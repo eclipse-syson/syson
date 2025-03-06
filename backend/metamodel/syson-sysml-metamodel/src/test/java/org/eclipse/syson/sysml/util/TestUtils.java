@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public class TestUtils {
 
     public static void testInheritedFeature(Type toTest, Feature... expected) {
         assertContentEquals(toTest.getInheritedMembership(), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
-        assertContentEquals(toTest.inheritedMemberships(new BasicEList<>(), false), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
+        assertContentEquals(toTest.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
         assertContentEquals(toTest.getInheritedFeature(), expected);
     }
 

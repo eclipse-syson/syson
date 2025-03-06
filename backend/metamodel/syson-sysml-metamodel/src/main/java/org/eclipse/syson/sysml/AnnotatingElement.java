@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -70,5 +70,19 @@ public interface AnnotatingElement extends Element {
      * @generated
      */
     EList<Annotation> getOwnedAnnotatingRelationship();
+
+    /**
+     * Returns the value of the '<em><b>Owning Annotating Relationship</b></em>' reference. It is bidirectional and its
+     * opposite is '{@link org.eclipse.syson.sysml.Annotation#getOwnedAnnotatingElement <em>Owned Annotating
+     * Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Owning Annotating Relationship</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotatingElement_OwningAnnotatingRelationship()
+     * @see org.eclipse.syson.sysml.Annotation#getOwnedAnnotatingElement
+     * @model opposite="ownedAnnotatingElement" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="subsets"
+     * @generated
+     */
+    Annotation getOwningAnnotatingRelationship();
 
 } // AnnotatingElement

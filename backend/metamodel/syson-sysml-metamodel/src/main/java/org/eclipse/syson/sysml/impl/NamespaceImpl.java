@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -196,6 +195,18 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
+     */
+    @Override
+    public EList<Membership> membershipsOfVisibility(VisibilityKind visibility, EList<Namespace> excluded) {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -309,14 +320,13 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public Membership resolveLocal(String name) {
-        // Try to resolve the Simple name in the current namespace
-        Optional<Membership> membership = this.getMembership().stream()
-                .filter(m -> (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name))).findFirst();
+        // Try to resolve the simple name in the current namespace
+        var membership = this.getMembership().stream()
+             .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
+             .findFirst();
 
         if (membership.isEmpty()) {
-
             Namespace owningNamespace = this.getOwningNamespace();
-
             if (owningNamespace != null) {
                 return owningNamespace.resolveLocal(name);
             } else {
@@ -338,11 +348,10 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     public Membership resolveVisible(String name) {
         EList<Membership> memberships = this.visibleMemberships(new BasicEList<>(), false, false);
 
-        Optional<Membership> membership = memberships.stream().filter(m -> {
-            return (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name));
-        }).findFirst();
-
-        return membership.orElseGet(() -> null);
+        return memberships.stream()
+                .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -444,6 +453,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         switch (operationID) {
             case SysmlPackage.NAMESPACE___IMPORTED_MEMBERSHIPS__ELIST:
                 return this.importedMemberships((EList<Namespace>) arguments.get(0));
+            case SysmlPackage.NAMESPACE___MEMBERSHIPS_OF_VISIBILITY__VISIBILITYKIND_ELIST:
+                return this.membershipsOfVisibility((VisibilityKind) arguments.get(0), (EList<Namespace>) arguments.get(1));
             case SysmlPackage.NAMESPACE___NAMES_OF__ELEMENT:
                 return this.namesOf((Element) arguments.get(0));
             case SysmlPackage.NAMESPACE___QUALIFICATION_OF__STRING:

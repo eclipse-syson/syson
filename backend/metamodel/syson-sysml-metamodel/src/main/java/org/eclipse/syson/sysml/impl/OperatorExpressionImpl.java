@@ -170,5 +170,4 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
         result.append(')');
         return result.toString();
     }
-
 } // OperatorExpressionImpl

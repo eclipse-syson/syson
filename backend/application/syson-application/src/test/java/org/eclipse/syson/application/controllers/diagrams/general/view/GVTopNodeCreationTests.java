@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -295,6 +294,38 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         }
     }
 
+    @Test
+    @DisplayName("Given an empty SysML Project, when we subscribe to the selection dialog tree of the NamespaceImport tool, then the tree is sent")
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenAnEmptySysMLProjectWhenWeSubscribeToTheSelectionDialogTreeOfTheNamespaceImportToolThenTheTreeIsSent() {
+        AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
+
+        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext));
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                })).thenCancel().verify();
+
+        assertThat(selectionDialogDescriptionId.get()).isNotEmpty();
+
+        if (selectionDialogDescriptionId.get().isPresent()) {
+            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+                    List.of());
+            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, representationId);
+            var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+
+            var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {
+                // 95 is the number of standard libraries
+                assertThat(tree.getChildren()).isNotEmpty().hasSize(95);
+            });
+            StepVerifier.create(flux)
+                    .consumeNextWith(hasResourceRootContent)
+                    .thenCancel()
+                    .verify(Duration.ofSeconds(10));
+        }
+    }
+
     private Optional<String> getISQAcousticsLibraryId(IEditingContext editingContext) {
         Optional<ResourceSet> optionalResourceSet = Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
@@ -324,45 +355,12 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .flatMap(namespace -> namespace.getOwnedMembership().stream())
-                .filter(Objects::nonNull)
                 .map(Membership.class::cast)
                 .flatMap(membership -> membership.getRelatedElement().stream())
                 .filter(LibraryPackage.class::isInstance)
                 .filter(element -> "ISQAcoustics".equals(element.getDeclaredName()))
                 .map(LibraryPackage.class::cast)
                 .findFirst();
-    }
-
-    @Test
-    @DisplayName("Given an empty SysML Project, when we subscribe to the selection dialog tree of the NamespaceImport tool, then the tree is sent")
-    @Sql(scripts = {"/scripts/syson-test-database.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenAnEmptySysMLProjectWhenWeSubscribeToTheSelectionDialogTreeOfTheNamespaceImportToolThenTheTreeIsSent() {
-        AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
-
-        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
-                (editingContext, executeEditingContextFunctionInput) -> {
-                    selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext));
-                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                }
-        )).thenCancel().verify();
-
-        assertThat(selectionDialogDescriptionId.get()).isNotEmpty();
-
-        if (selectionDialogDescriptionId.get().isPresent()) {
-            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
-                    List.of());
-            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, representationId);
-            var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
-
-            var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {
-                assertThat(tree.getChildren()).isNotEmpty().hasSize(94);
-            });
-            StepVerifier.create(flux)
-                    .consumeNextWith(hasResourceRootContent)
-                    .thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
     }
 
     private Optional<String> getSelectionDialogDescriptionId(IEditingContext editingContext) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -118,6 +118,14 @@ public interface Namespace extends Element {
      * @generated
      */
     EList<Membership> importedMemberships(EList<Namespace> excluded);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model ordered="false" visibilityOrdered="false" excludedMany="true" excludedOrdered="false"
+     * @generated
+     */
+    EList<Membership> membershipsOfVisibility(VisibilityKind visibility, EList<Namespace> excluded);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

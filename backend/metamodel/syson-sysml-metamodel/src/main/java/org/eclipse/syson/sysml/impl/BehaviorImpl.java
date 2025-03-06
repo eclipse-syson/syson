@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -75,8 +75,12 @@ public class BehaviorImpl extends ClassImpl implements Behavior {
      */
     @Override
     public EList<Step> getStep() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Step(), data.size(), data.toArray());
+        List<Step> steps = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(Step.class::isInstance)
+                .map(Step.class::cast)
+                .forEach(steps::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Step(), steps.size(), steps.toArray());
     }
 
     /**

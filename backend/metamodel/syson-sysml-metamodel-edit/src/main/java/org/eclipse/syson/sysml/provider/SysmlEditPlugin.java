@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.net.URL;
 
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 
 /**
  * This is the central singleton for the Sysml edit plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -46,6 +47,7 @@ public final class SysmlEditPlugin extends EMFPlugin {
      */
     public SysmlEditPlugin() {
         super(new ResourceLocator[] {
+                EcoreEditPlugin.INSTANCE,
         });
     }
 

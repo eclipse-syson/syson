@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
  */
 public class NameHelperTest {
 
-    @DisplayName("Test that names containg simple quotes are printed with these simple quotes escpaed.")
+    @DisplayName("Test that names containing simple quotes are printed with these simple quotes escpaed.")
     @Test
     void testEscapeSimpleQuotes() {
         String printableName = NameHelper.toPrintableName("Hello what's up!", true);

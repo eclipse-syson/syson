@@ -12,16 +12,20 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Element;
@@ -35,6 +39,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.AnnotationImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.AnnotationImpl#getAnnotatingElement <em>Annotating Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.AnnotationImpl#getOwnedAnnotatingElement <em>Owned Annotating
+ * Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.AnnotationImpl#getOwningAnnotatedElement <em>Owning Annotated
  * Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.AnnotationImpl#getOwningAnnotatingElement <em>Owning Annotating
@@ -53,16 +59,6 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
      * @ordered
      */
     protected Element annotatedElement;
-
-    /**
-     * The cached value of the '{@link #getAnnotatingElement() <em>Annotating Element</em>}' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getAnnotatingElement()
-     * @generated
-     * @ordered
-     */
-    protected AnnotatingElement annotatingElement;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -132,44 +128,21 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
      */
     @Override
     public AnnotatingElement getAnnotatingElement() {
-        if (this.annotatingElement != null && this.annotatingElement.eIsProxy()) {
-            InternalEObject oldAnnotatingElement = (InternalEObject) this.annotatingElement;
-            this.annotatingElement = (AnnotatingElement) this.eResolveProxy(oldAnnotatingElement);
-            if (this.annotatingElement != oldAnnotatingElement) {
-                if (this.eNotificationRequired()) {
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, oldAnnotatingElement, this.annotatingElement));
-                }
-            }
-        }
-        return this.annotatingElement;
+        AnnotatingElement annotatingElement = this.basicGetAnnotatingElement();
+        return annotatingElement != null && annotatingElement.eIsProxy() ? (AnnotatingElement) this.eResolveProxy((InternalEObject) annotatingElement) : annotatingElement;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public AnnotatingElement basicGetAnnotatingElement() {
-        return this.annotatingElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetAnnotatingElement(AnnotatingElement newAnnotatingElement, NotificationChain msgs) {
-        AnnotatingElement oldAnnotatingElement = this.annotatingElement;
-        this.annotatingElement = newAnnotatingElement;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, oldAnnotatingElement, newAnnotatingElement);
-            if (msgs == null) {
-                msgs = notification;
-            } else {
-                msgs.add(notification);
-            }
+        AnnotatingElement ownedAnnotatingElement = this.getOwnedAnnotatingElement();
+        if (ownedAnnotatingElement != null) {
+            return ownedAnnotatingElement;
         }
-        return msgs;
+        return this.getOwningAnnotatingElement();
     }
 
     /**
@@ -178,22 +151,26 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
      * @generated
      */
     @Override
-    public void setAnnotatingElement(AnnotatingElement newAnnotatingElement) {
-        if (newAnnotatingElement != this.annotatingElement) {
-            NotificationChain msgs = null;
-            if (this.annotatingElement != null) {
-                msgs = ((InternalEObject) this.annotatingElement).eInverseRemove(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
-            }
-            if (newAnnotatingElement != null) {
-                msgs = ((InternalEObject) newAnnotatingElement).eInverseAdd(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
-            }
-            msgs = this.basicSetAnnotatingElement(newAnnotatingElement, msgs);
-            if (msgs != null) {
-                msgs.dispatch();
-            }
-        } else if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, newAnnotatingElement, newAnnotatingElement));
+    public AnnotatingElement getOwnedAnnotatingElement() {
+        AnnotatingElement ownedAnnotatingElement = this.basicGetOwnedAnnotatingElement();
+        return ownedAnnotatingElement != null && ownedAnnotatingElement.eIsProxy() ? (AnnotatingElement) this.eResolveProxy((InternalEObject) ownedAnnotatingElement) : ownedAnnotatingElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public AnnotatingElement basicGetOwnedAnnotatingElement() {
+        List<AnnotatingElement> ownedAnnotatingElements = new ArrayList<>();
+        this.getOwnedRelatedElement().stream()
+                .filter(AnnotatingElement.class::isInstance)
+                .map(AnnotatingElement.class::cast)
+                .forEach(ownedAnnotatingElements::add);
+        if (!ownedAnnotatingElements.isEmpty()) {
+            return ownedAnnotatingElements.get(0);
         }
+        return null;
     }
 
     /**
@@ -210,12 +187,14 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Element basicGetOwningAnnotatedElement() {
-        // TODO: implement this method to return the 'Owning Annotated Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element annotatedElement = this.getAnnotatedElement();
+        Element owningRelatedElement = this.getOwningRelatedElement();
+        if (Objects.equals(annotatedElement, owningRelatedElement)) {
+            return annotatedElement;
+        }
         return null;
     }
 
@@ -233,44 +212,14 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public AnnotatingElement basicGetOwningAnnotatingElement() {
-        // TODO: implement this method to return the 'Owning Annotating Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element owningRelatedElement = this.getOwningRelatedElement();
+        if (owningRelatedElement instanceof AnnotatingElement annotatingElement) {
+            return annotatingElement;
+        }
         return null;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                if (this.annotatingElement != null) {
-                    msgs = ((InternalEObject) this.annotatingElement).eInverseRemove(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
-                }
-                return this.basicSetAnnotatingElement((AnnotatingElement) otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                return this.basicSetAnnotatingElement(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -291,6 +240,11 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
                     return this.getAnnotatingElement();
                 }
                 return this.basicGetAnnotatingElement();
+            case SysmlPackage.ANNOTATION__OWNED_ANNOTATING_ELEMENT:
+                if (resolve) {
+                    return this.getOwnedAnnotatingElement();
+                }
+                return this.basicGetOwnedAnnotatingElement();
             case SysmlPackage.ANNOTATION__OWNING_ANNOTATED_ELEMENT:
                 if (resolve) {
                     return this.getOwningAnnotatedElement();
@@ -316,9 +270,6 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
             case SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT:
                 this.setAnnotatedElement((Element) newValue);
                 return;
-            case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                this.setAnnotatingElement((AnnotatingElement) newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -333,9 +284,6 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
         switch (featureID) {
             case SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT:
                 this.setAnnotatedElement((Element) null);
-                return;
-            case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                this.setAnnotatingElement((AnnotatingElement) null);
                 return;
         }
         super.eUnset(featureID);
@@ -352,7 +300,9 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
             case SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT:
                 return this.annotatedElement != null;
             case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                return this.annotatingElement != null;
+                return this.basicGetAnnotatingElement() != null;
+            case SysmlPackage.ANNOTATION__OWNED_ANNOTATING_ELEMENT:
+                return this.basicGetOwnedAnnotatingElement() != null;
             case SysmlPackage.ANNOTATION__OWNING_ANNOTATED_ELEMENT:
                 return this.basicGetOwningAnnotatedElement() != null;
             case SysmlPackage.ANNOTATION__OWNING_ANNOTATING_ELEMENT:
@@ -394,37 +344,18 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     }
 
     /**
-     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     * <!-- begin-user-doc --> annotatingElement redefines source <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.ANNOTATION__SOURCE) {
-            @Override
-            public boolean addAll(Collection<? extends Element> collection) {
-                if (collection != null) {
-                    Iterator<? extends Element> iterator = collection.iterator();
-                    if (iterator.hasNext()) {
-                        Element next = iterator.next();
-                        if (next instanceof AnnotatingElement annotatingElement) {
-                            AnnotationImpl.this.setAnnotatingElement(annotatingElement);
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            protected void dispatchNotification(Notification notification) {
-            }
-        };
+        EList<Element> sources = new BasicEList<>();
         AnnotatingElement annotatingElement = this.getAnnotatingElement();
         if (annotatingElement != null) {
             sources.add(annotatingElement);
         }
-        return sources;
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // AnnotationImpl

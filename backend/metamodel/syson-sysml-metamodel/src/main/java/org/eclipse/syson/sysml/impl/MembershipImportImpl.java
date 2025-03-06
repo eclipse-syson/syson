@@ -178,6 +178,7 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
+        // We should get rid of this custom implementation
         return new MembershipComputer(this, excluded).importedMemberships();
     }
 

@@ -306,7 +306,11 @@
             }
         ],
         "valuation": null,
-        "definition": [],
+        "definition": [
+            {
+                "@id":"0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
         "directedUsage": [],
         "nestedAction": [],
         "nestedAllocation": [],
@@ -341,7 +345,11 @@
         "variant": [],
         "variantMembership": [],
         "individualDefinition": null,
-        "occurrenceDefinition": [],
+        "occurrenceDefinition": [
+            {
+                "@id":"0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
         "itemDefinition": [],
         "partDefinition": [
             {

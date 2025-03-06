@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class AnnotationItemProvider extends RelationshipItemProvider {
 
             this.addAnnotatedElementPropertyDescriptor(object);
             this.addAnnotatingElementPropertyDescriptor(object);
+            this.addOwnedAnnotatingElementPropertyDescriptor(object);
             this.addOwningAnnotatedElementPropertyDescriptor(object);
             this.addOwningAnnotatingElementPropertyDescriptor(object);
         }
@@ -89,6 +90,26 @@ public class AnnotationItemProvider extends RelationshipItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Owned Annotating Element feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOwnedAnnotatingElementPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Annotation_ownedAnnotatingElement_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Annotation_ownedAnnotatingElement_feature", "_UI_Annotation_type"),
+                SysmlPackage.eINSTANCE.getAnnotation_OwnedAnnotatingElement(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

@@ -121,9 +121,9 @@ public class ViewLabelServiceTest {
         featureValue.setIsDefault(true);
 
         assertEquals("myAttributeUsage default = 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
-        
+
         featureValue.setIsInitial(true);
-        
+
         assertEquals("myAttributeUsage default := 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
 
     }

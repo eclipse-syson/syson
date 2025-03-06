@@ -97,8 +97,8 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
         return this.getOwnedRelationship().stream()
                 .filter(ObjectiveMembership.class::isInstance)
                 .map(ObjectiveMembership.class::cast)
-                .map(om -> om.getOwnedObjectiveRequirement())
                 .findFirst()
+                .map(om -> om.getOwnedObjectiveRequirement())
                 .orElse(null);
     }
 
@@ -122,8 +122,8 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
         return this.getOwnedRelationship().stream()
                 .filter(SubjectMembership.class::isInstance)
                 .map(SubjectMembership.class::cast)
-                .map(sm -> sm.getOwnedSubjectParameter())
                 .findFirst()
+                .map(sm -> sm.getOwnedSubjectParameter())
                 .orElse(null);
     }
 

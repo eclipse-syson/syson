@@ -127,13 +127,15 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public OccurrenceDefinition basicGetIndividualDefinition() {
-        // TODO: implement this method to return the 'Individual Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOccurrenceDefinition().stream()
+                .filter(OccurrenceDefinition.class::isInstance)
+                .map(OccurrenceDefinition.class::cast)
+                .filter(OccurrenceDefinition::isIsIndividual)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -167,8 +169,12 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
      */
     @Override
     public EList<org.eclipse.syson.sysml.Class> getOccurrenceDefinition() {
-        List<org.eclipse.syson.sysml.Class> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOccurrenceUsage_OccurrenceDefinition(), data.size(), data.toArray());
+        List<org.eclipse.syson.sysml.Class> occurrenceDefinitions = new ArrayList<>();
+        this.getType().stream()
+                .filter(org.eclipse.syson.sysml.Class.class::isInstance)
+                .map(org.eclipse.syson.sysml.Class.class::cast)
+                .forEach(occurrenceDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOccurrenceUsage_OccurrenceDefinition(), occurrenceDefinitions.size(), occurrenceDefinitions.toArray());
     }
 
     /**

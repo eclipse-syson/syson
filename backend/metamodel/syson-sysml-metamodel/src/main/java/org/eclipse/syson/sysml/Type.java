@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -400,10 +400,45 @@ public interface Type extends Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @model excludedMany="true" excludedOrdered="false" excludeImpliedRequired="true" excludeImpliedOrdered="false"
+     * @model excludedNamespacesMany="true" excludedNamespacesOrdered="false" excludedTypesMany="true"
+     *        excludedTypesOrdered="false" excludeImpliedRequired="true" excludeImpliedOrdered="false"
      * @generated
      */
-    EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied);
+    EList<Membership> inheritableMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model excludedNamespacesMany="true" excludedNamespacesOrdered="false" excludedTypesMany="true"
+     *        excludedTypesOrdered="false" excludeImpliedRequired="true" excludeImpliedOrdered="false"
+     * @generated
+     */
+    EList<Membership> inheritedMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model
+     * @generated
+     */
+    EList<Multiplicity> multiplicities();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model excludedNamespacesMany="true" excludedNamespacesOrdered="false" excludedTypesMany="true"
+     *        excludedTypesOrdered="false" excludeImpliedRequired="true" excludeImpliedOrdered="false"
+     * @generated
+     */
+    EList<Membership> nonPrivateMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model membershipsMany="true"
+     * @generated
+     */
+    EList<Membership> removeRedefinedFeatures(EList<Membership> memberships);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -420,5 +455,13 @@ public interface Type extends Namespace {
      * @generated
      */
     boolean specializesFromLibrary(String libraryTypeName);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model excludeImpliedRequired="true" excludeImpliedOrdered="false"
+     * @generated
+     */
+    EList<Type> supertypes(boolean excludeImplied);
 
 } // Type

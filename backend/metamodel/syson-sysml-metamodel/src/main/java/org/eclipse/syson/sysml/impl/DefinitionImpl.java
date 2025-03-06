@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -665,8 +665,12 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Usage> getUsage() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_Usage(), data.size(), data.toArray());
+        List<Usage> usages = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(Usage.class::isInstance)
+                .map(Usage.class::cast)
+                .forEach(usages::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_Usage(), usages.size(), usages.toArray());
     }
 
     /**
@@ -676,8 +680,11 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Usage> getVariant() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_Variant(), data.size(), data.toArray());
+        List<Usage> variants = new ArrayList<>();
+        this.getVariantMembership().stream()
+                .map(VariantMembership::getOwnedVariantUsage)
+                .forEach(variants::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_Variant(), variants.size(), variants.toArray());
     }
 
     /**
@@ -687,8 +694,12 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<VariantMembership> getVariantMembership() {
-        List<VariantMembership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_VariantMembership(), data.size(), data.toArray());
+        List<VariantMembership> variantMemberships = new ArrayList<>();
+        this.getOwnedMembership().stream()
+                .filter(VariantMembership.class::isInstance)
+                .map(VariantMembership.class::cast)
+                .forEach(variantMemberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_VariantMembership(), variantMemberships.size(), variantMemberships.toArray());
     }
 
     /**
@@ -698,7 +709,7 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMemberships = this.inheritedMemberships(new BasicEList<>(), false);
+        EList<Membership> inheritedMemberships = this.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 

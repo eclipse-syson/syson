@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -33,22 +32,11 @@ import org.eclipse.syson.sysml.SysmlPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.InvocationExpressionImpl#getArgument <em>Argument</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.InvocationExpressionImpl#getOperand <em>Operand</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class InvocationExpressionImpl extends ExpressionImpl implements InvocationExpression {
-    /**
-     * The cached value of the '{@link #getOperand() <em>Operand</em>}' reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getOperand()
-     * @generated
-     * @ordered
-     */
-    protected EList<Expression> operand;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -91,25 +79,10 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
      * @generated
      */
     @Override
-    public EList<Expression> getOperand() {
-        if (this.operand == null) {
-            this.operand = new EObjectResolvingEList<>(Expression.class, this, SysmlPackage.INVOCATION_EXPRESSION__OPERAND);
-        }
-        return this.operand;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.INVOCATION_EXPRESSION__ARGUMENT:
                 return this.getArgument();
-            case SysmlPackage.INVOCATION_EXPRESSION__OPERAND:
-                return this.getOperand();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -124,8 +97,6 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
         switch (featureID) {
             case SysmlPackage.INVOCATION_EXPRESSION__ARGUMENT:
                 return !this.getArgument().isEmpty();
-            case SysmlPackage.INVOCATION_EXPRESSION__OPERAND:
-                return this.operand != null && !this.operand.isEmpty();
         }
         return super.eIsSet(featureID);
     }
