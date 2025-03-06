@@ -10,6 +10,16 @@ In such cases, delete the `SuccessionUsage` graphical node and recreate it graph
 
 - Fix an issue while computing the name of `VariantMembership`.
 This has an impact on name resolution against `Element` contained in `VariantMembership` during the textual import process (e.g. for `EnumerationUsage` literals in `EnumerationDefinition`). 
+- Fix resolution of "unrestricted" names. For example, while importing the following model, the reference to _'p 2'::'A 1'_ is now properly resolved.
+
+```
+package p1 {
+    package 'p 2' {
+        action def 'A 1';
+    }
+    action 'a 2' : 'p 2'::'A 1';
+}
+```
 
 == New features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,11 +45,11 @@ public class NamespaceImplTest {
      * package p1 {
      *      part def def1;
      *      package p1x1 {
-     *          part def def1x1;
+     *          part def 'def 1x1';
      *          package p1x1x1 {
-     *              part def def1x1x1 :> def4;
+     *              part def def1x1x1 :> 'def 4';
      *          }
-     *          private part def privatedef1x1 :> p4::def4;
+     *          private part def privatedef1x1 :> 'p 4'::'def 4';
      *      }
      *
      *      package p1x2 {
@@ -73,8 +73,8 @@ public class NamespaceImplTest {
      *      private part def privateDef3
      *  }
      *
-     *  package p4 {
-     *      part def def4;
+     *  package 'p 4' {
+     *      part def 'def 4';
      *  }
      * }
      * </pre>
@@ -149,7 +149,7 @@ public class NamespaceImplTest {
             this.def1 = this.builder.createInWithName(PartDefinition.class, this.p1, "Def1");
 
             this.p1x1 = this.builder.createInWithName(Package.class, this.p1, "p1x1");
-            this.def1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def1x1");
+            this.def1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def 1x1");
             this.privatedef1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "privatedef1x1");
             this.privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
 
@@ -176,8 +176,8 @@ public class NamespaceImplTest {
 
 
             this.root2 = this.builder.createWithName(Namespace.class, null);
-            this.p4 = this.builder.createInWithName(Package.class, this.root2, "p9");
-            this.def4 = this.builder.createInWithName(PartDefinition.class, this.p4, "def9");
+            this.p4 = this.builder.createInWithName(Package.class, this.root2, "p 4");
+            this.def4 = this.builder.createInWithName(PartDefinition.class, this.p4, "def 4");
 
             this.builder.addSubclassification(this.def1x1x1, this.def4);
             this.builder.createIn(NamespaceImport.class, this.p1x1x1).setImportedNamespace(this.def4);
@@ -470,7 +470,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         /*      package p1x1 {
-         *          part def def1x1;
+         *          part def 'def 1x1';
          *          package p1x1x1 {
          *              part def def1x1x1;
          *          }
@@ -500,13 +500,14 @@ public class NamespaceImplTest {
         assertEquals(testModel.p1, testModel.p1.resolveLocal(testModel.p1.getName()).getMemberElement());
     }
 
+
     @DisplayName("Test resolveVisible")
     @Test
     public void resolveVisibleTest() {
         var testModel = new TestModel();
 
         /*      package p1x1 {
-         *          part def def1x1;
+         *          part def 'def 1x1';
          *          package p1x1x1 {
          *              part def def1x1x1;
          *          }
@@ -531,7 +532,7 @@ public class NamespaceImplTest {
         * package p1 {
         *      part def def1;
         *      package p1x1 {
-        *          part def def1x1;
+        *          part def 'def 1x1';
         *          package p1x1x1 {
         *              part def def1x1x1;
         *          }
@@ -568,16 +569,16 @@ public class NamespaceImplTest {
 
         /*
          *  package p1x1 {
-         *    part def def1x1;
+         *    part def 'def 1x1';
          *    package p1x1x1 {
          *      import p4::*;
-         *      part def def1x1x1 :> def4;
+         *      part def def1x1x1 :> 'def 4';
          *    }
-         *    private part def privatedef1x1 :> p4::def4;
+         *    private part def privatedef1x1 :> 'p 4'::'def 4';
          *  }
          *
-         *  package p4 {
-         *    part def def4;
+         *  package 'p 4' {
+         *    part def 'def 4';
          *  }
          */
 
@@ -601,7 +602,9 @@ public class NamespaceImplTest {
 
         assertEquals("test 1", testModel.p1.unqualifiedNameOf("test 1"));
         assertEquals("test 2", testModel.p1.unqualifiedNameOf("test 1::test 2"));
+        assertEquals("test 2", testModel.p1.unqualifiedNameOf("'test 1'::test 2"));
         assertEquals("test 3", testModel.p1.unqualifiedNameOf("test 1::test 2::test 3"));
+        assertEquals("test 3", testModel.p1.unqualifiedNameOf("test 1::test 2::'test 3'"));
 
     }
 
