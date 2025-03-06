@@ -178,6 +178,19 @@ public class ImportExportTests extends AbstractIntegrationTests {
         this.checker.check(input, input);
     }
 
+    @Test
+    @DisplayName("Given a model with unrestricted names, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    public void checkUnrestrictedNamesResolution() throws IOException {
+        var input = """
+                package p1 {
+                    package 'p 2' {
+                        action def 'A 1';
+                    }
+                    action 'a 2' : 'p 2'::'A 1';
+                }""";
+
+        this.checker.check(input, input);
+    }
     /**
      * Test import/export on test file UseCaseTest.sysml. The content of UseCaseTest.sysml that have been copied below
      * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the

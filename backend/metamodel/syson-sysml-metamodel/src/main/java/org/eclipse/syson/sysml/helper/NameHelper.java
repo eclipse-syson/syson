@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,10 @@ public class NameHelper {
      * @return
      */
     public static String unescapeString(String str) {
-        return StringEscapeUtils.unescapeJava(str);
+        if (str != null && str.length() > 1 && str.startsWith("'") && str.endsWith("'")) {
+            return str.substring(1, str.length() - 1);
+        }
+        return str;
     }
 
     /**
