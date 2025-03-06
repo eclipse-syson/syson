@@ -39,7 +39,7 @@ public interface MultiplicityRange extends Multiplicity {
      * @return the value of the '<em>Bound</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMultiplicityRange_Bound()
      * @model required="true" upper="2" transient="true" changeable="false" volatile="true" derived="true"
-     *        annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     EList<Expression> getBound();

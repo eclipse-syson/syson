@@ -122,6 +122,14 @@ public interface Namespace extends Element {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @model ordered="false" visibilityOrdered="false" excludedMany="true" excludedOrdered="false"
+     * @generated
+     */
+    EList<Membership> membershipsOfVisibility(VisibilityKind visibility, EList<Namespace> excluded);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @model ordered="false" elementRequired="true" elementOrdered="false"
      * @generated
      */

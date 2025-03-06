@@ -480,4 +480,12 @@ public interface Usage extends Feature {
      */
     EList<VariantMembership> getVariantMembership();
 
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" ordered="false"
+     * @generated
+     */
+    Feature referencedFeatureTarget();
+
 } // Usage

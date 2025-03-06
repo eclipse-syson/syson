@@ -196,6 +196,18 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
+     */
+    @Override
+    public EList<Membership> membershipsOfVisibility(VisibilityKind visibility, EList<Namespace> excluded) {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -444,6 +456,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         switch (operationID) {
             case SysmlPackage.NAMESPACE___IMPORTED_MEMBERSHIPS__ELIST:
                 return this.importedMemberships((EList<Namespace>) arguments.get(0));
+            case SysmlPackage.NAMESPACE___MEMBERSHIPS_OF_VISIBILITY__VISIBILITYKIND_ELIST:
+                return this.membershipsOfVisibility((VisibilityKind) arguments.get(0), (EList<Namespace>) arguments.get(1));
             case SysmlPackage.NAMESPACE___NAMES_OF__ELEMENT:
                 return this.namesOf((Element) arguments.get(0));
             case SysmlPackage.NAMESPACE___QUALIFICATION_OF__STRING:

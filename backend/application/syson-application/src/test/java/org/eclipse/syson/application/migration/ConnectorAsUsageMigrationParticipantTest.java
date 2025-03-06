@@ -31,7 +31,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Test for {@link ConnectorAsUsageSourceAndTargetMigrationParticipant}.
+ * Tests for all migration participant related to ConnectorAsUsage elements.
  *
  * @author Arthur Daussy
  */
@@ -56,7 +56,7 @@ public class ConnectorAsUsageMigrationParticipantTest extends AbstractIntegratio
     @DisplayName("Given a project with an old SysML model, when the model is loaded, ConnectorAsUsageSourceAndTargetMigrationParticipant migrates the model correctly meaning it does not deserialize source and target features")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenAnOldModelMigrationParticipantCanBeContributedToUpdateTheModel() {
+    public void connectorAsUsageSourceAndTargetMigrationParticipantTest() {
         this.givenCommittedTransaction.commit();
         var optionalEditingContext = this.editingContextSearchService.findById(CONNECTOR_AS_USAGE_MIGRATION_PARTICIPANT_TEST_EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();

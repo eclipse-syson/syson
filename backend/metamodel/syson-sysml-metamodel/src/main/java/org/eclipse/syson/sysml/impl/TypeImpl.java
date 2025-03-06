@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import static java.util.stream.Collectors.toCollection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -43,6 +45,7 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
@@ -158,8 +161,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Type> getDifferencingType() {
-        List<Type> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DifferencingType(), data.size(), data.toArray());
+        List<Type> differencingTypes = new ArrayList<>();
+        this.getOwnedDifferencing().stream()
+                .map(Differencing::getDifferencingType)
+                .forEach(differencingTypes::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DifferencingType(), differencingTypes.size(), differencingTypes.toArray());
     }
 
     /**
@@ -169,8 +175,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getDirectedFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DirectedFeature(), data.size(), data.toArray());
+        List<Feature> directedFeatures = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(f -> this.directionOf(f) != null)
+                .forEach(directedFeatures::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DirectedFeature(), directedFeatures.size(), directedFeatures.toArray());
     }
 
     /**
@@ -253,8 +262,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getInput() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Input(), data.size(), data.toArray());
+        List<Feature> inputs = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(f -> {
+                    var direction = this.directionOf(f);
+                    return direction == FeatureDirectionKind.IN || direction == FeatureDirectionKind.INOUT;
+                })
+                .forEach(inputs::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Input(), inputs.size(), inputs.toArray());
     }
 
     /**
@@ -264,8 +279,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Type> getIntersectingType() {
-        List<Type> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_IntersectingType(), data.size(), data.toArray());
+        List<Type> intersectingTypes = new ArrayList<>();
+        this.getOwnedIntersecting().stream()
+                .map(Intersecting::getIntersectingType)
+                .forEach(intersectingTypes::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_IntersectingType(), intersectingTypes.size(), intersectingTypes.toArray());
     }
 
     /**
@@ -299,7 +317,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public boolean isIsConjugated() {
-        return false;
+        return this.getOwnedConjugator() != null;
     }
 
     /**
@@ -340,13 +358,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Multiplicity basicGetMultiplicity() {
-        // TODO: implement this method to return the 'Multiplicity' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedMember().stream()
+                .filter(Multiplicity.class::isInstance)
+                .map(Multiplicity.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -356,8 +375,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getOutput() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Output(), data.size(), data.toArray());
+        List<Feature> outputs = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(f -> {
+                    var direction = this.directionOf(f);
+                    return direction == FeatureDirectionKind.OUT || direction == FeatureDirectionKind.INOUT;
+                })
+                .forEach(outputs::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Output(), outputs.size(), outputs.toArray());
     }
 
     /**
@@ -374,13 +399,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Conjugation basicGetOwnedConjugator() {
-        // TODO: implement this method to return the 'Owned Conjugator' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(Conjugation.class::isInstance)
+                .map(Conjugation.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -390,8 +416,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Differencing> getOwnedDifferencing() {
-        List<Differencing> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedDifferencing(), data.size(), data.toArray());
+        List<Differencing> ownedDifferencings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(Differencing.class::isInstance)
+                .map(Differencing.class::cast)
+                .forEach(ownedDifferencings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedDifferencing(), ownedDifferencings.size(), ownedDifferencings.toArray());
     }
 
     /**
@@ -401,8 +431,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Disjoining> getOwnedDisjoining() {
-        List<Disjoining> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedDisjoining(), data.size(), data.toArray());
+        List<Disjoining> ownedDisjoinings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(Disjoining.class::isInstance)
+                .map(Disjoining.class::cast)
+                .forEach(ownedDisjoinings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedDisjoining(), ownedDisjoinings.size(), ownedDisjoinings.toArray());
     }
 
     /**
@@ -412,8 +446,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getOwnedEndFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedEndFeature(), data.size(), data.toArray());
+        List<Feature> ownedEndFeatures = new ArrayList<>();
+        this.getOwnedFeature().stream()
+                .filter(Feature::isIsEnd)
+                .forEach(ownedEndFeatures::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedEndFeature(), ownedEndFeatures.size(), ownedEndFeatures.toArray());
     }
 
     /**
@@ -454,8 +491,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Intersecting> getOwnedIntersecting() {
-        List<Intersecting> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedIntersecting(), data.size(), data.toArray());
+        List<Intersecting> ownedIntersectings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(Intersecting.class::isInstance)
+                .map(Intersecting.class::cast)
+                .forEach(ownedIntersectings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedIntersecting(), ownedIntersectings.size(), ownedIntersectings.toArray());
     }
 
     /**
@@ -487,8 +528,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Unioning> getOwnedUnioning() {
-        List<Unioning> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedUnioning(), data.size(), data.toArray());
+        List<Unioning> ownedUnionings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(Unioning.class::isInstance)
+                .map(Unioning.class::cast)
+                .forEach(ownedUnionings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedUnioning(), ownedUnionings.size(), ownedUnionings.toArray());
     }
 
     /**
@@ -498,8 +543,10 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Type> getUnioningType() {
-        List<Type> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_UnioningType(), data.size(), data.toArray());
+        List<Type> unioningTypes = this.getOwnedUnioning().stream()
+                .map(Unioning::getUnioningType)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_UnioningType(), unioningTypes.size(), unioningTypes.toArray());
     }
 
     /**
@@ -559,25 +606,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public FeatureDirectionKind directionOf(Feature feature) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public FeatureDirectionKind directionOfExcluding(Feature feature, EList<Type> excluded) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.directionOfExcluding(feature, new BasicEList<>());
     }
 
     /**
@@ -586,8 +619,151 @@ public class TypeImpl extends NamespaceImpl implements Type {
      * @generated NOT
      */
     @Override
-    public EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied) {
-        return new MembershipComputer(this, excluded).inheritedMemberships();
+    public FeatureDirectionKind directionOfExcluding(Feature feature, EList<Type> excluded) {
+        FeatureDirectionKind directionOfExcluding = null;
+        EList<Type> excludedSelf = new BasicEList<>();
+        excludedSelf.addAll(excluded);
+        excludedSelf.add(this);
+
+        if (this.equals(feature.getOwningType())) {
+            directionOfExcluding = feature.getDirection();
+        } else {
+            EList<Type> supertypes = this.supertypes(false);
+            supertypes.removeAll(excludedSelf);
+            var directions = supertypes.stream()
+                    .map(s -> s.directionOfExcluding(feature, excludedSelf))
+                    .filter(Objects::nonNull)
+                    .toList();
+            if (!directions.isEmpty()) {
+                var direction = directions.get(0);
+                if (!this.isIsConjugated()) {
+                    directionOfExcluding = direction;
+                } else if (direction == FeatureDirectionKind.IN) {
+                    directionOfExcluding = FeatureDirectionKind.OUT;
+                } else if (direction == FeatureDirectionKind.OUT) {
+                    directionOfExcluding = FeatureDirectionKind.IN;
+                } else {
+                    directionOfExcluding = direction;
+                }
+            }
+        }
+        return directionOfExcluding;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> inheritableMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied) {
+        EList<Membership> inheritableMemberships = new BasicEList<>();
+        var excludingSelf = new HashSet<>();
+        excludingSelf.addAll(excludedTypes);
+        excludingSelf.add(this);
+
+        EList<Type> supertypes = this.supertypes(excludeImplied);
+        supertypes.removeIf(t -> excludingSelf.contains(t));
+        var nonPrivateMemberships = supertypes.stream()
+                .map(t -> t.nonPrivateMemberships(excludedNamespaces, excludedTypes, excludeImplied))
+                .flatMap(Collection::stream)
+                .toList();
+        inheritableMemberships.addAll(nonPrivateMemberships);
+        return inheritableMemberships;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> inheritedMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied) {
+        // Implementation as specified by the SysMLv2 specification
+        // return this.removeRedefinedFeatures(this.inheritableMemberships(excludedNamespaces, excludedTypes,
+        // excludeImplied));
+        return new MembershipComputer(this, excludedTypes).inheritedMemberships();
+    }
+
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Multiplicity> multiplicities() {
+        EList<Multiplicity> multiplicities = new BasicEList<>();
+        if (this.getMultiplicity() != null) {
+            multiplicities.add(this.getMultiplicity());
+        } else {
+            List<Type> specializationsWithMultiplicities = new ArrayList<>();
+            this.multiplicitiesClosure(this, specializationsWithMultiplicities);
+            specializationsWithMultiplicities.stream()
+                    .filter(t -> t.getMultiplicity() != null)
+                    .map(Type::multiplicities)
+                    .flatMap(Collection::stream)
+                    .forEach(multiplicities::add);
+        }
+        return multiplicities;
+    }
+
+    /**
+     * @generated NOT
+     */
+    private void multiplicitiesClosure(Type currentType, List<Type> accu) {
+        var ownedSpecialization = currentType.getOwnedSpecialization();
+        for (var specialization : ownedSpecialization) {
+            var general = specialization.getGeneral();
+            if (general != null && general.getMultiplicity() == null && !accu.contains(general)) {
+                this.multiplicitiesClosure(general, accu);
+            }
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> nonPrivateMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied) {
+        EList<Membership> nonPrivateMemberships = new BasicEList<>();
+        var publicMemberships = this.membershipsOfVisibility(VisibilityKind.PUBLIC, excludedNamespaces);
+        var protectedMemberships = this.membershipsOfVisibility(VisibilityKind.PROTECTED, excludedNamespaces);
+        var inheritedMemberships = this.inheritedMemberships(excludedNamespaces, excludedTypes, excludeImplied);
+        nonPrivateMemberships.addAll(publicMemberships);
+        nonPrivateMemberships.addAll(protectedMemberships);
+        nonPrivateMemberships.addAll(inheritedMemberships);
+        return nonPrivateMemberships;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> removeRedefinedFeatures(EList<Membership> memberships) {
+        // let reducedMemberships : Sequence(Membership) =
+        // memberships->reject(mem1 |
+        // memberships->excluding(mem1)->
+        // exists(mem2 | allRedefinedFeaturesOf(mem2)->
+        // includes(mem1.memberElement))) in
+        // let redefinedFeatures : Set(Feature) =
+        // ownedFeature.redefinition.redefinedFeature->asSet() in
+        // reducedMemberships->reject(mem | allRedefinedFeaturesOf(mem)->
+        // exists(feature | redefinedFeatures->includes(feature)))
+        var reducedMemberships = new ArrayList<>();
+        reducedMemberships.addAll(memberships);
+        reducedMemberships.removeIf(mem1 -> {
+            return memberships.stream()
+                    .filter(m -> !Objects.equals(m, mem1))
+                    .anyMatch(mem2 -> {
+                        return false;
+                    });
+        });
+        return null;
     }
 
     /**
@@ -652,6 +828,18 @@ public class TypeImpl extends NamespaceImpl implements Type {
             }
         }
         return false;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Type> supertypes(boolean excludeImplied) {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
     }
 
     /**
@@ -832,12 +1020,22 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 return this.directionOf((Feature) arguments.get(0));
             case SysmlPackage.TYPE___DIRECTION_OF_EXCLUDING__FEATURE_ELIST:
                 return this.directionOfExcluding((Feature) arguments.get(0), (EList<Type>) arguments.get(1));
-            case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST_BOOLEAN:
-                return this.inheritedMemberships((EList<Type>) arguments.get(0), (Boolean) arguments.get(1));
+            case SysmlPackage.TYPE___INHERITABLE_MEMBERSHIPS__ELIST_ELIST_BOOLEAN:
+                return this.inheritableMemberships((EList<Namespace>) arguments.get(0), (EList<Type>) arguments.get(1), (Boolean) arguments.get(2));
+            case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST_ELIST_BOOLEAN:
+                return this.inheritedMemberships((EList<Namespace>) arguments.get(0), (EList<Type>) arguments.get(1), (Boolean) arguments.get(2));
+            case SysmlPackage.TYPE___MULTIPLICITIES:
+                return this.multiplicities();
+            case SysmlPackage.TYPE___NON_PRIVATE_MEMBERSHIPS__ELIST_ELIST_BOOLEAN:
+                return this.nonPrivateMemberships((EList<Namespace>) arguments.get(0), (EList<Type>) arguments.get(1), (Boolean) arguments.get(2));
+            case SysmlPackage.TYPE___REMOVE_REDEFINED_FEATURES__ELIST:
+                return this.removeRedefinedFeatures((EList<Membership>) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES__TYPE:
                 return this.specializes((Type) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES_FROM_LIBRARY__STRING:
                 return this.specializesFromLibrary((String) arguments.get(0));
+            case SysmlPackage.TYPE___SUPERTYPES__BOOLEAN:
+                return this.supertypes((Boolean) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }

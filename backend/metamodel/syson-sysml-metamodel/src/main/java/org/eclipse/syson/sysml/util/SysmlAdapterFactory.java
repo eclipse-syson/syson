@@ -271,6 +271,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseCrossSubsetting(CrossSubsetting object) {
+            return SysmlAdapterFactory.this.createCrossSubsettingAdapter();
+        }
+
+        @Override
         public Adapter caseDataType(DataType object) {
             return SysmlAdapterFactory.this.createDataTypeAdapter();
         }
@@ -438,6 +443,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseIncludeUseCaseUsage(IncludeUseCaseUsage object) {
             return SysmlAdapterFactory.this.createIncludeUseCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseIndexExpression(IndexExpression object) {
+            return SysmlAdapterFactory.this.createIndexExpressionAdapter();
         }
 
         @Override
@@ -1486,6 +1496,19 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CrossSubsetting <em>Cross
+     * Subsetting</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.CrossSubsetting
+     * @generated
+     */
+    public Adapter createCrossSubsettingAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.DataType <em>Data Type</em>}'. <!--
      * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -1935,6 +1958,19 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createIncludeUseCaseUsageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.IndexExpression <em>Index
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.IndexExpression
+     * @generated
+     */
+    public Adapter createIndexExpressionAdapter() {
         return null;
     }
 

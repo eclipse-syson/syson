@@ -14,16 +14,12 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Element;
@@ -48,16 +44,6 @@ import org.eclipse.syson.sysml.Usage;
  * @generated
  */
 public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature {
-    /**
-     * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getAnnotation()
-     * @generated
-     * @ordered
-     */
-    protected EList<Annotation> annotation;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -95,10 +81,12 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
      */
     @Override
     public EList<Annotation> getAnnotation() {
-        if (this.annotation == null) {
-            this.annotation = new EObjectWithInverseResolvingEList<>(Annotation.class, this, SysmlPackage.METADATA_FEATURE__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
-        }
-        return this.annotation;
+        // TODO: implement this method to return the 'Annotation' reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        return null;
     }
 
     /**
@@ -110,6 +98,30 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     public EList<Annotation> getOwnedAnnotatingRelationship() {
         List<Usage> data = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(), data.size(), data.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Annotation getOwningAnnotatingRelationship() {
+        Annotation owningAnnotatingRelationship = this.basicGetOwningAnnotatingRelationship();
+        return owningAnnotatingRelationship != null && owningAnnotatingRelationship.eIsProxy() ? (Annotation) this.eResolveProxy((InternalEObject) owningAnnotatingRelationship)
+                : owningAnnotatingRelationship;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public Annotation basicGetOwningAnnotatingRelationship() {
+        // TODO: implement this method to return the 'Owning Annotating Relationship' reference
+        // -> do not perform proxy resolution
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
     }
 
     /**
@@ -184,35 +196,6 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getAnnotation()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return ((InternalEList<?>) this.getAnnotation()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -222,6 +205,11 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                 return this.getAnnotation();
             case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
                 return this.getOwnedAnnotatingRelationship();
+            case SysmlPackage.METADATA_FEATURE__OWNING_ANNOTATING_RELATIONSHIP:
+                if (resolve) {
+                    return this.getOwningAnnotatingRelationship();
+                }
+                return this.basicGetOwningAnnotatingRelationship();
             case SysmlPackage.METADATA_FEATURE__METACLASS:
                 if (resolve) {
                     return this.getMetaclass();
@@ -236,47 +224,17 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                this.getAnnotation().clear();
-                this.getAnnotation().addAll((Collection<? extends Annotation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void eUnset(int featureID) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                this.getAnnotation().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT:
                 return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return this.annotation != null && !this.annotation.isEmpty();
+                return !this.getAnnotation().isEmpty();
             case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
                 return !this.getOwnedAnnotatingRelationship().isEmpty();
+            case SysmlPackage.METADATA_FEATURE__OWNING_ANNOTATING_RELATIONSHIP:
+                return this.basicGetOwningAnnotatingRelationship() != null;
             case SysmlPackage.METADATA_FEATURE__METACLASS:
                 return this.basicGetMetaclass() != null;
         }
@@ -298,6 +256,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                     return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION;
                 case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
                     return SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP;
+                case SysmlPackage.METADATA_FEATURE__OWNING_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.ANNOTATING_ELEMENT__OWNING_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }
@@ -320,6 +280,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                     return SysmlPackage.METADATA_FEATURE__ANNOTATION;
                 case SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP:
                     return SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP;
+                case SysmlPackage.ANNOTATING_ELEMENT__OWNING_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.METADATA_FEATURE__OWNING_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }

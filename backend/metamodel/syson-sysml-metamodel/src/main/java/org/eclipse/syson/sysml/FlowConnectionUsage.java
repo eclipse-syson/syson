@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface FlowConnectionUsage extends ConnectionUsage, ActionUsage, ItemFlow {
+public interface FlowConnectionUsage extends ConnectorAsUsage, ActionUsage, ItemFlow {
     /**
      * Returns the value of the '<em><b>Flow Connection Definition</b></em>' reference list. The list contents are of
      * type {@link org.eclipse.syson.sysml.Interaction}. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -92,13 +92,14 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public CaseDefinition basicGetCaseDefinition() {
-        // TODO: implement this method to return the 'Case Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getType().stream()
+                .filter(CaseDefinition.class::isInstance)
+                .map(CaseDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -121,8 +122,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
         return this.getOwnedRelationship().stream()
                 .filter(ObjectiveMembership.class::isInstance)
                 .map(ObjectiveMembership.class::cast)
-                .map(om -> om.getOwnedObjectiveRequirement())
                 .findFirst()
+                .map(om -> om.getOwnedObjectiveRequirement())
                 .orElse(null);
     }
 
@@ -146,8 +147,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
         return this.getOwnedRelationship().stream()
                 .filter(SubjectMembership.class::isInstance)
                 .map(SubjectMembership.class::cast)
-                .map(sm -> sm.getOwnedSubjectParameter())
                 .findFirst()
+                .map(sm -> sm.getOwnedSubjectParameter())
                 .orElse(null);
     }
 
