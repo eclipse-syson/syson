@@ -56,6 +56,26 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with a PortDefinition, when importing/exporting the file, then check that the conjugated port reference is kept during the process.")
+    public void checkConjugatedPortUse() throws IOException {
+        var input = """
+                package Conjugated {
+                    attribute def Temp;
+                    port def TempPort {
+                        attribute temperature : Temp;
+                    }
+                    part def TempPortClassic {
+                        port tempPortClassic : TempPort;
+                    }
+                    part def TempPortConj {
+                        port tempPortConj : ~TempPort;
+                    }
+                }""";
+
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a named SuccessionAsUsage, when importing and exporting the model, then the exported text file should be the same as the imported one.")
     public void checkNamedSuccessionAsUsageInActionDefinitionTest() throws IOException {
         var input = """

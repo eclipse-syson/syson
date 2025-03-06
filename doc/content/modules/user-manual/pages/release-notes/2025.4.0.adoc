@@ -70,6 +70,7 @@ action def ActionDef1 {
     succession s1 first a1 then a2;
 }
 ```
+- Improve `PortDefinition` textual import by creating the required `ConjugatedPort` during the import process.
 
 == Dependency update
 
