@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -85,8 +85,12 @@ public class ActionDefinitionImpl extends OccurrenceDefinitionImpl implements Ac
      */
     @Override
     public EList<Step> getStep() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Step(), data.size(), data.toArray());
+        List<Step> steps = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(Step.class::isInstance)
+                .map(Step.class::cast)
+                .forEach(steps::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Step(), steps.size(), steps.toArray());
     }
 
     /**
@@ -96,8 +100,12 @@ public class ActionDefinitionImpl extends OccurrenceDefinitionImpl implements Ac
      */
     @Override
     public EList<ActionUsage> getAction() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionDefinition_Action(), data.size(), data.toArray());
+        List<Usage> actions = new ArrayList<>();
+        this.getUsage().stream()
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .forEach(actions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionDefinition_Action(), actions.size(), actions.toArray());
     }
 
     /**

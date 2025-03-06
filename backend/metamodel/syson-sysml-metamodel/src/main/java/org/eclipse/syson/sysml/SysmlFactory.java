@@ -336,6 +336,14 @@ public interface SysmlFactory extends EFactory {
     ConstraintUsage createConstraintUsage();
 
     /**
+     * Returns a new object of class '<em>Cross Subsetting</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Cross Subsetting</em>'.
+     * @generated
+     */
+    CrossSubsetting createCrossSubsetting();
+
+    /**
      * Returns a new object of class '<em>Data Type</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Data Type</em>'.
@@ -576,6 +584,14 @@ public interface SysmlFactory extends EFactory {
      * @generated
      */
     IncludeUseCaseUsage createIncludeUseCaseUsage();
+
+    /**
+     * Returns a new object of class '<em>Index Expression</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Index Expression</em>'.
+     * @generated
+     */
+    IndexExpression createIndexExpression();
 
     /**
      * Returns a new object of class '<em>Interaction</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

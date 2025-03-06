@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -12,14 +12,33 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Flow Connection Definition</b></em>'. <!--
  * end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link org.eclipse.syson.sysml.FlowConnectionDefinition#getFlowConnectionEnd <em>Flow Connection End</em>}</li>
+ * </ul>
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getFlowConnectionDefinition()
  * @model
  * @generated
  */
-public interface FlowConnectionDefinition extends ConnectionDefinition, ActionDefinition, Interaction {
+public interface FlowConnectionDefinition extends ActionDefinition, Interaction {
+
+    /**
+     * Returns the value of the '<em><b>Flow Connection End</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.syson.sysml.Usage}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Flow Connection End</em>' reference list.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFlowConnectionDefinition_FlowConnectionEnd()
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
+     * @generated
+     */
+    EList<Usage> getFlowConnectionEnd();
 } // FlowConnectionDefinition

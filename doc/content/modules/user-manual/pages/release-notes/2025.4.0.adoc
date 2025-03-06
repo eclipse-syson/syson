@@ -1,5 +1,12 @@
 = 2025.4.0 (work in progress)
 
+== Key highlights
+
+- *Model conformance to SysMLv2 Beta 2.4 version*: the metamodel has been modified to conform to SysMLv2 and KerML 2024-12 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
+All existing models/projects in WysON will be automatically migrated to this new version.
+In any case, please download all your existing models/projects before upgrading to 2025.4.0 (as always).
+
+
 == Breaking changes
 
 - A `SuccessionUsage` now computes its _source_ and _target_ from the properties _sourceFeature_ and _targetFeature_.
@@ -27,6 +34,60 @@ package p1 {
 
 == Improvements
 
+- Align metamodel to SysMLv2 2024-12 specification released on December 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML 2024-12 specification released on December 2024(see https://www.omg.org/spec/KerML/ for more details).
+Please download all your models/projects before upgrading to 2025.4.0.
+The new concepts are:
+* `CrossSubsetting` (inherits from `Subsetting`)
+* `IndexExpression` (inherits from `OperatorExpression`)
+The new operations are:
+* `Usage#referencedTargetFeature()`
+* `Type#supertypes(EBoolean)`
+* `Type#removedRedefinedFeatures(Membership)`
+* `Type#nonPrivateMemberships(Namespace, Type, EBoolean)`
+* `Type#inheritableMemberships(Namespace, Type, EBoolean)`
+* `Type#multiplicities()`
+* `Namespace#membershipsOfVisibility(VisibilityKind, Namespace)`
+* `Membership#allRedefinedFeatures()`
+* `Feature#allRedefinedFeatures()`
+* `Feature#asCartesianProduct()`
+* `Feature#isCartesianProduct()`
+* `Feature#isOwnedCrossFeature()`
+* `Feature#ownedCrossFeature()`
+The new references are:
+* `CrossSubsetting#crossedFeature`
+* `CrossSubsetting#crossingFeature`
+* `Feature#crossFeature`
+* `Feature#ownedCrossSubsetting`
+* `Annotation#ownedAnnotatingElement`
+* `AnnotatingElement#owningAnnotatingRelationship`
+* `FlowConnectionDefinition#flowConnectionEnd`
+The modifications are:
+* `Usage#nestedConnection` now subsets `Usage#nestedUsage` instead of `Usage#nestedPart`
+* `CaseDefinition#subjectParameter` now subsets `Definition#usage` instead of `Definition#ownedUsage`
+* `CaseDefinition#objectiveRequirement` now subsets `Definition#usage` instead of `Usage#ownedRequirement`
+* `CaseDefinition#actorParameter` now subsets `Definition#usage` instead of `Usage#ownedPart`
+* `CaseUsage#subjectParameter` now subsets `Usage#usage` instead of `Usage#nestedUsage`
+* `CaseUsage#objectiveRequirement` now subsets `Usage#usage` instead of `Usage#nestedRequirement`
+* `CaseUsage#actorParameter` now subsets `Usage#usage` instead of `Usage#nestedPart`
+* `RequirementDefinition#subjectParameter` now subsets `Definition#usage` instead of `Definition#ownedUsage`
+* `RequirementDefinition#stakeholderParameter` now subsets `Definition#usage` instead of `Definition#ownedUsage`
+* `RequirementDefinition#actorParameter` now subsets `Definition#usage` instead of `Definition#ownedUsage`
+* `RequirementUsage#subjectParameter` now subsets `Usage#usage` instead of `Usage#nestedUsage`
+* `RequirementUsage#stakeholderParameter` now subsets `Usage#usage` instead of `Usage#nestedUsage`
+* `RequirementUsage#actorParameter` now subsets `Usage#usage` instead of `Usage#nestedPart`
+* `Type#inheritedMemberships`
+** `excluded` parameter renamed to `excludedTypes`
+** new `excludedNamespaces : Namespace [0..\*]` parameter
+* `MultiplicityRange#bound` now subsets `Namespace#ownedMember` instead of redefining it
+* `InvocationExpression#operand` has been deleted
+* `FlowConnectionUsage` now inherits from `ConnectorAsUsage` instead of `ConnectionUsage`
+* `Definition#ownedConnection` now subsets `Definition#ownedUsage` instead of `Definition#ownedPart`
+* `Annotation#annotatingElement` is now derived
+* `AnnotatingElement#annotation` is now derived
+* `FlowConnectionDefinition` do not inherits from `ConnectionDefinition` anymore
+* `FlowConnectionUsage#flowConnectionDefinition` do not redefines `ConnectionUsage#connectionDefinition` anymore
+- All standard libraries have been updated to comply with the SysMLv2 2024-12 specification.
+- All validation rules have been updated to comply with the SysMLv2 2024-12 specification.
 - In `General View` and `State Transition View` diagrams, when `Packages` labels exceed the available space, an ellipsis is added to provide a visual indication that the
 name is truncated.
 

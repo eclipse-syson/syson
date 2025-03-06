@@ -316,6 +316,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      *
      * @generated
      */
+    private EClass crossSubsettingEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass dataTypeEClass = null;
 
     /**
@@ -548,6 +555,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     private EClass includeUseCaseUsageEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass indexExpressionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1642,6 +1656,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EReference getAnnotatingElement_OwningAnnotatingRelationship() {
+        return (EReference) this.annotatingElementEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getAnnotation() {
         return this.annotationEClass;
     }
@@ -1672,7 +1696,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getAnnotation_OwningAnnotatedElement() {
+    public EReference getAnnotation_OwnedAnnotatingElement() {
         return (EReference) this.annotationEClass.getEStructuralFeatures().get(2);
     }
 
@@ -1682,8 +1706,18 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getAnnotation_OwningAnnotatingElement() {
+    public EReference getAnnotation_OwningAnnotatedElement() {
         return (EReference) this.annotationEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getAnnotation_OwningAnnotatingElement() {
+        return (EReference) this.annotationEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2394,6 +2428,36 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EOperation getControlNode__MultiplicityHasBounds__Multiplicity_int_int() {
         return this.controlNodeEClass.getEOperations().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getCrossSubsetting() {
+        return this.crossSubsettingEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCrossSubsetting_CrossedFeature() {
+        return (EReference) this.crossSubsettingEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCrossSubsetting_CrossingFeature() {
+        return (EReference) this.crossSubsettingEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -3312,6 +3376,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EReference getFeature_CrossFeature() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getFeature_Direction() {
         return (EAttribute) this.featureEClass.getEStructuralFeatures().get(0);
     }
@@ -3323,16 +3397,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getFeature_EndOwningType() {
-        return (EReference) this.featureEClass.getEStructuralFeatures().get(10);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getFeature_FeatureTarget() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(11);
     }
 
@@ -3342,8 +3406,28 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_FeaturingType() {
+    public EReference getFeature_FeatureTarget() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFeature_FeaturingType() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(13);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFeature_OwnedCrossSubsetting() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(14);
     }
 
     /**
@@ -3433,26 +3517,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getFeature_OwnedFeatureChaining() {
-        return (EReference) this.featureEClass.getEStructuralFeatures().get(13);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getFeature_OwnedFeatureInverting() {
-        return (EReference) this.featureEClass.getEStructuralFeatures().get(14);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getFeature_OwnedRedefinition() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(15);
     }
 
@@ -3462,7 +3526,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwnedReferenceSubsetting() {
+    public EReference getFeature_OwnedFeatureInverting() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(16);
     }
 
@@ -3472,7 +3536,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwnedSubsetting() {
+    public EReference getFeature_OwnedRedefinition() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(17);
     }
 
@@ -3482,7 +3546,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwnedTypeFeaturing() {
+    public EReference getFeature_OwnedReferenceSubsetting() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(18);
     }
 
@@ -3492,7 +3556,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwnedTyping() {
+    public EReference getFeature_OwnedSubsetting() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(19);
     }
 
@@ -3502,7 +3566,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwningFeatureMembership() {
+    public EReference getFeature_OwnedTypeFeaturing() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(20);
     }
 
@@ -3512,7 +3576,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_OwningType() {
+    public EReference getFeature_OwnedTyping() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(21);
     }
 
@@ -3522,7 +3586,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_Type() {
+    public EReference getFeature_OwningFeatureMembership() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(22);
     }
 
@@ -3532,7 +3596,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getFeature_Valuation() {
+    public EReference getFeature_OwningType() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(23);
     }
 
@@ -3542,7 +3606,27 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__DirectionFor__Type() {
+    public EReference getFeature_Type() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(24);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFeature_Valuation() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(25);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__AllRedefinedFeatures() {
         return this.featureEClass.getEOperations().get(0);
     }
 
@@ -3552,7 +3636,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__IsFeaturedWithin__Type() {
+    public EOperation getFeature__AsCartesianProduct() {
         return this.featureEClass.getEOperations().get(1);
     }
 
@@ -3562,7 +3646,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__NamingFeature() {
+    public EOperation getFeature__DirectionFor__Type() {
         return this.featureEClass.getEOperations().get(2);
     }
 
@@ -3572,7 +3656,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__Redefines__Feature() {
+    public EOperation getFeature__IsCartesianProduct() {
         return this.featureEClass.getEOperations().get(3);
     }
 
@@ -3582,7 +3666,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__RedefinesFromLibrary__String() {
+    public EOperation getFeature__IsFeaturedWithin__Type() {
         return this.featureEClass.getEOperations().get(4);
     }
 
@@ -3592,7 +3676,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__SubsetsChain__Feature_Feature() {
+    public EOperation getFeature__IsOwnedCrossFeature() {
         return this.featureEClass.getEOperations().get(5);
     }
 
@@ -3602,8 +3686,58 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getFeature__TypingFeatures() {
+    public EOperation getFeature__NamingFeature() {
         return this.featureEClass.getEOperations().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__OwnedCrossFeature() {
+        return this.featureEClass.getEOperations().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__Redefines__Feature() {
+        return this.featureEClass.getEOperations().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__RedefinesFromLibrary__String() {
+        return this.featureEClass.getEOperations().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__SubsetsChain__Feature_Feature() {
+        return this.featureEClass.getEOperations().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getFeature__TypingFeatures() {
+        return this.featureEClass.getEOperations().get(11);
     }
 
     /**
@@ -3892,6 +4026,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EReference getFlowConnectionDefinition_FlowConnectionEnd() {
+        return (EReference) this.flowConnectionDefinitionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getFlowConnectionUsage() {
         return this.flowConnectionUsageEClass;
     }
@@ -4152,6 +4296,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EClass getIndexExpression() {
+        return this.indexExpressionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getInteraction() {
         return this.interactionEClass;
     }
@@ -4264,16 +4418,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EReference getInvocationExpression_Argument() {
         return (EReference) this.invocationExpressionEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getInvocationExpression_Operand() {
-        return (EReference) this.invocationExpressionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -4612,6 +4756,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EOperation getMembership__AllRedefinedFeatures() {
+        return this.membershipEClass.getEOperations().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getMembership_MemberShortName() {
         return (EAttribute) this.membershipEClass.getEStructuralFeatures().get(2);
     }
@@ -4633,7 +4787,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EOperation getMembership__IsDistinguishableFrom__Membership() {
-        return this.membershipEClass.getEOperations().get(0);
+        return this.membershipEClass.getEOperations().get(1);
     }
 
     /**
@@ -4962,7 +5116,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__NamesOf__Element() {
+    public EOperation getNamespace__MembershipsOfVisibility__VisibilityKind_EList() {
         return this.namespaceEClass.getEOperations().get(1);
     }
 
@@ -4972,7 +5126,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__QualificationOf__String() {
+    public EOperation getNamespace__NamesOf__Element() {
         return this.namespaceEClass.getEOperations().get(2);
     }
 
@@ -4982,7 +5136,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__Resolve__String() {
+    public EOperation getNamespace__QualificationOf__String() {
         return this.namespaceEClass.getEOperations().get(3);
     }
 
@@ -4992,7 +5146,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__ResolveGlobal__String() {
+    public EOperation getNamespace__Resolve__String() {
         return this.namespaceEClass.getEOperations().get(4);
     }
 
@@ -5002,7 +5156,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__ResolveLocal__String() {
+    public EOperation getNamespace__ResolveGlobal__String() {
         return this.namespaceEClass.getEOperations().get(5);
     }
 
@@ -5012,7 +5166,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__ResolveVisible__String() {
+    public EOperation getNamespace__ResolveLocal__String() {
         return this.namespaceEClass.getEOperations().get(6);
     }
 
@@ -5022,7 +5176,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__UnqualifiedNameOf__String() {
+    public EOperation getNamespace__ResolveVisible__String() {
         return this.namespaceEClass.getEOperations().get(7);
     }
 
@@ -5032,7 +5186,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__VisibilityOf__Membership() {
+    public EOperation getNamespace__UnqualifiedNameOf__String() {
         return this.namespaceEClass.getEOperations().get(8);
     }
 
@@ -5042,8 +5196,18 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getNamespace__VisibleMemberships__EList_boolean_boolean() {
+    public EOperation getNamespace__VisibilityOf__Membership() {
         return this.namespaceEClass.getEOperations().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getNamespace__VisibleMemberships__EList_boolean_boolean() {
+        return this.namespaceEClass.getEOperations().get(10);
     }
 
     /**
@@ -6922,7 +7086,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__InheritedMemberships__EList_boolean() {
+    public EOperation getType__InheritableMemberships__EList_EList_boolean() {
         return this.typeEClass.getEOperations().get(3);
     }
 
@@ -6932,7 +7096,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__Specializes__Type() {
+    public EOperation getType__InheritedMemberships__EList_EList_boolean() {
         return this.typeEClass.getEOperations().get(4);
     }
 
@@ -6942,8 +7106,58 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__SpecializesFromLibrary__String() {
+    public EOperation getType__Multiplicities() {
         return this.typeEClass.getEOperations().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__NonPrivateMemberships__EList_EList_boolean() {
+        return this.typeEClass.getEOperations().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__RemoveRedefinedFeatures__EList() {
+        return this.typeEClass.getEOperations().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__Specializes__Type() {
+        return this.typeEClass.getEOperations().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__SpecializesFromLibrary__String() {
+        return this.typeEClass.getEOperations().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__Supertypes__boolean() {
+        return this.typeEClass.getEOperations().get(10);
     }
 
     /**
@@ -7384,6 +7598,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EReference getUsage_VariantMembership() {
         return (EReference) this.usageEClass.getEStructuralFeatures().get(35);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getUsage__ReferencedFeatureTarget() {
+        return this.usageEClass.getEOperations().get(0);
     }
 
     /**
@@ -7872,10 +8096,12 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__ANNOTATED_ELEMENT);
         this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__ANNOTATION);
         this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP);
+        this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__OWNING_ANNOTATING_RELATIONSHIP);
 
         this.annotationEClass = this.createEClass(ANNOTATION);
         this.createEReference(this.annotationEClass, ANNOTATION__ANNOTATED_ELEMENT);
         this.createEReference(this.annotationEClass, ANNOTATION__ANNOTATING_ELEMENT);
+        this.createEReference(this.annotationEClass, ANNOTATION__OWNED_ANNOTATING_ELEMENT);
         this.createEReference(this.annotationEClass, ANNOTATION__OWNING_ANNOTATED_ELEMENT);
         this.createEReference(this.annotationEClass, ANNOTATION__OWNING_ANNOTATING_ELEMENT);
 
@@ -7979,6 +8205,10 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.controlNodeEClass = this.createEClass(CONTROL_NODE);
         this.createEOperation(this.controlNodeEClass, CONTROL_NODE___MULTIPLICITY_HAS_BOUNDS__MULTIPLICITY_INT_INT);
+
+        this.crossSubsettingEClass = this.createEClass(CROSS_SUBSETTING);
+        this.createEReference(this.crossSubsettingEClass, CROSS_SUBSETTING__CROSSED_FEATURE);
+        this.createEReference(this.crossSubsettingEClass, CROSS_SUBSETTING__CROSSING_FEATURE);
 
         this.dataTypeEClass = this.createEClass(DATA_TYPE);
 
@@ -8096,9 +8326,11 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEAttribute(this.featureEClass, FEATURE__IS_READ_ONLY);
         this.createEAttribute(this.featureEClass, FEATURE__IS_UNIQUE);
         this.createEReference(this.featureEClass, FEATURE__CHAINING_FEATURE);
+        this.createEReference(this.featureEClass, FEATURE__CROSS_FEATURE);
         this.createEReference(this.featureEClass, FEATURE__END_OWNING_TYPE);
         this.createEReference(this.featureEClass, FEATURE__FEATURE_TARGET);
         this.createEReference(this.featureEClass, FEATURE__FEATURING_TYPE);
+        this.createEReference(this.featureEClass, FEATURE__OWNED_CROSS_SUBSETTING);
         this.createEReference(this.featureEClass, FEATURE__OWNED_FEATURE_CHAINING);
         this.createEReference(this.featureEClass, FEATURE__OWNED_FEATURE_INVERTING);
         this.createEReference(this.featureEClass, FEATURE__OWNED_REDEFINITION);
@@ -8110,9 +8342,14 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.featureEClass, FEATURE__OWNING_TYPE);
         this.createEReference(this.featureEClass, FEATURE__TYPE);
         this.createEReference(this.featureEClass, FEATURE__VALUATION);
+        this.createEOperation(this.featureEClass, FEATURE___ALL_REDEFINED_FEATURES);
+        this.createEOperation(this.featureEClass, FEATURE___AS_CARTESIAN_PRODUCT);
         this.createEOperation(this.featureEClass, FEATURE___DIRECTION_FOR__TYPE);
+        this.createEOperation(this.featureEClass, FEATURE___IS_CARTESIAN_PRODUCT);
         this.createEOperation(this.featureEClass, FEATURE___IS_FEATURED_WITHIN__TYPE);
+        this.createEOperation(this.featureEClass, FEATURE___IS_OWNED_CROSS_FEATURE);
         this.createEOperation(this.featureEClass, FEATURE___NAMING_FEATURE);
+        this.createEOperation(this.featureEClass, FEATURE___OWNED_CROSS_FEATURE);
         this.createEOperation(this.featureEClass, FEATURE___REDEFINES__FEATURE);
         this.createEOperation(this.featureEClass, FEATURE___REDEFINES_FROM_LIBRARY__STRING);
         this.createEOperation(this.featureEClass, FEATURE___SUBSETS_CHAIN__FEATURE_FEATURE);
@@ -8154,6 +8391,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.featuringEClass, FEATURING__TYPE);
 
         this.flowConnectionDefinitionEClass = this.createEClass(FLOW_CONNECTION_DEFINITION);
+        this.createEReference(this.flowConnectionDefinitionEClass, FLOW_CONNECTION_DEFINITION__FLOW_CONNECTION_END);
 
         this.flowConnectionUsageEClass = this.createEClass(FLOW_CONNECTION_USAGE);
         this.createEReference(this.flowConnectionUsageEClass, FLOW_CONNECTION_USAGE__FLOW_CONNECTION_DEFINITION);
@@ -8189,6 +8427,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.includeUseCaseUsageEClass = this.createEClass(INCLUDE_USE_CASE_USAGE);
         this.createEReference(this.includeUseCaseUsageEClass, INCLUDE_USE_CASE_USAGE__USE_CASE_INCLUDED);
 
+        this.indexExpressionEClass = this.createEClass(INDEX_EXPRESSION);
+
         this.interactionEClass = this.createEClass(INTERACTION);
 
         this.interfaceDefinitionEClass = this.createEClass(INTERFACE_DEFINITION);
@@ -8206,7 +8446,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.invocationExpressionEClass = this.createEClass(INVOCATION_EXPRESSION);
         this.createEReference(this.invocationExpressionEClass, INVOCATION_EXPRESSION__ARGUMENT);
-        this.createEReference(this.invocationExpressionEClass, INVOCATION_EXPRESSION__OPERAND);
 
         this.itemDefinitionEClass = this.createEClass(ITEM_DEFINITION);
 
@@ -8258,6 +8497,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEAttribute(this.membershipEClass, MEMBERSHIP__VISIBILITY);
         this.createEReference(this.membershipEClass, MEMBERSHIP__MEMBER_ELEMENT);
         this.createEReference(this.membershipEClass, MEMBERSHIP__MEMBERSHIP_OWNING_NAMESPACE);
+        this.createEOperation(this.membershipEClass, MEMBERSHIP___ALL_REDEFINED_FEATURES);
         this.createEOperation(this.membershipEClass, MEMBERSHIP___IS_DISTINGUISHABLE_FROM__MEMBERSHIP);
 
         this.membershipExposeEClass = this.createEClass(MEMBERSHIP_EXPOSE);
@@ -8302,6 +8542,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.namespaceEClass, NAMESPACE__OWNED_MEMBER);
         this.createEReference(this.namespaceEClass, NAMESPACE__OWNED_MEMBERSHIP);
         this.createEOperation(this.namespaceEClass, NAMESPACE___IMPORTED_MEMBERSHIPS__ELIST);
+        this.createEOperation(this.namespaceEClass, NAMESPACE___MEMBERSHIPS_OF_VISIBILITY__VISIBILITYKIND_ELIST);
         this.createEOperation(this.namespaceEClass, NAMESPACE___NAMES_OF__ELEMENT);
         this.createEOperation(this.namespaceEClass, NAMESPACE___QUALIFICATION_OF__STRING);
         this.createEOperation(this.namespaceEClass, NAMESPACE___RESOLVE__STRING);
@@ -8550,9 +8791,14 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEOperation(this.typeEClass, TYPE___ALL_SUPERTYPES);
         this.createEOperation(this.typeEClass, TYPE___DIRECTION_OF__FEATURE);
         this.createEOperation(this.typeEClass, TYPE___DIRECTION_OF_EXCLUDING__FEATURE_ELIST);
-        this.createEOperation(this.typeEClass, TYPE___INHERITED_MEMBERSHIPS__ELIST_BOOLEAN);
+        this.createEOperation(this.typeEClass, TYPE___INHERITABLE_MEMBERSHIPS__ELIST_ELIST_BOOLEAN);
+        this.createEOperation(this.typeEClass, TYPE___INHERITED_MEMBERSHIPS__ELIST_ELIST_BOOLEAN);
+        this.createEOperation(this.typeEClass, TYPE___MULTIPLICITIES);
+        this.createEOperation(this.typeEClass, TYPE___NON_PRIVATE_MEMBERSHIPS__ELIST_ELIST_BOOLEAN);
+        this.createEOperation(this.typeEClass, TYPE___REMOVE_REDEFINED_FEATURES__ELIST);
         this.createEOperation(this.typeEClass, TYPE___SPECIALIZES__TYPE);
         this.createEOperation(this.typeEClass, TYPE___SPECIALIZES_FROM_LIBRARY__STRING);
+        this.createEOperation(this.typeEClass, TYPE___SUPERTYPES__BOOLEAN);
 
         this.typeFeaturingEClass = this.createEClass(TYPE_FEATURING);
         this.createEReference(this.typeFeaturingEClass, TYPE_FEATURING__FEATURE_OF_TYPE);
@@ -8600,6 +8846,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.usageEClass, USAGE__USAGE);
         this.createEReference(this.usageEClass, USAGE__VARIANT);
         this.createEReference(this.usageEClass, USAGE__VARIANT_MEMBERSHIP);
+        this.createEOperation(this.usageEClass, USAGE___REFERENCED_FEATURE_TARGET);
 
         this.useCaseDefinitionEClass = this.createEClass(USE_CASE_DEFINITION);
         this.createEReference(this.useCaseDefinitionEClass, USE_CASE_DEFINITION__INCLUDED_USE_CASE);
@@ -8744,6 +8991,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.constraintUsageEClass.getESuperTypes().add(this.getOccurrenceUsage());
         this.constraintUsageEClass.getESuperTypes().add(this.getBooleanExpression());
         this.controlNodeEClass.getESuperTypes().add(this.getActionUsage());
+        this.crossSubsettingEClass.getESuperTypes().add(this.getSubsetting());
         this.dataTypeEClass.getESuperTypes().add(this.getClassifier());
         this.decisionNodeEClass.getESuperTypes().add(this.getControlNode());
         this.definitionEClass.getESuperTypes().add(this.getClassifier());
@@ -8771,10 +9019,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.featureTypingEClass.getESuperTypes().add(this.getSpecialization());
         this.featureValueEClass.getESuperTypes().add(this.getOwningMembership());
         this.featuringEClass.getESuperTypes().add(this.getRelationship());
-        this.flowConnectionDefinitionEClass.getESuperTypes().add(this.getConnectionDefinition());
         this.flowConnectionDefinitionEClass.getESuperTypes().add(this.getActionDefinition());
         this.flowConnectionDefinitionEClass.getESuperTypes().add(this.getInteraction());
-        this.flowConnectionUsageEClass.getESuperTypes().add(this.getConnectionUsage());
+        this.flowConnectionUsageEClass.getESuperTypes().add(this.getConnectorAsUsage());
         this.flowConnectionUsageEClass.getESuperTypes().add(this.getActionUsage());
         this.flowConnectionUsageEClass.getESuperTypes().add(this.getItemFlow());
         this.forkNodeEClass.getESuperTypes().add(this.getControlNode());
@@ -8785,6 +9032,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.importEClass.getESuperTypes().add(this.getRelationship());
         this.includeUseCaseUsageEClass.getESuperTypes().add(this.getUseCaseUsage());
         this.includeUseCaseUsageEClass.getESuperTypes().add(this.getPerformActionUsage());
+        this.indexExpressionEClass.getESuperTypes().add(this.getOperatorExpression());
         this.interactionEClass.getESuperTypes().add(this.getAssociation());
         this.interactionEClass.getESuperTypes().add(this.getBehavior());
         this.interfaceDefinitionEClass.getESuperTypes().add(this.getConnectionDefinition());
@@ -8961,18 +9209,22 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEClass(this.annotatingElementEClass, AnnotatingElement.class, "AnnotatingElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getAnnotatingElement_AnnotatedElement(), this.getElement(), null, "annotatedElement", null, 1, -1, AnnotatingElement.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getAnnotatingElement_Annotation(), this.getAnnotation(), this.getAnnotation_AnnotatingElement(), "annotation", null, 0, -1, AnnotatingElement.class, !IS_TRANSIENT,
-                !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getAnnotatingElement_Annotation(), this.getAnnotation(), this.getAnnotation_AnnotatingElement(), "annotation", null, 0, -1, AnnotatingElement.class, IS_TRANSIENT,
+                IS_VOLATILE,
+                !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getAnnotatingElement_OwnedAnnotatingRelationship(), this.getAnnotation(), this.getAnnotation_OwningAnnotatingElement(), "ownedAnnotatingRelationship", null, 0, -1,
+                AnnotatingElement.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getAnnotatingElement_OwningAnnotatingRelationship(), this.getAnnotation(), this.getAnnotation_OwnedAnnotatingElement(), "owningAnnotatingRelationship", null, 0, 1,
                 AnnotatingElement.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getAnnotation_AnnotatedElement(), this.getElement(), null, "annotatedElement", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getAnnotation_AnnotatingElement(), this.getAnnotatingElement(), this.getAnnotatingElement_Annotation(), "annotatingElement", null, 1, 1, Annotation.class,
-                !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+                IS_TRANSIENT,
+                IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+        this.initEReference(this.getAnnotation_OwnedAnnotatingElement(), this.getAnnotatingElement(), this.getAnnotatingElement_OwningAnnotatingRelationship(), "ownedAnnotatingElement", null, 0, 1,
+                Annotation.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getAnnotation_OwningAnnotatedElement(), this.getElement(), this.getElement_OwnedAnnotation(), "owningAnnotatedElement", null, 0, 1, Annotation.class, IS_TRANSIENT,
                 IS_VOLATILE,
                 !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
@@ -9146,6 +9398,14 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.addEParameter(op, this.getMultiplicity(), "mult", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.ecorePackage.getEInt(), "lower", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.ecorePackage.getEInt(), "upper", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        this.initEClass(this.crossSubsettingEClass, CrossSubsetting.class, "CrossSubsetting", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getCrossSubsetting_CrossedFeature(), this.getFeature(), null, "crossedFeature", null, 1, 1, CrossSubsetting.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+        this.initEReference(this.getCrossSubsetting_CrossingFeature(), this.getFeature(), this.getFeature_OwnedCrossSubsetting(), "crossingFeature", null, 1, 1, CrossSubsetting.class, IS_TRANSIENT,
+                IS_VOLATILE,
+                !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.dataTypeEClass, DataType.class, "DataType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -9400,6 +9660,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 !IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getFeature_ChainingFeature(), this.getFeature(), null, "chainingFeature", null, 0, -1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFeature_CrossFeature(), this.getFeature(), null, "crossFeature", null, 0, 1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getFeature_EndOwningType(), this.getType(), this.getType_OwnedEndFeature(), "endOwningType", null, 0, 1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
                 !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
@@ -9409,6 +9672,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getFeature_FeaturingType(), this.getType(), null, "featuringType", null, 0, -1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFeature_OwnedCrossSubsetting(), this.getCrossSubsetting(), this.getCrossSubsetting_CrossingFeature(), "ownedCrossSubsetting", null, 0, 1, Feature.class,
+                IS_TRANSIENT,
+                IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getFeature_OwnedFeatureChaining(), this.getFeatureChaining(), this.getFeatureChaining_FeatureChained(), "ownedFeatureChaining", null, 0, -1, Feature.class,
                 IS_TRANSIENT,
                 IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -9442,13 +9708,23 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
+        this.initEOperation(this.getFeature__AllRedefinedFeatures(), this.getFeature(), "allRedefinedFeatures", 0, -1, IS_UNIQUE, !IS_ORDERED);
+
+        this.initEOperation(this.getFeature__AsCartesianProduct(), this.getType(), "asCartesianProduct", 0, -1, !IS_UNIQUE, IS_ORDERED);
+
         op = this.initEOperation(this.getFeature__DirectionFor__Type(), this.getFeatureDirectionKind(), "directionFor", 0, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getType(), "type", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        this.initEOperation(this.getFeature__IsCartesianProduct(), this.ecorePackage.getEBoolean(), "isCartesianProduct", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         op = this.initEOperation(this.getFeature__IsFeaturedWithin__Type(), this.ecorePackage.getEBoolean(), "isFeaturedWithin", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getType(), "type", 0, 1, IS_UNIQUE, !IS_ORDERED);
 
+        this.initEOperation(this.getFeature__IsOwnedCrossFeature(), this.ecorePackage.getEBoolean(), "isOwnedCrossFeature", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
         this.initEOperation(this.getFeature__NamingFeature(), this.getFeature(), "namingFeature", 0, 1, IS_UNIQUE, !IS_ORDERED);
+
+        this.initEOperation(this.getFeature__OwnedCrossFeature(), this.getFeature(), "ownedCrossFeature", 0, 1, IS_UNIQUE, !IS_ORDERED);
 
         op = this.initEOperation(this.getFeature__Redefines__Feature(), this.ecorePackage.getEBoolean(), "redefines", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getFeature(), "redefinedFeature", 1, 1, IS_UNIQUE, !IS_ORDERED);
@@ -9529,6 +9805,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.flowConnectionDefinitionEClass, FlowConnectionDefinition.class, "FlowConnectionDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getFlowConnectionDefinition_FlowConnectionEnd(), this.getUsage(), null, "flowConnectionEnd", null, 0, -1, FlowConnectionDefinition.class, IS_TRANSIENT, IS_VOLATILE,
+                !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.flowConnectionUsageEClass, FlowConnectionUsage.class, "FlowConnectionUsage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFlowConnectionUsage_FlowConnectionDefinition(), this.getInteraction(), null, "flowConnectionDefinition", null, 0, -1, FlowConnectionUsage.class, IS_TRANSIENT,
@@ -9594,6 +9872,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 !IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
+        this.initEClass(this.indexExpressionEClass, IndexExpression.class, "IndexExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
         this.initEClass(this.interactionEClass, Interaction.class, "Interaction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.interfaceDefinitionEClass, InterfaceDefinition.class, "InterfaceDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -9618,9 +9898,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.initEClass(this.invocationExpressionEClass, InvocationExpression.class, "InvocationExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getInvocationExpression_Argument(), this.getExpression(), null, "argument", null, 0, -1, InvocationExpression.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
-                !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getInvocationExpression_Operand(), this.getExpression(), null, "operand", null, 0, -1, InvocationExpression.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE,
                 !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
@@ -9710,6 +9987,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 IS_TRANSIENT,
                 IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
+        this.initEOperation(this.getMembership__AllRedefinedFeatures(), this.getFeature(), "allRedefinedFeatures", 0, -1, IS_UNIQUE, !IS_ORDERED);
+
         op = this.initEOperation(this.getMembership__IsDistinguishableFrom__Membership(), this.ecorePackage.getEBoolean(), "isDistinguishableFrom", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getMembership(), "other", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
@@ -9788,6 +10067,10 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         op = this.initEOperation(this.getNamespace__ImportedMemberships__EList(), this.getMembership(), "importedMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.getNamespace(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
+
+        op = this.initEOperation(this.getNamespace__MembershipsOfVisibility__VisibilityKind_EList(), this.getMembership(), "membershipsOfVisibility", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getVisibilityKind(), "visibility", 0, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getNamespace(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
 
         op = this.initEOperation(this.getNamespace__NamesOf__Element(), this.ecorePackage.getEString(), "namesOf", 0, -1, IS_UNIQUE, !IS_ORDERED);
@@ -10287,15 +10570,34 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.addEParameter(op, this.getFeature(), "feature", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getType(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
 
-        op = this.initEOperation(this.getType__InheritedMemberships__EList_boolean(), this.getMembership(), "inheritedMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
-        this.addEParameter(op, this.getType(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        op = this.initEOperation(this.getType__InheritableMemberships__EList_EList_boolean(), this.getMembership(), "inheritableMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.getNamespace(), "excludedNamespaces", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getType(), "excludedTypes", 0, -1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.ecorePackage.getEBoolean(), "excludeImplied", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        op = this.initEOperation(this.getType__InheritedMemberships__EList_EList_boolean(), this.getMembership(), "inheritedMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.getNamespace(), "excludedNamespaces", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getType(), "excludedTypes", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.ecorePackage.getEBoolean(), "excludeImplied", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        this.initEOperation(this.getType__Multiplicities(), this.getMultiplicity(), "multiplicities", 0, -1, IS_UNIQUE, IS_ORDERED);
+
+        op = this.initEOperation(this.getType__NonPrivateMemberships__EList_EList_boolean(), this.getMembership(), "nonPrivateMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.getNamespace(), "excludedNamespaces", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getType(), "excludedTypes", 0, -1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.ecorePackage.getEBoolean(), "excludeImplied", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        op = this.initEOperation(this.getType__RemoveRedefinedFeatures__EList(), this.getMembership(), "removeRedefinedFeatures", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.getMembership(), "memberships", 0, -1, IS_UNIQUE, IS_ORDERED);
 
         op = this.initEOperation(this.getType__Specializes__Type(), this.ecorePackage.getEBoolean(), "specializes", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getType(), "supertype", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         op = this.initEOperation(this.getType__SpecializesFromLibrary__String(), this.ecorePackage.getEBoolean(), "specializesFromLibrary", 1, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.ecorePackage.getEString(), "libraryTypeName", 1, 1, IS_UNIQUE, !IS_ORDERED);
+
+        op = this.initEOperation(this.getType__Supertypes__boolean(), this.getType(), "supertypes", 0, -1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, this.ecorePackage.getEBoolean(), "excludeImplied", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         this.initEClass(this.typeFeaturingEClass, TypeFeaturing.class, "TypeFeaturing", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getTypeFeaturing_FeatureOfType(), this.getFeature(), null, "featureOfType", null, 1, 1, TypeFeaturing.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
@@ -10405,6 +10707,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getUsage_VariantMembership(), this.getVariantMembership(), null, "variantMembership", null, 0, -1, Usage.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
                 !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+
+        this.initEOperation(this.getUsage__ReferencedFeatureTarget(), this.getFeature(), "referencedFeatureTarget", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         this.initEClass(this.useCaseDefinitionEClass, UseCaseDefinition.class, "UseCaseDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getUseCaseDefinition_IncludedUseCase(), this.getUseCaseUsage(), null, "includedUseCase", null, 0, -1, UseCaseDefinition.class, IS_TRANSIENT, IS_VOLATILE,
@@ -10589,6 +10893,22 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                         URI.createURI(eNS_URI).appendFragment("//AnnotatingElement/annotation"),
                         URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
                 });
+        this.addAnnotation(this.getAnnotatingElement_OwningAnnotatingRelationship(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningRelationship"),
+                        URI.createURI(eNS_URI).appendFragment("//AnnotatingElement/annotation")
+                });
+        this.addAnnotation(this.getAnnotation_OwnedAnnotatingElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Annotation/annotatingElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/ownedRelatedElement")
+                });
         this.addAnnotation(this.getAnnotation_OwningAnnotatedElement(),
                 source,
                 new String[] {
@@ -10647,14 +10967,14 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getCaseDefinition_ObjectiveRequirement(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedRequirement")
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getCaseDefinition_SubjectParameter(),
                 source,
@@ -10662,22 +10982,22 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getCaseUsage_ActorParameter(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
-                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getCaseUsage_ObjectiveRequirement(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedRequirement")
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getCaseUsage_SubjectParameter(),
                 source,
@@ -10685,7 +11005,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getClassifier_OwnedSubclassification(),
                 source,
@@ -10728,8 +11048,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Definition/usage"),
-                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getDefinition_OwnedAction(),
                 source,
@@ -10785,7 +11105,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
                 });
         this.addAnnotation(this.getDefinition_OwnedConstraint(),
                 source,
@@ -10954,8 +11274,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Disjoining/typeDisjoined"),
-                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Disjoining/typeDisjoined")
                 });
         this.addAnnotation(this.getDocumentation_DocumentedElement(),
                 source,
@@ -10997,8 +11317,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Type/output")
+                        URI.createURI(eNS_URI).appendFragment("//Type/output"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
                 });
         this.addAnnotation(this.getFeature_EndOwningType(),
                 source,
@@ -11006,6 +11326,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Feature/owningType")
+                });
+        this.addAnnotation(this.getFeature_OwnedCrossSubsetting(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/ownedSubsetting")
                 });
         this.addAnnotation(this.getFeature_OwnedFeatureChaining(),
                 source,
@@ -11068,8 +11395,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Element/owningNamespace"),
-                        URI.createURI(eNS_URI).appendFragment("//Feature/featuringType")
+                        URI.createURI(eNS_URI).appendFragment("//Feature/featuringType"),
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningNamespace")
                 });
         this.addAnnotation(this.getFeatureChainExpression_TargetFeature(),
                 source,
@@ -11090,8 +11417,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement"),
-                        URI.createURI(eNS_URI).appendFragment("//FeatureInverting/featureInverted")
+                        URI.createURI(eNS_URI).appendFragment("//FeatureInverting/featureInverted"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
                 });
         this.addAnnotation(this.getFeatureReferenceExpression_Referent(),
                 source,
@@ -11140,8 +11467,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Type/output")
+                        URI.createURI(eNS_URI).appendFragment("//Type/output"),
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter")
                 });
         this.addAnnotation(this.getImport_ImportOwningNamespace(),
                 source,
@@ -11198,6 +11525,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Feature/type")
+                });
+        this.addAnnotation(this.getMultiplicityRange_Bound(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
                 });
         this.addAnnotation(this.getMultiplicityRange_LowerBound(),
                 source,
@@ -11324,8 +11658,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart"),
-                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter")
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getRequirementDefinition_AssumedConstraint(),
                 source,
@@ -11353,8 +11687,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart"),
-                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter")
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getRequirementDefinition_SubjectParameter(),
                 source,
@@ -11362,15 +11696,15 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
                 });
         this.addAnnotation(this.getRequirementUsage_ActorParameter(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
-                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getRequirementUsage_AssumedConstraint(),
                 source,
@@ -11398,8 +11732,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
-                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getRequirementUsage_SubjectParameter(),
                 source,
@@ -11407,15 +11741,15 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getSpecialization_OwningType(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific"),
-                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific")
                 });
         this.addAnnotation(this.getStateDefinition_State(),
                 source,
@@ -11599,8 +11933,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//TypeFeaturing/featureOfType"),
-                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//TypeFeaturing/featureOfType")
                 });
         this.addAnnotation(this.getUnioning_TypeUnioned(),
                 source,
@@ -11614,8 +11948,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/usage"),
-                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
                 });
         this.addAnnotation(this.getUsage_NestedAction(),
                 source,
@@ -11671,7 +12005,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart")
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
                 });
         this.addAnnotation(this.getUsage_NestedConstraint(),
                 source,
@@ -12105,6 +12439,21 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//BooleanExpression/predicate")
                 });
+        this.addAnnotation(this.getCrossSubsetting_CrossedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettedFeature")
+                });
+        this.addAnnotation(this.getCrossSubsetting_CrossingFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/owningFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature")
+                });
         this.addAnnotation(this.getDependency_Client(),
                 source,
                 new String[] {
@@ -12222,16 +12571,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement"),
-                        URI.createURI(eNS_URI).appendFragment("//Featuring/feature")
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/feature"),
+                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement")
                 });
         this.addAnnotation(this.getFeatureMembership_OwningType(),
                 source,
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Membership/membershipOwningNamespace"),
-                        URI.createURI(eNS_URI).appendFragment("//Featuring/type")
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/type"),
+                        URI.createURI(eNS_URI).appendFragment("//Membership/membershipOwningNamespace")
                 });
         this.addAnnotation(this.getFeatureTyping_OwningFeature(),
                 source,
@@ -12261,13 +12610,19 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement")
                 });
+        this.addAnnotation(this.getFlowConnectionDefinition_FlowConnectionEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Association/associationEnd")
+                });
         this.addAnnotation(this.getFlowConnectionUsage_FlowConnectionDefinition(),
                 source,
                 new String[] {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//ActionUsage/actionDefinition"),
-                        URI.createURI(eNS_URI).appendFragment("//ConnectionUsage/connectionDefinition"),
                         URI.createURI(eNS_URI).appendFragment("//ItemFlow/interaction")
                 });
         this.addAnnotation(this.getFramedConcernMembership_OwnedConcern(),
@@ -12362,13 +12717,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//ItemUsage/itemDefinition"),
                         URI.createURI(eNS_URI).appendFragment("//MetadataFeature/metaclass")
-                });
-        this.addAnnotation(this.getMultiplicityRange_Bound(),
-                source,
-                new String[] {
-                },
-                new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
                 });
         this.addAnnotation(this.getNamespaceImport_ImportedNamespace(),
                 source,
@@ -12480,8 +12828,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new String[] {
                 },
                 new URI[] {
-                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature"),
-                        URI.createURI(eNS_URI).appendFragment("//Subsetting/owningFeature")
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/owningFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature")
                 });
         this.addAnnotation(this.getRenderingUsage_RenderingDefinition(),
                 source,

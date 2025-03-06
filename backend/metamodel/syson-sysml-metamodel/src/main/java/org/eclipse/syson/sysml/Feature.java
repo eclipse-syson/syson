@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -31,9 +31,11 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsReadOnly <em>Is Read Only</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsUnique <em>Is Unique</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getChainingFeature <em>Chaining Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#getCrossFeature <em>Cross Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getEndOwningType <em>End Owning Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getFeatureTarget <em>Feature Target</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getFeaturingType <em>Featuring Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedCrossSubsetting <em>Owned Cross Subsetting</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedFeatureChaining <em>Owned Feature Chaining</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedFeatureInverting <em>Owned Feature Inverting</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedRedefinition <em>Owned Redefinition</em>}</li>
@@ -62,6 +64,16 @@ public interface Feature extends Type {
      * @generated
      */
     EList<Feature> getChainingFeature();
+
+    /**
+     * Returns the value of the '<em><b>Cross Feature</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Cross Feature</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_CrossFeature()
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @generated
+     */
+    Feature getCrossFeature();
 
     /**
      * Returns the value of the '<em><b>Direction</b></em>' attribute. The literals are from the enumeration
@@ -148,6 +160,20 @@ public interface Feature extends Type {
      * @generated
      */
     EList<Type> getFeaturingType();
+
+    /**
+     * Returns the value of the '<em><b>Owned Cross Subsetting</b></em>' reference. It is bidirectional and its opposite
+     * is '{@link org.eclipse.syson.sysml.CrossSubsetting#getCrossingFeature <em>Crossing Feature</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Owned Cross Subsetting</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedCrossSubsetting()
+     * @see org.eclipse.syson.sysml.CrossSubsetting#getCrossingFeature
+     * @model opposite="crossingFeature" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="subsets"
+     * @generated
+     */
+    CrossSubsetting getOwnedCrossSubsetting();
 
     /**
      * Returns the value of the '<em><b>Is Composite</b></em>' attribute. The default value is <code>"false"</code>.
@@ -473,10 +499,34 @@ public interface Feature extends Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @model ordered="false"
+     * @generated
+     */
+    EList<Feature> allRedefinedFeatures();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model unique="false"
+     * @generated
+     */
+    EList<Type> asCartesianProduct();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @model ordered="false" typeRequired="true" typeOrdered="false"
      * @generated
      */
     FeatureDirectionKind directionFor(Type type);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model kind="operation" required="true" ordered="false"
+     * @generated
+     */
+    boolean isCartesianProduct();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -489,10 +539,26 @@ public interface Feature extends Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @model kind="operation" required="true" ordered="false"
+     * @generated
+     */
+    boolean isOwnedCrossFeature();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @model ordered="false"
      * @generated
      */
     Feature namingFeature();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model ordered="false"
+     * @generated
+     */
+    Feature ownedCrossFeature();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

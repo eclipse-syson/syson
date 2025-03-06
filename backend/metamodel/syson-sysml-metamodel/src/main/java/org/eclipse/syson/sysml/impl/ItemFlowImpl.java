@@ -106,13 +106,14 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ItemFeature basicGetItemFeature() {
-        // TODO: implement this method to return the 'Item Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedFeature().stream()
+                .filter(ItemFeature.class::isInstance)
+                .map(ItemFeature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -151,13 +152,14 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetSourceOutputFeature() {
-        // TODO: implement this method to return the 'Source Output Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getConnectorEnd().stream()
+                .map(Feature::getOwnedFeature)
+                .flatMap(List::stream)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public interface MultiplicityRange extends Multiplicity {
      * @return the value of the '<em>Bound</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMultiplicityRange_Bound()
      * @model required="true" upper="2" transient="true" changeable="false" volatile="true" derived="true"
-     *        annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     EList<Expression> getBound();

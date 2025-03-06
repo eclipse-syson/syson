@@ -14,15 +14,18 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.CrossSubsetting;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -30,6 +33,8 @@ import org.eclipse.syson.sysml.FeatureInverting;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.MetadataFeature;
+import org.eclipse.syson.sysml.Multiplicity;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -54,9 +59,11 @@ import org.eclipse.syson.sysml.TypeFeaturing;
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsReadOnly <em>Is Read Only</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsUnique <em>Is Unique</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getChainingFeature <em>Chaining Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getCrossFeature <em>Cross Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getEndOwningType <em>End Owning Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getFeatureTarget <em>Feature Target</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getFeaturingType <em>Featuring Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedCrossSubsetting <em>Owned Cross Subsetting</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureChaining <em>Owned Feature Chaining</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureInverting <em>Owned Feature Inverting</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedRedefinition <em>Owned Redefinition</em>}</li>
@@ -277,11 +284,41 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Feature> getChainingFeature() {
-        List<Feature> data = this.getOwnedFeatureChaining().stream()
+        List<Feature> chainingFeatures = this.getOwnedFeatureChaining().stream()
                 .map(FeatureChaining::getChainingFeature)
                 .filter(Objects::nonNull)
                 .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_ChainingFeature(), data.size(), data.toArray());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_ChainingFeature(), chainingFeatures.size(), chainingFeatures.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Feature getCrossFeature() {
+        Feature crossFeature = this.basicGetCrossFeature();
+        return crossFeature != null && crossFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) crossFeature) : crossFeature;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public Feature basicGetCrossFeature() {
+        var ownedCrossSubsetting = this.getOwnedCrossSubsetting();
+        if (ownedCrossSubsetting != null) {
+            var crossedFeature = ownedCrossSubsetting.getCrossedFeature();
+            if (crossedFeature != null) {
+                var chainingFeature = crossedFeature.getChainingFeature();
+                if (chainingFeature.size() >= 2) {
+                    return chainingFeature.get(1);
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -390,8 +427,39 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Type> getFeaturingType() {
-        List<Type> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_FeaturingType(), data.size(), data.toArray());
+        List<Type> featuringTypes = new LinkedList<>();
+        this.getOwnedTypeFeaturing().stream()
+                .map(TypeFeaturing::getFeaturingType)
+                .forEach(featuringTypes::add);
+        var chainingFeature = this.getChainingFeature();
+        if (!chainingFeature.isEmpty()) {
+            featuringTypes.addAll(chainingFeature.get(0).getFeaturingType());
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_FeaturingType(), featuringTypes.size(), featuringTypes.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CrossSubsetting getOwnedCrossSubsetting() {
+        CrossSubsetting ownedCrossSubsetting = this.basicGetOwnedCrossSubsetting();
+        return ownedCrossSubsetting != null && ownedCrossSubsetting.eIsProxy() ? (CrossSubsetting) this.eResolveProxy((InternalEObject) ownedCrossSubsetting) : ownedCrossSubsetting;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public CrossSubsetting basicGetOwnedCrossSubsetting() {
+        return this.getOwnedSubsetting().stream()
+                .filter(CrossSubsetting.class::isInstance)
+                .map(CrossSubsetting.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -594,8 +662,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<FeatureInverting> getOwnedFeatureInverting() {
-        List<FeatureInverting> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedFeatureInverting(), data.size(), data.toArray());
+        List<FeatureInverting> ownedFeatureInvertings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureInverting.class::isInstance)
+                .map(FeatureInverting.class::cast)
+                .filter(fi -> Objects.equals(this, fi.getFeatureInverted()))
+                .forEach(ownedFeatureInvertings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedFeatureInverting(), ownedFeatureInvertings.size(), ownedFeatureInvertings.toArray());
     }
 
     /**
@@ -659,8 +732,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<TypeFeaturing> getOwnedTypeFeaturing() {
-        List<TypeFeaturing> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedTypeFeaturing(), data.size(), data.toArray());
+        List<TypeFeaturing> ownedTypeFeaturings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(TypeFeaturing.class::isInstance)
+                .map(TypeFeaturing.class::cast)
+                .filter(tf -> Objects.equals(this, tf.getFeatureOfType()))
+                .forEach(ownedTypeFeaturings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedTypeFeaturing(), ownedTypeFeaturings.size(), ownedTypeFeaturings.toArray());
     }
 
     /**
@@ -763,6 +841,59 @@ public class FeatureImpl extends TypeImpl implements Feature {
      *
      * @generated NOT
      */
+    @Override
+    public EList<Feature> allRedefinedFeatures() {
+        EList<Feature> allRedefinedFeatures = new BasicEList<>();
+        allRedefinedFeatures.add(this);
+        List<Feature> accu = new LinkedList<>();
+        this.allRedefinedFeatures(this, accu);
+        allRedefinedFeatures.addAll(accu);
+        return allRedefinedFeatures;
+    }
+
+    private void allRedefinedFeatures(Feature currentFeature, List<Feature> accu) {
+        EList<Redefinition> ownedRedefinition = currentFeature.getOwnedRedefinition();
+        for (Redefinition redefinition : ownedRedefinition) {
+            Feature redefinedFeature = redefinition.getRedefinedFeature();
+            if (redefinedFeature != null && !accu.contains(redefinedFeature)) {
+                accu.add(redefinedFeature);
+                this.allRedefinedFeatures(redefinedFeature, accu);
+            }
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Type> asCartesianProduct() {
+        EList<Type> cartesianProduct = new BasicEList<>();
+
+        this.getFeaturingType().stream()
+                .filter(t -> !this.equals(t.getOwner()))
+                .forEach(cartesianProduct::add);
+
+        this.getFeaturingType().stream()
+                .filter(t -> this.equals(t.getOwner()))
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .map(f -> f.asCartesianProduct())
+                .forEach(cartesianProduct::addAll);
+
+        cartesianProduct.addAll(this.getType());
+
+        cartesianProduct.removeIf(Objects::isNull);
+
+        return cartesianProduct;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
     public FeatureValue basicGetValuation() {
         return this.getOwnedMembership().stream()
                 .filter(FeatureValue.class::isInstance)
@@ -774,12 +905,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public FeatureDirectionKind directionFor(Type type) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
+        if (type != null) {
+            return type.directionOf(this);
+        }
         return null;
     }
 
@@ -789,7 +921,57 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @generated NOT
      */
     @Override
+    public boolean isCartesianProduct() {
+        boolean onlyOneType = this.getType().size() == 1;
+        if (!onlyOneType) {
+            return false;
+        }
+        boolean onlyOneFeaturingType = this.getFeaturingType().size() == 1;
+        if (!onlyOneFeaturingType) {
+            return false;
+        }
+        var firstFeaturingType = this.getFeaturingType().get(0);
+        boolean firstFeaturingTypeOwnerEqualsSelf = Objects.equals(this, firstFeaturingType.getOwner());
+        boolean firstFeaturingFeatureIsCartesionProduct = false;
+
+        if (firstFeaturingType instanceof Feature firstFeaturingFeature) {
+            firstFeaturingFeatureIsCartesionProduct = firstFeaturingFeature.isCartesianProduct();
+        }
+
+        return (!firstFeaturingTypeOwnerEqualsSelf) || firstFeaturingFeatureIsCartesionProduct;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
     public boolean isFeaturedWithin(Type type) {
+        if (type == null) {
+            return this.getFeaturingType().stream().allMatch(f -> Objects.equals(f, this.resolveGlobal("Base::Anything").getMemberElement()));
+        }
+        boolean isCompatibleWithAllTypes = this.getFeaturingType().stream().allMatch(f -> type.specializes(f));
+        // isVariable does not exists so use false instead
+        boolean isVariableAndCompatible = false && type.specializes(this.getOwningType());
+        boolean isChainingFeatureVariable = false;
+        if (!this.getChainingFeature().isEmpty()) {
+            // isVariable does not exists so use false instead
+            isChainingFeatureVariable = false && type.specializes(this.getChainingFeature().get(0).getOwningType());
+        }
+        return isCompatibleWithAllTypes || isVariableAndCompatible || isChainingFeatureVariable;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public boolean isOwnedCrossFeature() {
+        if (this.getOwningNamespace() instanceof Feature f) {
+            return Objects.equals(this, f.ownedCrossFeature());
+        }
         return false;
     }
 
@@ -802,7 +984,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public Feature namingFeature() {
         return this.getOwnedRedefinition().stream()
                 .findFirst()
-                .map(red -> red.getRedefinedFeature())
+                .map(Redefinition::getRedefinedFeature)
                 .orElse(null);
     }
 
@@ -812,8 +994,34 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @generated NOT
      */
     @Override
+    public Feature ownedCrossFeature() {
+        if (!this.isIsEnd() || this.getOwningType() == null) {
+            return null;
+        }
+        List<Feature> ownedMemberFeatures = new ArrayList<>();
+        this.getOwnedMember().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .filter(f -> !(f instanceof Multiplicity) && !(f instanceof MetadataFeature) && !(f instanceof FeatureValue))
+                .filter(f -> !(f.getOwningMembership() instanceof FeatureMembership))
+                .forEach(ownedMemberFeatures::add);
+        Feature ownedCrossFeature = null;
+        if (!ownedMemberFeatures.isEmpty()) {
+            ownedCrossFeature = ownedMemberFeatures.get(0);
+        }
+        return ownedCrossFeature;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
     public boolean redefines(Feature redefinedFeature) {
-        return false;
+        return this.getOwnedRedefinition().stream()
+                .map(Redefinition::getRedefinedFeature).toList()
+                .contains(redefinedFeature);
     }
 
     /**
@@ -823,6 +1031,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public boolean redefinesFromLibrary(String libraryFeatureName) {
+        var mem = this.resolveGlobal(libraryFeatureName);
+        if (mem != null && mem.getMemberElement() instanceof Feature f) {
+            return this.redefines(f);
+        }
         return false;
     }
 
@@ -833,19 +1045,46 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public boolean subsetsChain(Feature first, Feature second) {
-        return false;
+        return this.allSupertypes().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .anyMatch(f -> {
+                    var chainingFeature = f.getChainingFeature();
+                    int n = chainingFeature.size();
+                    if (n >= 2) {
+                        return Objects.equals(chainingFeature.get(n - 1), first) && Objects.equals(chainingFeature.get(n), second);
+                    }
+                    return false;
+                });
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Feature> typingFeatures() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EList<Feature> typingFeatures = new BasicEList<>();
+        if (!this.isIsConjugated()) {
+            var subsettedFeatures = this.getOwnedSubsetting().stream()
+                    .filter(s -> !(s instanceof CrossSubsetting))
+                    .map(Subsetting::getSubsettedFeature)
+                    .toList();
+            var chainingFeature = this.getChainingFeature();
+            if (chainingFeature.isEmpty() || subsettedFeatures.contains(chainingFeature.get(chainingFeature.size() - 1))) {
+                typingFeatures.addAll(subsettedFeatures);
+            } else {
+                subsettedFeatures.add(chainingFeature.get(chainingFeature.size() - 1));
+                typingFeatures.addAll(subsettedFeatures);
+            }
+        } else {
+            var conjugator = this.getOwnedConjugator();
+            if (conjugator != null && conjugator.getOriginalType() instanceof Feature originalType) {
+                typingFeatures.add(originalType);
+            }
+        }
+        return typingFeatures;
     }
 
     /**
@@ -876,6 +1115,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.isIsUnique();
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
                 return this.getChainingFeature();
+            case SysmlPackage.FEATURE__CROSS_FEATURE:
+                if (resolve) {
+                    return this.getCrossFeature();
+                }
+                return this.basicGetCrossFeature();
             case SysmlPackage.FEATURE__END_OWNING_TYPE:
                 if (resolve) {
                     return this.getEndOwningType();
@@ -888,6 +1132,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.basicGetFeatureTarget();
             case SysmlPackage.FEATURE__FEATURING_TYPE:
                 return this.getFeaturingType();
+            case SysmlPackage.FEATURE__OWNED_CROSS_SUBSETTING:
+                if (resolve) {
+                    return this.getOwnedCrossSubsetting();
+                }
+                return this.basicGetOwnedCrossSubsetting();
             case SysmlPackage.FEATURE__OWNED_FEATURE_CHAINING:
                 return this.getOwnedFeatureChaining();
             case SysmlPackage.FEATURE__OWNED_FEATURE_INVERTING:
@@ -1069,12 +1318,16 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.isUnique != IS_UNIQUE_EDEFAULT;
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
                 return !this.getChainingFeature().isEmpty();
+            case SysmlPackage.FEATURE__CROSS_FEATURE:
+                return this.basicGetCrossFeature() != null;
             case SysmlPackage.FEATURE__END_OWNING_TYPE:
                 return this.basicGetEndOwningType() != null;
             case SysmlPackage.FEATURE__FEATURE_TARGET:
                 return this.basicGetFeatureTarget() != null;
             case SysmlPackage.FEATURE__FEATURING_TYPE:
                 return !this.getFeaturingType().isEmpty();
+            case SysmlPackage.FEATURE__OWNED_CROSS_SUBSETTING:
+                return this.basicGetOwnedCrossSubsetting() != null;
             case SysmlPackage.FEATURE__OWNED_FEATURE_CHAINING:
                 return !this.getOwnedFeatureChaining().isEmpty();
             case SysmlPackage.FEATURE__OWNED_FEATURE_INVERTING:
@@ -1109,12 +1362,22 @@ public class FeatureImpl extends TypeImpl implements Feature {
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
+            case SysmlPackage.FEATURE___ALL_REDEFINED_FEATURES:
+                return this.allRedefinedFeatures();
+            case SysmlPackage.FEATURE___AS_CARTESIAN_PRODUCT:
+                return this.asCartesianProduct();
             case SysmlPackage.FEATURE___DIRECTION_FOR__TYPE:
                 return this.directionFor((Type) arguments.get(0));
+            case SysmlPackage.FEATURE___IS_CARTESIAN_PRODUCT:
+                return this.isCartesianProduct();
             case SysmlPackage.FEATURE___IS_FEATURED_WITHIN__TYPE:
                 return this.isFeaturedWithin((Type) arguments.get(0));
+            case SysmlPackage.FEATURE___IS_OWNED_CROSS_FEATURE:
+                return this.isOwnedCrossFeature();
             case SysmlPackage.FEATURE___NAMING_FEATURE:
                 return this.namingFeature();
+            case SysmlPackage.FEATURE___OWNED_CROSS_FEATURE:
+                return this.ownedCrossFeature();
             case SysmlPackage.FEATURE___REDEFINES__FEATURE:
                 return this.redefines((Feature) arguments.get(0));
             case SysmlPackage.FEATURE___REDEFINES_FROM_LIBRARY__STRING:

@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -33,7 +34,6 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Association</b></em>'. <!-- end-user-doc -->
@@ -219,8 +219,11 @@ public class AssociationImpl extends ClassifierImpl implements Association {
      */
     @Override
     public EList<Feature> getAssociationEnd() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_AssociationEnd(), data.size(), data.toArray());
+        List<Feature> associationEnds = new ArrayList<>();
+        this.getFeature().stream()
+                .filter(Feature::isIsEnd)
+                .forEach(associationEnds::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_AssociationEnd(), associationEnds.size(), associationEnds.toArray());
     }
 
     /**
@@ -230,8 +233,13 @@ public class AssociationImpl extends ClassifierImpl implements Association {
      */
     @Override
     public EList<Type> getRelatedType() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_RelatedType(), data.size(), data.toArray());
+        List<Type> relatedTypes = new ArrayList<>();
+        this.getAssociationEnd().stream()
+                .map(Feature::getType)
+                .flatMap(List::stream)
+                .filter(Objects::nonNull)
+                .forEach(relatedTypes::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_RelatedType(), relatedTypes.size(), relatedTypes.toArray());
     }
 
     /**
@@ -248,12 +256,13 @@ public class AssociationImpl extends ClassifierImpl implements Association {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Type basicGetSourceType() {
-        // TODO: implement this method to return the 'Source Type' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        var relatedTypes = this.getRelatedType();
+        if (!relatedTypes.isEmpty()) {
+            return relatedTypes.get(0);
+        }
         return null;
     }
 
@@ -264,8 +273,12 @@ public class AssociationImpl extends ClassifierImpl implements Association {
      */
     @Override
     public EList<Type> getTargetType() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_TargetType(), data.size(), data.toArray());
+        List<Type> targetTypes = new ArrayList<>();
+        var relatedTypes = this.getRelatedType();
+        if (relatedTypes.size() >= 2) {
+            relatedTypes.subList(1, relatedTypes.size() - 1).forEach(targetTypes::add);;
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_TargetType(), targetTypes.size(), targetTypes.toArray());
     }
 
     /**

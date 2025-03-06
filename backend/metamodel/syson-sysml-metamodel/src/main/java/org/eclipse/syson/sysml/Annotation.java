@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ package org.eclipse.syson.sysml;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getAnnotatedElement <em>Annotated Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getAnnotatingElement <em>Annotating Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Annotation#getOwnedAnnotatingElement <em>Owned Annotating Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getOwningAnnotatedElement <em>Owning Annotated Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getOwningAnnotatingElement <em>Owning Annotating Element</em>}</li>
  * </ul>
@@ -59,24 +60,27 @@ public interface Annotation extends Relationship {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Annotating Element</em>' reference.
-     * @see #setAnnotatingElement(AnnotatingElement)
      * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotation_AnnotatingElement()
      * @see org.eclipse.syson.sysml.AnnotatingElement#getAnnotation
-     * @model opposite="annotation" required="true" ordered="false" annotation="redefines"
+     * @model opposite="annotation" required="true" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="redefines"
      * @generated
      */
     AnnotatingElement getAnnotatingElement();
 
     /**
-     * Sets the value of the '{@link org.eclipse.syson.sysml.Annotation#getAnnotatingElement <em>Annotating
-     * Element</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Owned Annotating Element</b></em>' reference. It is bidirectional and its
+     * opposite is '{@link org.eclipse.syson.sysml.AnnotatingElement#getOwningAnnotatingRelationship <em>Owning
+     * Annotating Relationship</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Annotating Element</em>' reference.
-     * @see #getAnnotatingElement()
+     * @return the value of the '<em>Owned Annotating Element</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotation_OwnedAnnotatingElement()
+     * @see org.eclipse.syson.sysml.AnnotatingElement#getOwningAnnotatingRelationship
+     * @model opposite="owningAnnotatingRelationship" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
-    void setAnnotatingElement(AnnotatingElement value);
+    AnnotatingElement getOwnedAnnotatingElement();
 
     /**
      * Returns the value of the '<em><b>Owning Annotated Element</b></em>' reference. It is bidirectional and its

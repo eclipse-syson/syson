@@ -624,8 +624,6 @@ public class SysMLElementSerializerTest {
         Annotation annotation = this.fact.createAnnotation();
         annotation.setAnnotatedElement(attr);
         comment.getOwnedRelationship().add(annotation);
-        // Workaround while the subset are not implemented
-        comment.getAnnotation().add(annotation);
 
         assertEquals(attr, comment.getAnnotatedElement().get(0));
 
@@ -653,8 +651,6 @@ public class SysMLElementSerializerTest {
         Annotation annotation = this.fact.createAnnotation();
         annotation.setAnnotatedElement(attr);
         comment.getOwnedRelationship().add(annotation);
-        // Workaround while the subset are not implemented
-        comment.getAnnotation().add(annotation);
 
         assertEquals(attr, comment.getAnnotatedElement().get(0));
 

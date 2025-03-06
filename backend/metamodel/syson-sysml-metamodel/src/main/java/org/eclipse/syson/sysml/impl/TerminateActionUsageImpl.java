@@ -84,8 +84,9 @@ public class TerminateActionUsageImpl extends ActionUsageImpl implements Termina
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.TERMINATE_ACTION_USAGE__TERMINATED_OCCURRENCE_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getTerminatedOccurrenceArgument();
+                }
                 return this.basicGetTerminatedOccurrenceArgument();
         }
         return super.eGet(featureID, resolve, coreType);

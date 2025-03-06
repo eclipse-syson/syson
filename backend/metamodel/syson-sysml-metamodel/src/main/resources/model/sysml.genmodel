@@ -86,10 +86,12 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//AnnotatingElement/annotatedElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//AnnotatingElement/annotation"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//AnnotatingElement/ownedAnnotatingRelationship"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//AnnotatingElement/owningAnnotatingRelationship"/>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//Annotation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Annotation/annotatedElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Annotation/annotatingElement"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Annotation/ownedAnnotatingElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Annotation/owningAnnotatedElement"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Annotation/owningAnnotatingElement"/>
     </genClasses>
@@ -188,6 +190,10 @@
         <genParameters ecoreParameter="sysml.ecore#//ControlNode/multiplicityHasBounds/lower"/>
         <genParameters ecoreParameter="sysml.ecore#//ControlNode/multiplicityHasBounds/upper"/>
       </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="sysml.ecore#//CrossSubsetting">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//CrossSubsetting/crossedFeature"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//CrossSubsetting/crossingFeature"/>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//DataType"/>
     <genClasses ecoreClass="sysml.ecore#//DecisionNode"/>
@@ -307,9 +313,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysml.ecore#//Feature/isReadOnly"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysml.ecore#//Feature/isUnique"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/chainingFeature"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Feature/crossFeature"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/endOwningType"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Feature/featureTarget"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/featuringType"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Feature/ownedCrossSubsetting"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/ownedFeatureChaining"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/ownedFeatureInverting"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/ownedRedefinition"/>
@@ -321,13 +329,18 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/owningType"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/type"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Feature/valuation"/>
+      <genOperations ecoreOperation="sysml.ecore#//Feature/allRedefinedFeatures"/>
+      <genOperations ecoreOperation="sysml.ecore#//Feature/asCartesianProduct"/>
       <genOperations ecoreOperation="sysml.ecore#//Feature/directionFor">
         <genParameters ecoreParameter="sysml.ecore#//Feature/directionFor/type"/>
       </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Feature/isCartesianProduct"/>
       <genOperations ecoreOperation="sysml.ecore#//Feature/isFeaturedWithin">
         <genParameters ecoreParameter="sysml.ecore#//Feature/isFeaturedWithin/type"/>
       </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Feature/isOwnedCrossFeature"/>
       <genOperations ecoreOperation="sysml.ecore#//Feature/namingFeature"/>
+      <genOperations ecoreOperation="sysml.ecore#//Feature/ownedCrossFeature"/>
       <genOperations ecoreOperation="sysml.ecore#//Feature/redefines">
         <genParameters ecoreParameter="sysml.ecore#//Feature/redefines/redefinedFeature"/>
       </genOperations>
@@ -375,7 +388,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Featuring/feature"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Featuring/type"/>
     </genClasses>
-    <genClasses ecoreClass="sysml.ecore#//FlowConnectionDefinition"/>
+    <genClasses ecoreClass="sysml.ecore#//FlowConnectionDefinition">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//FlowConnectionDefinition/flowConnectionEnd"/>
+    </genClasses>
     <genClasses ecoreClass="sysml.ecore#//FlowConnectionUsage">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//FlowConnectionUsage/flowConnectionDefinition"/>
     </genClasses>
@@ -411,6 +426,7 @@
     <genClasses ecoreClass="sysml.ecore#//IncludeUseCaseUsage">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//IncludeUseCaseUsage/useCaseIncluded"/>
     </genClasses>
+    <genClasses ecoreClass="sysml.ecore#//IndexExpression"/>
     <genClasses ecoreClass="sysml.ecore#//Interaction"/>
     <genClasses ecoreClass="sysml.ecore#//InterfaceDefinition">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//InterfaceDefinition/interfaceEnd"/>
@@ -427,7 +443,6 @@
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//InvocationExpression">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//InvocationExpression/argument"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//InvocationExpression/operand"/>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//ItemDefinition"/>
     <genClasses ecoreClass="sysml.ecore#//ItemFeature"/>
@@ -472,6 +487,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysml.ecore#//Membership/visibility"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Membership/memberElement"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Membership/membershipOwningNamespace"/>
+      <genOperations ecoreOperation="sysml.ecore#//Membership/allRedefinedFeatures"/>
       <genOperations ecoreOperation="sysml.ecore#//Membership/isDistinguishableFrom">
         <genParameters ecoreParameter="sysml.ecore#//Membership/isDistinguishableFrom/other"/>
       </genOperations>
@@ -521,6 +537,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Namespace/ownedMembership"/>
       <genOperations ecoreOperation="sysml.ecore#//Namespace/importedMemberships">
         <genParameters ecoreParameter="sysml.ecore#//Namespace/importedMemberships/excluded"/>
+      </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Namespace/membershipsOfVisibility">
+        <genParameters ecoreParameter="sysml.ecore#//Namespace/membershipsOfVisibility/visibility"/>
+        <genParameters ecoreParameter="sysml.ecore#//Namespace/membershipsOfVisibility/excluded"/>
       </genOperations>
       <genOperations ecoreOperation="sysml.ecore#//Namespace/namesOf">
         <genParameters ecoreParameter="sysml.ecore#//Namespace/namesOf/element"/>
@@ -788,15 +808,33 @@
         <genParameters ecoreParameter="sysml.ecore#//Type/directionOfExcluding/feature"/>
         <genParameters ecoreParameter="sysml.ecore#//Type/directionOfExcluding/excluded"/>
       </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Type/inheritableMemberships">
+        <genParameters ecoreParameter="sysml.ecore#//Type/inheritableMemberships/excludedNamespaces"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/inheritableMemberships/excludedTypes"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/inheritableMemberships/excludeImplied"/>
+      </genOperations>
       <genOperations ecoreOperation="sysml.ecore#//Type/inheritedMemberships">
-        <genParameters ecoreParameter="sysml.ecore#//Type/inheritedMemberships/excluded"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/inheritedMemberships/excludedNamespaces"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/inheritedMemberships/excludedTypes"/>
         <genParameters ecoreParameter="sysml.ecore#//Type/inheritedMemberships/excludeImplied"/>
+      </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Type/multiplicities"/>
+      <genOperations ecoreOperation="sysml.ecore#//Type/nonPrivateMemberships">
+        <genParameters ecoreParameter="sysml.ecore#//Type/nonPrivateMemberships/excludedNamespaces"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/nonPrivateMemberships/excludedTypes"/>
+        <genParameters ecoreParameter="sysml.ecore#//Type/nonPrivateMemberships/excludeImplied"/>
+      </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Type/removeRedefinedFeatures">
+        <genParameters ecoreParameter="sysml.ecore#//Type/removeRedefinedFeatures/memberships"/>
       </genOperations>
       <genOperations ecoreOperation="sysml.ecore#//Type/specializes">
         <genParameters ecoreParameter="sysml.ecore#//Type/specializes/supertype"/>
       </genOperations>
       <genOperations ecoreOperation="sysml.ecore#//Type/specializesFromLibrary">
         <genParameters ecoreParameter="sysml.ecore#//Type/specializesFromLibrary/libraryTypeName"/>
+      </genOperations>
+      <genOperations ecoreOperation="sysml.ecore#//Type/supertypes">
+        <genParameters ecoreParameter="sysml.ecore#//Type/supertypes/excludeImplied"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//TypeFeaturing">
@@ -845,6 +883,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Usage/usage"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Usage/variant"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Usage/variantMembership"/>
+      <genOperations ecoreOperation="sysml.ecore#//Usage/referencedFeatureTarget"/>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//UseCaseDefinition">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//UseCaseDefinition/includedUseCase"/>

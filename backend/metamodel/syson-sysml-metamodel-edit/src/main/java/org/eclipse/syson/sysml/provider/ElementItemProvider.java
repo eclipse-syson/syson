@@ -552,6 +552,12 @@ public class ElementItemProvider
                 SysmlFactory.eINSTANCE.createConjugation()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
+                SysmlFactory.eINSTANCE.createSubsetting()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
+                SysmlFactory.eINSTANCE.createCrossSubsetting()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createDependency()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
@@ -619,9 +625,6 @@ public class ElementItemProvider
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createPortConjugation()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createSubsetting()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createRedefinition()));

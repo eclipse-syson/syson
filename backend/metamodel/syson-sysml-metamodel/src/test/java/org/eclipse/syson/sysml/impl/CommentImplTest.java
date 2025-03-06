@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests of {@link CommentImpl}.
- * 
+ *
  * @author Arthur Daussy
  */
 public class CommentImplTest {
@@ -35,7 +35,7 @@ public class CommentImplTest {
 
     @Test
     public void annotatedElementsEmpty() {
-        Comment comment = fact.createComment();
+        Comment comment = this.fact.createComment();
         assertTrue(comment.getAnnotatedElement().isEmpty());
     }
 
@@ -44,12 +44,12 @@ public class CommentImplTest {
      */
     @Test
     public void annotatedElementsOwningNameSpace() {
-        Comment comment = fact.createComment();
+        Comment comment = this.fact.createComment();
 
-        Package pack1 = fact.createPackage();
+        Package pack1 = this.fact.createPackage();
         pack1.setDeclaredName("Pack1");
 
-        OwningMembership ownedRelation = fact.createOwningMembership();
+        OwningMembership ownedRelation = this.fact.createOwningMembership();
         pack1.getOwnedRelationship().add(ownedRelation);
         ownedRelation.getOwnedRelatedElement().add(comment);
 
@@ -65,23 +65,23 @@ public class CommentImplTest {
     @Test
     public void annotatedElementsAnnotations() {
 
-        Package pack1 = fact.createPackage();
+        Package pack1 = this.fact.createPackage();
         pack1.setDeclaredName("Pack1");
 
-        Package pack2 = fact.createPackage();
+        Package pack2 = this.fact.createPackage();
         pack2.setDeclaredName("Pack2");
 
-        Comment comment = fact.createComment();
+        Comment comment = this.fact.createComment();
 
-        OwningMembership ownedRelation = fact.createOwningMembership();
+        OwningMembership ownedRelation = this.fact.createOwningMembership();
         pack1.getOwnedRelationship().add(ownedRelation);
         ownedRelation.getOwnedRelatedElement().add(comment);
 
-        Annotation annotation1 = fact.createAnnotation();
+        Annotation annotation1 = this.fact.createAnnotation();
 
         comment.getOwnedRelationship().add(annotation1);
-        // Note: This should be automatically done one the subset feature is implemented
-        comment.getAnnotation().add(annotation1);
+        assertTrue(comment.getAnnotation().contains(annotation1));
+
         annotation1.setAnnotatedElement(pack2);
 
         EList<Element> annotatedElements = comment.getAnnotatedElement();

@@ -137,6 +137,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createConstraintDefinition();
             case SysmlPackage.CONSTRAINT_USAGE:
                 return this.createConstraintUsage();
+            case SysmlPackage.CROSS_SUBSETTING:
+                return this.createCrossSubsetting();
             case SysmlPackage.DATA_TYPE:
                 return this.createDataType();
             case SysmlPackage.DECISION_NODE:
@@ -197,6 +199,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createIfActionUsage();
             case SysmlPackage.INCLUDE_USE_CASE_USAGE:
                 return this.createIncludeUseCaseUsage();
+            case SysmlPackage.INDEX_EXPRESSION:
+                return this.createIndexExpression();
             case SysmlPackage.INTERACTION:
                 return this.createInteraction();
             case SysmlPackage.INTERFACE_DEFINITION:
@@ -912,6 +916,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
+    public CrossSubsetting createCrossSubsetting() {
+        CrossSubsettingImpl crossSubsetting = new CrossSubsettingImpl();
+        crossSubsetting.setElementId(ElementUtil.generateUUID(crossSubsetting).toString());
+        return crossSubsetting;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
     public DataType createDataType() {
         DataTypeImpl dataType = new DataTypeImpl();
         dataType.setElementId(ElementUtil.generateUUID(dataType).toString());
@@ -1264,6 +1280,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
         IncludeUseCaseUsageImpl includeUseCaseUsage = new IncludeUseCaseUsageImpl();
         includeUseCaseUsage.setElementId(ElementUtil.generateUUID(includeUseCaseUsage).toString());
         return includeUseCaseUsage;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public IndexExpression createIndexExpression() {
+        IndexExpressionImpl indexExpression = new IndexExpressionImpl();
+        indexExpression.setElementId(ElementUtil.generateUUID(indexExpression).toString());
+        return indexExpression;
     }
 
     /**

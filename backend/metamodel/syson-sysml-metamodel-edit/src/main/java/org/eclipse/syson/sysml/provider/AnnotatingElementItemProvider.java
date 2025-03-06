@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ public class AnnotatingElementItemProvider extends ElementItemProvider {
             this.addAnnotatedElementPropertyDescriptor(object);
             this.addAnnotationPropertyDescriptor(object);
             this.addOwnedAnnotatingRelationshipPropertyDescriptor(object);
+            this.addOwningAnnotatingRelationshipPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -105,6 +106,26 @@ public class AnnotatingElementItemProvider extends ElementItemProvider {
                 this.getString("_UI_AnnotatingElement_ownedAnnotatingRelationship_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_AnnotatingElement_ownedAnnotatingRelationship_feature", "_UI_AnnotatingElement_type"),
                 SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(),
+                false,
+                false,
+                false,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Owning Annotating Relationship feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOwningAnnotatingRelationshipPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_AnnotatingElement_owningAnnotatingRelationship_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_AnnotatingElement_owningAnnotatingRelationship_feature", "_UI_AnnotatingElement_type"),
+                SysmlPackage.eINSTANCE.getAnnotatingElement_OwningAnnotatingRelationship(),
                 false,
                 false,
                 false,

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -137,8 +138,13 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<ConcernUsage> getFramedConcern() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern(), data.size(), data.toArray());
+        List<ConcernUsage> framedConcerns = new ArrayList<>();
+        this.getFeatureMembership().stream()
+                .filter(FramedConcernMembership.class::isInstance)
+                .map(FramedConcernMembership.class::cast)
+                .map(FramedConcernMembership::getOwnedConcern)
+                .forEach(framedConcerns::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern(), framedConcerns.size(), framedConcerns.toArray());
     }
 
     /**
@@ -193,8 +199,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public EList<PartUsage> getStakeholderParameter() {
         final List<PartUsage> stakeholders = this.getParameter().stream()
                 .filter(PartUsage.class::isInstance)
-                .filter(parameter -> parameter.getOwningMembership() instanceof StakeholderMembership)
                 .map(PartUsage.class::cast)
+                .filter(parameter -> parameter.getOwningMembership() instanceof StakeholderMembership)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), stakeholders.size(), stakeholders.toArray());
     }
@@ -219,8 +225,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
         return this.getOwnedRelationship().stream()
                 .filter(SubjectMembership.class::isInstance)
                 .map(SubjectMembership.class::cast)
-                .map(sm -> sm.getOwnedSubjectParameter())
                 .findFirst()
+                .map(sm -> sm.getOwnedSubjectParameter())
                 .orElse(null);
     }
 
