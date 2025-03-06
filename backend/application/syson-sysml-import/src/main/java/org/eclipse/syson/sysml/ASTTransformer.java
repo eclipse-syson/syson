@@ -91,6 +91,7 @@ public class ASTTransformer {
     private void preResolvingFixingPhase(List<EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixSuccessionUsageImplicitSource(root);
+            this.fixConjugatedPorts(root);
         }
     }
 
@@ -105,6 +106,31 @@ public class ASTTransformer {
         List<SuccessionAsUsage> succesionAsUsage = EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class).toList();
         this.fixImplicitSourceFeature(succesionAsUsage);
         this.fixImplicitTarget(succesionAsUsage);
+    }
+
+    /**
+     * Add all missing conjugate ports on PortDefinitions.
+     *
+     * @param root
+     *            a root element
+     */
+    private void fixConjugatedPorts(EObject root) {
+        List<PortDefinition> portDefinitions = EMFUtils.allContainedObjectOfType(root, PortDefinition.class).toList();
+
+        for (PortDefinition portDef : portDefinitions) {
+            if (portDef.getConjugatedPortDefinition() == null) {
+                OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                portDef.getOwnedRelationship().add(owningMembership);
+                // No need to set the declaredName for the ConjugatedPortDefinition here, it is always the same than its
+                // originalPortDefinition and computed elsewhere
+                ConjugatedPortDefinition conjugatedPortDefinition = SysmlFactory.eINSTANCE.createConjugatedPortDefinition();
+                owningMembership.getOwnedRelatedElement().add(conjugatedPortDefinition);
+                PortConjugation portConjugation = SysmlFactory.eINSTANCE.createPortConjugation();
+                conjugatedPortDefinition.getOwnedRelationship().add(portConjugation);
+                portConjugation.setConjugatedType(conjugatedPortDefinition);
+                portConjugation.setOriginalPortDefinition(portDef);
+            }
+        }
     }
 
     /**

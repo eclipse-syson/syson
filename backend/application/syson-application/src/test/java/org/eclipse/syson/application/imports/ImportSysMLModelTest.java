@@ -24,8 +24,11 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDo
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.PortDefinition;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -60,6 +63,41 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.checker = new SysMLv2SemanticImportChecker(this.sysmlResourceLoader, this.editingDomainFactory, this.sysMLEditingContextProcessor);
+    }
+
+    @Test
+    @DisplayName("Given a model with PortDefinitions, when importing the model, then a conjugated port is create for each conjugated ports")
+    public void checkConjugatedPortCreation() throws IOException {
+        var input = """
+                package Conjugated {
+                    attribute def Temp;
+                    port def TempPort {
+                        attribute temperature : Temp;
+                    }
+                    part def TempPortClassic {
+                        port tempPortClassic : TempPort;
+                    }
+                    part def TempPortConj {
+                        port tempPortConj : ~TempPort;
+                    }
+                }""";
+
+
+        this.checker.checkImportedModel(resource -> {
+            PortDefinition tempPort = EMFUtils.allContainedObjectOfType(resource, PortDefinition.class)
+                    .filter(pod -> "TempPort".equals(pod.getDeclaredName()))
+                    .findFirst().get();
+
+            ConjugatedPortDefinition conjugatedPortDefinition = tempPort.getConjugatedPortDefinition();
+            assertThat(conjugatedPortDefinition).isNotNull();
+
+            PortUsage tempPortConj = EMFUtils.allContainedObjectOfType(resource, PortUsage.class)
+                    .filter(pou -> "tempPortConj".equals(pou.getDeclaredName()))
+                    .findFirst().get();
+
+            assertThat(tempPortConj.getType()).hasSize(1).allMatch(e -> e == conjugatedPortDefinition);
+
+        }).check(input);
     }
 
     @Test

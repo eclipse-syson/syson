@@ -293,11 +293,13 @@ public class ASTTransformerTest {
         PortDefinition typedPortDefinition = (PortDefinition) portDefinition;
         assertEquals("portDefinition", typedPortDefinition.getDeclaredName());
 
-        assertEquals(1, typedPortDefinition.getOwnedMember().size());
+        assertEquals(2, typedPortDefinition.getOwnedMember().size());
         EObject referenceUsage = typedPortDefinition.getOwnedMember().get(0);
         assertInstanceOf(ReferenceUsage.class, referenceUsage);
         ReferenceUsage typedReferenceUsage = (ReferenceUsage) referenceUsage;
         assertEquals("referenceUsage", typedReferenceUsage.getDeclaredName());
+        EObject conjugatedPortDefinition = typedPortDefinition.getOwnedMember().get(1);
+        assertInstanceOf(ConjugatedPortDefinition.class, conjugatedPortDefinition);
 
         assertEquals(1, typedReferenceUsage.getOwnedTyping().size());
         FeatureTyping featureTyping = typedReferenceUsage.getOwnedTyping().get(0);
