@@ -490,6 +490,12 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
                 SysmlFactory.eINSTANCE.createConjugation()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createSubsetting()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createCrossSubsetting()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createDataType()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
@@ -572,6 +578,9 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createIncludeUseCaseUsage()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createIndexExpression()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createInteraction()));
@@ -689,9 +698,6 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createPredicate()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createSubsetting()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createRedefinition()));

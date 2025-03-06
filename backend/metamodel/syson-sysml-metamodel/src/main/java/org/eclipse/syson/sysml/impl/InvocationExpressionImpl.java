@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -12,18 +12,24 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InvocationExpression;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Invocation Expression</b></em>'. <!--
@@ -39,16 +45,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
  * @generated
  */
 public class InvocationExpressionImpl extends ExpressionImpl implements InvocationExpression {
-    /**
-     * The cached value of the '{@link #getOperand() <em>Operand</em>}' reference list. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getOperand()
-     * @generated
-     * @ordered
-     */
-    protected EList<Expression> operand;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -75,14 +71,36 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
      */
     @Override
     public EList<Expression> getArgument() {
-        List<Expression> arguments = this.getOwnedFeature().stream()
-                .filter(f -> f.getDirection() == FeatureDirectionKind.IN)
-                .map(Feature::getValuation)
-                .filter(Objects::nonNull)
-                .map(v -> v.getValue())
-                .filter(Objects::nonNull)
-                .toList();
+        List<Expression> arguments = new ArrayList<>();
+        Type instantiatedType = this.instantiatedType();
+        if (instantiatedType != null) {
+            instantiatedType.getInput().stream()
+                    .map(inp -> {
+                        return this.getOwnedFeature().stream()
+                                .filter(ow -> ow.redefines(inp))
+                                .map(Feature::getValuation)
+                                .filter(Objects::nonNull)
+                                .map(FeatureValue::getValue)
+                                .toList();
+                    })
+                    .flatMap(List::stream)
+                    .forEach(arguments::add);;
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInvocationExpression_Argument(), arguments.size(), arguments.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    protected Type instantiatedType() {
+        var members = this.getOwnedMembership().stream()
+                .filter(m -> !(m instanceof FeatureMembership))
+                .map(Membership::getMemberElement)
+                .toList();
+        if (!members.isEmpty() && members.get(0) instanceof Type t) {
+            return t;
+        }
+        return null;
     }
 
     /**
@@ -92,10 +110,26 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
      */
     @Override
     public EList<Expression> getOperand() {
-        if (this.operand == null) {
-            this.operand = new EObjectResolvingEList<>(Expression.class, this, SysmlPackage.INVOCATION_EXPRESSION__OPERAND);
+        // TODO: implement this method to return the 'Operand' containment reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
+        // org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case SysmlPackage.INVOCATION_EXPRESSION__OPERAND:
+                return ((InternalEList<?>) this.getOperand()).basicRemove(otherEnd, msgs);
         }
-        return this.operand;
+        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -125,7 +159,7 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
             case SysmlPackage.INVOCATION_EXPRESSION__ARGUMENT:
                 return !this.getArgument().isEmpty();
             case SysmlPackage.INVOCATION_EXPRESSION__OPERAND:
-                return this.operand != null && !this.operand.isEmpty();
+                return !this.getOperand().isEmpty();
         }
         return super.eIsSet(featureID);
     }

@@ -965,6 +965,29 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.CrossSubsetting} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CrossSubsettingItemProvider crossSubsettingItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.CrossSubsetting}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCrossSubsettingAdapter() {
+        if (this.crossSubsettingItemProvider == null) {
+            this.crossSubsettingItemProvider = new CrossSubsettingItemProvider(this);
+        }
+
+        return this.crossSubsettingItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.DataType} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1652,6 +1675,29 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         }
 
         return this.includeUseCaseUsageItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.IndexExpression} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected IndexExpressionItemProvider indexExpressionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.IndexExpression}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createIndexExpressionAdapter() {
+        if (this.indexExpressionItemProvider == null) {
+            this.indexExpressionItemProvider = new IndexExpressionItemProvider(this);
+        }
+
+        return this.indexExpressionItemProvider;
     }
 
     /**
@@ -4013,336 +4059,507 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
      */
     @Override
     public void dispose() {
-        if (this.acceptActionUsageItemProvider != null)
+        if (this.acceptActionUsageItemProvider != null) {
             this.acceptActionUsageItemProvider.dispose();
-        if (this.actionDefinitionItemProvider != null)
+        }
+        if (this.actionDefinitionItemProvider != null) {
             this.actionDefinitionItemProvider.dispose();
-        if (this.actionUsageItemProvider != null)
+        }
+        if (this.actionUsageItemProvider != null) {
             this.actionUsageItemProvider.dispose();
-        if (this.actorMembershipItemProvider != null)
+        }
+        if (this.actorMembershipItemProvider != null) {
             this.actorMembershipItemProvider.dispose();
-        if (this.allocationDefinitionItemProvider != null)
+        }
+        if (this.allocationDefinitionItemProvider != null) {
             this.allocationDefinitionItemProvider.dispose();
-        if (this.allocationUsageItemProvider != null)
+        }
+        if (this.allocationUsageItemProvider != null) {
             this.allocationUsageItemProvider.dispose();
-        if (this.analysisCaseDefinitionItemProvider != null)
+        }
+        if (this.analysisCaseDefinitionItemProvider != null) {
             this.analysisCaseDefinitionItemProvider.dispose();
-        if (this.analysisCaseUsageItemProvider != null)
+        }
+        if (this.analysisCaseUsageItemProvider != null) {
             this.analysisCaseUsageItemProvider.dispose();
-        if (this.annotatingElementItemProvider != null)
+        }
+        if (this.annotatingElementItemProvider != null) {
             this.annotatingElementItemProvider.dispose();
-        if (this.annotationItemProvider != null)
+        }
+        if (this.annotationItemProvider != null) {
             this.annotationItemProvider.dispose();
-        if (this.assertConstraintUsageItemProvider != null)
+        }
+        if (this.assertConstraintUsageItemProvider != null) {
             this.assertConstraintUsageItemProvider.dispose();
-        if (this.assignmentActionUsageItemProvider != null)
+        }
+        if (this.assignmentActionUsageItemProvider != null) {
             this.assignmentActionUsageItemProvider.dispose();
-        if (this.associationItemProvider != null)
+        }
+        if (this.associationItemProvider != null) {
             this.associationItemProvider.dispose();
-        if (this.associationStructureItemProvider != null)
+        }
+        if (this.associationStructureItemProvider != null) {
             this.associationStructureItemProvider.dispose();
-        if (this.attributeDefinitionItemProvider != null)
+        }
+        if (this.attributeDefinitionItemProvider != null) {
             this.attributeDefinitionItemProvider.dispose();
-        if (this.attributeUsageItemProvider != null)
+        }
+        if (this.attributeUsageItemProvider != null) {
             this.attributeUsageItemProvider.dispose();
-        if (this.behaviorItemProvider != null)
+        }
+        if (this.behaviorItemProvider != null) {
             this.behaviorItemProvider.dispose();
-        if (this.bindingConnectorItemProvider != null)
+        }
+        if (this.bindingConnectorItemProvider != null) {
             this.bindingConnectorItemProvider.dispose();
-        if (this.bindingConnectorAsUsageItemProvider != null)
+        }
+        if (this.bindingConnectorAsUsageItemProvider != null) {
             this.bindingConnectorAsUsageItemProvider.dispose();
-        if (this.booleanExpressionItemProvider != null)
+        }
+        if (this.booleanExpressionItemProvider != null) {
             this.booleanExpressionItemProvider.dispose();
-        if (this.calculationDefinitionItemProvider != null)
+        }
+        if (this.calculationDefinitionItemProvider != null) {
             this.calculationDefinitionItemProvider.dispose();
-        if (this.calculationUsageItemProvider != null)
+        }
+        if (this.calculationUsageItemProvider != null) {
             this.calculationUsageItemProvider.dispose();
-        if (this.caseDefinitionItemProvider != null)
+        }
+        if (this.caseDefinitionItemProvider != null) {
             this.caseDefinitionItemProvider.dispose();
-        if (this.caseUsageItemProvider != null)
+        }
+        if (this.caseUsageItemProvider != null) {
             this.caseUsageItemProvider.dispose();
-        if (this.classItemProvider != null)
+        }
+        if (this.classItemProvider != null) {
             this.classItemProvider.dispose();
-        if (this.classifierItemProvider != null)
+        }
+        if (this.classifierItemProvider != null) {
             this.classifierItemProvider.dispose();
-        if (this.collectExpressionItemProvider != null)
+        }
+        if (this.collectExpressionItemProvider != null) {
             this.collectExpressionItemProvider.dispose();
-        if (this.commentItemProvider != null)
+        }
+        if (this.commentItemProvider != null) {
             this.commentItemProvider.dispose();
-        if (this.concernDefinitionItemProvider != null)
+        }
+        if (this.concernDefinitionItemProvider != null) {
             this.concernDefinitionItemProvider.dispose();
-        if (this.concernUsageItemProvider != null)
+        }
+        if (this.concernUsageItemProvider != null) {
             this.concernUsageItemProvider.dispose();
-        if (this.conjugatedPortDefinitionItemProvider != null)
+        }
+        if (this.conjugatedPortDefinitionItemProvider != null) {
             this.conjugatedPortDefinitionItemProvider.dispose();
-        if (this.conjugatedPortTypingItemProvider != null)
+        }
+        if (this.conjugatedPortTypingItemProvider != null) {
             this.conjugatedPortTypingItemProvider.dispose();
-        if (this.conjugationItemProvider != null)
+        }
+        if (this.conjugationItemProvider != null) {
             this.conjugationItemProvider.dispose();
-        if (this.connectionDefinitionItemProvider != null)
+        }
+        if (this.connectionDefinitionItemProvider != null) {
             this.connectionDefinitionItemProvider.dispose();
-        if (this.connectionUsageItemProvider != null)
+        }
+        if (this.connectionUsageItemProvider != null) {
             this.connectionUsageItemProvider.dispose();
-        if (this.connectorItemProvider != null)
+        }
+        if (this.connectorItemProvider != null) {
             this.connectorItemProvider.dispose();
-        if (this.constraintDefinitionItemProvider != null)
+        }
+        if (this.constraintDefinitionItemProvider != null) {
             this.constraintDefinitionItemProvider.dispose();
-        if (this.constraintUsageItemProvider != null)
+        }
+        if (this.constraintUsageItemProvider != null) {
             this.constraintUsageItemProvider.dispose();
-        if (this.dataTypeItemProvider != null)
+        }
+        if (this.crossSubsettingItemProvider != null) {
+            this.crossSubsettingItemProvider.dispose();
+        }
+        if (this.dataTypeItemProvider != null) {
             this.dataTypeItemProvider.dispose();
-        if (this.decisionNodeItemProvider != null)
+        }
+        if (this.decisionNodeItemProvider != null) {
             this.decisionNodeItemProvider.dispose();
-        if (this.definitionItemProvider != null)
+        }
+        if (this.definitionItemProvider != null) {
             this.definitionItemProvider.dispose();
-        if (this.dependencyItemProvider != null)
+        }
+        if (this.dependencyItemProvider != null) {
             this.dependencyItemProvider.dispose();
-        if (this.differencingItemProvider != null)
+        }
+        if (this.differencingItemProvider != null) {
             this.differencingItemProvider.dispose();
-        if (this.disjoiningItemProvider != null)
+        }
+        if (this.disjoiningItemProvider != null) {
             this.disjoiningItemProvider.dispose();
-        if (this.documentationItemProvider != null)
+        }
+        if (this.documentationItemProvider != null) {
             this.documentationItemProvider.dispose();
-        if (this.elementFilterMembershipItemProvider != null)
+        }
+        if (this.elementFilterMembershipItemProvider != null) {
             this.elementFilterMembershipItemProvider.dispose();
-        if (this.endFeatureMembershipItemProvider != null)
+        }
+        if (this.endFeatureMembershipItemProvider != null) {
             this.endFeatureMembershipItemProvider.dispose();
-        if (this.enumerationDefinitionItemProvider != null)
+        }
+        if (this.enumerationDefinitionItemProvider != null) {
             this.enumerationDefinitionItemProvider.dispose();
-        if (this.enumerationUsageItemProvider != null)
+        }
+        if (this.enumerationUsageItemProvider != null) {
             this.enumerationUsageItemProvider.dispose();
-        if (this.eventOccurrenceUsageItemProvider != null)
+        }
+        if (this.eventOccurrenceUsageItemProvider != null) {
             this.eventOccurrenceUsageItemProvider.dispose();
-        if (this.exhibitStateUsageItemProvider != null)
+        }
+        if (this.exhibitStateUsageItemProvider != null) {
             this.exhibitStateUsageItemProvider.dispose();
-        if (this.expressionItemProvider != null)
+        }
+        if (this.expressionItemProvider != null) {
             this.expressionItemProvider.dispose();
-        if (this.featureItemProvider != null)
+        }
+        if (this.featureItemProvider != null) {
             this.featureItemProvider.dispose();
-        if (this.featureChainExpressionItemProvider != null)
+        }
+        if (this.featureChainExpressionItemProvider != null) {
             this.featureChainExpressionItemProvider.dispose();
-        if (this.featureChainingItemProvider != null)
+        }
+        if (this.featureChainingItemProvider != null) {
             this.featureChainingItemProvider.dispose();
-        if (this.featureInvertingItemProvider != null)
+        }
+        if (this.featureInvertingItemProvider != null) {
             this.featureInvertingItemProvider.dispose();
-        if (this.featureMembershipItemProvider != null)
+        }
+        if (this.featureMembershipItemProvider != null) {
             this.featureMembershipItemProvider.dispose();
-        if (this.featureReferenceExpressionItemProvider != null)
+        }
+        if (this.featureReferenceExpressionItemProvider != null) {
             this.featureReferenceExpressionItemProvider.dispose();
-        if (this.featureTypingItemProvider != null)
+        }
+        if (this.featureTypingItemProvider != null) {
             this.featureTypingItemProvider.dispose();
-        if (this.featureValueItemProvider != null)
+        }
+        if (this.featureValueItemProvider != null) {
             this.featureValueItemProvider.dispose();
-        if (this.flowConnectionDefinitionItemProvider != null)
+        }
+        if (this.flowConnectionDefinitionItemProvider != null) {
             this.flowConnectionDefinitionItemProvider.dispose();
-        if (this.flowConnectionUsageItemProvider != null)
+        }
+        if (this.flowConnectionUsageItemProvider != null) {
             this.flowConnectionUsageItemProvider.dispose();
-        if (this.forkNodeItemProvider != null)
+        }
+        if (this.forkNodeItemProvider != null) {
             this.forkNodeItemProvider.dispose();
-        if (this.forLoopActionUsageItemProvider != null)
+        }
+        if (this.forLoopActionUsageItemProvider != null) {
             this.forLoopActionUsageItemProvider.dispose();
-        if (this.framedConcernMembershipItemProvider != null)
+        }
+        if (this.framedConcernMembershipItemProvider != null) {
             this.framedConcernMembershipItemProvider.dispose();
-        if (this.functionItemProvider != null)
+        }
+        if (this.functionItemProvider != null) {
             this.functionItemProvider.dispose();
-        if (this.ifActionUsageItemProvider != null)
+        }
+        if (this.ifActionUsageItemProvider != null) {
             this.ifActionUsageItemProvider.dispose();
-        if (this.includeUseCaseUsageItemProvider != null)
+        }
+        if (this.includeUseCaseUsageItemProvider != null) {
             this.includeUseCaseUsageItemProvider.dispose();
-        if (this.interactionItemProvider != null)
+        }
+        if (this.indexExpressionItemProvider != null) {
+            this.indexExpressionItemProvider.dispose();
+        }
+        if (this.interactionItemProvider != null) {
             this.interactionItemProvider.dispose();
-        if (this.interfaceDefinitionItemProvider != null)
+        }
+        if (this.interfaceDefinitionItemProvider != null) {
             this.interfaceDefinitionItemProvider.dispose();
-        if (this.interfaceUsageItemProvider != null)
+        }
+        if (this.interfaceUsageItemProvider != null) {
             this.interfaceUsageItemProvider.dispose();
-        if (this.intersectingItemProvider != null)
+        }
+        if (this.intersectingItemProvider != null) {
             this.intersectingItemProvider.dispose();
-        if (this.invariantItemProvider != null)
+        }
+        if (this.invariantItemProvider != null) {
             this.invariantItemProvider.dispose();
-        if (this.invocationExpressionItemProvider != null)
+        }
+        if (this.invocationExpressionItemProvider != null) {
             this.invocationExpressionItemProvider.dispose();
-        if (this.itemDefinitionItemProvider != null)
+        }
+        if (this.itemDefinitionItemProvider != null) {
             this.itemDefinitionItemProvider.dispose();
-        if (this.itemFeatureItemProvider != null)
+        }
+        if (this.itemFeatureItemProvider != null) {
             this.itemFeatureItemProvider.dispose();
-        if (this.itemFlowItemProvider != null)
+        }
+        if (this.itemFlowItemProvider != null) {
             this.itemFlowItemProvider.dispose();
-        if (this.itemFlowEndItemProvider != null)
+        }
+        if (this.itemFlowEndItemProvider != null) {
             this.itemFlowEndItemProvider.dispose();
-        if (this.itemUsageItemProvider != null)
+        }
+        if (this.itemUsageItemProvider != null) {
             this.itemUsageItemProvider.dispose();
-        if (this.joinNodeItemProvider != null)
+        }
+        if (this.joinNodeItemProvider != null) {
             this.joinNodeItemProvider.dispose();
-        if (this.libraryPackageItemProvider != null)
+        }
+        if (this.libraryPackageItemProvider != null) {
             this.libraryPackageItemProvider.dispose();
-        if (this.lifeClassItemProvider != null)
+        }
+        if (this.lifeClassItemProvider != null) {
             this.lifeClassItemProvider.dispose();
-        if (this.literalBooleanItemProvider != null)
+        }
+        if (this.literalBooleanItemProvider != null) {
             this.literalBooleanItemProvider.dispose();
-        if (this.literalExpressionItemProvider != null)
+        }
+        if (this.literalExpressionItemProvider != null) {
             this.literalExpressionItemProvider.dispose();
-        if (this.literalInfinityItemProvider != null)
+        }
+        if (this.literalInfinityItemProvider != null) {
             this.literalInfinityItemProvider.dispose();
-        if (this.literalIntegerItemProvider != null)
+        }
+        if (this.literalIntegerItemProvider != null) {
             this.literalIntegerItemProvider.dispose();
-        if (this.literalRationalItemProvider != null)
+        }
+        if (this.literalRationalItemProvider != null) {
             this.literalRationalItemProvider.dispose();
-        if (this.literalStringItemProvider != null)
+        }
+        if (this.literalStringItemProvider != null) {
             this.literalStringItemProvider.dispose();
-        if (this.membershipItemProvider != null)
+        }
+        if (this.membershipItemProvider != null) {
             this.membershipItemProvider.dispose();
-        if (this.membershipExposeItemProvider != null)
+        }
+        if (this.membershipExposeItemProvider != null) {
             this.membershipExposeItemProvider.dispose();
-        if (this.membershipImportItemProvider != null)
+        }
+        if (this.membershipImportItemProvider != null) {
             this.membershipImportItemProvider.dispose();
-        if (this.mergeNodeItemProvider != null)
+        }
+        if (this.mergeNodeItemProvider != null) {
             this.mergeNodeItemProvider.dispose();
-        if (this.metaclassItemProvider != null)
+        }
+        if (this.metaclassItemProvider != null) {
             this.metaclassItemProvider.dispose();
-        if (this.metadataAccessExpressionItemProvider != null)
+        }
+        if (this.metadataAccessExpressionItemProvider != null) {
             this.metadataAccessExpressionItemProvider.dispose();
-        if (this.metadataDefinitionItemProvider != null)
+        }
+        if (this.metadataDefinitionItemProvider != null) {
             this.metadataDefinitionItemProvider.dispose();
-        if (this.metadataFeatureItemProvider != null)
+        }
+        if (this.metadataFeatureItemProvider != null) {
             this.metadataFeatureItemProvider.dispose();
-        if (this.metadataUsageItemProvider != null)
+        }
+        if (this.metadataUsageItemProvider != null) {
             this.metadataUsageItemProvider.dispose();
-        if (this.multiplicityItemProvider != null)
+        }
+        if (this.multiplicityItemProvider != null) {
             this.multiplicityItemProvider.dispose();
-        if (this.multiplicityRangeItemProvider != null)
+        }
+        if (this.multiplicityRangeItemProvider != null) {
             this.multiplicityRangeItemProvider.dispose();
-        if (this.namespaceItemProvider != null)
+        }
+        if (this.namespaceItemProvider != null) {
             this.namespaceItemProvider.dispose();
-        if (this.namespaceExposeItemProvider != null)
+        }
+        if (this.namespaceExposeItemProvider != null) {
             this.namespaceExposeItemProvider.dispose();
-        if (this.namespaceImportItemProvider != null)
+        }
+        if (this.namespaceImportItemProvider != null) {
             this.namespaceImportItemProvider.dispose();
-        if (this.nullExpressionItemProvider != null)
+        }
+        if (this.nullExpressionItemProvider != null) {
             this.nullExpressionItemProvider.dispose();
-        if (this.objectiveMembershipItemProvider != null)
+        }
+        if (this.objectiveMembershipItemProvider != null) {
             this.objectiveMembershipItemProvider.dispose();
-        if (this.occurrenceDefinitionItemProvider != null)
+        }
+        if (this.occurrenceDefinitionItemProvider != null) {
             this.occurrenceDefinitionItemProvider.dispose();
-        if (this.occurrenceUsageItemProvider != null)
+        }
+        if (this.occurrenceUsageItemProvider != null) {
             this.occurrenceUsageItemProvider.dispose();
-        if (this.operatorExpressionItemProvider != null)
+        }
+        if (this.operatorExpressionItemProvider != null) {
             this.operatorExpressionItemProvider.dispose();
-        if (this.owningMembershipItemProvider != null)
+        }
+        if (this.owningMembershipItemProvider != null) {
             this.owningMembershipItemProvider.dispose();
-        if (this.packageItemProvider != null)
+        }
+        if (this.packageItemProvider != null) {
             this.packageItemProvider.dispose();
-        if (this.parameterMembershipItemProvider != null)
+        }
+        if (this.parameterMembershipItemProvider != null) {
             this.parameterMembershipItemProvider.dispose();
-        if (this.partDefinitionItemProvider != null)
+        }
+        if (this.partDefinitionItemProvider != null) {
             this.partDefinitionItemProvider.dispose();
-        if (this.partUsageItemProvider != null)
+        }
+        if (this.partUsageItemProvider != null) {
             this.partUsageItemProvider.dispose();
-        if (this.performActionUsageItemProvider != null)
+        }
+        if (this.performActionUsageItemProvider != null) {
             this.performActionUsageItemProvider.dispose();
-        if (this.portConjugationItemProvider != null)
+        }
+        if (this.portConjugationItemProvider != null) {
             this.portConjugationItemProvider.dispose();
-        if (this.portDefinitionItemProvider != null)
+        }
+        if (this.portDefinitionItemProvider != null) {
             this.portDefinitionItemProvider.dispose();
-        if (this.portUsageItemProvider != null)
+        }
+        if (this.portUsageItemProvider != null) {
             this.portUsageItemProvider.dispose();
-        if (this.predicateItemProvider != null)
+        }
+        if (this.predicateItemProvider != null) {
             this.predicateItemProvider.dispose();
-        if (this.redefinitionItemProvider != null)
+        }
+        if (this.redefinitionItemProvider != null) {
             this.redefinitionItemProvider.dispose();
-        if (this.referenceSubsettingItemProvider != null)
+        }
+        if (this.referenceSubsettingItemProvider != null) {
             this.referenceSubsettingItemProvider.dispose();
-        if (this.referenceUsageItemProvider != null)
+        }
+        if (this.referenceUsageItemProvider != null) {
             this.referenceUsageItemProvider.dispose();
-        if (this.renderingDefinitionItemProvider != null)
+        }
+        if (this.renderingDefinitionItemProvider != null) {
             this.renderingDefinitionItemProvider.dispose();
-        if (this.renderingUsageItemProvider != null)
+        }
+        if (this.renderingUsageItemProvider != null) {
             this.renderingUsageItemProvider.dispose();
-        if (this.requirementConstraintMembershipItemProvider != null)
+        }
+        if (this.requirementConstraintMembershipItemProvider != null) {
             this.requirementConstraintMembershipItemProvider.dispose();
-        if (this.requirementDefinitionItemProvider != null)
+        }
+        if (this.requirementDefinitionItemProvider != null) {
             this.requirementDefinitionItemProvider.dispose();
-        if (this.requirementUsageItemProvider != null)
+        }
+        if (this.requirementUsageItemProvider != null) {
             this.requirementUsageItemProvider.dispose();
-        if (this.requirementVerificationMembershipItemProvider != null)
+        }
+        if (this.requirementVerificationMembershipItemProvider != null) {
             this.requirementVerificationMembershipItemProvider.dispose();
-        if (this.resultExpressionMembershipItemProvider != null)
+        }
+        if (this.resultExpressionMembershipItemProvider != null) {
             this.resultExpressionMembershipItemProvider.dispose();
-        if (this.returnParameterMembershipItemProvider != null)
+        }
+        if (this.returnParameterMembershipItemProvider != null) {
             this.returnParameterMembershipItemProvider.dispose();
-        if (this.satisfyRequirementUsageItemProvider != null)
+        }
+        if (this.satisfyRequirementUsageItemProvider != null) {
             this.satisfyRequirementUsageItemProvider.dispose();
-        if (this.selectExpressionItemProvider != null)
+        }
+        if (this.selectExpressionItemProvider != null) {
             this.selectExpressionItemProvider.dispose();
-        if (this.sendActionUsageItemProvider != null)
+        }
+        if (this.sendActionUsageItemProvider != null) {
             this.sendActionUsageItemProvider.dispose();
-        if (this.specializationItemProvider != null)
+        }
+        if (this.specializationItemProvider != null) {
             this.specializationItemProvider.dispose();
-        if (this.stakeholderMembershipItemProvider != null)
+        }
+        if (this.stakeholderMembershipItemProvider != null) {
             this.stakeholderMembershipItemProvider.dispose();
-        if (this.stateDefinitionItemProvider != null)
+        }
+        if (this.stateDefinitionItemProvider != null) {
             this.stateDefinitionItemProvider.dispose();
-        if (this.stateSubactionMembershipItemProvider != null)
+        }
+        if (this.stateSubactionMembershipItemProvider != null) {
             this.stateSubactionMembershipItemProvider.dispose();
-        if (this.stateUsageItemProvider != null)
+        }
+        if (this.stateUsageItemProvider != null) {
             this.stateUsageItemProvider.dispose();
-        if (this.stepItemProvider != null)
+        }
+        if (this.stepItemProvider != null) {
             this.stepItemProvider.dispose();
-        if (this.structureItemProvider != null)
+        }
+        if (this.structureItemProvider != null) {
             this.structureItemProvider.dispose();
-        if (this.subclassificationItemProvider != null)
+        }
+        if (this.subclassificationItemProvider != null) {
             this.subclassificationItemProvider.dispose();
-        if (this.subjectMembershipItemProvider != null)
+        }
+        if (this.subjectMembershipItemProvider != null) {
             this.subjectMembershipItemProvider.dispose();
-        if (this.subsettingItemProvider != null)
+        }
+        if (this.subsettingItemProvider != null) {
             this.subsettingItemProvider.dispose();
-        if (this.successionItemProvider != null)
+        }
+        if (this.successionItemProvider != null) {
             this.successionItemProvider.dispose();
-        if (this.successionAsUsageItemProvider != null)
+        }
+        if (this.successionAsUsageItemProvider != null) {
             this.successionAsUsageItemProvider.dispose();
-        if (this.successionFlowConnectionUsageItemProvider != null)
+        }
+        if (this.successionFlowConnectionUsageItemProvider != null) {
             this.successionFlowConnectionUsageItemProvider.dispose();
-        if (this.successionItemFlowItemProvider != null)
+        }
+        if (this.successionItemFlowItemProvider != null) {
             this.successionItemFlowItemProvider.dispose();
-        if (this.terminateActionUsageItemProvider != null)
+        }
+        if (this.terminateActionUsageItemProvider != null) {
             this.terminateActionUsageItemProvider.dispose();
-        if (this.textualRepresentationItemProvider != null)
+        }
+        if (this.textualRepresentationItemProvider != null) {
             this.textualRepresentationItemProvider.dispose();
-        if (this.transitionFeatureMembershipItemProvider != null)
+        }
+        if (this.transitionFeatureMembershipItemProvider != null) {
             this.transitionFeatureMembershipItemProvider.dispose();
-        if (this.transitionUsageItemProvider != null)
+        }
+        if (this.transitionUsageItemProvider != null) {
             this.transitionUsageItemProvider.dispose();
-        if (this.triggerInvocationExpressionItemProvider != null)
+        }
+        if (this.triggerInvocationExpressionItemProvider != null) {
             this.triggerInvocationExpressionItemProvider.dispose();
-        if (this.typeItemProvider != null)
+        }
+        if (this.typeItemProvider != null) {
             this.typeItemProvider.dispose();
-        if (this.typeFeaturingItemProvider != null)
+        }
+        if (this.typeFeaturingItemProvider != null) {
             this.typeFeaturingItemProvider.dispose();
-        if (this.unioningItemProvider != null)
+        }
+        if (this.unioningItemProvider != null) {
             this.unioningItemProvider.dispose();
-        if (this.usageItemProvider != null)
+        }
+        if (this.usageItemProvider != null) {
             this.usageItemProvider.dispose();
-        if (this.useCaseDefinitionItemProvider != null)
+        }
+        if (this.useCaseDefinitionItemProvider != null) {
             this.useCaseDefinitionItemProvider.dispose();
-        if (this.useCaseUsageItemProvider != null)
+        }
+        if (this.useCaseUsageItemProvider != null) {
             this.useCaseUsageItemProvider.dispose();
-        if (this.variantMembershipItemProvider != null)
+        }
+        if (this.variantMembershipItemProvider != null) {
             this.variantMembershipItemProvider.dispose();
-        if (this.verificationCaseDefinitionItemProvider != null)
+        }
+        if (this.verificationCaseDefinitionItemProvider != null) {
             this.verificationCaseDefinitionItemProvider.dispose();
-        if (this.verificationCaseUsageItemProvider != null)
+        }
+        if (this.verificationCaseUsageItemProvider != null) {
             this.verificationCaseUsageItemProvider.dispose();
-        if (this.viewDefinitionItemProvider != null)
+        }
+        if (this.viewDefinitionItemProvider != null) {
             this.viewDefinitionItemProvider.dispose();
-        if (this.viewpointDefinitionItemProvider != null)
+        }
+        if (this.viewpointDefinitionItemProvider != null) {
             this.viewpointDefinitionItemProvider.dispose();
-        if (this.viewpointUsageItemProvider != null)
+        }
+        if (this.viewpointUsageItemProvider != null) {
             this.viewpointUsageItemProvider.dispose();
-        if (this.viewRenderingMembershipItemProvider != null)
+        }
+        if (this.viewRenderingMembershipItemProvider != null) {
             this.viewRenderingMembershipItemProvider.dispose();
-        if (this.viewUsageItemProvider != null)
+        }
+        if (this.viewUsageItemProvider != null) {
             this.viewUsageItemProvider.dispose();
-        if (this.whileLoopActionUsageItemProvider != null)
+        }
+        if (this.whileLoopActionUsageItemProvider != null) {
             this.whileLoopActionUsageItemProvider.dispose();
+        }
     }
 
 }

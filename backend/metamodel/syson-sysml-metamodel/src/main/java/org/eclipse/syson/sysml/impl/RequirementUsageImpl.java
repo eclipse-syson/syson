@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.Predicate;
@@ -108,8 +109,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     public EList<PartUsage> getActorParameter() {
         List<PartUsage> actorParameters = this.getParameter().stream()
                 .filter(PartUsage.class::isInstance)
-                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
                 .map(PartUsage.class::cast)
+                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), actorParameters.size(), actorParameters.toArray());
     }
@@ -140,8 +141,13 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
      */
     @Override
     public EList<ConcernUsage> getFramedConcern() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), data.size(), data.toArray());
+        List<Usage> framedConcerns = new ArrayList<>();
+        this.getFeatureMembership().stream()
+                .filter(FramedConcernMembership.class::isInstance)
+                .map(FramedConcernMembership.class::cast)
+                .map(FramedConcernMembership::getOwnedConcern)
+                .forEach(framedConcerns::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), framedConcerns.size(), framedConcerns.toArray());
     }
 
     /**
@@ -201,13 +207,14 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public RequirementDefinition basicGetRequirementDefinition() {
-        // TODO: implement this method to return the 'Requirement Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getDefinition().stream()
+                .filter(RequirementDefinition.class::isInstance)
+                .map(RequirementDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

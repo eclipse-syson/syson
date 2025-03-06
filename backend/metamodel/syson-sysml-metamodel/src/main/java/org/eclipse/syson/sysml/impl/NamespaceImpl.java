@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -191,6 +191,18 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
                 .filter(nameConflictingFilter)
                 .forEach(importedMemberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Membership> membershipsOfVisibility(VisibilityKind visibility, EList<Namespace> excluded) {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
     }
 
     /**
@@ -444,6 +456,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         switch (operationID) {
             case SysmlPackage.NAMESPACE___IMPORTED_MEMBERSHIPS__ELIST:
                 return this.importedMemberships((EList<Namespace>) arguments.get(0));
+            case SysmlPackage.NAMESPACE___MEMBERSHIPS_OF_VISIBILITY__VISIBILITYKIND_ELIST:
+                return this.membershipsOfVisibility((VisibilityKind) arguments.get(0), (EList<Namespace>) arguments.get(1));
             case SysmlPackage.NAMESPACE___NAMES_OF__ELEMENT:
                 return this.namesOf((Element) arguments.get(0));
             case SysmlPackage.NAMESPACE___QUALIFICATION_OF__STRING:

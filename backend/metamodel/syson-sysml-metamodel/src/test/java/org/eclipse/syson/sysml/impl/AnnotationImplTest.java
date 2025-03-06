@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,13 +37,15 @@ public class AnnotationImplTest {
 
     @Test
     public void testSource() {
+        // source is redefined by the derived feature /annotatingElement
+        // so it is not possible to use setSource anymore
         AnnotatingElement annotatingElement = SysmlFactory.eINSTANCE.createAnnotatingElement();
         List<Element> mySources = new BasicEList<>();
         mySources.add(annotatingElement);
         Annotation annotation = SysmlFactory.eINSTANCE.createAnnotation();
         assertTrue(annotation.getSource().isEmpty());
         assertNull(annotation.getAnnotatingElement());
-        annotation.eSet(SysmlPackage.eINSTANCE.getRelationship_Source(), mySources);
+        annotation.setOwningRelatedElement(annotatingElement);
         assertFalse(annotation.getSource().isEmpty());
         assertNotNull(annotation.getAnnotatingElement());
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -204,12 +204,12 @@ public class TypeImplTest {
     public void inheritedMembers() {
         var testModel = new TestModel();
 
-        assertContentEquals(testModel.subDef.inheritedMemberships(new BasicEList<>(), false),
+        assertContentEquals(testModel.subDef.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false),
                 testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
-        assertContentEquals(testModel.superDef.inheritedMemberships(new BasicEList<>(), false), testModel.attr0.getOwningMembership());
+        assertContentEquals(testModel.superDef.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false), testModel.attr0.getOwningMembership());
         assertContentEquals(testModel.superDef.getInheritedMembership(), testModel.attr0.getOwningMembership());
-        assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>(), false));
-        assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>(), false));
+        assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false));
+        assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false));
 
         // Inherited membership is a subset of membership.
         // All those elements should also be contained in memebership.

@@ -12,11 +12,14 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Operator Expression</b></em>'. <!--
@@ -171,4 +174,30 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
         return result.toString();
     }
 
+    /**
+     * @generated NOT
+     */
+    @Override
+    protected Type instantiatedType() {
+        var libFunctions = new ArrayList<>();
+        var baseFunctions = this.resolveGlobal("BaseFunctions::'" + this.getOperator() + "'");
+        if (baseFunctions != null) {
+            libFunctions.add(baseFunctions.getMemberElement());
+        }
+        var dataFunctions = this.resolveGlobal("DataFunctions::'" + this.getOperator() + "'");
+        if (dataFunctions != null) {
+            libFunctions.add(dataFunctions.getMemberElement());
+        }
+        var controlFunctions = this.resolveGlobal("ControlFunctions::'" + this.getOperator() + "'");
+        if (controlFunctions != null) {
+            libFunctions.add(controlFunctions.getMemberElement());
+        }
+        if (!libFunctions.isEmpty()) {
+            var firstLibFunctions = libFunctions.get(0);
+            if (firstLibFunctions instanceof Type t) {
+                return t;
+            }
+        }
+        return null;
+    }
 } // OperatorExpressionImpl

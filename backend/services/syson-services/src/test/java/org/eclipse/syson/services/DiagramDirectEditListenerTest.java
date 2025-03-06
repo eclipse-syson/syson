@@ -234,22 +234,31 @@ public class DiagramDirectEditListenerTest {
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
         assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
-        assertThat(operatorExpression.getArgument()).hasSize(2);
-        assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureChainExpression.class);
-        FeatureChainExpression featureChainExpression = (FeatureChainExpression) operatorExpression.getArgument().get(0);
-        assertThat(featureChainExpression.getArgument())
+        assertThat(operatorExpression.getParameter()).hasSize(2);
+        var leftParam = operatorExpression.getParameter().get(0);
+        assertThat(leftParam).isInstanceOf(Feature.class);
+        var leftExpression = leftParam.getValuation().getValue();
+        assertThat(leftExpression).isInstanceOf(FeatureChainExpression.class);
+        assertThat(leftExpression.getParameter().get(0).getValuation().getValue())
                 .as("The feature chain expression should have 1 FeatureReferenceExpression argument")
-                .hasSize(1)
-                .allMatch(FeatureReferenceExpression.class::isInstance);
-        FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) featureChainExpression.getArgument().get(0);
+                .isInstanceOf(FeatureReferenceExpression.class);
+        FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) leftExpression.getParameter().get(0).getValuation().getValue();
         assertThat(featureReferenceExpression.getReferent()).isInstanceOf(ReferenceUsage.class);
         assertThat(featureReferenceExpression.getReferent().getName()).isEqualTo("mySubject");
-        assertThat(featureChainExpression.getTargetFeature())
+        assertThat(((FeatureChainExpression) leftExpression).getTargetFeature())
                 .as("The target feature shouldn't contain chaining features and should be named 'actualWeight'")
                 .returns(List.of(), Feature::getChainingFeature)
                 .returns("actualWeight", Feature::getDeclaredName);
-        assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
-        LiteralInteger literalInteger = (LiteralInteger) operatorExpression.getArgument().get(1);
+        var rightParam = operatorExpression.getParameter().get(1);
+        assertThat(rightParam).isInstanceOf(Feature.class);
+        var rightExpression = leftParam.getValuation().getValue();
+        assertThat(rightExpression).isInstanceOf(FeatureChainExpression.class);
+        assertThat(rightExpression.getParameter().get(0).getValuation().getValue())
+                .as("The feature chain expression should have 1 FeatureReferenceExpression argument")
+                .isInstanceOf(FeatureReferenceExpression.class);
+        FeatureReferenceExpression rightFeatureReferenceExpression = (FeatureReferenceExpression) rightExpression.getParameter().get(0).getValuation().getValue();
+        assertThat(rightFeatureReferenceExpression.getReferent()).isInstanceOf(LiteralInteger.class);
+        LiteralInteger literalInteger = (LiteralInteger) rightFeatureReferenceExpression.getReferent();
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
