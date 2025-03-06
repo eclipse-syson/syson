@@ -69,15 +69,16 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->The first owned related element which is an Usage.<!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetOwnedVariantUsage() {
-        // TODO: implement this method to return the 'Owned Variant Usage' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(Usage.class::isInstance)
+                .map(Usage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

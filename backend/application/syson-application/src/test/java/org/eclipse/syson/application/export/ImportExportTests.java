@@ -295,6 +295,10 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute b : Integer default = 1;
                         attribute c : Integer = 1;
                         attribute d : Integer := 3;
+                        attribute e : MyEnum default = enum1;
+                    }
+                    enum def MyEnum {
+                        enum1;
                     }
                 }""";
         this.checker.check(input, input);

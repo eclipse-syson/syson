@@ -17,6 +17,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/870[#870] Fix an issue while computing the name of `VariantMembership`. 
+
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1061[#1061] [general-view] Add ellipsis on `Packages` label, to provide visual feedback on name overflow.
