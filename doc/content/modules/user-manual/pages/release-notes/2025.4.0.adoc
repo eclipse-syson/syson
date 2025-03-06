@@ -8,6 +8,9 @@ In such cases, delete the `SuccessionUsage` graphical node and recreate it graph
 
 == Bug fixes
 
+- Fix an issue while computing the name of `VariantMembership`.
+This has an impact on name resolution against `Element` contained in `VariantMembership` during the textual import process (e.g. for `EnumerationUsage` literals in `EnumerationDefinition`). 
+
 == New features
 
 == Improvements
