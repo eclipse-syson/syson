@@ -575,7 +575,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (membership instanceof FeatureMembership feature && feature.getOwnedMemberFeature() instanceof Expression exp) {
             this.reportConsumer.accept(Status.warning("BodyExpression are not handled yet ({0})", exp.getElementId()));
         } else {
-            this.appendFeatureReferenceMember(builder, membership);
+            this.appendFeatureReferenceMember(builder, membership, expression);
         }
         return builder.toString();
     }
@@ -1316,9 +1316,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private void appendFeatureReferenceMember(Appender builder, Membership membership) {
+    private void appendFeatureReferenceMember(Appender builder, Membership membership, Expression context) {
         if (membership.getMemberElement() instanceof Feature feature) {
-            builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature, membership));
+            builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature, context));
         }
     }
 
