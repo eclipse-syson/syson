@@ -477,4 +477,20 @@ public class ImportExportTests extends AbstractIntegrationTests {
 
         this.checker.check(input, expected);
     }
+
+    @Test
+    @DisplayName("Given a model with a FeatureReferenceExpression set with a qualified name, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    public void checkFeatureReferenceExpressionWithQualifiedNameDeresolution() throws IOException {
+        var input = """
+                package P1 {
+                    part p1;
+                }
+                package P2 {
+                    part part2 {
+                        part p = P1::p1;
+                    }
+                }""";
+
+        this.checker.check(input, input);
+    }
 }

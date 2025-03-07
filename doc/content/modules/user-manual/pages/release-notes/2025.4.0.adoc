@@ -21,6 +21,7 @@ package p1 {
 }
 ```
 - Fix a problem encountered during the import of a SysML textual file in a specific model configuration. The model incorrectly resolved the target of a `Redefinition` when a name conflict was detected.
+- Fix an issue that prevented the export functionality to correctly produce qualified name for elements referenced in `FeatureReferenceExpression`.
 
 == New features
 
