@@ -107,6 +107,15 @@ action a0 {
 }
 ```
 
+- Improve the import of guard on TransitionUsages. The import can now handle `OperatorExpression` such has in:
+
+```
+action a0 {
+    attribute attr1 : Real;
+    succession S first start if x < 0.0 then done;
+}
+```
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
