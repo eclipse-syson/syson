@@ -83,9 +83,21 @@ public class ASTTransformer {
                 this.astTreeParser.resolveAllReference(proxiedReferences);
                 this.logger.info("End of references resolving");
 
+                this.postResolvingFixingPhase(rootSysmlObjects);
             }
         }
         return result;
+    }
+
+    private void postResolvingFixingPhase(List<EObject> rootSysmlObjects) {
+        for (EObject root : rootSysmlObjects) {
+            this.fixTransitionUsageImplicitSource(root);
+        }
+    }
+
+    private void fixTransitionUsageImplicitSource(EObject root) {
+        List<TransitionUsage> transitionUsages = EMFUtils.allContainedObjectOfType(root, TransitionUsage.class).toList();
+        this.fixImplicitTransitionSourceFeature(transitionUsages);
     }
 
     private void preResolvingFixingPhase(List<EObject> rootSysmlObjects) {
@@ -171,7 +183,7 @@ public class ASTTransformer {
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
                     EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
 
-                    Membership previousMembershipFeature = this.computePreviousFeatureMembership(suc);
+                    Membership previousMembershipFeature = this.computePreviousFeatureMembership(suc, m -> m.eClass() == SysmlPackage.eINSTANCE.getMembership());
                     if (previousMembershipFeature != null) {
                         // For implicit source that targets an element of the standard library, we need to keep a
                         // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
@@ -186,16 +198,39 @@ public class ASTTransformer {
                 });
     }
 
-    private Membership computePreviousFeatureMembership(SuccessionAsUsage successionAsUsage) {
-        Type owningType = successionAsUsage.getOwningType();
+    private void fixImplicitTransitionSourceFeature(List<TransitionUsage> transitionUsages) {
+        transitionUsages.stream().filter(this::hasImplicitSourceFeature)
+                .forEach(transition -> {
+                    // The specification define the computation of the sourceFeature of TransitionUsage by:
+                    // Return the Feature to be used as the source of the succession of this TransitionUsage, which is
+                    // the first ownedMember of the TransitionUsage that is a Feature not owned via a FeatureMembership
+                    // whose featureTarget is an ActionUsage.
+                    // The current implementation of SysIDE providing the AST does create such element. This fix aims to
+                    // provide a workaround.
+                    Membership previousFeature = this.computePreviousFeatureMembership(transition, m -> this.isValidPreviousFeature(m));
+                    if (previousFeature != null && previousFeature.getMemberElement() instanceof ActionUsage actionUsage) {
+                        Membership membership = SysmlFactory.eINSTANCE.createMembership();
+                        membership.setMemberElement(actionUsage);
+                        transition.getOwnedRelationship().add(0, membership);
+                    }
+                });
+    }
+
+    private boolean isValidPreviousFeature(Membership m) {
+        Element memberElement = m.getMemberElement();
+        return memberElement instanceof ActionUsage && !(memberElement instanceof TransitionUsage);
+    }
+
+    private Membership computePreviousFeatureMembership(Feature testedFeature, java.util.function.Predicate<Membership> filter) {
+        Type owningType = testedFeature.getOwningType();
         if (owningType != null) {
             EList<Membership> ownedMemberships = owningType.getOwnedMembership();
-            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            int index = ownedMemberships.indexOf(testedFeature.getOwningMembership());
             if (index > 0) {
                 ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
                 while (iterator.hasPrevious()) {
                     Membership previous = iterator.previous();
-                    if (previous.getMemberElement() instanceof Feature) {
+                    if (previous.getMemberElement() instanceof Feature && (filter == null || filter.test(previous))) {
                         return previous;
                     }
                 }
@@ -231,6 +266,11 @@ public class ASTTransformer {
             return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
         }
         return false;
+    }
+
+    private boolean hasImplicitSourceFeature(TransitionUsage transitionUsage) {
+        ActionUsage source = transitionUsage.getSource();
+        return source == null;
     }
 
     private boolean hasImplicitTargetFeature(SuccessionAsUsage successionUsage) {

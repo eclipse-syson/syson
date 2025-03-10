@@ -312,7 +312,9 @@
             "unioningType": [],
             "chainingFeature": [],
             "endOwningType": null,
-            "featureTarget": null,
+            "featureTarget": {
+                "@id":"a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+            },
             "featuringType": [],
             "ownedFeatureChaining": [],
             "ownedFeatureInverting": [],

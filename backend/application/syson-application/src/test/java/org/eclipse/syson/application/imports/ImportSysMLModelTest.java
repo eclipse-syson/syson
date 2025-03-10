@@ -25,6 +25,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDo
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
@@ -34,7 +35,9 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
@@ -71,7 +74,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with duplicated names, when importing the model, then the resolution of name shoud match the closest matching element")
+    @DisplayName("Given a model with duplicated names, when importing the model, then the resolution of name should match the closest matching element")
     public void checkNameResolutionProcessWithDuplicatedName() throws IOException {
         var input = """
                 package p1 {
@@ -99,7 +102,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a Redefintion, when importing the model, then the resolution of name should special Redefinition rules")
+    @DisplayName("Given a model with a Redefintion, when importing the model, then the resolution of name should specialize Redefinition rules")
     public void checkNameResolutionProcessInRedifinition() throws IOException {
         var input = """
                 package p1 {
@@ -129,7 +132,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a reference to an invalid type, when importing the model then the resolution of name shoud not set a reference with an incompatible target")
+    @DisplayName("Given a model with a reference to an invalid type, when importing the model, then the resolution of name shoud not set a reference with an incompatible target")
     public void checkNameResolutionProcessWithInvalidTargetName() throws IOException {
         var input = """
                 package p1 {
@@ -156,7 +159,78 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with PortDefinitions, when importing the model, then a conjugated port is create for each conjugated ports")
+    @DisplayName("Given a model with a TransitionUsage, when importing the model, then a TransitionUsage should be created.")
+    public void checkSimpleTransitionUsage() throws IOException {
+        var input = """
+                action def A1 {
+                    private import ScalarValues::Integer;
+                    action a1 ;
+                    action a2 ;
+                    attribute x : Integer;
+                    succession S first a1 if x == 1 then a2;
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            TransitionUsage transitionUsage = EMFUtils.allContainedObjectOfType(resource, TransitionUsage.class)
+                    .filter(t -> "S".equals(t.getDeclaredName()))
+                    .findFirst().get();
+
+            ActionUsage source = transitionUsage.getSource();
+            assertThat(source).isNotNull().matches(s -> "a1".equals(s.getName()));
+            ActionUsage target = transitionUsage.getTarget();
+            assertThat(target).isNotNull().matches(t -> "a2".equals(t.getName()));
+
+            Succession succession = transitionUsage.getSuccession();
+            assertThat(succession).isNotNull();
+
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a model with TransitionUsage with an implicit source, when importing the model, then the implicit source should be correctly resolved.")
+    public void checkTransitionWithImplicitSource() throws IOException {
+        var input = """
+                   action def A1 {
+                    private import ScalarValues::Integer;
+                    attribute x : Integer;
+                    action a1;
+                    action a2;
+                    action a3;
+                    decide d;
+                        if x == 1 then a1;
+                        if x == 2 then a2;
+                        else a3;
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            List<TransitionUsage> transitionUsages = EMFUtils.allContainedObjectOfType(resource, TransitionUsage.class)
+                    .toList();
+
+            assertThat(transitionUsages).hasSize(3);
+
+            TransitionUsage t1 = transitionUsages.get(0);
+            ActionUsage source1 = t1.getSource();
+            assertThat(source1).isNotNull().matches(s -> "d".equals(s.getName()));
+            ActionUsage target1 = t1.getTarget();
+            assertThat(target1).isNotNull().matches(t -> "a1".equals(t.getName()));
+
+            TransitionUsage t2 = transitionUsages.get(1);
+            ActionUsage source2 = t2.getSource();
+            assertThat(source2).isNotNull().matches(s -> "d".equals(s.getName()));
+            ActionUsage target2 = t2.getTarget();
+            assertThat(target2).isNotNull().matches(t -> "a2".equals(t.getName()));
+
+            TransitionUsage t3 = transitionUsages.get(2);
+            ActionUsage source3 = t3.getSource();
+            assertThat(source3).isNotNull().matches(s -> "d".equals(s.getName()));
+            ActionUsage target3 = t3.getTarget();
+            assertThat(target3).isNotNull().matches(t -> "a3".equals(t.getName()));
+
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a model with PortDefinitions, when importing the model, then a conjugated port is created for each conjugated ports")
     public void checkConjugatedPortCreation() throws IOException {
         var input = """
                 package Conjugated {
@@ -171,7 +245,6 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         port tempPortConj : ~TempPort;
                     }
                 }""";
-
 
         this.checker.checkImportedModel(resource -> {
             PortDefinition tempPort = EMFUtils.allContainedObjectOfType(resource, PortDefinition.class)
