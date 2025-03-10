@@ -182,69 +182,6 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         return super.caseReferenceUsage(referenceUsage);
     }
 
-    /**
-     * Handle special case of {@link ReferenceUsage} inside the {@link EndFeatureMembership} of a
-     * {@link SuccessionAsUsage}.
-     *
-     * <p>
-     * The first two ReferenceUsage of a SuccessionAsUsage point to the source and target. If those ReferenceUsages do
-     * not explicitly define a {@link ReferenceSubsetting} then a {@link ReferenceSubsetting} is computed from the
-     * previous and next feature.
-     * </p>
-     *
-     * @param referenceUsage
-     *            the {@link ReferenceUsage} that might need modificationU
-     * @param parentSuccessionAsUsage
-     *            the parent element of the given {@link ReferenceUsage}
-     * @return a list of {@link Specialization}
-     */
-    private List<Specialization> handleReferenceUsageInSuccessionAsUsage(ReferenceUsage referenceUsage, SuccessionAsUsage parentSuccessionAsUsage) {
-        final List<Specialization> result;
-        // At this moment we only handle the case of implicit source since we haven't found a
-        // case where the target is implicit
-        int index = parentSuccessionAsUsage.getOwnedFeature().indexOf(referenceUsage);
-        boolean hasNoExpliciteSubsetting = this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty();
-        if (index == 0 && this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty()) {
-            // Source feature
-            // Add a reference ReferenceSubsetting to the previous feature
-            Feature sourceFeature = this.computeSourceFeature(parentSuccessionAsUsage);
-            result = List.of(this.implicitReferenceSubsetting(referenceUsage, sourceFeature));
-        } else if (index == 1 && hasNoExpliciteSubsetting) {
-            // Target feature
-            // Add a reference ReferenceSubsetting to the next feature
-            Feature targetFeature = this.computeTargetFeature(parentSuccessionAsUsage);
-            result = List.of(this.implicitReferenceSubsetting(referenceUsage, targetFeature));
-        } else {
-            result = List.of();
-        }
-        return result;
-    }
-
-    private <T extends Relationship> List<T> getOwnedRelations(Class<T> type, Element parent) {
-        return parent.getOwnedRelationship().stream()
-                .filter(type::isInstance)
-                .map(type::cast)
-                .toList();
-    }
-
-    private Feature computeSourceFeature(SuccessionAsUsage successionAsUsage) {
-        Type owningType = successionAsUsage.getOwningType();
-        if (owningType != null) {
-            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
-            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
-            if (index > 0) {
-                ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
-                while (iterator.hasPrevious()) {
-                    Membership previous = iterator.previous();
-                    if (previous.getMemberElement() instanceof Feature feature) {
-                        return feature;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     @Override
     public List<Specialization> caseActionDefinition(ActionDefinition object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
@@ -1442,9 +1379,77 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         return null;
     }
 
+    /**
+     * Handle special case of {@link ReferenceUsage} inside the {@link EndFeatureMembership} of a
+     * {@link SuccessionAsUsage}.
+     *
+     * <p>
+     * The first two ReferenceUsage of a SuccessionAsUsage point to the source and target. If those ReferenceUsages do
+     * not explicitly define a {@link ReferenceSubsetting} then a {@link ReferenceSubsetting} is computed from the
+     * previous and next feature.
+     * </p>
+     *
+     * @param referenceUsage
+     *            the {@link ReferenceUsage} that might need modificationU
+     * @param parentSuccessionAsUsage
+     *            the parent element of the given {@link ReferenceUsage}
+     * @return a list of {@link Specialization}
+     */
+    private List<Specialization> handleReferenceUsageInSuccessionAsUsage(ReferenceUsage referenceUsage, SuccessionAsUsage parentSuccessionAsUsage) {
+        final List<Specialization> result;
+        // At this moment we only handle the case of implicit source since we haven't found a
+        // case where the target is implicit
+        int index = parentSuccessionAsUsage.getOwnedFeature().indexOf(referenceUsage);
+        boolean hasNoExpliciteSubsetting = this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty();
+        if (index == 0 && this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty()) {
+            // Source feature
+            // Add a reference ReferenceSubsetting to the previous feature
+            Feature sourceFeature = this.computeSourceFeature(parentSuccessionAsUsage);
+            result = List.of(this.implicitReferenceSubsetting(referenceUsage, sourceFeature));
+        } else if (index == 1 && hasNoExpliciteSubsetting) {
+            // Target feature
+            // Add a reference ReferenceSubsetting to the next feature
+            Feature targetFeature = this.computeTargetFeature(parentSuccessionAsUsage);
+            result = List.of(this.implicitReferenceSubsetting(referenceUsage, targetFeature));
+        } else {
+            result = List.of();
+        }
+        return result;
+    }
+
+    private <T extends Relationship> List<T> getOwnedRelations(Class<T> type, Element parent) {
+        return parent.getOwnedRelationship().stream()
+                .filter(type::isInstance)
+                .map(type::cast)
+                .toList();
+    }
+
+    private Feature computeSourceFeature(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
+            return transitionUsage.getSource();
+        }
+        if (owningType != null) {
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
+                while (iterator.hasPrevious()) {
+                    Membership previous = iterator.previous();
+                    if (previous.getMemberElement() instanceof Feature feature) {
+                        return feature;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private Feature computeTargetFeature(SuccessionAsUsage successionAsUsage) {
         Type owningType = successionAsUsage.getOwningType();
-        if (owningType != null) {
+        if (owningType instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
+            return transitionUsage.getTarget();
+        } else if (owningType != null) {
             EList<Membership> ownedMemberships = owningType.getOwnedMembership();
             int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
             if (index > 0 && ownedMemberships.size() > index) {

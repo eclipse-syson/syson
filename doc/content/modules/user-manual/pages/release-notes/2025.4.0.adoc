@@ -87,6 +87,26 @@ action def ActionDef1 {
 ```
 - Improve `PortDefinition` textual import by creating the required `ConjugatedPort` during the import process.
 
+- Improve textual import of `TransitionUsage` by handling _implicit_ source property.
+In the following example, the source of outgoing `TransitionUsages` of the `DecisionNode` are now properly resolved.
+
+```
+action a0 {
+    private import ScalarValues::*;
+    action a1;
+    action a2;
+    action a3;
+    action a4;
+   
+    attribute attr1 : Real;
+    first a0 then d1;
+    decide d1;
+        if x >= 2 then a1; // Source is d1
+        if x >= 1 and x < 2 then a3; // Source is d1
+        else a4; // Source is d1
+}
+```
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
