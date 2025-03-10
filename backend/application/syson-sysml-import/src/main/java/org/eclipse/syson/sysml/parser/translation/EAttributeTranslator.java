@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
 
 /**
  * Transforms a feature name and value in the AST in an EAttribute with a value that can be set in SysON metamodel.
@@ -120,7 +121,11 @@ public class EAttributeTranslator {
         if (astValue.isTextual() || astValue.isNumber()) {
             String cleanedValue = this.asCleanedText(astValue);
             EDataType eAttributeType = attr.getEAttributeType();
-            result = eAttributeType.getEPackage().getEFactoryInstance().createFromString(eAttributeType, cleanedValue);
+            if (this.isSpecialEnum(eAttributeType)) {
+                result = this.convertSpecialEnumLiteral(eAttributeType, cleanedValue);
+            } else {
+                result = eAttributeType.getEPackage().getEFactoryInstance().createFromString(eAttributeType, cleanedValue);
+            }
         } else if (astValue.isBoolean()) {
             result = astValue.asBoolean();
         } else {
@@ -128,6 +133,34 @@ public class EAttributeTranslator {
         }
         return result;
 
+    }
+
+    private boolean isSpecialEnum(EDataType dataType) {
+        return dataType == SysmlPackage.eINSTANCE.getTransitionFeatureKind();
+    }
+
+    private Object convertSpecialEnumLiteral(EDataType dataType, String aValue) {
+        final Object customValue;
+        if (dataType == SysmlPackage.eINSTANCE.getTransitionFeatureKind()) {
+            customValue = this.convertTransitionFeatureKind(aValue);
+        } else {
+            customValue = null;
+        }
+        return customValue;
+    }
+
+    private TransitionFeatureKind convertTransitionFeatureKind(String aValue) {
+        if (aValue != null) {
+            return switch (aValue) {
+                case "if" -> TransitionFeatureKind.GUARD;
+                default -> {
+                    // Fallback on default case
+                    // The other SysIDE inputs are not identified yet
+                    yield (TransitionFeatureKind) SysmlPackage.eINSTANCE.getEFactoryInstance().createFromString(SysmlPackage.eINSTANCE.getTransitionFeatureKind(), aValue);
+                }
+            };
+        }
+        return null;
     }
 
     /**

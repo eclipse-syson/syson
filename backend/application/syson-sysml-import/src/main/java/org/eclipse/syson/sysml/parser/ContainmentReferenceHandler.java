@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,14 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.InvocationExpression;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.parser.translation.EReferenceComputer;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
@@ -90,9 +97,26 @@ public class ContainmentReferenceHandler {
     }
 
     private boolean addChildIn(final EObject owner, final EObject owned, String referenceName) {
-        Optional<EReference> optContainementReference = this.referenceTranslator.getContainmentReference(owner, owned.eClass(), referenceName);
-        if (optContainementReference.isPresent()) {
-            this.setValue(owner, optContainementReference.get(), owned);
+
+        if ("operands".equals(referenceName) && owned instanceof Expression ownedExpression && owner instanceof InvocationExpression invocationExpression) {
+            // In this special case, we are handling parameters of an InvocationExpression
+            // The current implementation of sysIDe returns in the "operands" list directly the ValueExpression of the
+            // parameter. The specification requires here a ParameterMembership holding a Feature with a FeatureValue
+            // holding the given expression.
+            ParameterMembership paramMembership = SysmlFactory.eINSTANCE.createParameterMembership();
+            Feature feature = SysmlFactory.eINSTANCE.createFeature();
+            feature.setDirection(FeatureDirectionKind.IN);
+            paramMembership.getOwnedRelatedElement().add(feature);
+            FeatureValue featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
+            feature.getOwnedRelationship().add(featureValue);
+            featureValue.getOwnedRelatedElement().add(ownedExpression);
+            invocationExpression.getOwnedRelationship().add(paramMembership);
+        } else {
+
+            Optional<EReference> optContainementReference = this.referenceTranslator.getContainmentReference(owner, owned.eClass(), referenceName);
+            if (optContainementReference.isPresent()) {
+                this.setValue(owner, optContainementReference.get(), owned);
+            }
         }
 
         // Some relationship should set their source feature set with their container value. For the moment only the one

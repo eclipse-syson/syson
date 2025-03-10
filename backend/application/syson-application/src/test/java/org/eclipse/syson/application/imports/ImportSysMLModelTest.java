@@ -27,8 +27,12 @@ import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
@@ -198,7 +202,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     action a3;
                     decide d;
                         if x == 1 then a1;
-                        if x == 2 then a2;
+                        if 2 > x then a2;
                         else a3;
                 }""";
 
@@ -214,17 +218,24 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             ActionUsage target1 = t1.getTarget();
             assertThat(target1).isNotNull().matches(t -> "a1".equals(t.getName()));
 
+            this.assertOperatorExpressionGuard(t1, "==", FeatureReferenceExpression.class, LiteralInteger.class);
+
             TransitionUsage t2 = transitionUsages.get(1);
             ActionUsage source2 = t2.getSource();
             assertThat(source2).isNotNull().matches(s -> "d".equals(s.getName()));
             ActionUsage target2 = t2.getTarget();
             assertThat(target2).isNotNull().matches(t -> "a2".equals(t.getName()));
 
+            this.assertOperatorExpressionGuard(t2, ">", LiteralInteger.class, FeatureReferenceExpression.class);
+
             TransitionUsage t3 = transitionUsages.get(2);
             ActionUsage source3 = t3.getSource();
             assertThat(source3).isNotNull().matches(s -> "d".equals(s.getName()));
             ActionUsage target3 = t3.getTarget();
             assertThat(target3).isNotNull().matches(t -> "a3".equals(t.getName()));
+
+            EList<Expression> guardExpression3 = t3.getGuardExpression();
+            assertThat(guardExpression3).isEmpty();
 
         }).check(input);
     }
@@ -355,5 +366,24 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(startMemberships).isEmpty();
 
         }).check(input);
+    }
+    
+    private void assertOperatorExpressionGuard(TransitionUsage t1, String expectedOperator, Class<?> expectedFirstParameterType, Class<?> expectedSecondParameterType) {
+        EList<Expression> guardExpression1 = t1.getGuardExpression();
+        assertThat(guardExpression1).hasSize(1);
+
+        Expression guard = guardExpression1.get(0);
+        assertThat(guard).isInstanceOf(OperatorExpression.class);
+
+        OperatorExpression operationExpression = (OperatorExpression) guard;
+
+        assertThat(operationExpression.getOperator()).isEqualTo(expectedOperator);
+
+        EList<Expression> arguments = operationExpression.getArgument();
+
+        assertThat(arguments).hasSize(2);
+
+        assertThat(arguments.get(0)).isInstanceOf(expectedFirstParameterType);
+        assertThat(arguments.get(1)).isInstanceOf(expectedSecondParameterType);
     }
 }

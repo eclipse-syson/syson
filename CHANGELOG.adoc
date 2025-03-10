@@ -40,6 +40,8 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 - https://github.com/eclipse-syson/syson/issues/1045[#1045] [export] Improve textual export by properly handle named `SuccessionAsUsage`.
 - https://github.com/eclipse-syson/syson/issues/1080[#1080] [import] Improve textual import and resolution against `ConjugatedPorts`.
 - https://github.com/eclipse-syson/syson/issues/1048[#1048] [import] Improve textual import of `TransitionUsage` by handling _implicit_ source property.
+- https://github.com/eclipse-syson/syson/issues/1094[#1094] [import] Improve textual import of `TransitionUsage` by handling guards.
+
 
 === New features
 
