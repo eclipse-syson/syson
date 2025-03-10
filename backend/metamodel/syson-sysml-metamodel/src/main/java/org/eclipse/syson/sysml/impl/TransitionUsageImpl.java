@@ -15,7 +15,6 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -23,9 +22,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Succession;
@@ -146,32 +145,19 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     }
 
     /**
-     * <!-- begin-user-doc -->
-     *
-     * <pre>
-     * {@code source =
-     *  if ownedMembership->isEmpty() then null else
-     *      let member : Element = ownedMembership->at(1).memberElement in
-     *      if not member.oclIsKindOf(ActionUsage) then null
-     *      else member.oclAsKindOf(ActionUsage)
-     *      endif
-     *  endif}
-     * </pre>
-     *
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     public ActionUsage basicGetSource() {
-        ActionUsage result = null;
-        Optional<Membership> membership = this.getOwnedMembership().stream().findFirst();
-        if (membership.isPresent()) {
-            Element memberElement = membership.get().getMemberElement();
-            if (memberElement instanceof ActionUsage actionUsage) {
-                result = actionUsage;
+        Feature sourceFeature = this.sourceFeature();
+        if (sourceFeature != null) {
+            Feature featureTarget = sourceFeature.getFeatureTarget();
+            if (featureTarget instanceof ActionUsage actionUsage) {
+                return actionUsage;
             }
         }
-        return result;
+        return null;
     }
 
     /**
@@ -197,7 +183,11 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
      * @generated NOT
      */
     public Succession basicGetSuccession() {
-        return this.getOwnedMember().stream().filter(Succession.class::isInstance).map(Succession.class::cast).findFirst().orElse(null);
+        return this.getOwnedMember().stream()
+                .filter(Succession.class::isInstance)
+                .map(Succession.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -270,15 +260,23 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Return the Feature to be used as the source of the succession of this TransitionUsage,
+     * which is the first ownedMember of the TransitionUsage that is a Feature not owned via a FeatureMembership whose
+     * featureTarget is an ActionUsage. <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Feature sourceFeature() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedMembership().stream()
+                .filter(m -> !(m instanceof FeatureMembership))
+                .map(Membership::getMemberElement)
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .map(Feature::getFeatureTarget)
+                .filter(ActionUsage.class::isInstance)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
