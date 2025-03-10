@@ -373,13 +373,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetFeatureTarget() {
-        // TODO: implement this method to return the 'Feature Target' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        var chainingFeature = this.getChainingFeature();
+        if (chainingFeature.isEmpty()) {
+            return this;
+        }
+        return chainingFeature.get(chainingFeature.size() - 1);
     }
 
     /**
