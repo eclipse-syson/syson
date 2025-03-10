@@ -80,15 +80,18 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->Return the required value of the direction of the ownedMemberParameter. By default, this
+     * is in. body: FeatureDirectionKind::_'in'<!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public FeatureDirectionKind parameterDirection() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        var memberParameter = this.getOwnedMemberParameter();
+        if (memberParameter != null) {
+            return memberParameter.getDirection();
+        }
+        return FeatureDirectionKind.IN;
     }
 
     /**
