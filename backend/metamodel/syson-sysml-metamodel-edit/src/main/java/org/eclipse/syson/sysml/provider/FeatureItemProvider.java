@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,9 +60,11 @@ public class FeatureItemProvider extends TypeItemProvider {
             this.addIsReadOnlyPropertyDescriptor(object);
             this.addIsUniquePropertyDescriptor(object);
             this.addChainingFeaturePropertyDescriptor(object);
+            this.addCrossFeaturePropertyDescriptor(object);
             this.addEndOwningTypePropertyDescriptor(object);
             this.addFeatureTargetPropertyDescriptor(object);
             this.addFeaturingTypePropertyDescriptor(object);
+            this.addOwnedCrossSubsettingPropertyDescriptor(object);
             this.addOwnedFeatureChainingPropertyDescriptor(object);
             this.addOwnedFeatureInvertingPropertyDescriptor(object);
             this.addOwnedRedefinitionPropertyDescriptor(object);
@@ -92,6 +94,25 @@ public class FeatureItemProvider extends TypeItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Cross Feature feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addCrossFeaturePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_crossFeature_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_crossFeature_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_CrossFeature(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));
@@ -168,6 +189,26 @@ public class FeatureItemProvider extends TypeItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Owned Cross Subsetting feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addOwnedCrossSubsettingPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_ownedCrossSubsetting_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_ownedCrossSubsetting_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_OwnedCrossSubsetting(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

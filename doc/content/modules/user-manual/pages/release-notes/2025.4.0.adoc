@@ -1,5 +1,12 @@
 = 2025.4.0 (work in progress)
 
+== Key highlights
+
+- *Model conformance to SysMLv2 Beta 2.4 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.4 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
+All existing models/projects in WysON will be automatically migrated to this new version.
+In any case, please download all your existing models/projects before upgrading to 2025.4.0 (as always).
+
+
 == Breaking changes
 
 - A `SuccessionUsage` now computes its _source_ and _target_ from the properties _sourceFeature_ and _targetFeature_.

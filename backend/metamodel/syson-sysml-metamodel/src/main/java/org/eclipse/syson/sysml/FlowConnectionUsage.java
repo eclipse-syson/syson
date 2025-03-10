@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface FlowConnectionUsage extends ConnectionUsage, ActionUsage, ItemFlow {
+public interface FlowConnectionUsage extends ConnectorAsUsage, ActionUsage, ItemFlow {
     /**
      * Returns the value of the '<em><b>Flow Connection Definition</b></em>' reference list. The list contents are of
      * type {@link org.eclipse.syson.sysml.Interaction}. <!-- begin-user-doc --> <!-- end-user-doc -->

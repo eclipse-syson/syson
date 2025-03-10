@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +37,12 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -179,7 +180,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMembers = this.inheritedMemberships(new BasicEList<>(), false);
+        EList<Membership> inheritedMembers = this.inheritedMemberships(new BasicEList<>(), new BasicEList<>(), false);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMembers.size(), inheritedMembers.toArray());
     }
 
@@ -187,8 +188,9 @@ public class UsageImpl extends FeatureImpl implements Usage {
      * @generated NOT
      */
     @Override
-    public EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied) {
-        return new MembershipComputer(this, excluded).inheritedMemberships();
+    public EList<Membership> inheritedMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied) {
+        // We should get rid of this custom implemenatation
+        return new MembershipComputer(this, excludedTypes).inheritedMemberships();
     }
 
     /**
@@ -198,8 +200,12 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Usage> getDirectedUsage() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_DirectedUsage(), data.size(), data.toArray());
+        List<Usage> directedUsages = new ArrayList<>();
+        this.getDirectedFeature().stream()
+                .filter(Usage.class::isInstance)
+                .map(Usage.class::cast)
+                .forEach(directedUsages::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_DirectedUsage(), directedUsages.size(), directedUsages.toArray());
     }
 
     /**
@@ -244,10 +250,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ActionUsage> getNestedAction() {
         List<ActionUsage> nestedActions = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ActionUsage.class::isInstance)
                 .map(ActionUsage.class::cast)
                 .forEach(nestedActions::add);
@@ -262,10 +265,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<AllocationUsage> getNestedAllocation() {
         List<AllocationUsage> nestedAllocations = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(AllocationUsage.class::isInstance)
                 .map(AllocationUsage.class::cast)
                 .forEach(nestedAllocations::add);
@@ -280,10 +280,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<AnalysisCaseUsage> getNestedAnalysisCase() {
         List<AnalysisCaseUsage> nestedAnalysisCases = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(AnalysisCaseUsage.class::isInstance)
                 .map(AnalysisCaseUsage.class::cast)
                 .forEach(nestedAnalysisCases::add);
@@ -298,10 +295,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<AttributeUsage> getNestedAttribute() {
         List<AttributeUsage> nestedAttributes = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(AttributeUsage.class::isInstance)
                 .map(AttributeUsage.class::cast)
                 .forEach(nestedAttributes::add);
@@ -316,10 +310,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<CalculationUsage> getNestedCalculation() {
         List<CalculationUsage> nestedCalculations = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(CalculationUsage.class::isInstance)
                 .map(CalculationUsage.class::cast)
                 .forEach(nestedCalculations::add);
@@ -334,10 +325,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<CaseUsage> getNestedCase() {
         List<CaseUsage> nestedCases = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(CaseUsage.class::isInstance)
                 .map(CaseUsage.class::cast)
                 .forEach(nestedCases::add);
@@ -352,10 +340,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ConcernUsage> getNestedConcern() {
         List<ConcernUsage> nestedConcerns = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ConcernUsage.class::isInstance)
                 .map(ConcernUsage.class::cast)
                 .forEach(nestedConcerns::add);
@@ -369,8 +354,12 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<ConnectorAsUsage> getNestedConnection() {
-        List<ConnectorAsUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_NestedConnection(), data.size(), data.toArray());
+        List<ConnectorAsUsage> nestedConnection = new ArrayList<>();
+        this.getNestedUsage().stream()
+                .filter(ConnectorAsUsage.class::isInstance)
+                .map(ConnectorAsUsage.class::cast)
+                .forEach(nestedConnection::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_NestedConnection(), nestedConnection.size(), nestedConnection.toArray());
     }
 
     /**
@@ -381,10 +370,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ConstraintUsage> getNestedConstraint() {
         List<ConstraintUsage> nestedConstraints = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ConstraintUsage.class::isInstance)
                 .map(ConstraintUsage.class::cast)
                 .forEach(nestedConstraints::add);
@@ -399,10 +385,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<EnumerationUsage> getNestedEnumeration() {
         List<EnumerationUsage> nestedEnumerations = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(EnumerationUsage.class::isInstance)
                 .map(EnumerationUsage.class::cast)
                 .forEach(nestedEnumerations::add);
@@ -417,10 +400,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<FlowConnectionUsage> getNestedFlow() {
         List<FlowConnectionUsage> nestedFlows = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(FlowConnectionUsage.class::isInstance)
                 .map(FlowConnectionUsage.class::cast)
                 .forEach(nestedFlows::add);
@@ -435,10 +415,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<InterfaceUsage> getNestedInterface() {
         List<InterfaceUsage> nestedInterfaces = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(InterfaceUsage.class::isInstance)
                 .map(InterfaceUsage.class::cast)
                 .forEach(nestedInterfaces::add);
@@ -453,10 +430,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ItemUsage> getNestedItem() {
         List<ItemUsage> nestedItems = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ItemUsage.class::isInstance)
                 .map(ItemUsage.class::cast)
                 .forEach(nestedItems::add);
@@ -471,10 +445,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<MetadataUsage> getNestedMetadata() {
         List<MetadataUsage> nestedMetadatas = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(MetadataUsage.class::isInstance)
                 .map(MetadataUsage.class::cast)
                 .forEach(nestedMetadatas::add);
@@ -489,10 +460,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<OccurrenceUsage> getNestedOccurrence() {
         List<OccurrenceUsage> nestedOccurences = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(OccurrenceUsage.class::isInstance)
                 .map(OccurrenceUsage.class::cast)
                 .forEach(nestedOccurences::add);
@@ -507,10 +475,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<PartUsage> getNestedPart() {
         List<PartUsage> nestedParts = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .forEach(nestedParts::add);
@@ -525,10 +490,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<PortUsage> getNestedPort() {
         List<PortUsage> nestedPorts = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(PortUsage.class::isInstance)
                 .map(PortUsage.class::cast)
                 .forEach(nestedPorts::add);
@@ -543,10 +505,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ReferenceUsage> getNestedReference() {
         List<ReferenceUsage> nestedReferences = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ReferenceUsage.class::isInstance)
                 .map(ReferenceUsage.class::cast)
                 .forEach(nestedReferences::add);
@@ -561,10 +520,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<RenderingUsage> getNestedRendering() {
         List<RenderingUsage> nestedRenderings = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(RenderingUsage.class::isInstance)
                 .map(RenderingUsage.class::cast)
                 .forEach(nestedRenderings::add);
@@ -579,10 +535,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<RequirementUsage> getNestedRequirement() {
         List<RequirementUsage> nestedRequirements = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(RequirementUsage.class::isInstance)
                 .map(RequirementUsage.class::cast)
                 .forEach(nestedRequirements::add);
@@ -597,10 +550,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<StateUsage> getNestedState() {
         List<StateUsage> nestedStates = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(StateUsage.class::isInstance)
                 .map(StateUsage.class::cast)
                 .forEach(nestedStates::add);
@@ -615,10 +565,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<TransitionUsage> getNestedTransition() {
         List<TransitionUsage> nestedTransitions = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(TransitionUsage.class::isInstance)
                 .map(TransitionUsage.class::cast)
                 .forEach(nestedTransitions::add);
@@ -633,10 +580,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<Usage> getNestedUsage() {
         List<Usage> nestedUsages = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getOwnedFeature().stream()
                 .filter(Usage.class::isInstance)
                 .map(Usage.class::cast)
                 .forEach(nestedUsages::add);
@@ -651,10 +595,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<UseCaseUsage> getNestedUseCase() {
         List<UseCaseUsage> nestedUseCases = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(UseCaseUsage.class::isInstance)
                 .map(UseCaseUsage.class::cast)
                 .forEach(nestedUseCases::add);
@@ -669,10 +610,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<VerificationCaseUsage> getNestedVerificationCase() {
         List<VerificationCaseUsage> nestedVerificationCases = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(VerificationCaseUsage.class::isInstance)
                 .map(VerificationCaseUsage.class::cast)
                 .forEach(nestedVerificationCases::add);
@@ -687,10 +625,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ViewUsage> getNestedView() {
         List<ViewUsage> nestedViews = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ViewUsage.class::isInstance)
                 .map(ViewUsage.class::cast)
                 .forEach(nestedViews::add);
@@ -705,10 +640,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public EList<ViewpointUsage> getNestedViewpoint() {
         List<ViewpointUsage> nestedViewpoints = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        this.getNestedUsage().stream()
                 .filter(ViewpointUsage.class::isInstance)
                 .map(ViewpointUsage.class::cast)
                 .forEach(nestedViewpoints::add);
@@ -791,8 +723,11 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Usage> getVariant() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_Variant(), data.size(), data.toArray());
+        List<Usage> variants = new ArrayList<>();
+        this.getVariantMembership().stream()
+                .map(VariantMembership::getOwnedVariantUsage)
+                .forEach(variants::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_Variant(), variants.size(), variants.toArray());
     }
 
     /**
@@ -802,8 +737,29 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<VariantMembership> getVariantMembership() {
-        List<VariantMembership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_VariantMembership(), data.size(), data.toArray());
+        List<VariantMembership> variantMemberships = new ArrayList<>();
+        this.getOwnedMembership().stream()
+                .filter(VariantMembership.class::isInstance)
+                .map(VariantMembership.class::cast)
+                .forEach(variantMemberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_VariantMembership(), variantMemberships.size(), variantMemberships.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature referencedFeatureTarget() {
+        var ownedReferenceSubsetting = this.getOwnedReferenceSubsetting();
+        if (ownedReferenceSubsetting != null) {
+            var referencedFeature = ownedReferenceSubsetting.getReferencedFeature();
+            if (referencedFeature != null) {
+                return referencedFeature.getFeatureTarget();
+            }
+        }
+        return null;
     }
 
     /**
@@ -1026,6 +982,20 @@ public class UsageImpl extends FeatureImpl implements Usage {
                 return !this.getVariantMembership().isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+        switch (operationID) {
+            case SysmlPackage.USAGE___REFERENCED_FEATURE_TARGET:
+                return this.referencedFeatureTarget();
+        }
+        return super.eInvoke(operationID, arguments);
     }
 
     /**

@@ -36,15 +36,6 @@
 			<id>Central</id>
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
-		<repository>
-			<id>github-sirius-emfjson</id>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
-		</repository>
-		<repository>
-			<id>github-sirius-web</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
