@@ -24,6 +24,8 @@
 
 * xref:user-manual:features/import-export-textual.adoc[]
 
+* xref:user-manual:features/publication.adoc[]
+
 * xref:user-manual:features/mbse-capability.adoc[]
 
 * xref:user-manual:features/requirement-management.adoc[]

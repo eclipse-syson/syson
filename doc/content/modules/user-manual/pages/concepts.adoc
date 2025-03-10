@@ -43,3 +43,25 @@ These visual depictions play a pivotal role in model-based systems engineering, 
 Each representation within {sysmlv2} contributes to building a holistic understanding of a system's architecture and design.
 
 xref:features/features.adoc[Explore features...]
+
+== Library
+
+In {product}, a *Library* is a read-only snapshot of a project that may be referenced by other projects or libraries.
+
+Published libraries have a _namespace_, _version_ and _description_.
+Once a library has been published, it cannot be unpublished.
+It is also not possible to overwrite an existing library.
+Several libraries may have the same name (and version) provided they are from different namespaces.
+
+The list of published libraries in {product} is available at `<baseUrl>/libraries/`.
+This page is also accessible from the 'help' menu in the top right corner of the application.
+
+image::release-notes-publication-libraries-menu.png[Libraries menu, width=85%,height=85%]
+
+This page lists all the libraries published in the application.
+
+image::release-notes-publication-libraries.png[Libraries, width=85%,height=85%]
+
+Opening a library displays it as a read-only project.
+
+image::release-notes-publication-library.png[Libraries, width=85%,height=85%]

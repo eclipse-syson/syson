@@ -103,6 +103,8 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1078[#1078] [publication] Add support for publishing the SysML contents of a project as a library.
+
 
 == v2025.2.0
 
