@@ -19,6 +19,11 @@ import '@mui/material/styles/styled';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { diagramPanelActionExtensionPoint, NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  GQLOmniboxCommand,
+  OmniboxCommandOverrideContribution,
+  omniboxCommandOverrideContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-omnibox';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
   ApolloClientOptionsConfigurer,
@@ -26,14 +31,13 @@ import {
   DiagramRepresentationConfiguration,
   footerExtensionPoint,
   navigationBarIconExtensionPoint,
-  navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
-  NavigationBarMenuItemProps,
   NodeTypeRegistry,
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
+  PublishProjectSysMLContentsAsLibraryCommand,
   SysMLImportedPackageNode,
   SysMLImportedPackageNodeConverter,
   SysMLImportedPackageNodeLayoutHandler,
@@ -54,10 +58,9 @@ import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtension
 import { SysONFooter } from './extensions/SysONFooter';
 import { SysONNavigationBarIcon } from './extensions/SysONNavigationBarIcon';
 import { SysONObjectTreeItemContextMenuContribution } from './extensions/SysONObjectTreeItemContextMenuContribution';
-import { sysonTheme } from './theme/sysonTheme';
-
 import './fonts.css';
 import './reset.css';
+import { sysonTheme } from './theme/sysonTheme';
 import './variables.css';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -74,6 +77,20 @@ extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
 extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
   identifier: `syson_${navigationBarMenuHelpURLExtensionPoint.identifier}`,
   data: 'https://doc.mbse-syson.org',
+});
+
+const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
+  {
+    canHandle: (action: GQLOmniboxCommand) => {
+      return action.id === 'publishProjectSysMLContentsAsLibrary';
+    },
+    component: PublishProjectSysMLContentsAsLibraryCommand,
+  },
+];
+
+extensionRegistry.putData<OmniboxCommandOverrideContribution[]>(omniboxCommandOverrideContributionExtensionPoint, {
+  identifier: `syson_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
+  data: omniboxCommandOverrides,
 });
 
 const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
@@ -115,17 +132,6 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 extensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
-});
-
-// Temporary hack to remove the Libraries menu
-// To remove when the libraries mechanism will be fully implemented in Sirius Web
-const HideLibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
-  return <></>;
-};
-
-extensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
-  Component: HideLibrariesButtonContribution,
 });
 
 /*

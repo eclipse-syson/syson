@@ -33,6 +33,39 @@ package p1 {
 
 == New features
 
+- The SysML contents of a project may now be published as a library.
+The command palette now contains a dedicated command to do so.
+
+image::release-notes-publication-command.png[Publication command, width=85%,height=85%]
+
+Note that it is only available for projects with documents containing SysML elements as their root contents.
+The publication process only publishes the SysML contents.
+
+image::release-notes-publication-model.png[Publication command, width=85%,height=85%]
+
+Upon selecting this command, a dialog prompts for the library information.
+
+image::release-notes-publication-dialog.png[Publication command dialog, width=85%,height=85%]
+
+When the publication is successful, a success notification appears.
+Otherwise, an error notification appears, e.g. when trying to publish a library in a version that already exists.
+
+image::release-notes-publication-success.png[Publication success notification, width=85%,height=85%]
+
+After publication, the library is listed in `<baseUrl>/libraries/`.
+This page is also accessible from the 'help' menu in the top right corner of the application.
+
+image::release-notes-publication-libraries-menu.png[Libraries menu, width=85%,height=85%]
+
+This page lists all the libraries published in the application.
+
+image::release-notes-publication-libraries.png[Libraries, width=85%,height=85%]
+
+Opening a library displays it as a read-only project.
+
+image::release-notes-publication-library.png[Libraries, width=85%,height=85%]
+
+
 == Improvements
 
 - Align metamodel to SysMLv2 2024-12 specification released on December 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML 2024-12 specification released on December 2024(see https://www.omg.org/spec/KerML/ for more details).

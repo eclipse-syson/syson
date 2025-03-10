@@ -1,0 +1,26 @@
+= Publication
+
+In {product}, the mechanism that allows users to turn a xref:user-manual:concepts.adoc#project[project] into a xref:user-manual:concepts.adoc#library[Library] is called *Publication*.
+Publishing libraries is the way to define dependencies between projects.
+
+By default, publishing a project can be done by using the dedicated command from the command palette.
+
+image::release-notes-publication-command.png[Publication command, width=85%,height=85%]
+
+Note that it is only available for projects with documents containing SysML elements as their root contents.
+The publication process only publishes the SysML contents.
+
+image::release-notes-publication-model.png[Publication command, width=85%,height=85%]
+
+Upon selecting this command, a dialog prompts for the library information.
+
+image::release-notes-publication-dialog.png[Publication command dialog, width=85%,height=85%]
+
+The project name will be used as the library name, and the project ID will be used as the library namespace.
+
+When the publication is successful, a success notification appears.
+Otherwise, an error notification appears, e.g. when trying to publish a library with a namespace, name and version that already exists.
+
+image::release-notes-publication-success.png[Publication success notification, width=85%,height=85%]
+
+After publication, the library is listed alongside xref:user-manual:concepts.adoc#library[the other published libraries].
