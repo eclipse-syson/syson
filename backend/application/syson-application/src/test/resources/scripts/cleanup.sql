@@ -1,6 +1,6 @@
-DELETE FROM library_dependency;
 DELETE FROM library;
 DELETE FROM document;
+DELETE FROM semantic_data_dependency;
 DELETE FROM semantic_data_domain;
 DELETE FROM semantic_data;
 DELETE FROM project_semantic_data;

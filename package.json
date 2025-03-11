@@ -25,6 +25,6 @@
     "format-lint": "turbo run format-lint"
   },
   "devDependencies": {
-    "turbo": "2.3.3"
+    "turbo": "2.4.4"
   }
 }
