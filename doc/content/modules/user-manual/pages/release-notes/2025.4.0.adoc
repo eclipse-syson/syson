@@ -120,7 +120,9 @@ action a0 {
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
-- Switch to Sirius Web 2025.2.1
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.2]
+- Switch to Turbo 2.4.4
+- Switch to @xyflow 12.4.4
 
 == Technical details
 
