@@ -273,8 +273,12 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
      */
     @Override
     public EList<Association> getAssociation() {
-        List<Association> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), data.size(), data.toArray());
+        List<Association> associations = new ArrayList<>();
+        this.getType().stream()
+                .filter(Association.class::isInstance)
+                .map(Association.class::cast)
+                .forEach(associations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), associations.size(), associations.toArray());
     }
 
     /**

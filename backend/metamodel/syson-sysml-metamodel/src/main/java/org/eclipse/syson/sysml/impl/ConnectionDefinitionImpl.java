@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.ConnectionDefinition;
@@ -267,8 +267,13 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Type> getRelatedType() {
-        List<ActionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_RelatedType(), data.size(), data.toArray());
+        List<Type> relatedTypes = new ArrayList<>();
+        this.getAssociationEnd().stream()
+                .map(Feature::getType)
+                .flatMap(List::stream)
+                .filter(Objects::nonNull)
+                .forEach(relatedTypes::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_RelatedType(), relatedTypes.size(), relatedTypes.toArray());
 
     }
 
@@ -286,12 +291,13 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Type basicGetSourceType() {
-        // TODO: implement this method to return the 'Source Type' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        var relatedTypes = this.getRelatedType();
+        if (!relatedTypes.isEmpty()) {
+            return relatedTypes.get(0);
+        }
         return null;
     }
 
@@ -302,8 +308,12 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Type> getTargetType() {
-        List<ActionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_TargetType(), data.size(), data.toArray());
+        List<Type> targetTypes = new ArrayList<>();
+        var relatedTypes = this.getRelatedType();
+        if (relatedTypes.size() >= 2) {
+            relatedTypes.subList(1, relatedTypes.size()).forEach(targetTypes::add);;
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_TargetType(), targetTypes.size(), targetTypes.toArray());
     }
 
     /**
@@ -629,5 +639,4 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
         }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_AssociationEnd(), associationEnds.size(), associationEnds.toArray());
     }
-
 } // ConnectionDefinitionImpl

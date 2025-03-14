@@ -320,10 +320,23 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public Membership resolveLocal(String name) {
+        // Standard implementation from the specification.
+        // We should use this implementation at some point.
+        // Namespace owningNamespace = this.getOwningNamespace();
+        // if (owningNamespace == null) {
+        // // If no parent namespace, global resolve
+        // return this.resolveGlobal(name);
+        // }
+        // // Try to resolve the Simple name in the current namespace
+        // return this.getMembership().stream()
+        // .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
+        // .findFirst()
+        // .orElse(owningNamespace.resolveLocal(name));
+
         // Try to resolve the simple name in the current namespace
         var membership = this.getMembership().stream()
-             .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
-             .findFirst();
+                .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
+                .findFirst();
 
         if (membership.isEmpty()) {
             Namespace owningNamespace = this.getOwningNamespace();
@@ -346,8 +359,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public Membership resolveVisible(String name) {
-        EList<Membership> memberships = this.visibleMemberships(new BasicEList<>(), false, false);
-
+        var memberships = this.visibleMemberships(new BasicEList<>(), false, false);
         return memberships.stream()
                 .filter(m -> Objects.equals(m.getMemberShortName(), name) || Objects.equals(m.getMemberName(), name))
                 .findFirst()
@@ -364,7 +376,6 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     @Override
     public String unqualifiedNameOf(String qualifiedName) {
         List<String> segments = NameHelper.parseQualifiedName(qualifiedName);
-
         if (segments.isEmpty()) {
             return null;
         } else {

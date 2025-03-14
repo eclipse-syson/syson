@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
@@ -137,13 +138,15 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public OccurrenceDefinition basicGetIndividualDefinition() {
-        // TODO: implement this method to return the 'Individual Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOccurrenceDefinition().stream()
+                .filter(OccurrenceDefinition.class::isInstance)
+                .map(OccurrenceDefinition.class::cast)
+                .filter(OccurrenceDefinition::isIsIndividual)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -177,8 +180,12 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public EList<org.eclipse.syson.sysml.Class> getOccurrenceDefinition() {
-        List<org.eclipse.syson.sysml.Class> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOccurrenceUsage_OccurrenceDefinition(), data.size(), data.toArray());
+        List<org.eclipse.syson.sysml.Class> occurrenceDefinitions = new ArrayList<>();
+        this.getType().stream()
+                .filter(org.eclipse.syson.sysml.Class.class::isInstance)
+                .map(org.eclipse.syson.sysml.Class.class::cast)
+                .forEach(occurrenceDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOccurrenceUsage_OccurrenceDefinition(), occurrenceDefinitions.size(), occurrenceDefinitions.toArray());
     }
 
     /**
@@ -240,8 +247,12 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public EList<Structure> getItemDefinition() {
-        List<Structure> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), data.size(), data.toArray());
+        List<Structure> itemDefinitions = new ArrayList<>();
+        this.getOccurrenceDefinition().stream()
+                .filter(Structure.class::isInstance)
+                .map(Structure.class::cast)
+                .forEach(itemDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), itemDefinitions.size(), itemDefinitions.toArray());
     }
 
     /**
@@ -251,8 +262,15 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public EList<PartDefinition> getPartDefinition() {
-        List<PartDefinition> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getPartUsage_PartDefinition(), data.size(), data.toArray());
+        List<PartDefinition> partDefinitions = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(PartDefinition.class::isInstance)
+                .map(PartDefinition.class::cast)
+                .forEach(partDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getPartUsage_PartDefinition(), partDefinitions.size(), partDefinitions.toArray());
     }
 
     /**
@@ -262,8 +280,12 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public EList<AssociationStructure> getConnectionDefinition() {
-        List<AssociationStructure> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionUsage_ConnectionDefinition(), data.size(), data.toArray());
+        List<AssociationStructure> connectionDefinitions = new ArrayList<>();
+        this.getType().stream()
+                .filter(AssociationStructure.class::isInstance)
+                .map(AssociationStructure.class::cast)
+                .forEach(connectionDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionUsage_ConnectionDefinition(), connectionDefinitions.size(), connectionDefinitions.toArray());
     }
 
     /**

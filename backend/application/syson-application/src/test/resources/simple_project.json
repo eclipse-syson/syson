@@ -350,7 +350,11 @@
                 "@id":"0a70220d-707e-4a88-84dc-6aa43aa97269"
             }
         ],
-        "itemDefinition": [],
+        "itemDefinition": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
         "partDefinition": [
             {
                 "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
