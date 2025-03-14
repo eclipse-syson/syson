@@ -178,6 +178,7 @@ action a0 {
     succession S first start if x < 0.0 then done;
 }
 ```
+- Implement `ConnectionDefinition` derived references and operations in SysON SysMLv2 metamodel.
 
 == Dependency update
 

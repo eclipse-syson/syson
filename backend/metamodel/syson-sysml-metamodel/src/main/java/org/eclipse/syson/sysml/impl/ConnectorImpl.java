@@ -37,7 +37,6 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Connector</b></em>'. <!-- end-user-doc -->
@@ -224,8 +223,12 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public EList<Association> getAssociation() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), data.size(), data.toArray());
+        List<Association> associations = new ArrayList<>();
+        this.getType().stream()
+                .filter(Association.class::isInstance)
+                .map(Association.class::cast)
+                .forEach(associations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), associations.size(), associations.toArray());
     }
 
     /**

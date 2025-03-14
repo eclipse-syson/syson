@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -61,8 +61,12 @@ public class ItemUsageImpl extends OccurrenceUsageImpl implements ItemUsage {
      */
     @Override
     public EList<Structure> getItemDefinition() {
-        List<Structure> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), data.size(), data.toArray());
+        List<Structure> itemDefinitions = new ArrayList<>();
+        this.getOccurrenceDefinition().stream()
+            .filter(Structure.class::isInstance)
+            .map(Structure.class::cast)
+            .forEach(itemDefinitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), itemDefinitions.size(), itemDefinitions.toArray());
     }
 
     /**
