@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.Objects;
 import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -40,6 +43,9 @@ import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.utils.Appender;
+import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
 
 /**
  * Label-related Java services used in diagrams.
@@ -272,7 +278,8 @@ public class ViewLabelService extends LabelService {
         walker.walk(listener, tree);
 
         // cleanup deleted elements on empty expression
-        TransitionFeatureKind.VALUES.stream()
+        // We do not handle guard at the moment
+        Stream.of(TransitionFeatureKind.TRIGGER, TransitionFeatureKind.EFFECT)
                 .filter(val -> !listener.getVisitedTransitionFeatures().get(val))
                 .forEach(val -> this.utilService.removeTransitionFeaturesOfSpecificKind(element, val));
 
@@ -280,46 +287,51 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Compute the label for a {@link TransitionUsage}.
+     * Computes the label for a {@link TransitionUsage}.
+     *
+     * @param transition
+     *            The {@link TransitionUsage} to compute the label for
+     * @param displayGuard
+     *            holds <code>true</code> to display the guard
+     */
+    public String getTransitionLabel(TransitionUsage transition, boolean displayGuard) {
+        Appender appender = new Appender(" ", " ");
+        EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
+        if (!triggerActions.isEmpty()) {
+            String triggerLabel = this.getTriggerActionsDefaultDirectEditLabel(triggerActions);
+            if (!triggerLabel.isBlank()) {
+                appender.append(triggerLabel);
+            }
+        }
+        if (displayGuard) {
+            EList<Expression> guardExpressions = transition.getGuardExpression();
+            if (!guardExpressions.isEmpty()) {
+                SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(" ", " ", new NameDeresolver(), null);
+                String textGuardExpression = guardExpressions.stream().map(sysmlSerializer::doSwitch)
+                        .filter(Objects::nonNull)
+                        .collect(joining(GUARD_EXPRESSION_SEPARATOR));
+                appender.appendWithSpaceIfNeeded("[").append(textGuardExpression).append("]");
+            }
+        }
+
+        EList<ActionUsage> effectActions = transition.getEffectAction();
+        if (!effectActions.isEmpty()) {
+            String effectLabel = this.getEffectActionsDefaultDirectEditLabel(effectActions);
+            if (!effectLabel.isBlank()) {
+                appender.appendWithSpaceIfNeeded("/ " + effectLabel);
+            }
+        }
+        return appender.toString();
+    }
+
+    /**
+     * Computes the label for a {@link TransitionUsage}.
      *
      * @param transition
      *            The {@link TransitionUsage} to compute the label for
      */
     public String getTransitionLabel(TransitionUsage transition) {
-        String triggerLabel = "";
-        String guardLabel = "";
-        String effectLabel = "";
-        String resultLabel = "";
-
-        EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
-        EList<Expression> guardExpressions = transition.getGuardExpression();
-        EList<ActionUsage> effectActions = transition.getEffectAction();
-
-        if (!triggerActions.isEmpty()) {
-            triggerLabel = this.getTriggerActionsDefaultDirectEditLabel(triggerActions);
-            if (!triggerLabel.isBlank()) {
-                resultLabel += triggerLabel;
-            }
-        }
-        if (!guardExpressions.isEmpty()) {
-            guardLabel = this.getGuardExpressionsDefaultDirectEditLabel(guardExpressions);
-            if (!guardLabel.isBlank()) {
-                if (!resultLabel.isBlank()) {
-                    resultLabel += " ";
-                }
-                resultLabel += "[" + guardLabel + "]";
-            }
-        }
-        if (!effectActions.isEmpty()) {
-            effectLabel = this.getEffectActionsDefaultDirectEditLabel(effectActions);
-            if (!effectLabel.isBlank()) {
-                if (!resultLabel.isBlank()) {
-                    resultLabel += " ";
-                }
-                resultLabel += "/ " + effectLabel;
-            }
-        }
-        return resultLabel;
+        return this.getTransitionLabel(transition, true);
     }
 
     private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {

@@ -50,6 +50,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.junit.jupiter.api.AfterEach;
@@ -143,6 +144,105 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             this.verifier.thenCancel()
                     .verify(Duration.ofSeconds(10));
         }
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given two ActionUsage,"
+            + "when using the 'New Transition' tool between them, "
+            + "then a TransitionUsage is created between the two actions")
+    public void createTransitionUsageBetweenSubActions() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID,
+                creationToolId));
+
+        String[] newTransitionUsageId = new String[1];
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1) // The TransitionUsage is displayed in the Action compartment
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            newTransitionUsageId[0] = newEdge.getTargetObjectId();
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
+            assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> newTransitionUsageId[0], transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID);
+        });
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given a TransitionUsage,"
+            + "when reconnecting the target, "
+            + "then the new target of the TransitionUsage is correct")
+    public void reconnectTransitionUsageTarget() {
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ReconnectEdgeKind.TARGET));
+
+        IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
+            assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+        });
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given a TransitionUsage,"
+            + "when reconnecting the source, "
+            + "then the new source of the TransitionUsage is correct")
+    public void reconnectTransitionUsageSource() {
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ReconnectEdgeKind.SOURCE));
+
+        IDiagramChecker diagramCheckerSource = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION3_ID);
+            assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramCheckerSource, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION3_ID);
+        });
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

@@ -139,7 +139,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.elementInitializer = new ElementInitializerSwitch();
         this.visitedTransitionFeatures = new HashMap<>();
         this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, false);
-        this.getVisitedTransitionFeatures().put(TransitionFeatureKind.GUARD, false);
         this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, false);
     }
 

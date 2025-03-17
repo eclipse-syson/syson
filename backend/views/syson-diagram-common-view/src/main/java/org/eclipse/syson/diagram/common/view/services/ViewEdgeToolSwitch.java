@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,6 +99,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseActionUsage(ActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
+        edgeTools.add(this.edgeToolService.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), this.getSuccessionEdgeTargets()));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -112,6 +113,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     private boolean isSuccessionTargetNodeDescription(NodeDescription nodeDesc) {
         boolean result = this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage());
         result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAssignmentActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPerformActionUsage());
         result = result || this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName());
         result = result || this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName());
         result = result || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
@@ -162,6 +165,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseControlNode(ControlNode object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
+        edgeTools.add(this.edgeToolService.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), this.getSuccessionEdgeTargets()));
         return edgeTools;
     }
 

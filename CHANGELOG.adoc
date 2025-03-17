@@ -64,6 +64,22 @@ All standard libraries have been updated to comply with the SysMLv2 2024-12 spec
 All validation rules have been updated to comply with the SysMLv2 2024-12 specification.
 - https://github.com/eclipse-syson/syson/issues/1030[#1030] [metamodel] The _source_ and _target_ features are no longer editable on all concepts inheriting from `ConnectorAsUsage`.
 
+- https://github.com/eclipse-syson/syson/issues/1093[#1093] [diagrams] Handle TransitionUsage between ActionUsages in diagrams :
+
+The `SysMLElementSerializer` is now used to display the guard expressions on the label of the `TransitionUsages`.
+To avoid creating a dependency to _syson-sysml-export_ from the modules holding the _View_ descriptions, all the code that converts a SysML model to its textual format has been moved to _syson-sysml-metamodel_.
+As a consequence the following classes have been moved from the package _org.eclipse.syson.sysml.export_ to _org.eclipse.syson.sysml.textual_:
+
+* _SysMLElementSerializer_
+* _Appender_
+* _NameDeresolver_
+* _Severity_
+* _Status_
+* _SysMLKeywordSwitch_
+* _SysMLRelationPredicates_
+
+All matching tests have also been moved.
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
@@ -100,6 +116,7 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 - https://github.com/eclipse-syson/syson/issues/1048[#1048] [import] Improve textual import of `TransitionUsage` by handling _implicit_ source property.
 - https://github.com/eclipse-syson/syson/issues/1094[#1094] [import] Improve textual import of `TransitionUsage` by handling guards.
 - https://github.com/eclipse-syson/syson/issues/1105[#1105] [metamodel] Implement `ConnectionDefinition` derived references and operations in SysON SysMLv2 metamodel.
+- https://github.com/eclipse-syson/syson/issues/1093[#1093] [general-view] Handle TransitionUsage in GeneralView diagram
 
 === New features
 
