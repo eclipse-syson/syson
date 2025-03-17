@@ -307,7 +307,7 @@ public class ViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectSourceTransitionEdge(TransitionUsage transition, ActionUsage newSource) {
-        if (!(newSource instanceof StateUsage) || !this.checkTransitionEdgeTarget(newSource, transition.getTarget())) {
+        if (!(newSource instanceof ActionUsage) || !this.checkTransitionEdgeTarget(newSource, transition.getTarget())) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new source for transition", MessageLevel.WARNING));
             return transition;
         }
@@ -346,7 +346,7 @@ public class ViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectTargetTransitionEdge(TransitionUsage transition, ActionUsage newTarget) {
-        if (!(newTarget instanceof StateUsage) || !this.checkTransitionEdgeTarget(transition.getSource(), newTarget)) {
+        if (!(newTarget instanceof ActionUsage) || !this.checkTransitionEdgeTarget(transition.getSource(), newTarget)) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new target for transition", MessageLevel.WARNING));
             return transition;
         }
@@ -387,6 +387,17 @@ public class ViewEdgeService {
         }
         boolean parentIsParallel = this.utilService.isParallelState(source.getOwner());
         return sameParent && !parentIsParallel;
+    }
+
+    /**
+     * Checks that if a given transition is targeting a {@link StateUsage}.
+     *
+     * @param transition
+     *            a transition
+     * @return <code>true</code> if targeting a {@link StateUsage}.
+     */
+    public boolean isTransitionUsageForState(TransitionUsage transition) {
+        return transition.getTarget() instanceof StateUsage;
     }
 
     private Optional<ActionUsage> getAction(Element element) {

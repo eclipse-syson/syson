@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
@@ -68,7 +69,6 @@ import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionP
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SuccessionEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActionItemNodeDescriptionProvider;

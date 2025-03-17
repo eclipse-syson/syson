@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -134,6 +135,9 @@ public class JavaServiceIsCalledChecker {
 
         EMFUtils.allContainedObjectOfType(diagramDescription, ConditionalNodeStyle.class)
                 .map(ConditionalNodeStyle::getCondition)
+                .forEach(expressions::add);
+        EMFUtils.allContainedObjectOfType(diagramDescription, ConditionalEdgeStyle.class)
+                .map(ConditionalEdgeStyle::getCondition)
                 .forEach(expressions::add);
 
         return expressions;

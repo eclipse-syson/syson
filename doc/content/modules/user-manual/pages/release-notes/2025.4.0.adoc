@@ -212,6 +212,8 @@ action a0 {
 }
 ```
 - Implement `ConnectionDefinition` derived references and operations in SysON SysMLv2 metamodel.
+- `TransitionUsages` can now be displayed and created in the _General View_ and _Action Flow_ diagrams.
+Be aware that the guard expressions are displayed in the label but *can't* be edited yet using the direct edit tool.
 
 == Dependency update
 
