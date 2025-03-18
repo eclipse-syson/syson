@@ -82,6 +82,29 @@ public class FeatureReferenceExpressionImpl extends ExpressionImpl implements Fe
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated NOT
+     */
+    @Override
+    public Feature getResult() {
+        /**
+         * <pre>
+         * Shortcut to implement the description found in 8.3.4.8.4 FeatureReferenceExpression:
+         *  "A FeatureReferenceExpression is an Expression whose result is bound to a referent Feature."
+         *
+         * The specification would normally requires that:
+         *   1. This element contains a ResultExpressionMembership (since FeaturReferenceMembership inherits that constraint from Expression)
+         *   2. Then a BindingConnector is added between the referent and the resource (see checkFeatureReferenceExpressionBindingConnector)
+         *   3. Then that bind connector would in some way make the Feature owned by the ResultExpressionMembership redefine the referent feature
+         *
+         * At the moment we do not understand properly how to implement the link between the BindingConnector and the implicit computation of the redefinition.
+         * </pre>
+         */
+        return this.getReferent();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override

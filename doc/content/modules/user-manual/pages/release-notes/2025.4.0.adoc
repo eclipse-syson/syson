@@ -215,6 +215,16 @@ action a0 {
 - `TransitionUsages` can now be displayed and created in the _General View_ and _Action Flow_ diagrams.
 Be aware that the guard expressions are displayed in the label but *can't* be edited yet using the direct edit tool.
 
+- Update Batmobile project example by fixing some of the issues found in the model:
+
+* Improvements on `SuccessionAsUsage` and `TransitionUsage`
+* Improvements of _General View_ diagram to be be able to represent the "Drive Batmobile" action definition.
+
+image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representation, width=85%,height=85%]
+
+WARNING: The representation of the "Done" `ActionUsage` should use a circle shape.
+This will be fixed in a future contribution. 
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].

@@ -72,7 +72,7 @@ describe('Diagram Panel in General View Tests', () => {
 
       it('The add existing elements (recursive) tool add elements recursively', () => {
         diagram.getNodes(diagramLabel, '«item def» Hero').should('exist');
-        diagram.getNodes(diagramLabel, '«ref item» power : Power').should('exist');
+        diagram.getNodes(diagramLabel, '«item» power : Power').should('exist');
       });
     });
   });

@@ -374,7 +374,12 @@ public class ViewToolService extends ToolService {
                 this.logAncestorError(element, targetElement);
             } else {
                 var optElementToDrop = Optional.ofNullable(element);
-                if (element instanceof Membership membership) {
+
+                if (this.utilService.isStandardDoneAction(element) || this.utilService.isStandardStartAction(element)) {
+                    // Special case of "start" and "done" action.
+                    // Those elements are represented in the diagram using a membership instead of the "real" element
+                    optElementToDrop = Optional.of(element);
+                } else if (element instanceof Membership membership) {
                     optElementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
                 }
                 if (optElementToDrop.isPresent()) {
@@ -571,15 +576,13 @@ public class ViewToolService extends ToolService {
             Usage usage = (Usage) parentElement;
             List<Element> children = new ArrayList<>();
             children.addAll(usage.getNestedUsage());
-            children.addAll(this.utilService.getAllStandardStartActions(usage));
-            children.addAll(this.utilService.getAllStandardDoneActions(usage));
+            children.addAll(this.utilService.collectSuccesionSourceAndTarget(usage));
             childElements = children;
         } else if (parentElement instanceof ActionDefinition || parentElement instanceof PartDefinition) {
             Definition definition = (Definition) parentElement;
             List<Element> children = new ArrayList<>();
             children.addAll(definition.getOwnedUsage());
-            children.addAll(this.utilService.getAllStandardStartActions(definition));
-            children.addAll(this.utilService.getAllStandardDoneActions(definition));
+            children.addAll(this.utilService.collectSuccesionSourceAndTarget(definition));
             childElements = children;
         } else if (parentElement instanceof Usage usage) {
             childElements = usage.getNestedUsage();
