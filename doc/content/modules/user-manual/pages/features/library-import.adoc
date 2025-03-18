@@ -1,0 +1,35 @@
+= Importing published libraries
+
+In {product}, published libraries may be imported by projects.
+
+To do so, use the dedicated command from the omnibox
+
+image::release-notes-publication-import-command.png[Import published library command, width=85%,height=85%]
+
+This command is available for any project, to import any library.
+
+Upon selecting this command, a dialog prompts for the libraries to import.
+
+image::release-notes-publication-import-dialog.png[Import published library command dialog, width=85%,height=85%]
+
+The import is done either *by reference* or *by copy*.
+With the former, a dependency is added from the project to the library, and the contents of the library are accessed in read-only mode.
+With the latter, a copy of the contents of the library are copied into the project, and they may be used and edited as if they had been manually created into the project. There is no link between the copied contents and the original library contents so there is no way to "re-synchronize" these contents (e.g. in case the library has a new version).
+
+image::release-notes-publication-import-choices.png[Import published library command dialog, width=85%,height=85%]
+
+Upon importing:
+  - If one of the selected libraries is already imported (same namespace, name and version) then it will not be imported a second time.
+  - Dependencies are re-loaded, which may trigger imported libraries to re-appear in the Explorer view if they had been manually removed.
+
+Upon a successful import, a notification appears in the bottom right corner.
+
+image::release-notes-publication-import-success.png[Import published library command success notification, width=85%,height=85%]
+
+The project contents are updated.
+
+image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=85%,height=85%]
+
+If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
+
+image::release-notes-publication-import-user-library.png.png[Imported published library under User libraries, width=85%,height=85%]

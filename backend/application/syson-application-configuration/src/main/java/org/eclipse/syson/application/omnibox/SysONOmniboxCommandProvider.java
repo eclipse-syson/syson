@@ -31,6 +31,8 @@ public class SysONOmniboxCommandProvider implements IOmniboxCommandProvider {
 
     public static final String PUBLISH_SYSML_PROJECT_COMMAND_ID = "publishProjectSysMLContentsAsLibrary";
 
+    public static final String IMPORT_PUBLISHED_LIBRARY_COMMAND_ID = "importPublishedLibrary";
+
     private final IPredicateCanEditingContextPublishSysMLProject predicateCanEditingContextPublishSysMLProject;
 
     public SysONOmniboxCommandProvider(final IPredicateCanEditingContextPublishSysMLProject predicateCanEditingContextPublishSysMLProject) {
@@ -45,6 +47,8 @@ public class SysONOmniboxCommandProvider implements IOmniboxCommandProvider {
             result.add(new OmniboxCommand(PUBLISH_SYSML_PROJECT_COMMAND_ID, "Publish SysML project contents as library", List.of("/images/omnibox/publish.svg"),
                     "Publishes the SysML contents of the project as a library that can be referenced by other projects."));
         }
+        result.add(new OmniboxCommand(IMPORT_PUBLISHED_LIBRARY_COMMAND_ID, "Import published library", List.of("/images/omnibox/import.svg"),
+                "Imports one of the published libraries."));
 
         return result;
     }

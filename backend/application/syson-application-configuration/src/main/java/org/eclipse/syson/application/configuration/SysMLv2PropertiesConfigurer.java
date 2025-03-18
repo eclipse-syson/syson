@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.syson.application.services.DetailsViewService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
@@ -108,12 +109,15 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final UtilService utilService;
 
+    private final ISysONResourceService sysONResourceService;
+
     public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            ILabelService labelService) {
+            ILabelService labelService, final ISysONResourceService sysONResourceService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
         this.utilService = new UtilService();
     }
 
@@ -134,7 +138,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         });
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService, this.utilService),
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(),
+                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.sysONResourceService), this.labelService, this.utilService),
                 List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {

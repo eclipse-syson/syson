@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.util.Objects;
+
 import org.eclipse.syson.services.api.ISysMLReadOnlyService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -26,6 +29,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysMLReadOnlyService implements ISysMLReadOnlyService {
+
+    private final ISysONResourceService sysONResourceService;
+
+    public SysMLReadOnlyService(final ISysONResourceService sysONResourceService) {
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+    }
 
     @Override
     public boolean isReadOnly(Element element) {
@@ -41,7 +50,7 @@ public class SysMLReadOnlyService implements ISysMLReadOnlyService {
 
     private boolean isReadOnlyLibraryElement(Element element) {
         return EMFUtils.getFirstAncestor(LibraryPackage.class, element, null)
-                .map(lib -> lib.isIsStandard() || ElementUtil.isImported(lib.eResource()))
+                .map(lib -> lib.isIsStandard() || this.sysONResourceService.isImported(lib.eResource()))
                 .orElse(false);
     }
 }
