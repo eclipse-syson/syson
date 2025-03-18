@@ -41,7 +41,7 @@ public class SysMLReadOnlyService implements ISysMLReadOnlyService {
 
     private boolean isReadOnlyLibraryElement(Element element) {
         return EMFUtils.getFirstAncestor(LibraryPackage.class, element, null)
-                .map(lib -> lib.isIsStandard() || ElementUtil.isImported(lib.eResource()))
+                .map(lib -> lib.isIsStandard() || SysONResourceService.isImported(lib.eResource()))
                 .orElse(false);
     }
 }

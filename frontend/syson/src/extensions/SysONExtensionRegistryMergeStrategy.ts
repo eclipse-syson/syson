@@ -16,6 +16,7 @@ import {
   DataExtension,
   ExtensionRegistryMergeStrategy,
 } from '@eclipse-sirius/sirius-components-core';
+import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
   apolloClientOptionsConfigurersExtensionPoint,
@@ -55,6 +56,9 @@ export class SysONExtensionRegistryMergeStrategy
     if (identifier === apolloClientOptionsConfigurersExtensionPoint.identifier) {
       return this.mergeApolloClientContributions(existingValues, newValues);
     }
+    if (identifier === omniboxCommandOverrideContributionExtensionPoint.identifier) {
+      return this.mergeOmniboxCommandOverrideContributions(existingValues, newValues);
+    }
     return newValues;
   }
 
@@ -65,6 +69,16 @@ export class SysONExtensionRegistryMergeStrategy
     return {
       identifier: 'syson_apolloClient#apolloClientOptionsConfigurers',
       data: [...existingApolloClientContributions.data, ...newApolloClientContributions.data],
+    };
+  }
+
+  private mergeOmniboxCommandOverrideContributions(
+    existingOmniboxCommandOverrideContributions: DataExtension<any>,
+    newOmniboxCommandOverrideContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: `syson_${omniboxCommandOverrideContributionExtensionPoint.identifier}_merged`,
+      data: [...existingOmniboxCommandOverrideContributions.data, ...newOmniboxCommandOverrideContributions.data],
     };
   }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.syson.services.SysONResourceService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -47,7 +48,7 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     @Override
     public boolean isUserLibrary(Object object) {
         return object instanceof Resource res
-                && ElementUtil.isImported(res)
+                && SysONResourceService.isImported(res)
                 && !new UtilService().getLibraries(res, false).isEmpty();
     }
 

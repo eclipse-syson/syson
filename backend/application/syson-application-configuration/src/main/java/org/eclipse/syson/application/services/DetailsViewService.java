@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.services.SysONResourceService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -170,7 +171,7 @@ public class DetailsViewService {
     }
 
     private boolean isImportedLibrary(Resource resource) {
-        return resource != null && ElementUtil.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
+        return resource != null && SysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
     }
 
     /**

@@ -26,6 +26,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.syson.services.SysONResourceService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
@@ -73,7 +74,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             siriusWebContext.getDomain().getResourceSet().getResources().stream()
                     .filter(r -> !this.filterService.isSysMLStandardLibrary(r))
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
-                    .filter(r -> !ElementUtil.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
+                    .filter(r -> !SysONResourceService.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), activeFilterIds)) {

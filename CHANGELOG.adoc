@@ -136,6 +136,7 @@ The importer can now import SysML files that contain `FeatureChainingExpression`
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/1078[#1078] [publication] Add support for publishing the SysML contents of a project as a library.
+- https://github.com/eclipse-syson/syson/issues/1109[#1109] [publication] Add support for importing published libraries as dependencies of a project.
 
 
 == v2025.2.0
