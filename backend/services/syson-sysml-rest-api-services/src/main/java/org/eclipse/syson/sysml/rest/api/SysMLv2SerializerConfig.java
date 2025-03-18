@@ -64,4 +64,8 @@ public class SysMLv2SerializerConfig implements ResponseBodyAdvice<Object> {
         this.converter.setObjectMapper(this.customObjectMapper);
         return body;
     }
+
+    public ObjectMapper getCustomObjectMapper() {
+        return this.customObjectMapper;
+    }
 }

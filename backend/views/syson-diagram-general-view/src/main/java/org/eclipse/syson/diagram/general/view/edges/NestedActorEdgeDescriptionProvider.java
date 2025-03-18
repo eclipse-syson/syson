@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,10 +66,10 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
                 .isDomainBasedEdge(false)
                 .name(this.edgeName)
                 .centerLabelExpression("")
-                .sourceNodesExpression(AQLConstants.AQL_SELF)
+                .sourceExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .build();
     }
 
@@ -83,8 +83,8 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
+        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+        edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
         edgeDescription.setPalette(this.createEdgePalette());
     }

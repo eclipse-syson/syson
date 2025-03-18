@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,10 +70,10 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
                 .centerLabelExpression("=")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceNodesExpression("aql:self.getSourcePort()")
+                .sourceExpression("aql:self.getSourcePort()")
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression("aql:self.getTargetPort()")
+                .targetExpression("aql:self.getTargetPort()")
                 .build();
     }
 
@@ -90,12 +90,12 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
                 && optItemUsageBorderNodeDescription.isPresent()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
-            edgeDescription.getSourceNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
+            edgeDescription.getSourceDescriptions().add(optRootPortUsageBorderNodeDescription.get());
+            edgeDescription.getSourceDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getSourceDescriptions().add(optItemUsageBorderNodeDescription.get());
+            edgeDescription.getTargetDescriptions().add(optRootPortUsageBorderNodeDescription.get());
+            edgeDescription.getTargetDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getTargetDescriptions().add(optItemUsageBorderNodeDescription.get());
             edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }
