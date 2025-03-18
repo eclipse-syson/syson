@@ -40,6 +40,7 @@ import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Annotation;
@@ -88,9 +89,12 @@ public class DetailsViewService {
 
     private final EEnumLiteral unsetEnumLiteral;
 
-    public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService) {
+    private final ISysONResourceService sysONResourceService;
+
+    public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService, final ISysONResourceService sysONResourceService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
         this.importService = new ImportService();
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
@@ -170,7 +174,7 @@ public class DetailsViewService {
     }
 
     private boolean isImportedLibrary(Resource resource) {
-        return resource != null && ElementUtil.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
+        return resource != null && this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
     }
 
     /**

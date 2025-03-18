@@ -13,6 +13,14 @@
 
 package org.eclipse.syson.tree.explorer.view.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -38,19 +46,13 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.syson.application.services.SysONResourceService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests the {@link SysONExplorerFilterService} class.
@@ -62,6 +64,8 @@ public class SysONDefaultExplorerServicesTest {
     private static EditingContext editingContext;
 
     private SysONDefaultExplorerServices sysONDefaultExplorerServices;
+    
+    private final ISysONResourceService sysONResourceService = new SysONResourceService();
 
     @BeforeAll
     static void createEditingContext() {
@@ -157,9 +161,9 @@ public class SysONDefaultExplorerServicesTest {
         };
         IExplorerServices explorerServices = new ExplorerServices(objectService, urlParser, representationImageProviders, representationMetadataSearchService, readOnlyObjectPredicate);
 
-        ISysONExplorerFilterService filterService = new SysONExplorerFilterService();
+        ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
-        sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService);
+        sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService, this.sysONResourceService);
     }
 
 }

@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +66,9 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
+
+    @Autowired
+    private ISysONResourceService sysONResourceService;
 
     @BeforeEach
     public void setUp() {
@@ -113,7 +117,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                     Optional<Resource> optResource = this.getResource(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
                     assertThat(optResource).isPresent();
                     Resource resource = optResource.get();
-                    assertThat(ElementUtil.isImported(resource)).isFalse();
+                    assertThat(this.sysONResourceService.isImported(resource)).isFalse();
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 }).run();
     }

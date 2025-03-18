@@ -30,6 +30,7 @@ import {
   apolloClientOptionsConfigurersExtensionPoint,
   DiagramRepresentationConfiguration,
   footerExtensionPoint,
+  ImportLibraryCommand,
   navigationBarIconExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
   NodeTypeRegistry,
@@ -85,6 +86,12 @@ const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
       return action.id === 'publishProjectSysMLContentsAsLibrary';
     },
     component: PublishProjectSysMLContentsAsLibraryCommand,
+  },
+  {
+    canHandle: (action: GQLOmniboxCommand) => {
+      return action.id === 'importPublishedLibrary';
+    },
+    component: ImportLibraryCommand,
   },
 ];
 

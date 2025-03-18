@@ -14,9 +14,11 @@ package org.eclipse.syson.tree.explorer.view.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -33,6 +35,12 @@ import org.springframework.stereotype.Service;
 public class SysONExplorerFilterService implements ISysONExplorerFilterService {
 
     private final UtilService utilService = new UtilService();
+    
+    private final ISysONResourceService sysONResourceService;
+    
+    public SysONExplorerFilterService(final ISysONResourceService sysONResourceService) {
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+    }
 
     @Override
     public boolean isKerMLStandardLibrary(Object object) {
@@ -47,7 +55,7 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     @Override
     public boolean isUserLibrary(Object object) {
         return object instanceof Resource res
-                && ElementUtil.isImported(res)
+                && this.sysONResourceService.isImported(res)
                 && !new UtilService().getLibraries(res, false).isEmpty();
     }
 

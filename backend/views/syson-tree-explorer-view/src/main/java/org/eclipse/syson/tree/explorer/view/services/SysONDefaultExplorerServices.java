@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -56,14 +57,17 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     private final ISysONExplorerFilterService filterService;
 
     private final UtilService utilService = new UtilService();
+    
+    private final ISysONResourceService sysONResourceService;
 
     public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
-            ISysONExplorerFilterService filterService) {
+            ISysONExplorerFilterService filterService, final ISysONResourceService sysONResourceService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.filterService = Objects.requireNonNull(filterService);
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
     }
 
     @Override
@@ -73,7 +77,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             siriusWebContext.getDomain().getResourceSet().getResources().stream()
                     .filter(r -> !this.filterService.isSysMLStandardLibrary(r))
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
-                    .filter(r -> !ElementUtil.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
+                    .filter(r -> !this.sysONResourceService.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), activeFilterIds)) {

@@ -19,6 +19,8 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.syson.application.services.SysONResourceService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -34,8 +36,10 @@ import org.junit.jupiter.api.Test;
  * @author gdaniel
  */
 public class SysONExplorerFilterServiceTest {
+    
+    private final ISysONResourceService sysONResourceService = new SysONResourceService();
 
-    private ISysONExplorerFilterService filterService = new SysONExplorerFilterService();
+    private ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
     private Resource.Factory resourceFactory = new JsonResourceFactoryImpl();
 

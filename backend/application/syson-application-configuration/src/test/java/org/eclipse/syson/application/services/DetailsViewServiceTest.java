@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -40,10 +41,12 @@ public class DetailsViewServiceTest {
 
     private DetailsViewService detailsViewService;
 
+    private final ISysONResourceService sysONResourceService = new SysONResourceService();
+
     @BeforeEach
     public void setUp() {
         // Use a dummy CompsedAdapterFactory, we don't test methods that require the one used by SysON for the moment.
-        this.detailsViewService = new DetailsViewService(new ComposedAdapterFactory(), new IFeedbackMessageService.NoOp());
+        this.detailsViewService = new DetailsViewService(new ComposedAdapterFactory(), new IFeedbackMessageService.NoOp(), this.sysONResourceService);
     }
 
     @Test
