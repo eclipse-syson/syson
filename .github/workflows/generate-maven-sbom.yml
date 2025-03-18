@@ -1,26 +1,29 @@
 name: Generate Maven SBOM
 
 on:
+  workflow_run:
+    workflows: [Continuous integration]
+    types: [completed]
   push:
-    branches: 
+    branches:
       - "main"
     paths:
-      - 'backend/application/**/pom.xml'
+      - "backend/application/**/pom.xml"
     tags:
       - "v*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version'
-        default: 'main'
+        description: "Version"
+        default: "main"
         required: true
 
 env:
-  JAVA_VERSION: '17'
-  JAVA_DISTRO: 'temurin'
-  PRODUCT_PATH: 'backend/application'
-  PLUGIN_VERSION: '2.7.8'
-  SBOM_TYPE: 'makeAggregateBom'
+  JAVA_VERSION: "17"
+  JAVA_DISTRO: "temurin"
+  PRODUCT_PATH: "backend/application"
+  PLUGIN_VERSION: "2.7.8"
+  SBOM_TYPE: "makeAggregateBom"
 
 permissions:
   contents: read
@@ -73,11 +76,11 @@ jobs:
           path: ${{ env.PRODUCT_PATH }}/target/bom.json
 
   store-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
-    needs: ['generate-sbom']
+    needs: ["generate-sbom"]
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
-      projectName: 'backend'
+      projectName: "backend"
       projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
-      bomArtifact: 'backend-sbom'
-      bomFilename: 'bom.json'
-      parentProject: '75152c84-655b-4618-b23c-e5d3c3b562ae'
+      bomArtifact: "backend-sbom"
+      bomFilename: "bom.json"
+      parentProject: "75152c84-655b-4618-b23c-e5d3c3b562ae"
