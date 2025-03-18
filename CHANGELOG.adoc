@@ -80,6 +80,12 @@ As a consequence the following classes have been moved from the package _org.ecl
 
 All matching tests have also been moved.
 
+- [rest-apis] Allow createCommit REST API to amend commit.
+`SysMLv2RestDataVersionPayloadSerializerService` has been deleted.
+There is no more need for a specific serializer for this `RestDataVersion#payload` attribute, because `RestDataVersion#payload` is now typed with a `Map<String, Object>` instead of `Object`.
+The `Map<String, Object>` is handled by the default serializer/deserializer.
+`RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
