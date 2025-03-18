@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,10 +78,10 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
                 .centerLabelExpression(LabelConstants.OPEN_QUOTE + "allocate" + LabelConstants.CLOSE_QUOTE)
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + ".getAllReachableAllocateEdges()")
-                .sourceNodesExpression(AQLConstants.AQL_SELF + ".getSourceAllocateEdge()")
+                .sourceExpression(AQLConstants.AQL_SELF + ".getSourceAllocateEdge()")
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + ".getTargetAllocateEdge()")
+                .targetExpression(AQLConstants.AQL_SELF + ".getTargetAllocateEdge()")
                 .build();
     }
 
@@ -91,8 +91,8 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
 
-        edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
-        edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
+        edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+        edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
 
         edgeDescription.setPalette(this.createEdgePalette());
     }

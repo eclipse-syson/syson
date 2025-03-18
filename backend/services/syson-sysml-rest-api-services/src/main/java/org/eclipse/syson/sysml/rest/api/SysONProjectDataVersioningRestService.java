@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.rest.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,12 +52,15 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
 
     private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
+    private final SysMLv2SerializerConfig sysMLv2SerializerConfig;
+
     public SysONProjectDataVersioningRestService(IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService, IIdentityService identityService,
-            SysONObjectRestService objectRestService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
+            SysONObjectRestService objectRestService, IProjectSemanticDataSearchService projectSemanticDataSearchService, SysMLv2SerializerConfig sysMLv2SerializerConfig) {
         this.defaultProjectDataVersioningRestService = Objects.requireNonNull(defaultProjectDataVersioningRestService);
         this.identityService = Objects.requireNonNull(identityService);
         this.objectRestService = Objects.requireNonNull(objectRestService);
         this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
+        this.sysMLv2SerializerConfig = Objects.requireNonNull(sysMLv2SerializerConfig);
     }
 
     @Override
@@ -68,8 +74,8 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     }
 
     @Override
-    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId) {
-        return null;
+    public RestCommit createCommit(IEditingContext editingContext, Optional<UUID> branchId, List<RestDataVersion> changes) {
+        return this.defaultProjectDataVersioningRestService.createCommit(editingContext, branchId, changes);
     }
 
     @Override
@@ -87,7 +93,9 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
             for (var element : elements) {
                 var elementId = this.identityService.getId(element);
                 var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
-                var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
+                Map<String, Object> elementAsMap = this.sysMLv2SerializerConfig.getCustomObjectMapper().convertValue(element, new TypeReference<>() {
+                });
+                var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), elementAsMap);
                 dataVersions.add(dataVersion);
             }
         }
@@ -105,7 +113,9 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
                 if (elementId != null) {
                     var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                     if (Objects.equals(changeId.toString(), computedChangeId.toString())) {
-                        dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
+                        Map<String, Object> elementAsMap = this.sysMLv2SerializerConfig.getCustomObjectMapper().convertValue(element, new TypeReference<>() {
+                        });
+                        dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), elementAsMap);
                         break;
                     }
                 }

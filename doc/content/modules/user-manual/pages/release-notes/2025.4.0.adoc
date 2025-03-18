@@ -218,9 +218,10 @@ Be aware that the guard expressions are displayed in the label but *can't* be ed
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.2]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.4]
 - Switch to Turbo 2.4.4
 - Switch to @xyflow 12.4.4
+- Switch to Sirius EMF-JSON 2.4.0
 
 == Technical details
 

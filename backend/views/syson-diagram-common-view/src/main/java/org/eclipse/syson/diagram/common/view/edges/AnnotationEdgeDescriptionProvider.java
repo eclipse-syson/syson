@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ public class AnnotationEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + ".annotatedElement")
+                .targetExpression(AQLConstants.AQL_SELF + ".annotatedElement")
                 .centerLabelExpression("")
                 .build();
     }
@@ -79,8 +79,8 @@ public class AnnotationEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                         .filter(nodeDescription -> !nodeDescription.getName().contains("Compartment"))
                         .toList());
 
-        edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetNodeDescriptions().addAll(targetNodes);
+        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+        edgeDescription.getTargetDescriptions().addAll(targetNodes);
 
         edgeDescription.setPalette(this.createEdgePalette());
     }

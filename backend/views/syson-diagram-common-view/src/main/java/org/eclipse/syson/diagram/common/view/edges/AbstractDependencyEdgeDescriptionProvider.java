@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,10 +79,10 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getDependencyLabel"))
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
+                .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
+                .targetExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
                 .build();
     }
 
@@ -92,8 +92,8 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
 
-        edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
-        edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
+        edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+        edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
 
         edgeDescription.setPalette(this.createEdgePalette());
     }

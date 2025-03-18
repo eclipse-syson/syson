@@ -75,11 +75,11 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .isDomainBasedEdge(false)
                 .centerLabelExpression(AQLConstants.AQL + "''") // Empty aql expression is necessary to allow direct edit on edge
                 .name(this.edgeName)
-                .sourceNodesExpression(AQLConstants.AQL_SELF)
+                .sourceExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .conditionalStyles(this.createReferenceConditionalEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
                         + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + "," + "cache"
                         + ")")
@@ -98,8 +98,8 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
+        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+        edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
         edgeDescription.setPalette(this.createEdgePalette());
     }

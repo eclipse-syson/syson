@@ -77,8 +77,8 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .sourceNodesExpression("aql:self.getSource()")
-                .targetNodesExpression("aql:self.getTarget()")
+                .sourceExpression("aql:self.getSource()")
+                .targetExpression("aql:self.getTarget()")
                 .build();
     }
 
@@ -86,8 +86,8 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession())).ifPresent(ed -> {
             diagramDescription.getEdgeDescriptions().add(ed);
-            ed.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
-            ed.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
+            ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+            ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
             ed.setPalette(this.createEdgePalette());
         });
     }

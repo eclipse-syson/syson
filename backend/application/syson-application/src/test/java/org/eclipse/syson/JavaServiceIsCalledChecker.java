@@ -203,10 +203,10 @@ public class JavaServiceIsCalledChecker {
         Optional.ofNullable(edgeDescription.getEndLabelExpression())
                 .map(expressions::add);
 
-        Optional.ofNullable(edgeDescription.getSourceNodesExpression())
+        Optional.ofNullable(edgeDescription.getSourceExpression())
                 .map(expressions::add);
 
-        Optional.ofNullable(edgeDescription.getTargetNodesExpression())
+        Optional.ofNullable(edgeDescription.getTargetExpression())
                 .map(expressions::add);
 
         Optional.ofNullable(edgeDescription.getPreconditionExpression())

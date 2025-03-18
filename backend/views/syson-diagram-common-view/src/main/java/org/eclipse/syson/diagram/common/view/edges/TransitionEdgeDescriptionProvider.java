@@ -74,8 +74,8 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getEdgeDescription(this.getEdgeDescriptionName()).ifPresent(ed -> {
             diagramDescription.getEdgeDescriptions().add(ed);
-            ed.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
-            ed.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
+            ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+            ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
             ed.setPalette(this.createEdgePalette());
         });
     }
@@ -89,11 +89,11 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getTransitionLabel"))
                 .name(this.getEdgeDescriptionName())
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
-                .sourceNodesExpression(AQLConstants.AQL_SELF + ".source")
+                .sourceExpression(AQLConstants.AQL_SELF + ".source")
                 .style(this.createDefaultEdgeStyle())
                 .conditionalStyles(this.createStateConditionalStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + ".target")
+                .targetExpression(AQLConstants.AQL_SELF + ".target")
                 .build();
     }
 

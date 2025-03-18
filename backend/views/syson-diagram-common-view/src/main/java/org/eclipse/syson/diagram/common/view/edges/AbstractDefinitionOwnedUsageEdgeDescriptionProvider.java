@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,10 +72,10 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
                 .isDomainBasedEdge(false)
                 .centerLabelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
                 .name(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
-                .sourceNodesExpression(AQLConstants.AQL_SELF)
+                .sourceExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
                         + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + "," + "cache" + ")")
                 .build();
@@ -93,8 +93,8 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
+        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+        edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
         edgeDescription.setPalette(this.createEdgePalette());
     }
