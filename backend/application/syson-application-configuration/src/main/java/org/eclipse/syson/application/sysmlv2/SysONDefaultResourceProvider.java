@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@
 package org.eclipse.syson.application.sysmlv2;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -80,7 +82,11 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
     @Override
     public void loadBatmobileResource(Resource resource) {
         try (var inputStream = new ClassPathResource("templates/Batmobile.json").getInputStream()) {
+            Instant start = Instant.now();
             resource.load(inputStream, null);
+            Instant finish = Instant.now();
+            long timeElapsed = Duration.between(start, finish).toMillis();
+            this.logger.info("Batmobile loaded in %sms".formatted(timeElapsed));
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }

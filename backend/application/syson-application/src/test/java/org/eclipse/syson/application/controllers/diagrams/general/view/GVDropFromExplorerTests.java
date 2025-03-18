@@ -38,6 +38,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
+import org.eclipse.syson.application.data.GeneralViewAddExistingElementsIdentifiers;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
@@ -116,12 +117,12 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM);
+                GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
+                GeneralViewAddExistingElementsIdentifiers.Diagram.ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
@@ -139,7 +140,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     @Test
     public void dropFromExplorerOnEmptyDiagram() {
         AtomicReference<String> semanticElementId = new AtomicReference<>();
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
                     semanticElementId.set(partUsageId);
@@ -154,7 +155,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             String emptyDiagramNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
             // Ensure the existing node is the "empty diagram" one.
             assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
-            this.dropFromExplorerTester.dropFromExplorerOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                     this.diagram,
                     semanticElementId.get());
         });
@@ -182,7 +183,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     @Test
     public void dropFromExplorerOnEmptyDiagramNode() {
         AtomicReference<String> semanticElementId = new AtomicReference<>();
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
                     semanticElementId.set(partUsageId);
@@ -197,7 +198,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             String emptyDiagramNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
             // Ensure the existing node is the "empty diagram" one.
             assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
-            this.dropFromExplorerTester.dropFromExplorer(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+            this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                     this.diagram,
                     emptyDiagramNode.getId(),
                     semanticElementId.get());
@@ -223,7 +224,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
 
     private String getSemanticElementWithTargetObjectLabel(IEditingContext editingContext, String targetObjectLabel) {
         Object semanticRootObject = this.objectSearchService.getObject(editingContext,
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM_OBJECT).orElse(null);
+                GeneralViewAddExistingElementsIdentifiers.Semantic.PACKAGE_1).orElse(null);
         assertThat(semanticRootObject).isInstanceOf(Package.class);
         Package rootPackage = (Package) semanticRootObject;
         Optional<Element> optPartUsage = rootPackage.getOwnedMember().stream().filter(m -> Objects.equals(m.getName(), targetObjectLabel)).findFirst();

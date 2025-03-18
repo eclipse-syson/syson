@@ -39,7 +39,6 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -94,57 +93,11 @@ public class ViewEdgeService {
     }
 
     public Element getSource(SuccessionAsUsage succession) {
-        Feature sourceFeature = succession.getSourceFeature();
-        String membershipAliasId = null;
-
-        EList<Feature> ends = succession.getConnectorEnd();
-        if (!ends.isEmpty()) {
-            Feature firstEnd = ends.get(0);
-            if (firstEnd instanceof ReferenceUsage refUsage) {
-                EList<String> aliasId = refUsage.getAliasIds();
-                if (!aliasId.isEmpty()) {
-                    membershipAliasId = aliasId.get(0);
-                }
-            }
-        }
-
-        if (membershipAliasId != null && sourceFeature != null) {
-            // Check for referencing membership
-            Membership membership = this.getReferencingMembershipWithId(sourceFeature, membershipAliasId);
-            if (membership != null) {
-                return membership;
-            }
-        }
-        return sourceFeature;
+        return this.utilService.getSource(succession);
     }
 
     public Element getTarget(SuccessionAsUsage succession) {
-        Feature targetFeature = null;
-        EList<Feature> targetFeatures = succession.getTargetFeature();
-        if (!targetFeatures.isEmpty()) {
-
-            targetFeature = targetFeatures.get(0);
-            String membershipAliasId = null;
-            EList<Feature> ends = succession.getConnectorEnd();
-            if (ends.size() > 1) {
-                Feature firstEnd = ends.get(1);
-                if (firstEnd instanceof ReferenceUsage refUsage) {
-                    EList<String> aliasId = refUsage.getAliasIds();
-                    if (!aliasId.isEmpty()) {
-                        membershipAliasId = aliasId.get(0);
-                    }
-                }
-            }
-
-            if (membershipAliasId != null) {
-                // Check for referencing membership
-                Membership membeship = this.getReferencingMembershipWithId(targetFeature, membershipAliasId);
-                if (membeship != null) {
-                    return membeship;
-                }
-            }
-        }
-        return targetFeature;
+        return this.utilService.getTarget(succession);
     }
 
     public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
@@ -234,22 +187,6 @@ public class ViewEdgeService {
         return result;
     }
 
-    /**
-     * Gets all memberships referencing the given feature with the specified id
-     *
-     * @param sourceFeature
-     *            the source feature
-     * @param membershipId
-     *            the id of the membership
-     * @return membership or <code>null</code> if not found
-     */
-    private Membership getReferencingMembershipWithId(Feature sourceFeature, String membershipId) {
-        return EMFUtils.getInverse(sourceFeature, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream()
-                .filter(setting -> setting.getEObject() instanceof Membership membership && membershipId.equals(membership.getElementId()))
-                .map(setting -> (Membership) setting.getEObject())
-                .findFirst()
-                .orElse(null);
-    }
 
     public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
         EList<Feature> ends = succession.getConnectorEnd();

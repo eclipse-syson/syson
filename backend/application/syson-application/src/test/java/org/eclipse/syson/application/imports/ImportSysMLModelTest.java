@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.Membership;
@@ -75,6 +76,30 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.checker = new SysMLv2SemanticImportChecker(this.sysmlResourceLoader, this.editingDomainFactory, this.sysMLEditingContextProcessor);
+    }
+
+    @Test
+    @DisplayName("Given a model with a FeatureChainExpression, when importing the model, then target feature should be resolved")
+    public void checkFeatureChainExpressionNameResolution() throws IOException {
+        var input = """
+                action def P1 {
+
+                    action def A2 {
+                        out pr2 : ScalarValues::Boolean;
+                    }
+
+                    action a2 : A2 {
+                         out pr2;
+                    }
+                    if a2.pr2 then a3;
+                    action a3 {}
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            FeatureChainExpression featureChaingExpression = EMFUtils.allContainedObjectOfType(resource, FeatureChainExpression.class)
+                    .findFirst().get();
+            assertThat(featureChaingExpression.getTargetFeature().getQualifiedName()).isEqualTo("P1::a2::pr2");
+
+        }).check(input);
     }
 
     @Test
@@ -367,7 +392,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
 
         }).check(input);
     }
-    
+
     private void assertOperatorExpressionGuard(TransitionUsage t1, String expectedOperator, Class<?> expectedFirstParameterType, Class<?> expectedSecondParameterType) {
         EList<Expression> guardExpression1 = t1.getGuardExpression();
         assertThat(guardExpression1).hasSize(1);

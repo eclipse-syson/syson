@@ -14,7 +14,9 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -29,6 +31,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataFeature;
 import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -78,23 +81,40 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
      */
     @Override
     public EList<Element> getAnnotatedElement() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), data.size(), data.toArray());
+        final List<Element> annotatedElements;
+
+        List<Annotation> annotations = this.getAnnotation();
+        if (annotations.isEmpty()) {
+            Element owningNamespace = this.getOwningNamespace();
+            if (owningNamespace != null) {
+                annotatedElements = Collections.singletonList(owningNamespace);
+            } else {
+                annotatedElements = Collections.emptyList();
+            }
+        } else {
+            annotatedElements = annotations.stream()
+                    .map(Annotation::getAnnotatedElement)
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
+
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), annotatedElements.size(), annotatedElements.toArray());
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Annotation> getAnnotation() {
-        // TODO: implement this method to return the 'Annotation' reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
-        // org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        return null;
+        List<Element> annotations = new ArrayList<>();
+        Annotation owningAnnotatingRelationship = this.getOwningAnnotatingRelationship();
+        if (owningAnnotatingRelationship != null) {
+            annotations.add(owningAnnotatingRelationship);
+        }
+        annotations.addAll(this.getOwnedAnnotatingRelationship());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_Annotation(), annotations.size(), annotations.toArray());
     }
 
     /**
@@ -123,12 +143,13 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Annotation basicGetOwningAnnotatingRelationship() {
-        // TODO: implement this method to return the 'Owning Annotating Relationship' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Relationship owningRelationship = this.getOwningRelationship();
+        if (owningRelationship instanceof Annotation annotation) {
+            return annotation;
+        }
         return null;
     }
 
