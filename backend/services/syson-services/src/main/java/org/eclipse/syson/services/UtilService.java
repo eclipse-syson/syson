@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -50,6 +51,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -57,6 +59,7 @@ import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
@@ -65,6 +68,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.AQLUtils;
@@ -319,6 +323,76 @@ public class UtilService {
         return result;
     }
 
+    /**
+     * Get the source of {@link SuccessionAsUsage} edge. It can be either the
+     * {@link SuccessionAsUsage#getSourceFeature()} or a special {@link Membership} representing an "imported" element.
+     * 
+     * @param succession
+     *            a {@link SuccessionAsUsage}
+     * @return a source {@link Element} or <code>null</code>.
+     */
+    public Element getSource(SuccessionAsUsage succession) {
+        Feature sourceFeature = succession.getSourceFeature();
+        String membershipAliasId = null;
+
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (!ends.isEmpty()) {
+            Feature firstEnd = ends.get(0);
+            if (firstEnd instanceof ReferenceUsage refUsage) {
+                EList<String> aliasId = refUsage.getAliasIds();
+                if (!aliasId.isEmpty()) {
+                    membershipAliasId = aliasId.get(0);
+                }
+            }
+        }
+
+        if (membershipAliasId != null && sourceFeature != null) {
+            // Check for referencing membership
+            Membership membership = this.getReferencingMembershipWithId(sourceFeature, membershipAliasId);
+            if (membership != null) {
+                return membership;
+            }
+        }
+        return sourceFeature;
+    }
+
+    /**
+     * Get the target of {@link SuccessionAsUsage} edge. It can be either the
+     * {@link SuccessionAsUsage#getTargetFeature()} or a special {@link Membership} representing an "imported" element.
+     * 
+     * @param succession
+     *            a {@link SuccessionAsUsage}
+     * @return a source {@link Element} or <code>null</code>.
+     */
+    public Element getTarget(SuccessionAsUsage succession) {
+        Feature targetFeature = null;
+        EList<Feature> targetFeatures = succession.getTargetFeature();
+        if (!targetFeatures.isEmpty()) {
+
+            targetFeature = targetFeatures.get(0);
+            String membershipAliasId = null;
+            EList<Feature> ends = succession.getConnectorEnd();
+            if (ends.size() > 1) {
+                Feature firstEnd = ends.get(1);
+                if (firstEnd instanceof ReferenceUsage refUsage) {
+                    EList<String> aliasId = refUsage.getAliasIds();
+                    if (!aliasId.isEmpty()) {
+                        membershipAliasId = aliasId.get(0);
+                    }
+                }
+            }
+
+            if (membershipAliasId != null) {
+                // Check for referencing membership
+                Membership membeship = this.getReferencingMembershipWithId(targetFeature, membershipAliasId);
+                if (membeship != null) {
+                    return membeship;
+                }
+            }
+        }
+        return targetFeature;
+    }
+
     public List<Membership> getAllStandardStartActions(Namespace self) {
         if (this.isPart(self) || this.isAction(self)) {
             return self.getOwnedRelationship().stream()
@@ -343,6 +417,34 @@ public class UtilService {
                     .toList();
         }
         return List.of();
+    }
+
+    /**
+     * Collects all the sources and targets of all {@link SuccessionAsUsage} contained in the given object.
+     * 
+     * @param self
+     *            the container
+     * @return a list of {@link Element}s
+     */
+    public List<Element> collectSuccesionSourceAndTarget(Namespace self) {
+        List<Element> result = new ArrayList<>();
+        if (self instanceof Type type) {
+            List<SuccessionAsUsage> successions = type.getOwnedFeature().stream()
+                    .filter(SuccessionAsUsage.class::isInstance)
+                    .map(SuccessionAsUsage.class::cast)
+                    .toList();
+            for (SuccessionAsUsage succession : successions) {
+                Element source = this.getSource(succession);
+                if (source != null) {
+                    result.add(source);
+                }
+                Element target = this.getTarget(succession);
+                if (target != null) {
+                    result.add(target);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -756,12 +858,12 @@ public class UtilService {
     }
 
     /**
-     * Return an instance of the actual {@link PartDefinition} associated to the given {@link PartUsage}.
-     * The type of the given parameter may be a subclass of {@link PartUsage}, in that case the method
-     * returns the definition associated to the actual instance type.
+     * Return an instance of the actual {@link PartDefinition} associated to the given {@link PartUsage}. The type of
+     * the given parameter may be a subclass of {@link PartUsage}, in that case the method returns the definition
+     * associated to the actual instance type.
      *
      * @param partUsage
-     *         an instance of PartUsage
+     *            an instance of PartUsage
      * @return an actual part definition instance associated to the given part usage.
      */
     public Definition createPartDefinitionFrom(PartUsage partUsage) {
@@ -769,11 +871,12 @@ public class UtilService {
     }
 
     /**
-     * Return the PartDefinition {@link EClass} corresponding to the given PartUsage.
-     * The type of the given parameter may be a subclass of {@link PartUsage},
-     * the method returns the {@link EClass} of the corresponding part definition.
+     * Return the PartDefinition {@link EClass} corresponding to the given PartUsage. The type of the given parameter
+     * may be a subclass of {@link PartUsage}, the method returns the {@link EClass} of the corresponding part
+     * definition.
      *
-     * @param partUsage a PartUsage instance
+     * @param partUsage
+     *            a PartUsage instance
      * @return the EClass of the PartDefinition associated to the given PartUsage.
      */
     public EClass getPartDefinitionEClassFrom(PartUsage partUsage) {
@@ -792,5 +895,22 @@ public class UtilService {
             result = SysmlPackage.eINSTANCE.getViewDefinition();
         }
         return result;
+    }
+
+    /**
+     * Gets all memberships referencing the given feature with the specified id
+     *
+     * @param sourceFeature
+     *            the source feature
+     * @param membershipId
+     *            the id of the membership
+     * @return membership or <code>null</code> if not found
+     */
+    private Membership getReferencingMembershipWithId(Feature sourceFeature, String membershipId) {
+        return EMFUtils.getInverse(sourceFeature, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream()
+                .filter(setting -> setting.getEObject() instanceof Membership membership && membershipId.equals(membership.getElementId()))
+                .map(setting -> (Membership) setting.getEObject())
+                .findFirst()
+                .orElse(null);
     }
 }

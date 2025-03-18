@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataFeature;
 import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -89,12 +90,13 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
      */
     @Override
     public EList<Annotation> getAnnotation() {
-        // TODO: implement this method to return the 'Annotation' reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and
-        // org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        return null;
+        List<Element> annotations = new ArrayList<>();
+        Annotation owningAnnotatingRelationship = this.getOwningAnnotatingRelationship();
+        if (owningAnnotatingRelationship != null) {
+            annotations.add(owningAnnotatingRelationship);
+        }
+        annotations.addAll(this.getOwnedAnnotatingRelationship());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_Annotation(), annotations.size(), annotations.toArray());
     }
 
     /**
@@ -123,12 +125,13 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Annotation basicGetOwningAnnotatingRelationship() {
-        // TODO: implement this method to return the 'Owning Annotating Relationship' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Relationship owningRelationship = this.getOwningRelationship();
+        if (owningRelationship instanceof Annotation annotation) {
+            return annotation;
+        }
         return null;
     }
 
