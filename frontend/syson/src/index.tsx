@@ -24,7 +24,12 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
-import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  TreeItemContextMenuEntry,
+  treeItemContextMenuEntryExtensionPoint,
+  treeItemContextMenuEntryOverrideExtensionPoint,
+  TreeItemContextMenuOverrideContribution,
+} from '@eclipse-sirius/sirius-components-trees';
 import {
   ApolloClientOptionsConfigurer,
   apolloClientOptionsConfigurersExtensionPoint,
@@ -35,6 +40,7 @@ import {
   navigationBarMenuHelpURLExtensionPoint,
   NodeTypeRegistry,
   SiriusWebApplication,
+  UpdateLibraryTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
@@ -139,6 +145,20 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 extensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
+});
+
+const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
+  {
+    canHandle: (entry: TreeItemContextMenuEntry) => {
+      return entry.id.includes('updateLibrary');
+    },
+    component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+];
+
+extensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(treeItemContextMenuEntryOverrideExtensionPoint, {
+  identifier: `syson_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
+  data: treeItemContextMenuOverrideContributions,
 });
 
 /*

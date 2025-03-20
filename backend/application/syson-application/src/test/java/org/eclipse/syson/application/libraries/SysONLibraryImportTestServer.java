@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.libraries.imports;
+package org.eclipse.syson.application.libraries;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,6 +18,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.eclipse.syson.application.libraries.imports.SySONLibraryImportTests;
+import org.eclipse.syson.application.libraries.update.SySONLibraryUpdateTests;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -26,6 +28,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
  * Annotation to setup the SysON server for testing the import of a published library.
  *
  * @see SySONLibraryImportTests
+ * @see SySONLibraryUpdateTests
  * @author flatombe
  */
 @Documented
