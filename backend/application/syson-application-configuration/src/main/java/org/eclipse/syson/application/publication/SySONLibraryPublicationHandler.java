@@ -129,7 +129,9 @@ public class SySONLibraryPublicationHandler implements ILibraryPublicationHandle
                 final EcoreUtil.Copier ecoreCopier = new EcoreUtil.Copier();
                 final List<Resource> standaloneResources = properSysMLRootContents.entrySet().stream().map(entry -> {
                     final String resourceName = this.getResourceName(entry.getKey());
-                    final String libraryResourceId = "%s:%s:%s:%s".formatted(libraryNamespace, libraryName, libraryVersion, resourceName);
+                    // Important: the library upgrade process will use the resource name as identity, so it should not
+                    // include the library version.
+                    final String libraryResourceId = "%s:%s:%s".formatted(libraryNamespace, libraryName, resourceName);
                     final Resource standaloneResource = this.createResource(this.getResourceName(entry.getKey()), libraryResourceId, ecoreCopier.copyAll(entry.getValue()));
                     return standaloneResource;
                 }).toList();

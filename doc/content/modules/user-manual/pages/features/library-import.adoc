@@ -33,3 +33,36 @@ image::release-notes-publication-import-result.png[Project contents after succes
 If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
 
 image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=85%,height=85%]
+
+
+== Updating the version of a library dependency
+
+The version of a published library used by a project may be updated.
+Since publish library versions are strings, there is no natural order on the versions of libraries.
+This means library versions have no particular "semantic meaning", so updating from one version to another version of a library may have very large or very small impacts.
+This is totally up to the library authors.
+
+Only libraries that have been imported-by-reference may be updated.
+Libraries imported-by-copy have no link to their originating library, and may not be updated automatically.
+
+To update a library, select in the Explorer view, a document from an imported-by-reference published library.
+These documents may be located at the root of the project, or under node `Libraries > User libraries`.
+
+Open the contextual menu to find the 'Update library' action.
+
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=85%,height=85%]
+
+Upon selecting this action, a dialog prompts for the new version of the library to use.
+
+image::release-notes-library-update-dialog.png[Dialog for the 'Update library' action, width=85%,height=85%]
+
+After the library update has been performed, if successful, a notification appears.
+
+image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=85%,height=85%]
+
+Updating a library means that the contents of the project are modified, possibly breaking some aspects of the project, so validation errors may occur as a consequence.
+Libraries may add, remove or edit their contents freely between versions, so there is no guarantees that two versions of a library are compatible or even somewhat resembling.
+This means projects may become invalid because some of the library elements it was built upon no longer exist, or their identity has changed.
+
+Library authors should note that the identity of a document is based on its namespace (ID of the authoring project from which the library is published) and its name.
+Renaming a document may thus result in breakages in cross-document references.

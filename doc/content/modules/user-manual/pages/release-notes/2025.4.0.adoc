@@ -100,6 +100,23 @@ If a document from an imported-by-reference library has a root element that is a
 image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=85%,height=85%]
 
 
+- Projects may now update the version of a published library they depend on.
+In the Explorer view, the contextual menu on documents from imported-by-reference published libraries now contains an entry to update the version of the library dependency.
+
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=85%,height=85%]
+
+Upon selecting this action, a dialog prompts for the new version of the library to use.
+
+image::release-notes-library-update-dialog.png[Dialog for the 'Update library' action, width=85%,height=85%]
+
+After the library update has been performed, if successful, a notification appears.
+
+image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=85%,height=85%]
+
+Updating a library means that the contents of the project are updated.
+Libraries may add, remove or edit their contents between versions.
+This means projects may become invalid because some of the library elements it was built upon no longer exist, or their identity has changed.
+
 
 == Improvements
 
