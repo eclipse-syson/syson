@@ -103,6 +103,38 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with a FeatureChainExpression containing an implicitly redefined parameter, when importing the mode, then the FeatureChaining are resolved")
+    public void checkFeatureChainExpressionWithImplicitParameterRedefinitionNameResolution() throws IOException {
+        var input = """
+                action def A1 {
+
+                    part def P1 {
+                        isValid : ScalarValues::Boolean;
+                    }
+
+                    action def A2 {
+                        out prA2 : P1;
+                    }
+
+                    action a2 : A2 {
+                        out pra2;
+                    }
+                    if a2.pra2.isValid then a3;
+                    action a3 {}
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            FeatureChainExpression featureChainExpression = EMFUtils.allContainedObjectOfType(resource, FeatureChainExpression.class)
+                    .findFirst()
+                    .get();
+            Feature targetFeature = featureChainExpression.getTargetFeature();
+            assertThat(targetFeature).isNotNull();
+            assertThat(targetFeature.getOwnedFeatureChaining()).hasSize(2);
+            assertThat(targetFeature.getOwnedFeatureChaining().get(0).getChainingFeature().getQualifiedName()).isEqualTo("A1::a2::pra2");
+            assertThat(targetFeature.getOwnedFeatureChaining().get(1).getChainingFeature().getQualifiedName()).isEqualTo("A1::P1::isValid");
+        }).check(input);
+    }
+
+    @Test
     @DisplayName("Given a model with duplicated names, when importing the model, then the resolution of name should match the closest matching element")
     public void checkNameResolutionProcessWithDuplicatedName() throws IOException {
         var input = """

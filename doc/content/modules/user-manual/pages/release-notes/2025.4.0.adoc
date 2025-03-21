@@ -226,6 +226,11 @@ WARNING: The representation of the "Done" `ActionUsage` should use a circle shap
 This will be fixed in a future contribution. 
 
 - The tool "Add Existing Elements" is now directly available from the Action Flow compartement in the General View Diagram.
+- Add support for implicit redefinition of `Behavior` and `Step` parameters
+Parameters of `Behavior` and `Step` now implicitly redefine the matching parameters of `Behavior` subclassifications and `Step` specializations.
+See KerML 7.4.7.2 and 7.4.7.3 for more information.
+These implicit redefinitions are not visible in the diagrams nor the explorer (like all the other implicit specializations).
+The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
 
 == Dependency update
 

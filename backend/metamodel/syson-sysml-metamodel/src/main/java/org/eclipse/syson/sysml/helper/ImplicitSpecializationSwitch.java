@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -30,6 +31,7 @@ import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.CalculationDefinition;
 import org.eclipse.syson.sysml.CalculationUsage;
 import org.eclipse.syson.sysml.CaseDefinition;
@@ -92,6 +94,7 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
@@ -113,6 +116,8 @@ import org.eclipse.syson.sysml.ViewpointUsage;
 import org.eclipse.syson.sysml.WhileLoopActionUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Switch allowing to compute implicit specializations for a given Element.
@@ -120,6 +125,8 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author arichard
  */
 public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specialization>> {
+
+    private final Logger logger = LoggerFactory.getLogger(ImplicitSpecializationSwitch.class);
 
     private final List<Specialization> existingSpecializations;
 
@@ -138,6 +145,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAcceptActionUsage(AcceptActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -168,18 +178,23 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> caseReferenceUsage(ReferenceUsage referenceUsage) {
-        final List<Specialization> result;
+        List<Specialization> result = new ArrayList<>();
+
         Type owningType = referenceUsage.getOwningType();
         if (owningType instanceof SuccessionAsUsage successionAsUsage) {
-            result = this.handleReferenceUsageInSuccessionAsUsage(referenceUsage, successionAsUsage);
+            result.addAll(this.handleReferenceUsageInSuccessionAsUsage(referenceUsage, successionAsUsage));
+        }
+
+        if (result.isEmpty()) {
+            // If not found check for super type cases
+            result = super.caseReferenceUsage(referenceUsage);
         } else {
-            result = List.of();
+            if (!this.hasRedefinition(referenceUsage)) {
+                result.addAll(this.handleImplicitParameterRedefinition(referenceUsage));
+            }
         }
-        if (!result.isEmpty()) {
-            return result;
-        }
-        // If not found check for super type cases
-        return super.caseReferenceUsage(referenceUsage);
+
+        return result;
     }
 
     @Override
@@ -198,6 +213,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseActionUsage(ActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         var implicitSubsettingElement = "Actions::actions";
         // A composite ActionUsage whose owningType is PartDefinition or PartUsage must directly or indirectly
         // specialize the ActionUsage Parts::Part::ownedActions from the Systems Model Library.
@@ -251,6 +269,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAllocationUsage(AllocationUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -277,6 +298,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAnalysisCaseUsage(AnalysisCaseUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -298,6 +322,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAssertConstraintUsage(AssertConstraintUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -318,6 +345,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAssignmentActionUsage(AssignmentActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -337,6 +367,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseAttributeUsage(AttributeUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -363,6 +396,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseCalculationUsage(CalculationUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -394,6 +430,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseCaseUsage(CaseUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -427,6 +466,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseConcernUsage(ConcernUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -467,6 +509,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseConnectionUsage(ConnectionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -499,6 +544,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseConstraintUsage(ConstraintUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -536,6 +584,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseControlNode(ControlNode object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -549,6 +600,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseDecisionNode(DecisionNode object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -561,8 +615,12 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> caseEventOccurrenceUsage(EventOccurrenceUsage object) {
+        List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
-            return List.of();
+            return implicitSpecializations;
         }
         // If an EventOccurrenceUsage has an owningType that is an OccurrenceDefinition or OccurrenceUsage, then it must
         // directly or indirectly specialize the Feature Occurrences::Occurrence::timeEnclosedOccurrences.
@@ -570,7 +628,8 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (owningType instanceof OccurrenceDefinition || owningType instanceof OccurrenceUsage) {
             var implicitSubsetting = this.implicitSubsetting(object, "Occurrences::Occurrence::timeEnclosedOccurrences");
             if (implicitSubsetting != null) {
-                return List.of(implicitSubsetting);
+                implicitSpecializations.add(implicitSubsetting);
+                return implicitSpecializations;
             }
         }
         return super.caseEventOccurrenceUsage(object);
@@ -578,8 +637,12 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> caseExhibitStateUsage(ExhibitStateUsage object) {
+        List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
-            return List.of();
+            return implicitSpecializations;
         }
         // If an ExhibitStateUsage has an owningType that is a PartDefinition or PartUsage, then it must directly or
         // indirectly specialize the StateUsage Parts::Part::exhibitedStates.
@@ -587,10 +650,20 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (owningType instanceof PartDefinition || owningType instanceof PartUsage) {
             var implicitSubsetting = this.implicitSubsetting(object, "Parts::Part::exhibitedStates");
             if (implicitSubsetting != null) {
-                return List.of(implicitSubsetting);
+                implicitSpecializations.add(implicitSubsetting);
+                return implicitSpecializations;
             }
         }
         return super.caseExhibitStateUsage(object);
+    }
+
+    @Override
+    public List<Specialization> caseFeature(Feature object) {
+        List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
+        return implicitSpecializations;
     }
 
     @Override
@@ -609,6 +682,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseFlowConnectionUsage(FlowConnectionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -628,6 +704,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseForkNode(ForkNode object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -641,6 +720,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseForLoopActionUsage(ForLoopActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -660,6 +742,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseIfActionUsage(IfActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -683,8 +768,12 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> caseIncludeUseCaseUsage(IncludeUseCaseUsage object) {
+        List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
-            return List.of();
+            return implicitSpecializations;
         }
         // A IncludeUseCaseUsage whose owningType is a UseCaseDefinition or UseCaseUsage must directly or indirectly
         // specialize the UseCaseUsage UseCases::UseCase::includedUseCases from the Systems Model Library.
@@ -692,7 +781,8 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (owningType instanceof UseCaseDefinition || owningType instanceof UseCaseUsage) {
             var implicitSubsetting = this.implicitSubsetting(object, "UseCases::UseCase::includedUseCases");
             if (implicitSubsetting != null) {
-                return List.of(implicitSubsetting);
+                implicitSpecializations.add(implicitSubsetting);
+                return implicitSpecializations;
             }
         }
         return super.caseIncludeUseCaseUsage(object);
@@ -720,6 +810,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseInterfaceUsage(InterfaceUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -752,6 +845,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseItemUsage(ItemUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -765,6 +861,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseJoinNode(JoinNode object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -791,6 +890,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseMergeNode(MergeNode object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -817,6 +919,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseMetadataUsage(MetadataUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -830,6 +935,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseMultiplicity(Multiplicity object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -856,6 +964,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseOccurrenceUsage(OccurrenceUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -882,6 +993,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> casePartUsage(PartUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -914,8 +1028,12 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     @Override
     public List<Specialization> casePerformActionUsage(PerformActionUsage object) {
+        List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
-            return List.of();
+            return implicitSpecializations;
         }
         // If a PerformActionUsage has an owningType that is a PartDefinition or PartUsage, then it must directly or
         // indirectly specialize the ActionUsage Parts::Part::performedActions.
@@ -923,7 +1041,8 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (owningType instanceof PartDefinition || owningType instanceof PartUsage) {
             var implicitSubsetting = this.implicitSubsetting(object, "Parts::Part::performedActions");
             if (implicitSubsetting != null) {
-                return List.of(implicitSubsetting);
+                implicitSpecializations.add(implicitSubsetting);
+                return implicitSpecializations;
             }
         }
         return super.casePerformActionUsage(object);
@@ -945,6 +1064,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> casePortUsage(PortUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -978,6 +1100,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseRenderingUsage(RenderingUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         var owningFeatureMembership = object.getOwningFeatureMembership();
         if (owningFeatureMembership instanceof ViewRenderingMembership && !(this.hasRedefinition(object))) {
             // A RenderingUsage whose owningFeatureMembership is a ViewRenderingMembership must redefine the
@@ -1024,6 +1149,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseRequirementUsage(RequirementUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1051,6 +1179,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseSendActionUsage(SendActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1083,6 +1214,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseStateUsage(StateUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1104,6 +1238,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1117,6 +1254,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseTransitionUsage(TransitionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1144,6 +1284,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseTriggerInvocationExpression(TriggerInvocationExpression object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1179,6 +1322,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseUseCaseUsage(UseCaseUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1212,6 +1358,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseVerificationCaseUsage(VerificationCaseUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1258,6 +1407,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseViewpointUsage(ViewpointUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1278,6 +1430,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseViewUsage(ViewUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1298,6 +1453,9 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseWhileLoopActionUsage(WhileLoopActionUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
+        if (!this.hasRedefinition(object)) {
+            implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
+        }
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
@@ -1317,14 +1475,18 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     private Redefinition implicitRedefinition(Feature feature, String implicitRedefinedFeatureQualifiedName) {
         var implicitFeature = this.elementUtil.findByNameAndType(feature, implicitRedefinedFeatureQualifiedName, Feature.class);
         if (implicitFeature != null) {
-            var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
-            redefinition.setDeclaredName("redefines (implicit)");
-            redefinition.setIsImplied(true);
-            redefinition.setRedefiningFeature(feature);
-            redefinition.setRedefinedFeature(implicitFeature);
-            return redefinition;
+            return this.implicitRedefinition(feature, implicitFeature);
         }
         return null;
+    }
+
+    private Redefinition implicitRedefinition(Feature redefiningFeature, Feature redefinedFeature) {
+        var redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+        redefinition.setDeclaredName("redefines (implicit)");
+        redefinition.setIsImplied(true);
+        redefinition.setRedefiningFeature(redefiningFeature);
+        redefinition.setRedefinedFeature(redefinedFeature);
+        return redefinition;
     }
 
     private Subclassification implicitSubclassification(Classifier classifier, String implicitSuperclassifierQualifiedName) {
@@ -1479,5 +1641,95 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     private boolean hasFeatureTyping(Element element) {
         return this.existingSpecializations.stream().anyMatch(FeatureTyping.class::isInstance);
+    }
+
+    /**
+     * Handle the creation of implicit redefinitions for feature that are parameters of their owner.
+     * <p>
+     * This method implements KerML 7.4.7.2 and 7.4.7.3, and ensures that a parameter implicitly redefines the
+     * corresponding parameters of its owner's specializations that are {@link Behavior} or {@link Step}.
+     * </p>
+     *
+     * @param feature
+     *            the feature to redefine
+     * @return the list of {@link Redefinition} for the provided {@code feature}
+     */
+    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature) {
+        List<Redefinition> implicitRedefinitions = new ArrayList<>();
+        if (feature.getOwner() instanceof Step stepOwner) {
+            implicitRedefinitions = this.handleImplicitParameterRedefinition(feature, stepOwner);
+        } else if (feature.getOwner() instanceof Behavior behaviorOwner) {
+            implicitRedefinitions = this.handleImplicitParameterRedefinition(feature, behaviorOwner);
+        }
+        return implicitRedefinitions;
+    }
+
+
+
+    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature, Step owner) {
+        List<Redefinition> implicitRedefinitions = new ArrayList<>();
+        int parameterIndex = owner.getParameter().indexOf(feature);
+        if (parameterIndex >= 0) {
+            implicitRedefinitions = owner.getOwnedSpecialization().stream()
+                    .map(Specialization::getGeneral)
+                    .filter(type -> type instanceof Behavior || type instanceof Step)
+                    .map(type -> this.createImplicitParameterRedefinition(feature, type, parameterIndex))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+        }
+        return implicitRedefinitions;
+    }
+
+    private List<Redefinition> handleImplicitParameterRedefinition(Feature feature, Behavior owner) {
+        List<Redefinition> implicitRedefinitions = new ArrayList<>();
+        int parameterIndex = owner.getParameter().indexOf(feature);
+        if (parameterIndex >= 0) {
+            implicitRedefinitions = owner.getOwnedSubclassification().stream()
+                    .map(Subclassification::getSuperclassifier)
+                    .filter(Behavior.class::isInstance)
+                    .map(classifier -> this.createImplicitParameterRedefinition(feature, classifier, parameterIndex))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+        }
+        return implicitRedefinitions;
+    }
+
+    /**
+     * Creates an implicit redefinition from {@code feature} to the {@code index} parameter of {@code type}.
+     * <p>
+     * This method creates the redefinition if:
+     * <ul>
+     * <li>The provided {@code type} contains parameters</li>
+     * <li>The {@code index} parameter of {@code type} exists</li>
+     * <li>The {@code index} parameter of {@code type} has the same direction as the provided {@code feature}.</li>
+     * </ul>
+     * </p>
+     *
+     * @param feature
+     *            the feature redefining the parameter
+     * @param type
+     *            the type containing the redefined parameter
+     * @param index
+     *            the index of the redefined parameter in {@code type}
+     * @return
+     */
+    private Optional<Redefinition> createImplicitParameterRedefinition(Feature feature, Type type, int index) {
+        Optional<Redefinition> result = Optional.empty();
+        List<Feature> parameters = new ArrayList<>();
+        if (type instanceof Behavior behavior) {
+            parameters = behavior.getParameter();
+        } else if (type instanceof Step step) {
+            parameters = step.getParameter();
+        }
+        if (parameters.size() > index) {
+            if (parameters.get(index).getDirection() != feature.getDirection()) {
+                this.logger.warn("Cannot create an implicit parameter definition from {} to {}: the Features don't have the same direction", feature, parameters.get(index));
+            } else {
+                result = Optional.ofNullable(this.implicitRedefinition(feature, parameters.get(index)));
+            }
+        }
+        return result;
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -27,11 +27,11 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -74,14 +74,19 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> features = this.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .flatMap(or -> or.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
+        List<Feature> data = this.getOwnedFeature().stream()
+                .filter(this::isParameter)
                 .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), features.size(), features.toArray());
+        // The list should contain the inherited parameters, it is not the case for now.
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean isParameter(Feature feature) {
+        Type owningType = feature.getOwningType();
+        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
     }
 
     /**

@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,9 +32,12 @@ import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -164,6 +168,41 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
             assertTrue(acceptActionUsage.specializesFromLibrary("Actions::acceptActions"));
         };
 
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+    }
+
+    @DisplayName("Test that a parameter of an ActionUsage that subsets another ActionUsage with parameters implicitly redefines the corresponding parameter")
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testImplicitParameterRedefinitionOnItemUsage() {
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
+            assertThat(semanticRootObject).isInstanceOf(Element.class);
+            Element semanticRootElement = (Element) semanticRootObject;
+            Optional<ActionUsage> optionalParentActionWithParameter = EMFUtils.allContainedObjectOfType(semanticRootElement, ActionUsage.class)
+                    .filter(actionUsage -> Objects.equals(actionUsage.getName(), "parentActionWithParameter"))
+                    .findFirst();
+            assertThat(optionalParentActionWithParameter).isPresent();
+            ActionUsage parentActionWithParameter = optionalParentActionWithParameter.get();
+            Optional<ActionUsage> optionalSubActionWithParameter = EMFUtils.allContainedObjectOfType(semanticRootElement, ActionUsage.class)
+                    .filter(actionUsage -> Objects.equals(actionUsage.getName(), "subActionWithParameter"))
+                    .findFirst();
+            assertThat(optionalSubActionWithParameter).isPresent();
+            ActionUsage subActionWithParameter = optionalSubActionWithParameter.get();
+            assertThat(parentActionWithParameter.getParameter()).hasSize(1);
+            assertThat(subActionWithParameter.getParameter()).hasSize(1);
+            List<Specialization> subParameterSpecializations = subActionWithParameter.getParameter().get(0).getOwnedSpecialization();
+            Optional<Redefinition> optionalRedefinition = subParameterSpecializations.stream()
+                    .filter(Redefinition.class::isInstance)
+                    .map(Redefinition.class::cast)
+                    .findFirst();
+            assertThat(optionalRedefinition).isPresent();
+            assertThat(optionalRedefinition)
+                    .get()
+                    .extracting(Redefinition::getRedefinedFeature)
+                    .isEqualTo(parentActionWithParameter.getParameter().get(0));
+        };
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 }

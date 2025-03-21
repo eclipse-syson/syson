@@ -126,6 +126,11 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 - https://github.com/eclipse-syson/syson/issues/1093[#1093] [general-view] Handle TransitionUsage in GeneralView diagram
 - https://github.com/eclipse-syson/syson/issues/1113[#1113] Update Batmobile project example
 - https://github.com/eclipse-syson/syson/issues/1037[#1037] [general-view] Add "Add existing nested element" tool on the Action Flow compartment on the General View Diagram.
+- https://github.com/eclipse-syson/syson/issues/1122[#1122] [metamodel] Add support for implicit parameter redefinition
+Parameters of `Behavior` and `Step` now implicitly redefine the matching parameters of `Behavior` subclassifications and `Step` specializations.
+See KerML 7.4.7.2 and 7.4.7.3 for more information.
+These implicit redefinitions are not visible in the diagrams nor the explorer (like all the other implicit specializations).
+The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
 
 === New features
 

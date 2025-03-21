@@ -23,7 +23,7 @@ import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Behavior</b></em>'. <!-- end-user-doc -->
@@ -64,8 +64,18 @@ public class BehaviorImpl extends ClassImpl implements Behavior {
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
+        List<Feature> data = this.getOwnedFeature().stream()
+                .filter(this::isParameter)
+                .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), data.size(), data.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean isParameter(Feature feature) {
+        Type owningType = feature.getOwningType();
+        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
     }
 
     /**
