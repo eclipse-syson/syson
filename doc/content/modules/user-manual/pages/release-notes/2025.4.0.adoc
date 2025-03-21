@@ -225,6 +225,8 @@ image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representat
 WARNING: The representation of the "Done" `ActionUsage` should use a circle shape.
 This will be fixed in a future contribution. 
 
+- The tool "Add Existing Elements" is now directly available from the Action Flow compartement in the General View Diagram.
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -126,6 +126,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
 
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.toolDescriptionService.relatedElementsNodeToolSection(false));
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
         return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))

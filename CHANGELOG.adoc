@@ -125,6 +125,7 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 - https://github.com/eclipse-syson/syson/issues/1105[#1105] [metamodel] Implement `ConnectionDefinition` derived references and operations in SysON SysMLv2 metamodel.
 - https://github.com/eclipse-syson/syson/issues/1093[#1093] [general-view] Handle TransitionUsage in GeneralView diagram
 - https://github.com/eclipse-syson/syson/issues/1113[#1113] Update Batmobile project example
+- https://github.com/eclipse-syson/syson/issues/1037[#1037] [general-view] Add "Add existing nested element" tool on the Action Flow compartment on the General View Diagram.
 
 === New features
 
