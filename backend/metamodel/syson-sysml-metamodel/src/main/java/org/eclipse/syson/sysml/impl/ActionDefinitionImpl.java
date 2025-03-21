@@ -22,9 +22,9 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -68,14 +68,18 @@ public class ActionDefinitionImpl extends OccurrenceDefinitionImpl implements Ac
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Feature> features = this.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .flatMap(or -> or.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
+        List<Feature> data = this.getOwnedFeature().stream()
+                .filter(this::isParameter)
                 .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), features.size(), features.toArray());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), data.size(), data.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean isParameter(Feature feature) {
+        Type owningType = feature.getOwningType();
+        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
     }
 
     /**

@@ -12,9 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
-import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE_STYLE;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -24,6 +29,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -153,13 +159,19 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
             // Get the target with its description instead of its label: there are new two elements with the label
             // "action" on the diagram (one on the diagram itself, and one in the "actions" compartment of the part
             // element).
-            String targetId = diagramNavigator
-                    .nodeWithNodeDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))).getNode()
-                    .getId();
-            Edge newEdge = newDiagram.getEdges().get(0);
-            assertThat(newEdge).hasSourceId(sourceId);
-            assertThat(newEdge).hasTargetId(targetId);
-            assertThat(newEdge.getStyle()).hasSourceArrow(ArrowStyle.FillDiamond);
+            Optional<String> optionalTargetId = diagramNavigator.findAllNodes().stream()
+                    .filter(node -> Objects.equals(node.getTargetObjectLabel(), "action"))
+                    .filter(node -> Objects.equals(node.getDescriptionId(),
+                            this.diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))))
+                    .map(Node::getId)
+                    .findFirst();
+            assertThat(optionalTargetId).isPresent();
+            List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
+            assertThat(newEdges).hasSize(1).first(EDGE)
+                    .hasSourceId(sourceId)
+                    .hasTargetId(optionalTargetId.get())
+                    .extracting(Edge::getStyle, EDGE_STYLE)
+                    .hasSourceArrow(ArrowStyle.FillDiamond);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);

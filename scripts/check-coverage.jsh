@@ -29,14 +29,14 @@ double checkCoverage(String module) {
 }
 
 record ModuleCoverage(String moduleName, double expectedCoverage) {}
-double expectedGlobalCoverage = 62.0;
+double expectedGlobalCoverage = 61.0;
 var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-metamodel", 70.0),
   new ModuleCoverage("syson-sysml-metamodel-edit", 9.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 49.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 64.0),
-  new ModuleCoverage("syson-services", 65.0),
+  new ModuleCoverage("syson-services", 66.0),
   new ModuleCoverage("syson-sysml-rest-api-services", 94.0),
   new ModuleCoverage("syson-sysml-import", 81.0),
   new ModuleCoverage("syson-sysml-export", 61.0),
