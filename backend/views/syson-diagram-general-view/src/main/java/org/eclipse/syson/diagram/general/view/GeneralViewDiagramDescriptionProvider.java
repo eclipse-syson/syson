@@ -657,6 +657,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider,
                         this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence(), colorProvider,
+                        this.getDescriptionNameGenerator()));
 
         return definitionOwnedUsageEdgeDescriptionProviders;
     }

@@ -225,6 +225,11 @@ image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representat
 WARNING: The representation of the "Done" `ActionUsage` should use a circle shape.
 This will be fixed in a future contribution. 
 
+
+- An edge is now displayed between `OccurrenceDefinition` its nested `OccurrenceUsage`.
+
+image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=85%,height=85%]
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
