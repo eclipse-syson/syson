@@ -819,11 +819,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
         } else if (!excludeImplied) {
             this.getOwnedSpecialization().stream()
                     .map(Specialization::getGeneral)
+                    .filter(Objects::nonNull)
                     .forEach(supertypes::add);
         } else {
             this.getOwnedSpecialization().stream()
                     .filter(spe -> !spe.isIsImplied())
                     .map(Specialization::getGeneral)
+                    .filter(Objects::nonNull)
                     .forEach(supertypes::add);
         }
         return supertypes;

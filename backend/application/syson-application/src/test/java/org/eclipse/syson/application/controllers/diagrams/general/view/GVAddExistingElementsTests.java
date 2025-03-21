@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.data.GeneralViewAddExistingElementsIdentifiers;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -105,12 +106,12 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM);
+                GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
+                GeneralViewAddExistingElementsIdentifiers.Diagram.ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
@@ -129,7 +130,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -153,13 +154,19 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsRecursiveOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(newDiagram -> {
                     assertThat(newDiagram.getNodes()).as("4 nodes should be visible on the diagram").hasSize(4);
-                    assertThat(newDiagram.getEdges()).as("1 edge should be visible on the diagram").hasSize(1);
+                    assertThat(newDiagram.getEdges())
+                            .as("2 edges should be visible on the diagram")
+                            .hasSize(2)
+                            .as("The diagrm should contain a composite edge between part2 and part1")
+                            .anyMatch(edge -> edge.getTargetObjectLabel().equals(PART1))
+                            .as("The diagrm should contain a SuccessionAsUsage edge between start and action2")
+                            .anyMatch(edge -> edge.getTargetObjectId().equals(GeneralViewAddExistingElementsIdentifiers.Semantic.SUCCESSION_START_ACTION_2));
                     assertThat(newDiagram.getNodes())
                             .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, PACKAGE1))
                             .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), PACKAGE1))
