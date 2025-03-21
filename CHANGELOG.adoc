@@ -131,6 +131,7 @@ Parameters of `Behavior` and `Step` now implicitly redefine the matching paramet
 See KerML 7.4.7.2 and 7.4.7.3 for more information.
 These implicit redefinitions are not visible in the diagrams nor the explorer (like all the other implicit specializations).
 The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
+- https://github.com/eclipse-syson/syson/issues/1120[#1120] [general-view] Add a graphical edge to represent the composition between `OccurrenceDefinition` and its `OccurrenceUsages`.
 
 === New features
 
