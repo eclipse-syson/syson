@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,9 +55,33 @@ public class EdgeCreationTester {
     }
 
     public void createEdgeUsingNodeId(String projectId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId) {
+        this.createEdgeUsingNodeId(projectId, diagram, sourceNodeId, targetNodeId, toolId, Optional.empty());
+    }
+
+    /**
+     * Runs a SingleClickOnTwoDiagramElementsTool.
+     *
+     * @param editingContextId
+     *            the editing context id
+     * @param diagram
+     *            the current diagram
+     * @param sourceNodeId
+     *            the source node id
+     * @param targetNodeId
+     *            the target node id
+     * @param toolId
+     *            the tool id
+     * @param expectedMessages
+     *            a list of expected messages shown to the user
+     */
+    public void runSingleClickOnTwoDiagramElementsTool(String editingContextId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId, List<String> expectedMessages) {
+        this.createEdgeUsingNodeId(editingContextId, diagram, sourceNodeId, targetNodeId, toolId, Optional.of(expectedMessages));
+    }
+
+    private void createEdgeUsingNodeId(String editingContextId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId, Optional<List<String>> expectedMessages) {
         var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                 UUID.randomUUID(),
-                projectId,
+                editingContextId,
                 diagram.get().getId(),
                 sourceNodeId,
                 targetNodeId,
@@ -68,7 +94,17 @@ public class EdgeCreationTester {
         var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
         String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
-    }
 
+        // If some messages have been provided then checks them
+        if (expectedMessages.isPresent()) {
+            List<String> expectedMsg = expectedMessages.get();
+            for (int i = 0; i < expectedMsg.size(); i++) {
+                String expMg = expectedMsg.get(i);
+                String messageText = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.messages[" + i + "].body");
+                assertThat(messageText).isEqualTo(expMg);
+            }
+
+        }
+    }
 
 }

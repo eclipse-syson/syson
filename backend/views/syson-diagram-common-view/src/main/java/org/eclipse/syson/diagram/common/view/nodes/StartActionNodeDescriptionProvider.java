@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,14 +51,14 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMembership());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getActionUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(false)
                 .domainType(domainType)
                 .defaultWidthExpression("28")
                 .defaultHeightExpression("28")
                 .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardStartActions"))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("retrieveStandardStartAction"))
                 .style(this.createImageNodeStyleDescription("images/start_action.svg"))
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -95,7 +95,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         var targetElementDescriptions = this.getStartTargetDescriptions(cache);
 
         var builder = this.diagramBuilderHelper.newEdgeTool();
-        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
+        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
 

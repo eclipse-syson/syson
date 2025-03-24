@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,14 +44,14 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMembership());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getActionUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(false)
                 .domainType(domainType)
                 .defaultWidthExpression("36")
                 .defaultHeightExpression("36")
                 .name(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardDoneActions"))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("retrieveStandardDoneAction"))
                 .style(this.createImageNodeStyleDescription("images/done_action.svg"))
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

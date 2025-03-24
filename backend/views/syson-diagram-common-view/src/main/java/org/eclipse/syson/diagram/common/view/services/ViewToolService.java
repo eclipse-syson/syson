@@ -127,7 +127,7 @@ public class ViewToolService extends ToolService {
     private final NodeDescriptionService nodeDescriptionService;
 
     public ViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-                           IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
         super(identityService, objectSearchService, representationDescriptionSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
@@ -167,7 +167,6 @@ public class ViewToolService extends ToolService {
 
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
-
 
         final org.eclipse.sirius.components.view.diagram.NodeDescription parentNodeDescription;
         if (parentViewCreationRequest != null) {
@@ -553,7 +552,6 @@ public class ViewToolService extends ToolService {
             });
         }
     }
-
 
     /**
      * Returns the elements contained by {@code parentElement} that should be rendered.
@@ -944,8 +942,8 @@ public class ViewToolService extends ToolService {
             parentNode = selectedNode.getChildNodes().stream()
                     .filter(child -> child.getInsideLabel() != null)
                     .filter(child -> Objects.equals(child.getInsideLabel().getText(), compartmentName))
-                .findFirst()
-                .orElse(null);
+                    .findFirst()
+                    .orElse(null);
         }
 
         if (parentNode != null) {
@@ -963,41 +961,51 @@ public class ViewToolService extends ToolService {
      *            the {@link Feature} used as a source for the transition
      * @param targetUsage
      *            the {@link Feature} used as a target for the transition
+     * @param source
+     *            the node of the source
+     * @param target
+     *            the node of the target
+     * @param diagramService
+     *            service used to navigate inside the diagram
      * @return the given source {@link Feature}.
      */
-    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage) {
-        // Check source and target have the same parent
-        Element sourceParentElement = sourceUsage.getOwner();
-        Element targetParentElement = targetUsage.getOwner();
-        if (sourceParentElement != targetParentElement || this.utilService.isParallelState(sourceParentElement)) {
-            // Should probably not be here as the transition creation should not be allowed.
-            return sourceUsage;
+    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService) {
+        if (this.isInSameGraphicalContainer(source, target, diagramService)) {
+            // Check source and target have the same parent
+            Element sourceParentElement = sourceUsage.getOwner();
+            Element targetParentElement = targetUsage.getOwner();
+            if (sourceParentElement != targetParentElement || this.utilService.isParallelState(sourceParentElement)) {
+                // Should probably not be here as the transition creation should not be allowed.
+                return sourceUsage;
+            }
+            // Create transition usage and add it to the parent element
+            // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
+            TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+            var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
+            sourceParentElement.getOwnedRelationship().add(featureMembership);
+
+            // Create EndFeature
+            // TransitionUsage <>-> Membership -> MemberElement = sourceAction
+            var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
+            newTransitionUsage.getOwnedRelationship().add(sourceMembership);
+            sourceMembership.setMemberElement(sourceUsage);
+
+            // Create Succession
+            // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
+            Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+            this.elementInitializerSwitch.doSwitch(succession);
+            var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            successionFeatureMembership.getOwnedRelatedElement().add(succession);
+            newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
+
+            // Set Succession Source and Target Features
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
+            this.elementInitializerSwitch.doSwitch(newTransitionUsage);
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container TransitionUsage", MessageLevel.WARNING));
         }
-        // Create transition usage and add it to the parent element
-        // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
-        TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
-        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
-        sourceParentElement.getOwnedRelationship().add(featureMembership);
-
-        // Create EndFeature
-        // TransitionUsage <>-> Membership -> MemberElement = sourceAction
-        var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
-        newTransitionUsage.getOwnedRelationship().add(sourceMembership);
-        sourceMembership.setMemberElement(sourceUsage);
-
-        // Create Succession
-        // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
-        Succession succession = SysmlFactory.eINSTANCE.createSuccession();
-        this.elementInitializerSwitch.doSwitch(succession);
-        var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        successionFeatureMembership.getOwnedRelatedElement().add(succession);
-        newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
-
-        // Set Succession Source and Target Features
-        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
-        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
-        this.elementInitializerSwitch.doSwitch(newTransitionUsage);
 
         return sourceUsage;
     }
@@ -1126,7 +1134,9 @@ public class ViewToolService extends ToolService {
 
     /**
      * Service to retrieve the root elements of the selection dialog of the NamespaceImport creation tool.
-     * @param editingContext the editing context
+     * 
+     * @param editingContext
+     *            the editing context
      * @return the list of resources that contain at least one {@link Package}
      */
     public List<Resource> getNamespaceImportSelectionDialogElements(IEditingContext editingContext) {
@@ -1137,7 +1147,7 @@ public class ViewToolService extends ToolService {
                 .map(EditingDomain::getResourceSet);
         var resources = optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
                 .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, SysmlPackage.eINSTANCE.getPackage()))
-                        .toList())
+                .toList())
                 .orElseGet(ArrayList::new);
         return resources.stream().sorted((r1, r2) -> this.getResourceName(r1).compareTo(this.getResourceName(r2))).toList();
     }
@@ -1146,7 +1156,7 @@ public class ViewToolService extends ToolService {
      * Service to retrieve the children of a given element in the selection dialog of the NamespaceImport creation tool.
      *
      * @param self
-     *         an element of the tree
+     *            an element of the tree
      * @return the list of {@link Package} element found under the given root element.
      */
     public List<Package> getNamespaceImportSelectionDialogChildren(Object self) {
@@ -1311,5 +1321,12 @@ public class ViewToolService extends ToolService {
         }
 
         return result;
+    }
+
+    private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {
+        Diagram diagram = diagramService.getDiagramContext().getDiagram();
+        var sourceParentNode = new NodeFinder(diagram).getParent(sourceNode);
+        var targetParentNode = new NodeFinder(diagram).getParent(targetNode);
+        return Objects.equals(sourceParentNode, targetParentNode);
     }
 }

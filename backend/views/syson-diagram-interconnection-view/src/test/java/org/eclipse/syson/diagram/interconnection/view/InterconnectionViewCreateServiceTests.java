@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -86,7 +87,8 @@ public class InterconnectionViewCreateServiceTests {
         };
         var objectSearchService = new IObjectSearchService.NoOp();
         var showDiagramsInheritedMembersService = new ShowDiagramsInheritedMembersService();
-        this.interconnectionViewCreateService = new InterconnectionViewCreateService(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService);
+        this.interconnectionViewCreateService = new InterconnectionViewCreateService(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService,
+                new IFeedbackMessageService.NoOp());
         this.builder = new ModelBuilder();
         this.build();
     }
