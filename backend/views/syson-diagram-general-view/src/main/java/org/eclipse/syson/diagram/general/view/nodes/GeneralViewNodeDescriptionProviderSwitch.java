@@ -81,7 +81,10 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
 
     @Override
     public INodeDescriptionProvider caseActionUsage(ActionUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.colorProvider);
+        UsageNodeDescriptionProvider actionUsageProvider = new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.colorProvider);
+        // Start and done standard ActionUsage have their own NodeDescription
+        actionUsageProvider.setPrecondition("aql:not self.isStandardStartAction() and not self.isStandardDoneAction()");
+        return actionUsageProvider;
     }
 
     @Override

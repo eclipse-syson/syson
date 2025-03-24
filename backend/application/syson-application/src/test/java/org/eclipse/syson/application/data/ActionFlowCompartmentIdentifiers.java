@@ -28,9 +28,9 @@ public class ActionFlowCompartmentIdentifiers {
 
         public static final String ID = "cbd3d33f-970e-438d-9e25-6c19ac2fbe32";
 
-        public static final String START_ID = "de64b291-581f-3df1-99f0-0b9f7560e8eb";
+        public static final String START_ID = "3a97ff70-bc26-3d04-bf64-939a686cb10c";
 
-        public static final String DONE_ID = "608daae3-9233-3042-9b6e-064de3c1cbfe";
+        public static final String DONE_ID = "5f4c2780-f6f7-3977-8876-69f90c36d3eb";
 
         public static final String SUB_ACTION1_ID = "b7f0f687-c99e-3772-9fa0-a500a176cbf8";
 
@@ -41,6 +41,8 @@ public class ActionFlowCompartmentIdentifiers {
         public static final String SUCCESSION_A1_A2_ID = "cdafcc5a-49c9-367a-bb1c-e047d3ac8c7c";
 
         public static final String TRANSITION_A2_A3_ID = "39d7a57a-648d-3250-8d10-99dcccc9cac6";
+
+        public static final String ROOT_ACTION_USAGE = "f3c59470-977b-3e8d-b459-07d4e2bc103b";
     }
 
     /**
@@ -61,6 +63,8 @@ public class ActionFlowCompartmentIdentifiers {
         public static final String SUB_ACTION1_NAME = "subAction1";
 
         public static final String SUB_ACTION2_NAME = "subAction2";
+
+        public static final String ROOT_ACTION_USAGE = "17fab5b2-d11f-4ee1-a778-e78810a8fe66";
     }
 
 }

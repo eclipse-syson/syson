@@ -36,7 +36,6 @@ import org.eclipse.syson.sysml.parser.EAttributeHandler;
 import org.eclipse.syson.sysml.parser.NonContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.ProxiedReference;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
-import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,15 +159,6 @@ public class ASTTransformer {
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
                     EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
 
-                    Membership previousMembershipFeature = this.computeTargetFeatureMembership(suc);
-                    if (previousMembershipFeature != null && ElementUtil.isFromLibrary(previousMembershipFeature.getMemberElement(), true)) {
-                        // For implicit target that targets an element of the standard library, we need to keep a
-                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
-                        // see implementation :
-                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
-                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
-                    }
-
                     int index = ownedRelatedElements.indexOf(invalidFeature);
                     ownedRelatedElements.remove(index);
                     ownedRelatedElements.add(index, refUsage);
@@ -182,15 +172,6 @@ public class ASTTransformer {
                     FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
                     EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
-
-                    Membership previousMembershipFeature = this.computePreviousFeatureMembership(suc, m -> m.eClass() == SysmlPackage.eINSTANCE.getMembership());
-                    if (previousMembershipFeature != null) {
-                        // For implicit source that targets an element of the standard library, we need to keep a
-                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
-                        // see implementation :
-                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
-                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
-                    }
 
                     int index = ownedRelatedElements.indexOf(invalidFeature);
                     ownedRelatedElements.remove(index);
@@ -235,26 +216,6 @@ public class ASTTransformer {
                     }
                 }
             }
-        }
-        return null;
-    }
-
-    private Membership computeTargetFeatureMembership(SuccessionAsUsage successionAsUsage) {
-        Type owningType = successionAsUsage.getOwningType();
-        if (owningType != null) {
-
-            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
-            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
-            if (index > 0 && ownedMemberships.size() > index) {
-                ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();
-                while (iterator.hasNext()) {
-                    Membership next = iterator.next();
-                    if (next.getMemberElement() instanceof Feature) {
-                        return next;
-                    }
-                }
-            }
-
         }
         return null;
     }

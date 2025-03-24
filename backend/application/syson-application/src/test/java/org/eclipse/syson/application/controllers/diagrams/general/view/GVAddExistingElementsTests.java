@@ -163,7 +163,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                     assertThat(newDiagram.getEdges())
                             .as("2 edges should be visible on the diagram")
                             .hasSize(2)
-                            .as("The diagrm should contain a composite edge between part2 and part1")
+                            .as("The diagram should contain a composite edge between part2 and part1")
                             .anyMatch(edge -> edge.getTargetObjectLabel().equals(PART1))
                             .as("The diagrm should contain a SuccessionAsUsage edge between start and action2")
                             .anyMatch(edge -> edge.getTargetObjectId().equals(GeneralViewAddExistingElementsIdentifiers.Semantic.SUCCESSION_START_ACTION_2));
@@ -213,7 +213,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                             .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2))
                             .as(ACTION1 + " action flow compartment should contain a start node")
                             .anyMatch(n -> n.getStyle() instanceof ImageNodeStyle imageStyle && Objects.equals(imageStyle.getImageURL(), "images/start_action.svg")
-                                    && Objects.equals("", n.getTargetObjectLabel()));
+                                    && Objects.equals("start", n.getTargetObjectLabel()));
 
                     var optAction2Node = action1ActionFlowCompartment.get().getChildNodes().stream()
                             .filter(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2))

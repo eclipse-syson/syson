@@ -361,7 +361,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     @Test
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, "
             + "when importing the model, "
-            + "then a special membership should be created that reference the 'start' element and its id should belong to the aliasId of the source connector end.")
+            + "then a special membership should be created that reference the 'start' element.")
     public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -386,12 +386,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
 
             assertThat(startMemberships).hasSize(1);
 
-            Membership startMembership = startMemberships.get(0);
-
             // Check that alias id for the ReferenceUsage of the source feature
             Feature sourceEnd = successionUsage.getConnectorEnd().get(0);
             assertThat(sourceEnd).isInstanceOf(ReferenceUsage.class);
-            assertEquals(List.of(startMembership.getElementId()), sourceEnd.getAliasIds());
+            assertThat(sourceEnd.getAliasIds()).isEmpty();
 
         }).check(input);
     }

@@ -20,6 +20,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.UtilService;
@@ -48,7 +50,6 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class ViewEdgeService {
 
-
     protected final IFeedbackMessageService feedbackMessageService;
 
     private final UtilService utilService;
@@ -76,6 +77,29 @@ public class ViewEdgeService {
     }
 
     /**
+     * Check if the given source and target {@link org.eclipse.sirius.components.representations.Element} or contained
+     * by the same graphical container.
+     *
+     * @param source
+     *            the source element
+     * @param target
+     *            the target element
+     * @param cache
+     *            the DiagramRenderingCache
+     * @return <code>true</code> if contained by the same container
+     */
+    public boolean isInSameGraphicalContainer(org.eclipse.sirius.components.representations.Element source, org.eclipse.sirius.components.representations.Element target, DiagramRenderingCache cache) {
+        if (source.getProps() instanceof NodeElementProps sourceNodeProps
+                && target.getProps() instanceof NodeElementProps targetNodeProps) {
+            String sourceParentId = this.getParentId(cache, sourceNodeProps);
+            String targetParentId = this.getParentId(cache, targetNodeProps);
+            return (sourceParentId == null && targetParentId == null) // Root nodes
+                    || (sourceParentId != null && sourceParentId.equals(targetParentId)); // Sub nodes
+        }
+        return true;
+    }
+
+    /**
      * Get all reachable {@link AllocationUsage} in the {@link ResourceSet} of given {@link EObject}.
      *
      * @param eObject
@@ -93,11 +117,11 @@ public class ViewEdgeService {
     }
 
     public Element getSource(SuccessionAsUsage succession) {
-        return this.utilService.getSource(succession);
+        return succession.getSourceFeature();
     }
 
     public Element getTarget(SuccessionAsUsage succession) {
-        return this.utilService.getTarget(succession);
+        return succession.getTargetFeature().stream().findFirst().orElse(null);
     }
 
     public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
@@ -187,7 +211,6 @@ public class ViewEdgeService {
         return result;
     }
 
-
     public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
         EList<Feature> ends = succession.getConnectorEnd();
         if (!ends.isEmpty()) {
@@ -216,8 +239,6 @@ public class ViewEdgeService {
      */
     private void setConnectorEndFeature(Feature sourceEnd, Element newTargetFeature) {
         if (sourceEnd instanceof ReferenceUsage refUsage) {
-            sourceEnd.getAliasIds().clear();
-
             ReferenceSubsetting referenceSubsetting = sourceEnd.getOwnedReferenceSubsetting();
             if (referenceSubsetting == null || referenceSubsetting.isIsImplied()) {
                 // Needs to create a new one because this one is inherited
@@ -225,11 +246,6 @@ public class ViewEdgeService {
                 referenceSubsetting.setSubsettingFeature(refUsage);
             }
             this.getAction(newTargetFeature).ifPresent(referenceSubsetting::setReferencedFeature);
-            // In case the newSource if a membership (e.g for 'start' and 'done') keep the membership id to identify
-            // the graphical source of the edge
-            if (newTargetFeature instanceof Membership sourceMembership) {
-                refUsage.getAliasIds().add(sourceMembership.getElementId());
-            }
         }
     }
 
@@ -348,5 +364,19 @@ public class ViewEdgeService {
             result = Optional.of(au);
         }
         return result;
+    }
+
+    private String getParentId(DiagramRenderingCache cache, NodeElementProps sourceNodeProps) {
+        return cache.getParent(sourceNodeProps.getId())
+                .map(org.eclipse.sirius.components.representations.Element::getProps)
+                .map(props -> {
+                    if (props instanceof NodeElementProps nodeProps) {
+                        return nodeProps.getId();
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .orElse(null);
     }
 }

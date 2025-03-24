@@ -222,8 +222,8 @@ Be aware that the guard expressions are displayed in the label but *can't* be ed
 
 image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representation, width=85%,height=85%]
 
-WARNING: The representation of the "Done" `ActionUsage` should use a circle shape.
-This will be fixed in a future contribution. 
+- Simplify handling of "start" and "done" `ActionUsages`.
+Those elements can now be displayed without the special `Membership` previously used to "import" them in the parent.
 
 - The tool "Add Existing Elements" is now directly available from the Action Flow compartement in the General View Diagram.
 - Add support for implicit redefinition of `Behavior` and `Step` parameters

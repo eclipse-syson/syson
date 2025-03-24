@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -47,6 +48,7 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -144,6 +146,64 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             this.verifier.thenCancel()
                     .verify(Duration.ofSeconds(10));
         }
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given two ActionUsages nested in each other,"
+            + "when using the 'New succession' tool between them, "
+            + "then a SuccessionAsUsage should not be created and a message should be displayed to the user")
+    public void creatSuccesionBetweenNestedActions() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.ROOT_ACTION_USAGE,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                creationToolId,
+                List.of("Can't create cross container SuccessionAsUsage")));
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(0)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE, rootActionUsage -> {
+            assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
+        });
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given two ActionUsages nested in each other,"
+            + "when using the 'New Transition' tool between them, "
+            + "then a TransitionUsage should not be created and a message should be displayed to the user")
+    public void creatTransitionBetweenNestedActions() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.ROOT_ACTION_USAGE,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                creationToolId,
+                List.of("Can't create cross container TransitionUsage")));
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(0)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE, rootActionUsage -> {
+            assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
+        });
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -250,7 +310,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
     @Test
     @DisplayName("Given two ActionUsage,"
             + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the two actions without any aliasIds stored")
+            + "then a SuccessionAsUsage is created between the two actions")
     public void createSuccessionBetweenSubActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
@@ -286,7 +346,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
     @Test
     @DisplayName("Given SuccessionAsUsage from 2 ActionUsages,"
             + "when reconnecting the target to the 'done' usage, "
-            + "then a SuccessionAsUsage should point to the 'done' action and the aliasId should be updated")
+            + "then a SuccessionAsUsage should point to the 'done' action")
     public void reconnectSuccessionToDone() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -311,16 +371,15 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
-            assertThat(EMFUtils.allContainedObjectOfType(successionAsUsage, ReferenceUsage.class).toList().get(1).getAliasIds()).isNotEmpty();
         });
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a start action and  ActionUsage,"
+    @DisplayName("Given a start action and an ActionUsage,"
             + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the 'start' membership and the selected ActionUsage")
+            + "then a SuccessionAsUsage is created between the 'start' and the selected ActionUsage")
     public void createSuccessionFromStart() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
@@ -347,8 +406,6 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             assertThat(successionAsUsage.getSourceFeature()).matches(sourceFeature -> new UtilService().isStandardStartAction(sourceFeature));
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
-            assertThat(EMFUtils.allContainedObjectOfType(successionAsUsage, ReferenceUsage.class).findFirst().get().getAliasIds())
-                    .hasSize(1);
         });
     }
 
@@ -357,7 +414,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
     @Test
     @DisplayName("Given a start action and  ActionUsage,"
             + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the 'start' membership to the 'done' membership with required aliasIds")
+            + "then a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     public void createSuccessionFromStartToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
@@ -386,7 +443,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .allMatch(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
             assertThat(EMFUtils.allContainedObjectOfType(successionAsUsage, ReferenceUsage.class))
                     .hasSize(2)
-                    .allMatch(refUsage -> !refUsage.getAliasIds().isEmpty());
+                    .allMatch(refUsage -> refUsage.getAliasIds().isEmpty());
         });
     }
 }

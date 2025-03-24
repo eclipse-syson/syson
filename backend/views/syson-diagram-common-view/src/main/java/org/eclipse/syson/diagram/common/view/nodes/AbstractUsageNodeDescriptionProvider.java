@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -59,6 +60,8 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
+    private String precondition;
+
     public AbstractUsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
@@ -74,6 +77,18 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
      */
     protected String getNodeDescriptionName() {
         return this.getDescriptionNameGenerator().getNodeName(this.eClass);
+    }
+
+    /**
+     * Set an optional precondition for the future node.
+     *
+     * @param aPrecondition
+     *            a precondition (or <code>null</code> to unset the precondition).
+     * @return this for convenience
+     */
+    public AbstractUsageNodeDescriptionProvider setPrecondition(String aPrecondition) {
+        this.precondition = aPrecondition;
+        return this;
     }
 
     /**
@@ -132,7 +147,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
-        return this.diagramBuilderHelper.newNodeDescription()
+        NodeDescriptionBuilder builder = this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -144,8 +159,12 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .preconditionExpression(this.createPreconditionExpression())
                 .style(this.createUsageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .build();
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
+        if (this.precondition != null) {
+            builder.preconditionExpression(this.precondition);
+        }
+
+        return builder.build();
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.util.Objects;
 
 import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -51,7 +50,6 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -68,7 +66,6 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.AQLUtils;
@@ -323,105 +320,10 @@ public class UtilService {
         return result;
     }
 
-    /**
-     * Get the source of {@link SuccessionAsUsage} edge. It can be either the
-     * {@link SuccessionAsUsage#getSourceFeature()} or a special {@link Membership} representing an "imported" element.
-     * 
-     * @param succession
-     *            a {@link SuccessionAsUsage}
-     * @return a source {@link Element} or <code>null</code>.
-     */
-    public Element getSource(SuccessionAsUsage succession) {
-        Feature sourceFeature = succession.getSourceFeature();
-        String membershipAliasId = null;
-
-        EList<Feature> ends = succession.getConnectorEnd();
-        if (!ends.isEmpty()) {
-            Feature firstEnd = ends.get(0);
-            if (firstEnd instanceof ReferenceUsage refUsage) {
-                EList<String> aliasId = refUsage.getAliasIds();
-                if (!aliasId.isEmpty()) {
-                    membershipAliasId = aliasId.get(0);
-                }
-            }
-        }
-
-        if (membershipAliasId != null && sourceFeature != null) {
-            // Check for referencing membership
-            Membership membership = this.getReferencingMembershipWithId(sourceFeature, membershipAliasId);
-            if (membership != null) {
-                return membership;
-            }
-        }
-        return sourceFeature;
-    }
-
-    /**
-     * Get the target of {@link SuccessionAsUsage} edge. It can be either the
-     * {@link SuccessionAsUsage#getTargetFeature()} or a special {@link Membership} representing an "imported" element.
-     * 
-     * @param succession
-     *            a {@link SuccessionAsUsage}
-     * @return a source {@link Element} or <code>null</code>.
-     */
-    public Element getTarget(SuccessionAsUsage succession) {
-        Feature targetFeature = null;
-        EList<Feature> targetFeatures = succession.getTargetFeature();
-        if (!targetFeatures.isEmpty()) {
-
-            targetFeature = targetFeatures.get(0);
-            String membershipAliasId = null;
-            EList<Feature> ends = succession.getConnectorEnd();
-            if (ends.size() > 1) {
-                Feature firstEnd = ends.get(1);
-                if (firstEnd instanceof ReferenceUsage refUsage) {
-                    EList<String> aliasId = refUsage.getAliasIds();
-                    if (!aliasId.isEmpty()) {
-                        membershipAliasId = aliasId.get(0);
-                    }
-                }
-            }
-
-            if (membershipAliasId != null) {
-                // Check for referencing membership
-                Membership membeship = this.getReferencingMembershipWithId(targetFeature, membershipAliasId);
-                if (membeship != null) {
-                    return membeship;
-                }
-            }
-        }
-        return targetFeature;
-    }
-
-    public List<Membership> getAllStandardStartActions(Namespace self) {
-        if (this.isPart(self) || this.isAction(self)) {
-            return self.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .filter(m -> {
-                        return m.getMemberElement() instanceof ActionUsage au && this.isStandardStartAction(au);
-                    })
-                    .toList();
-        }
-        return List.of();
-    }
-
-    public List<Membership> getAllStandardDoneActions(Namespace self) {
-        if (this.isPart(self) || this.isAction(self)) {
-            return self.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .filter(m -> {
-                        return m.getMemberElement() instanceof ActionUsage au && this.isStandardDoneAction(au);
-                    })
-                    .toList();
-        }
-        return List.of();
-    }
 
     /**
      * Collects all the sources and targets of all {@link SuccessionAsUsage} contained in the given object.
-     * 
+     *
      * @param self
      *            the container
      * @return a list of {@link Element}s
@@ -434,14 +336,11 @@ public class UtilService {
                     .map(SuccessionAsUsage.class::cast)
                     .toList();
             for (SuccessionAsUsage succession : successions) {
-                Element source = this.getSource(succession);
+                Feature source = succession.getSourceFeature();
                 if (source != null) {
                     result.add(source);
                 }
-                Element target = this.getTarget(succession);
-                if (target != null) {
-                    result.add(target);
-                }
+                result.addAll(succession.getTargetFeature());
             }
         }
         return result;
@@ -895,22 +794,5 @@ public class UtilService {
             result = SysmlPackage.eINSTANCE.getViewDefinition();
         }
         return result;
-    }
-
-    /**
-     * Gets all memberships referencing the given feature with the specified id
-     *
-     * @param sourceFeature
-     *            the source feature
-     * @param membershipId
-     *            the id of the membership
-     * @return membership or <code>null</code> if not found
-     */
-    private Membership getReferencingMembershipWithId(Feature sourceFeature, String membershipId) {
-        return EMFUtils.getInverse(sourceFeature, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream()
-                .filter(setting -> setting.getEObject() instanceof Membership membership && membershipId.equals(membership.getElementId()))
-                .map(setting -> (Membership) setting.getEObject())
-                .findFirst()
-                .orElse(null);
     }
 }

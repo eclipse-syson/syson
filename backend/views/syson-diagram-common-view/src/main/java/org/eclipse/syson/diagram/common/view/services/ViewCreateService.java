@@ -24,10 +24,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
@@ -93,8 +96,11 @@ public class ViewCreateService {
 
     private final UtilService utilService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
-            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService feedbackMessageService) {
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
@@ -737,14 +743,15 @@ public class ViewCreateService {
         return result;
     }
 
-    public Element createSuccessionEdge(Element successionSource, Element successionTarget, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
-        EObject successionOwner = this.getSourceOwner(sourceNode, editingContext, diagramService);
-        if (this.utilService.isStandardStartAction(successionSource)) {
-            // When the source of the succession is the standard start action,
-            // successionSource is a Membership instead of an ActionUsage
-            // In this case, its owner cannot be obtained by getOwner() method.
-            successionOwner = successionSource.eContainer();
+
+    public Element createSuccessionEdge(Element successionSource, Element successionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, IDiagramService diagramService) {
+        if (!this.isInSameGraphicalContainer(sourceNode, targetNode, diagramService)) {
+            // The current implementation only rely on the semantic features "sourceFeature" and "targetFeature" to find source and target
+            // In order to avoid duplicated edges in case the source/target is displayed more than once we forbid the display of cross container edge
+            this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container SuccessionAsUsage", MessageLevel.WARNING));
+            return successionSource;
         }
+        EObject successionOwner = this.getSourceOwner(sourceNode, editingContext, diagramService);
         return this.createSuccessionEdge(successionSource, successionTarget, successionOwner);
     }
 
@@ -773,9 +780,6 @@ public class ViewCreateService {
             if (membership.getMemberElement() instanceof ActionUsage au) {
                 referenceSubSetting.setReferencedFeature(au);
             }
-            // Keep track of the selected membership in order to be able to identify uniquely the source/target
-            // graphically
-            referenceUsage.getAliasIds().add(membership.getElementId());
         } else if (sourceOrTarget instanceof ActionUsage au) {
             referenceSubSetting.setReferencedFeature(au);
         }
@@ -791,15 +795,8 @@ public class ViewCreateService {
      *         an element that will own the standard start action.
      * @return the {@link Membership} element containing the start action in its memberElement feature.
      */
-    public Membership addStartAction(Element ownerElement) {
-        var standardStartAction = this.utilService.retrieveStandardStartAction(ownerElement);
-        if (standardStartAction != null) {
-            var membership = SysmlFactory.eINSTANCE.createMembership();
-            membership.setMemberElement(standardStartAction);
-            ownerElement.getOwnedRelationship().add(membership);
-            return membership;
-        }
-        return null;
+    public ActionUsage addStartAction(Element ownerElement) {
+        return this.utilService.retrieveStandardStartAction(ownerElement);
     }
 
     /**
@@ -809,15 +806,8 @@ public class ViewCreateService {
      *         an element that will own the standard done action.
      * @return the {@link Membership} element containing the done action in its memberElement feature.
      */
-    public Membership addDoneAction(Element ownerElement) {
-        var standardDoneAction = this.utilService.retrieveStandardDoneAction(ownerElement);
-        if (standardDoneAction != null) {
-            var membership = SysmlFactory.eINSTANCE.createMembership();
-            membership.setMemberElement(standardDoneAction);
-            ownerElement.getOwnedRelationship().add(membership);
-            return membership;
-        }
-        return null;
+    public ActionUsage addDoneAction(Element ownerElement) {
+        return this.utilService.retrieveStandardDoneAction(ownerElement);
     }
 
     /**
@@ -1049,5 +1039,12 @@ public class ViewCreateService {
             return namespaceImport;
         }
         return self;
+    }
+    
+    private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {
+        Diagram diagram = diagramService.getDiagramContext().getDiagram();
+        var sourceParentNode = new NodeFinder(diagram).getParent(sourceNode);
+        var targetParentNode = new NodeFinder(diagram).getParent(targetNode);
+        return Objects.equals(sourceParentNode, targetParentNode);
     }
 }
