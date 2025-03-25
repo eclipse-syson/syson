@@ -224,7 +224,7 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     @Override
     public EList<Association> getAssociation() {
         List<Association> associations = new ArrayList<>();
-        this.getType().stream()
+        super.getType().stream()
                 .filter(Association.class::isInstance)
                 .map(Association.class::cast)
                 .forEach(associations::add);
