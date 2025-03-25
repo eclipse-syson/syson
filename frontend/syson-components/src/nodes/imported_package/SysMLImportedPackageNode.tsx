@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,7 +186,9 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
 
     const labelElement = data.insideLabel && (
       <>
-        <Typography color={'black'}>{visibilityPart()}</Typography>
+        <Typography color={'black'} data-svg="text">
+          {visibilityPart()}
+        </Typography>
         <Label diagramElementId={id} label={splitLabel} faded={data.faded} />
       </>
     );
@@ -225,7 +227,8 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
               ...importedPackageHeaderStyle(theme, data.style, !!selected, data.isHovered, data.faded),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
-            }}>
+            }}
+            data-svg="rect">
             {data.insideLabel ? (
               <Label diagramElementId={id} label={{ ...label, text: '  ' }} faded={data.faded} />
             ) : null}
@@ -235,7 +238,8 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
               ...importedPackageContainerStyle(theme, data.style, !!selected, data.isHovered, data.faded),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
-            }}>
+            }}
+            data-svg="rect">
             {labelElement}
           </div>
         </div>

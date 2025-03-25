@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,7 +186,8 @@ export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
               ...packageHeaderStyle(theme, data.style, !!selected, data.isHovered, data.faded),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
-            }}>
+            }}
+            data-svg="rect">
             {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} /> : null}
           </div>
           <div
@@ -195,6 +196,7 @@ export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
             }}
+            data-svg="rect"
           />
         </div>
       </>
