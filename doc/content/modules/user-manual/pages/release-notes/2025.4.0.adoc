@@ -235,6 +235,10 @@ The importer can now import SysML files that contain `FeatureChainingExpression`
 
 image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=85%,height=85%]
 
+- It is now possible, in diagrams, to reduce the width of `NamespaceImport` graphical nodes with a long name as their label can now be wrapped.
+
+image::namespace-import-wrapped-label.png[NamesapceImport wrapped label, width=85%,height=85%]
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

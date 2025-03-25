@@ -133,6 +133,7 @@ These implicit redefinitions are not visible in the diagrams nor the explorer (l
 The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
 - https://github.com/eclipse-syson/syson/issues/1120[#1120] [general-view] Add a graphical edge to represent the composition between `OccurrenceDefinition` and its `OccurrenceUsages`.
 - https://github.com/eclipse-syson/syson/issues/1125[#1125] [general-view] Simplify "Done" and "Start" actions
+- https://github.com/eclipse-syson/syson/issues/1131[#1131] [diagrams] Allow `NamespaceImport` graphical node labels to be wrapped to handle long names more easily.
 
 === New features
 

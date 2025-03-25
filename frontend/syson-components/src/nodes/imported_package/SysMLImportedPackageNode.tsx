@@ -146,7 +146,6 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
       ...data.insideLabel,
       style: {
         ...data?.insideLabel?.style,
-        whiteSpace: 'pre',
         overflow: 'hidden',
         paddingRight: '0',
         justifyContent: 'flex-start',
