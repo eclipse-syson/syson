@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -148,7 +148,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
               left: '0px',
               zIndex: '-1',
             }}>
-            <svg viewBox={`0 0 ${nodeWidth} ${nodeHeight}`}>
+            <svg viewBox={`0 0 ${nodeWidth} ${nodeHeight}`} data-svg="svg">
               <path
                 style={svgPathStyle(theme, data.style, data.faded)}
                 d={`M ${borderOffset},${borderOffset} H ${nodeWidth - 15} L ${nodeWidth - borderOffset} 15 V ${

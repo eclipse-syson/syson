@@ -116,8 +116,6 @@ import org.eclipse.syson.sysml.ViewpointUsage;
 import org.eclipse.syson.sysml.WhileLoopActionUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Switch allowing to compute implicit specializations for a given Element.
@@ -125,8 +123,6 @@ import org.slf4j.LoggerFactory;
  * @author arichard
  */
 public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specialization>> {
-
-    private final Logger logger = LoggerFactory.getLogger(ImplicitSpecializationSwitch.class);
 
     private final List<Specialization> existingSpecializations;
 
@@ -1724,9 +1720,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
             parameters = step.getParameter();
         }
         if (parameters.size() > index) {
-            if (parameters.get(index).getDirection() != feature.getDirection()) {
-                this.logger.warn("Cannot create an implicit parameter definition from {} to {}: the Features don't have the same direction", feature, parameters.get(index));
-            } else {
+            if (parameters.get(index).getDirection() == feature.getDirection()) {
                 result = Optional.ofNullable(this.implicitRedefinition(feature, parameters.get(index)));
             }
         }
