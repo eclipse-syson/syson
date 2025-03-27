@@ -49,6 +49,7 @@ import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
+import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type</b></em>'. <!-- end-user-doc -->
@@ -516,6 +517,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .forEach(ownedSpecializations::add);
         var implicitSpecializations = new ImplicitSpecializationSwitch(ownedSpecializations).doSwitch(this);
         for (var specialization : implicitSpecializations) {
+            // See {@link SpecializationImpl#getOwningRelatedElement()} for explanation
+            specialization.eAdapters().add(new VirtualLinkAdapter(this, SysmlPackage.eINSTANCE.getRelationship_OwningRelatedElement().getName()));
             ownedSpecializations.add(specialization);
         }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedSpecialization(), ownedSpecializations.size(), ownedSpecializations.toArray());

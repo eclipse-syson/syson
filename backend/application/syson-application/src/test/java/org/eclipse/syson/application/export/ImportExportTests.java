@@ -12,19 +12,36 @@
  *******************************************************************************/
 package org.eclipse.syson.application.export;
 
-import java.io.IOException;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
+import org.eclipse.sirius.web.application.project.services.ProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.application.export.checker.SysmlImportExportChecker;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,19 +57,50 @@ public class ImportExportTests extends AbstractIntegrationTests {
     private SysMLExternalResourceLoaderService sysmlLoader;
 
     @Autowired
-    private IEditingDomainFactory editingDomainFactory;
+    private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
     private SysMLv2DocumentExporter exporter;
 
     @Autowired
-    private SysMLEditingContextProcessor sysMLEditingContextProcessor;
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private ProjectApplicationService projectCreationService;
+
+    @Autowired
+    private IProjectEditingContextService projectToEditingContext;
+
+    @Autowired
+    private IProjectApplicationService projectDeletionService;
 
     private SysmlImportExportChecker checker;
+    
+    private String projectId;
 
     @BeforeEach
     public void setUp() {
-        this.checker = new SysmlImportExportChecker(this.sysmlLoader, this.editingDomainFactory, this.exporter, this.sysMLEditingContextProcessor);
+        this.givenInitialServerState.initialize();
+        UUID randomUUID = UUID.randomUUID();
+        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of()));
+        assertThat(project instanceof CreateProjectSuccessPayload);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        this.projectId = ((CreateProjectSuccessPayload) project).project().id().toString();
+
+        Optional<String> editingContextId = this.projectToEditingContext.getEditingContextId(this.projectId);
+        Optional<IEditingContext> optEditingContext = this.editingContextSearchService.findById(editingContextId.get());
+
+        this.checker = new SysmlImportExportChecker(this.sysmlLoader, this.exporter, (EditingContext) optEditingContext.get());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        IPayload payload = this.projectDeletionService.deleteProject(new DeleteProjectInput(UUID.randomUUID(), this.projectId));
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
     }
 
     @Test
@@ -119,16 +167,14 @@ public class ImportExportTests extends AbstractIntegrationTests {
          * <ul>
          * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
          * complete syntax "first source then target;"</li>
-         * <li>The current implementation of implicit specialization causes some issues during name de-resolution see
-         * https://github.com/eclipse-syson/syson/issues/1029</li>
          * <ul>
          */
         var expected = """
                 action def ActionDef1 {
                     action a0;
-                    then ActionDef1::a1;
+                    then a1;
                     action a1;
-                    then ActionDef1::a2;
+                    then a2;
                     action a2;
                 }""";
 
@@ -150,14 +196,12 @@ public class ImportExportTests extends AbstractIntegrationTests {
          * <ul>
          * <li>The strange construction of the Membership referencing 'start' is hard to detect so we chose to use the
          * complete syntax "first source then target;"</li>
-         * <li>The current implementation of implicit specialization causes some issues during name de-resolution see
-         * https://github.com/eclipse-syson/syson/issues/1029</li>
          * <ul>
          */
         var expected = """
                 action def ActionDef1 {
                     action a2;
-                    first Actions::Action::start then a2;
+                    first start then a2;
                 }""";
 
         this.checker.check(input, expected);
