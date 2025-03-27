@@ -104,6 +104,24 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with TransitionUsage used between actions, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkTransitionUsageBetweenActions() throws IOException {
+        var input = """
+                action def A1 {
+                    private import ScalarValues::Integer;
+                    attribute x : Integer;
+                    action a1;
+                    action a2;
+                    first a1 if x == 1 then a2;
+                    succession s1 first a1 if x > 1 & x < 2 then a2;
+                    succession s2 first a1 if x > 2 & x < 3 then a2 {
+                        doc /* Some documentation on that succession */
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with a PortDefinition, when importing/exporting the file, then check that the conjugated port reference is kept during the process.")
     public void checkConjugatedPortUse() throws IOException {
         var input = """
@@ -235,6 +253,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
 
         this.checker.check(input, input);
     }
+
     /**
      * Test import/export on test file UseCaseTest.sysml. The content of UseCaseTest.sysml that have been copied below
      * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the

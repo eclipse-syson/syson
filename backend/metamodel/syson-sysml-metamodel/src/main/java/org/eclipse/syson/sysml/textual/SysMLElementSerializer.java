@@ -116,6 +116,8 @@ import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
@@ -1766,8 +1768,68 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseTransitionFeatureMembership(TransitionFeatureMembership transitionFeatureMembership) {
+        Appender builder = this.newAppender();
+
+        if (transitionFeatureMembership.getKind() == TransitionFeatureKind.GUARD) {
+            List<String> expressions = transitionFeatureMembership.getOwnedRelatedElement().stream()
+                    .filter(Expression.class::isInstance)
+                    .map(Expression.class::cast)
+                    .map(this::doSwitch)
+                    .toList();
+        } else {
+            this.reportConsumer.accept(Status.warning("TransitionFeatureMembership of kind {0} are not yet handled", transitionFeatureMembership.getKind()));
+        }
+
+        return super.caseTransitionFeatureMembership(transitionFeatureMembership);
+    }
+
+    private boolean isDecisionTransition(TransitionUsage transitionUsage) {
+        return transitionUsage.specializesFromLibrary("Actions::Action::decisionTransitions");
+    }
+
+    @Override
     public String caseTransitionUsage(TransitionUsage transitionUsage) {
-        this.reportUnhandledType(transitionUsage);
+        Appender builder = this.newAppender();
+
+        if (this.isDecisionTransition(transitionUsage)) {
+            Appender declarionAppender = this.newAppender();
+            this.appendUsageDeclaration(declarionAppender, transitionUsage);
+            if (!declarionAppender.isEmpty()) {
+                builder.append("succession ").append(declarionAppender.toString());
+            }
+
+            Set<Element> alreadyHandledElements = new HashSet<>();
+
+            Feature sourceFeature = transitionUsage.sourceFeature();
+            if (sourceFeature != null) {
+                builder.appendWithSpaceIfNeeded("first ").append(this.getDeresolvableName(sourceFeature, transitionUsage));
+            }
+
+            if (!transitionUsage.getGuardExpression().isEmpty()) {
+                builder.appendWithSpaceIfNeeded("if");
+                for (var guardExpression : transitionUsage.getGuardExpression()) {
+                    alreadyHandledElements.add(guardExpression.getOwningMembership());
+                    builder.appendWithSpaceIfNeeded(this.doSwitch(guardExpression));
+                }
+            }
+
+            builder.appendWithSpaceIfNeeded("then ").append(this.getDeresolvableName(transitionUsage.getTarget(), transitionUsage));
+            alreadyHandledElements.add(transitionUsage.getSuccession().getOwningMembership());
+            
+            // Append usage body (removed already handled element : Succession and guard
+            List<Relationship> children = transitionUsage.getOwnedRelationship().stream()
+                    .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                    .filter(e -> !alreadyHandledElements.contains(e) && !(e instanceof ParameterMembership))
+                    .toList();
+            this.appendChildrenContent(builder, transitionUsage, children);
+
+            return builder.toString();
+        } else {
+            // Not handle yet (missing the case of StateTransition)
+            this.reportUnhandledType(transitionUsage);
+        }
+
         return "";
     }
 
