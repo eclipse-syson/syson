@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.stream.Streams;
@@ -278,7 +279,7 @@ public class SySONLibraryUpdateTests extends AbstractIntegrationTests {
     }
 
     private Project loadProjectByName(final String projectName) {
-        final List<Project> candidates = this.projectSearchService.findAll(ScrollPosition.keyset(), 10).stream()
+        final List<Project> candidates = this.projectSearchService.findAll(ScrollPosition.keyset(), 10, Map.of()).stream()
                 .filter(project -> project.getName().equals(projectName))
                 .toList();
         if (candidates.size() != 1) {

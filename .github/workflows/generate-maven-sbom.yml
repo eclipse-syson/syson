@@ -31,6 +31,7 @@ permissions:
 jobs:
   generate-sbom:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     outputs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     steps:

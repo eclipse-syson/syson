@@ -25,7 +25,6 @@ import {
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
 import {
-  TreeItemContextMenuEntry,
   treeItemContextMenuEntryExtensionPoint,
   treeItemContextMenuEntryOverrideExtensionPoint,
   TreeItemContextMenuOverrideContribution,
@@ -59,6 +58,7 @@ import {
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
 
+import { GQLTreeItemContextMenuEntry } from '@eclipse-sirius/sirius-components-trees';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
 import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
@@ -149,7 +149,7 @@ extensionRegistry.addComponent(footerExtensionPoint, {
 
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
   {
-    canHandle: (entry: TreeItemContextMenuEntry) => {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
       return entry.id.includes('updateLibrary');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,
