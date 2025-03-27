@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,8 @@ public class CheckDiagramElementCount implements IDiagramChecker {
 
     private int newEdgeCount;
 
+    private int newBorderNodeCount;
+
     public CheckDiagramElementCount(DiagramComparator diagramComparator) {
         this.diagramComparator = diagramComparator;
     }
@@ -48,11 +50,17 @@ public class CheckDiagramElementCount implements IDiagramChecker {
         return this;
     }
 
+    public CheckDiagramElementCount hasNewBorderNodeCount(int expectedBorderNodeCount) {
+        this.newBorderNodeCount = expectedBorderNodeCount;
+        return this;
+    }
+
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         assertThat(newNodes).as("The diagram should contain " + this.newNodeCount + " new nodes").hasSize(this.newNodeCount);
         List<Edge> newEdges = this.diagramComparator.newEdges(previousDiagram, newDiagram);
         assertThat(newEdges).as("The diagram should contain " + this.newEdgeCount + " new edges").hasSize(this.newEdgeCount);
+        assertThat(newNodes.stream().filter(Node::isBorderNode).count()).as("The diagram should contain " + this.newBorderNodeCount + " new border nodes").isEqualTo(this.newBorderNodeCount);
     }
 }

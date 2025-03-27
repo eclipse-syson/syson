@@ -334,6 +334,23 @@ public class ViewLabelService extends LabelService {
         return this.getTransitionLabel(transition, true);
     }
 
+    /**
+     * Return the label for the given {@link Usage} represented as a border node.
+     *
+     * @param usage
+     *         the given {@link Usage}.
+     * @return the label for the given {@link Usage}.
+     */
+    public String getBorderNodeUsageLabel(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(usage.getDeclaredName())
+                .append(this.getTypingLabel(usage))
+                .append(this.getRedefinitionLabel(usage))
+                .append(this.getSubsettingLabel(usage));
+        return label.toString();
+    }
+
     private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
         return elements.stream()
                 .map(action -> {

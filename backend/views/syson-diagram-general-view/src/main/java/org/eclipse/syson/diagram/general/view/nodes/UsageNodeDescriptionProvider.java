@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,6 +95,17 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         });
 
         return reusedChildren;
+    }
+
+    @Override
+    protected Set<NodeDescription> getBorderNodes(IViewDiagramElementFinder cache) {
+        var borderNodes = new LinkedHashSet<NodeDescription>();
+
+        if (SysmlPackage.eINSTANCE.getPartUsage().equals(this.eClass)) {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
+        }
+
+        return borderNodes;
     }
 
     @Override

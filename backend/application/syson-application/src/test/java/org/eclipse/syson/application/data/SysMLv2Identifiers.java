@@ -50,6 +50,10 @@ public final class SysMLv2Identifiers {
 
     public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT = "5465efdc-f100-4854-9f86-d09f63de1d3b";
 
+    public static final String INTERCONNECTION_VIEW_WITH_FLOW_CONNECTION_CONTEXT_ID = "2e9d176e-8243-4033-8b4a-2b14ec5a8572";
+
+    public static final String INTERCONNECTION_VIEW_WITH_FLOW_CONNECTION_DIAGRAM = "057c1bbe-6fe3-498e-9a88-2d891a3e87c0";
+
     public static final String SYSON_STUDIO_EDITING_CONTEXT_ID = "6323955c-ceff-48e3-88ad-bd3ace221729";
 
     public static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";

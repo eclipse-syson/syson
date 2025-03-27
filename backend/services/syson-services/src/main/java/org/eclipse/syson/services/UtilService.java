@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
@@ -795,4 +796,17 @@ public class UtilService {
         }
         return result;
     }
+
+    public boolean isInFeature(Feature feature) {
+        return FeatureDirectionKind.IN.equals(feature.getDirection());
+    }
+
+    public boolean isOutFeature(Feature feature) {
+        return FeatureDirectionKind.OUT.equals(feature.getDirection());
+    }
+
+    public boolean isInOutFeature(Feature feature) {
+        return FeatureDirectionKind.INOUT.equals(feature.getDirection());
+    }
+
 }
