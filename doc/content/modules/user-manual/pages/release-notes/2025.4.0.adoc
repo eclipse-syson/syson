@@ -338,6 +338,9 @@ action def A1 {
     else a3;
 }
 ```  
+- In _General View_ diagram, `PortUsage` are now represented as border nodes on `PartUsage` nodes.
+
+image::gv-port-as-border-node.png[Port as border node, width=85%,height=85%]
 
 == Dependency update
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -113,15 +113,15 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(AQLUtils.getSelfServiceCallExpression("isInFeature"))
-                        .style(this.createImageNodeStyleDescription("/images/Feature_In.svg", borderColor, true))
-                .build(),
+                        .style(this.createImageNodeStyleDescription("/images/feature_in.svg", borderColor, true))
+                        .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(AQLUtils.getSelfServiceCallExpression("isOutFeature"))
-                        .style(this.createImageNodeStyleDescription("/images/Feature_Out.svg", borderColor, true))
+                        .style(this.createImageNodeStyleDescription("/images/feature_out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition(AQLUtils.getSelfServiceCallExpression("isInOutFeature"))
-                        .style(this.createImageNodeStyleDescription("/images/Feature_Inout.svg", borderColor, true))
+                        .style(this.createImageNodeStyleDescription("/images/feature_inout.svg", borderColor, true))
                         .build()
         );
     }

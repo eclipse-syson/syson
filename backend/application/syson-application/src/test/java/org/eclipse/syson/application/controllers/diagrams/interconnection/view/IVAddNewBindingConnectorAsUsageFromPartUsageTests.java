@@ -133,6 +133,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
                     // we should have 1 more edge (the new binding connector as usage edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
+                    .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
         };
 
@@ -168,6 +169,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
                     // we should have 1 more edge (the new binding connector as usage edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
+                    .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
         };
 
