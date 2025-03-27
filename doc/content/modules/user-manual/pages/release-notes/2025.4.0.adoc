@@ -97,7 +97,7 @@ image::release-notes-publication-import-result.png[Project contents after succes
 
 If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
 
-image::release-notes-publication-import-user-library.png.png[Imported published library under User libraries, width=85%,height=85%]
+image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=85%,height=85%]
 
 
 
