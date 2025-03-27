@@ -137,6 +137,7 @@ The importer can now import SysML files that contain `FeatureChainingExpression`
 - https://github.com/eclipse-syson/syson/issues/1131[#1131] [diagrams] Allow `NamespaceImport` graphical node labels to be wrapped to handle long names more easily.
 - https://github.com/eclipse-syson/syson/issues/1143[#1143] [export] Implement textual export of `Decision Transition Usages`.
 - https://github.com/eclipse-syson/syson/issues/1147[#1147] [export] Implement textual export of `DecisionNode`.
+- https://github.com/eclipse-syson/syson/issues/1141[#1141] [general-view] Add `PortUsages` as border nodes in General View.
 
 === New features
 

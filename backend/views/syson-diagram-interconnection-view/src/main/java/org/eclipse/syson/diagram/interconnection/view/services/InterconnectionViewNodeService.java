@@ -21,8 +21,6 @@ import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagram
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
@@ -114,18 +112,6 @@ public class InterconnectionViewNodeService extends ViewNodeService {
             items = actionUsage.getNestedItem().stream().filter(ni -> SysmlPackage.eINSTANCE.getItemUsage().equals(ni.eClass())).toList();
         }
         return items;
-    }
-
-    public boolean isInFeature(Feature feature) {
-        return FeatureDirectionKind.IN.equals(feature.getDirection());
-    }
-
-    public boolean isOutFeature(Feature feature) {
-        return FeatureDirectionKind.OUT.equals(feature.getDirection());
-    }
-
-    public boolean isInOutFeature(Feature feature) {
-        return FeatureDirectionKind.INOUT.equals(feature.getDirection());
     }
 
 }

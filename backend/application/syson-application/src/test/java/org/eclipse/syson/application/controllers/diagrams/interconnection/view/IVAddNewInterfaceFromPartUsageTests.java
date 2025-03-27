@@ -133,6 +133,7 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
                     // we should have 1 more edge (the new interface edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
+                    .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
         };
 
@@ -170,6 +171,7 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
                     // we should have 1 more edge (the new interface edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
+                    .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
         };
 
