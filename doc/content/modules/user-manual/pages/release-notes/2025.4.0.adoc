@@ -310,6 +310,20 @@ action def ActionDef1 {
 }
 ```
 
+- Support the textual export of `TransitionUsage` owned by `ActionUsage` and `ActionDefinition` such as:
+
+```
+action def A1 {
+    private import ScalarValues::Integer;
+    attribute x : Integer;
+    action a1;
+    action a2;
+    first a1 if x == 1 then a2;
+    succession s1 first a1 if x > 1 & x < 2 then a2;
+    succession s2 first a1 if x > 2 & x < 3 then a2;
+}
+```
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
