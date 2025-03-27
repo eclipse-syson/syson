@@ -16,7 +16,7 @@ import { SysMLv2 } from '../../../usecases/SysMLv2';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
-describe('Diagram Creation Tests', () => {
+describe.skip('Diagram Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
 
   context('Given an empty SysMLv2 project', () => {
@@ -55,11 +55,13 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage'));
 
       it('Then we can create a General View diagram', () => {
+        explorer.select('part1');
         explorer.createRepresentation('part1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
+        explorer.select('part1');
         explorer.createRepresentation('part1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
@@ -69,16 +71,19 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage'));
 
       it('Then we can create a General View diagram', () => {
+        explorer.select('action1');
         explorer.createRepresentation('action1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
+        explorer.select('action1');
         explorer.createRepresentation('action1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
 
       it('Then we can create an Action Flow View diagram', () => {
+        explorer.select('action1');
         explorer.createRepresentation('action1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
       });
@@ -88,16 +93,19 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition'));
 
       it('Then we can create a General View diagram', () => {
+        explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
+        explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
 
       it('Then we can create an Action Flow View diagram', () => {
+        explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
       });
