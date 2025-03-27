@@ -103,6 +103,7 @@ The `Map<String, Object>` is handled by the default serializer/deserializer.
 - https://github.com/eclipse-syson/syson/issues/1091[#1091] [export] Fix `FeatureReferenceExpression` export for elements that should be exported as qualified names.
 Exporting a SysML model containing a `FeatureReferenceExpression` now correctly produces qualified names where it should.
 - https://github.com/eclipse-syson/syson/issues/1077[#1077] [explorer] Fix navigation in case of project containing both sysml and non-sysml model elements
+- https://github.com/eclipse-syson/syson/issues/1029[#1029] [metamodel] Fix an issue where the resolution of the names of elements accessed using implicit specialization failed.
 
 === Improvements
 

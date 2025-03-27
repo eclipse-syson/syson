@@ -12,23 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.application.export.checker;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
-import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.springframework.http.MediaType;
@@ -42,29 +37,22 @@ public class SysmlImportExportChecker {
 
     private final SysMLExternalResourceLoaderService sysmlLoader;
 
-    private final IEditingDomainFactory editingDomainFactory;
-
     private final SysMLv2DocumentExporter exporter;
 
-    private final SysMLEditingContextProcessor sysMLEditingContextProcessor;
+    private final EditingContext editingContext;
 
-    public SysmlImportExportChecker(SysMLExternalResourceLoaderService sysmlLoader, IEditingDomainFactory editingDomainFactory, SysMLv2DocumentExporter exporter, SysMLEditingContextProcessor sysMLEditingContextProcessor) {
+    public SysmlImportExportChecker(SysMLExternalResourceLoaderService sysmlLoader, SysMLv2DocumentExporter exporter, EditingContext editingContext) {
         super();
-        this.sysMLEditingContextProcessor = Objects.requireNonNull(sysMLEditingContextProcessor);
+        this.editingContext = Objects.requireNonNull(editingContext);
         this.sysmlLoader = Objects.requireNonNull(sysmlLoader);
-        this.editingDomainFactory = editingDomainFactory;
-        this.exporter = exporter;
+        this.exporter = Objects.requireNonNull(exporter);
     }
 
     public void check(String importedText, String expectedResult) throws IOException {
 
-        UUID uuid = UUID.randomUUID();
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        this.sysMLEditingContextProcessor.preProcess(editingContext);
-
         try (var inputStream = new ByteArrayInputStream(importedText.getBytes())) {
-            Optional<Resource> optLoadedResources = this.sysmlLoader.getResource(inputStream, this.createFakeURI(uuid), editingDomain.getResourceSet(), false);
+            Optional<Resource> optLoadedResources = this.sysmlLoader.getResource(inputStream, this.createFakeURI(UUID.randomUUID()), this.editingContext.getDomain().getResourceSet(),
+                    false);
 
             assertTrue(optLoadedResources.isPresent());
             Optional<byte[]> bytes = this.exporter.getBytes(optLoadedResources.get(), MediaType.TEXT_HTML.toString());

@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
@@ -69,7 +68,7 @@ public class SemanticCheckerService {
      * @param semanticChecker
      *            the checks that needs to be run
      */
-    public <T extends Element> void checkElement(Step<DiagramRefreshedEventPayload> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
+    public <T extends Element> void checkElement(Step<?> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
         ISemanticChecker checker = editingContext -> {
             Optional<Object> optElement = this.objectSearchService.getObject(editingContext, idSupplier.get());
             assertThat(optElement).isPresent();
@@ -81,7 +80,7 @@ public class SemanticCheckerService {
         this.checkEditingContext(checker, verifier);
     }
 
-    public void checkEditingContext(ISemanticChecker semanticChecker, Step<DiagramRefreshedEventPayload> verifier) {
+    public void checkEditingContext(ISemanticChecker semanticChecker, Step<?> verifier) {
         Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(this.editingContextId,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);

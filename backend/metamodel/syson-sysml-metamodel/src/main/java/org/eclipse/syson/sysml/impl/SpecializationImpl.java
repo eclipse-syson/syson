@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Specialization</b></em>'. <!-- end-user-doc -->
@@ -133,15 +134,30 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Special case to handle implicit specialization. In the current implementation, the specialization are not
+     * attached to the model, they are only added using the {@link Type#getOwnedSpecialization()} derived feature. It
+     * causes some issues during name resolution process. In order to virtually connect them to the model we add a
+     * special adapter to be able to retrieve the "virtual" container of the parent.
      *
-     * @generated
+     * @generated NOT
+     */
+    @Override
+    public Element getOwningRelatedElement() {
+        Element owningRelatedElement = super.getOwningRelatedElement();
+        if (owningRelatedElement == null && this.isIsImplied()) {
+            owningRelatedElement = VirtualLinkAdapter.getVirtualLink(this, SysmlPackage.eINSTANCE.getRelationship_OwningRelatedElement().getName()).orElse(null);
+        }
+        return owningRelatedElement;
+    }
+
+    /**
+     * <!-- begin-user-doc -->The Type that is the specific Type of this Specialization and owns it as its
+     * owningRelatedElement<!-- end-user-doc -->
+     *
+     * @generated NOT
      */
     public Type basicGetOwningType() {
-        // TODO: implement this method to return the 'Owning Type' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getSpecific();
     }
 
     /**

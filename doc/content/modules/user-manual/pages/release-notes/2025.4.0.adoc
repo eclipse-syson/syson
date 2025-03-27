@@ -291,6 +291,25 @@ image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=85%,hei
 
 image::namespace-import-wrapped-label.png[NamesapceImport wrapped label, width=85%,height=85%]
 
+- Improve the name used in exported files of objects referenced by an implicit `Specialization`.
+For example, the name used to reference the "start" `ActionUsage` in the following model has been improved:
+
+.Before
+```
+action def ActionDef1 {
+    action a2;
+    first Actions::Action::start then a2;
+}
+```
+
+.After
+```
+action def ActionDef1 {
+    action a2;
+    first start then a2;
+}
+```
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
