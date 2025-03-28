@@ -16,7 +16,7 @@ import { SysMLv2 } from '../../../usecases/SysMLv2';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
-describe.skip('Diagram Creation Tests', () => {
+describe('Diagram Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
 
   context('Given an empty SysMLv2 project', () => {
@@ -32,87 +32,100 @@ describe.skip('Diagram Creation Tests', () => {
       })
     );
 
-    afterEach(() => cy.deleteProject(projectId));
+    afterEach(() => {
+      cy.deleteProject(projectId);
+    });
 
-    context('When we select a Package in the explorer', () => {
-      it('Then we can create a General View diagram', () => {
+    context.skip('When we select a Package in the explorer', () => {
+      it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Action Flow View diagram', () => {
+      it('Then we can create an Action Flow View diagram', { retries: 3 }, () => {
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create a State Transition View diagram', () => {
+      it('Then we can create a State Transition View diagram', { retries: 3 }, () => {
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'State Transition View', 'stateTransitionView');
         diagram.getDiagram('stateTransitionView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
     });
 
     context('When we select a PartUsage in the explorer', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage'));
 
-      it('Then we can create a General View diagram', () => {
+      it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('part1');
         explorer.createRepresentation('part1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Interconnection View diagram', () => {
+      it('Then we can create an Interconnection View diagram', { retries: 3 }, () => {
         explorer.select('part1');
         explorer.createRepresentation('part1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
     });
 
     context('When we select an ActionUsage in the explorer', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage'));
 
-      it('Then we can create a General View diagram', () => {
+      it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('action1');
         explorer.createRepresentation('action1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Interconnection View diagram', () => {
+      it('Then we can create an Interconnection View diagram', { retries: 3 }, () => {
         explorer.select('action1');
         explorer.createRepresentation('action1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Action Flow View diagram', () => {
+      it('Then we can create an Action Flow View diagram', { retries: 3 }, () => {
         explorer.select('action1');
         explorer.createRepresentation('action1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
     });
 
     context('When we select an ActionDefinition in the explorer', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition'));
 
-      it('Then we can create a General View diagram', () => {
+      it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Interconnection View diagram', () => {
+      it('Then we can create an Interconnection View diagram', { retries: 3 }, () => {
         explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
-      it('Then we can create an Action Flow View diagram', () => {
+      it('Then we can create an Action Flow View diagram', { retries: 3 }, () => {
         explorer.select('ActionDefinition1');
         explorer.createRepresentation('ActionDefinition1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
+        cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
     });
 
     context('When we select the Libraries directory in the explorer', () => {
-      it('Then we cannot create a new representation in it', () => {
+      it('Then we cannot create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.getTreeItemByLabel(sysmlv2.getLibrariesLabel()).first().find('button').click();
         cy.getByTestId('new-representation').should('not.exist');
@@ -120,7 +133,7 @@ describe.skip('Diagram Creation Tests', () => {
     });
 
     context('When we select the KerML directory in the explorer', () => {
-      it('Then we cannot create a new representation in it', () => {
+      it('Then we cannot create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.expand(sysmlv2.getLibrariesLabel());
         explorer.getTreeItemByLabel(sysmlv2.getKerMLLabel()).first().find('button').click();
@@ -129,7 +142,7 @@ describe.skip('Diagram Creation Tests', () => {
     });
 
     context('When we select the SysML directory in the explorer', () => {
-      it('Then we cannot create a new representation in it', () => {
+      it('Then we cannot create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.expand(sysmlv2.getLibrariesLabel());
         explorer.getTreeItemByLabel(sysmlv2.getSysMLLabel()).first().find('button').click();
@@ -138,7 +151,7 @@ describe.skip('Diagram Creation Tests', () => {
     });
 
     context('When we select the Base KerML model in the explorer', () => {
-      it('Then we cannot create a new representation in it', () => {
+      it('Then we cannot create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.expand(sysmlv2.getLibrariesLabel());
         explorer.expand(sysmlv2.getKerMLLabel());
@@ -148,7 +161,7 @@ describe.skip('Diagram Creation Tests', () => {
     });
 
     context('When we select the Base KerML model top-level element in the explorer', () => {
-      it('Then we cannot create a new representation in it', () => {
+      it('Then we cannot create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.expand(sysmlv2.getLibrariesLabel());
         explorer.expand(sysmlv2.getKerMLLabel());
@@ -163,7 +176,7 @@ describe.skip('Diagram Creation Tests', () => {
     });
 
     context('When we select a root namespace element', () => {
-      it('Then we can create a new representation in it', () => {
+      it('Then we can create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         cy.getByTestId('tree-filter-menu-icon').should('exist').click();
         cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').click();

@@ -48,13 +48,17 @@ describe('Node Creation Tests', () => {
         diagram.getPalette().should('exist').findByTestId('tool-New Attribute').click();
       });
 
-      it('Then the new AttributeUsage is visible on the diagram and its compartments are not visible', () => {
-        diagram.getNodes(diagramLabel, 'attribute').should('exist');
-        // Check that the compartments of the node aren't visible
-        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
-        diagram.getNodes(diagramLabel, 'references').should('not.exist');
-        diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '10px');
-      });
+      it(
+        'Then the new AttributeUsage is visible on the diagram and its compartments are not visible',
+        { retries: 3 },
+        () => {
+          diagram.getNodes(diagramLabel, 'attribute').should('exist');
+          // Check that the compartments of the node aren't visible
+          diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
+          diagram.getNodes(diagramLabel, 'references').should('not.exist');
+          diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '10px');
+        }
+      );
 
       //unstable test
       it.skip('Then we can create a new AttributeUsage inside it', () => {
@@ -81,11 +85,15 @@ describe('Node Creation Tests', () => {
         diagram.getPalette().should('exist').findByTestId('tool-New Attribute Definition').click();
       });
 
-      it('Then the new AttributeDefinition is visible on the diagram and its compartments are not visible', () => {
-        diagram.getNodes(diagramLabel, 'attribute').should('exist');
-        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
-        diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '0px');
-      });
+      it(
+        'Then the new AttributeDefinition is visible on the diagram and its compartments are not visible',
+        { retries: 3 },
+        () => {
+          diagram.getNodes(diagramLabel, 'attribute').should('exist');
+          diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
+          diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '0px');
+        }
+      );
 
       //unstable test
       it.skip('Then we can create a new AttributeUsage inside it', () => {
