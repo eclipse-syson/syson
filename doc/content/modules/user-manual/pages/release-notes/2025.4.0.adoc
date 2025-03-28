@@ -310,6 +310,10 @@ action def ActionDef1 {
 }
 ```
 
+- In _General View_ diagram, `PortUsage` are now represented as border nodes on `PartUsage` nodes.
+
+image::gv-port-as-border-node.png[Port as border node, width=85%,height=85%]
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

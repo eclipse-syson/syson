@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="24"
+   viewBox="0 0 24 24"
+   width="24"
+   fill="#000000"
+   version="1.1"
+   id="svg6"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <defs
+     id="defs10" />
+  <path
+     d="M 24,24 H 0 V 0 h 24 z"
+     fill="none"
+     id="path2" />
+  <path
+     d="M 4,13 H 16.17 L 10.58,18.59 12,20 20,12 12,4 10.59,5.41 16.17,11 H 4 Z"
+     id="path4" />
+</svg>
