@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
@@ -1594,7 +1595,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
                 ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
                 while (iterator.hasPrevious()) {
                     Membership previous = iterator.previous();
-                    if (previous.getMemberElement() instanceof Feature feature) {
+                    if (previous.getMemberElement() instanceof Feature feature && this.isValidSourceOrTargetFeaturForSuccession(feature)) {
                         return feature;
                     }
                 }
@@ -1614,13 +1615,17 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
                 ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();
                 while (iterator.hasNext()) {
                     Membership next = iterator.next();
-                    if (next.getMemberElement() instanceof Feature feature) {
+                    if (next.getMemberElement() instanceof Feature feature && this.isValidSourceOrTargetFeaturForSuccession(feature)) {
                         return feature;
                     }
                 }
             }
         }
         return null;
+    }
+
+    private boolean isValidSourceOrTargetFeaturForSuccession(Feature feature) {
+        return !(feature instanceof Connector || feature instanceof TransitionUsage);
     }
 
     private boolean hasRedefinition(Element element) {

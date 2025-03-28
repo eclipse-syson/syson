@@ -19,14 +19,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
+import org.eclipse.sirius.web.application.project.services.ProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
@@ -46,11 +59,13 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -66,16 +81,47 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     private SysMLExternalResourceLoaderService sysmlResourceLoader;
 
     @Autowired
-    private IEditingDomainFactory editingDomainFactory;
+    private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private SysMLEditingContextProcessor sysMLEditingContextProcessor;
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private IProjectApplicationService projectDeletionService;
+
+    @Autowired
+    private ProjectApplicationService projectCreationService;
+
+    @Autowired
+    private IProjectEditingContextService projectToEditingContext;
 
     private SysMLv2SemanticImportChecker checker;
 
+    private String projectId;
+
     @BeforeEach
     public void setUp() {
-        this.checker = new SysMLv2SemanticImportChecker(this.sysmlResourceLoader, this.editingDomainFactory, this.sysMLEditingContextProcessor);
+        this.givenInitialServerState.initialize();
+        UUID randomUUID = UUID.randomUUID();
+        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of()));
+        assertThat(project instanceof CreateProjectSuccessPayload);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        this.projectId = ((CreateProjectSuccessPayload) project).project().id().toString();
+
+        Optional<String> editingContextId = this.projectToEditingContext.getEditingContextId(this.projectId);
+        Optional<IEditingContext> optEditingContext = this.editingContextSearchService.findById(editingContextId.get());
+
+        this.checker = new SysMLv2SemanticImportChecker(this.sysmlResourceLoader, (EditingContext) optEditingContext.get());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        IPayload payload = this.projectDeletionService.deleteProject(new DeleteProjectInput(UUID.randomUUID(), this.projectId));
+        assertThat(payload).isInstanceOf(SuccessPayload.class);
     }
 
     @Test
@@ -98,6 +144,35 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             FeatureChainExpression featureChaingExpression = EMFUtils.allContainedObjectOfType(resource, FeatureChainExpression.class)
                     .findFirst().get();
             assertThat(featureChaingExpression.getTargetFeature().getQualifiedName()).isEqualTo("P1::a2::pr2");
+
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a model with a SuccessionAsUsage targeting, when importing the model, then target feature should be resolved")
+    public void checkSuccessionWithImplicitSourceWithIntermediareFeatures() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    action ax2;
+                    action ax1;
+                    then ax2;
+                    then decide;
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<DecisionNode> decisionNodes = EMFUtils.allContainedObjectOfType(resource, DecisionNode.class)
+                    .toList();
+            assertThat(decisionNodes).hasSize(1);
+
+            // Succession between a1 and second decision node
+            List<SuccessionAsUsage> successionAsUsages = EMFUtils.allContainedObjectOfType(resource, SuccessionAsUsage.class)
+                    .toList();
+
+            SuccessionAsUsage first = successionAsUsages.get(0);
+            assertThat(first.getSourceFeature().getName()).isEqualTo("ax1");
+            assertThat(first.getTargetFeature()).hasSize(1).allMatch(t -> t.getName().equals("ax2"));
+            SuccessionAsUsage second = successionAsUsages.get(1);
+            assertThat(second.getSourceFeature().getName()).isEqualTo("ax1");
+            assertThat(second.getTargetFeature()).hasSize(1).allMatch(t -> t == decisionNodes.get(0));
 
         }).check(input);
     }
