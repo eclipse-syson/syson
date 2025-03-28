@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.textual;
 
-
 import static java.util.stream.Collectors.joining;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_DEFINITION_BODY_ITEM_MEMBER;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_IMPORT;
@@ -24,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -48,6 +48,8 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.ControlNode;
+import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -132,6 +134,7 @@ import org.eclipse.syson.sysml.textual.utils.Appender;
 import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.eclipse.syson.sysml.textual.utils.SysMLKeywordSwitch;
+import org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -373,7 +376,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (endFeatureMemberships.size() == 2) {
 
             EndFeatureMembership first = endFeatureMemberships.get(0);
-            if (!this.isSuccessionUsageImplicitSource(first) || !this.isSourceFeaturePreviousDefinedFeature(successionAsUsage)) {
+            if (!this.isSuccessionUsageImplicitSource(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
+                    m -> this.isNotSuccessionWithSameSource(m, successionAsUsage.getSourceFeature()))) {
                 builder.appendWithSpaceIfNeeded("first");
                 this.appendConnectorEndMember(builder, first);
             }
@@ -396,23 +400,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendChildrenContent(builder, successionAsUsage, children);
 
         return builder.toString();
-    }
-
-    private boolean isSourceFeaturePreviousDefinedFeature(SuccessionAsUsage successionAsUsage) {
-        Feature sourceFeature = successionAsUsage.getSourceFeature();
-
-        Namespace namespace = successionAsUsage.getOwningNamespace();
-        if (namespace != null) {
-
-            EList<Membership> memberships = namespace.getMembership();
-            int index = memberships.indexOf(successionAsUsage.getOwningFeatureMembership());
-            if (index > 0) {
-                Membership previousMembership = memberships.get(index - 1);
-                return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == sourceFeature;
-            }
-
-        }
-        return false;
     }
 
     /**
@@ -1793,44 +1780,104 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
 
         if (this.isDecisionTransition(transitionUsage)) {
+            this.appenDecisionTransition(transitionUsage, builder);
+        } else {
+            // Not handle yet (missing the case of StateTransition)
+            this.reportUnhandledType(transitionUsage);
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * @param transitionUsage
+     * @param builder
+     */
+    private void appenDecisionTransition(TransitionUsage transitionUsage, Appender builder) {
+        Feature sourceFeature = transitionUsage.sourceFeature();
+        boolean hasGuards = !transitionUsage.getGuardExpression().isEmpty();
+        boolean isElsePattern = !hasGuards && sourceFeature instanceof DecisionNode;
+
+        Set<Element> alreadyHandledElements = new HashSet<>();
+        if (isElsePattern) {
+            builder.appendWithSpaceIfNeeded("else ");
+        } else {
+
             Appender declarionAppender = this.newAppender();
             this.appendUsageDeclaration(declarionAppender, transitionUsage);
             if (!declarionAppender.isEmpty()) {
                 builder.append("succession ").append(declarionAppender.toString());
             }
 
-            Set<Element> alreadyHandledElements = new HashSet<>();
-
-            Feature sourceFeature = transitionUsage.sourceFeature();
-            if (sourceFeature != null) {
+            if (sourceFeature != null
+                    // Skip this part for Transition with implicit source and no declared name
+                    && (!this.isPreviousFeatureEqualsTo(sourceFeature, transitionUsage, m -> this.isNotSuccessionWithSameSource(m, sourceFeature))
+                            || !declarionAppender.isEmpty())) {
                 builder.appendWithSpaceIfNeeded("first ").append(this.getDeresolvableName(sourceFeature, transitionUsage));
             }
 
-            if (!transitionUsage.getGuardExpression().isEmpty()) {
+            if (hasGuards) {
                 builder.appendWithSpaceIfNeeded("if");
                 for (var guardExpression : transitionUsage.getGuardExpression()) {
                     alreadyHandledElements.add(guardExpression.getOwningMembership());
                     builder.appendWithSpaceIfNeeded(this.doSwitch(guardExpression));
                 }
             }
+            builder.appendWithSpaceIfNeeded("then ");
 
-            builder.appendWithSpaceIfNeeded("then ").append(this.getDeresolvableName(transitionUsage.getTarget(), transitionUsage));
-            alreadyHandledElements.add(transitionUsage.getSuccession().getOwningMembership());
-            
-            // Append usage body (removed already handled element : Succession and guard
-            List<Relationship> children = transitionUsage.getOwnedRelationship().stream()
-                    .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
-                    .filter(e -> !alreadyHandledElements.contains(e) && !(e instanceof ParameterMembership))
-                    .toList();
-            this.appendChildrenContent(builder, transitionUsage, children);
-
-            return builder.toString();
-        } else {
-            // Not handle yet (missing the case of StateTransition)
-            this.reportUnhandledType(transitionUsage);
         }
 
-        return "";
+        builder.append(this.getDeresolvableName(transitionUsage.getTarget(), transitionUsage));
+
+        alreadyHandledElements.add(transitionUsage.getSuccession().getOwningMembership());
+
+        // Append usage body (removed already handled element : Succession and guard
+        List<Relationship> children = transitionUsage.getOwnedRelationship().stream()
+                .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                .filter(e -> !alreadyHandledElements.contains(e) && !(e instanceof ParameterMembership))
+                .toList();
+        this.appendChildrenContent(builder, transitionUsage, children);
+    }
+
+    @Override
+    public String caseDecisionNode(DecisionNode decisionNode) {
+        Appender builder = this.newAppender();
+
+        this.appendControlNodePrefix(builder, decisionNode);
+
+        if (decisionNode.isIsComposite()) {
+            builder.appendWithSpaceIfNeeded("decide ");
+            this.appendUsageDeclaration(builder, decisionNode);
+        }
+
+        this.appendActionNodeBody(builder, decisionNode);
+        return builder.toString();
+    }
+
+    private void appendControlNodePrefix(Appender builder, ControlNode controlNode) {
+        final String isRef;
+        if (controlNode.isIsReference() && !this.isImplicitlyReferential(controlNode)) {
+            isRef = "ref";
+        } else {
+            isRef = "";
+        }
+
+        if (controlNode.isIsIndividual()) {
+            builder.appendSpaceIfNeeded().append("individual");
+        }
+
+        if (controlNode.isIsPortion() && controlNode.getPortionKind() != null) {
+            builder.appendSpaceIfNeeded().append(controlNode.getPortionKind().toString());
+        }
+
+        this.appendExtensionKeyword(builder, controlNode);
+
+    }
+
+    private void appendActionNodeBody(Appender appender, ControlNode controlNode) {
+        this.appendChildrenContent(appender, controlNode, controlNode.getOwnedRelationship().stream()
+                .filter(SysMLRelationPredicates.IS_ANNOTATING_ELEMENT)
+                .toList());
     }
 
     @Override
@@ -2053,5 +2100,49 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             return "";
         }
         return string;
+    }
+
+    private boolean isNotSuccessionWithSameSource(Membership m, Feature source) {
+        Element element = m.getMemberElement();
+        final boolean result;
+        if (element instanceof TransitionUsage transitionUsage) {
+            result = transitionUsage.getSource() != source;
+        } else if (element instanceof SuccessionAsUsage succession) {
+            result = succession.getSourceFeature() != source;
+        } else {
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * Checks if the previous defined feature of the owning type of the source element is the expected feature. The
+     * candidates {@link FeatureMembership} are filtered using a given predicate
+     *
+     * @param expectedFeature
+     *            the expected feature
+     * @param sourceElement
+     *            the source feature from which the previous elements will be searched
+     * @param candidatePredicate
+     *            an optional predicate to filter among the previous elements
+     * @return <code>true</code> if the previous feature is the expected one
+     */
+    private boolean isPreviousFeatureEqualsTo(Feature expectedFeature, Feature sourceElement, Predicate<Membership> candidatePredicate) {
+
+        Type type = sourceElement.getOwningType();
+        if (type != null) {
+
+            EList<Membership> memberships = type.getMembership();
+            FeatureMembership owningFeatureMembership = sourceElement.getOwningFeatureMembership();
+            int index = memberships.indexOf(owningFeatureMembership);
+            ListIterator<Membership> iterator = memberships.listIterator(index);
+            while (iterator.hasPrevious()) {
+                Membership previousMembership = iterator.previous();
+                if (candidatePredicate == null || candidatePredicate.test(previousMembership)) {
+                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == expectedFeature;
+                }
+            }
+        }
+        return false;
     }
 }
