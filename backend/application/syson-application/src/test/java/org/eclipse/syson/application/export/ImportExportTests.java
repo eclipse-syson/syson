@@ -104,6 +104,74 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with TransitionUsage used between actions, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkTransitionUsageBetweenActions() throws IOException {
+        var input = """
+                action def A1 {
+                    private import ScalarValues::Integer;
+                    attribute x : Integer;
+                    action a1;
+                    action a2;
+                    first a1 if x == 1 then a2;
+                    succession s1 first a1 if x > 1 & x < 2 then a2;
+                    succession s2 first a1 if x > 2 & x < 3 then a2 {
+                        doc /* Some documentation on that succession */
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
+    @Test
+    @DisplayName("Given a model with a DecisionNode with named TransitionUsage , when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkDecisionWithNamedTransition() throws IOException {
+        var input = """
+                action def A1 {
+                    private import ScalarValues::Integer;
+                    attribute x : Integer;
+                    action a0;
+                    action a1;
+                    action a2;
+                    action a3;
+                    then decide d1;
+                        succession sd1 first d1 if x < 0 then a1;
+                        succession sd2 first d1 if x == 0 then a2;
+                        succession sd3 first d1 then a3;
+                }""";
+        var expected = """
+                action def A1 {
+                    private import ScalarValues::Integer;
+                    attribute x : Integer;
+                    action a0;
+                    action a1;
+                    action a2;
+                    action a3;
+                    then d1;
+                    decide d1;
+                    succession sd1 first d1 if x < 0 then a1;
+                    succession sd2 first d1 if x == 0 then a2;
+                    succession sd3 first d1 then a3;
+                }""";
+        this.checker.check(input, expected);
+    }
+
+
+    @Test
+    @DisplayName("Given a model with a DecisionNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkDecisionNode() throws IOException {
+        var input = """
+                action def A1 {
+                    action a1;
+                    action a2;
+                    action a3;
+                    attribute x : ScalarValues::Real;
+                    decide decision1;
+                    if x >= 2.1 then a1;
+                    if x >= 1.1 and x < 2.1 then a2;
+                    else a3;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with a PortDefinition, when importing/exporting the file, then check that the conjugated port reference is kept during the process.")
     public void checkConjugatedPortUse() throws IOException {
         var input = """
@@ -181,6 +249,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
         this.checker.check(input, expected);
     }
 
+
     @Test
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, when importing and exporting the model, then the exported text file should be semantically equal.")
     public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
@@ -235,6 +304,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
 
         this.checker.check(input, input);
     }
+
     /**
      * Test import/export on test file UseCaseTest.sysml. The content of UseCaseTest.sysml that have been copied below
      * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the
