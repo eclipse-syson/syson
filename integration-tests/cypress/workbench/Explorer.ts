@@ -17,7 +17,7 @@ export class Explorer {
   }
 
   public getTreeItemByLabel(treeItemLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
-    return this.getExplorerView().get(`[data-treeitemlabel="${treeItemLabel}"]`);
+    return this.getExplorerView().find(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
   public getTreeItemByLabelAndKind(
@@ -46,8 +46,8 @@ export class Explorer {
   }
 
   public insertTextualSysMLv2(documentTreeItemLabel: string, textualContent: string) {
-    this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
-    cy.getByTestId('insert-textual-sysmlv2-menu').click();
+    this.getTreeItemByLabel(documentTreeItemLabel).should('exist').find('button').click();
+    cy.getByTestId('insert-textual-sysmlv2-menu').should('exist').click();
     cy.getByTestId('insert-textual-sysmlv2-submit').should('be.disabled');
     cy.getByTestId('insert-textual-sysmlv2-modal-textarea').type(textualContent);
     cy.getByTestId('insert-textual-sysmlv2-submit').should('not.be.disabled');
@@ -104,8 +104,9 @@ export class Explorer {
     representationDescriptionName: string,
     representationLabel: string
   ): void {
-    this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    this.getTreeItemByLabel(treeItemLabel).should('exist').find('button').should('exist').click();
+    cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
+    cy.getByTestId('treeitem-contextmenu').should('exist').getByTestId('new-representation').should('exist').click();
     cy.get('[aria-labelledby="dialog-title"]').then((modal) => {
       cy.wrap(modal).findByTestId('name').clear();
       cy.wrap(modal).findByTestId('name').type(representationLabel);

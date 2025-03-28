@@ -16,7 +16,7 @@ import { SysMLv2 } from '../../../usecases/SysMLv2';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
-describe.skip('Diagram Creation Tests', () => {
+describe('Diagram Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
 
   context('Given an empty SysMLv2 project', () => {
