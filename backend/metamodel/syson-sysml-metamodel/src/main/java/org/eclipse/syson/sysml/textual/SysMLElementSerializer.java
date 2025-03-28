@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.textual;
 
-
 import static java.util.stream.Collectors.joining;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_DEFINITION_BODY_ITEM_MEMBER;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_IMPORT;
@@ -24,6 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -48,6 +48,8 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.ControlNode;
+import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -132,6 +134,7 @@ import org.eclipse.syson.sysml.textual.utils.Appender;
 import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.eclipse.syson.sysml.textual.utils.SysMLKeywordSwitch;
+import org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -187,41 +190,289 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseNamespace(Namespace namespace) {
+    public String caseActionDefinition(ActionDefinition actionDef) {
+        return this.appendDefaultDefinition(this.newAppender(), actionDef).toString();
+    }
+
+    @Override
+    public String caseActionUsage(ActionUsage actionUsage) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        this.appendOccurrenceUsagePrefix(builder, actionUsage);
+        builder.appendWithSpaceIfNeeded("action");
+        this.appendActionUsageDeclaration(builder, actionUsage);
+        this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
+        return builder.toString();
+    }
+
+    @Override
+    public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
+        this.reportUnhandledType(analysisCaseUsage);
+        return "";
+    }
+
+    @Override
+    public String caseActorMembership(ActorMembership actor) {
         Appender builder = this.newAppender();
-        if (namespace.eContainer() == null && namespace.getName() == null) {
-            // Root namespace are not serialized
-            String content = this.getContent(namespace.getOwnedMembership(), "");
-            if (content != null && !content.isBlank()) {
-                builder.append(content);
+
+        PartUsage ownedActorParameter = actor.getOwnedActorParameter();
+
+        if (ownedActorParameter != null) {
+            VisibilityKind visibility = actor.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisibilityIndicator(visibility));
             }
-        } else if (namespace.eClass() == SysmlPackage.eINSTANCE.getNamespace()) {
-            builder.append("namespace ");
-            this.appendChildrenContent(builder, namespace, namespace.getOwnedMembership());
+
+            this.appendDefaultUsage(builder, ownedActorParameter);
+        }
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseAssertConstraintUsage(AssertConstraintUsage usage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        ReferenceSubsetting ownedReferenceSubsetting = usage.getOwnedReferenceSubsetting();
+
+        if (ownedReferenceSubsetting != null) {
+            // We still need to implement this part
+            // ownedRelationship += OwnedReferenceSubsetting
+            // FeatureSpecializationPart?
+        } else {
+            builder.appendSpaceIfNeeded().append("constraint");
+            this.appendUsageDeclaration(builder, usage);
+        }
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseAttributeDefinition(AttributeDefinition attrDef) {
+        return this.appendDefaultDefinition(this.newAppender(), attrDef).toString();
+    }
+
+    @Override
+    public String caseAttributeUsage(AttributeUsage attrUsage) {
+        Appender builder = this.newAppender();
+        this.appendDefaultUsage(builder, attrUsage);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseCalculationDefinition(CalculationDefinition calculationDefinition) {
+        this.reportUnhandledType(calculationDefinition);
+        return "";
+    }
+
+    @Override
+    public String caseCollectExpression(CollectExpression expression) {
+        this.reportConsumer.accept(Status.warning("CollectExpression are not handled yet({0})", expression.getElementId()));
+        return "";
+    }
+
+    @Override
+    public String caseComment(Comment comment) {
+        Appender builder = this.newAppender();
+        EList<Element> annotatedElements = comment.getAnnotatedElement();
+        boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(comment);
+        if (this.isNullOrEmpty(comment.getLocale()) && selfNamespaceDescribingComment && comment.getDeclaredName() == null) {
+            builder.append(this.getCommentBody(comment.getBody()));
+        } else {
+            builder.append("comment");
+
+            this.appendNameWithShortName(builder, comment);
+
+            if (!selfNamespaceDescribingComment) {
+                this.appendAnnotatedElements(builder, comment, annotatedElements);
+            }
+
+            this.appendLocale(builder, comment.getLocale());
+
+            builder.newLine().indent();
+            builder.appendIndentedContent(this.getCommentBody(comment.getBody()));
+        }
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
+        // Conjugated port definition are implicit
+        return "";
+    }
+
+    @Override
+    public String caseConstraintUsage(ConstraintUsage usage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        this.appendCalculationUsageDeclaration(builder, usage);
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseDecisionNode(DecisionNode decisionNode) {
+        Appender builder = this.newAppender();
+
+        this.appendControlNodePrefix(builder, decisionNode);
+
+        if (decisionNode.isIsComposite()) {
+            builder.appendWithSpaceIfNeeded("decide ");
+            this.appendUsageDeclaration(builder, decisionNode);
+        }
+
+        this.appendActionNodeBody(builder, decisionNode);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseDocumentation(Documentation doc) {
+        Appender builder = this.newAppender();
+
+        builder.appendSpaceIfNeeded().append("doc");
+        this.appendNameWithShortName(builder, doc);
+        boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(doc);
+        if (this.isNullOrEmpty(doc.getLocale()) && selfNamespaceDescribingComment) {
+            builder.appendWithSpaceIfNeeded(this.getCommentBody(doc.getBody()));
         }
         return builder.toString();
     }
 
     @Override
-    public String casePackage(Package pack) {
+    public String caseEnumerationDefinition(EnumerationDefinition enumDef) {
+        return this.appendDefaultDefinition(this.newAppender(), enumDef).toString();
+    }
+
+    @Override
+    public String caseEnumerationUsage(EnumerationUsage enumUsage) {
         Appender builder = this.newAppender();
-        builder.append("package ");
-        this.appendNameWithShortName(builder, pack);
-        List<Relationship> children = pack.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
-        this.appendChildrenContent(builder, pack, children);
+        this.appendDefaultUsage(builder, enumUsage);
         return builder.toString();
     }
 
     @Override
-    public String caseLibraryPackage(LibraryPackage libraryPackage) {
+    public String caseFeatureChainExpression(FeatureChainExpression feature) {
         Appender builder = this.newAppender();
-        if (libraryPackage.isIsStandard()) {
-            builder.append("standard ");
+
+        feature.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .map(ParameterMembership::getOwnedMemberParameter)
+                .map(Feature::getOwnedRelationship)
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .ifPresent(ft -> this.appendNonFeatureChainExpression(builder, ft.getValue()));
+
+        builder.append(".");
+
+        feature.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .skip(1)
+                .findFirst()
+                .ifPresent(exp -> this.appendFeatureChainMember(builder, exp));
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseFeatureReferenceExpression(FeatureReferenceExpression expression) {
+        Appender builder = this.newAppender();
+
+        Membership membership = expression.getOwnedMembership().stream()
+                .findFirst()
+                .orElse(null);
+
+        if (membership instanceof FeatureMembership feature && feature.getOwnedMemberFeature() instanceof Expression exp) {
+            this.reportConsumer.accept(Status.warning("BodyExpression are not handled yet ({0})", exp.getElementId()));
+        } else {
+            this.appendFeatureReferenceMember(builder, membership, expression);
         }
-        builder.append("library package ");
-        this.appendNameWithShortName(builder, libraryPackage);
-        List<Relationship> children = libraryPackage.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
-        this.appendChildrenContent(builder, libraryPackage, children);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseImport(Import aImport) {
+        Appender builder = this.newAppender();
+
+        VisibilityKind visibility = aImport.getVisibility();
+        if (visibility != VisibilityKind.PUBLIC) {
+            builder.append(this.getVisibilityIndicator(visibility));
+        }
+        builder.appendSpaceIfNeeded().append("import ");
+
+        if (aImport.isIsImportAll()) {
+            builder.appendSpaceIfNeeded().append("all");
+        }
+
+        if (aImport instanceof NamespaceImport namespaceImport) {
+            this.appendNamespaceImport(builder, namespaceImport);
+        } else if (aImport instanceof MembershipImport membershipImport) {
+            this.appendMembershipImport(builder, membershipImport);
+        }
+
+        if (aImport.isIsRecursive()) {
+            builder.append("::**");
+        }
+
+        this.appendChildrenContent(builder, aImport, aImport.getOwnedRelationship());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, includeUseCaseUsage);
+
+        builder.appendWithSpaceIfNeeded("include");
+
+        if (includeUseCaseUsage.getOwnedReferenceSubsetting() != null) {
+            builder.appendWithSpaceIfNeeded(this.getDeresolvableName(includeUseCaseUsage.getOwnedReferenceSubsetting().getReferencedFeature(), includeUseCaseUsage));
+        } else {
+
+            builder.appendWithSpaceIfNeeded("use case");
+            this.appendUsageDeclaration(builder, includeUseCaseUsage);
+        }
+
+        this.appendValuePart(builder, includeUseCaseUsage);
+
+        this.appendChildrenContent(builder, includeUseCaseUsage, includeUseCaseUsage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseInvocationExpression(InvocationExpression expression) {
+        Appender builder = this.newAppender();
+        List<Relationship> relationships = expression.getOwnedRelationship();
+        if (!relationships.isEmpty() && (relationships.get(0) instanceof FeatureTyping || relationships.get(0) instanceof Subsetting)) {
+            relationships.stream()
+                    .filter(Specialization.class::isInstance)
+                    .map(Specialization.class::cast)
+                    .findFirst()
+                    .ifPresent(specialization -> builder.appendSpaceIfNeeded().append(this.getDeresolvableName(specialization.getGeneral(), specialization)));
+            this.appendArgumentList(builder, expression);
+        } else {
+            this.reportConsumer.accept(Status.warning("FunctionOperationExpression are not handled yet ({0})", expression.getElementId()));
+        }
         return builder.toString();
     }
 
@@ -240,246 +491,28 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseActionDefinition(ActionDefinition actionDef) {
-        return this.appendDefaultDefinition(this.newAppender(), actionDef).toString();
+    public String caseInterfaceDefinition(InterfaceDefinition interfaceDef) {
+        return this.appendDefaultDefinition(this.newAppender(), interfaceDef).toString();
     }
 
     @Override
-    public String caseEnumerationDefinition(EnumerationDefinition enumDef) {
-        return this.appendDefaultDefinition(this.newAppender(), enumDef).toString();
-    }
-
-    @Override
-    public String caseAttributeDefinition(AttributeDefinition attrDef) {
-        return this.appendDefaultDefinition(this.newAppender(), attrDef).toString();
-    }
-
-    @Override
-    public String caseOccurrenceDefinition(OccurrenceDefinition occDef) {
-        return this.appendDefaultDefinition(this.newAppender(), occDef).toString();
-    }
-
-    @Override
-    public String casePortDefinition(PortDefinition portDef) {
-        return this.appendDefaultDefinition(this.newAppender(), portDef).toString();
-    }
-
-    @Override
-    public String casePartDefinition(PartDefinition partDef) {
-        return this.appendDefaultDefinition(this.newAppender(), partDef).toString();
-    }
-
-    @Override
-    public String casePartUsage(PartUsage partUsage) {
-        return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
-    }
-
-    @Override
-    public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsagePrefix(builder, occurrenceUsage);
-        this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
-        if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
-            builder.appendWithSpaceIfNeeded("snapshot");
-        } else if (PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
-            builder.appendWithSpaceIfNeeded("timeslice");
-        } else {
-            builder.appendWithSpaceIfNeeded("occurrence");
+    public String caseLibraryPackage(LibraryPackage libraryPackage) {
+        Appender builder = this.newAppender();
+        if (libraryPackage.isIsStandard()) {
+            builder.append("standard ");
         }
-        this.appendOccurrenceUsageDeclaration(builder, occurrenceUsage);
-        this.appendChildrenContent(builder, occurrenceUsage, occurrenceUsage.getOwnedMembership());
-        return builder.toString();
-    }
-
-    private void appendOccurrenceUsageDeclaration(Appender builder, OccurrenceUsage occurrenceUsage) {
-        this.appendUsageDeclaration(builder, occurrenceUsage);
-        this.appendValuePart(builder, occurrenceUsage);
-    }
-
-    @Override
-    public String caseReferenceUsage(ReferenceUsage reference) {
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-        if (!this.isImplicit(reference)) {
-            this.appendBasicUsagePrefix(builder, reference);
-            this.appendUsageDeclaration(builder, reference);
-            this.appendUsageCompletion(builder, reference);
-        }
+        builder.append("library package ");
+        this.appendNameWithShortName(builder, libraryPackage);
+        List<Relationship> children = libraryPackage.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
+        this.appendChildrenContent(builder, libraryPackage, children);
         return builder.toString();
     }
 
     @Override
-    public String caseActionUsage(ActionUsage actionUsage) {
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-        this.appendOccurrenceUsagePrefix(builder, actionUsage);
-        builder.appendWithSpaceIfNeeded("action");
-        this.appendActionUsageDeclaration(builder, actionUsage);
-        this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
+    public String caseLiteralBoolean(LiteralBoolean literal) {
+        Appender builder = this.newAppender();
+        builder.append(String.valueOf(literal.isValue()));
         return builder.toString();
-    }
-
-    private void appendActionUsageDeclaration(Appender builder, ActionUsage actionUsage) {
-        this.appendUsageDeclaration(builder, actionUsage);
-        this.appendValuePart(builder, actionUsage);
-    }
-
-    @Override
-    public String casePerformActionUsage(PerformActionUsage perfomActionUsage) {
-
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-
-        this.appendOccurrenceUsagePrefix(builder, perfomActionUsage);
-
-        builder.appendWithSpaceIfNeeded("perform");
-
-        Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
-        this.appendNameWithShortName(nameAppender, perfomActionUsage);
-
-        if (nameAppender.isEmpty() && perfomActionUsage.getOwnedReferenceSubsetting() != null) {
-            // Use simple form : perfom <nameOfReferenceSubSetting>
-            this.appendOwnedReferenceSubsetting(builder, perfomActionUsage.getOwnedReferenceSubsetting());
-        } else {
-            // Use complete form
-            builder.appendWithSpaceIfNeeded("action");
-            this.appendUsageDeclaration(builder, perfomActionUsage);
-        }
-
-        this.appendValuePart(builder, perfomActionUsage);
-
-        this.appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseSuccessionAsUsage(SuccessionAsUsage successionAsUsage) {
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-
-        this.appendBasicUsagePrefix(builder, successionAsUsage);
-
-        Appender declarationBuilder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsageDeclaration(declarationBuilder, successionAsUsage);
-
-        if (!declarationBuilder.isEmpty()) {
-            builder.appendWithSpaceIfNeeded("succession ").append(declarationBuilder.toString());
-        }
-
-        List<EndFeatureMembership> endFeatureMemberships = successionAsUsage.getFeatureMembership().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .toList();
-
-        Set<Element> childrenToExclude = new HashSet<>();
-
-        if (endFeatureMemberships.size() == 2) {
-
-            EndFeatureMembership first = endFeatureMemberships.get(0);
-            if (!this.isSuccessionUsageImplicitSource(first) || !this.isSourceFeaturePreviousDefinedFeature(successionAsUsage)) {
-                builder.appendWithSpaceIfNeeded("first");
-                this.appendConnectorEndMember(builder, first);
-            }
-            childrenToExclude.add(first);
-
-            builder.appendWithSpaceIfNeeded("then");
-            EndFeatureMembership second = endFeatureMemberships.get(1);
-            childrenToExclude.add(second);
-            this.appendConnectorEndMember(builder, second);
-
-        } else {
-            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
-        }
-
-        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
-                .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
-                .filter(e -> !childrenToExclude.contains(e))
-                .toList();
-
-        this.appendChildrenContent(builder, successionAsUsage, children);
-
-        return builder.toString();
-    }
-
-    private boolean isSourceFeaturePreviousDefinedFeature(SuccessionAsUsage successionAsUsage) {
-        Feature sourceFeature = successionAsUsage.getSourceFeature();
-
-        Namespace namespace = successionAsUsage.getOwningNamespace();
-        if (namespace != null) {
-
-            EList<Membership> memberships = namespace.getMembership();
-            int index = memberships.indexOf(successionAsUsage.getOwningFeatureMembership());
-            if (index > 0) {
-                Membership previousMembership = memberships.get(index - 1);
-                return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == sourceFeature;
-            }
-
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
-     *
-     * @param endFeatureMembership
-     *            the element to test
-     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
-     */
-    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
-        EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
-        if (relatedElements.size() == 1) {
-            Element relatedElement = relatedElements.get(0);
-            if (relatedElement instanceof ReferenceUsage refUsage) {
-                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
-            }
-        }
-        return false;
-    }
-
-    private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {
-        endFeatureMembership.getOwnedRelatedElement().stream()
-                .filter(ReferenceUsage.class::isInstance)
-                .map(ReferenceUsage.class::cast)
-                .findFirst()
-                .ifPresent(ref -> this.appendConnectorEnd(builder, ref));
-    }
-
-    private void appendConnectorEnd(Appender builder, ReferenceUsage referenceUsage) {
-        String declaredName = referenceUsage.getDeclaredName();
-
-        if (declaredName != null && !declaredName.isBlank()) {
-            builder.appendWithSpaceIfNeeded(declaredName).append(" ").append(LabelConstants.REFERENCES);
-        }
-
-        ReferenceSubsetting refSubsetting = referenceUsage.getOwnedReferenceSubsetting();
-
-        if (refSubsetting != null) {
-            this.appendOwnedReferenceSubsetting(builder, refSubsetting);
-        }
-        // We still need to implement this part here ( ownedRelationship += OwnedMultiplicity )?
-    }
-
-    private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
-        Feature referencedFeature = refSubsetting.getReferencedFeature();
-
-        if (referencedFeature != null) {
-
-            if (!referencedFeature.getOwnedFeatureChaining().isEmpty()) {
-                this.appendFeatureChain(builder, referencedFeature);
-            } else {
-                String deresolvedName = this.nameDeresolver.getDeresolvedName(referencedFeature, refSubsetting);
-                if (deresolvedName == null || deresolvedName.isBlank()) {
-                    this.reportConsumer.accept(Status.error("Unable to compute a valid identifier for ReferenceSubSetting {0}", refSubsetting.getElementId()));
-                }
-                builder.appendWithSpaceIfNeeded(deresolvedName);
-            }
-        }
-    }
-
-    private Appender appendDefaultDefinition(Appender builder, Definition def) {
-        if (def instanceof OccurrenceDefinition occDef) {
-            this.appendDefinitionPrefix(builder, occDef);
-        }
-        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(def));
-        this.appendDefinition(builder, def);
-        return builder;
     }
 
     @Override
@@ -500,27 +533,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseLiteralString(LiteralString literal) {
-        Appender builder = this.newAppender();
-        builder.append(literal.getValue());
-        return builder.toString();
-    }
-
-    @Override
-    public String caseLiteralRational(LiteralRational literal) {
-        Appender builder = this.newAppender();
-        builder.append(String.valueOf(literal.getValue()));
-        return builder.toString();
-    }
-
-    @Override
-    public String caseLiteralBoolean(LiteralBoolean literal) {
-        Appender builder = this.newAppender();
-        builder.append(String.valueOf(literal.isValue()));
-        return builder.toString();
-    }
-
-    @Override
     public String caseLiteralInfinity(LiteralInfinity literal) {
         Appender builder = this.newAppender();
         builder.append("*");
@@ -534,50 +546,101 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
-    private String appendDefaultUsage(Appender builder, Usage usage) {
-        return this.serializeDeclarationWithModifiers(builder, usage, this.getUsageKeyword(usage));
-    }
-
-    private String serializeDeclarationWithModifiers(Appender builder, Usage usage, String keyword) {
-        this.appendUsagePrefix(builder, usage);
-        builder.appendSpaceIfNeeded().append(keyword);
-        this.appendUsageDeclaration(builder, usage);
-        this.appendUsageCompletion(builder, usage);
-        return builder.toString();
-    }
-
-    private void appendDefinitionBody(Appender builder, Usage usage) {
-        List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
-        this.appendChildrenContent(builder, usage, children);
-    }
-
     @Override
-    public String caseAttributeUsage(AttributeUsage attrUsage) {
+    public String caseLiteralRational(LiteralRational literal) {
         Appender builder = this.newAppender();
-        this.appendDefaultUsage(builder, attrUsage);
+        builder.append(String.valueOf(literal.getValue()));
         return builder.toString();
     }
 
     @Override
-    public String caseEnumerationUsage(EnumerationUsage enumUsage) {
+    public String caseLiteralString(LiteralString literal) {
         Appender builder = this.newAppender();
-        this.appendDefaultUsage(builder, enumUsage);
+        builder.append(literal.getValue());
         return builder.toString();
     }
 
     @Override
-    public String caseFeatureReferenceExpression(FeatureReferenceExpression expression) {
+    public String caseMetadataAccessExpression(MetadataAccessExpression expression) {
+        this.reportConsumer.accept(Status.warning("MetadataAccessExpression are not handled yet({0})", expression.getElementId()));
+        return "";
+    }
+
+    @Override
+    public String caseMetadataDefinition(MetadataDefinition metadata) {
         Appender builder = this.newAppender();
 
-        Membership membership = expression.getOwnedMembership().stream()
-                .findFirst()
-                .orElse(null);
-
-        if (membership instanceof FeatureMembership feature && feature.getOwnedMemberFeature() instanceof Expression exp) {
-            this.reportConsumer.accept(Status.warning("BodyExpression are not handled yet ({0})", exp.getElementId()));
-        } else {
-            this.appendFeatureReferenceMember(builder, membership, expression);
+        if (metadata.isIsAbstract()) {
+            builder.append("abstract");
         }
+
+        builder.appendSpaceIfNeeded().append("metadata def");
+
+        this.appendDefinitionDeclaration(builder, metadata);
+
+        this.appendChildrenContent(builder, metadata, metadata.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseNamespace(Namespace namespace) {
+        Appender builder = this.newAppender();
+        if (namespace.eContainer() == null && namespace.getName() == null) {
+            // Root namespace are not serialized
+            String content = this.getContent(namespace.getOwnedMembership(), "");
+            if (content != null && !content.isBlank()) {
+                builder.append(content);
+            }
+        } else if (namespace.eClass() == SysmlPackage.eINSTANCE.getNamespace()) {
+            builder.append("namespace ");
+            this.appendChildrenContent(builder, namespace, namespace.getOwnedMembership());
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String caseNullExpression(NullExpression expression) {
+        return "null";
+    }
+
+    @Override
+    public String caseOccurrenceDefinition(OccurrenceDefinition occDef) {
+        return this.appendDefaultDefinition(this.newAppender(), occDef).toString();
+    }
+
+    @Override
+    public String caseObjectiveMembership(ObjectiveMembership objective) {
+        Appender builder = this.newAppender();
+        RequirementUsage ownedObjectiveRequirement = objective.getOwnedObjectiveRequirement();
+
+        if (ownedObjectiveRequirement != null && !this.isImplicit(ownedObjectiveRequirement)) {
+            VisibilityKind visibility = objective.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisibilityIndicator(visibility));
+            }
+
+            builder.append("objective");
+            this.appendObjectiveRequirementUsage(builder, ownedObjectiveRequirement);
+        }
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        this.appendUsagePrefix(builder, occurrenceUsage);
+        this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
+        if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
+            builder.appendWithSpaceIfNeeded("snapshot");
+        } else if (PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
+            builder.appendWithSpaceIfNeeded("timeslice");
+        } else {
+            builder.appendWithSpaceIfNeeded("occurrence");
+        }
+        this.appendOccurrenceUsageDeclaration(builder, occurrenceUsage);
+        this.appendChildrenContent(builder, occurrenceUsage, occurrenceUsage.getOwnedMembership());
         return builder.toString();
     }
 
@@ -645,70 +708,154 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
-    private void appendConditionalBinaryOperatorExpression(Appender builder, OperatorExpression op) {
-        op.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .findFirst()
-                .ifPresent(param -> this.appendArgumentMember(builder, param));
+    @Override
+    public String caseOwningMembership(OwningMembership owningMembership) {
+        Appender builder = this.newAppender();
 
-        builder.appendSpaceIfNeeded().append(op.getOperator());
+        this.appendMembershipPrefix(owningMembership, builder);
 
-        op.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .skip(1)
-                .findFirst()
-                .ifPresent(param -> this.appendArgumentExpressionMember(builder, param));
-    }
+        String content = owningMembership.getOwnedRelatedElement().stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(builder.getNewLine()));
+        builder.appendSpaceIfNeeded().append(content);
 
-    private void appendArgumentExpressionMember(Appender builder, ParameterMembership param) {
-        Feature ownedMemberParameter = param.getOwnedMemberParameter();
-        if (ownedMemberParameter != null) {
-            ownedMemberParameter.getOwnedRelationship()
-                    .stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .forEach(val -> this.appendOwnedExpressionReference(builder, val.getValue()));
-        }
-    }
-
-    private void appendOwnedExpressionReference(Appender builder, Expression value) {
-        if (value instanceof FeatureReferenceExpression featureReference) {
-            featureReference.getOwnedRelationship().stream()
-                    .filter(FeatureMembership.class::isInstance)
-                    .map(FeatureMembership.class::cast)
-                    .filter(feature -> feature.getOwnedMemberFeature() instanceof Expression)
-                    .findFirst()
-                    .ifPresent(feature -> this.appendOwnedExpression(builder, (Expression) feature.getOwnedMemberFeature()));
-        }
+        return builder.toString();
     }
 
     @Override
-    public String caseInvocationExpression(InvocationExpression expression) {
+    public String casePackage(Package pack) {
         Appender builder = this.newAppender();
-        List<Relationship> relationships = expression.getOwnedRelationship();
-        if (!relationships.isEmpty() && (relationships.get(0) instanceof FeatureTyping || relationships.get(0) instanceof Subsetting)) {
-            relationships.stream()
-                    .filter(Specialization.class::isInstance)
-                    .map(Specialization.class::cast)
-                    .findFirst()
-                    .ifPresent(specialization -> builder.appendSpaceIfNeeded().append(this.getDeresolvableName(specialization.getGeneral(), specialization)));
-            this.appendArgumentList(builder, expression);
+        builder.append("package ");
+        this.appendNameWithShortName(builder, pack);
+        List<Relationship> children = pack.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
+        this.appendChildrenContent(builder, pack, children);
+        return builder.toString();
+    }
+
+    @Override
+    public String casePartDefinition(PartDefinition partDef) {
+        return this.appendDefaultDefinition(this.newAppender(), partDef).toString();
+    }
+
+    @Override
+    public String casePartUsage(PartUsage partUsage) {
+        return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
+    }
+
+    @Override
+    public String casePerformActionUsage(PerformActionUsage perfomActionUsage) {
+
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+
+        this.appendOccurrenceUsagePrefix(builder, perfomActionUsage);
+
+        builder.appendWithSpaceIfNeeded("perform");
+
+        Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
+        this.appendNameWithShortName(nameAppender, perfomActionUsage);
+
+        if (nameAppender.isEmpty() && perfomActionUsage.getOwnedReferenceSubsetting() != null) {
+            // Use simple form : perfom <nameOfReferenceSubSetting>
+            this.appendOwnedReferenceSubsetting(builder, perfomActionUsage.getOwnedReferenceSubsetting());
         } else {
-            this.reportConsumer.accept(Status.warning("FunctionOperationExpression are not handled yet ({0})", expression.getElementId()));
+            // Use complete form
+            builder.appendWithSpaceIfNeeded("action");
+            this.appendUsageDeclaration(builder, perfomActionUsage);
+        }
+
+        this.appendValuePart(builder, perfomActionUsage);
+
+        this.appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String casePortDefinition(PortDefinition portDef) {
+        return this.appendDefaultDefinition(this.newAppender(), portDef).toString();
+    }
+
+    @Override
+    public String casePortUsage(PortUsage portUsage) {
+        Appender builder = this.newAppender();
+        // PortUsage inside a InterfaceDefintion which are InterfaceEnd have a special rule for serialization
+        Element owner = portUsage.getOwner();
+        if (owner instanceof InterfaceDefinition def && def.getInterfaceEnd().contains(portUsage)) {
+            this.appendInterfaceEndPortUsage(builder, portUsage);
+        } else {
+            this.appendOccurrenceUsagePrefix(builder, portUsage);
+
+            builder.appendWithSpaceIfNeeded("port");
+
+            this.appendUsage(builder, portUsage);
         }
         return builder.toString();
     }
 
     @Override
-    public String caseNullExpression(NullExpression expression) {
-        return "null";
+    public String caseRequirementDefinition(RequirementDefinition requirement) {
+        Appender builder = this.newAppender();
+
+        this.appendDefinitionPrefix(builder, requirement);
+
+        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(requirement));
+
+        this.appendDefinitionDeclaration(builder, requirement);
+
+        this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
+
+        return builder.toString();
     }
 
     @Override
-    public String caseCollectExpression(CollectExpression expression) {
-        this.reportConsumer.accept(Status.warning("CollectExpression are not handled yet({0})", expression.getElementId()));
+    public String caseReferenceUsage(ReferenceUsage reference) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        if (!this.isImplicit(reference)) {
+            this.appendBasicUsagePrefix(builder, reference);
+            this.appendUsageDeclaration(builder, reference);
+            this.appendUsageCompletion(builder, reference);
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String caseRequirementUsage(RequirementUsage usage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        this.appendCalculationUsageDeclaration(builder, usage);
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseReturnParameterMembership(ReturnParameterMembership parameter) {
+        // We still need to implement this part
+        // ReturnFeatureMember : ReturnParameterMembership =
+        // MemberPrefix 'return'
+        // ownedRelatedElement += FeatureElement
+
+        Appender builder = this.newAppender();
+        Feature ownedMemberParameter = parameter.getOwnedMemberParameter();
+
+        if (ownedMemberParameter != null && !this.isImplicit(ownedMemberParameter) && ownedMemberParameter instanceof Usage usage) {
+            VisibilityKind visibility = parameter.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisibilityIndicator(visibility));
+            }
+
+            builder.append("return");
+            this.appendDefaultUsage(builder, usage);
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String caseSatisfyRequirementUsage(SatisfyRequirementUsage satisfyRequirementUsage) {
+        this.reportUnhandledType(satisfyRequirementUsage);
         return "";
     }
 
@@ -719,36 +866,116 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseMetadataAccessExpression(MetadataAccessExpression expression) {
-        this.reportConsumer.accept(Status.warning("MetadataAccessExpression are not handled yet({0})", expression.getElementId()));
+    public String caseStakeholderMembership(StakeholderMembership stakeholderMembership) {
+        Appender builder = this.newAppender();
+
+        this.appendMembershipPrefix(stakeholderMembership, builder);
+
+        this.appendStakeholderUsage(builder, stakeholderMembership);
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseStateUsage(StateUsage stateUsage) {
+        this.reportUnhandledType(stateUsage);
         return "";
     }
 
     @Override
-    public String caseFeatureChainExpression(FeatureChainExpression feature) {
+    public String caseSubjectMembership(SubjectMembership subject) {
+        Appender builder = this.newAppender();
+        Usage ownedSubjectParameter = subject.getOwnedSubjectParameter();
+
+        if (ownedSubjectParameter != null && !this.isImplicit(ownedSubjectParameter)) {
+            VisibilityKind visibility = subject.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisibilityIndicator(visibility));
+            }
+            builder.appendWithSpaceIfNeeded("subject");
+
+            this.appendUsage(builder, ownedSubjectParameter);
+        }
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseSuccessionAsUsage(SuccessionAsUsage successionAsUsage) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+
+        this.appendBasicUsagePrefix(builder, successionAsUsage);
+
+        Appender declarationBuilder = new Appender(this.lineSeparator, this.indentation);
+        this.appendUsageDeclaration(declarationBuilder, successionAsUsage);
+
+        if (!declarationBuilder.isEmpty()) {
+            builder.appendWithSpaceIfNeeded("succession ").append(declarationBuilder.toString());
+        }
+
+        List<EndFeatureMembership> endFeatureMemberships = successionAsUsage.getFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+
+        Set<Element> childrenToExclude = new HashSet<>();
+
+        if (endFeatureMemberships.size() == 2) {
+
+            EndFeatureMembership first = endFeatureMemberships.get(0);
+            if (!this.isSuccessionUsageImplicitSource(first) || !this.isPreviousFeatureEqualsTo(successionAsUsage.getSourceFeature(), successionAsUsage,
+                    m -> this.isNotSuccessionWithSameSource(m, successionAsUsage.getSourceFeature()))) {
+                builder.appendWithSpaceIfNeeded("first");
+                this.appendConnectorEndMember(builder, first);
+            }
+            childrenToExclude.add(first);
+
+            builder.appendWithSpaceIfNeeded("then");
+            EndFeatureMembership second = endFeatureMemberships.get(1);
+            childrenToExclude.add(second);
+            this.appendConnectorEndMember(builder, second);
+
+        } else {
+            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
+        }
+
+        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
+                .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                .filter(e -> !childrenToExclude.contains(e))
+                .toList();
+
+        this.appendChildrenContent(builder, successionAsUsage, children);
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseTransitionFeatureMembership(TransitionFeatureMembership transitionFeatureMembership) {
         Appender builder = this.newAppender();
 
-        feature.getOwnedRelationship().stream()
-                .filter(ParameterMembership.class::isInstance)
-                .map(ParameterMembership.class::cast)
-                .findFirst()
-                .map(ParameterMembership::getOwnedMemberParameter)
-                .map(Feature::getOwnedRelationship)
-                .stream()
-                .flatMap(Collection::stream)
-                .filter(FeatureValue.class::isInstance)
-                .map(FeatureValue.class::cast)
-                .findFirst()
-                .ifPresent(ft -> this.appendNonFeatureChainExpression(builder, ft.getValue()));
+        if (transitionFeatureMembership.getKind() == TransitionFeatureKind.GUARD) {
+            List<String> expressions = transitionFeatureMembership.getOwnedRelatedElement().stream()
+                    .filter(Expression.class::isInstance)
+                    .map(Expression.class::cast)
+                    .map(this::doSwitch)
+                    .toList();
+        } else {
+            this.reportConsumer.accept(Status.warning("TransitionFeatureMembership of kind {0} are not yet handled", transitionFeatureMembership.getKind()));
+        }
 
-        builder.append(".");
+        return super.caseTransitionFeatureMembership(transitionFeatureMembership);
+    }
 
-        feature.getOwnedRelationship().stream()
-                .filter(Membership.class::isInstance)
-                .map(Membership.class::cast)
-                .skip(1)
-                .findFirst()
-                .ifPresent(exp -> this.appendFeatureChainMember(builder, exp));
+    @Override
+    public String caseTransitionUsage(TransitionUsage transitionUsage) {
+        Appender builder = this.newAppender();
+
+        if (this.isDecisionTransition(transitionUsage)) {
+            this.appenDecisionTransition(transitionUsage, builder);
+        } else {
+            // Not handle yet (missing the case of StateTransition)
+            this.reportUnhandledType(transitionUsage);
+        }
 
         return builder.toString();
     }
@@ -789,193 +1016,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage) {
-        Appender builder = this.newAppender();
-
-        this.appendOccurrenceUsagePrefix(builder, includeUseCaseUsage);
-
-        builder.appendWithSpaceIfNeeded("include");
-
-        if (includeUseCaseUsage.getOwnedReferenceSubsetting() != null) {
-            builder.appendWithSpaceIfNeeded(this.getDeresolvableName(includeUseCaseUsage.getOwnedReferenceSubsetting().getReferencedFeature(), includeUseCaseUsage));
-        } else {
-
-            builder.appendWithSpaceIfNeeded("use case");
-            this.appendUsageDeclaration(builder, includeUseCaseUsage);
-        }
-
-        this.appendValuePart(builder, includeUseCaseUsage);
-
-        this.appendChildrenContent(builder, includeUseCaseUsage, includeUseCaseUsage.getOwnedMembership());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseStakeholderMembership(StakeholderMembership stakeholderMembership) {
-        Appender builder = this.newAppender();
-
-        this.appendMembershipPrefix(stakeholderMembership, builder);
-
-        this.appendStakeholderUsage(builder, stakeholderMembership);
-
-        return builder.toString();
-    }
-
-    private void appendStakeholderUsage(Appender builder, StakeholderMembership stakeholderMembership) {
-
-        for (Element relatedElement : stakeholderMembership.getOwnedRelatedElement()) {
-            if (relatedElement instanceof Usage usage) {
-                builder.appendWithSpaceIfNeeded("stakeholder ");
-                this.serializeDeclarationWithModifiers(builder, usage, "");
-            }
-        }
-
-    }
-
-    @Override
-    public String caseActorMembership(ActorMembership actor) {
-        Appender builder = this.newAppender();
-
-        PartUsage ownedActorParameter = actor.getOwnedActorParameter();
-
-        if (ownedActorParameter != null) {
-            VisibilityKind visibility = actor.getVisibility();
-            if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisibilityIndicator(visibility));
-            }
-
-            this.appendDefaultUsage(builder, ownedActorParameter);
-        }
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseSubjectMembership(SubjectMembership subject) {
-        Appender builder = this.newAppender();
-        Usage ownedSubjectParameter = subject.getOwnedSubjectParameter();
-
-        if (ownedSubjectParameter != null && !this.isImplicit(ownedSubjectParameter)) {
-            VisibilityKind visibility = subject.getVisibility();
-            if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisibilityIndicator(visibility));
-            }
-            builder.appendWithSpaceIfNeeded("subject");
-
-            this.appendUsage(builder, ownedSubjectParameter);
-        }
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseObjectiveMembership(ObjectiveMembership objective) {
-        Appender builder = this.newAppender();
-        RequirementUsage ownedObjectiveRequirement = objective.getOwnedObjectiveRequirement();
-
-        if (ownedObjectiveRequirement != null && !this.isImplicit(ownedObjectiveRequirement)) {
-            VisibilityKind visibility = objective.getVisibility();
-            if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisibilityIndicator(visibility));
-            }
-
-            builder.append("objective");
-            this.appendObjectiveRequirementUsage(builder, ownedObjectiveRequirement);
-        }
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseConstraintUsage(ConstraintUsage usage) {
-        Appender builder = this.newAppender();
-
-        this.appendOccurrenceUsagePrefix(builder, usage);
-
-        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
-
-        this.appendCalculationUsageDeclaration(builder, usage);
-
-        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseRequirementUsage(RequirementUsage usage) {
-        Appender builder = this.newAppender();
-
-        this.appendOccurrenceUsagePrefix(builder, usage);
-
-        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
-
-        this.appendCalculationUsageDeclaration(builder, usage);
-
-        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseAssertConstraintUsage(AssertConstraintUsage usage) {
-        Appender builder = this.newAppender();
-
-        this.appendOccurrenceUsagePrefix(builder, usage);
-
-        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
-
-        ReferenceSubsetting ownedReferenceSubsetting = usage.getOwnedReferenceSubsetting();
-
-        if (ownedReferenceSubsetting != null) {
-            // We still need to implement this part
-            // ownedRelationship += OwnedReferenceSubsetting
-            // FeatureSpecializationPart?
-        } else {
-            builder.appendSpaceIfNeeded().append("constraint");
-            this.appendUsageDeclaration(builder, usage);
-        }
-
-        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseReturnParameterMembership(ReturnParameterMembership parameter) {
-        // We still need to implement this part
-        // ReturnFeatureMember : ReturnParameterMembership =
-        // MemberPrefix 'return'
-        // ownedRelatedElement += FeatureElement
-
-        Appender builder = this.newAppender();
-        Feature ownedMemberParameter = parameter.getOwnedMemberParameter();
-
-        if (ownedMemberParameter != null && !this.isImplicit(ownedMemberParameter) && ownedMemberParameter instanceof Usage usage) {
-            VisibilityKind visibility = parameter.getVisibility();
-            if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisibilityIndicator(visibility));
-            }
-
-            builder.append("return");
-            this.appendDefaultUsage(builder, usage);
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String caseRequirementDefinition(RequirementDefinition requirement) {
-        Appender builder = this.newAppender();
-
-        this.appendDefinitionPrefix(builder, requirement);
-
-        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(requirement));
-
-        this.appendDefinitionDeclaration(builder, requirement);
-
-        this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
-
-        return builder.toString();
+    public String caseVerificationCaseUsage(VerificationCaseUsage verificationCaseUsage) {
+        this.reportUnhandledType(verificationCaseUsage);
+        return "";
     }
 
     @Override
@@ -993,21 +1036,140 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
-    @Override
-    public String caseMetadataDefinition(MetadataDefinition metadata) {
-        Appender builder = this.newAppender();
+    private Appender newAppender() {
+        return new Appender(this.lineSeparator, this.indentation);
+    }
 
-        if (metadata.isIsAbstract()) {
-            builder.append("abstract");
+    private void appendStakeholderUsage(Appender builder, StakeholderMembership stakeholderMembership) {
+        for (Element relatedElement : stakeholderMembership.getOwnedRelatedElement()) {
+            if (relatedElement instanceof Usage usage) {
+                builder.appendWithSpaceIfNeeded("stakeholder ");
+                this.serializeDeclarationWithModifiers(builder, usage, "");
+            }
+        }
+    }
+
+    private void appendConditionalBinaryOperatorExpression(Appender builder, OperatorExpression op) {
+        op.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .ifPresent(param -> this.appendArgumentMember(builder, param));
+
+        builder.appendSpaceIfNeeded().append(op.getOperator());
+
+        op.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .skip(1)
+                .findFirst()
+                .ifPresent(param -> this.appendArgumentExpressionMember(builder, param));
+    }
+
+    private void appendArgumentExpressionMember(Appender builder, ParameterMembership param) {
+        Feature ownedMemberParameter = param.getOwnedMemberParameter();
+        if (ownedMemberParameter != null) {
+            ownedMemberParameter.getOwnedRelationship()
+                    .stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .forEach(val -> this.appendOwnedExpressionReference(builder, val.getValue()));
+        }
+    }
+
+    private void appendOwnedExpressionReference(Appender builder, Expression value) {
+        if (value instanceof FeatureReferenceExpression featureReference) {
+            featureReference.getOwnedRelationship().stream()
+                    .filter(FeatureMembership.class::isInstance)
+                    .map(FeatureMembership.class::cast)
+                    .filter(feature -> feature.getOwnedMemberFeature() instanceof Expression)
+                    .findFirst()
+                    .ifPresent(feature -> this.appendOwnedExpression(builder, (Expression) feature.getOwnedMemberFeature()));
+        }
+    }
+
+    private String appendDefaultUsage(Appender builder, Usage usage) {
+        return this.serializeDeclarationWithModifiers(builder, usage, this.getUsageKeyword(usage));
+    }
+
+    private String serializeDeclarationWithModifiers(Appender builder, Usage usage, String keyword) {
+        this.appendUsagePrefix(builder, usage);
+        builder.appendSpaceIfNeeded().append(keyword);
+        this.appendUsageDeclaration(builder, usage);
+        this.appendUsageCompletion(builder, usage);
+        return builder.toString();
+    }
+
+    private void appendDefinitionBody(Appender builder, Usage usage) {
+        List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
+        this.appendChildrenContent(builder, usage, children);
+    }
+
+    /**
+     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
+     *
+     * @param endFeatureMembership
+     *            the element to test
+     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
+     */
+    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
+        EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
+        if (relatedElements.size() == 1) {
+            Element relatedElement = relatedElements.get(0);
+            if (relatedElement instanceof ReferenceUsage refUsage) {
+                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
+            }
+        }
+        return false;
+    }
+
+    private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {
+        endFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .ifPresent(ref -> this.appendConnectorEnd(builder, ref));
+    }
+
+    private void appendConnectorEnd(Appender builder, ReferenceUsage referenceUsage) {
+        String declaredName = referenceUsage.getDeclaredName();
+
+        if (declaredName != null && !declaredName.isBlank()) {
+            builder.appendWithSpaceIfNeeded(declaredName).append(" ").append(LabelConstants.REFERENCES);
         }
 
-        builder.appendSpaceIfNeeded().append("metadata def");
+        ReferenceSubsetting refSubsetting = referenceUsage.getOwnedReferenceSubsetting();
 
-        this.appendDefinitionDeclaration(builder, metadata);
+        if (refSubsetting != null) {
+            this.appendOwnedReferenceSubsetting(builder, refSubsetting);
+        }
+        // We still need to implement this part here ( ownedRelationship += OwnedMultiplicity )?
+    }
 
-        this.appendChildrenContent(builder, metadata, metadata.getOwnedMembership());
+    private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
+        Feature referencedFeature = refSubsetting.getReferencedFeature();
 
-        return builder.toString();
+        if (referencedFeature != null) {
+
+            if (!referencedFeature.getOwnedFeatureChaining().isEmpty()) {
+                this.appendFeatureChain(builder, referencedFeature);
+            } else {
+                String deresolvedName = this.nameDeresolver.getDeresolvedName(referencedFeature, refSubsetting);
+                if (deresolvedName == null || deresolvedName.isBlank()) {
+                    this.reportConsumer.accept(Status.error("Unable to compute a valid identifier for ReferenceSubSetting {0}", refSubsetting.getElementId()));
+                }
+                builder.appendWithSpaceIfNeeded(deresolvedName);
+            }
+        }
+    }
+
+    private Appender appendDefaultDefinition(Appender builder, Definition def) {
+        if (def instanceof OccurrenceDefinition occDef) {
+            this.appendDefinitionPrefix(builder, occDef);
+        }
+        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(def));
+        this.appendDefinition(builder, def);
+        return builder;
     }
 
     private boolean isImplicit(Element element) {
@@ -1490,10 +1652,287 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    @Override
-    public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
-        // Conjugated port definition are implicit
-        return "";
+    private void appendInterfaceEndPortUsage(Appender builder, PortUsage portUsage) {
+        FeatureDirectionKind direction = portUsage.getDirection();
+        if (direction != null) {
+            builder.appendWithSpaceIfNeeded(direction.toString());
+        }
+
+        if (portUsage.isIsAbstract()) {
+            builder.appendWithSpaceIfNeeded("abstract");
+        } else if (portUsage.isIsVariation()) {
+            builder.appendWithSpaceIfNeeded("variation");
+        }
+
+        if (portUsage.isIsEnd()) {
+            builder.appendWithSpaceIfNeeded("end");
+        }
+        this.appendUsage(builder, portUsage);
+    }
+
+    private void appendUsage(Appender builder, Usage portUsage) {
+        this.appendUsageDeclaration(builder, portUsage);
+        this.appendUsageCompletion(builder, portUsage);
+    }
+
+    private void appendMembershipPrefix(Membership membership, Appender builder) {
+        VisibilityKind visibility = membership.getVisibility();
+        if (visibility != VisibilityKind.PUBLIC) {
+            builder.append(this.getVisibilityIndicator(visibility));
+        }
+    }
+
+    private void appendNamespaceImport(Appender builder, NamespaceImport namespaceImport) {
+        Namespace importedNamespace = namespaceImport.getImportedNamespace();
+        if (importedNamespace != null) {
+            builder.appendSpaceIfNeeded().append(this.buildImportContextRelativeQualifiedName(importedNamespace, namespaceImport)).append("::");
+        }
+        builder.append("*");
+    }
+
+    private void appendMembershipImport(Appender builder, MembershipImport membershipImport) {
+
+        Membership importedMembership = membershipImport.getImportedMembership();
+        if (importedMembership != null) {
+            String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(Objects::nonNull).findFirst()
+                    .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipImport)).orElse("");
+
+            builder.appendSpaceIfNeeded().append(qnName);
+        }
+    }
+
+    private String buildImportContextRelativeQualifiedName(Element element, Element from) {
+        String qualifiedName = this.nullToEmpty(element.getQualifiedName());
+        Element commonAncestor = EMFUtils.getLeastCommonContainer(Element.class, element, from);
+        if (commonAncestor != null) {
+            String prefix = commonAncestor.getQualifiedName() + "::";
+            if (qualifiedName.startsWith(prefix)) {
+                return qualifiedName.substring(prefix.length());
+            }
+        }
+        return qualifiedName;
+    }
+
+    private String appendNameWithShortName(Appender builder, Element element) {
+        String shortName = element.getShortName();
+        if (!this.isNullOrEmpty(shortName)) {
+            builder.appendSpaceIfNeeded().append("<").appendPrintableName(shortName).append(">");
+        }
+        String name = element.getDeclaredName();
+        if (!this.isNullOrEmpty(name)) {
+            builder.appendSpaceIfNeeded().appendPrintableName(name);
+        }
+        return builder.toString();
+    }
+
+    private String getVisibilityIndicator(VisibilityKind visibility) {
+        if (visibility == null) {
+            return "";
+        }
+        return switch (visibility) {
+            case PRIVATE -> "private";
+            case PROTECTED -> "protected";
+            case PUBLIC -> "public";
+            default -> "";
+        };
+    }
+
+    private boolean isNullOrEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
+    private String nullToEmpty(String string) {
+        if (string == null) {
+            return "";
+        }
+        return string;
+    }
+
+    private boolean isNotSuccessionWithSameSource(Membership m, Feature source) {
+        Element element = m.getMemberElement();
+        final boolean result;
+        if (element instanceof TransitionUsage transitionUsage) {
+            result = transitionUsage.getSource() != source;
+        } else if (element instanceof SuccessionAsUsage succession) {
+            result = succession.getSourceFeature() != source;
+        } else {
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * Checks if the previous defined feature of the owning type of the source element is the expected feature. The
+     * candidates {@link FeatureMembership} are filtered using a given predicate
+     *
+     * @param expectedFeature
+     *            the expected feature
+     * @param sourceElement
+     *            the source feature from which the previous elements will be searched
+     * @param candidatePredicate
+     *            an optional predicate to filter among the previous elements
+     * @return <code>true</code> if the previous feature is the expected one
+     */
+    private boolean isPreviousFeatureEqualsTo(Feature expectedFeature, Feature sourceElement, Predicate<Membership> candidatePredicate) {
+
+        Type type = sourceElement.getOwningType();
+        if (type != null) {
+
+            EList<Membership> memberships = type.getMembership();
+            FeatureMembership owningFeatureMembership = sourceElement.getOwningFeatureMembership();
+            int index = memberships.indexOf(owningFeatureMembership);
+            ListIterator<Membership> iterator = memberships.listIterator(index);
+            while (iterator.hasPrevious()) {
+                Membership previousMembership = iterator.previous();
+                if (candidatePredicate == null || candidatePredicate.test(previousMembership)) {
+                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == expectedFeature;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isDecisionTransition(TransitionUsage transitionUsage) {
+        return transitionUsage.specializesFromLibrary("Actions::Action::decisionTransitions");
+    }
+
+    private void reportUnhandledType(Element e) {
+        this.reportConsumer.accept(Status.warning("{0} are not yet handled : {1}", e.eClass().getName(), e.getElementId()));
+    }
+
+    /**
+     * Returns true if the comment describes its <b>direct</b> owning namespace
+     *
+     * @param comment
+     *            a comment
+     * @return true if described is direct owning namespace
+     */
+    private boolean isSelfNamespaceDescribingComment(Comment comment) {
+        EList<Element> annotatedElements = comment.getAnnotatedElement();
+        if (!annotatedElements.isEmpty()) {
+            Element annotatedElement = annotatedElements.get(0);
+            if (annotatedElement instanceof Namespace owningNamespace && (owningNamespace == this.getDirectContainer(comment, Namespace.class))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void appendAnnotatedElements(Appender builder, Comment comment, EList<Element> annotatedElements) {
+        if (!annotatedElements.isEmpty()) {
+            builder.appendSpaceIfNeeded().append("about ");
+            builder.append(annotatedElements.stream().map(e -> this.getDeresolvableName(e, comment)).collect(joining(",")));
+        }
+    }
+
+    /**
+     * Returns the direct container of the element with the expected type. A direct container is either the
+     * {@link EObject#eContainer()} or the container of the {@link OwningMembership}
+     *
+     * @param element
+     *            an element
+     * @param expected
+     *            the expected type
+     * @return the expected type or <code>null</code> if no direct container of the expected type
+     */
+    private <T> T getDirectContainer(EObject element, Class<T> expected) {
+        EObject eContainer = element.eContainer();
+        T result = null;
+        if (expected.isInstance(eContainer)) {
+            result = (T) eContainer;
+        } else if (eContainer instanceof OwningMembership owning && expected.isInstance(owning.eContainer())) {
+            result = (T) owning.eContainer();
+        }
+        return result;
+    }
+
+    private String getCommentBody(String body) {
+        Appender subBuilder = this.newAppender();
+        subBuilder.append("/* ").append(body).append(" */");
+        return subBuilder.toString();
+    }
+
+    private void appendLocale(Appender builder, String local) {
+        if (!this.isNullOrEmpty(local)) {
+            builder.appendSpaceIfNeeded().append("locale").append(" \"").append(local).append("\"");
+        }
+    }
+
+    private void appendControlNodePrefix(Appender builder, ControlNode controlNode) {
+        final String isRef;
+        if (controlNode.isIsReference() && !this.isImplicitlyReferential(controlNode)) {
+            isRef = "ref";
+        } else {
+            isRef = "";
+        }
+
+        if (controlNode.isIsIndividual()) {
+            builder.appendSpaceIfNeeded().append("individual");
+        }
+
+        if (controlNode.isIsPortion() && controlNode.getPortionKind() != null) {
+            builder.appendSpaceIfNeeded().append(controlNode.getPortionKind().toString());
+        }
+
+        this.appendExtensionKeyword(builder, controlNode);
+
+    }
+
+    private void appendActionNodeBody(Appender appender, ControlNode controlNode) {
+        this.appendChildrenContent(appender, controlNode, controlNode.getOwnedRelationship().stream()
+                .filter(SysMLRelationPredicates.IS_ANNOTATING_ELEMENT)
+                .toList());
+    }
+
+    private void appenDecisionTransition(TransitionUsage transitionUsage, Appender builder) {
+        Feature sourceFeature = transitionUsage.sourceFeature();
+        boolean hasGuards = !transitionUsage.getGuardExpression().isEmpty();
+        boolean isElsePattern = !hasGuards && sourceFeature instanceof DecisionNode;
+
+        Set<Element> alreadyHandledElements = new HashSet<>();
+        if (isElsePattern) {
+            builder.appendWithSpaceIfNeeded("else ");
+        } else {
+
+            Appender declarionAppender = this.newAppender();
+            this.appendUsageDeclaration(declarionAppender, transitionUsage);
+            if (!declarionAppender.isEmpty()) {
+                builder.append("succession ").append(declarionAppender.toString());
+            }
+
+            if (sourceFeature != null
+                    // Skip this part for Transition with implicit source and no declared name
+                    && (!this.isPreviousFeatureEqualsTo(sourceFeature, transitionUsage, m -> this.isNotSuccessionWithSameSource(m, sourceFeature))
+                            || !declarionAppender.isEmpty())) {
+                builder.appendWithSpaceIfNeeded("first ").append(this.getDeresolvableName(sourceFeature, transitionUsage));
+            }
+
+            if (hasGuards) {
+                builder.appendWithSpaceIfNeeded("if");
+                for (var guardExpression : transitionUsage.getGuardExpression()) {
+                    alreadyHandledElements.add(guardExpression.getOwningMembership());
+                    builder.appendWithSpaceIfNeeded(this.doSwitch(guardExpression));
+                }
+            }
+            builder.appendWithSpaceIfNeeded("then ");
+
+        }
+
+        builder.append(this.getDeresolvableName(transitionUsage.getTarget(), transitionUsage));
+
+        alreadyHandledElements.add(transitionUsage.getSuccession().getOwningMembership());
+
+        // Append usage body (removed already handled element : Succession and guard
+        List<Relationship> children = transitionUsage.getOwnedRelationship().stream()
+                .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                .filter(e -> !alreadyHandledElements.contains(e) && !(e instanceof ParameterMembership))
+                .toList();
+        this.appendChildrenContent(builder, transitionUsage, children);
+    }
+
+    private void appendActionUsageDeclaration(Appender builder, ActionUsage actionUsage) {
+        this.appendUsageDeclaration(builder, actionUsage);
+        this.appendValuePart(builder, actionUsage);
     }
 
     private String getDefinitionKeyword(Definition def) {
@@ -1681,10 +2120,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private Appender newAppender() {
-        return new Appender(this.lineSeparator, this.indentation);
-    }
-
     private void appendChildrenContent(Appender builder, Element element, List<? extends Relationship> childrenRelationships) {
         String content = this.getContent(childrenRelationships, this.lineSeparator);
         if (content != null && !content.isBlank()) {
@@ -1700,358 +2135,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return children.stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(this.lineSeparator, prefix, ""));
     }
 
-    @Override
-    public String caseImport(Import aImport) {
-        Appender builder = this.newAppender();
-
-        VisibilityKind visibility = aImport.getVisibility();
-        if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisibilityIndicator(visibility));
-        }
-        builder.appendSpaceIfNeeded().append("import ");
-
-        if (aImport.isIsImportAll()) {
-            builder.appendSpaceIfNeeded().append("all");
-        }
-
-        if (aImport instanceof NamespaceImport namespaceImport) {
-            this.appendNamespaceImport(builder, namespaceImport);
-        } else if (aImport instanceof MembershipImport membershipImport) {
-            this.appendMembershipImport(builder, membershipImport);
-        }
-
-        if (aImport.isIsRecursive()) {
-            builder.append("::**");
-        }
-
-        this.appendChildrenContent(builder, aImport, aImport.getOwnedRelationship());
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseComment(Comment comment) {
-        Appender builder = this.newAppender();
-        EList<Element> annotatedElements = comment.getAnnotatedElement();
-        boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(comment);
-        if (this.isNullOrEmpty(comment.getLocale()) && selfNamespaceDescribingComment && comment.getDeclaredName() == null) {
-            builder.append(this.getCommentBody(comment.getBody()));
-        } else {
-            builder.append("comment");
-
-            this.appendNameWithShortName(builder, comment);
-
-            if (!selfNamespaceDescribingComment) {
-                this.appendAnnotatedElements(builder, comment, annotatedElements);
-            }
-
-            this.appendLocale(builder, comment.getLocale());
-
-            builder.newLine().indent();
-            builder.appendIndentedContent(this.getCommentBody(comment.getBody()));
-        }
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseDocumentation(Documentation doc) {
-        Appender builder = this.newAppender();
-
-        builder.appendSpaceIfNeeded().append("doc");
-        this.appendNameWithShortName(builder, doc);
-        boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(doc);
-        if (this.isNullOrEmpty(doc.getLocale()) && selfNamespaceDescribingComment) {
-            builder.appendWithSpaceIfNeeded(this.getCommentBody(doc.getBody()));
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String caseTransitionFeatureMembership(TransitionFeatureMembership transitionFeatureMembership) {
-        Appender builder = this.newAppender();
-
-        if (transitionFeatureMembership.getKind() == TransitionFeatureKind.GUARD) {
-            List<String> expressions = transitionFeatureMembership.getOwnedRelatedElement().stream()
-                    .filter(Expression.class::isInstance)
-                    .map(Expression.class::cast)
-                    .map(this::doSwitch)
-                    .toList();
-        } else {
-            this.reportConsumer.accept(Status.warning("TransitionFeatureMembership of kind {0} are not yet handled", transitionFeatureMembership.getKind()));
-        }
-
-        return super.caseTransitionFeatureMembership(transitionFeatureMembership);
-    }
-
-    private boolean isDecisionTransition(TransitionUsage transitionUsage) {
-        return transitionUsage.specializesFromLibrary("Actions::Action::decisionTransitions");
-    }
-
-    @Override
-    public String caseTransitionUsage(TransitionUsage transitionUsage) {
-        Appender builder = this.newAppender();
-
-        if (this.isDecisionTransition(transitionUsage)) {
-            Appender declarionAppender = this.newAppender();
-            this.appendUsageDeclaration(declarionAppender, transitionUsage);
-            if (!declarionAppender.isEmpty()) {
-                builder.append("succession ").append(declarionAppender.toString());
-            }
-
-            Set<Element> alreadyHandledElements = new HashSet<>();
-
-            Feature sourceFeature = transitionUsage.sourceFeature();
-            if (sourceFeature != null) {
-                builder.appendWithSpaceIfNeeded("first ").append(this.getDeresolvableName(sourceFeature, transitionUsage));
-            }
-
-            if (!transitionUsage.getGuardExpression().isEmpty()) {
-                builder.appendWithSpaceIfNeeded("if");
-                for (var guardExpression : transitionUsage.getGuardExpression()) {
-                    alreadyHandledElements.add(guardExpression.getOwningMembership());
-                    builder.appendWithSpaceIfNeeded(this.doSwitch(guardExpression));
-                }
-            }
-
-            builder.appendWithSpaceIfNeeded("then ").append(this.getDeresolvableName(transitionUsage.getTarget(), transitionUsage));
-            alreadyHandledElements.add(transitionUsage.getSuccession().getOwningMembership());
-            
-            // Append usage body (removed already handled element : Succession and guard
-            List<Relationship> children = transitionUsage.getOwnedRelationship().stream()
-                    .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
-                    .filter(e -> !alreadyHandledElements.contains(e) && !(e instanceof ParameterMembership))
-                    .toList();
-            this.appendChildrenContent(builder, transitionUsage, children);
-
-            return builder.toString();
-        } else {
-            // Not handle yet (missing the case of StateTransition)
-            this.reportUnhandledType(transitionUsage);
-        }
-
-        return "";
-    }
-
-    @Override
-    public String caseStateUsage(StateUsage stateUsage) {
-        this.reportUnhandledType(stateUsage);
-        return "";
-    }
-
-    @Override
-    public String caseSatisfyRequirementUsage(SatisfyRequirementUsage satisfyRequirementUsage) {
-        this.reportUnhandledType(satisfyRequirementUsage);
-        return "";
-    }
-
-    @Override
-    public String caseCalculationDefinition(CalculationDefinition calculationDefinition) {
-        this.reportUnhandledType(calculationDefinition);
-        return "";
-    }
-
-    @Override
-    public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
-        this.reportUnhandledType(analysisCaseUsage);
-        return "";
-    }
-
-    @Override
-    public String caseVerificationCaseUsage(VerificationCaseUsage verificationCaseUsage) {
-        this.reportUnhandledType(verificationCaseUsage);
-        return "";
-    }
-
-    private void reportUnhandledType(Element e) {
-        this.reportConsumer.accept(Status.warning("{0} are not yet handled : {1}", e.eClass().getName(), e.getElementId()));
-    }
-
-    /**
-     * Returns true if the comment describes its <b>direct</b> owning namespace
-     *
-     * @param comment
-     *            a comment
-     * @return true if described is direct owning namespace
-     */
-    private boolean isSelfNamespaceDescribingComment(Comment comment) {
-        EList<Element> annotatedElements = comment.getAnnotatedElement();
-        if (!annotatedElements.isEmpty()) {
-            Element annotatedElement = annotatedElements.get(0);
-            if (annotatedElement instanceof Namespace owningNamespace && (owningNamespace == this.getDirectContainer(comment, Namespace.class))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void appendAnnotatedElements(Appender builder, Comment comment, EList<Element> annotatedElements) {
-        if (!annotatedElements.isEmpty()) {
-            builder.appendSpaceIfNeeded().append("about ");
-            builder.append(annotatedElements.stream().map(e -> this.getDeresolvableName(e, comment)).collect(joining(",")));
-        }
-    }
-
-    /**
-     * Returns the direct container of the element with the expected type. A direct container is either the
-     * {@link EObject#eContainer()} or the container of the {@link OwningMembership}
-     *
-     * @param element
-     *            an element
-     * @param expected
-     *            the expected type
-     * @return the expected type or <code>null</code> if no direct container of the expected type
-     */
-    private <T> T getDirectContainer(EObject element, Class<T> expected) {
-        EObject eContainer = element.eContainer();
-        T result = null;
-        if (expected.isInstance(eContainer)) {
-            result = (T) eContainer;
-        } else if (eContainer instanceof OwningMembership owning && expected.isInstance(owning.eContainer())) {
-            result = (T) owning.eContainer();
-        }
-        return result;
-    }
-
-    private String getCommentBody(String body) {
-        Appender subBuilder = this.newAppender();
-        subBuilder.append("/* ").append(body).append(" */");
-        return subBuilder.toString();
-    }
-
-    private void appendLocale(Appender builder, String local) {
-        if (!this.isNullOrEmpty(local)) {
-            builder.appendSpaceIfNeeded().append("locale").append(" \"").append(local).append("\"");
-        }
-    }
-
-    @Override
-    public String caseOwningMembership(OwningMembership owningMembership) {
-        Appender builder = this.newAppender();
-
-        this.appendMembershipPrefix(owningMembership, builder);
-
-        String content = owningMembership.getOwnedRelatedElement().stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(builder.getNewLine()));
-        builder.appendSpaceIfNeeded().append(content);
-
-        return builder.toString();
-    }
-
-    @Override
-    public String caseInterfaceDefinition(InterfaceDefinition interfaceDef) {
-        return this.appendDefaultDefinition(this.newAppender(), interfaceDef).toString();
-    }
-
-    @Override
-    public String casePortUsage(PortUsage portUsage) {
-        Appender builder = this.newAppender();
-        // PortUsage inside a InterfaceDefintion which are InterfaceEnd have a special rule for serialization
-        Element owner = portUsage.getOwner();
-        if (owner instanceof InterfaceDefinition def && def.getInterfaceEnd().contains(portUsage)) {
-            this.appendInterfaceEndPortUsage(builder, portUsage);
-        } else {
-            this.appendOccurrenceUsagePrefix(builder, portUsage);
-
-            builder.appendWithSpaceIfNeeded("port");
-
-            this.appendUsage(builder, portUsage);
-        }
-        return builder.toString();
-    }
-
-    private void appendInterfaceEndPortUsage(Appender builder, PortUsage portUsage) {
-        FeatureDirectionKind direction = portUsage.getDirection();
-        if (direction != null) {
-            builder.appendWithSpaceIfNeeded(direction.toString());
-        }
-
-        if (portUsage.isIsAbstract()) {
-            builder.appendWithSpaceIfNeeded("abstract");
-        } else if (portUsage.isIsVariation()) {
-            builder.appendWithSpaceIfNeeded("variation");
-        }
-
-        if (portUsage.isIsEnd()) {
-            builder.appendWithSpaceIfNeeded("end");
-        }
-        this.appendUsage(builder, portUsage);
-    }
-
-    private void appendUsage(Appender builder, Usage portUsage) {
-        this.appendUsageDeclaration(builder, portUsage);
-        this.appendUsageCompletion(builder, portUsage);
-    }
-
-    private void appendMembershipPrefix(Membership membership, Appender builder) {
-        VisibilityKind visibility = membership.getVisibility();
-        if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisibilityIndicator(visibility));
-        }
-    }
-
-    private void appendNamespaceImport(Appender builder, NamespaceImport namespaceImport) {
-        Namespace importedNamespace = namespaceImport.getImportedNamespace();
-        if (importedNamespace != null) {
-            builder.appendSpaceIfNeeded().append(this.buildImportContextRelativeQualifiedName(importedNamespace, namespaceImport)).append("::");
-        }
-        builder.append("*");
-    }
-
-    private void appendMembershipImport(Appender builder, MembershipImport membershipImport) {
-
-        Membership importedMembership = membershipImport.getImportedMembership();
-        if (importedMembership != null) {
-            String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(Objects::nonNull).findFirst()
-                    .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipImport)).orElse("");
-
-            builder.appendSpaceIfNeeded().append(qnName);
-        }
-    }
-
-    private String buildImportContextRelativeQualifiedName(Element element, Element from) {
-        String qualifiedName = this.nullToEmpty(element.getQualifiedName());
-        Element commonAncestor = EMFUtils.getLeastCommonContainer(Element.class, element, from);
-        if (commonAncestor != null) {
-            String prefix = commonAncestor.getQualifiedName() + "::";
-            if (qualifiedName.startsWith(prefix)) {
-                return qualifiedName.substring(prefix.length());
-            }
-        }
-        return qualifiedName;
-    }
-
-    private String appendNameWithShortName(Appender builder, Element element) {
-        String shortName = element.getShortName();
-        if (!this.isNullOrEmpty(shortName)) {
-            builder.appendSpaceIfNeeded().append("<").appendPrintableName(shortName).append(">");
-        }
-        String name = element.getDeclaredName();
-        if (!this.isNullOrEmpty(name)) {
-            builder.appendSpaceIfNeeded().appendPrintableName(name);
-        }
-        return builder.toString();
-    }
-
-    public String getVisibilityIndicator(VisibilityKind visibility) {
-        if (visibility == null) {
-            return "";
-        }
-        return switch (visibility) {
-            case PRIVATE -> "private";
-            case PROTECTED -> "protected";
-            case PUBLIC -> "public";
-            default -> "";
-        };
-    }
-
-    private boolean isNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
-    }
-
-    private String nullToEmpty(String string) {
-        if (string == null) {
-            return "";
-        }
-        return string;
+    private void appendOccurrenceUsageDeclaration(Appender builder, OccurrenceUsage occurrenceUsage) {
+        this.appendUsageDeclaration(builder, occurrenceUsage);
+        this.appendValuePart(builder, occurrenceUsage);
     }
 }
