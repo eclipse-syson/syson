@@ -30,6 +30,17 @@ package p1 {
 - Fix a problem encountered during the import of a SysML textual file in a specific model configuration. The model incorrectly resolved the target of a `Redefinition` when a name conflict was detected.
 - Fix an issue that prevented the export functionality to correctly produce qualified name for elements referenced in `FeatureReferenceExpression`.
 - In `Explorer View`, the fold/unfold arrow is now also available for non-sysml model elements.
+- Fix computation of `SuccessionAsUsage.getSourceFeature()` derived reference when using implicit source such as in the following example:
+
+```
+action def ActionDef1 {
+    action ax2;
+    action ax1;
+    then ax2;
+    then decide; // <- The source is ax1
+}
+```
+
 
 == New features
 
