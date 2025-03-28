@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,11 @@
 
 export class Project {
   public visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
-    return cy.visit(`/projects/${projectId}/edit`);
+    return cy.visit(`/projects/${projectId}/edit`, {
+      onBeforeLoad(win) {
+        cy.spy(win.console, 'debug').as('consoleDebug');
+      },
+    });
   }
   public disableDeletionConfirmationDialog(): void {
     cy.window().then((win) => {

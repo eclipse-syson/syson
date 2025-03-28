@@ -17,7 +17,7 @@ export class Explorer {
   }
 
   public getTreeItemByLabel(treeItemLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
-    return this.getExplorerView().get(`[data-treeitemlabel="${treeItemLabel}"]`);
+    return this.getExplorerView().find(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
   public getTreeItemByLabelAndKind(
@@ -104,8 +104,10 @@ export class Explorer {
     representationDescriptionName: string,
     representationLabel: string
   ): void {
-    this.getTreeItemByLabel(treeItemLabel).find('button').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    this.getTreeItemByLabel(treeItemLabel).find('button').should('exist').click();
+    cy.getByTestId('treeitem-contextmenu').should('exist');
+    cy.get('@consoleDebug').should('be.calledWith', 'query getAllContextMenuEntries: response received');
+    cy.getByTestId('new-representation').should('exist').click();
     cy.get('[aria-labelledby="dialog-title"]').then((modal) => {
       cy.wrap(modal).findByTestId('name').clear();
       cy.wrap(modal).findByTestId('name').type(representationLabel);

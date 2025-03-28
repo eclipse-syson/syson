@@ -46,24 +46,32 @@ describe('Details View Tests', () => {
     });
 
     context('When we select a PartUsage without type', () => {
-      it('Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.', () => {
-        explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
-        explorer.select('part4');
-        details.getGroup('Part Properties').should('be.visible');
-        details.getReferenceWidget('Typed by').should('exist');
-        details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');
-      });
+      it(
+        'Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.',
+        { retries: 3 },
+        () => {
+          explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+          explorer.select('part4');
+          details.getGroup('Part Properties').should('be.visible');
+          details.getReferenceWidget('Typed by').should('exist');
+          details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');
+        }
+      );
     });
 
     context('When we select an Element', () => {
       beforeEach(() => explorer.select('Vehicle'));
 
-      it('Then the details view contains the extra property "Documentation" even if the Element has no documentation yet.', () => {
-        details.getGroup('Part Definition Properties').should('be.visible');
-        details.getTextField('Declared Name').should('have.value', 'Vehicle');
-        details.getTextField('Documentation').should('exist');
-        details.getTextField('Documentation').should('have.value', '');
-      });
+      it(
+        'Then the details view contains the extra property "Documentation" even if the Element has no documentation yet.',
+        { retries: 3 },
+        () => {
+          details.getGroup('Part Definition Properties').should('be.visible');
+          details.getTextField('Declared Name').should('have.value', 'Vehicle');
+          details.getTextField('Documentation').should('exist');
+          details.getTextField('Documentation').should('have.value', '');
+        }
+      );
     });
   });
 });

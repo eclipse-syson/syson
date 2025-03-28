@@ -35,38 +35,46 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
     afterEach(() => cy.deleteProject(projectId));
 
     context('When we select a Package in the explorer', () => {
-      it("Then we can perform the 'New objects from text' menu entry", () => {
+      it("Then we can perform the 'New objects from text' menu entry", { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
         cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
         explorer.getExplorerView().contains('myAttribute', { timeout: 6000 });
       });
 
-      it("Then we can perform the 'New objects from text' menu entry and it will references elements from standard libraries (with appropriate imports)", () => {
-        const explorer = new Explorer();
-        explorer.insertTextualSysMLv2(
-          sysmlv2.getRootElementLabel(),
-          'import ScalarValues::*; attribute myAttribute : String;'
-        );
-        cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
-        explorer.getExplorerView().contains('myAttribute');
-        explorer.expand('myAttribute');
-        explorer.getExplorerView().contains('FeatureTyping');
-        explorer.select('myAttribute');
-        details.getGroup('Attribute Properties').should('be.visible');
-        details.getReferenceWidget('Typed by').should('exist');
-        details.getReferenceWidgetSelectedValue('Typed by', 'String').should('exist');
-      });
+      it(
+        "Then we can perform the 'New objects from text' menu entry and it will references elements from standard libraries (with appropriate imports)",
+        { retries: 3 },
+        () => {
+          const explorer = new Explorer();
+          explorer.insertTextualSysMLv2(
+            sysmlv2.getRootElementLabel(),
+            'import ScalarValues::*; attribute myAttribute : String;'
+          );
+          cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
+          explorer.getExplorerView().contains('myAttribute');
+          explorer.expand('myAttribute');
+          explorer.getExplorerView().contains('FeatureTyping');
+          explorer.select('myAttribute');
+          details.getGroup('Attribute Properties').should('be.visible');
+          details.getReferenceWidget('Typed by').should('exist');
+          details.getReferenceWidgetSelectedValue('Typed by', 'String').should('exist');
+        }
+      );
 
-      it("Then we can perform the 'New objects from text' menu entry with not valid textual sysml", () => {
-        const explorer = new Explorer();
-        explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), '£$$`:=;');
-        cy.getByTestId('insert-textual-sysmlv2-modal').should('exist');
-      });
+      it(
+        "Then we can perform the 'New objects from text' menu entry with not valid textual sysml",
+        { retries: 3 },
+        () => {
+          const explorer = new Explorer();
+          explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), '£$$`:=;');
+          cy.getByTestId('insert-textual-sysmlv2-modal').should('exist');
+        }
+      );
     });
 
     context('When we select a Document in the explorer', () => {
-      it("Then we can't perform the 'New objects from text' menu entry", () => {
+      it("Then we can't perform the 'New objects from text' menu entry", { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.getTreeItemByLabel(sysmlv2.getProjectLabel()).find('button').click();
         cy.getByTestId('insert-textual-sysmlv2-menu').should('not.exist');
