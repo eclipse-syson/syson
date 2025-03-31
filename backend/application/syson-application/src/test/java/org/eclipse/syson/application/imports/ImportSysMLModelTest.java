@@ -57,6 +57,7 @@ import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -126,6 +127,38 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void tearDown() {
         IPayload payload = this.projectDeletionService.deleteProject(new DeleteProjectInput(UUID.randomUUID(), this.projectId));
         assertThat(payload).isInstanceOf(SuccessPayload.class);
+    }
+
+    @Test
+    @DisplayName("Given a model with a TextualRepresentation with a multiline body, when importing the model, then the boly is imported without /* and */")
+    public void checkTextualRepresentationFeatures() throws IOException {
+        var input = """
+                action def P1 {
+                rep l1 language "naturalLanguage"
+                    /* some comment
+                    some other comment */
+                rep l2 language "naturalLanguage2"
+                    /* some comment 3 */
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<TextualRepresentation> textualRepresentations = EMFUtils.allContainedObjectOfType(resource, TextualRepresentation.class)
+                    .toList();
+            assertThat(textualRepresentations).hasSize(2);
+
+            TextualRepresentation t1 = textualRepresentations.get(0);
+            assertThat(t1.getLanguage()).isEqualTo("naturalLanguage");
+            // Note here the extra 4 spaces due to indentation
+            // The current implementation do not correctly handle indentation
+            assertThat(t1.getBody()).isEqualTo("""
+                    some comment
+                        some other comment""");
+            assertThat(t1.getDeclaredName()).isEqualTo("l1");
+            TextualRepresentation t2 = textualRepresentations.get(1);
+            assertThat(t2.getLanguage()).isEqualTo("naturalLanguage2");
+            assertThat(t2.getBody()).isEqualTo("some comment 3");
+            assertThat(t2.getDeclaredName()).isEqualTo("l2");
+
+        }).check(input);
     }
 
     @Test

@@ -59,8 +59,10 @@ public class EAttributeTranslator {
             this.matchingAttribute = this.getAttribute(ownerType, "value").orElse(null);
         } else if (astFeatureName.equals("isReference")) {
             forcedValue = this.handleIsReferenceAttribute(ownerType, astValue);
-        } else if (SysmlPackage.eINSTANCE.getComment().isSuperTypeOf(ownerType) && "body".equals(astFeatureName)) {
+        } else if ((SysmlPackage.eINSTANCE.getComment().isSuperTypeOf(ownerType) || SysmlPackage.eINSTANCE.getTextualRepresentation().isSuperTypeOf(ownerType)) && "body".equals(astFeatureName)) {
             forcedValue = this.handleCommentBody(ownerType, astFeatureName, astValue);
+        } else if (SysmlPackage.eINSTANCE.getTextualRepresentation().isSuperTypeOf(ownerType) && "language".equals(astFeatureName)) {
+            forcedValue = this.handleTextualRepresentationLanguage(ownerType, astFeatureName, astValue);
         } else if (SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(ownerType) && "isNonunique".equals(astFeatureName)) {
             forcedValue = this.handleIsUniqueAttribute(ownerType, astValue);
         } else if (SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(ownerType) && "importsAll".equals(astFeatureName)) {
@@ -81,6 +83,13 @@ public class EAttributeTranslator {
             }
 
         }
+    }
+
+    private Object handleTextualRepresentationLanguage(EClass ownerType, String astFeatureName, JsonNode astValue) {
+        Object forcedValue;
+        this.matchingAttribute = this.getAttribute(ownerType, astFeatureName).orElse(null);
+        forcedValue = this.asCleanedText(astValue).replaceFirst("\"", "").replaceFirst("\\\"", "").trim();
+        return forcedValue;
     }
 
     private Object handleIsUniqueAttribute(EClass ownerType, JsonNode astValue) {
