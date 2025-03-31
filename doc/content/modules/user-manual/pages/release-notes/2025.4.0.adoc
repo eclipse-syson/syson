@@ -46,6 +46,13 @@ Importing a "do" `TransitionFeatureMembership` now explicitly sets its kind to `
 - Fix an issue on import that set the default `RequirementConstraintKind` value on require and assume `RequirementConstraintMembership`
 Importing a "require" `RequirementConstraintMembership` now correctly sets its kind to `requirement`.
 Importing an "assume" `RequirementConstraintMembership` now explicitly sets its kind to `assumption`.
+- Fix import of `TextualRepresentation` to clean _language_ and _body_ properties.
+They no longuer contain the extra characters:
+
+* _/*_
+* _*/_
+* _"_
+
 
 == New features
 

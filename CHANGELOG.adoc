@@ -111,6 +111,7 @@ Importing a "do" `TransitionFeatureMembership` now explicitly sets its kind to `
 - https://github.com/eclipse-syson/syson/issues/1164[#1164] [import] Fix imported `RequirementConstraintKind` value on require and assume `RequirementConstraintMembership`
 Importing a "require" `RequirementConstraintMembership` now correctly sets its kind to `requirement`.
 Importing an "assume" `RequirementConstraintMembership` now explicitly sets its kind to `assumption`.
+- https://github.com/eclipse-syson/syson/issues/1154[#1154] [import] Fix import of `TextualRepresentation`.
 
 === Improvements
 
