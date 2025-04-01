@@ -47,6 +47,7 @@ import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -93,6 +94,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseComment(Comment object) {
         object.setBody("add comment here");
+        return object;
+    }
+
+    @Override
+    public Element caseTextualRepresentation(TextualRepresentation object) {
+        object.setBody("add textual representation here");
         return object;
     }
 

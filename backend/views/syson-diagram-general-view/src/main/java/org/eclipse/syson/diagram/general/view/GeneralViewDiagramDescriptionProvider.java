@@ -153,7 +153,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             );
 
     public static final List<EClass> ANNOTATINGS = List.of(
-            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment());
+            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment(),
+            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getTextualRepresentation());
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),

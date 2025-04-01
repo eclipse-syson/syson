@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,9 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
         var commentNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                 SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
         var documentationNodeTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache);
-        return List.of(commentNodeTool, documentationNodeTool);
+        var textualRepresentationNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getTextualRepresentation()),
+                SysmlPackage.eINSTANCE.getTextualRepresentation(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
+        return List.of(commentNodeTool, documentationNodeTool, textualRepresentationNodeTool);
     }
 
     @Override
@@ -65,6 +67,8 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
         var commentNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                 SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
         var documentationNodeTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache);
-        return List.of(commentNodeTool, documentationNodeTool);
+        var textualRepresentationNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getTextualRepresentation()),
+                SysmlPackage.eINSTANCE.getTextualRepresentation(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
+        return List.of(commentNodeTool, documentationNodeTool, textualRepresentationNodeTool);
     }
 }
