@@ -104,6 +104,19 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with TextualRepresentation, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkTextualRepresentation() throws IOException {
+        var input = """
+                action def P1 {
+                    language "naturalLanguage"
+                        /* some comment some other comment */
+                    rep l2 language "naturalLanguage2"
+                        /* some comment 3 */
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with TransitionUsage used between actions, when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkTransitionUsageBetweenActions() throws IOException {
         var input = """
@@ -120,6 +133,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
         this.checker.check(input, input);
     }
+
     @Test
     @DisplayName("Given a model with a DecisionNode with named TransitionUsage , when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkDecisionWithNamedTransition() throws IOException {
@@ -152,7 +166,6 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
         this.checker.check(input, expected);
     }
-
 
     @Test
     @DisplayName("Given a model with a DecisionNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
@@ -248,7 +261,6 @@ public class ImportExportTests extends AbstractIntegrationTests {
 
         this.checker.check(input, expected);
     }
-
 
     @Test
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, when importing and exporting the model, then the exported text file should be semantically equal.")

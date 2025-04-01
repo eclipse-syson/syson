@@ -160,6 +160,7 @@ This was not possible for libraries containing `LibraryPackage` instances, which
 - https://github.com/eclipse-syson/syson/issues/1160[#1160] [details] Use textarea widget for "body" property on `Comment`, `Documentation` and `TextualRepresentation` (instead of textfield widget).
 - https://github.com/eclipse-syson/syson/issues/1152[#1152] [general-view] Add `TextualRepresentation` in General View diagram.
 - https://github.com/eclipse-syson/syson/issues/1177[#1177] [syson] Add new SysMLv2 Library template allowing to create a project composed with a simple model with only one element: a `LibraryPackage`.
+- https://github.com/eclipse-syson/syson/issues/1162[#1162] [export] Implement textual export of `TextualRepresentation`.
 
 === New features
 

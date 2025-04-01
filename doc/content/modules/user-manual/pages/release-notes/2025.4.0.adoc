@@ -401,6 +401,18 @@ image::release-notes-navigation-bar-menu-icon.png[navigation bar menu icon, widt
 - Add new SysMLv2 Library template allowing to create a project composed with a simple model with only one element: a `LibraryPackage`.
 This template is visible on the home page (like SysMlv2 and Batmobile templates).
 
+- Implement textual export of `TextualRepresentation` such as:
+
+```
+ action def P1 {
+    language "naturalLanguage"
+        /* some comment
+        some other comment */
+    rep l2 language "naturalLanguage2"
+        /* some comment 3 */
+}
+```
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

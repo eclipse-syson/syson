@@ -118,6 +118,7 @@ import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -208,6 +209,25 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
         this.reportUnhandledType(analysisCaseUsage);
         return "";
+    }
+
+    @Override
+    public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
+        Appender builder = this.newAppender();
+
+        Appender identificationAppender = this.newAppender();
+
+        this.appendNameWithShortName(identificationAppender, textualRepresentation);
+
+        if (!identificationAppender.isEmpty()) {
+            builder.append("rep ").append(identificationAppender.toString());
+        }
+
+        builder.appendWithSpaceIfNeeded("language \"").append(textualRepresentation.getLanguage()).append("\"");
+
+        builder.appendIndentedContent(System.lineSeparator() + this.getCommentBody(textualRepresentation.getBody()));
+
+        return builder.toString();
     }
 
     @Override
