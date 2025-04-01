@@ -58,6 +58,8 @@ public final class SysMLv2Identifiers {
 
     public static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
+    public static final String SIMPLE_PROJECT_NAME = "SysMLv2-SimpleProject";
+
     public static final String SIMPLE_PROJECT_EDITING_CONTEXT_ID = "4b5adc0c-90a2-48c6-9ae7-c3fc035ff38b";
 
     public static final String SIMPLE_PROJECT_DOCUMENT = "9a59f836-1df2-4e5d-803c-9eb0ba7031aa";
@@ -69,6 +71,10 @@ public final class SysMLv2Identifiers {
     public static final String SIMPLE_PROJECT_PART = "a4f51a38-bfeb-4e0d-a870-55f8fe90405e";
 
     public static final String SIMPLE_PROJECT_PACKAGE2 = "ec12f223-8639-42a3-96c2-34163c6eccce";
+
+    public static final String IMPORTED_PROJECT = "afffb8f5-3db6-4b47-b295-55a36984db2e";
+
+    public static final String IMPORTED_PROJECT_NAME = "SysMLv2-ImportedProject";
 
     private SysMLv2Identifiers() {
         // Prevent instantiation
