@@ -153,6 +153,8 @@ public class EAttributeTranslator {
         if (aValue != null) {
             return switch (aValue) {
                 case "if" -> TransitionFeatureKind.GUARD;
+                case "accept" -> TransitionFeatureKind.TRIGGER;
+                case "do" -> TransitionFeatureKind.EFFECT;
                 default -> {
                     // Fallback on default case
                     // The other SysIDE inputs are not identified yet

@@ -55,6 +55,8 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -495,6 +497,62 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             List<Membership> startMemberships = memberships.stream().filter(m -> new UtilService().isStandardStartAction(m)).toList();
             assertThat(startMemberships).isEmpty();
 
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a TransitionUsage with an AcceptActionUsage, when importing the model, then the TransitionFeatureMembership's kind is trigger")
+    public void checkTransitionUsageWithAcceptActionUsageTest() throws IOException {
+        var input = """
+                attribute def StartSignal;
+
+                state myState {
+                    state off;
+                    accept StartSignal then on;
+                    state on;
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<TransitionUsage> transitionUsages = EMFUtils.allContainedObjectOfType(resource, TransitionUsage.class).toList();
+            assertThat(transitionUsages).hasSize(1);
+            TransitionUsage transitionUsage = transitionUsages.get(0);
+            assertThat(transitionUsage.getTriggerAction()).hasSize(1);
+            Optional<TransitionFeatureMembership> optionalTransitionFeatureMembership = transitionUsage.getOwnedRelationship().stream()
+                .filter(TransitionFeatureMembership.class::isInstance)
+                .map(TransitionFeatureMembership.class::cast)
+                .findFirst();
+            assertThat(optionalTransitionFeatureMembership).isPresent();
+            assertThat(optionalTransitionFeatureMembership.get().getKind()).isEqualTo(TransitionFeatureKind.TRIGGER);
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a TransitionUsage with an AcceptActionUsage containing a SendSignalActionUsage, when importing the model, then the TransitionFeatureMembership holding the SendSignalAction has the effect kind")
+    public void checkTransitionUsageWithAcceptActionUsageAndSendSignalActionTest() throws IOException {
+        var input = """
+                attribute def StartSignal;
+
+                state myState {
+                    state off;
+                    accept StartSignal
+                        do send StartSignal()
+                        then on;
+                    state on;
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<TransitionUsage> transitionUsages = EMFUtils.allContainedObjectOfType(resource, TransitionUsage.class).toList();
+            assertThat(transitionUsages).hasSize(1);
+            TransitionUsage transitionUsage = transitionUsages.get(0);
+            // The AcceptActionUsage is the trigger of the transition
+            assertThat(transitionUsage.getTriggerAction()).hasSize(1);
+            // The SendSignalActionUsage is the effect of the transition
+            assertThat(transitionUsage.getEffectAction()).hasSize(1);
+            List<TransitionFeatureMembership> transitionFeatureMemberships = transitionUsage.getOwnedRelationship().stream()
+                    .filter(TransitionFeatureMembership.class::isInstance)
+                    .map(TransitionFeatureMembership.class::cast)
+                    .toList();
+            assertThat(transitionFeatureMemberships).hasSize(2);
+            TransitionFeatureMembership doTransitionFeatureMembership = transitionFeatureMemberships.get(1);
+            assertThat(doTransitionFeatureMembership.getKind()).isEqualTo(TransitionFeatureKind.EFFECT);
         }).check(input);
     }
 

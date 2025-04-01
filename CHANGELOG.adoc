@@ -105,6 +105,9 @@ Exporting a SysML model containing a `FeatureReferenceExpression` now correctly 
 - https://github.com/eclipse-syson/syson/issues/1077[#1077] [explorer] Fix navigation in case of project containing both sysml and non-sysml model elements
 - https://github.com/eclipse-syson/syson/issues/1029[#1029] [metamodel] Fix an issue where the resolution of the names of elements accessed using implicit specialization failed.
 - https://github.com/eclipse-syson/syson/issues/1148[#1148] [metamodel] Fix computation of `SuccessionAsUsage` source and target feature when using implicit source/target.
+- https://github.com/eclipse-syson/syson/issues/1158[#1158] [import] Fix imported `TransitionFeatureKind` value on accept and do `TransitionFeatureMembership`
+Importing an "accept" `TransitionFeatureMembership` now correctly sets its kind to `trigger`.
+Importing a "do" `TransitionFeatureMembership` now explicitly sets its kind to `effect`.
 
 === Improvements
 
