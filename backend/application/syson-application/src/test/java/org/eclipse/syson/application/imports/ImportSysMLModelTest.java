@@ -52,6 +52,8 @@ import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
@@ -553,6 +555,38 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(transitionFeatureMemberships).hasSize(2);
             TransitionFeatureMembership doTransitionFeatureMembership = transitionFeatureMemberships.get(1);
             assertThat(doTransitionFeatureMembership.getKind()).isEqualTo(TransitionFeatureKind.EFFECT);
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a RequirementUsage with an assume ConstraintUsage, when importing the model, then the RequirementConstraintMembership holding the ConstraintUsage has the assumption kind")
+    public void checkRequirementUsageWithAssumeConstraintUsageTest() throws IOException {
+        var input = """
+                requirement myRequirement {
+                    assume constraint { 1 >= 0 }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<RequirementConstraintMembership> requirementConstraintMemberships = EMFUtils.allContainedObjectOfType(resource, RequirementConstraintMembership.class).toList();
+            assertThat(requirementConstraintMemberships).hasSize(1);
+            RequirementConstraintMembership requirementConstraintMembership = requirementConstraintMemberships.get(0);
+            assertThat(requirementConstraintMembership.getKind()).isEqualTo(RequirementConstraintKind.ASSUMPTION);
+            assertThat(requirementConstraintMembership.getOwnedConstraint()).isNotNull();
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a RequirementUsage with an require ConstraintUsage, when importing the model, then the RequirementConstraintMembership holding the ConstraintUsage has the requirement kind")
+    public void checkRequirementUsageWithRequireConstraintUsageTest() throws IOException {
+        var input = """
+                requirement myRequirement {
+                    require constraint { 1 >= 0 }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<RequirementConstraintMembership> requirementConstraintMemberships = EMFUtils.allContainedObjectOfType(resource, RequirementConstraintMembership.class).toList();
+            assertThat(requirementConstraintMemberships).hasSize(1);
+            RequirementConstraintMembership requirementConstraintMembership = requirementConstraintMemberships.get(0);
+            assertThat(requirementConstraintMembership.getKind()).isEqualTo(RequirementConstraintKind.REQUIREMENT);
+            assertThat(requirementConstraintMembership.getOwnedConstraint()).isNotNull();
         }).check(input);
     }
 

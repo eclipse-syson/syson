@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 
@@ -136,13 +137,16 @@ public class EAttributeTranslator {
     }
 
     private boolean isSpecialEnum(EDataType dataType) {
-        return dataType == SysmlPackage.eINSTANCE.getTransitionFeatureKind();
+        return dataType == SysmlPackage.eINSTANCE.getTransitionFeatureKind()
+                || dataType == SysmlPackage.eINSTANCE.getRequirementConstraintKind();
     }
 
     private Object convertSpecialEnumLiteral(EDataType dataType, String aValue) {
         final Object customValue;
         if (dataType == SysmlPackage.eINSTANCE.getTransitionFeatureKind()) {
             customValue = this.convertTransitionFeatureKind(aValue);
+        } else if (dataType == SysmlPackage.eINSTANCE.getRequirementConstraintKind()) {
+            customValue = this.convertRequirementConstraintKind(aValue);
         } else {
             customValue = null;
         }
@@ -159,6 +163,21 @@ public class EAttributeTranslator {
                     // Fallback on default case
                     // The other SysIDE inputs are not identified yet
                     yield (TransitionFeatureKind) SysmlPackage.eINSTANCE.getEFactoryInstance().createFromString(SysmlPackage.eINSTANCE.getTransitionFeatureKind(), aValue);
+                }
+            };
+        }
+        return null;
+    }
+
+    private RequirementConstraintKind convertRequirementConstraintKind(String aValue) {
+        if (aValue != null) {
+            return switch (aValue) {
+                case "require" -> RequirementConstraintKind.REQUIREMENT;
+                case "assume" -> RequirementConstraintKind.ASSUMPTION;
+                default -> {
+                    // Fallback on default case
+                    // The other SysIDE inputs are not identified yet
+                    yield (RequirementConstraintKind) SysmlPackage.eINSTANCE.getEFactoryInstance().createFromString(SysmlPackage.eINSTANCE.getRequirementConstraintKind(), aValue);
                 }
             };
         }
