@@ -196,6 +196,10 @@ public class SySONLibraryPublicationHandler implements ILibraryPublicationHandle
         final Resource isolatedResource = jsonResourceFactory.createResource(uri);
         isolatedResource.eAdapters().add(new ResourceMetadataAdapter(resourceName));
         isolatedResource.getContents().addAll(contents);
+        // Remove the imported flag on the resource: the resource is now a library, and its read-only/read-write nature
+        // should be determined by its import kind (reference or copy), and not whether it was imported from a textual
+        // SysML file in the first place.
+        ElementUtil.setIsImported(isolatedResource, false);
         return isolatedResource;
     }
 

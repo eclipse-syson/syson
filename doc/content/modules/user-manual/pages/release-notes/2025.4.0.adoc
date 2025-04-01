@@ -355,6 +355,10 @@ action def A1 {
 
 image::gv-port-as-border-node.png[Port as border node, width=85%,height=85%]
 
+- Allow to properly import libraries as copies if they have been created from models imported from textual SysML
+Models imported from textual SysML that contain `LibraryPackage` were always read-only, even when published as libraries and imported by the user.
+This conflicted with the expected behavior of the _import by copy_ feature, which should allow the user to edit the content of the imported library.
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

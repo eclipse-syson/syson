@@ -142,6 +142,9 @@ The importer can now import SysML files that contain `FeatureChainingExpression`
 - https://github.com/eclipse-syson/syson/issues/1143[#1143] [export] Implement textual export of `Decision Transition Usages`.
 - https://github.com/eclipse-syson/syson/issues/1147[#1147] [export] Implement textual export of `DecisionNode`.
 - https://github.com/eclipse-syson/syson/issues/1141[#1141] [general-view] Add `PortUsages` as border nodes in General View.
+- https://github.com/eclipse-syson/syson/issues/1155[#1155] [publication] Remove the imported `EAnnotation` from published libraries
+This annotation conflicts with the behavior of the _import by copy_ feature, which should allow the user to edit the content of the imported library.
+This was not possible for libraries containing `LibraryPackage` instances, which were always read-only, regardless of the import kind.
 
 === New features
 

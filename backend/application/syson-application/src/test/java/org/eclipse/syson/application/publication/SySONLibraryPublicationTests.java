@@ -14,9 +14,12 @@ package org.eclipse.syson.application.publication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -28,17 +31,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
@@ -46,16 +48,12 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.CapturedOutput;
-import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -65,15 +63,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @see SysONLibraryPublicationListener
  * @author flatombe
  */
-@Transactional(propagation = Propagation.NEVER)
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith(OutputCaptureExtension.class)
-@TestInstance(Lifecycle.PER_CLASS)
 public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
-
-    private static final String PUBLISHED_PROJECT_ID = SysMLv2Identifiers.SIMPLE_PROJECT;
-
-    private static final String PUBLISHED_PROJECT_EDITING_CONTEXT_ID = SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID;
 
     private static final String PUBLICATION_KIND = "Project_SysML_AllProperContents";
 
@@ -85,12 +77,6 @@ public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private SySONLibraryPublicationHandler sySONLibraryPublicationHandler;
-
-    @Autowired
-    private IProjectSearchService projectSearchService;
-
-    @Autowired
     private ISemanticDataSearchService semanticDataSearchService;
 
     @Autowired
@@ -99,78 +85,93 @@ public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
     @Autowired
     private ILibrarySearchService librarySearchService;
 
+    @Autowired
+    private PublishLibrariesMutationRunner publishLibrariesMutationRunner;
+
     @BeforeEach
     public void initializeServerState() {
         this.givenInitialServerState.initialize();
-
-        final Project projectBeforePublication = this.projectSearchService.findById(PUBLISHED_PROJECT_ID).orElseThrow();
-
-        // Publish a project as a library and do some sanity checks.
-        final PublishLibrariesInput input = new PublishLibrariesInput(UUID.randomUUID(), PUBLISHED_PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
-        assertThat(this.sySONLibraryPublicationHandler.canHandle(input));
-        final IPayload publicationResult = this.sySONLibraryPublicationHandler.handle(input);
-        assertThat(publicationResult).isInstanceOf(SuccessPayload.class);
-
-        final Project projectAfterPublication = this.projectSearchService.findById(PUBLISHED_PROJECT_ID).orElseThrow();
-        assertThat(projectBeforePublication.getLastModifiedOn()).isEqualTo(projectAfterPublication.getLastModifiedOn());
     }
 
     @Test
-    @DisplayName("The published library exists and its metadatas are correct")
+    @DisplayName("Given a project, when the library is published, then the library exists and its metadatas are correct")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void testPublishedLibraryExistsAndMetadatasAreCorrect(CapturedOutput capturedOutput) {
-        final Project project = this.projectSearchService.findById(PUBLISHED_PROJECT_ID).orElseThrow();
-        assertThat(this.librarySearchService.findByNamespaceAndNameAndVersion(PUBLISHED_PROJECT_ID, project.getName(), LIBRARY_VERSION))
+    public void givenProjectWhenLibraryIsPublishedThenLibraryExistsAndHasCorrectMetadatas() {
+        var input = new PublishLibrariesInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var result = this.publishLibrariesMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        assertThat(this.librarySearchService.findByNamespaceAndNameAndVersion(SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT_NAME, LIBRARY_VERSION))
                 .isPresent()
-                .hasValueSatisfying(library -> library.getName().equals(project.getName()))
-                .hasValueSatisfying(library -> library.getVersion().equals(LIBRARY_VERSION))
-                .hasValueSatisfying(library -> library.getDescription().equals(LIBRARY_DESCRIPTION));
+                .hasValueSatisfying(library -> assertThat(library.getName()).isEqualTo(SysMLv2Identifiers.SIMPLE_PROJECT_NAME))
+                .hasValueSatisfying(library -> assertThat(library.getVersion()).isEqualTo(LIBRARY_VERSION))
+                .hasValueSatisfying(library -> assertThat(library.getDescription()).isEqualTo(LIBRARY_DESCRIPTION));
     }
 
     @Test
-    @DisplayName("It is not possible to overwrite an existing library")
+    @DisplayName("Given a project, when the library is published twice with the same version, then the second publication fails and the library is not updated")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void testCannotOverwriteExistingLibrary(CapturedOutput capturedOutput) {
-        final Project project = this.projectSearchService.findById(PUBLISHED_PROJECT_ID).orElseThrow();
-        final Optional<Library> maybeLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(PUBLISHED_PROJECT_ID, project.getName(), LIBRARY_VERSION);
-        assertThat(maybeLibrary).isPresent();
+    public void givenProjectWhenLibraryIsPublishedTwiceThenTheSecondPublicationFailsAndTheLibraryIsNotUpdated() {
+        var input1 = new PublishLibrariesInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var result1 = this.publishLibrariesMutationRunner.run(input1);
+        String typename1 = JsonPath.read(result1, "$.data.publishLibraries.__typename");
+        assertThat(typename1).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
-        final Instant libraryLastModifiedBeforeOurTry = maybeLibrary.get().getLastModifiedOn();
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT_NAME, LIBRARY_VERSION);
+        assertThat(optionalLibrary).isPresent();
+        Instant initialLastModifiedOn = optionalLibrary.get().getLastModifiedOn();
 
         // The uniqueness of a library is ensured based on its namespace (project ID), name and version so we may tweak
         // the description.
-        final PublishLibrariesInput input = new PublishLibrariesInput(UUID.randomUUID(), PUBLISHED_PROJECT_ID, PUBLICATION_KIND, maybeLibrary.get().getVersion(),
-                maybeLibrary.get().getDescription() + "_2");
-        final IPayload publicationResult = this.sySONLibraryPublicationHandler.handle(input);
-        assertThat(publicationResult).isInstanceOf(ErrorPayload.class);
+        var input2 = new PublishLibrariesInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION + "_2");
+        var result2 = this.publishLibrariesMutationRunner.run(input2);
+        String typename2 = JsonPath.read(result2, "$.data.publishLibraries.__typename");
+        assertThat(typename2).isEqualTo(ErrorPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
-        final Instant libraryLastModifiedAfterOurTry = this.librarySearchService.findByNamespaceAndNameAndVersion(PUBLISHED_PROJECT_ID, project.getName(), LIBRARY_VERSION).get().getLastModifiedOn();
-
-        assertThat(libraryLastModifiedBeforeOurTry).isEqualTo(libraryLastModifiedAfterOurTry);
+        Optional<Library> optionalUpdatedLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT_NAME,
+                LIBRARY_VERSION);
+        // Check that the published library has not been updated.
+        assertThat(optionalUpdatedLibrary)
+                .isPresent()
+                .hasValueSatisfying(library -> assertThat(library.getLastModifiedOn()).isEqualTo(initialLastModifiedOn));
     }
 
     @Test
-    @DisplayName("The contents of the library are similar to the SysML contents of the project that was published")
+    @DisplayName("Given a project, when the library is published, then the content of the library matches the content of the project")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void testLibraryContents(CapturedOutput capturedOutput) {
-        final Project project = this.projectSearchService.findById(PUBLISHED_PROJECT_ID).orElseThrow();
-        final Optional<Library> maybeLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(PUBLISHED_PROJECT_ID, project.getName(), LIBRARY_VERSION);
-        assertThat(maybeLibrary).isPresent();
+    public void givenProjectWhenLibraryIsPublishedThenContentOfLibraryMatchesContentOfProject() {
+        var input = new PublishLibrariesInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var result = this.publishLibrariesMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
-        final Optional<SemanticData> maybeLibrarySemanticData = this.semanticDataSearchService.findById(maybeLibrary.get().getSemanticData().getId());
-        assertThat(maybeLibrarySemanticData).isPresent();
-
-        final Optional<IEditingContext> maybeLibraryEditingContext = this.editingContextSearchService.findById(maybeLibrarySemanticData.get().getId().toString());
+        final Optional<IEditingContext> maybeLibraryEditingContext = this.librarySearchService
+                .findByNamespaceAndNameAndVersion(SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT_NAME, LIBRARY_VERSION)
+                .map(Library::getSemanticData)
+                .map(AggregateReference::getId)
+                .map(UUID::toString)
+                .flatMap(this.editingContextSearchService::findById);
         assertThat(maybeLibraryEditingContext).isPresent().get().isInstanceOf(IEMFEditingContext.class);
-
         final ResourceSet libraryResourceSet = ((IEMFEditingContext) maybeLibraryEditingContext.get()).getDomain().getResourceSet();
 
-        final Optional<IEditingContext> maybeSimpleProjectEditingContext = this.editingContextSearchService.findById(PUBLISHED_PROJECT_EDITING_CONTEXT_ID);
+        final Optional<IEditingContext> maybeSimpleProjectEditingContext = this.editingContextSearchService.findById(SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID);
         assertThat(maybeSimpleProjectEditingContext).isPresent().get().isInstanceOf(IEMFEditingContext.class);
-
         final ResourceSet simpleProjectResourceSet = ((IEMFEditingContext) maybeSimpleProjectEditingContext.get()).getDomain().getResourceSet();
 
         final Function<Resource, List<EObject>> functionResourceToSysMLRootContents = resource -> resource.getContents().stream()
@@ -205,8 +206,6 @@ public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
 
             assertThat(functionResourceToSysMLRootContents.apply(librarySysMLResource))
                     .usingElementComparator((left, right) -> {
-                        // return Integer.compare(Iterators.size(left.eAllContents()),
-                        // Iterators.size(right.eAllContents()));
                         if (EcoreUtil.equals(left, right)) {
                             return 0;
                         } else {
@@ -215,6 +214,31 @@ public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
                     })
                     .hasSameElementsAs(functionResourceToSysMLRootContents.apply(simpleProjectSysMLResource));
         }
+    }
+
+    @Test
+    @DisplayName("Given a project with a resource flagged as imported, when the library is published, then the library does not contain the imported flag.")
+    @Sql(scripts = { "/scripts/SysMLv2-ImportedProject/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWithImportedResourceWhenLibraryIsPublishedThenLibraryDoesNotContainTheImportedFlag() {
+        var input = new PublishLibrariesInput(UUID.randomUUID(), SysMLv2Identifiers.IMPORTED_PROJECT, PUBLICATION_KIND, "1.0.0", "");
+        var result = this.publishLibrariesMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Optional<SemanticData> semanticData = this.librarySearchService.findByNamespaceAndNameAndVersion(SysMLv2Identifiers.IMPORTED_PROJECT, SysMLv2Identifiers.IMPORTED_PROJECT_NAME, "1.0.0")
+                    .map(Library::getSemanticData)
+                    .map(AggregateReference::getId)
+                    .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(semanticData).isPresent();
+        Set<Document> documents = semanticData.get().getDocuments();
+        assertThat(documents)
+                .hasSize(1)
+                .allSatisfy(document -> assertThat(document.getContent()).doesNotContain("\"source\":\"org.eclipse.syson.sysml.imported\""));
     }
 
 }
