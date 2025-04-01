@@ -34,6 +34,7 @@ import org.eclipse.syson.application.controller.editingContext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesIdentifiers;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -248,17 +249,18 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM);
+                GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesIdentifiers.Diagram.ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
+        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1);
     }
 
     @AfterEach
@@ -377,7 +379,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         String parentLabel = "Package";
         List<ToolVariable> variables = List.of();
         if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(childEClass)) {
-            variables = List.of(new ToolVariable("selectedObject", SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT, ToolVariableType.OBJECT_ID));
+            variables = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1, ToolVariableType.OBJECT_ID));
         }
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass, variables);
         this.diagramCheckerService.checkDiagram(

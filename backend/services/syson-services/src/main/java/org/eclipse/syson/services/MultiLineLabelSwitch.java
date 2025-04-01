@@ -63,6 +63,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TriggerInvocationExpression;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
@@ -362,6 +363,38 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .append(this.caseElement(object))
                     .append(LabelConstants.CR);
         }
+        String body = object.getBody();
+        if (body != null) {
+            label
+                    .append(LabelConstants.CR)
+                    .append(object.getBody());
+        }
+        return label.toString();
+    }
+
+    @Override
+    public String caseTextualRepresentation(TextualRepresentation object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("rep")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        String declaredName = object.getDeclaredName();
+        if (declaredName != null && !declaredName.isEmpty()) {
+            label
+                    .append(this.caseElement(object))
+                    .append(LabelConstants.CR);
+        }
+
+        String language = object.getLanguage();
+
+        if (language != null) {
+            label.append(LabelConstants.CR)
+                    .append("language = ")
+                    .append(language);
+        }
+
         String body = object.getBody();
         if (body != null) {
             label

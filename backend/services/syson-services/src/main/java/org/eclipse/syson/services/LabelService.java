@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
@@ -234,6 +235,17 @@ public class LabelService {
      */
     public String getDefaultInitialDirectEditLabel(Comment comment) {
         return comment.getBody();
+    }
+
+    /**
+     * Get the value to display when a direct edit has been called on the given {@link TextualRepresentation}.
+     *
+     * @param textualRepresentation
+     *            the given {@link Comment}.
+     * @return the value to display.
+     */
+    public String getDefaultInitialDirectEditLabel(TextualRepresentation textualRepresentation) {
+        return textualRepresentation.getBody();
     }
 
     /**

@@ -137,7 +137,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE);
     }
 
     @AfterEach

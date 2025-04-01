@@ -68,10 +68,12 @@ public class AnnotationEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
         String commentNodeName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getComment());
         String documentationNodeName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getDocumentation());
+        String textualRepresentationNodeName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getTextualRepresentation());
 
         var sourceNodes = new ArrayList<NodeDescription>();
         cache.getNodeDescription(commentNodeName).ifPresent(sourceNodes::add);
         cache.getNodeDescription(documentationNodeName).ifPresent(sourceNodes::add);
+        cache.getNodeDescription(textualRepresentationNodeName).ifPresent(sourceNodes::add);
 
         var targetNodes = new ArrayList<NodeDescription>();
         targetNodes.addAll(

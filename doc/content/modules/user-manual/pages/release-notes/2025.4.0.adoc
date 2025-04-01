@@ -375,6 +375,10 @@ This is visible on the "body" property on:
 * `Documentation`
 * `TextualRepresentation`
 
+- `TextualRepresentations` can now be displayed and edited in the "General View" diagram.
+
+image::GV_TextualRepresentation.png[TextualRepresentation on General View Diagram, width=85%,height=85%]
+
 
 == Dependency update
 

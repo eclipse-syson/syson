@@ -30,12 +30,6 @@ public final class SysMLv2Identifiers {
 
     public static final String GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT = "528fae42-60c2-40c8-baa3-684d874a950d";
 
-    public static final String GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID = "1b0c2b5c-5bbe-4429-a73b-43ef46c16955";
-
-    public static final String GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM = "f798f221-9992-4d47-9831-0312e7f9f726";
-
-    public static final String GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT = "8bd049dc-6f98-44fc-9be6-b2acb871c8c3";
-
     public static final String INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=e1bd3b6d-357b-3068-b2e9-e0c1e19d6856";
 
     public static final String INTERCONNECTION_VIEW_EMPTY_EDITING_CONTEXT_ID = "5e2327fa-1247-4429-9b26-64b7941965f2";

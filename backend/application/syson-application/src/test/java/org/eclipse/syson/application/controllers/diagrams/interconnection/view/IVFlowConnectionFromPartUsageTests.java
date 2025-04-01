@@ -107,7 +107,7 @@ public class IVFlowConnectionFromPartUsageTests extends AbstractIntegrationTests
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, InterconnectionViewIdentifiers.EDITING_CONTEXT_ID);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, InterconnectionViewIdentifiers.EDITING_CONTEXT_ID, null);
     }
 
     @AfterEach

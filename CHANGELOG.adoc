@@ -150,6 +150,7 @@ The importer can now import SysML files that contain `FeatureChainingExpression`
 This annotation conflicts with the behavior of the _import by copy_ feature, which should allow the user to edit the content of the imported library.
 This was not possible for libraries containing `LibraryPackage` instances, which were always read-only, regardless of the import kind.
 - https://github.com/eclipse-syson/syson/issues/1160[#1160] [details] Use textarea widget for "body" property on `Comment`, `Documentation` and `TextualRepresentation` (instead of textfield widget).
+- https://github.com/eclipse-syson/syson/issues/1152[#1152] [general-view] Add `TextualRepresentation` in General View diagram.
 
 === New features
 

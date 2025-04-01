@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024 , 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -60,6 +61,11 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
 
     @Override
     public Optional<EClass> caseDocumentation(Documentation object) {
+        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
+    }
+
+    @Override
+    public Optional<EClass> caseTextualRepresentation(TextualRepresentation object) {
         return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
     }
 

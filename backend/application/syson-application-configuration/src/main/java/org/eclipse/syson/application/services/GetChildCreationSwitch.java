@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
         return childrenCandidates;
     }
 
@@ -104,6 +105,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
         return childrenCandidates;
     }
 
@@ -195,6 +197,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
         return childrenCandidates;
     }
 
@@ -246,6 +249,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
         return childrenCandidates;
     }
 
@@ -267,6 +271,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDependency());
         return childrenCandidates;
     }

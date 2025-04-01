@@ -158,15 +158,19 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
      *
-     * @generated
+     * <pre>
+     * /representedElement : Element {subsets owner, redefines annotatedElement}
+     * The Element that is represented by this TextualRepresentation.
+     * </pre>
+     * 
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
      */
     public Element basicGetRepresentedElement() {
-        // TODO: implement this method to return the 'Represented Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwner();
     }
 
     /**

@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 import reactor.test.StepVerifier.Step;
@@ -37,7 +36,10 @@ public class NodeCreationTestsService {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public NodeCreationTestsService(NodeCreationTester nodeCreationTester, IDescriptionNameGenerator descriptionNameGenerator) {
+    private final String editingContextId;
+
+    public NodeCreationTestsService(NodeCreationTester nodeCreationTester, IDescriptionNameGenerator descriptionNameGenerator, String editingContextId) {
+        this.editingContextId = Objects.requireNonNull(editingContextId);
         this.nodeCreationTester = Objects.requireNonNull(nodeCreationTester);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
@@ -61,7 +63,7 @@ public class NodeCreationTestsService {
     public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
             AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName, List<ToolVariable> variables) {
         String creationToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(parentEClass), toolName);
-        verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
+        verifier.then(() -> this.nodeCreationTester.createNode(this.editingContextId,
                 diagram,
                 parentLabel,
                 creationToolId,

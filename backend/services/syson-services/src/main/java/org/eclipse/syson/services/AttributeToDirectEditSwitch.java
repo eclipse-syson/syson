@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.services;
 
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -31,6 +32,11 @@ public class AttributeToDirectEditSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseComment(Comment object) {
+        object.setBody(this.newValue);
+        return object;
+    }
+    @Override
+    public Element caseTextualRepresentation(TextualRepresentation object) {
         object.setBody(this.newValue);
         return object;
     }

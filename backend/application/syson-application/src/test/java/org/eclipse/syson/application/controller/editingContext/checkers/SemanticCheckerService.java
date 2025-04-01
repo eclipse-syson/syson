@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.sysml.Element;
 
@@ -41,14 +40,17 @@ public class SemanticCheckerService {
 
     private final String editingContextId;
 
-    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectSearchService objectSearchService, String editingContextId) {
+    private final String rootElementId;
+
+    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectSearchService objectSearchService, String editingContextId, String rootElementId) {
         this.semanticRunnableFactory = semanticRunnableFactory;
         this.objectSearchService = objectSearchService;
         this.editingContextId = editingContextId;
+        this.rootElementId = rootElementId;
     }
 
     public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass) {
-        return new CheckElementInParent(this.objectSearchService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT)
+        return new CheckElementInParent(this.objectSearchService, this.rootElementId)
                 .withParentLabel(parentLabel)
                 .withContainmentReference(containmentReference)
                 .hasType(childEClass);
