@@ -173,10 +173,6 @@ public class DetailsViewService {
         return isReadOnly;
     }
 
-    private boolean isImportedLibrary(Resource resource) {
-        return resource != null && this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
-    }
-
     /**
      * Checks that {@code element} OR {@code eStructuralFeature} are readOnly respectively based on isReadOnly(Element)
      * and isReadOnly(EStructuralFeature).
@@ -220,8 +216,18 @@ public class DetailsViewService {
         return false;
     }
 
+    public boolean isMultilineStringAttribute(Element element, EStructuralFeature eStructuralFeature) {
+        boolean isMultiline = false;
+        if (this.isBodyField(eStructuralFeature)) {
+            isMultiline = true;
+        } else {
+            isMultiline = false;
+        }
+        return isMultiline;
+    }
+
     public boolean isStringAttribute(Element element, EStructuralFeature eStructuralFeature) {
-        if (eStructuralFeature instanceof EAttribute) {
+        if (eStructuralFeature instanceof EAttribute && !eStructuralFeature.isMany() && !this.isMultilineStringAttribute(element, eStructuralFeature)) {
             EClassifier eType = eStructuralFeature.getEType();
             boolean readOnlyProperty = false;
             if (SysmlPackage.eINSTANCE.getElement_ElementId().equals(eStructuralFeature)) {
@@ -231,7 +237,8 @@ public class DetailsViewService {
             } else if (element instanceof ConjugatedPortDefinition) {
                 readOnlyProperty = true;
             }
-            return !readOnlyProperty && (!eStructuralFeature.isMany() && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName())));
+            return !readOnlyProperty
+                    && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName()));
         }
         return false;
     }
@@ -567,7 +574,7 @@ public class DetailsViewService {
      * Returns the element that owns the visibility feature of the given element.
      *
      * @param self
-     *         An element for which the visibility owner is being searched.
+     *            An element for which the visibility owner is being searched.
      * @return the element that owns the visibility feature of the given element
      */
     public Element getVisibilityPropertyOwner(Element self) {
@@ -581,7 +588,7 @@ public class DetailsViewService {
      * Returns the enumeration literals for the visibility feature of the given element.
      *
      * @param self
-     *         An element for which the list of  visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @return the enumeration literals for the visibility feature of the given element.
      */
     public List<EEnumLiteral> getVisibilityEnumLiterals(Element self) {
@@ -596,7 +603,7 @@ public class DetailsViewService {
      * Returns the visibility value of the given element.
      *
      * @param self
-     *         An element for which the list of  visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @return the current value of the visibility feature of the given element.
      */
     public EEnumLiteral getVisibilityValue(Element self) {
@@ -611,10 +618,11 @@ public class DetailsViewService {
      * Sets the visibility value of the given element.
      *
      * @param self
-     *         An element for which the list of  visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @param newValue
-     *         the value to set.
-     * @return <code>true</code> if the visibility feature of the given element has been properly set and <code>false</code> otherwise.
+     *            the value to set.
+     * @return <code>true</code> if the visibility feature of the given element has been properly set and
+     *         <code>false</code> otherwise.
      */
     public boolean setVisibilityValue(Element self, Object newValue) {
         boolean result = false;
@@ -764,5 +772,13 @@ public class DetailsViewService {
             receiverFeature.setDirection(FeatureDirectionKind.OUT);
             receiverReturn.getOwnedRelatedElement().add(receiverFeature);
         }
+    }
+
+    private boolean isImportedLibrary(Resource resource) {
+        return resource != null && this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
+    }
+
+    private boolean isBodyField(EStructuralFeature eStructuralFeature) {
+        return SysmlPackage.eINSTANCE.getTextualRepresentation_Body().equals(eStructuralFeature) || SysmlPackage.eINSTANCE.getComment_Body().equals(eStructuralFeature);
     }
 }
