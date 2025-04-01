@@ -44,6 +44,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -275,6 +276,15 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature());
         features.add(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseTextualRepresentation(TextualRepresentation object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getTextualRepresentation_Language());
+        features.add(SysmlPackage.eINSTANCE.getTextualRepresentation_Body());
         return features;
     }
 

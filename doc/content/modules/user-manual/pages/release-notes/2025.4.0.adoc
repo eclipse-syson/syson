@@ -361,6 +361,13 @@ image::gv-port-as-border-node.png[Port as border node, width=85%,height=85%]
 - Allow to properly import libraries as copies if they have been created from models imported from textual SysML
 Models imported from textual SysML that contain `LibraryPackage` were always read-only, even when published as libraries and imported by the user.
 This conflicted with the expected behavior of the _import by copy_ feature, which should allow the user to edit the content of the imported library.
+- Use a _textarea_ widget to be able to edit multiline string properties in the _Details_ view.
+This is visible on the "body" property on:
+
+* `Comment`
+* `Documentation`
+* `TextualRepresentation`
+
 
 == Dependency update
 
