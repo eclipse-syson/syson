@@ -9,9 +9,9 @@ if [[ $isTestContainerRunning -ne 1 ]]; then
     exit 1
 fi
 
-echo "Cleaning syson-db & importing ./annotation-annotatingElement-migration-participant-test-database.sql"
+echo "Cleaning syson-db & importing ./syson-test-database.sql"
 # Remove winpty if you are not calling the script from git bash
-winpty psql -U dbuser -d syson-db --host "localhost" --port "5433" -f ./cleanup.sql -f ./annotation-annotatingElement-migration-participant-test-database.sql
+winpty psql -U dbuser -d syson-db --host "localhost" --port "5433" -f ./cleanup.sql -f ./syson-test-database.sql
 echo "Done"
 
 exit 0
