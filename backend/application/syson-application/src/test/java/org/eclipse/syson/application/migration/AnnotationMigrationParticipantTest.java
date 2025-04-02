@@ -56,7 +56,7 @@ public class AnnotationMigrationParticipantTest extends AbstractIntegrationTests
 
     @Test
     @DisplayName("Given a project with an old SysML model, when the model is loaded, AnnotationAnnotatingElementMigrationParticipant migrates the model correctly meaning it does not deserialize source feature")
-    @Sql(scripts = { "/migrationParticipants/annotation/annotation-annotatingElement-migration-participant-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/migrationParticipants/annotation/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void annotationSourceMigrationParticpantTest() {
         this.givenCommittedTransaction.commit();
