@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.tests.graphql.CreateRootObjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.api.ISysONResourceService;
@@ -52,7 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gdaniel
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Autowired

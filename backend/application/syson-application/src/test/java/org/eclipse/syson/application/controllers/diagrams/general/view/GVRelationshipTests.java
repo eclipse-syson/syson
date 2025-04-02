@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.GeneraViewRelationshipIdentifiers;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +45,7 @@ import reactor.test.StepVerifier;
  * @author frouene
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class GVRelationshipTests extends AbstractIntegrationTests {
 
     @Autowired
