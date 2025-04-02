@@ -14,6 +14,7 @@ package org.eclipse.syson.application.controllers.rest;
 
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class RestControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired

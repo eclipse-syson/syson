@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
@@ -55,7 +56,7 @@ import reactor.test.StepVerifier.Step;
  * @author Jerome Gout
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractIntegrationTests {
 
     private static final int PART_USAGE_COMPARTMENT_COUNT = 3;
