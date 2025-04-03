@@ -41,7 +41,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-import", 83.0),
   new ModuleCoverage("syson-sysml-export", 61.0),
   new ModuleCoverage("syson-sysml-validation", 99.0),
-  new ModuleCoverage("syson-diagram-common-view", 84.0),
+  new ModuleCoverage("syson-diagram-common-view", 83.0),
   new ModuleCoverage("syson-diagram-general-view", 98.0),
   new ModuleCoverage("syson-diagram-actionflow-view", 96.0),
   new ModuleCoverage("syson-diagram-statetransition-view", 94.0),

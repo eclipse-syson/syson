@@ -69,7 +69,7 @@ image::release-notes-publication-command.png[Publication command, width=65%,heig
 Note that it is only available for projects with documents containing SysML elements as their root contents.
 The publication process only publishes the SysML contents.
 
-image::release-notes-publication-model.png[Publication command, width=50%,height=50%]
+image::release-notes-publication-model.png[Publication command, width=30%,height=30%]
 
 Upon selecting this command, a dialog prompts for the library information.
 
@@ -111,8 +111,9 @@ With the latter, a copy of the contents of the library are copied into the proje
 image::release-notes-publication-import-choices.png[Import published library command dialog, width=85%,height=85%]
 
 Upon importing:
-  - If one of the selected libraries is already imported (same namespace, name and version) then it will not be imported a second time.
-  - Dependencies are re-loaded, which may trigger imported libraries to re-appear in the Explorer view if they had been manually removed.
+
+- If one of the selected libraries is already imported (same namespace, name and version) then it will not be imported a second time.
+- Dependencies are re-loaded, which may trigger imported libraries to re-appear in the Explorer view if they had been manually removed.
 
 Upon a successful import, a notification appears in the bottom right corner.
 
@@ -127,9 +128,10 @@ If a document from an imported-by-reference library has a root element that is a
 image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=50%,height=50%]
 
 - Projects may now update the version of a published library they depend on.
+
 In the Explorer view, the contextual menu on documents from imported-by-reference published libraries now contains an entry to update the version of the library dependency.
 
-image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=50%,height=50%]
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=30%,height=30%]
 
 Upon selecting this action, a dialog prompts for the new version of the library to use.
 
@@ -311,11 +313,11 @@ These implicit redefinitions are not visible in the diagrams nor the explorer (l
 The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
 - An edge is now displayed between `OccurrenceDefinition` its nested `OccurrenceUsages`.
 
-image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=85%,height=85%]
+image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=40%,height=40%]
 
 - It is now possible, in diagrams, to reduce the width of `NamespaceImport` graphical nodes with a long name as their label can now be wrapped.
 
-image::namespace-import-wrapped-label.png[NamesapceImport wrapped label, width=85%,height=85%]
+image::namespace-import-wrapped-label.png[NamesapceImport wrapped label, width=40%,height=40%]
 
 - Improve the name used in exported files of objects referenced by an implicit `Specialization`.
 For example, the name used to reference the "start" `ActionUsage` in the following model has been improved:
@@ -366,7 +368,7 @@ action def A1 {
 ```  
 - In _General View_ diagram, `PortUsage` are now represented as border nodes on `PartUsage` nodes.
 
-image::gv-port-as-border-node.png[Port as border node, width=85%,height=85%]
+image::gv-port-as-border-node.png[Port as border node, width=60%,height=60%]
 
 - Allow to properly import libraries as copies if they have been created from models imported from textual SysML
 Models imported from textual SysML that contain `LibraryPackage` were always read-only, even when published as libraries and imported by the user.
@@ -380,16 +382,13 @@ This is visible on the "body" property on:
 
 - `TextualRepresentations` can now be displayed and edited in the "General View" diagram.
 
-image::GV_TextualRepresentation.png[TextualRepresentation on General View Diagram, width=85%,height=85%]
+image::GV_TextualRepresentation.png[TextualRepresentation on General View Diagram, width=40%,height=40%]
 
 - The navigation bar menu icon has been updated (from a question mark to a "classic" menu icon).
 At the beginning of SysON, it had sense because the only menu entry (i.e. a link) available on this menu was the documentation.
 Now, it also includes a menu entry to the projects page and a menu entry to the libraries page.
 
 image::release-notes-navigation-bar-menu-icon.png[navigation bar menu icon, width=85%,height=85%]
-
-image::release-notes-navigation-bar-menu.png[navigation bar menu, width=85%,height=85%]
-
 
 == Dependency update
 
