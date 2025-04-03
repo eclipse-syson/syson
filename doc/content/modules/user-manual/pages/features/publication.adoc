@@ -10,7 +10,7 @@ image::release-notes-publication-command.png[Publication command, width=65%,heig
 Note that it is only available for projects with documents containing SysML elements as their root contents.
 The publication process only publishes the SysML contents.
 
-image::release-notes-publication-model.png[Publication command, width=50%,height=50%]
+image::release-notes-publication-model.png[Publication command, width=30%,height=30%]
 
 Upon selecting this command, a dialog prompts for the library information.
 

@@ -19,8 +19,9 @@ With the latter, a copy of the contents of the library are copied into the proje
 image::release-notes-publication-import-choices.png[Import published library command dialog, width=85%,height=85%]
 
 Upon importing:
-  - If one of the selected libraries is already imported (same namespace, name and version) then it will not be imported a second time.
-  - Dependencies are re-loaded, which may trigger imported libraries to re-appear in the Explorer view if they had been manually removed.
+
+- If one of the selected libraries is already imported (same namespace, name and version) then it will not be imported a second time.
+- Dependencies are re-loaded, which may trigger imported libraries to re-appear in the Explorer view if they had been manually removed.
 
 Upon a successful import, a notification appears in the bottom right corner.
 
@@ -50,7 +51,7 @@ These documents may be located at the root of the project, or under node `Librar
 
 Open the contextual menu to find the 'Update library' action.
 
-image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=50%,height=50%]
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=30%,height=30%]
 
 Upon selecting this action, a dialog prompts for the new version of the library to use.
 
