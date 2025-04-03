@@ -65,6 +65,8 @@ This behavior is aligned with how SysON handles quotes in `declaredName` fields.
 The user had to explicitly add the double quotes around a `LiteralString` value to ensure the export was producing valid SysML.
 This is not the case anymore.
 
+- Fix the creation of `TransitionUsage` from an `ActionUsage` to the "Done" ActionUsage.
+
 == New features
 
 - The SysML contents of a project may now be published as a library.
