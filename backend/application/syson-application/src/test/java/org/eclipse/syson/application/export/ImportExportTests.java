@@ -75,7 +75,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     private IProjectApplicationService projectDeletionService;
 
     private SysmlImportExportChecker checker;
-    
+
     private String projectId;
 
     @BeforeEach
@@ -605,6 +605,14 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("Given a model with an AttributeUsage containing a LiteralString, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    public void checkLiteralString() throws IOException {
+        var input = """
+                attribute myAttribute = "value";""";
         this.checker.check(input, input);
     }
 }
