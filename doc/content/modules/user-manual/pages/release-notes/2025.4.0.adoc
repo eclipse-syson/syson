@@ -61,6 +61,9 @@ They no longuer contain the extra characters:
 - Uniformize the import of `LiteralString`.
 The `value` field of imported `LiteralString` elements does not contain double quotes anymore.
 This behavior is aligned with how SysON handles quotes in `declaredName` fields.
+- Fix the textual export of `LiteralString` not wrapped in double quotes.
+The user had to explicitly add the double quotes around a `LiteralString` value to ensure the export was producing valid SysML.
+This is not the case anymore.
 
 == New features
 

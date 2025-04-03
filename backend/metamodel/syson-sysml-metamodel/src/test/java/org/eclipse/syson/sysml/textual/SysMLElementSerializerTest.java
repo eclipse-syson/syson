@@ -1227,7 +1227,15 @@ public class SysMLElementSerializerTest {
         LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
         literalStr.setValue("value");
 
-        this.assertTextualFormEquals("value", literalStr);
+        this.assertTextualFormEquals("\"value\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithDoubleQuotes() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("va\"lue");
+
+        this.assertTextualFormEquals("\"va\\\"lue\"", literalStr);
     }
 
     @Test
@@ -1749,5 +1757,4 @@ public class SysMLElementSerializerTest {
 
         this.assertTextualFormEquals("individual timeslice occurrence1;", occurrenceUsage);
     }
-
 }

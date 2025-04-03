@@ -116,6 +116,9 @@ Importing an "assume" `RequirementConstraintMembership` now explicitly sets its 
 - https://github.com/eclipse-syson/syson/issues/1172[#1172] [import] Uniformize the import of `LiteralString` value.
 The `value` field of imported `LiteralString` elements does not contain double quotes anymore.
 This behavior is aligned with how SysON handles quotes in `declaredName` fields.
+- https://github.com/eclipse-syson/syson/issues/1173[#1173] [export] Fix the textual export of `LiteralString` not wrapped in double quotes.
+The user had to explicitly add the double quotes around a `LiteralString` value to ensure the export was producing valid SysML.
+This is not the case anymore.
 
 === Improvements
 
