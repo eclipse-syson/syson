@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2.sysml";
 
+    private static final String SYSMLV2_LIBRARY_DOCUMENT_NAME = "SysMLv2-Library.sysml";
+
     private static final String BATMOBILE_DOCUMENT_NAME = "Batmobile.sysml";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -72,7 +74,8 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     @Override
     public boolean canHandle(String templateId) {
-        return SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(templateId) || SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(templateId);
+        return SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(templateId) || SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID.equals(templateId)
+                || SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(templateId);
     }
 
     @Override
@@ -80,6 +83,8 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         Optional<RepresentationMetadata> project = Optional.empty();
         if (SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(projectTemplateId)) {
             project = this.initializeSysMLv2Project(cause, editingContext);
+        } else if (SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID.equals(projectTemplateId)) {
+            project = this.initializeSysMLv2LibraryProject(cause, editingContext);
         } else if (SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(projectTemplateId)) {
             project = this.initializeBatmobileProject(cause, editingContext);
         }
@@ -91,6 +96,41 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                 .flatMap(resourceSet -> {
                     Optional<RepresentationMetadata> result = Optional.empty();
                     var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SYSMLV2_DOCUMENT_NAME);
+                    resourceSet.getResources().add(resource);
+
+                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
+                    if (optionalGeneralViewDiagram.isPresent()) {
+                        DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
+                        var semanticTarget = this.getRootPackage(resource);
+                        if (semanticTarget.isPresent()) {
+                            var variableManager = new VariableManager();
+                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            String label = generalViewDiagram.getLabelProvider().apply(variableManager);
+                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
+
+                            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                                    .kind(diagram.getKind())
+                                    .label(label)
+                                    .descriptionId(diagram.getDescriptionId())
+                                    .iconURLs(iconURLs)
+                                    .build();
+
+                            this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
+                            this.representationPersistenceService.save(cause, editingContext, diagram);
+                            result = Optional.of(representationMetadata);
+                        }
+                    }
+                    return result;
+                });
+    }
+
+    private Optional<RepresentationMetadata> initializeSysMLv2LibraryProject(ICause cause, IEditingContext editingContext) {
+        return this.getResourceSet(editingContext)
+                .flatMap(resourceSet -> {
+                    Optional<RepresentationMetadata> result = Optional.empty();
+                    var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(UUID.randomUUID(), SYSMLV2_LIBRARY_DOCUMENT_NAME);
                     resourceSet.getResources().add(resource);
 
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");

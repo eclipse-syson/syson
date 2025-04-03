@@ -17,7 +17,7 @@ The layout has been simplified to ensure a clear understanding of the content wi
 image::editor.png[{editor}]
 
 === Toolbar
-The toolbar houses a selection of actions categorized into three groups: _Homepage_, _Project Actions_ (with the name of the project) and _Help_.
+The toolbar houses a selection of actions categorized into three groups: _Homepage_, _Project Actions_ (with the name of the project) and _Actions menu_.
 
 image::editor-toolbar.png[{editor} Toolbar]
 
@@ -31,6 +31,10 @@ Access project-level actions such as _xref:hands-on/how-tos/project-management.a
 image::editor-projectActions.png[{editor} Project Actions]
 
 For further actions, see: xref:hands-on/hands-on.adoc[].
+
+include::user-manual:partial$projects-action.adoc[leveloffset=+3]
+
+include::user-manual:partial$libraries-action.adoc[leveloffset=+3]
 
 include::user-manual:partial$help-action.adoc[leveloffset=+3]
 

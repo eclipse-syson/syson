@@ -158,6 +158,7 @@ This annotation conflicts with the behavior of the _import by copy_ feature, whi
 This was not possible for libraries containing `LibraryPackage` instances, which were always read-only, regardless of the import kind.
 - https://github.com/eclipse-syson/syson/issues/1160[#1160] [details] Use textarea widget for "body" property on `Comment`, `Documentation` and `TextualRepresentation` (instead of textfield widget).
 - https://github.com/eclipse-syson/syson/issues/1152[#1152] [general-view] Add `TextualRepresentation` in General View diagram.
+- https://github.com/eclipse-syson/syson/issues/1177[#1177] [syson] Add new SysMLv2 Library template allowing to create a project composed with a simple model with only one element: a `LibraryPackage`.
 
 === New features
 

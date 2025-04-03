@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,14 +43,16 @@ public class SysMLv2StereotypeHandler implements IStereotypeHandler {
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String stereotypeId) {
-        return SysMLv2StereotypeProvider.EMPTY_SYSML_ID.equals(stereotypeId) || SysMLv2StereotypeProvider.EMPTY_ID.equals(stereotypeId);
+        return SysMLv2StereotypeProvider.EMPTY_SYSML_ID.equals(stereotypeId) || SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_ID.equals(stereotypeId)
+                || SysMLv2StereotypeProvider.EMPTY_ID.equals(stereotypeId);
     }
 
     @Override
     public Optional<DocumentDTO> handle(IEditingContext editingContext, String stereotypeId, String name) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             return switch (stereotypeId) {
-                case SysMLv2StereotypeProvider.EMPTY_SYSML_ID -> this.createEmptySysMLV2Document(emfEditingContext, name);
+                case SysMLv2StereotypeProvider.EMPTY_SYSML_ID -> this.createEmptySysMLv2Document(emfEditingContext, name);
+                case SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_ID -> this.createEmptySysMLv2LibraryDocument(emfEditingContext, name);
                 case SysMLv2StereotypeProvider.EMPTY_ID -> this.createEmptyDocument(emfEditingContext, name);
                 default -> Optional.empty();
             };
@@ -66,9 +68,17 @@ public class SysMLv2StereotypeHandler implements IStereotypeHandler {
         return Optional.of(new DocumentDTO(documentId, name, ExplorerDescriptionProvider.DOCUMENT_KIND));
     }
 
-    private Optional<DocumentDTO> createEmptySysMLV2Document(IEMFEditingContext emfEditingContext, String name) {
+    private Optional<DocumentDTO> createEmptySysMLv2Document(IEMFEditingContext emfEditingContext, String name) {
         var documentId = UUID.randomUUID();
         var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(documentId, name);
+        emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
+
+        return Optional.of(new DocumentDTO(documentId, name, ExplorerDescriptionProvider.DOCUMENT_KIND));
+    }
+
+    private Optional<DocumentDTO> createEmptySysMLv2LibraryDocument(IEMFEditingContext emfEditingContext, String name) {
+        var documentId = UUID.randomUUID();
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(documentId, name);
         emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
 
         return Optional.of(new DocumentDTO(documentId, name, ExplorerDescriptionProvider.DOCUMENT_KIND));

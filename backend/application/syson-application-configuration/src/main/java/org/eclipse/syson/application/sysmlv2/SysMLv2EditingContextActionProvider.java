@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,17 +29,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMLv2EditingContextActionProvider implements IEditingContextActionProvider {
 
-    public static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2";
+    private static final EditingContextAction EMPTY_SYSML_EDITING_CONTEXT_ACTION = new EditingContextAction(SysMLv2StereotypeProvider.EMPTY_SYSML_ID, SysMLv2StereotypeProvider.EMPTY_SYSML_LABEL);
 
-    public static final String EMPTY_SYSML_ID = "empty_sysmlv2";
-
-    private static final EditingContextAction EMPTY_SYSML_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_SYSML_ID, SYSMLV2_DOCUMENT_NAME);
+    private static final EditingContextAction EMPTY_SYSML_LIBRARY_EDITING_CONTEXT_ACTION = new EditingContextAction(SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_ID,
+            SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_LABEL);
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
         var actions = new ArrayList<EditingContextAction>();
-        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+        if (editingContext instanceof IEMFEditingContext) {
             actions.add(EMPTY_SYSML_EDITING_CONTEXT_ACTION);
+            actions.add(EMPTY_SYSML_LIBRARY_EDITING_CONTEXT_ACTION);
         }
         return actions;
     }
