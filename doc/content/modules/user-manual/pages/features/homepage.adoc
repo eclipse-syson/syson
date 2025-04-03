@@ -20,11 +20,15 @@ image::homepage.png[{homepage}]
 
 === Toolbar
 
-The toolbar consists of two groups, each featuring a single action: _Homepage_ and _Help_.
+The toolbar consists of two groups: _Homepage_ and _Links_.
 
 image::homepage-toolbar.png[{homepage} Toolbar]
 
 include::user-manual:partial$homepage-action.adoc[leveloffset=+3]
+
+include::user-manual:partial$projects-action.adoc[leveloffset=+3]
+
+include::user-manual:partial$libraries-action.adoc[leveloffset=+3]
 
 include::user-manual:partial$help-action.adoc[leveloffset=+3]
 
@@ -40,9 +44,11 @@ Within the platform, initiating a new project is a user-friendly process that ac
 With blank project, there is no model and no representation at creation.
 * **Create a Project from Existing Templates**: For efficiency and consistency, users can select from predefined templates that streamline project initiation, aligning with common modeling scenarios.
 The 3 first possible templates are displayed unitary at the beginning of Project sections and they're also available in "Show all templates" section.
-For now, there exist two available templates : _Batmobile_ and _SysMLv2_.
-_Batmobile- template is a complete SysML project with several concepts of each SysML type (kind of _Definitions_ and _Usages_ with relationships).
-_SysMLv2_ is an empty SysML project with only the root model, a _Package_ and a {gv} representation.
+For now, there exist three available templates : 
+
+ - _Batmobile- template is a complete SysML project with several concepts of each SysML type (kind of _Definitions_ and _Usages_ with relationships).
+ - _SysMLv2_ is an empty SysML project with only the root model, a _Package_ and a {gv} representation.
+ - _SysMLv2-Library_ is an empty SysML project with only the root model, a _LibraryPackage_ and a {gv} representation.
 * **Upload a Previously Exported Project**: Facilitating collaboration and workflow continuity, users can effortlessly upload a project previously exported, ensuring seamless transitions and flexibility in collaboration.
 
 [NOTE]

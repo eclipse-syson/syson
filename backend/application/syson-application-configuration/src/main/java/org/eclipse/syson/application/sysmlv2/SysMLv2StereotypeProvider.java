@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,13 +30,22 @@ public class SysMLv2StereotypeProvider implements IStereotypeProvider {
 
     public static final String EMPTY_ID = "empty";
 
+    public static final String EMPTY_LABEL = "Others...";
+
     public static final String EMPTY_SYSML_ID = "empty_sysmlv2";
+
+    public static final String EMPTY_SYSML_LABEL = "SysMLv2";
+
+    public static final String EMPTY_SYSML_LIBRARY_ID = "empty_sysmlv2_library";
+
+    public static final String EMPTY_SYSML_LIBRARY_LABEL = "SysMLv2-Library";
 
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
         return List.of(
-                new Stereotype(EMPTY_SYSML_ID, "SysMLv2"),
-                new Stereotype(EMPTY_ID, "Others...")
+                new Stereotype(EMPTY_SYSML_ID, EMPTY_SYSML_LABEL),
+                new Stereotype(EMPTY_SYSML_LIBRARY_ID, EMPTY_SYSML_LIBRARY_LABEL),
+                new Stereotype(EMPTY_ID, EMPTY_LABEL)
         );
     }
 }

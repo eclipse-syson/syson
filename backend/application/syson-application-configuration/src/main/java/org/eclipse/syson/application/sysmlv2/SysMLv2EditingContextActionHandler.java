@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMLv2EditingContextActionHandler implements IEditingContextActionHandler {
 
-    private static final List<String> HANDLED_ACTIONS = List.of(SysMLv2EditingContextActionProvider.EMPTY_SYSML_ID);
+    private static final List<String> HANDLED_ACTIONS = List.of(SysMLv2StereotypeProvider.EMPTY_SYSML_ID, SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_ID);
 
     private final IDefaultSysMLv2ResourceProvider defaultSysMLv2ResourceProvider;
 
@@ -66,7 +66,8 @@ public class SysMLv2EditingContextActionHandler implements IEditingContextAction
 
     private IStatus performActionOnResourceSet(ResourceSet resourceSet, String actionId) {
         return switch (actionId) {
-            case SysMLv2EditingContextActionProvider.EMPTY_SYSML_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptySysMLResource);
+            case SysMLv2StereotypeProvider.EMPTY_SYSML_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptySysMLResource);
+            case SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptySysMLLibraryResource);
             default -> new Failure("Unknown action.");
         };
     }
@@ -77,7 +78,12 @@ public class SysMLv2EditingContextActionHandler implements IEditingContextAction
     }
 
     private void createEmptySysMLResource(ResourceSet resourceSet) {
-        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SysMLv2EditingContextActionProvider.SYSMLV2_DOCUMENT_NAME + ".sysml");
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SysMLv2StereotypeProvider.EMPTY_SYSML_LABEL + ".sysml");
+        resourceSet.getResources().add(resource);
+    }
+
+    private void createEmptySysMLLibraryResource(ResourceSet resourceSet) {
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(UUID.randomUUID(), SysMLv2StereotypeProvider.EMPTY_SYSML_LIBRARY_LABEL + ".sysml");
         resourceSet.getResources().add(resource);
     }
 }

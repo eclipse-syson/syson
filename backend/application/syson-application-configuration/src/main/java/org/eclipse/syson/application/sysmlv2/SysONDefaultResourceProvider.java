@@ -80,6 +80,22 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
     }
 
     @Override
+    public Resource getDefaultSysMLv2LibraryResource(UUID resourcePath, String name) {
+        var resource = this.getEmptyResource(resourcePath, name);
+
+        var rootNamespace = SysmlFactory.eINSTANCE.createNamespace();
+        var rootMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        var libraryPackage1 = SysmlFactory.eINSTANCE.createLibraryPackage();
+        rootNamespace.getOwnedRelationship().add(rootMembership);
+        rootMembership.getOwnedRelatedElement().add(libraryPackage1);
+        libraryPackage1.setDeclaredName("LibraryPackage1");
+        libraryPackage1.setElementId(ElementUtil.generateUUID(libraryPackage1).toString());
+
+        resource.getContents().add(rootNamespace);
+        return resource;
+    }
+
+    @Override
     public void loadBatmobileResource(Resource resource) {
         try (var inputStream = new ClassPathResource("templates/Batmobile.json").getInputStream()) {
             Instant start = Instant.now();
