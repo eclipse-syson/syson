@@ -113,6 +113,9 @@ Importing a "require" `RequirementConstraintMembership` now correctly sets its k
 Importing an "assume" `RequirementConstraintMembership` now explicitly sets its kind to `assumption`.
 - https://github.com/eclipse-syson/syson/issues/1154[#1154] [import] Fix import of `TextualRepresentation`.
 - https://github.com/eclipse-syson/syson/issues/1169[#1169] [syson] Add a new navigation bar menu icon on the top right corner of the appliation.
+- https://github.com/eclipse-syson/syson/issues/1172[#1172] [import] Uniformize the import of `LiteralString` value.
+The `value` field of imported `LiteralString` elements does not contain double quotes anymore.
+This behavior is aligned with how SysON handles quotes in `declaredName` fields.
 
 === Improvements
 
