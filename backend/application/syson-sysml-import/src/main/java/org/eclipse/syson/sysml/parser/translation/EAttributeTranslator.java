@@ -33,6 +33,8 @@ public class EAttributeTranslator {
 
     private static final String QUOTE_CONST = "\'";
 
+    private static final String DOUBLE_QUOTE_CONST = "\"";
+
     private EAttribute matchingAttribute;
 
     private Object value;
@@ -57,6 +59,9 @@ public class EAttributeTranslator {
             this.matchingAttribute = SysmlPackage.eINSTANCE.getMembership_MemberName();
         } else if (SysmlPackage.eINSTANCE.getLiteralExpression().isSuperTypeOf(ownerType) && astFeatureName.equals("literal")) {
             this.matchingAttribute = this.getAttribute(ownerType, "value").orElse(null);
+            if (SysmlPackage.eINSTANCE.getLiteralString().isSuperTypeOf(ownerType)) {
+                forcedValue = this.handleLiteralStringValue(ownerType, astFeatureName, astValue);
+            }
         } else if (astFeatureName.equals("isReference")) {
             forcedValue = this.handleIsReferenceAttribute(ownerType, astValue);
         } else if ((SysmlPackage.eINSTANCE.getComment().isSuperTypeOf(ownerType) || SysmlPackage.eINSTANCE.getTextualRepresentation().isSuperTypeOf(ownerType)) && "body".equals(astFeatureName)) {
@@ -115,6 +120,10 @@ public class EAttributeTranslator {
         // This does not properly handle multiline comment
         forcedValue = this.asCleanedText(astValue).replaceFirst("^/\\*", "").replaceFirst("\\*/", "").trim();
         return forcedValue;
+    }
+
+    private Object handleLiteralStringValue(EClass ownerType, String astFeatureName, JsonNode astValue) {
+        return astValue.asText().replace(DOUBLE_QUOTE_CONST, "");
     }
 
     public Object getValue() {

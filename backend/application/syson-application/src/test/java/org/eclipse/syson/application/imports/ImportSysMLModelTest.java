@@ -45,6 +45,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.PartUsage;
@@ -620,6 +621,20 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             RequirementConstraintMembership requirementConstraintMembership = requirementConstraintMemberships.get(0);
             assertThat(requirementConstraintMembership.getKind()).isEqualTo(RequirementConstraintKind.REQUIREMENT);
             assertThat(requirementConstraintMembership.getOwnedConstraint()).isNotNull();
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given an AttributeUsage with a LiteralString, when importing the model, then the LiteralString value does not contain double quotes")
+    public void checkAttributeUsageLiteralStringValueTest() throws IOException {
+        var input = """
+                attribute myAttribute = "value";
+                """;
+        this.checker.checkImportedModel(resource -> {
+            List<LiteralString> literalStrings = EMFUtils.allContainedObjectOfType(resource, LiteralString.class).toList();
+            assertThat(literalStrings).hasSize(1);
+            LiteralString literalString = literalStrings.get(0);
+            assertThat(literalString.getValue()).doesNotContain("\"");
         }).check(input);
     }
 

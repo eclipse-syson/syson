@@ -58,6 +58,9 @@ They no longuer contain the extra characters:
 * _*/_
 * _"_
 
+- Uniformize the import of `LiteralString`.
+The `value` field of imported `LiteralString` elements does not contain double quotes anymore.
+This behavior is aligned with how SysON handles quotes in `declaredName` fields.
 
 == New features
 
