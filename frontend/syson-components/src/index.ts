@@ -12,6 +12,7 @@
  *******************************************************************************/
 export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSysMLv2MenuContribution';
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
+export { SysONNavigationBarMenuIcon } from './extensions/navigationBarMenu/SysONNavigationBarMenuIcon';
 export { PublishProjectSysMLContentsAsLibraryCommand } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand';
 export type { PublishProjectSysMLContentsAsLibraryCommandState } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand.types';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';

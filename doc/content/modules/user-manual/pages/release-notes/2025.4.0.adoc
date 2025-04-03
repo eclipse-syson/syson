@@ -6,6 +6,11 @@
 All existing models/projects in SysON will be automatically migrated to this new version.
 In any case, please download all your existing models/projects before upgrading to 2025.4.0 (as always).
 
+- *Libraries publication/import*: the SysML contents of a project may now be published as a library.
+After publication, the library is listed in `<baseUrl>/libraries/`.
+Projects may now import published libraries.
+Projects may now update the version of a published library they depend on.
+More details at xref:user-manual:features/publication.adoc[Publication section] and xref:user-manual:features/library-import.adoc[Library import section] in this documentation for more details.
 
 == Breaking changes
 
@@ -59,12 +64,12 @@ They no longuer contain the extra characters:
 - The SysML contents of a project may now be published as a library.
 The command palette now contains a dedicated command to do so.
 
-image::release-notes-publication-command.png[Publication command, width=85%,height=85%]
+image::release-notes-publication-command.png[Publication command, width=65%,height=65%]
 
 Note that it is only available for projects with documents containing SysML elements as their root contents.
 The publication process only publishes the SysML contents.
 
-image::release-notes-publication-model.png[Publication command, width=85%,height=85%]
+image::release-notes-publication-model.png[Publication command, width=50%,height=50%]
 
 Upon selecting this command, a dialog prompts for the library information.
 
@@ -88,11 +93,10 @@ Opening a library displays it as a read-only project.
 
 image::release-notes-publication-library.png[Libraries, width=85%,height=85%]
 
-
 - Projects may now import published libraries.
 The command palette now contains a dedicated command to do so.
 
-image::release-notes-publication-import-command.png[Import published library command, width=85%,height=85%]
+image::release-notes-publication-import-command.png[Import published library command, width=65%,height=65%]
 
 This command is available for any project to import any library.
 
@@ -112,21 +116,20 @@ Upon importing:
 
 Upon a successful import, a notification appears in the bottom right corner.
 
-image::release-notes-publication-import-success.png[Import published library command success notification, width=85%,height=85%]
+image::release-notes-publication-import-success.png[Import published library command success notification, width=30%,height=30%]
 
 The project contents are updated.
 
-image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=85%,height=85%]
+image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=50%,height=50%]
 
 If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
 
-image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=85%,height=85%]
-
+image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=50%,height=50%]
 
 - Projects may now update the version of a published library they depend on.
 In the Explorer view, the contextual menu on documents from imported-by-reference published libraries now contains an entry to update the version of the library dependency.
 
-image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=85%,height=85%]
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=50%,height=50%]
 
 Upon selecting this action, a dialog prompts for the new version of the library to use.
 
@@ -134,7 +137,7 @@ image::release-notes-library-update-dialog.png[Dialog for the 'Update library' a
 
 After the library update has been performed, if successful, a notification appears.
 
-image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=85%,height=85%]
+image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=30%,height=30%]
 
 Updating a library means that the contents of the project are updated.
 Libraries may add, remove or edit their contents between versions.
@@ -378,6 +381,14 @@ This is visible on the "body" property on:
 - `TextualRepresentations` can now be displayed and edited in the "General View" diagram.
 
 image::GV_TextualRepresentation.png[TextualRepresentation on General View Diagram, width=85%,height=85%]
+
+- The navigation bar menu icon has been updated (from a question mark to a "classic" menu icon).
+At the beginning of SysON, it had sense because the only menu entry (i.e. a link) available on this menu was the documentation.
+Now, it also includes a menu entry to the projects page and a menu entry to the libraries page.
+
+image::release-notes-navigation-bar-menu-icon.png[navigation bar menu icon, width=85%,height=85%]
+
+image::release-notes-navigation-bar-menu.png[navigation bar menu, width=85%,height=85%]
 
 
 == Dependency update
