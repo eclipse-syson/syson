@@ -32,6 +32,7 @@ import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagram
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -51,8 +52,9 @@ public class InterconnectionViewToolService extends ViewToolService {
     private final ElementInitializerSwitch elementInitializerSwitch;
 
     public InterconnectionViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-                                          IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
-        super(identityService, objectSearchService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService, moveService);
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService,
+            ISysMLReadOnlyService readOnlyService) {
+        super(identityService, objectSearchService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService, moveService, readOnlyService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 

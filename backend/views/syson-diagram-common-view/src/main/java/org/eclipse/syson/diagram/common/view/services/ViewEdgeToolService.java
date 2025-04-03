@@ -356,7 +356,7 @@ public class ViewEdgeToolService {
 
         var callService = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createTransitionUsage", List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES)));
+                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, IEditingContext.EDITING_CONTEXT)));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(eClass))

@@ -119,6 +119,7 @@ This behavior is aligned with how SysON handles quotes in `declaredName` fields.
 - https://github.com/eclipse-syson/syson/issues/1173[#1173] [export] Fix the textual export of `LiteralString` not wrapped in double quotes.
 The user had to explicitly add the double quotes around a `LiteralString` value to ensure the export was producing valid SysML.
 This is not the case anymore.
+- https://github.com/eclipse-syson/syson/issues/1176[#1176] [general-view] Fix the creation of `TransitionUsage` from an `ActionUsage` to the "Done" ActionUsage.
 
 === Improvements
 

@@ -447,4 +447,40 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .allMatch(refUsage -> refUsage.getAliasIds().isEmpty());
         });
     }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given a sub action node and a done action,"
+            + "when using the 'New Transition' tool between them, "
+            + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is store in the container action")
+    public void createTransitionUsageToDone() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentIdentifiers.Diagram.DONE_ID,
+                creationToolId));
+
+        String[] newSuccessionId = new String[1];
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1) // TransitionUsage are also added to the previous compartment as node
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            newSuccessionId[0] = newEdge.getTargetObjectId();
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.DONE_ID);
+            assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> newSuccessionId[0], transitionUsage -> {
+            assertThat(transitionUsage.getSource().getName()).isEqualTo("subAction1");
+            assertThat(transitionUsage.getTarget()).matches(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
+            assertThat(transitionUsage.getOwningType().getName()).matches(parentName -> "RootAction".equals(parentName));
+        });
+    }
 }
