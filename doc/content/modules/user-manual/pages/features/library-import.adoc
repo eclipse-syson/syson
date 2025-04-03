@@ -4,7 +4,7 @@ In {product}, published libraries may be imported by projects.
 
 To do so, use the dedicated command from the omnibox
 
-image::release-notes-publication-import-command.png[Import published library command, width=85%,height=85%]
+image::release-notes-publication-import-command.png[Import published library command, width=65%,height=65%]
 
 This command is available for any project, to import any library.
 
@@ -24,15 +24,15 @@ Upon importing:
 
 Upon a successful import, a notification appears in the bottom right corner.
 
-image::release-notes-publication-import-success.png[Import published library command success notification, width=85%,height=85%]
+image::release-notes-publication-import-success.png[Import published library command success notification, width=30%,height=30%]
 
 The project contents are updated.
 
-image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=85%,height=85%]
+image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=50%,height=50%]
 
 If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
 
-image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=85%,height=85%]
+image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=50%,height=50%]
 
 
 == Updating the version of a library dependency
@@ -50,7 +50,7 @@ These documents may be located at the root of the project, or under node `Librar
 
 Open the contextual menu to find the 'Update library' action.
 
-image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=85%,height=85%]
+image::release-notes-library-update-action.png[Contextual menu action 'Update library' for documents from imported-by-reference published libraries, width=50%,height=50%]
 
 Upon selecting this action, a dialog prompts for the new version of the library to use.
 
@@ -58,7 +58,7 @@ image::release-notes-library-update-dialog.png[Dialog for the 'Update library' a
 
 After the library update has been performed, if successful, a notification appears.
 
-image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=85%,height=85%]
+image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=30%,height=30%]
 
 Updating a library means that the contents of the project are modified, possibly breaking some aspects of the project, so validation errors may occur as a consequence.
 Libraries may add, remove or edit their contents freely between versions, so there is no guarantees that two versions of a library are compatible or even somewhat resembling.

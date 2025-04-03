@@ -37,6 +37,7 @@ import {
   ImportLibraryCommand,
   navigationBarIconExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
+  navigationBarMenuIconExtensionPoint,
   NodeTypeRegistry,
   SiriusWebApplication,
   UpdateLibraryTreeItemContextMenuContribution,
@@ -55,6 +56,7 @@ import {
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
   SysONDiagramPanelMenu,
+  SysONNavigationBarMenuIcon,
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
 
@@ -145,6 +147,11 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 extensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
+});
+
+extensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
+  identifier: `syson_${navigationBarMenuIconExtensionPoint.identifier}`,
+  Component: SysONNavigationBarMenuIcon,
 });
 
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
