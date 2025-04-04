@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -66,18 +66,18 @@ public class SysMLReadOnlyServiceTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given a simple SysML project, when we ask if an element is read only, then elements stored in standard libraries should be read-only whereas elements stored in other resources should be considered as editable")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkEditableElements() {
 
         this.givenCommittedTransaction.commit();
 
-        Optional<IEditingContext> ed = this.editingContextSearchService.findById(SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID);
+        Optional<IEditingContext> ed = this.editingContextSearchService.findById(SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID);
 
         assertThat(ed).isPresent();
 
-        URI mainResourceURI = new JSONResourceFactory().createResourceURI(SysMLv2Identifiers.SIMPLE_PROJECT_DOCUMENT);
+        URI mainResourceURI = new JSONResourceFactory().createResourceURI(SimpleProjectElementsTestProjectData.DOCUMENT_ID);
 
         for (Resource r : ((IEMFEditingContext) ed.get()).getDomain().getResourceSet().getResources()) {
             boolean expectedReadOnly = !mainResourceURI.equals(r.getURI());

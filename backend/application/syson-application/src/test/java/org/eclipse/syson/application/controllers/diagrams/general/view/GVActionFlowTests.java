@@ -38,8 +38,8 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
-import org.eclipse.syson.application.data.ActionFlowCompartmentIdentifiers;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.ActionFlowCompartmentTestProjectData;
+import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.UtilService;
@@ -128,17 +128,17 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.ID);
+                ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescripionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
-                ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE);
     }
 
     @AfterEach
@@ -149,7 +149,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsages nested in each other,"
@@ -157,10 +157,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a SuccessionAsUsage should not be created and a message should be displayed to the user")
     public void creatSuccesionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
-        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.ROOT_ACTION_USAGE,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.ROOT_ACTION_USAGE,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 creationToolId,
                 List.of("Can't create cross container SuccessionAsUsage")));
 
@@ -173,12 +173,12 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE, rootActionUsage -> {
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE, rootActionUsage -> {
             assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsages nested in each other,"
@@ -186,10 +186,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a TransitionUsage should not be created and a message should be displayed to the user")
     public void creatTransitionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
-        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.ROOT_ACTION_USAGE,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.ROOT_ACTION_USAGE,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 creationToolId,
                 List.of("Can't create cross container TransitionUsage")));
 
@@ -202,12 +202,12 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.ROOT_ACTION_USAGE, rootActionUsage -> {
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE, rootActionUsage -> {
             assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsage,"
@@ -215,10 +215,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a TransitionUsage is created between the two actions")
     public void createTransitionUsageBetweenSubActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId));
 
         String[] newTransitionUsageId = new String[1];
@@ -229,30 +229,30 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             newTransitionUsageId[0] = newEdge.getTargetObjectId();
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> newTransitionUsageId[0], transitionUsage -> {
-            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
-            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID);
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID);
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a TransitionUsage,"
             + "when reconnecting the target, "
             + "then the new target of the TransitionUsage is correct")
     public void reconnectTransitionUsageTarget() {
-        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.TRANSITION_A2_A3_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 ReconnectEdgeKind.TARGET));
 
         IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
@@ -261,30 +261,30 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
 
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
         this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.TRANSITION_A2_A3_ID, transitionUsage -> {
-            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID);
-            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a TransitionUsage,"
             + "when reconnecting the source, "
             + "then the new source of the TransitionUsage is correct")
     public void reconnectTransitionUsageSource() {
-        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.TRANSITION_A2_A3_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 ReconnectEdgeKind.SOURCE));
 
         IDiagramChecker diagramCheckerSource = (initialDiagram, newDiagram) -> {
@@ -293,20 +293,20 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
 
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION3_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION3_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
         this.diagramCheckerService.checkDiagram(diagramCheckerSource, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.TRANSITION_A2_A3_ID, transitionUsage -> {
-            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
-            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION3_ID);
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION3_ID);
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsage,"
@@ -314,10 +314,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a SuccessionAsUsage is created between the two actions")
     public void createSuccessionBetweenSubActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId));
 
         String[] newSuccessionId = new String[1];
@@ -327,32 +327,32 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             newSuccessionId[0] = newEdge.getTargetObjectId();
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         this.semanticCheckerService.checkElement(this.verifier, SuccessionAsUsage.class, () -> newSuccessionId[0], successionAsUsage -> {
-            assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+            assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
-                    .allMatch(targetFeature -> ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
+                    .allMatch(targetFeature -> ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
             assertThat(EMFUtils.allContainedObjectOfType(successionAsUsage, ReferenceUsage.class).toList()).allMatch(refUsage -> refUsage.getAliasIds().isEmpty());
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given SuccessionAsUsage from 2 ActionUsages,"
             + "when reconnecting the target to the 'done' usage, "
             + "then a SuccessionAsUsage should point to the 'done' action")
     public void reconnectSuccessionToDone() {
-        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.SUCCESSION_A1_A2_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.DONE_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUCCESSION_A1_A2_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID,
                 ReconnectEdgeKind.TARGET));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
@@ -361,21 +361,21 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
 
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.DONE_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, SuccessionAsUsage.class, () -> ActionFlowCompartmentIdentifiers.Semantic.SUCCESSION_AS_USAGE_ID, successionAsUsage -> {
-            assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION1_ID);
+        this.semanticCheckerService.checkElement(this.verifier, SuccessionAsUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.SUCCESSION_AS_USAGE_ID, successionAsUsage -> {
+            assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a start action and an ActionUsage,"
@@ -383,10 +383,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a SuccessionAsUsage is created between the 'start' and the selected ActionUsage")
     public void createSuccessionFromStart() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.START_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId));
 
         String[] newSuccessionId = new String[1];
@@ -396,8 +396,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             newSuccessionId[0] = newEdge.getTargetObjectId();
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.START_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION2_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
@@ -406,11 +406,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkElement(this.verifier, SuccessionAsUsage.class, () -> newSuccessionId[0], successionAsUsage -> {
             assertThat(successionAsUsage.getSourceFeature()).matches(sourceFeature -> new UtilService().isStandardStartAction(sourceFeature));
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
-                    .allMatch(targetFeature -> ActionFlowCompartmentIdentifiers.Semantic.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
+                    .allMatch(targetFeature -> ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a start action and  ActionUsage,"
@@ -418,10 +418,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     public void createSuccessionFromStartToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.START_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.DONE_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID,
                 creationToolId));
 
         String[] newSuccessionId = new String[1];
@@ -431,8 +431,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             newSuccessionId[0] = newEdge.getTargetObjectId();
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.START_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.DONE_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 
@@ -448,7 +448,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a sub action node and a done action,"
@@ -456,10 +456,10 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is store in the container action")
     public void createTransitionUsageToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID,
-                ActionFlowCompartmentIdentifiers.Diagram.DONE_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID,
                 creationToolId));
 
         String[] newSuccessionId = new String[1];
@@ -470,8 +470,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             newSuccessionId[0] = newEdge.getTargetObjectId();
-            assertThat(newEdge).hasSourceId(ActionFlowCompartmentIdentifiers.Diagram.SUB_ACTION1_ID);
-            assertThat(newEdge).hasTargetId(ActionFlowCompartmentIdentifiers.Diagram.DONE_ID);
+            assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
+            assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         };
 

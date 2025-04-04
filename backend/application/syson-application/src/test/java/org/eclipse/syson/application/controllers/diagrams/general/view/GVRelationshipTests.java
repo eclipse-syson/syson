@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
-import org.eclipse.syson.application.data.GeneraViewRelationshipIdentifiers;
+import org.eclipse.syson.application.data.GeneraViewRelationshipTestProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,15 +54,15 @@ public class GVRelationshipTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneraViewRelationshipTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a General View with multiplicity range, when the diagram is render, then the edge center label as an empty text")
     public void checkMultiplicityLabel() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneraViewRelationshipIdentifiers.EDITING_CONTEXT_ID,
-                GeneraViewRelationshipIdentifiers.Diagram.ID);
+                GeneraViewRelationshipTestProjectData.EDITING_CONTEXT_ID,
+                GeneraViewRelationshipTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
 
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
@@ -82,22 +82,22 @@ public class GVRelationshipTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneraViewRelationshipTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a General View with an OccurrenceDefinition owning a OccurrenceUsage, when the diagram is rendered, then an edge should be diplayed between the usage and the definition")
     public void checkOccurenceDefinitionNestedOccurrencesEdge() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneraViewRelationshipIdentifiers.EDITING_CONTEXT_ID,
-                GeneraViewRelationshipIdentifiers.Diagram.ID);
+                GeneraViewRelationshipTestProjectData.EDITING_CONTEXT_ID,
+                GeneraViewRelationshipTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
 
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     Optional<Edge> nestedOcccurenceEdge = diagram.getEdges().stream().filter(
-                            edge -> GeneraViewRelationshipIdentifiers.Diagram.OCC_1.equals(edge.getTargetId()) && GeneraViewRelationshipIdentifiers.Diagram.OCC_DEF_1.equals(edge.getSourceId()))
+                            edge -> GeneraViewRelationshipTestProjectData.GraphicalIds.OCC_1_ID.equals(edge.getTargetId()) && GeneraViewRelationshipTestProjectData.GraphicalIds.OCC_DEF_1_ID.equals(edge.getSourceId()))
                             .findFirst();
                     assertThat(nestedOcccurenceEdge.isPresent()).isTrue();
                     assertThat(nestedOcccurenceEdge.get().getStyle().getSourceArrow() == ArrowStyle.FillDiamond);

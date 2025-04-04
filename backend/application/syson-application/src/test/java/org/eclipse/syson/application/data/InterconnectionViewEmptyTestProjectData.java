@@ -13,31 +13,32 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Identifiers of the project GeneralView-AddExistingElements.
+ * Identifiers for the "InterconnectionView-Empty" project.
  *
  * @author Arthur Daussy
  */
-public class GeneralViewAddExistingElementsIdentifiers {
+public class InterconnectionViewEmptyTestProjectData {
 
-    public static final String EDITING_CONTEXT_ID = "cbb4b3b4-af8e-4a05-a419-19dbfd1cc94d";
+    public static final String SCRIPT_PATH = "/scripts/InterconnectionView-Empty.sql";
+
+    public static final String EDITING_CONTEXT_ID = "5e2327fa-1247-4429-9b26-64b7941965f2";
 
     /**
-     * Ids for the representation part.
+     * Ids of graphical elements.
      */
-    public static class Diagram {
+    public static class GraphicalIds {
 
-        public static final String ID = "110fea70-b1c2-4740-82da-584030618c80";
+        public static final String DIAGRAM_ID = "b01eb87a-5383-4883-b4b3-bf53067a4cc5";
 
     }
 
     /**
-     * Ids for the semantic part.
+     * Ids for the semantic elements.
      */
-    public static final class Semantic {
+    public static final class SemanticIds {
 
-        public static final String PACKAGE_1 = "8d4123ac-3ac5-412d-90f2-49282b923003";
+        public static final String PACKAGE_1_ID = "b06dee32-6645-4b78-8a86-8df3b4306c7f";
 
-        public static final String SUCCESSION_START_ACTION_2 = "18d6f2fc-2182-4217-8da2-bf68c36ffa41";
     }
 
 }

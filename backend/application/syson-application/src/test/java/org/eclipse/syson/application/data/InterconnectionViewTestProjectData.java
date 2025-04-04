@@ -17,14 +17,18 @@ package org.eclipse.syson.application.data;
  *
  * @author frouene
  */
-public class InterconnectionViewIdentifiers {
+public class InterconnectionViewTestProjectData {
+
+    public static final String SCRIPT_PATH = "/scripts/InterconnectionView-FlowConnectionTest.sql";
 
     public static final String EDITING_CONTEXT_ID = "2e9d176e-8243-4033-8b4a-2b14ec5a8572";
 
     /**
-     * Ids for the representation part.
+     * Ids of graphical elements.
      */
-    public static class Diagram {
+    public static class GraphicalIds {
+
+        public static final String DIAGRAM_ID = "057c1bbe-6fe3-498e-9a88-2d891a3e87c0";
 
         public static final String FLOW_CONNECTION_P1_P2_ID = "32e75a86-1324-3ace-84d2-4947d04b3f6c";
 
@@ -37,9 +41,9 @@ public class InterconnectionViewIdentifiers {
     }
 
     /**
-     * Ids for the semantic part.
+     * Ids for the semantic elements.
      */
-    public static final class Semantic {
+    public static final class SemanticIds {
 
         public static final String FLOW_CONNECTION_P1_P2_ID = "482ea42c-6755-442e-860a-5b4dd11cbf07";
 

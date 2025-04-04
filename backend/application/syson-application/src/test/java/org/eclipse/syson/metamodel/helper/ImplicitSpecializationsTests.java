@@ -28,7 +28,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
-import org.eclipse.syson.application.data.GeneralViewWithTopNodesIdentifiers;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.AcceptActionUsage;
@@ -83,12 +83,12 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesIdentifiers.Diagram.ID);
+                GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
     @AfterEach
@@ -100,12 +100,12 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Test that a PartUsage with or without Specialization (FeatureTyping, Susbetting or Redefinition) implictly specializes 'Parts::parts' from the standard libraries.")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitSpecializationOnPartUsage() {
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<PartUsage> optPartUsage = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
@@ -152,12 +152,12 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Test that an AcceptAction implictly specializes 'Actions::acceptActions'")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitSpecializationOnAcceptActionUsage() {
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<AcceptActionUsage> optAcceptActionUsage = EMFUtils.allContainedObjectOfType(semanticRootElement, AcceptActionUsage.class)
@@ -173,12 +173,12 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Test that a parameter of an ActionUsage that subsets another ActionUsage with parameters implicitly redefines the corresponding parameter")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitParameterRedefinitionOnItemUsage() {
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<ActionUsage> optionalParentActionWithParameter = EMFUtils.allContainedObjectOfType(semanticRootElement, ActionUsage.class)

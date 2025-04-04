@@ -13,20 +13,22 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Identifiers for the "GeneralView-ActionFlowCompartmentTest project".
+ * Project data for the "GeneralView-ActionFlowCompartmentTest" project.
  *
  * @author Arthur Daussy
  */
-public class ActionFlowCompartmentIdentifiers {
+public class ActionFlowCompartmentTestProjectData {
+
+    public static final String SCRIPT_PATH = "/scripts/GeneralView-ActionFlowCompartmentTest.sql";
 
     public static final String EDITING_CONTEXT_ID = "4aac66a2-7511-44e4-b5a2-9c9c494cce3a";
 
     /**
-     * Ids for the representation part.
+     * Ids of graphical elements.
      */
-    public static class Diagram {
+    public static class GraphicalIds {
 
-        public static final String ID = "cbd3d33f-970e-438d-9e25-6c19ac2fbe32";
+        public static final String DIAGRAM_ID = "cbd3d33f-970e-438d-9e25-6c19ac2fbe32";
 
         public static final String START_ID = "3a97ff70-bc26-3d04-bf64-939a686cb10c";
 
@@ -46,9 +48,9 @@ public class ActionFlowCompartmentIdentifiers {
     }
 
     /**
-     * Ids for the semantic part.
+     * Ids for the semantic elements.
      */
-    public static final class Semantic {
+    public static final class SemanticIds {
 
         public static final String SUB_ACTION1_ID = "52133bc6-29a4-47fa-8722-e0ec2dda56e0";
 
