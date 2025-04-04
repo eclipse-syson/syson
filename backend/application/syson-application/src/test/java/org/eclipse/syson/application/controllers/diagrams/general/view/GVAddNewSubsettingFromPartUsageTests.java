@@ -29,8 +29,8 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.GeneralViewWithTopNodesIdentifiers;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -98,13 +98,13 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesIdentifiers.Diagram.ID);
+                GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescripionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
     }
@@ -118,13 +118,13 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
     }
 
     @DisplayName("Given a SysML Project, when New Subsetting tool is requested on a PartUsage, then a new PartUsage node and a Subsetting edge are created")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyTool() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Subsetting");
         assertThat(creationToolId).as("The tool 'New Subsetting' should exist on a PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "part",
                 creationToolId));

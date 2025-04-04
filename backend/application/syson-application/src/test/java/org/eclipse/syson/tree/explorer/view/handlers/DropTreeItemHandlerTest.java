@@ -34,7 +34,7 @@ import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionR
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,20 +81,20 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given the simple project, when drag an dropping a part definition on a package, then the part definition should be moved under the Package.")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkDnDPartDefinitionOnPackage() {
 
         var expandedIds = List.of(
-                SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE2.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_DOCUMENT.toString());
+                SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID,
+                SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE2_ID,
+                SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID,
+                SimpleProjectElementsTestProjectData.DOCUMENT_ID.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
@@ -108,18 +108,18 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                     assertThat(tree).isNotNull();
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(2);
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(SysMLv2Identifiers.SIMPLE_PROJECT_PART.toString()));
+                            .equals(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
                     assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
                     assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(SysMLv2Identifiers.SIMPLE_PROJECT_PART_DEF.toString()));
+                            .equals(SimpleProjectElementsTestProjectData.SemanticIds.PART_DEF_ID));
                 }, () -> fail("Missing tree"));
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
+                    UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID,
                     explorerRepresentationId,
-                    List.of(SysMLv2Identifiers.SIMPLE_PROJECT_PART_DEF.toString()),
-                    SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
+                    List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_DEF_ID),
+                    SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID,
                     -1);
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
             String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
@@ -141,7 +141,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                     assertThat(tree).isNotNull();
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(SysMLv2Identifiers.SIMPLE_PROJECT_PART_DEF.toString()));
+                            .equals(SimpleProjectElementsTestProjectData.SemanticIds.PART_DEF_ID));
                 }, () -> fail("Missing tree"));
 
         StepVerifier.create(flux)
@@ -154,20 +154,20 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given a SySML project, when drag an dropping an element into one of its descendant, then the selected element should not be moved")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkForbiddenDropOnDescendant() {
 
         var expandedIds = List.of(
-                SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE2.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT_DOCUMENT.toString());
+                SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID,
+                SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE2_ID,
+                SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID,
+                SimpleProjectElementsTestProjectData.DOCUMENT_ID.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
@@ -181,18 +181,18 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                     assertThat(tree).isNotNull();
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(2);
                     assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(SysMLv2Identifiers.SIMPLE_PROJECT_PART.toString()));
+                            .equals(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
                     assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
                     assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
-                            .equals(SysMLv2Identifiers.SIMPLE_PROJECT_PART_DEF.toString()));
+                            .equals(SimpleProjectElementsTestProjectData.SemanticIds.PART_DEF_ID));
                 }, () -> fail("Missing tree"));
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
+                    UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID,
                     explorerRepresentationId,
-                    List.of(SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString()),
-                    SysMLv2Identifiers.SIMPLE_PROJECT_PART.toString(),
+                    List.of(SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID),
+                    SimpleProjectElementsTestProjectData.SemanticIds.PART_ID,
                     -1);
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
             String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");

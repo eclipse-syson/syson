@@ -34,7 +34,8 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.UtilService;
@@ -116,13 +117,13 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM);
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                SysONRepresentationDescripionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
     }
@@ -139,25 +140,24 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 4)
-                );
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 4));
     }
 
     @DisplayName("Given a SysML Project, when the New Feature Typing tool is requested on a PartUsage, then a new PartDefinition node and a FeatureTyping edge are created")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partUsageNodeParameters")
     public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 this.diagram,
                 creationToolId));
 
         var diagramAfterAddingElement = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 diagramAfterAddingElement,
                 nodeName,
                 this.getNewName(nodeName)));
@@ -167,14 +167,14 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
         String toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
         assertThat(toolId).as("The tool 'New Feature Typing' should exist on a ").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 diagramAfterRenameElement,
                 this.getNewName(nodeName),
                 toolId));
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
-                    Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
+                    Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
                     Element semanticRootElement = (Element) semanticRootObject;
                     assertThat(semanticRootElement).isNotNull();
@@ -186,7 +186,8 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                     // should find the PartDefinition
                     var partDefinition = semanticRootElement.getOwnedElement().stream().filter(definitionEClass::isInstance).findFirst();
                     assertThat(partDefinition).isNotEmpty();
-                    // PartUsage should contain a FeatureTyping relationship pointing to the PartDefinition (through its type property)
+                    // PartUsage should contain a FeatureTyping relationship pointing to the PartDefinition (through its
+                    // type property)
                     assertThat(partUsage.get().getOwnedRelationship()).isNotEmpty();
                     var featureTypingRelationship = partUsage.get().getOwnedRelationship().stream()
                             .filter(FeatureTyping.class::isInstance)

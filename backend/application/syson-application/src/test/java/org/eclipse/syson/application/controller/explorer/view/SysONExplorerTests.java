@@ -40,7 +40,8 @@ import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionR
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.explorer.testers.ExpandTreeItemTester;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.data.SysonStudioTestProjectData;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -101,7 +102,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given an empty SysML Project, when the available explorers are requested, then the SysON explorer is returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getAvailableExplorersForSysMLv2Project() {
@@ -109,7 +110,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID);
+                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
@@ -117,7 +118,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given a SysON Studio Project, when the available explorers are requested, then the Sirius Web explorer is returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SysonStudioTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getAvailableExplorersForStudioProject() {
@@ -125,7 +126,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", SysMLv2Identifiers.SYSON_STUDIO_EDITING_CONTEXT_ID);
+                "editingContextId", SysonStudioTestProjectData.EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
@@ -133,13 +134,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given an empty SysML Project, when the explorer is displayed, then the libraries are visible and the root namespace and memberships are not visible")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithDefaultFilters() {
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), this.defaultFilters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         AtomicReference<String> sysmlModelTreeItemId = new AtomicReference<>();
@@ -169,14 +170,14 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
-                .then(() -> expandedTreeItemIds.addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, treeId.get(), sysmlModelTreeItemId.get())))
+                .then(() -> expandedTreeItemIds.addAll(this.expandTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), sysmlModelTreeItemId.get())))
                 .then(() -> expandedTreeItemIds
-                        .addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, treeId.get(), librariesDirectoryTreeItemId.get())))
+                        .addAll(this.expandTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), librariesDirectoryTreeItemId.get())))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, expandedTreeItemIds, this.defaultFilters);
-        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, updatedExplorerRepresentationId);
+        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
 
         var updatedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
@@ -213,14 +214,14 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given an empty SysML Project, when the explorer is displayed with its root model expanded and the hide memberships and hide KerML libraries filters, then the root model is visible and is expanded")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
 
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL), filters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, explorerRepresentationId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

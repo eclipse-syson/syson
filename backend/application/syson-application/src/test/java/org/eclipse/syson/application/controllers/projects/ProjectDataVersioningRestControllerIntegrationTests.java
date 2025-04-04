@@ -21,7 +21,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,8 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for all changes, then all changes should be returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForAllChangesThenAllChangesShouldBeReturned() {
         var webTestClient = WebTestClient.bindToServer()
@@ -78,7 +79,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -90,7 +91,8 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for all changes in an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForAllChangesInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
@@ -107,7 +109,8 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for changes of a specific element, then those changes should be returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForChangesOfASpecificElementThenThoseChangesShouldBeReturned() {
         var webTestClient = WebTestClient.bindToServer()
@@ -122,8 +125,8 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
             fail(e);
         }
 
-        var computedChangeId = UUID.nameUUIDFromBytes((SysMLv2Identifiers.SIMPLE_PROJECT + SysMLv2Identifiers.SIMPLE_PROJECT_PART).getBytes()).toString();
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, computedChangeId);
+        var computedChangeId = UUID.nameUUIDFromBytes((SimpleProjectElementsTestProjectData.PROJECT_ID + SimpleProjectElementsTestProjectData.SemanticIds.PART_ID).getBytes()).toString();
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID, computedChangeId);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -135,14 +138,15 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for specific changes in an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForSpecificChangesInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var computedChangeId = UUID.nameUUIDFromBytes((INVALID_PROJECT + SysMLv2Identifiers.SIMPLE_PROJECT_PART).getBytes()).toString();
+        var computedChangeId = UUID.nameUUIDFromBytes((INVALID_PROJECT + SimpleProjectElementsTestProjectData.SemanticIds.PART_ID).getBytes()).toString();
         var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", INVALID_PROJECT, INVALID_PROJECT, computedChangeId);
         webTestClient.get()
                 .uri(uri)

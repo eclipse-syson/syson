@@ -36,7 +36,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @SqlGroup({
     @Sql(scripts = {
-        "/scripts/libraries/imports/syson-test-database.sql"
+        "/scripts/database-content/syson-test-database-import.sql"
     },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED)),

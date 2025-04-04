@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRun
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.application.sysmlv2.SysMLv2ProjectTemplatesProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
@@ -74,7 +75,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
 
     @DisplayName("Given the Batmobile project template, when the mutation is performed, then the project is created")
     @Test
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenBatmobileProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
@@ -108,7 +109,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
 
     @DisplayName("Given the SysMLv2 project template, when the mutation is performed, then the project is created")
     @Test
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysMLv2ProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
@@ -142,7 +143,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
 
     @DisplayName("Given the SysMLv2-Library project template, when the mutation is performed, then the project is created")
     @Test
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysMLv2LibraryProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
