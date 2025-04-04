@@ -12,7 +12,9 @@ The scripts below have been tested with Git Bash on Windows. They rely on `winpt
 
 ### Setup the testing environment
 
-Integration tests are initialized with the `syson-test-database.sql` file located in `src/test/resources/scripts`. This file contains models and diagrams that are used as baselines to run the tests on.
+Integration tests are initialized with SQL script file. Each script contains the data required for one or more test.
+It generally contains only one project.
+Those files contain models and diagrams that are used as baselines to run the tests on.
 
 The steps below show how to generate this file:
 
@@ -37,7 +39,7 @@ This creates the database tables required by the tests. The SysON frontend can b
 
 ```bash
 cd src/test/resources/scripts
-./initialize-test-data.sh
+./initialize-test-data.sh <$SQLScriptName>
 ```
 
 4. Navigate to `localhost:5173` and update your test models using SysON
@@ -45,10 +47,21 @@ cd src/test/resources/scripts
 
 ```bash
 cd src/test/resources/scripts
-./dump-test-data.sh
+./dump-test-data.sh <$SQLScriptName>
 ```
 
 The produced SQL file will replace the existing one.
 
 > [!TIP]
 > Follow from step 3 if you already have a `syson-test-postgres` container.
+
+### Good practices
+
+When creating a new project, creates the associated XXXTestProjectData Java class.
+Follow the pattern used in the existing files to stores required information such as:
+
+* Editing Context identifier
+* Graphical Element identifiers
+* Semantic identifiers
+* Name of the initialization script
+

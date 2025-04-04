@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.sysml.datafetchers.MutationInsertTextualSysMLv2DataFetcher;
 import org.eclipse.syson.sysml.dto.InsertTextualSysMLv2Input;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,12 +76,12 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         this.givenInitialServerState.initialize();
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testCreationFromText() {
         this.givenCommittedTransaction.commit();
-        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, SIMPLE_PROJECT_PACKAGE1, """
+        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, SIMPLE_PROJECT_PACKAGE1, """
                 package importedPackage;
                 """);
         var result = this.queryRunner.run(input);
@@ -92,7 +92,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), this.objectSearchService.getObject(editingContext, SIMPLE_PROJECT_PACKAGE1).get());
         };
-        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, function));
+        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, function));
 
         Predicate<IPayload> predicate = payload -> Optional.of(payload)
                 .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)

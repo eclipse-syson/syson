@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.InterconnectionViewEmptyTestProjectData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,12 +67,12 @@ public class RelatedElementsViewTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given an empty SysML Project, when the Related Elements View is requested, then no error is returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { InterconnectionViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getRelatedElementsView() {
-        var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(SysMLv2Identifiers.INTERCONNECTION_VIEW_EMPTY_DIAGRAM_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), SysMLv2Identifiers.INTERCONNECTION_VIEW_EMPTY_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
+        var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(InterconnectionViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID.toString()));
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), InterconnectionViewEmptyTestProjectData.EDITING_CONTEXT_ID, relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

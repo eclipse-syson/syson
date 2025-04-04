@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for all elements, then all elements should be returned")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForAllElementsThenAllElementsShouldBeReturned() {
         var webTestClient = WebTestClient.bindToServer()
@@ -81,7 +82,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -93,7 +94,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for all elements in an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForAllElementsInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
@@ -110,7 +112,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for a specific element, then it should return the element")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForSpecificElementThenItShouldReturnTheElement() {
         var webTestClient = WebTestClient.bindToServer()
@@ -125,7 +128,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, SIMPLE_PROJECT_PACKAGE1);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID, SIMPLE_PROJECT_PACKAGE1);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -137,7 +140,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for a specific element in an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForSpecificElementInUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
@@ -153,7 +157,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for the relationships of an element, then it should return the relationships")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForRelationshipsOfAnElementThenItShouldReturnTheRelationships() {
         var webTestClient = WebTestClient.bindToServer()
@@ -168,7 +173,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, SIMPLE_PROJECT_PART);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID,
+                SIMPLE_PROJECT_PART);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()
@@ -180,7 +186,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for the relationships of an element in an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForRelationshipsOfAnElementInAnUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()
@@ -197,7 +204,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for the root elements, then it should return the root elements")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForTheRootElementsThenItShouldReturnTheRootElements() {
         var webTestClient = WebTestClient.bindToServer()
@@ -212,7 +220,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()
@@ -224,7 +232,8 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for the root elements of an unknown project, then it should return an error")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForTheRootElementsOfUnknownProjectThenItShouldReturnAnError() {
         var webTestClient = WebTestClient.bindToServer()

@@ -40,8 +40,8 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.GeneralViewWithTopNodesIdentifiers;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -135,20 +135,20 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesIdentifiers.Diagram.ID);
+                GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescripionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewWithTopNodesIdentifiers.Semantic.PACKAGE_1);
-        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID);
-        this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID);
-        this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, GeneralViewWithTopNodesIdentifiers.EDITING_CONTEXT_ID);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
+        this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
+        this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
     }
 
     @AfterEach
@@ -161,7 +161,7 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
 
     @DisplayName("Given a Part Definition, when using the 'New TextualRepresentation' tool, then a new node should be created with an edge connecting it to the PartDefinition")
     @Test
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void createTextualRepresentation() {
         String parentLabel = "part";
@@ -179,13 +179,13 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
 
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
             assertThat(newEdge.getSourceId()).isEqualTo(newNode.getId());
-            assertThat(newEdge.getTargetId()).isEqualTo(GeneralViewWithTopNodesIdentifiers.Diagram.PART_USAGE);
+            assertThat(newEdge.getTargetId()).isEqualTo(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesIdentifiers.Semantic.PART_USAGE).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(PartUsage.class);
             Element semanticRootElement = (Element) semanticRootObject;
             List<TextualRepresentation> textualRepresentations = EMFUtils.allContainedObjectOfType(semanticRootElement, TextualRepresentation.class)
@@ -198,18 +198,18 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
 
     @DisplayName("Given a TextualRepresentation, when using the 'Direct Edit' tool, then the body of the textual representation should be updated")
     @Test
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void directEditTextualRepresentation() {
-        this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram, GeneralViewWithTopNodesIdentifiers.Diagram.PART_DEFINITION_TEXTUAL_REP,
+        this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID,
                 "add textual representation here");
 
-        this.directEditTester.checkDirectEdit(this.verifier, this.diagram, GeneralViewWithTopNodesIdentifiers.Diagram.PART_DEFINITION_TEXTUAL_REP, "Some textual representation", "«rep»\n"
+        this.directEditTester.checkDirectEdit(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID, "Some textual representation", "«rep»\n"
                 + "\n"
                 + "add textual representation here");
 
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object element = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesIdentifiers.Semantic.PART_DEFINITION_TEXTUAL_REP).orElse(null);
+            Object element = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_TEXTUAL_REP_ID).orElse(null);
             assertThat(element).isInstanceOf(TextualRepresentation.class);
             TextualRepresentation textualRepresentation = (TextualRepresentation) element;
             assertThat(textualRepresentation.getBody()).isEqualTo("Some textual representation");
