@@ -77,33 +77,6 @@ public class ElementUtil {
     private static final String IMPORTED_EANNOTATION_SOURCE = "org.eclipse.syson.sysml.imported";
 
     /**
-     * Check if the given {@link Element} comes from a library (i.e. a {@link LibraryPackage}) or not.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @param standardOnly
-     *            whether the library must be standard. If set to <code>false</code>, this method will return
-     *            <code>true</code> if the given element comes from a library, without regarding its standard attribute.
-     * @return <code>true</code> if the given element is contained in a library, <code>false</code> otherwise.
-     */
-    public static boolean isFromLibrary(Element element, boolean standardOnly) {
-        boolean isFromStandardLibrary = false;
-        if (element instanceof LibraryPackage libraryPackage) {
-            if (standardOnly) {
-                isFromStandardLibrary = libraryPackage.isIsStandard();
-            } else {
-                isFromStandardLibrary = true;
-            }
-        } else {
-            EObject eContainer = element.eContainer();
-            if (eContainer instanceof Element eContainerElement) {
-                isFromStandardLibrary = isFromStandardLibrary(eContainerElement);
-            }
-        }
-        return isFromStandardLibrary;
-    }
-
-    /**
      * Checks if the given resource is one of KerML or SysML standard libraries.
      *
      * @param resource
@@ -127,7 +100,8 @@ public class ElementUtil {
      * @return <code>true</code> if the given element is contained in a standard library, <code>false</code> otherwise.
      */
     public static boolean isFromStandardLibrary(Element element) {
-        return isFromLibrary(element, true);
+        return element.libraryNamespace() instanceof LibraryPackage libraryPackage
+                && libraryPackage.isIsStandard();
     }
 
     /**
