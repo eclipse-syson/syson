@@ -66,6 +66,8 @@ The user had to explicitly add the double quotes around a `LiteralString` value 
 This is not the case anymore.
 
 - Fix the creation of `TransitionUsage` from an `ActionUsage` to the "Done" ActionUsage.
+- Fix the value of the `isLibraryElement` attribute for elements inside `LibraryPackage`.
+The attribute is now correctly `true` for elements contained in the ownership tree of a `LibraryPackage`.
 
 == New features
 
