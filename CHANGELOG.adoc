@@ -86,6 +86,13 @@ There is no more need for a specific serializer for this `RestDataVersion#payloa
 The `Map<String, Object>` is handled by the default serializer/deserializer.
 `RestDataVersionRequest#payload` is now typed by a `Map<String, Object>` instead of `IRestDataRequest`.
 
+- [test] The integration tests have been refactored.
+The initialization SQL scripts have been split in smaller pieces.
+The class _SysMLv2Identifiers_ has also been split in:
+
+* _XXXTestProjectData_ : Witch contains all required datas for test on a specific project.
+* _SysONRepresentationDescriptionIdentifiers_ : Witch contains the representation description ids.
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -78,14 +78,14 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given an imported document, when a root object is created, then it is created properly and the document is not imported anymore")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenImportedDocumentWhenRootObjectIsCreatedThenItIsCreatedProperlyAndDocumentIsNotImported() {
         this.givenCommittedTransaction.commit();
 
-        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
-                    Optional<Resource> optResource = this.getResource(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
+                    Optional<Resource> optResource = this.getResource(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
                     assertThat(optResource).isPresent();
                     Resource resource = optResource.get();
                     ElementUtil.setIsImported(resource, true);
@@ -94,8 +94,8 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
-                UUID.fromString(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL),
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                UUID.fromString(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID),
                 SysmlPackage.eNS_URI,
                 "SysMLv2EditService-Package");
 
@@ -113,9 +113,9 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
         String objectKind = JsonPath.read(result, "$.data.createRootObject.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=sysml&entity=Package");
 
-        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+        this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
-                    Optional<Resource> optResource = this.getResource(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
+                    Optional<Resource> optResource = this.getResource(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
                     assertThat(optResource).isPresent();
                     Resource resource = optResource.get();
                     assertThat(this.sysONResourceService.isImported(resource)).isFalse();
@@ -133,7 +133,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
         if (optionalEditingDomain.isPresent()) {
             var editingDomain = optionalEditingDomain.get();
             ResourceSet resourceSet = editingDomain.getResourceSet();
-            URI uri = new JSONResourceFactory().createResourceURI(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
+            URI uri = new JSONResourceFactory().createResourceURI(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
             result = resourceSet.getResources().stream()
                     .filter(r -> r.getURI().equals(uri))
                     .findFirst();

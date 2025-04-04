@@ -33,8 +33,8 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.GeneralViewAddExistingElementsIdentifiers;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
+import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
@@ -106,13 +106,13 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
-                GeneralViewAddExistingElementsIdentifiers.Diagram.ID);
+                GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewAddExistingElementsTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID,
-                SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescripionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
 
@@ -124,13 +124,13 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void addExistingElementsOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -148,13 +148,13 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
     }
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void addExistingElementsRecursiveOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsIdentifiers.EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -166,7 +166,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                             .as("The diagram should contain a composite edge between part2 and part1")
                             .anyMatch(edge -> edge.getTargetObjectLabel().equals(PART1))
                             .as("The diagrm should contain a SuccessionAsUsage edge between start and action2")
-                            .anyMatch(edge -> edge.getTargetObjectId().equals(GeneralViewAddExistingElementsIdentifiers.Semantic.SUCCESSION_START_ACTION_2));
+                            .anyMatch(edge -> edge.getTargetObjectId().equals(GeneralViewAddExistingElementsTestProjectData.SemanticIds.SUCCESSION_START_ACTION_2_IDS));
                     assertThat(newDiagram.getNodes())
                             .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, PACKAGE1))
                             .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), PACKAGE1))

@@ -15,7 +15,7 @@ package org.eclipse.syson.application.controllers.rest;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,8 @@ public class RestControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given the SysON REST API, when we ask for several queries involving dates, then all queries should return correctly")
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysONRestAPIWhenWeAskForSeveralQueriesInvolvingDatesThenAllQueriesShouldReturnCorrectly() {
         var webTestClient = WebTestClient.bindToServer()
@@ -68,7 +69,7 @@ public class RestControllerIntegrationTests extends AbstractIntegrationTests {
                 .expectStatus()
                 .isOk();
 
-        uri = String.format("/api/rest/projects/%s/commits/%s/elements", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
+        uri = String.format("/api/rest/projects/%s/commits/%s/elements", SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_ID);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
