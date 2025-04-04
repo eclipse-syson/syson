@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
-import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewEdgeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewLabelService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewToolService;
@@ -42,7 +42,7 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,
                     InterconnectionViewCreateService.class,
-                    InterconnectionViewEdgeService.class,
+                    ViewEdgeService.class,
                     InterconnectionViewNodeService.class,
                     InterconnectionViewLabelService.class,
                     InterconnectionViewToolService.class,
