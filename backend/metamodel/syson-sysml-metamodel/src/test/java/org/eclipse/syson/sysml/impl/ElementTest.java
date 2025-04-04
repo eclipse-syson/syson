@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.syson.sysml.Documentation;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.DisplayName;
@@ -118,5 +121,23 @@ public class ElementTest {
         var testModel = new TestModel();
         assertNotNull(testModel.p1.getDocumentation());
         assertFalse(testModel.p1.getDocumentation().isEmpty());
+    }
+
+    @DisplayName("Check isLibraryElement feature for an element inside a LibraryPackage")
+    @Test
+    public void isLibraryElementInsideLibraryPackageTest() {
+        ModelBuilder builder = new ModelBuilder();
+        LibraryPackage libraryPackage = builder.createWithName(LibraryPackage.class, "MyLibrary");
+        PartUsage part = builder.createInWithName(PartUsage.class, libraryPackage, "myPart");
+        assertThat(libraryPackage.isIsLibraryElement()).isTrue();
+        assertThat(part.isIsLibraryElement()).isTrue();
+    }
+
+    @DisplayName("Check isLibraryElement feature for an element not in the ownership tree of a LibraryPackage")
+    @Test
+    public void isLibraryElementNotInsideLibraryPackageTest() {
+        var testModel = new TestModel();
+        assertThat(testModel.def1.isIsLibraryElement()).isFalse();
+        assertThat(testModel.def12.isIsLibraryElement()).isFalse();
     }
 }

@@ -127,6 +127,8 @@ This behavior is aligned with how SysON handles quotes in `declaredName` fields.
 The user had to explicitly add the double quotes around a `LiteralString` value to ensure the export was producing valid SysML.
 This is not the case anymore.
 - https://github.com/eclipse-syson/syson/issues/1176[#1176] [general-view] Fix the creation of `TransitionUsage` from an `ActionUsage` to the "Done" ActionUsage.
+- https://github.com/eclipse-syson/syson/issues/1183[#1183] [metamodel] Fix `Element#isLibraryElement` for elements inside `LibraryPackage`.
+The attribute is now correctly `true` for elements contained in the ownership tree of a `LibraryPackage`.
 
 === Improvements
 

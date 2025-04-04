@@ -39,7 +39,6 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.helper.NameHelper;
-import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element</b></em>'. <!-- end-user-doc -->
@@ -360,7 +359,7 @@ public abstract class ElementImpl extends EModelElementImpl implements Element {
      */
     @Override
     public boolean isIsLibraryElement() {
-        return ElementUtil.isFromLibrary(this, false);
+        return this.libraryNamespace() != null;
     }
 
     /**
