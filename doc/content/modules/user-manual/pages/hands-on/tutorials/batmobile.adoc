@@ -63,7 +63,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating Subsetting
 
-. Click on the diagram background and select the `New Part` tool.
+. Right-click on the diagram background and select the `Structure` -> `New Part` tool.
 . A new part usage is created.
 . Rename it to `frontRightWheel :> wheels`.
 . A new `subsetting` relationship appears between the two parts usages `frontRightWheel` and `wheels`.
