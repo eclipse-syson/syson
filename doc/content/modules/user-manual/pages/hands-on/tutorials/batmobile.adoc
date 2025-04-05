@@ -71,7 +71,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating Redefinition
 
-. Click on the diagram background and click on the `New Part` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part` tool.
 . A new part usage is created.
 . Rename it to `bulletProofWheels[4]:>>wheels`.
 . A new `redefines` relationship appears between the `bulletProofWheels` part definition and the`wheels` part usage.
