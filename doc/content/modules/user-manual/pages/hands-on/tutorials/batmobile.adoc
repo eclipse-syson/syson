@@ -56,7 +56,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating Specialization
 
-. Click on the diagram background and click on the `New Part Definition` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part Definition` tool.
 . A new part definition is created.
 . Rename it `Batmobile:> Vehicle`.
 . A new `specialization` relationship is created between the `Batmobile` part definition and the `Vehicle` part definition.
