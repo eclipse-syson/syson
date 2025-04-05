@@ -15,8 +15,8 @@ A default `{gv}` representation associated with the package is opened in the mai
 
 === Using the {diag-toolbar}
 
-. In the main editor area, click on the diagram background to open the {diag-toolbar}.
-. Click on the `New Part Definition` tool to create a new part definition.
+. In the main editor area, right-click on the diagram background to open the {diag-toolbar}.
+. Click on the `Structure` -> `New Part Definition` tool to create a new part definition.
 +
 [NOTE]
 ====
@@ -24,14 +24,14 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 ====
 +
 . Rename the part definition to `Vehicle` using the xref:hands-on/how-tos/model-management.adoc#representation[direct-edit action] or the xref:hands-on/how-tos/model-management.adoc#update-element#details[{details} view].
-. Select the `Vehicle` part definition and click on the `New Item` tool to create an item usage.
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Item` tool to create an item usage.
 . Rename the item usage to `driver`.
-. Select the `Vehicle` part definition and click on the `New Part` tool to create a new part usage.
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Part` tool to create a new part usage.
 . Rename the part usage to `engine`.
 
 === Setting Multiplicity
 
-. Select the `Vehicle` part definition and click on the `New Part` tool in the {diag-toolbar} to create a new part usage
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
 . Rename the part usage to `wheels`.
 
 === Using Drag and Drop
@@ -45,7 +45,7 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 
 === Adding Attributes
 
-. Select the `Vehicle` part definition and click on the `New Attribute` tool in the {diag-toolbar}.
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Attribute` tool in the {diag-toolbar}.
 . A new attribute usage is created.
 . Select the attribute and use the direct-edit tool to rename it to `actualSpeed : SpeedUnit`
 . A new import element appears in model which refers to the library `ISQSpaceTime` that contains `SpeedUnit`
@@ -56,14 +56,14 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating Specialization
 
-. Click on the diagram background and click on the `New Part Definition` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part Definition` tool.
 . A new part definition is created.
 . Rename it `Batmobile:> Vehicle`.
 . A new `specialization` relationship is created between the `Batmobile` part definition and the `Vehicle` part definition.
 
 === Creating Subsetting
 
-. Click on the diagram background and select the `New Part` tool.
+. Right-click on the diagram background and select the `Structure` -> `New Part` tool.
 . A new part usage is created.
 . Rename it to `frontRightWheel :> wheels`.
 . A new `subsetting` relationship appears between the two parts usages `frontRightWheel` and `wheels`.
@@ -71,7 +71,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating Redefinition
 
-. Click on the diagram background and click on the `New Part` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part` tool.
 . A new part usage is created.
 . Rename it to `bulletProofWheels[4]:>>wheels`.
 . A new `redefines` relationship appears between the `bulletProofWheels` part definition and the`wheels` part usage.
@@ -80,12 +80,12 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating specialization relationship
 
-. Click on the diagram background and click on the `New Part Definition` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part Definition` tool.
 . A new part definition is created.
 . Rename it `BatmobileNG`
 . Click on node `BatmobileNG`.
 . Click on arrow border and hold down until `Batmobile:> Vehicle` node.
-. Select the `Subclassification` tool.
+. Select the `New Subclassification` tool.
 
 
 === Creating containment relationships
