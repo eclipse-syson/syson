@@ -80,12 +80,12 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 === Creating specialization relationship
 
-. Click on the diagram background and click on the `New Part Definition` tool.
+. Right-click on the diagram background and click on the `Structure` -> `New Part Definition` tool.
 . A new part definition is created.
 . Rename it `BatmobileNG`
 . Click on node `BatmobileNG`.
 . Click on arrow border and hold down until `Batmobile:> Vehicle` node.
-. Select the `Subclassification` tool.
+. Select the `New Subclassification` tool.
 
 
 === Creating containment relationships
