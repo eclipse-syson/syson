@@ -45,7 +45,7 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 
 === Adding Attributes
 
-. Select the `Vehicle` part definition and click on the `New Attribute` tool in the {diag-toolbar}.
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Attribute` tool in the {diag-toolbar}.
 . A new attribute usage is created.
 . Select the attribute and use the direct-edit tool to rename it to `actualSpeed : SpeedUnit`
 . A new import element appears in model which refers to the library `ISQSpaceTime` that contains `SpeedUnit`
