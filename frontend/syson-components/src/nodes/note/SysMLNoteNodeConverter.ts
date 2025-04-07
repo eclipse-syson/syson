@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import {
   GQLDiagram,
   GQLDiagramDescription,
   GQLEdge,
+  GQLHandleLayoutData,
   GQLNode,
   GQLNodeDescription,
   GQLNodeLayoutData,
@@ -60,7 +61,12 @@ const toSysMLNoteNode = (
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
+    .filter((nodeLayoutData) => nodeLayoutData.id === id)
+    .flatMap((nodeLayoutData) => nodeLayoutData.handleLayoutData);
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges, handleLayoutData);
+
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
   );
