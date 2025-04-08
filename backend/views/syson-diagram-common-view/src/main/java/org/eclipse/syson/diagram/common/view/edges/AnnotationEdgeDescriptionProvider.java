@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBu
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -75,16 +76,18 @@ public class AnnotationEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         cache.getNodeDescription(documentationNodeName).ifPresent(sourceNodes::add);
         cache.getNodeDescription(textualRepresentationNodeName).ifPresent(sourceNodes::add);
 
-        var targetNodes = new ArrayList<NodeDescription>();
+        var targetNodes = new ArrayList<DiagramElementDescription>();
         targetNodes.addAll(
                 cache.getNodeDescriptions().stream().filter(nodeDescription -> !commentNodeName.equals(nodeDescription.getName()) && !documentationNodeName.equals(nodeDescription.getName()))
                         .filter(nodeDescription -> !nodeDescription.getName().contains("Compartment"))
                         .toList());
 
+        cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getDependency())).ifPresent(targetNodes::add);
+
         edgeDescription.getSourceDescriptions().addAll(sourceNodes);
         edgeDescription.getTargetDescriptions().addAll(targetNodes);
 
-        edgeDescription.setPalette(this.createEdgePalette());
+        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     @Override

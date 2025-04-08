@@ -30,6 +30,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -274,17 +276,29 @@ public class ViewNodeService {
      *         {@code false} otherwise
      */
     public boolean showAnnotatingNode(Element element, IDiagramContext diagramContext, IEditingContext editingContext) {
-        boolean displayAnnotatingNode = true;
+        boolean displayAnnotatingNode = false;
         if (element instanceof AnnotatingElement ae && diagramContext != null && editingContext != null) {
             EList<Element> annotatedElements = ae.getAnnotatedElement();
-            Node matchingNode = null;
+            IDiagramElement matchingDiagramElement = null;
             for (Node node : diagramContext.getDiagram().getNodes()) {
-                matchingNode = this.getOneMatchingAnnotatedNodes(node, annotatedElements, diagramContext, editingContext);
-                if (matchingNode != null) {
-                    return true;
+                matchingDiagramElement = this.getOneMatchingAnnotatedNodes(node, annotatedElements, diagramContext, editingContext);
+                if (matchingDiagramElement != null) {
+                    displayAnnotatingNode = true;
+                    break;
                 }
             }
-            displayAnnotatingNode = false;
+            if (!displayAnnotatingNode) {
+                for (Edge edge : diagramContext.getDiagram().getEdges()) {
+                    matchingDiagramElement = this.getOneMatchingAnnotatedEdge(edge, annotatedElements, diagramContext, editingContext);
+                    if (matchingDiagramElement != null) {
+                        displayAnnotatingNode = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            // drag & drop from explorer view
+            displayAnnotatingNode = true;
         }
         return displayAnnotatingNode;
     }
@@ -294,6 +308,24 @@ public class ViewNodeService {
         // pointing to an action.
         ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage;
+    }
+
+    private Edge getOneMatchingAnnotatedEdge(Edge edge, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+        Edge matchingAnnotatedEdge = null;
+        Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
+        if (semanticNodeOpt.isPresent()) {
+            if (annotatedElements.contains(semanticNodeOpt.get())) {
+                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream() //
+                        .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), edge.getId()));
+                if (!isDeletingAnnotatingNode) {
+                    // annotating edge is present and it is not planned to be removed
+                    matchingAnnotatedEdge = edge;
+                }
+                // Do not browse children of annotating edge which is planned to be removed
+                return matchingAnnotatedEdge;
+            }
+        }
+        return matchingAnnotatedEdge;
     }
 
     private Node getOneMatchingAnnotatedNodes(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {

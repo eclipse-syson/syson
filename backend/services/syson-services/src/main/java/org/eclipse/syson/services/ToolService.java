@@ -26,6 +26,8 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -71,21 +73,47 @@ public class ToolService {
      *
      * @param element
      *            the given {@link Element}.
-     * @param node
-     *            the {@link Node} corresponding to the given {@link Element}.
+     * @param selectedNode
+     *            the {@link Node} corresponding to the given {@link Element}, could be <code>null</code>.
+     * @param selectedEdge
+     *            the {@link Edge} corresponding to the given {@link Element}, could be <code>null</code>.
      * @param diagramContext
      *            the diagram context in which to find the parent node.
      * @return a {@link Node} or a {@link Diagram}.
      */
-    public Object getParentNode(Element element, Node node, IDiagramContext diagramContext) {
+    public Object getParentNode(Element element, Node selectedNode, Edge selectedEdge, IDiagramContext diagramContext) {
         Object parentNode = null;
-        Diagram diagram = diagramContext.getDiagram();
-        List<Node> nodes = diagram.getNodes();
-        if (nodes.contains(node)) {
+        if (selectedEdge != null) {
+            parentNode = this.getParentNode(element, selectedEdge, diagramContext);
+        } else {
+            parentNode = this.getParentNode(element, selectedNode, diagramContext);
+        }
+        return parentNode;
+    }
+
+    /**
+     * Get the parent node of the given {@link Element}. This could be a {@link Node} or a {@link Diagram}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param diagramElement
+     *            the {@link IDiagramElement} corresponding to the given {@link Element}.
+     * @param diagramContext
+     *            the diagram context in which to find the parent node.
+     * @return a {@link Node} or a {@link Diagram}.
+     */
+    public Object getParentNode(Element element, IDiagramElement diagramElement, IDiagramContext diagramContext) {
+        Object parentNode = null;
+        var diagram = diagramContext.getDiagram();
+        var nodes = diagram.getNodes();
+        var edges = diagram.getEdges();
+        if (nodes.contains(diagramElement)) {
+            parentNode = diagram;
+        } else if (edges.contains(diagramElement)) {
             parentNode = diagram;
         } else {
             parentNode = nodes.stream()
-                    .map(subNode -> this.getParentNode(node, subNode))
+                    .map(subNode -> this.getParentNode(diagramElement, subNode))
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElse(null);
@@ -93,13 +121,13 @@ public class ToolService {
         return parentNode;
     }
 
-    protected Node getParentNode(Node node, Node nodeContainer) {
+    protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
         List<Node> nodes = nodeContainer.getChildNodes();
-        if (nodes.contains(node)) {
+        if (nodes.contains(diagramElement)) {
             return nodeContainer;
         }
         return nodes.stream()
-                .map(subNode -> this.getParentNode(node, subNode))
+                .map(subNode -> this.getParentNode(diagramElement, subNode))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);

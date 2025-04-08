@@ -153,8 +153,10 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             );
 
     public static final List<EClass> ANNOTATINGS = List.of(
-            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment(),
-            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getTextualRepresentation());
+            SysmlPackage.eINSTANCE.getComment(),
+            SysmlPackage.eINSTANCE.getDocumentation(),
+            SysmlPackage.eINSTANCE.getTextualRepresentation()
+            );
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
@@ -615,7 +617,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         final var edgeDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
 
         edgeDescriptionProviders.add(new AnnotationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        edgeDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
+        edgeDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));

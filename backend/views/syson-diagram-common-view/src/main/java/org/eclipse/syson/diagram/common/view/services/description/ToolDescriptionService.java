@@ -482,8 +482,7 @@ public class ToolDescriptionService {
 
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var setDirection = this.viewBuilderHelper.newSetValue()
-                .featureName("direction");
+        var setDirection = this.viewBuilderHelper.newSetValue().featureName("direction");
 
         if (direction != null) {
             setDirection.valueExpression(direction.getLiteral());
@@ -498,7 +497,7 @@ public class ToolDescriptionService {
 
         var parentViewExpression = "aql:selectedNode";
         if (nodeKind == null) {
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT));
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "selectedEdge", IDiagramContext.DIAGRAM_CONTEXT));
         }
 
         var createView = this.diagramBuilderHelper.newCreateView()
@@ -514,7 +513,7 @@ public class ToolDescriptionService {
                 .variableName(NEW_INSTANCE)
                 .children(createView.build(), changeContextNewInstance.build());
 
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newFeatureMembership")
                 .children(createEClassInstance.build());
 
@@ -522,7 +521,7 @@ public class ToolDescriptionService {
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(membershipEClass))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
                 .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
+                .children(changeContextMembership.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 

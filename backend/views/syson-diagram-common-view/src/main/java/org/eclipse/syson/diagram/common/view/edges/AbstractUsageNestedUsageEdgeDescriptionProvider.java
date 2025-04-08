@@ -101,7 +101,7 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
         edgeDescription.getSourceDescriptions().addAll(sourceNodes);
         edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
-        edgeDescription.setPalette(this.createEdgePalette());
+        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     private EdgeStyle createEdgeStyle() {

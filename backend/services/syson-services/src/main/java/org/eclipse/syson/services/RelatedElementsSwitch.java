@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
@@ -53,6 +54,15 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     @Override
     public Set<EObject> caseElement(Element object) {
         return Set.of();
+    }
+
+    @Override
+    public Set<EObject> caseAnnotation(Annotation object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement())) {
+            relatedElements.add(object);
+        }
+        return relatedElements;
     }
 
     @Override
@@ -93,7 +103,7 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     @Override
     public Set<EObject> caseReferenceSubsetting(ReferenceSubsetting object) {
         Set<EObject> relatedElements = new HashSet<>();
-        if (object.getReferencedFeature() instanceof ActionUsage au && object.eContainer() instanceof Feature feat) {
+        if (object.getReferencedFeature() instanceof ActionUsage && object.eContainer() instanceof Feature feat) {
             if (feat.eContainer() instanceof EndFeatureMembership efm && efm.eContainer() instanceof Succession succ) {
                 if (succ.eContainer() instanceof FeatureMembership fm && fm.eContainer() instanceof TransitionUsage tu) {
                     relatedElements.add(tu);
