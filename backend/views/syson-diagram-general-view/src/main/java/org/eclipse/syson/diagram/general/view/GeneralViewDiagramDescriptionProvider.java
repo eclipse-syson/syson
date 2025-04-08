@@ -119,8 +119,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getAllocationDefinition(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
             SysmlPackage.eINSTANCE.getCaseDefinition(),
-            SysmlPackage.eINSTANCE.getConstraintDefinition(),
             SysmlPackage.eINSTANCE.getConcernDefinition(),
+            SysmlPackage.eINSTANCE.getConnectionDefinition(),
+            SysmlPackage.eINSTANCE.getConstraintDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
             SysmlPackage.eINSTANCE.getItemDefinition(),
@@ -217,6 +218,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.STRUCTURE, List.of(
             SysmlPackage.eINSTANCE.getAttributeUsage(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getConnectionDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),

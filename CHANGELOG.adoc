@@ -12,6 +12,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1192[#1192] [general-view] Add `ConnectionDefinition` in _General View_ diagram
+
 === New features
 
 
