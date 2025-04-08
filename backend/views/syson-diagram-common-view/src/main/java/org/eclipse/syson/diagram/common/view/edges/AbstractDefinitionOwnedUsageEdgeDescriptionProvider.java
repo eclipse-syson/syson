@@ -96,7 +96,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
         edgeDescription.getSourceDescriptions().addAll(sourceNodes);
         edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
-        edgeDescription.setPalette(this.createEdgePalette());
+        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     @Override

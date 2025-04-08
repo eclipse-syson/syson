@@ -76,7 +76,7 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
             diagramDescription.getEdgeDescriptions().add(ed);
             ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
             ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
-            ed.setPalette(this.createEdgePalette());
+            ed.setPalette(this.createEdgePalette(cache));
         });
     }
 

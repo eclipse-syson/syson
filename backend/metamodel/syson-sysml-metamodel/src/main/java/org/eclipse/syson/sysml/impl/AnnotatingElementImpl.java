@@ -68,7 +68,6 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     @Override
     public EList<Element> getAnnotatedElement() {
         final List<Element> annotatedElements;
-
         List<Annotation> annotations = this.getAnnotation();
         if (annotations.isEmpty()) {
             Element owningNamespace = this.getOwningNamespace();
@@ -83,7 +82,6 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
                     .filter(Objects::nonNull)
                     .toList();
         }
-
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), annotatedElements.size(), annotatedElements.toArray());
     }
 

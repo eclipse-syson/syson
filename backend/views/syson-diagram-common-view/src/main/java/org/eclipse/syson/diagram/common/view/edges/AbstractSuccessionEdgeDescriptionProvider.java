@@ -89,7 +89,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
             diagramDescription.getEdgeDescriptions().add(ed);
             ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
             ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
-            ed.setPalette(this.createEdgePalette());
+            ed.setPalette(this.createEdgePalette(cache));
         });
     }
 

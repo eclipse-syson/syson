@@ -93,7 +93,7 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
         edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
         edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
 
-        edgeDescription.setPalette(this.createEdgePalette());
+        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     private EdgeStyle createEdgeStyle() {

@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.edges;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -29,6 +30,7 @@ import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -39,8 +41,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractDependencyEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public AbstractDependencyEdgeDescriptionProvider(IColorProvider colorProvider) {
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public AbstractDependencyEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     /**
@@ -70,6 +75,10 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
      */
     protected abstract List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache);
 
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
+    }
+
     @Override
     public EdgeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getDependency());
@@ -95,7 +104,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
         edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
         edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
 
-        edgeDescription.setPalette(this.createEdgePalette());
+        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     private EdgeStyle createEdgeStyle() {

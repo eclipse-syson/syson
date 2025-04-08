@@ -138,7 +138,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
         diagramElementDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new AnnotationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));

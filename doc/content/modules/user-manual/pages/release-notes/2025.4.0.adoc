@@ -212,17 +212,17 @@ The modifications are:
 * `FlowConnectionUsage#flowConnectionDefinition` do not redefines `ConnectionUsage#connectionDefinition` anymore
 - All standard libraries have been updated to comply with the SysMLv2 2024-12 specification.
 - All validation rules have been updated to comply with the SysMLv2 2024-12 specification.
-- In `General View` and `State Transition View` diagrams, when `Packages` labels exceed the available space, an ellipsis is added to provide a visual indication that the
+- In _General View_ and _State Transition View_ diagrams, when `Packages` labels exceed the available space, an ellipsis is added to provide a visual indication that the
 name is truncated.
 
 image::release-notes-package-name-ellipsis-overflow.png[Package name overflow with ellipsis, width=85%,height=85%]
 
 - In diagrams, the direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:user-manual:hands-on/how-tos/model-management.adoc#direct-edit[user documentation] ).
-- It is now possible to create a `General View` diagram under root namespace elements.
+- It is now possible to create a _General View_ diagram under root namespace elements.
 
 image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram on root namespace element, width=50%, height=50%]
 
-- In the `General View` diagram, the subject creation tool displays available `Usages` in a tree instead of a list.
+- In the _General View_ diagram, the subject creation tool displays available `Usages` in a tree instead of a list.
 
 image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
 
@@ -241,13 +241,13 @@ action def ActionDef1 {
 
 The textual export module has also be improved to produce the same file than the one imported.
 
-- The `General View` diagram now supports `Satisfy Requirement Usage` objects.
+- The _General View_ diagram now supports `Satisfy Requirement Usage` objects.
 A new creation tool can be found in the `Requirements` section of the palette.
 `Satisfy Requirement Usage` objects may also be drag-and-dropped from the _Explorer_ onto the diagram background.
 
 image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage node creation tool, width=50%, height=50%]
 
-- The `General View` diagram is now proposed first when creating a diagram.
+- The _General View_ diagram is now proposed first when creating a diagram.
 - It is now possible, in diagrams, to reduce the width of `Usages` (e.g. `Part`) and `Definition` (e.g. `Part Definition`) graphical nodes with a long name as their label can now be wrapped.
 
 - Improve textual import of `SuccessionAsUsage` which define a new target action directly after the 'then' keyword.
@@ -315,7 +315,7 @@ image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representat
 - Simplify handling of "start" and "done" `ActionUsages`.
 Those elements can now be displayed without the special `Membership` previously used to "import" them in the parent.
 
-- The tool "Add Existing Elements" is now directly available from the Action Flow compartment in the General View Diagram.
+- The tool "Add Existing Elements" is now directly available from the Action Flow compartment in the _General View_ Diagram.
 - Add support for implicit redefinition of `Behavior` and `Step` parameters
 Parameters of `Behavior` and `Step` now implicitly redefine the matching parameters of `Behavior` subclassifications and `Step` specializations.
 See KerML 7.4.7.2 and 7.4.7.3 for more information.
@@ -390,7 +390,7 @@ This is visible on the "body" property on:
 * `Documentation`
 * `TextualRepresentation`
 
-- `TextualRepresentations` can now be displayed and edited in the "General View" diagram.
+- `TextualRepresentations` can now be displayed and edited in the _General View_ diagram.
 
 image::GV_TextualRepresentation.png[TextualRepresentation on General View Diagram, width=40%,height=40%]
 
@@ -414,6 +414,10 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
         /* some comment 3 */
 }
 ```
+- In _General View_ diagram, `Comments` can now be created from a `Dependency` graphical edge, using the graphical edge contextual menu (a.k.a. the palette).
+
+image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=85%,height=85%]
+
 
 == Dependency update
 

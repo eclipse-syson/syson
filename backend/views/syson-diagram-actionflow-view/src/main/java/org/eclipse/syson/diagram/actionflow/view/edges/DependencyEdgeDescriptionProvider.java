@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.syson.diagram.common.view.edges.AbstractDependencyEdgeDescrip
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Used to create the {@link Dependency} edge description inside the Action Flow View diagram.
@@ -32,8 +33,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class DependencyEdgeDescriptionProvider extends AbstractDependencyEdgeDescriptionProvider {
 
-    public DependencyEdgeDescriptionProvider(IColorProvider colorProvider) {
-        super(colorProvider);
+    public DependencyEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider, descriptionNameGenerator);
     }
 
     @Override
