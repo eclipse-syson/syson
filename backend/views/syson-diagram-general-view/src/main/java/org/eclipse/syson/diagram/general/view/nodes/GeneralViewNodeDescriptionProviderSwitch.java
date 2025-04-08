@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -130,6 +131,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseConcernUsage(ConcernUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseConnectionDefinition(ConnectionDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConnectionDefinition(), this.colorProvider);
     }
 
     @Override

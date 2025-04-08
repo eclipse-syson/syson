@@ -415,6 +415,10 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
 }
 ```
 
+- In _General View_ diagram, `ConnectionDefinition` are now represented as nodes.
+
+image::connection-definition-nodes.png[Connection Definition nodes, width=60%,height=60%]
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
