@@ -427,6 +427,10 @@ image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=8
 image::gv-port-edge-tools.png[Port edge tools, width=60%,height=60%]
 
 
+- In _General View_ diagram, `ConnectionDefinition` are now represented as nodes.
+
+image::connection-definition-nodes.png[Connection Definition nodes, width=60%,height=60%]
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].

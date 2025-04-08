@@ -10,6 +10,11 @@
 
 == Improvements
 
+- In _General View_ diagram, `ConnectionDefinition` are now also represented as graphical elements:
+
+image::connection-definition-nodes.png[Connection Definition graphical elements, width=60%,height=60%]
+
+
 == Dependency update
 
 == Technical details

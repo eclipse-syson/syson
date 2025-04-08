@@ -170,6 +170,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 4),
