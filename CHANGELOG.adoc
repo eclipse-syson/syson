@@ -13,6 +13,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1192[#1192] [general-view] Add `ConnectionDefinition` in _General View_ diagram
+- https://github.com/eclipse-syson/syson/issues/1196[#1196] [general-view] Add _New Exhibit State with referenced State_ tool on `Part Usage` graphical elements.
 
 === New features
 
