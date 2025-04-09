@@ -166,13 +166,13 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     new CheckDiagramElementCount(this.diagramComparator)
                             .hasNewEdgeCount(0)
-                            // 1 node for the PartUsage and 7 for its compartments
-                            .hasNewNodeCount(8)
+                            // 1 node for the PartUsage and 8 for its compartments
+                            .hasNewNodeCount(9)
                             .check(this.diagram.get(), newDiagram);
                     new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
                             .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                             .hasTargetObjectLabel("part1")
-                            .hasCompartmentCount(7)
+                            .hasCompartmentCount(8)
                             .check(this.diagram.get(), newDiagram);
                 }, () -> fail("Missing diagram"));
 
@@ -210,13 +210,13 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     new CheckDiagramElementCount(this.diagramComparator)
                             .hasNewEdgeCount(0)
-                            // 1 node for the PartUsage and 7 for its compartments
-                            .hasNewNodeCount(8)
+                            // 1 node for the PartUsage and 8 for its compartments
+                            .hasNewNodeCount(9)
                             .check(this.diagram.get(), newDiagram);
                     new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
                             .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                             .hasTargetObjectLabel("part1")
-                            .hasCompartmentCount(7)
+                            .hasCompartmentCount(8)
                             .check(this.diagram.get(), newDiagram);
                 }, () -> fail("Missing diagram"));
 

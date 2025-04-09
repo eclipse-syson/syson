@@ -375,7 +375,8 @@ action def A1 {
     if x >= 1.1 and x < 2.1 then a2;
     else a3;
 }
-```  
+```
+
 - In _General View_ diagram, `PortUsage` are now represented as border nodes on `PartUsage` nodes.
 
 image::gv-port-as-border-node.png[Port as border node, width=60%,height=60%]
@@ -425,7 +426,6 @@ image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=8
 * `FlowConnectionUsage`
 
 image::gv-port-edge-tools.png[Port edge tools, width=60%,height=60%]
-
 
 - In _General View_ diagram, `ConnectionDefinition` are now represented as nodes.
 

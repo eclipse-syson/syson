@@ -14,6 +14,8 @@
 
 image::connection-definition-nodes.png[Connection Definition graphical elements, width=60%,height=60%]
 
+- New tool `New Exhibit State with referenced State` has been added to the palette of the `Part Usage` (inside the `Behavior` section).
+This tool allows to create a new `Exhibit State` element referencing an existing `State Usage` selected using a dedicated selection dialog.
 
 == Dependency update
 
