@@ -418,6 +418,14 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
 
 image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=85%,height=85%]
 
+- In _General View_ diagram, `PortUsage` now have edges tools to create three types of edges:
+
+* `BindingConnectorAsUsage`
+* `InterfaceUsage`
+* `FlowConnectionUsage`
+
+image::gv-port-edge-tools.png[Port edge tools, width=60%,height=60%]
+
 
 == Dependency update
 

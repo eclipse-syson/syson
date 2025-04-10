@@ -60,10 +60,13 @@ import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNode
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.FeatureTypingEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.FlowConnectionUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.NestedActorEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
@@ -625,6 +628,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         edgeDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new FlowConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return edgeDescriptionProviders;
     }
@@ -734,7 +740,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription requirementDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(),
-                SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                        SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
                 .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -744,7 +750,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription requirementDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -754,7 +760,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription requirementDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
                 .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -764,14 +770,14 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(concernUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription concernDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
-                SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                        SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkSatisfyRequirementUsageSubjectCompartment(IViewDiagramElementFinder cache) {
         NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -781,15 +787,15 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(concernUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription concernDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
-                        SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                                SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkSatisfyRequirementUsageActorsCompartment(IViewDiagramElementFinder cache) {
         NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
                 .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -799,15 +805,15 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(concernUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription concernDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
-                        SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkSatisfyRequirementUsageStakeholdersCompartment(IViewDiagramElementFinder cache) {
         NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
@@ -822,7 +828,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         NodeDescription caseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseDefinition())).get();
         NodeDescription useCaseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(),
-                SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()))
+                        SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()))
                 .ifPresent(compartment -> {
                     caseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
                     useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
@@ -857,7 +863,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         NodeDescription caseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseDefinition())).get();
         NodeDescription useCaseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(),
-                SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
+                        SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
                 .ifPresent(compartment -> {
                     caseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
                     useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
@@ -867,32 +873,32 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private void linkAllocationDefinitionEndsCompartment(IViewDiagramElementFinder cache) {
         NodeDescription allocationDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAllocationDefinition())).get();
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
                 .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkStatesCompartment(IViewDiagramElementFinder cache) {
         NodeDescription stateDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(),
-                SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                        SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(stateDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(),
-                SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                        SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(stateDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription stateUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(),
-                SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                        SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(stateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(),
-                SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                        SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(stateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         NodeDescription exhibitStateUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getExhibitStateUsage())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(),
-                SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                        SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(exhibitStateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(),
-                SysmlPackage.eINSTANCE.getUsage_NestedState()) +
-                StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                        SysmlPackage.eINSTANCE.getUsage_NestedState()) +
+                        StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(exhibitStateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
