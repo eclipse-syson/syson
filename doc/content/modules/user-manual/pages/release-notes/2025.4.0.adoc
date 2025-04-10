@@ -418,7 +418,7 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.9]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.10]
 - Switch to Turbo 2.4.4
 - Switch to @xyflow 12.4.4
 - Switch to Sirius EMF-JSON 2.4.0
