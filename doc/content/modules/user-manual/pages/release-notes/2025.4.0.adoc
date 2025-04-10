@@ -415,6 +415,8 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
 }
 ```
 
+- The tool `New Exhibit State with referenced State` has been added to the palette of the `Part Usage` (inside the `Behavior` section)
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
