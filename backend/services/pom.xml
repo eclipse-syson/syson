@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-services-parent</artifactId>
-	<version>2025.2.9</version>
+	<version>2025.2.10</version>
 
 	<name>syson-services-parent</name>
 	<description>SysON Services Parent</description>
