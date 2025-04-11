@@ -65,12 +65,14 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.ForkNode;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
@@ -80,6 +82,7 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
@@ -211,6 +214,35 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return "";
     }
 
+    @Override
+    public String caseForkNode(ForkNode forkNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, forkNode, "fork");
+        return builder.toString();
+    }
+
+    @Override
+    public String caseJoinNode(JoinNode joinNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, joinNode, "join");
+        return builder.toString();
+    }
+
+    @Override
+    public String caseMergeNode(MergeNode mergeNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, mergeNode, "merge");
+        return builder.toString();
+    }
+
+    private void appendControlNode(Appender appender, ControlNode controlNode, String key) {
+        this.appendControlNodePrefix(appender, controlNode);
+        if (controlNode.isIsComposite()) {
+            appender.appendWithSpaceIfNeeded(key);
+        }
+        this.appendUsageDeclaration(appender, controlNode);
+        this.appendActionNodeBody(appender, controlNode);
+    }
     @Override
     public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
         Appender builder = this.newAppender();

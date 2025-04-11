@@ -104,6 +104,89 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with ForkNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkForkNode() throws IOException {
+        var input = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    first start then fork1;
+                }
+                action action2 {
+                    action a1;
+                    action a2;
+                    fork fork1 {
+                        /* doc1 */
+                    }
+                    then a1;
+                    then a2;
+                    first start then fork1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("Given a model with JoinNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkJoinNode() throws IOException {
+        var input = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    join join1;
+                    first start then fork1;
+                    first a1 then join1;
+                    first a2 then join1;
+                    then done;
+                }""";
+        /**
+         * Here we have differences here because :
+         *
+         * <ul>
+         * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
+         * complete syntax "first source then target;"</li>
+         * <ul>
+         */
+        var expected = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    join join1;
+                    first start then fork1;
+                    first a1 then join1;
+                    first a2 then join1;
+                    first join1 then done;
+                }""";
+        this.checker.check(input, expected);
+    }
+
+    @Test
+    @DisplayName("Given a model with MergeNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkMergeNode() throws IOException {
+        var input = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    merge merge1;
+                    first start then fork1;
+                    first a1 then merge1;
+                    first a2 then merge1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with TextualRepresentation, when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkTextualRepresentation() throws IOException {
         var input = """

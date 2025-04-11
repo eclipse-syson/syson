@@ -1,0 +1,72 @@
+= 2025.6.0
+
+== Key highlights
+
+== Breaking changes
+
+== Bug fixes
+
+== New features
+
+== Improvements
+
+- Implement textual export of `ForkNode` such as:
+
+```
+action action1 {
+    action a1;
+    action a2;
+    fork fork1;
+    then a1;
+    then a2;
+    first start then fork1;
+}
+action action2 {
+    action a1;
+    action a2;
+    fork fork1 {
+        /* doc1 */
+    }
+    then a1;
+    then a2;
+    first start then fork1;
+}
+```
+
+- Implement textual export of `JoinNode` such as:
+
+```
+action action1 {
+    action a1;
+    action a2;
+    fork fork1;
+    then a1;
+    then a2;
+    join join1;
+    first start then fork1;
+    first a1 then join1;
+    first a2 then join1;
+    then done;
+}
+```
+
+- Implement textual export of `MergeNode` such as:
+
+```
+action action1 {
+    action a1;
+    action a2;
+    fork fork1;
+    then a1;
+    then a2;
+    merge merge1;
+    first start then fork1;
+    first a1 then merge1;
+    first a2 then merge1;
+}
+```
+
+== Dependency update
+
+== Technical details
+
