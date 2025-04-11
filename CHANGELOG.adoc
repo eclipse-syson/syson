@@ -13,6 +13,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1214[#1214] [export] Implement textual export of `ForkNode`.
+- https://github.com/eclipse-syson/syson/issues/1216[#1216] [export] Implement textual export of `JoinNode`.
 
 === New features
 

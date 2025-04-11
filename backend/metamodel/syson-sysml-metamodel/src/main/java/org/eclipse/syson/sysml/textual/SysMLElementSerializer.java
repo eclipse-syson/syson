@@ -72,6 +72,7 @@ import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
@@ -223,7 +224,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendActionNodeBody(builder, forkNode);
         return builder.toString();
     }
-    
+
+    @Override
+    public String caseJoinNode(JoinNode joinNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNodePrefix(builder, joinNode);
+        if (joinNode.isIsComposite()) {
+            builder.appendWithSpaceIfNeeded("join");
+        }
+        this.appendUsageDeclaration(builder, joinNode);
+        this.appendActionNodeBody(builder, joinNode);
+        return builder.toString();
+    }
+
     @Override
     public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
         Appender builder = this.newAppender();
