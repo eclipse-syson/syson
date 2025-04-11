@@ -17,6 +17,29 @@ image::connection-definition-nodes.png[Connection Definition graphical elements,
 - New tool `New Exhibit State with referenced State` has been added to the palette of the `Part Usage` (inside the `Behavior` section).
 This tool allows to create a new `Exhibit State` element referencing an existing `State Usage` selected using a dedicated selection dialog.
 
+- Implement textual export of `ForkNode` such as:
+
+```
+action action1 {
+    action a1;
+    action a2;
+    fork fork1;
+    then a1;
+    then a2;
+    first start then fork1;
+}
+action action2 {
+    action a1;
+    action a2;
+    fork fork1 {
+        /* doc1 */
+    }
+    then a1;
+    then a2;
+    first start then fork1;
+}
+```
+
 == Dependency update
 
 == Technical details

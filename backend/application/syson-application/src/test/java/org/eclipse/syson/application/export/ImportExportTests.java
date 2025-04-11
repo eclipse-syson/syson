@@ -104,6 +104,31 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with ForkNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkForkNode() throws IOException {
+        var input = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    first start then fork1;
+                }
+                action action2 {
+                    action a1;
+                    action a2;
+                    fork fork1 {
+                        /* doc1 */
+                    }
+                    then a1;
+                    then a2;
+                    first start then fork1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with TextualRepresentation, when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkTextualRepresentation() throws IOException {
         var input = """

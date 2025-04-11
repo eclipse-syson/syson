@@ -65,6 +65,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.ForkNode;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
@@ -211,6 +212,18 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return "";
     }
 
+    @Override
+    public String caseForkNode(ForkNode forkNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNodePrefix(builder, forkNode);
+        if (forkNode.isIsComposite()) {
+            builder.appendWithSpaceIfNeeded("fork");
+        }
+        this.appendUsageDeclaration(builder, forkNode);
+        this.appendActionNodeBody(builder, forkNode);
+        return builder.toString();
+    }
+    
     @Override
     public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
         Appender builder = this.newAppender();
