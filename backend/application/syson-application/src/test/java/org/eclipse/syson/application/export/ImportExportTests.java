@@ -169,6 +169,24 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a model with MergeNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    public void checkMergeNode() throws IOException {
+        var input = """
+                action action1 {
+                    action a1;
+                    action a2;
+                    fork fork1;
+                    then a1;
+                    then a2;
+                    merge merge1;
+                    first start then fork1;
+                    first a1 then merge1;
+                    first a2 then merge1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with TextualRepresentation, when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkTextualRepresentation() throws IOException {
         var input = """

@@ -82,6 +82,7 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
@@ -216,27 +217,32 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseForkNode(ForkNode forkNode) {
         Appender builder = this.newAppender();
-        this.appendControlNodePrefix(builder, forkNode);
-        if (forkNode.isIsComposite()) {
-            builder.appendWithSpaceIfNeeded("fork");
-        }
-        this.appendUsageDeclaration(builder, forkNode);
-        this.appendActionNodeBody(builder, forkNode);
+        this.appendControlNode(builder, forkNode, "fork");
         return builder.toString();
     }
 
     @Override
     public String caseJoinNode(JoinNode joinNode) {
         Appender builder = this.newAppender();
-        this.appendControlNodePrefix(builder, joinNode);
-        if (joinNode.isIsComposite()) {
-            builder.appendWithSpaceIfNeeded("join");
-        }
-        this.appendUsageDeclaration(builder, joinNode);
-        this.appendActionNodeBody(builder, joinNode);
+        this.appendControlNode(builder, joinNode, "join");
         return builder.toString();
     }
 
+    @Override
+    public String caseMergeNode(MergeNode mergeNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, mergeNode, "merge");
+        return builder.toString();
+    }
+
+    private void appendControlNode(Appender appender, ControlNode controlNode, String key) {
+        this.appendControlNodePrefix(appender, controlNode);
+        if (controlNode.isIsComposite()) {
+            appender.appendWithSpaceIfNeeded(key);
+        }
+        this.appendUsageDeclaration(appender, controlNode);
+        this.appendActionNodeBody(appender, controlNode);
+    }
     @Override
     public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
         Appender builder = this.newAppender();
