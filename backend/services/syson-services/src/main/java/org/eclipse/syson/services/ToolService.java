@@ -84,7 +84,12 @@ public class ToolService {
     public Object getParentNode(Element element, Node selectedNode, Edge selectedEdge, IDiagramContext diagramContext) {
         Object parentNode = null;
         if (selectedEdge != null) {
-            parentNode = this.getParentNode(element, selectedEdge, diagramContext);
+            Node sourceNode = this.getSourceNode(selectedEdge, diagramContext.getDiagram());
+            if (sourceNode != null) {
+                parentNode = this.getParentNode(element, sourceNode, diagramContext);
+            } else {
+                parentNode = this.getParentNode(element, selectedEdge, diagramContext);
+            }
         } else {
             parentNode = this.getParentNode(element, selectedNode, diagramContext);
         }
@@ -335,5 +340,57 @@ public class ToolService {
                 diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
             }
         }
+    }
+
+    /**
+     * Get the source node of the given {@link Edge}.
+     *
+     * @param edge
+     *            the given {@link Edge}.
+     * @param diagram
+     *            the diagram containing the {@link Edge}.
+     * @return the source node of the given {@link Edge} if found, <code>null</code> otherwise.
+     */
+    protected Node getSourceNode(Edge edge, Diagram diagram) {
+        Node sourceNode = null;
+        String sourceId = edge.getSourceId();
+        for (Node node : diagram.getNodes()) {
+            if (Objects.equals(sourceId, node.getId())) {
+                sourceNode = node;
+                break;
+            }
+            sourceNode = this.getSourceNode(sourceId, node);
+            if (sourceNode != null) {
+                break;
+            }
+        }
+        return sourceNode;
+    }
+
+    protected Node getSourceNode(String sourceId, Node node) {
+        Node sourceNode = null;
+        for (Node childNode : node.getChildNodes()) {
+            if (Objects.equals(sourceId, childNode.getId())) {
+                sourceNode = childNode;
+                break;
+            }
+            sourceNode = this.getSourceNode(sourceId, childNode);
+            if (sourceNode != null) {
+                break;
+            }
+        }
+        if (sourceNode == null) {
+            for (Node borderNode : node.getBorderNodes()) {
+                if (Objects.equals(sourceId, borderNode.getId())) {
+                    sourceNode = borderNode;
+                    break;
+                }
+                sourceNode = this.getSourceNode(sourceId, borderNode);
+                if (sourceNode != null) {
+                    break;
+                }
+            }
+        }
+        return sourceNode;
     }
 }

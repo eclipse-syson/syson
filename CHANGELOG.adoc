@@ -90,8 +90,8 @@ The `Map<String, Object>` is handled by the default serializer/deserializer.
 The initialization SQL scripts have been split in smaller pieces.
 The class _SysMLv2Identifiers_ has also been split in:
 
-* _XXXTestProjectData_ : Witch contains all required datas for test on a specific project.
-* _SysONRepresentationDescriptionIdentifiers_ : Witch contains the representation description ids.
+* _XXXTestProjectData_ : which contains all required data for test on a specific project.
+* _SysONRepresentationDescriptionIdentifiers_ : which contains the representation description IDs.
 
 === Dependency update
 
@@ -173,6 +173,7 @@ This was not possible for libraries containing `LibraryPackage` instances, which
 - https://github.com/eclipse-syson/syson/issues/1200[#1200] [general-view] Display `Comments` on `Dependency` graphical edges.
 - https://github.com/eclipse-syson/syson/issues/1200[#1200] [general-view] Add `Comment` creation tool on `Dependency` graphical edges.
 - https://github.com/eclipse-syson/syson/issues/1198[#1198] [general-view] Add edge tools on `PortUsage` border nodes in the General View
+- https://github.com/eclipse-syson/syson/issues/1223[#1223] [general-view] Add `Comment` creation tool on `TransitionUsage` graphical edges.
 
 === New features
 

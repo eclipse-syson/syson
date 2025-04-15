@@ -83,6 +83,7 @@ public class AnnotationEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                         .toList());
 
         cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getDependency())).ifPresent(targetNodes::add);
+        cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getTransitionUsage())).ifPresent(targetNodes::add);
 
         edgeDescription.getSourceDescriptions().addAll(sourceNodes);
         edgeDescription.getTargetDescriptions().addAll(targetNodes);

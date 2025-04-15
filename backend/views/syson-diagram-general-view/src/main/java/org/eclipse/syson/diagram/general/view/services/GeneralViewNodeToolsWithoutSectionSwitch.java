@@ -26,6 +26,7 @@ import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -55,6 +56,13 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
     }
 
     @Override
+    public List<NodeTool> caseDependency(Dependency object) {
+        var commentNodeTool = new AnnotatingElementOnRelationshipNodeToolProvider(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
+                this.descriptionNameGenerator).create(this.cache);
+        return List.of(commentNodeTool);
+    }
+
+    @Override
     public List<NodeTool> caseDefinition(Definition object) {
         var commentNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                 SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
@@ -65,6 +73,13 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
     }
 
     @Override
+    public List<NodeTool> caseTransitionUsage(TransitionUsage object) {
+        var commentNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
+        return List.of(commentNodeTool);
+    }
+
+    @Override
     public List<NodeTool> caseUsage(Usage object) {
         var commentNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                 SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
@@ -72,12 +87,5 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
         var textualRepresentationNodeTool = this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getTextualRepresentation()),
                 SysmlPackage.eINSTANCE.getTextualRepresentation(), SysmlPackage.eINSTANCE.getOwningMembership(), null);
         return List.of(commentNodeTool, documentationNodeTool, textualRepresentationNodeTool);
-    }
-
-    @Override
-    public List<NodeTool> caseDependency(Dependency object) {
-        var commentNodeTool = new AnnotatingElementOnRelationshipNodeToolProvider(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
-                this.descriptionNameGenerator).create(this.cache);
-        return List.of(commentNodeTool);
     }
 }

@@ -42,7 +42,7 @@ public class ActionFlowCompartmentTestProjectData {
 
         public static final String SUCCESSION_A1_A2_ID = "cdafcc5a-49c9-367a-bb1c-e047d3ac8c7c";
 
-        public static final String TRANSITION_A2_A3_ID = "39d7a57a-648d-3250-8d10-99dcccc9cac6";
+        public static final String TRANSITION_A2_A3_ID = "11c55416-2702-32e7-9ae7-770c4967b9bd";
 
         public static final String ROOT_ACTION_USAGE = "f3c59470-977b-3e8d-b459-07d4e2bc103b";
     }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.edges;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,11 +32,12 @@ import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -43,13 +45,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the {@link BindingConnectorAsUsage} edge description.
+ * Used to create the {@link TransitionUsage} edge description.
  *
  * @author adieumegard
  */
-public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
-
-    public static final String NAME = "Edge TransitionUsage";
+public abstract class AbstractTransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
@@ -57,27 +57,9 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public TransitionEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public AbstractTransitionEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-    }
-
-    protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        return this.getAllActionOrStateUsage(cache, false, true);
-    }
-
-    protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return this.getAllActionOrStateUsage(cache, true, false);
-    }
-
-    @Override
-    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getEdgeDescription(this.getEdgeDescriptionName()).ifPresent(ed -> {
-            diagramDescription.getEdgeDescriptions().add(ed);
-            ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
-            ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
-            ed.setPalette(this.createEdgePalette(cache));
-        });
     }
 
     @Override
@@ -97,20 +79,14 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .build();
     }
 
-    private ConditionalEdgeStyle createStateConditionalStyle() {
-        return this.diagramBuilderHelper.newConditionalEdgeStyle()
-                .borderSize(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
-                .edgeWidth(1)
-                .lineStyle(LineStyle.SOLID)
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
-                .condition(AQLUtils.getSelfServiceCallExpression("isTransitionUsageForState"))
-                .build();
-    }
-
-    protected String getEdgeDescriptionName() {
-        return this.getDescriptionNameGenerator().getDiagramPrefix() + NAME;
+    @Override
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        cache.getEdgeDescription(this.getEdgeDescriptionName()).ifPresent(ed -> {
+            diagramDescription.getEdgeDescriptions().add(ed);
+            ed.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+            ed.getTargetDescriptions().addAll(this.getTargetNodes(cache));
+            ed.setPalette(this.createEdgePalette(cache));
+        });
     }
 
     @Override
@@ -156,16 +132,17 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .build();
     }
 
-    private EdgeStyle createDefaultEdgeStyle() {
-        return this.diagramBuilderHelper.newEdgeStyle()
-                .borderSize(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
-                .edgeWidth(1)
-                .lineStyle(LineStyle.DASH)
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
-                .build();
-    }
+    /**
+     * Implementers should provide the list of {@link NodeTool} (without ToolSection) for this {@link EdgeDescription}.
+     *
+     * @param cache
+     *            the cache used to retrieve node descriptions.
+     * @return the list of {@link NodeTool} of this edge.
+     */
+    @Override
+    protected List<NodeTool> getToolsWithoutSection(IViewDiagramElementFinder cache) {
+        return new ArrayList<>();
+    };
 
     protected ViewBuilders getViewBuilderHelper() {
         return this.viewBuilderHelper;
@@ -179,22 +156,57 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         return this.descriptionNameGenerator;
     }
 
-    private List<NodeDescription> getAllActionOrStateUsage(IViewDiagramElementFinder cache, boolean excudeStart, boolean excludeDone) {
+    protected String getEdgeDescriptionName() {
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getTransitionUsage());
+    }
+
+    protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
+        return this.getAllActionOrStateUsage(cache, false, true);
+    }
+
+    protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
+        return this.getAllActionOrStateUsage(cache, true, false);
+    }
+
+    protected EdgeStyle createDefaultEdgeStyle() {
+        return this.diagramBuilderHelper.newEdgeStyle()
+                .borderSize(0)
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
+                .edgeWidth(1)
+                .lineStyle(LineStyle.DASH)
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                .build();
+    }
+
+    protected ConditionalEdgeStyle createStateConditionalStyle() {
+        return this.diagramBuilderHelper.newConditionalEdgeStyle()
+                .borderSize(0)
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
+                .edgeWidth(1)
+                .lineStyle(LineStyle.SOLID)
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                .condition(AQLUtils.getSelfServiceCallExpression("isTransitionUsageForState"))
+                .build();
+    }
+
+    protected List<NodeDescription> getAllActionOrStateUsage(IViewDiagramElementFinder cache, boolean excudeStart, boolean excludeDone) {
         return cache.getNodeDescriptions().stream().filter(this::isActionOrStateUsage)
                 .filter(n -> !excudeStart || !this.isStartNode(n))
                 .filter(n -> !excludeDone || !this.isDoneNode(n))
                 .toList();
     }
 
-    private boolean isStartNode(NodeDescription n) {
-        return this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME).equals(n.getName());
+    protected boolean isStartNode(NodeDescription n) {
+        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME), n.getName());
     }
 
-    private boolean isDoneNode(NodeDescription n) {
-        return this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(n.getName());
+    protected boolean isDoneNode(NodeDescription n) {
+        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME), n.getName());
     }
 
-    private boolean isActionOrStateUsage(NodeDescription nodeDescription) {
+    protected boolean isActionOrStateUsage(NodeDescription nodeDescription) {
         EClass targetEClass = SysMLMetamodelHelper.toEClass(nodeDescription.getDomainType());
         return targetEClass != null && (SysmlPackage.eINSTANCE.getActionUsage().isSuperTypeOf(targetEClass) || SysmlPackage.eINSTANCE.getStateUsage().isSuperTypeOf(targetEClass))
                 && !(nodeDescription.getStyle() instanceof IconLabelNodeStyleDescription);

@@ -30,7 +30,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.data.InterconnectionViewWithTopNodesTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescripionIdentifiers;
+import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -103,7 +103,7 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescripionIdentifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID);
+                SysONRepresentationDescriptionIdentifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
     }
