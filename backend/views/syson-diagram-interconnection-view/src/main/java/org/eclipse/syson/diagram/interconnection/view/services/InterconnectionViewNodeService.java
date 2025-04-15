@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -21,10 +20,8 @@ import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagram
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,21 +94,6 @@ public class InterconnectionViewNodeService extends ViewNodeService {
             this.logger.warn("Cannot get {} from the provided element {}", ActionUsage.class.getSimpleName(), element);
         }
         return actionUsages;
-    }
-
-    /**
-     * Returns the items of the provided element. Only intended to be used by ItemUsageBorderNodeDescriptionProvider.
-     *
-     * @param element
-     *            the element
-     * @return the the items of the provided element.
-     */
-    public List<ItemUsage> getBorderNodesItems(Element element) {
-        List<ItemUsage> items = new ArrayList<>();
-        if (element instanceof ActionUsage actionUsage) {
-            items = actionUsage.getNestedItem().stream().filter(ni -> SysmlPackage.eINSTANCE.getItemUsage().equals(ni.eClass())).toList();
-        }
-        return items;
     }
 
 }

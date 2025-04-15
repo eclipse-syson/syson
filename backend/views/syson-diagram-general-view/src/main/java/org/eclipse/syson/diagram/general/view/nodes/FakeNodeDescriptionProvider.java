@@ -53,6 +53,12 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
+        this.addReusableCompartments(cache, nameGenerator, childrenNodes);
+        this.addReusableBorderedNode(cache, nameGenerator, childrenNodes);
+        return childrenNodes;
+    }
+
+    private void addReusableCompartments(IViewDiagramElementFinder cache, GVDescriptionNameGenerator nameGenerator, ArrayList<NodeDescription> childrenNodes) {
         // don't forget to add custom compartments
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
@@ -130,8 +136,6 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
 
         this.addCustomCompartmentsForParts(cache, nameGenerator, childrenNodes);
-
-        return childrenNodes;
     }
 
     private void addCustomCompartmentsForParts(IViewDiagramElementFinder cache, IDescriptionNameGenerator nameGenerator, List<NodeDescription> childrenNodes) {
@@ -150,6 +154,19 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(childrenNodes::add);
+    }
+
+    private void addReusableBorderedNode(IViewDiagramElementFinder cache, GVDescriptionNameGenerator nameGenerator, ArrayList<NodeDescription> childrenNodes) {
+        cache.getNodeDescription(nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()))
                 .ifPresent(childrenNodes::add);
     }
 }

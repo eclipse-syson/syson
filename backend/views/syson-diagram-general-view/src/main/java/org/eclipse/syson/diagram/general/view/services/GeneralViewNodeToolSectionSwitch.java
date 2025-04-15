@@ -170,7 +170,6 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.INOUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.OUT));
-        this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem(), sections, this.cache);
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
