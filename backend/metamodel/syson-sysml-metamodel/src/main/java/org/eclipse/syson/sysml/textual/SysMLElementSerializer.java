@@ -65,12 +65,14 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.ForkNode;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
@@ -80,6 +82,7 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
@@ -209,25 +212,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
         this.reportUnhandledType(analysisCaseUsage);
         return "";
-    }
-
-    @Override
-    public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
-        Appender builder = this.newAppender();
-
-        Appender identificationAppender = this.newAppender();
-
-        this.appendNameWithShortName(identificationAppender, textualRepresentation);
-
-        if (!identificationAppender.isEmpty()) {
-            builder.append("rep ").append(identificationAppender.toString());
-        }
-
-        builder.appendWithSpaceIfNeeded("language \"").append(textualRepresentation.getLanguage()).append("\"");
-
-        builder.appendIndentedContent(System.lineSeparator() + this.getCommentBody(textualRepresentation.getBody()));
-
-        return builder.toString();
     }
 
     @Override
@@ -428,6 +412,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseForkNode(ForkNode forkNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, forkNode, "fork");
+        return builder.toString();
+    }
+
+    @Override
     public String caseImport(Import aImport) {
         Appender builder = this.newAppender();
 
@@ -516,6 +507,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseJoinNode(JoinNode joinNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, joinNode, "join");
+        return builder.toString();
+    }
+
+    @Override
     public String caseLibraryPackage(LibraryPackage libraryPackage) {
         Appender builder = this.newAppender();
         if (libraryPackage.isIsStandard()) {
@@ -579,6 +577,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.append("\"");
         builder.append(literal.getValue().replace("\"", "\\\""));
         builder.append("\"");
+        return builder.toString();
+    }
+
+    @Override
+    public String caseMergeNode(MergeNode mergeNode) {
+        Appender builder = this.newAppender();
+        this.appendControlNode(builder, mergeNode, "merge");
         return builder.toString();
     }
 
@@ -967,6 +972,25 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .toList();
 
         this.appendChildrenContent(builder, successionAsUsage, children);
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
+        Appender builder = this.newAppender();
+
+        Appender identificationAppender = this.newAppender();
+
+        this.appendNameWithShortName(identificationAppender, textualRepresentation);
+
+        if (!identificationAppender.isEmpty()) {
+            builder.append("rep ").append(identificationAppender.toString());
+        }
+
+        builder.appendWithSpaceIfNeeded("language \"").append(textualRepresentation.getLanguage()).append("\"");
+
+        builder.appendIndentedContent(System.lineSeparator() + this.getCommentBody(textualRepresentation.getBody()));
 
         return builder.toString();
     }
@@ -2160,5 +2184,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendOccurrenceUsageDeclaration(Appender builder, OccurrenceUsage occurrenceUsage) {
         this.appendUsageDeclaration(builder, occurrenceUsage);
         this.appendValuePart(builder, occurrenceUsage);
+    }
+
+    private void appendControlNode(Appender appender, ControlNode controlNode, String key) {
+        this.appendControlNodePrefix(appender, controlNode);
+        if (controlNode.isIsComposite()) {
+            appender.appendWithSpaceIfNeeded(key);
+        }
+        this.appendUsageDeclaration(appender, controlNode);
+        this.appendActionNodeBody(appender, controlNode);
     }
 }
