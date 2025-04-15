@@ -38,6 +38,7 @@ import org.eclipse.syson.diagram.actionflow.view.edges.RedefinitionEdgeDescripti
 import org.eclipse.syson.diagram.actionflow.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SuccessionEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.actionflow.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptionProvider;
@@ -47,7 +48,6 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.ReferencingPerformActionU
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;

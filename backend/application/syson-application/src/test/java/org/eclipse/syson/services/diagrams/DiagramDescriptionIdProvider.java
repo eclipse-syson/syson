@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -65,6 +66,19 @@ public class DiagramDescriptionIdProvider {
                         .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
                         .findFirst());
         assertThat(creationToolId).as(nodeDescriptionName + " node tool " + toolName + " should exist").isPresent();
+        return creationToolId.get();
+    }
+
+    public String getNodeCreationToolIdOnEdge(String edgeDescriptionName, String toolName) {
+        Optional<String> creationToolId = EMFUtils.allContainedObjectOfType(this.diagramDescription, EdgeDescription.class)
+                .filter(nodeDescription -> nodeDescription.getName().equals(edgeDescriptionName))
+                .findFirst()
+                .map(EdgeDescription::getPalette)
+                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, NodeTool.class)
+                        .filter(nodeTool -> nodeTool.getName().equals(toolName))
+                        .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
+                        .findFirst());
+        assertThat(creationToolId).as(edgeDescriptionName + " node tool " + toolName + " should exist").isPresent();
         return creationToolId.get();
     }
 

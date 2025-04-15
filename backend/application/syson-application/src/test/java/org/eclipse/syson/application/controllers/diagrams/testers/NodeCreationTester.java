@@ -59,21 +59,45 @@ public class NodeCreationTester {
         this.createNode(editingContextId, diagram, null, toolId);
     }
 
-    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId) {
-        this.createNode(editingContextId, diagram, parentNodeTargetObjectLabel, toolId, List.of());
+    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId) {
+        this.createNode(editingContextId, diagram, selectedNodeTargetObjectLabel, toolId, List.of());
     }
 
-    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
-        String parentId = diagram.get().getId();
-        if (parentNodeTargetObjectLabel != null) {
+    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
+        String diagramElementId = diagram.get().getId();
+        if (selectedNodeTargetObjectLabel != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-            parentId = diagramNavigator.nodeWithTargetObjectLabel(parentNodeTargetObjectLabel).getNode().getId();
+            diagramElementId = diagramNavigator.nodeWithTargetObjectLabel(selectedNodeTargetObjectLabel).getNode().getId();
         }
         var createElementInput = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
                 editingContextId,
                 diagram.get().getId(),
-                parentId,
+                diagramElementId,
+                toolId,
+                0,
+                0,
+                variables);
+        var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
+        String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+        assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+    }
+
+    public void createNodeOnEdge(String editingContextId, AtomicReference<Diagram> diagram, String selectedEdgeTargetObjectLabel, String toolId) {
+        this.createNodeOnEdge(editingContextId, diagram, selectedEdgeTargetObjectLabel, toolId, List.of());
+    }
+
+    public void createNodeOnEdge(String editingContextId, AtomicReference<Diagram> diagram, String selectedEdgeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
+        String diagramElementId = diagram.get().getId();
+        if (selectedEdgeTargetObjectLabel != null) {
+            DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
+            diagramElementId = diagramNavigator.edgeWithTargetObjectLabel(selectedEdgeTargetObjectLabel).getEdge().getId();
+        }
+        var createElementInput = new InvokeSingleClickOnDiagramElementToolInput(
+                UUID.randomUUID(),
+                editingContextId,
+                diagram.get().getId(),
+                diagramElementId,
                 toolId,
                 0,
                 0,

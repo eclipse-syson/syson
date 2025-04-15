@@ -307,8 +307,8 @@ Be aware that the guard expressions are displayed in the label but *can't* be ed
 
 - Update Batmobile project example by fixing some of the issues found in the model:
 
-* Improvements on `SuccessionAsUsage` and `TransitionUsage`
-* Improvements of _General View_ diagram to be be able to represent the "Drive Batmobile" action definition.
+* improvements on `SuccessionAsUsage` and `TransitionUsage`
+* represent the "Drive Batmobile" action definition on the _General View_ diagram
 
 image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representation, width=85%,height=85%]
 
@@ -414,7 +414,7 @@ This template is visible on the home page (like SysMlv2 and Batmobile templates)
         /* some comment 3 */
 }
 ```
-- In _General View_ diagram, `Comments` can now be created from a `Dependency` graphical edge, using the graphical edge contextual menu (a.k.a. the palette).
+- In _General View_ diagram, `Comments` can now be created from a `Dependency` graphical edge or a `TransitionUsage` graphical edge, using the graphical edge contextual menu (a.k.a. the palette).
 
 image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=85%,height=85%]
 
