@@ -120,7 +120,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
     }
 
     @Override
-    protected Set<NodeDescription> getBorderNodes(IViewDiagramElementFinder cache) {
+    protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
         // No reused children to avoid the creation of graphical elements inside the image node.
         return Set.of();
     }
