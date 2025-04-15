@@ -102,14 +102,14 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     protected abstract Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
 
     /**
-     * Implementers should provide the set of {@link NodeDescription} that is reused as border node in that Usage node
+     * Implementers should provide the set of {@link NodeDescription} that are reused as border nodes in that Usage node
      * description.
      *
      * @param cache
-     *         the cache used to retrieve node descriptions.
-     * @return the set of {@link NodeDescription} that are added as reused child.
+     *            the cache used to retrieve node descriptions.
+     * @return the set of {@link NodeDescription} that are reused as border nodes.
      */
-    protected abstract Set<NodeDescription> getBorderNodes(IViewDiagramElementFinder cache);
+    protected abstract Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache);
 
     /**
      * Implementers should provide the list of all {@link NodeDescription} defined in the diagram.<br>
@@ -182,7 +182,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
         cache.getNodeDescription(this.getNodeDescriptionName()).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
-            nodeDescription.getBorderNodesDescriptions().addAll(this.getBorderNodes(cache));
+            nodeDescription.getReusedBorderNodeDescriptions().addAll(this.getReusedBorderNodes(cache));
             List<NodeDescription> growableNodes = new ArrayList<>();
             nodeDescription.getReusedChildNodeDescriptions().stream()
                     .filter(nodeDesc -> nodeDesc.getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)

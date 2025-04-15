@@ -73,6 +73,10 @@ action action1 {
 }
 ```
 
+- Add `ItemUsage` as _bordered nodes_ on `ActionUsage` and `ActionDefinition` in the _General View_ diagram.
+
+image::ItemParameters.png[ItemUsage on ActionUsage and ActionUsage]
+
 == Dependency update
 
 == Technical details

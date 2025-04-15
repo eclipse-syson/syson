@@ -80,7 +80,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     }
 
     @Override
-    protected Set<NodeDescription> getBorderNodes(IViewDiagramElementFinder cache) {
+    protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
         return Set.of();
     }
 

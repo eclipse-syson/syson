@@ -98,11 +98,13 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     }
 
     @Override
-    protected Set<NodeDescription> getBorderNodes(IViewDiagramElementFinder cache) {
+    protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
         var borderNodes = new LinkedHashSet<NodeDescription>();
 
         if (SysmlPackage.eINSTANCE.getPartUsage().equals(this.eClass)) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
+        } else if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(borderNodes::add);
         }
 
         return borderNodes;

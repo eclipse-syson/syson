@@ -17,6 +17,7 @@
 - https://github.com/eclipse-syson/syson/issues/1214[#1214] [export] Implement textual export of `ForkNode`.
 - https://github.com/eclipse-syson/syson/issues/1216[#1216] [export] Implement textual export of `JoinNode`.
 - https://github.com/eclipse-syson/syson/issues/1217[#1217] [export] Implement textual export of `MergeNode`.
+- https://github.com/eclipse-syson/syson/issues/1222[#1222] [general-view] Add `ItemUsage` as _bordered nodes_ of `ActionUsage` and `ActionDefinition` in the _General View_ diagram.
 
 === New features
 
