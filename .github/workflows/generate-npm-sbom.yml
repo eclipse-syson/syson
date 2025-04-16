@@ -66,6 +66,7 @@ jobs:
           VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/bom.json)"
 
           if [[ "$event" == "push" && "$ref" == refs/heads/* ]] || \
+            [[ "$event" == "workflow_run" && "$ref" == refs/heads/* ]] || \
             [[ "$event" == "workflow_dispatch" && ! "$input" =~ ^v ]]; then
             VERSION="${VERSION}@dev"
           fi
