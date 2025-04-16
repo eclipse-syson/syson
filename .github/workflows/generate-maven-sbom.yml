@@ -23,13 +23,17 @@ permissions:
 
 jobs:
   generate-sbom:
+    name: Generate SBOM for backend
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}
     outputs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     steps:
-      - name: Display branch of the workflow that has been completed before this one
-        run: echo "Run from branch ${{ github.event.workflow_run.head_branch }}"
+      - name: Display metadata of workflow that has been completed before this one
+        run: |
+          echo "Run from workflow_run branch ${{ github.event.workflow_run.head_branch }}"
+          echo "Run from workflow_run event ${{ github.event.workflow_run.event }}"
+          echo "Run on github.ref ${{ github.ref }}"
 
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
