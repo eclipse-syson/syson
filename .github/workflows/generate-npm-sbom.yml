@@ -1,11 +1,9 @@
 name: Generate NPM SBOM
 
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: [Continuous integration]
+    types: [completed]
   workflow_dispatch:
     inputs:
       version:
@@ -25,6 +23,7 @@ jobs:
   generate-sbom:
     name: Generate SBOM
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}
     outputs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     permissions:
