@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -76,11 +77,14 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
+        var revealOperation = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("newInstance", "diagramContext", "editingContext", "convertedNodes")));
+
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getExhibitStateUsage()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), revealOperation.build());
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 
@@ -92,7 +96,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing State to associate to the ExhibitState you want to create:");
 
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build());
 
@@ -101,7 +105,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
         return builder
                 .name(toolLabel)
                 .iconURLsExpression("/icons/full/obj16/ExhibitStateUsage.svg")
-                .body(changeContexMembership.build())
+                .body(changeContextMembership.build())
                 .dialogDescription(selectExistingStateUsage.build())
                 .build();
     }

@@ -1,0 +1,25 @@
+= 2025.6.0 (work in progress)
+
+== Key highlights
+
+== Breaking changes
+
+No breaking changes.
+
+== Bug fixes
+
+
+== New features
+
+
+== Improvements
+
+- New tool `New Exhibit State with referenced State` has been added to the palette of the `Part Usage` (inside the `Behavior` section).
+This tool allows to create a new Exhibit State element referencing an existing State Usage selected using a dedicated selection dialog.
+
+== Dependency update
+
+
+== Technical details
+
+* For technical details on this {product} release please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

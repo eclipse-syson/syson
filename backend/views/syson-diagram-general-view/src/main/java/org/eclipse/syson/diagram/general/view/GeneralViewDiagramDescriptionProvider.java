@@ -396,12 +396,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // ActionUsage, PartUsage, PerformActionUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForNestedAction(colorProvider));
 
-        // Compartment "states" (OwnedState) is defined for:
+        // Compartment "state transition" (OwnedState) is defined for:
         // PartDefinition
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(),
                 colorProvider, this.getDescriptionNameGenerator()));
 
-        // Compartment "states" (NestedState) is defined for:
+        // Compartment "state transition" (NestedState) is defined for:
         // PartUsage
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
                 colorProvider, this.getDescriptionNameGenerator()));
@@ -437,6 +437,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     compartmentNodeDescriptionProviders.add(new ActionItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                } else if ((SysmlPackage.eINSTANCE.getPartUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference))
+                        || (SysmlPackage.eINSTANCE.getPartDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedState().equals(eReference))) {
+                    compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                    compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                    compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
+                    compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
                 } else {
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
@@ -900,6 +906,24 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                         SysmlPackage.eINSTANCE.getUsage_NestedState()) +
                         StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(exhibitStateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        // add "states" compartment node as reusedChild of PartUsage and PartDefinition
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nd ->
+            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+        );
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition())).ifPresent(nd ->
+            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+        );
+        // add "exhibit states" compartment node as reusedChild of PartUsage and PartDefinition
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nd ->
+            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+        );
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition())).ifPresent(nd ->
+            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+        );
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {

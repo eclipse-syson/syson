@@ -1,4 +1,4 @@
-= 2025.4.0 (work in progress)
+= 2025.4.0
 
 == Key highlights
 
@@ -425,7 +425,6 @@ image::release-notes-gv-comment-on-dependency.png[Comment on Dependency, width=8
 * `FlowConnectionUsage`
 
 image::gv-port-edge-tools.png[Port edge tools, width=60%,height=60%]
-
 
 == Dependency update
 
