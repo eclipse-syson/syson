@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - "main"
-    paths:
-      - "package.json"
-      - "package-lock.json"
     tags:
       - "v*"
   workflow_dispatch:
