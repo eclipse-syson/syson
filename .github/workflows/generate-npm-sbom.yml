@@ -2,7 +2,7 @@ name: Generate NPM SBOM
 
 on:
   push:
-    branches: 
+    branches:
       - "main"
     paths:
       - "package.json"
@@ -12,14 +12,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version'
-        default: 'main'
+        description: "Version"
+        default: "main"
         required: true
 
 env:
-  NODE_VERSION: '18.7'
-  REGISTRY_URL: 'https://npm.pkg.github.com/'
-  PRODUCT_PATH: './'
+  NODE_VERSION: "18.7"
+  REGISTRY_URL: "https://npm.pkg.github.com/"
+  PRODUCT_PATH: "./"
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     permissions:
       packages: read
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.REGISTRY_URL }}
-          
+
       - name: Install dependencies
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
@@ -75,6 +75,7 @@ jobs:
           fi
 
           echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Product version: $VERSION"
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
@@ -83,11 +84,11 @@ jobs:
           path: ${{ env.PRODUCT_PATH }}/bom.json
 
   store-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
-    needs: ['generate-sbom']
+    needs: ["generate-sbom"]
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
-      projectName: 'frontend'
+      projectName: "frontend"
       projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
-      bomArtifact: 'frontend-sbom'
-      bomFilename: 'bom.json'
-      parentProject: '1b099ee7-62ee-48e1-986b-b7f0309dd344'
+      bomArtifact: "frontend-sbom"
+      bomFilename: "bom.json"
+      parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
