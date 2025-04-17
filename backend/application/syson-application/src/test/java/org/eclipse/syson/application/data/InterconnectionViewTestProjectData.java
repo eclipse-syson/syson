@@ -45,7 +45,13 @@ public class InterconnectionViewTestProjectData {
      */
     public static final class SemanticIds {
 
-        public static final String FLOW_CONNECTION_P1_P2_ID = "482ea42c-6755-442e-860a-5b4dd11cbf07";
+        public static final String FLOW_CONNECTION_P1_P2_ID = "4c289c86-b476-4580-956a-f2e5ea0a0b5f";
+
+        public static final String PART_1_ID = "f431b2c3-3854-4239-a93b-97ef8be9fc4e";
+
+        public static final String PART_2_ID = "f8d34ea9-31cd-446d-965b-7f36016c912a";
+
+        public static final String PART_3_ID = "cc534549-70f3-49ff-b41b-35926aa89032";
 
         public static final String PORT_PART_1_ID = "f8f30460-3264-4536-a3fb-34cba73b626d";
 

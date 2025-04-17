@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.edges;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,19 +39,25 @@ public class FlowConnectionUsageEdgeDescriptionProvider extends AbstractFlowConn
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
+    @Override
     public String getName() {
         return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getFlowConnectionUsage());
     }
 
     @Override
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        return optPortUsageBorderNodeDescription.map(List::of).orElseGet(List::of);
+        var sources = new ArrayList<NodeDescription>();
+
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(sources::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(sources::add);
+        return sources;
     }
 
     @Override
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        return optPortUsageBorderNodeDescription.map(List::of).orElseGet(List::of);
+        var targets = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(targets::add);
+        return targets;
     }
 }

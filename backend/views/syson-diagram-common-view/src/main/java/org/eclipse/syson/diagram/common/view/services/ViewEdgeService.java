@@ -34,11 +34,14 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StateUsage;
@@ -361,6 +364,21 @@ public class ViewEdgeService {
     }
 
     /**
+     * Unwrap the given {@link ReferenceUsage} to its referenced element.
+     *
+     * @param input
+     *            the input {@link ReferenceUsage}
+     * @return a {@link Feature} or <code>null</code>
+     */
+    public Feature unwrapReferenceUsage(ReferenceUsage input) {
+        return input.getOwnedRedefinition().stream()
+                .map(Redefinition::getRedefinedFeature)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
      * Return the source {@link Usage} of the given {@link ConnectorAsUsage} (e.g. a {@link BindingConnectorAsUsage}, an
      * {@link InterfaceUsage}).
      *
@@ -434,6 +452,46 @@ public class ViewEdgeService {
             }
         }
         return targetPort;
+    }
+
+    /**
+     * Reconnects the source of a {@link FlowConnectionUsage}.
+     *
+     * @param flow
+     *            a flow
+     * @param newSource
+     *            the new source
+     * @return the flow itself
+     */
+    public FlowConnectionUsage reconnectSource(FlowConnectionUsage flow, Feature newSource) {
+        EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
+        if (!mFeatures.isEmpty()) {
+            FeatureMembership toDelete = mFeatures.get(0);
+            int index = flow.getOwnedRelationship().indexOf(toDelete);
+            flow.getOwnedRelationship().remove(index);
+            flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newSource));
+        }
+        return flow;
+    }
+
+    /**
+     * Reconnects the target of a {@link FlowConnectionUsage}.
+     *
+     * @param flow
+     *            a flow
+     * @param newTarget
+     *            the new target
+     * @return the flow itself
+     */
+    public FlowConnectionUsage reconnectTarget(FlowConnectionUsage flow, Feature newTarget) {
+        EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
+        if (mFeatures.size() >= 2) {
+            FeatureMembership toDelete = mFeatures.get(1);
+            int index = flow.getOwnedRelationship().indexOf(toDelete);
+            flow.getOwnedRelationship().remove(index);
+            flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newTarget));
+        }
+        return flow;
     }
 
     /**

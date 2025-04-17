@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -84,10 +85,10 @@ public abstract class AbstractFlowConnectionUsageEdgeDescriptionProvider extends
                 .centerLabelExpression("aql:self.getEdgeLabel()")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression("aql:self.getSourcePort()")
+                .sourceExpression("aql:self.sourceOutputFeature.unwrapReferenceUsage()")
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTargetPort()")
+                .targetExpression("aql:self.targetInputFeature.unwrapReferenceUsage()")
                 .build();
     }
 
@@ -120,11 +121,11 @@ public abstract class AbstractFlowConnectionUsageEdgeDescriptionProvider extends
     @Override
     protected LabelEditTool getEdgeEditTool() {
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".editEdgeCenterLabel(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("editEdgeCenterLabel", "newLabel"));
 
         return this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build())
                 .build();
     }
@@ -133,12 +134,12 @@ public abstract class AbstractFlowConnectionUsageEdgeDescriptionProvider extends
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setSourcePort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectSource", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setTargetPort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTarget", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 }
