@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for `ViewUsages` and `ViewDefinitions`
+
 === Breaking changes
 
 === Dependency update
