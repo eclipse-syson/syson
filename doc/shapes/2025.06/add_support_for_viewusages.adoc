@@ -1,0 +1,26 @@
+= Add support for ViewUsages
+
+This shape is the container shape for the support of `ViewUsage` elements in SysON.
+
+The shapes are:
+
+* link:./diagrams_on_view_usages.adoc[Diagrams on ViewUsages]
+* link:./display_view_usages_in_diagrams.adoc[Display ViewUsages in Diagrams]
+* link:./manage_update_of_view_usages_in_diagrams.adoc[Manage Update of ViewUsages in Diagrams]
+
+The work to do (ordered by priority):
+
+. Allow creation of `ViewUsages` from _New object_ menu in _Explorer_ view.
+. Create `ViewUsage` semantic element in addition to _diagram representation_ on _New representation_ menu in _Explorer_ view.
+. Update _Explorer_ view to open associated _diagram representation_ when a `ViewUsage` is selected.
+. Update _Explorer_ view to hide _diagram representation_.
+. Update _Details_ view to display two tabs when a `ViewUsage` is selected: one for the semantic element, and one for the associated _diagram representation_. 
+. Display `ViewUsages` in diagrams by implementing a new custom shape (like for `Packages` or `Comments`).
+. Update SysON metamodel if needed to handle the list of semantic elements associated to a `ViewUsage`.
+. Display `ViewUsages` contents in diagrams.
+. Add new menu allowing to hide `ViewUsages` graphical elements in diagrams and display `ViewUsages` graphical elements' contents in `ViewUsages` graphical elements' container.
+. Add new option in "Manage Visibility" action, allowing to reveal a parent `ViewUsage` graphical element.
+. Update Sirius Web to allow switching of _NodeDescription_ on graphical elements.
+. Merge all SysON _DiagramDescriptions_ in one.
+. Create migration participants for existing diagrams.
+. Add new menu allowing to switch the appearance of a diagram/graphical element/set of graphical element.
