@@ -77,6 +77,10 @@ action action1 {
 
 image::ItemParameters.png[ItemUsage on ActionUsage and ActionUsage]
 
+- Add `FlowConnectionUsage` from `ItemUsage` on _General View_ Diagram.
+
+image::FlowConnectionUsageOnItems.png[FlowConnectionUsage on ItemUsages]
+
 == Dependency update
 
 == Technical details
