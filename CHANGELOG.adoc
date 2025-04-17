@@ -13,6 +13,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1222[#1222] [general-view] Add `ItemUsage` as bordered node of `ActionUsage` and `ActionDefinition` in the _General View_ Diagram.
+- https://github.com/eclipse-syson/syson/issues/1226[#1226] [general-view] Add `FlowConnectionUsage` from `ItemUsage` on _General View_ Diagram.
 
 === New features
 

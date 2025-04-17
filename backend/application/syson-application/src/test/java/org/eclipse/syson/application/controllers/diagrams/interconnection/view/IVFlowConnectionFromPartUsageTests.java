@@ -143,8 +143,12 @@ public class IVFlowConnectionFromPartUsageTests extends AbstractIntegrationTests
         this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
 
         this.semanticCheckerService.checkElement(this.verifier, FlowConnectionUsage.class, () -> InterconnectionViewTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowConnectionUsage -> {
-            assertThat(this.identityService.getId(flowConnectionUsage.getSource().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_1_ID);
-            assertThat(this.identityService.getId(flowConnectionUsage.getTarget().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_3_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+                    .isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_1_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+                    .isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_3_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getSourceFeature())).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PART_1_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getTargetFeature().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PART_3_ID);
         });
     }
 
@@ -173,8 +177,12 @@ public class IVFlowConnectionFromPartUsageTests extends AbstractIntegrationTests
         this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
 
         this.semanticCheckerService.checkElement(this.verifier, FlowConnectionUsage.class, () -> InterconnectionViewTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowConnectionUsage -> {
-            assertThat(this.identityService.getId(flowConnectionUsage.getSource().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_3_ID);
-            assertThat(this.identityService.getId(flowConnectionUsage.getTarget().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_2_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+                    .isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_3_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
+                    .isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PORT_PART_2_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getSourceFeature())).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PART_3_ID);
+            assertThat(this.identityService.getId(flowConnectionUsage.getTargetFeature().get(0))).isEqualTo(InterconnectionViewTestProjectData.SemanticIds.PART_2_ID);
         });
     }
 }

@@ -358,15 +358,17 @@ public class FlowConnectionUsageImpl extends ConnectorAsUsageImpl implements Flo
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> See constraint "deriveItemFlowTargetInputFeature" <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetTargetInputFeature() {
-        // TODO: implement this method to return the 'Target Input Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EList<Feature> ends = this.getConnectorEnd();
+        if (ends.size() < 2 || ends.get(1).getOwnedFeature().isEmpty()) {
+            return null;
+        } else {
+            return ends.get(1).getOwnedFeature().get(0);
+        }
     }
 
     /**

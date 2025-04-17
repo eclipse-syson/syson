@@ -1096,27 +1096,8 @@ public class ViewCreateService {
         this.addChildInParent(flowContainer, flowConnectionUsage);
         this.elementInitializer(flowConnectionUsage);
 
-        EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        flowConnectionUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
-        Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(sourceFeature);
-        sourceFeature.setIsEnd(true);
-        sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
-        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(sourceReferenceSubsetting);
-        sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
-        sourceReferenceSubsetting.setReferencedFeature(source);
-
-        EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        flowConnectionUsage.getOwnedRelationship().add(targetEndFeatureMembership);
-        Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
-        targetFeature.setIsEnd(true);
-        targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
-        this.elementInitializer(targetFeature);
-        ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
-        this.elementInitializer(targetReferenceSubsetting);
-        targetReferenceSubsetting.setReferencedFeature(target);
+        flowConnectionUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(source));
+        flowConnectionUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(target));
 
         return flowConnectionUsage;
     }
