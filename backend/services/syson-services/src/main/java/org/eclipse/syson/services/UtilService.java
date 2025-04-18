@@ -37,12 +37,14 @@ import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.ItemFlowEnd;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -51,6 +53,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -515,6 +518,41 @@ public class UtilService {
         parentState.getOwnedRelationship().add(featureMembership);
         this.elementInitializerSwitch.doSwitch(childState);
         return childState;
+    }
+
+    /**
+     * Create a new EndFeatureMembership to be used as {@link FlowConnectionUsage} end.
+     *
+     * @param targetedFeature
+     *            the targeted feature (either the source or target of the flow)
+     * @return the new EndFeatureMembership
+     */
+    public EndFeatureMembership createFlowConnectionEnd(Feature targetedFeature) {
+        EndFeatureMembership featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+
+        ItemFlowEnd itemFlowEnd = SysmlFactory.eINSTANCE.createItemFlowEnd();
+        featureMembership.getOwnedRelatedElement().add(itemFlowEnd);
+
+        Type owningType = targetedFeature.getOwningType();
+        if (owningType instanceof Feature owningFeature) {
+            var referenceSubSetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            itemFlowEnd.getOwnedRelationship().add(referenceSubSetting);
+            referenceSubSetting.setReferencedFeature(owningFeature);
+        }
+
+        EndFeatureMembership target = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        itemFlowEnd.getOwnedRelationship().add(target);
+
+        ReferenceUsage referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        target.getOwnedRelatedElement().add(referenceUsage);
+
+        Redefinition redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+        redefinition.setRedefinedFeature(targetedFeature);
+        redefinition.setRedefiningFeature(referenceUsage);
+
+        referenceUsage.getOwnedRelationship().add(redefinition);
+
+        return featureMembership;
     }
 
     /**

@@ -47,6 +47,10 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String PART_DEFINITION_TEXTUAL_REP_ID = "a2348331-4625-49b1-8455-2d9e4f0e1dc0";
 
         public static final String PART_USAGE_ID = "2ae87f41-e214-4a36-9985-e9ec156e28e6";
+
+        public static final String ACTION_USAGE_ID = "62481ceb-d036-4723-acda-2bace93ae370";
+
+        public static final String ACTION_DEFINITION_ID = "b918a8a1-f30b-4703-b131-77cde928401d";
     }
 
 }
