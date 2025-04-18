@@ -1,12 +1,16 @@
 = 2025.6.0 (work in progress)
- 
+
 == Key highlights
 
 == Breaking changes
 
+No breaking changes.
+
 == Bug fixes
 
+
 == New features
+
 
 == Improvements
 
@@ -113,8 +117,11 @@ part part1 {
     }
 }
 ```
+- New tools have been introduced in `Behavior` section of State elements (Usage and Definition) to create state sub actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
+Existing tools `New Entry Action`, `New Do Action` and `New Exit Action` have been updated to be aligned with SysMLV2 specification.
 
 == Dependency update
+
 
 == Technical details
 

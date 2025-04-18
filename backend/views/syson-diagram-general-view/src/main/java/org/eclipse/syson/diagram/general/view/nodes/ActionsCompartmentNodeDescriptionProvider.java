@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.StateSubactionNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -60,16 +62,15 @@ public class ActionsCompartmentNodeDescriptionProvider extends AbstractActionsCo
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         var palette = this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
-
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
-        List<EReference> refList = GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(this.eClass);
-        if (refList != null) {
-            refList.forEach(eRef -> {
-                var eType = eRef.getEType();
-                var toolSectionName = this.toolDescriptionService.getToolSectionName(eType);
-                this.toolDescriptionService.addNodeTool(toolSections, toolSectionName, new StateTransitionActionCompartmentToolProvider(eRef).create(cache));
-            });
-        }
+        // add sub actions tools
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, false).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, true).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, false).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, true).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, false).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, true).create(cache));
+
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
