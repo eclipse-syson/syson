@@ -54,6 +54,17 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     }
 
     @Override
+    protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
+        var borderNodes = new LinkedHashSet<NodeDescription>();
+
+        if (SysmlPackage.eINSTANCE.getActionDefinition().equals(this.eClass)) {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(borderNodes::add);
+        }
+
+        return borderNodes;
+    }
+
+    @Override
     protected Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new LinkedHashSet<NodeDescription>();
 

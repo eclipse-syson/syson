@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.interconnection.view.nodes;
+package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 /**
  * Used to create the item usage border node description.
  *
- * @author gdaniel
+ * @author Arthur Daussy
  */
 public class ItemUsageBorderNodeDescriptionProvider extends AbtractItemUsageBorderNodeDescriptionProvider {
 
@@ -41,7 +41,8 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbtractItemUsageBord
     protected List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache) {
         NodeDescription nodeDescription = cache.getNodeDescription(this.getName()).get();
         NodeDescription portBorderNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
-        NodeDescription rootPortBorderNode = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
-        return List.of(nodeDescription, portBorderNodeDescription, rootPortBorderNode);
+        return List.of(nodeDescription, portBorderNodeDescription);
     }
+
+
 }

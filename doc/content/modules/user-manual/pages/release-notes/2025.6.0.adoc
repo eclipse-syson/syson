@@ -1,0 +1,20 @@
+= 2025.6.0
+
+== Key highlights
+
+== Breaking changes
+
+== Bug fixes
+
+== New features
+
+== Improvements
+
+- Add `ItemUsage` as _bordered nodes_ on `ActionUsage` and `ActionDefinition` in the _General View_ Diagram.
+
+image::ItemParameters.png[ItemUsage on ActionUsage and ActionUsage]
+
+== Dependency update
+
+== Technical details
+
