@@ -23,6 +23,7 @@
 - https://github.com/eclipse-syson/syson/issues/1247[#1247] [explorer] Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
 When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
 - https://github.com/eclipse-syson/syson/issues/1252[#1252] [exort] Implement textual export of `TriggerInvocationExpression`.
+- https://github.com/eclipse-syson/syson/issues/1233[#1233] [general-view] Add a creation tool of State sub actions with referenced action inside State elements
 
 === New features
 

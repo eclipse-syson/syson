@@ -47,7 +47,7 @@ import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StakeholdersCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StateSubactionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
@@ -76,6 +76,7 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -621,13 +622,13 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, false).create(this.cache));
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
         return sections;
@@ -640,13 +641,13 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.ENTRY, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.DO, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateSubactionNodeToolProvider(StateSubactionKind.EXIT, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));

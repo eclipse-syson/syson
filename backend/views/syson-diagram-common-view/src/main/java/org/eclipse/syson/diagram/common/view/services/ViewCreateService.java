@@ -61,6 +61,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -71,6 +72,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -1135,6 +1137,35 @@ public class ViewCreateService {
         targetReferenceSubsetting.setReferencedFeature(target);
 
         return bindingConnectorAsUsage;
+    }
+
+    /**
+     * Creates a state sub action (entry, do or exit actions) as a child of the given StateUsage or StateDefinition.
+     *
+     * @param self
+     *         the StateUsage or StateDefinition owning the sub action
+     * @param performedAction
+     *         an ActionUsage or <code>null</code>. If set the new PerformAction should reference this action.
+     * @param kindLiteral
+     *         the kind of the StateSubactionMembership owning the PerformAction
+     * @return the new PerformAction or null if self is not a State
+     */
+    public PerformActionUsage createStateSubaction(Element self, ActionUsage performedAction, String kindLiteral) {
+        if (self instanceof StateUsage || self instanceof StateDefinition) {
+            StateSubactionMembership stateSubactionMembership = (StateSubactionMembership) this.createMembership(self,  SysmlPackage.eINSTANCE.getStateSubactionMembership());
+            stateSubactionMembership.setKind(StateSubactionKind.get(kindLiteral));
+            var performAction = SysmlFactory.eINSTANCE.createPerformActionUsage();
+            stateSubactionMembership.getOwnedRelatedElement().add(performAction);
+            this.elementInitializerSwitch.doSwitch(performAction);
+            if (performedAction != null) {
+                // set the reference subsetting relationship to the performed action
+                var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                referenceSubsetting.setReferencedFeature(performedAction);
+                performAction.getOwnedRelationship().add(referenceSubsetting);
+            }
+            return performAction;
+        }
+        return null;
     }
 
     private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {
