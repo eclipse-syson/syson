@@ -6,6 +6,10 @@
 
 - Add support for `ViewUsages` and `ViewDefinitions`
 
+=== Architectural decision records
+
+- Support representation only through `ViewUsage`
+
 === Breaking changes
 
 === Dependency update
@@ -35,6 +39,9 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/1237[#1237] [general-view] Add `ViewUsage` graphical node in the General View diagram.
+- https://github.com/eclipse-syson/syson/issues/1270[#1270] [explorer-view] Change explorer to link representation behavior to `ViewUsage`:
+* Open associated representation when a `ViewUsage` is selected
+* Hide representation in the explorer
 
 == v2025.4.0
 

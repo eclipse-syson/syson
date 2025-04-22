@@ -30,6 +30,10 @@ Publishing a project with a dependency to a library now correctly produces a lib
 
 image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
 
+- Diagram representations like _General View_ are no longer directly available in the tree explorer.
+They are now managed through dedicated `ViewUsage` element.
+To open a diagram, you should now select the `ViewUsage` in the explorer.
+
 
 == Improvements
 

@@ -58,6 +58,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
@@ -101,6 +102,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
@@ -152,17 +154,17 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param parentElement
-     *            the {@link Element} to add in the diagram
+     *         the {@link Element} to add in the diagram
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @param diagramContext
-     *            the diagram context
+     *         the diagram context
      * @param parentViewCreationRequest
-     *            the creation request of the parent element (not yet rendered on the diagram)
+     *         the creation request of the parent element (not yet rendered on the diagram)
      * @param convertedNodes
-     *            the converted nodes
+     *         the converted nodes
      * @param recursive
-     *            whether the tool should add elements recursively or not
+     *         whether the tool should add elements recursively or not
      * @return the created element
      */
     public Element addExistingElements(Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, ViewCreationRequest parentViewCreationRequest,
@@ -257,17 +259,17 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param parentElement
-     *            the {@link Element} to add in the diagram
+     *         the {@link Element} to add in the diagram
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @param diagramContext
-     *            the diagram context
+     *         the diagram context
      * @param selectedNode
-     *            the creation request of the parent element (not yet rendered on the diagram)
+     *         the creation request of the parent element (not yet rendered on the diagram)
      * @param convertedNodes
-     *            the converted nodes
+     *         the converted nodes
      * @param recursive
-     *            whether the tool should add elements recursively or not
+     *         whether the tool should add elements recursively or not
      * @return the created element
      */
     public Element addExistingElements(Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
@@ -342,19 +344,19 @@ public class ViewToolService extends ToolService {
      * Called by "Drop tool" from General View diagram.
      *
      * @param element
-     *            the {@link Element} to drop to a General View diagram.
+     *         the {@link Element} to drop to a General View diagram.
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param selectedNode
-     *            the selected node on which the element has been dropped (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
+     *         the selected node on which the element has been dropped (may be null if the tool has been called from
+     *         the diagram). It corresponds to a variable accessible from the variable manager.
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *         the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *         a variable accessible from the variable manager.
      * @return the input {@link Element}.
      */
     public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
@@ -394,6 +396,16 @@ public class ViewToolService extends ToolService {
         return element;
     }
 
+    public Element dropElementFromExplorer(RepresentationMetadata representationMetadata, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+
+        Element element = this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast).orElse(null);
+        if (element == null) {
+            return null;
+        }
+        return this.dropElementFromExplorer(element, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
     /**
      * Drops the provided {@code sourceElement} from the explorer on the given {@code selectedNode} on the diagram.
      * <p>
@@ -408,17 +420,17 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param sourceElement
-     *            the source element to drop
+     *         the source element to drop
      * @param targetElement
-     *            the target of the drop
+     *         the target of the drop
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @param diagramContext
-     *            the diagram context
+     *         the diagram context
      * @param selectedNode
-     *            the selected node
+     *         the selected node
      * @param convertedNodes
-     *            the converted nodes
+     *         the converted nodes
      */
     private void dropElementFromExplorerInTarget(Element sourceElement, Element targetElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
@@ -457,22 +469,22 @@ public class ViewToolService extends ToolService {
      * Called by "Drop Node tool" from General View diagram.
      *
      * @param droppedElement
-     *            the dropped {@link Element}.
+     *         the dropped {@link Element}.
      * @param droppedNode
-     *            the dropped {@link Node}.
+     *         the dropped {@link Node}.
      * @param targetElement
-     *            the new semantic container.
+     *         the new semantic container.
      * @param targetElement
-     *            the new graphical container.
+     *         the new graphical container.
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *         the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *         a variable accessible from the variable manager.
      * @return the input {@link Element}.
      */
     public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
@@ -498,9 +510,9 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param parent
-     *            the parent in the hierarchy
+     *         the parent in the hierarchy
      * @param child
-     *            the child in the hierarchy
+     *         the child in the hierarchy
      */
     private void logAncestorError(Element parent, Element child) {
         final String errorMessage;
@@ -522,13 +534,13 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param parentViewCreationRequest
-     *            the creation request for the Node to hide the compartment from
+     *         the creation request for the Node to hide the compartment from
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @param diagramContext
-     *            the diagram context
+     *         the diagram context
      * @param convertedNodes
-     *            the converted nodes
+     *         the converted nodes
      */
     private void hideCompartments(ViewCreationRequest parentViewCreationRequest, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
@@ -567,7 +579,7 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param parentElement
-     *            the parent element
+     *         the parent element
      * @return the list of contained elements that should be rendered
      */
     private List<? extends Element> getChildElementsToRender(Element parentElement) {
@@ -610,17 +622,17 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param element
-     *            the element to create a view from
+     *         the element to create a view from
      * @param parentElementId
-     *            the identifier of the parent that should contain the created view
+     *         the identifier of the parent that should contain the created view
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @param diagramContext
-     *            the diagram context
+     *         the diagram context
      * @param convertedNodes
-     *            the converted nodes
+     *         the converted nodes
      * @param recursive
-     *            whether the creation is recursive
+     *         whether the creation is recursive
      * @return the element
      */
     private Element addElementInParent(Element element, String parentElementId, IEditingContext editingContext, IDiagramContext diagramContext,
@@ -655,9 +667,9 @@ public class ViewToolService extends ToolService {
      * the given {@link Namespace}.
      *
      * @param ns
-     *            the given {@link Namespace}.
+     *         the given {@link Namespace}.
      * @param type
-     *            the given type.
+     *         the given type.
      * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
      */
     public boolean toolShouldBeAvailable(Namespace ns, String type) {
@@ -801,11 +813,11 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param self
-     *            the current UseCase or Requirement
+     *         the current UseCase or Requirement
      * @param newSource
-     *            the new UseCase or Requirement
+     *         the new UseCase or Requirement
      * @param otherEnd
-     *            the Actor connected to the UseCase or Requirement
+     *         the Actor connected to the UseCase or Requirement
      * @return the Actor
      */
     public Element reconnectSourceNestedActorEdge(Element self, Element newSource, Element otherEnd) {
@@ -875,9 +887,9 @@ public class ViewToolService extends ToolService {
      * </p>
      *
      * @param self
-     *            the current annotating element
+     *         the current annotating element
      * @param newTarget
-     *            the new Annotated element
+     *         the new Annotated element
      * @return the annotating element
      */
     public Element reconnnectTargetAnnotatedEdge(Element self, Element newTarget) {
@@ -891,7 +903,7 @@ public class ViewToolService extends ToolService {
      * Moves the provided {@code usage} in the closest containing package.
      *
      * @param usage
-     *            the usage to move
+     *         the usage to move
      * @return the moved element
      */
     public Element moveToClosestContainingPackage(Usage usage) {
@@ -920,19 +932,19 @@ public class ViewToolService extends ToolService {
      * Create a new graphical view for an element inside a compartment given its label.
      *
      * @param childElement
-     *            the semantic object for which the view is created.
+     *         the semantic object for which the view is created.
      * @param compartmentName
-     *            the label of the compartment in which the view should be created.
+     *         the label of the compartment in which the view should be created.
      * @param selectedNode
-     *            the {@link Node} where the tool was triggered. It can be an element or the compartment itself.
+     *         the {@link Node} where the tool was triggered. It can be an element or the compartment itself.
      * @param editingContext
-     *            the {@link IEditingContext} of the tool
+     *         the {@link IEditingContext} of the tool
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *         the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *         a variable accessible from the variable manager.
      */
     public Element createViewInFreeFormCompartment(Element childElement, String compartmentName, Node selectedNode,
             IEditingContext editingContext,
@@ -963,17 +975,17 @@ public class ViewToolService extends ToolService {
      * and target.
      *
      * @param sourceUsage
-     *            the {@link Feature} used as a source for the transition
+     *         the {@link Feature} used as a source for the transition
      * @param targetUsage
-     *            the {@link Feature} used as a target for the transition
+     *         the {@link Feature} used as a target for the transition
      * @param source
-     *            the node of the source
+     *         the node of the source
      * @param target
-     *            the node of the target
+     *         the node of the target
      * @param diagramService
-     *            service used to navigate inside the diagram
+     *         service used to navigate inside the diagram
      * @param editingContext
-     *            the current editing context
+     *         the current editing context
      * @return the given source {@link Feature}.
      */
     public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService, IEditingContext editingContext) {
@@ -1043,7 +1055,7 @@ public class ViewToolService extends ToolService {
      * <>-> EndFeatureMembership -> RelatedElement = Feature <>-> ReferenceSubsetting -> ReferencedFeature = feature
      *
      * @param feature
-     *            The feature to reference subset
+     *         The feature to reference subset
      * @return
      */
     private EndFeatureMembership createConnectorEndFeatureMembership(Feature feature) {
@@ -1062,21 +1074,21 @@ public class ViewToolService extends ToolService {
      * against possible {@link StateSubactionKind} values to set the new {@link ActionUsage} of the correct kind.
      *
      * @param parentState
-     *            The state onto which the action is added
+     *         The state onto which the action is added
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param selectedNode
-     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
-     *            variable manager.
+     *         the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *         variable manager.
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *         the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *         a variable accessible from the variable manager.
      * @param actionKind
-     *            The value against which the {@link StateSubactionKind} of the {@link ActionUsage} membership is set.
+     *         The value against which the {@link StateSubactionKind} of the {@link ActionUsage} membership is set.
      * @return
      */
     public ActionUsage createOwnedAction(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
@@ -1108,23 +1120,23 @@ public class ViewToolService extends ToolService {
      * Called by "New State" tool from StateTransition View StateUsage node.
      *
      * @param parentState
-     *            The parent {@link StateDefinition} or {@link StateUsage}
+     *         The parent {@link StateDefinition} or {@link StateUsage}
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *         the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *         manager.
      * @param selectedNode
-     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
-     *            variable manager.
+     *         the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *         variable manager.
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *         the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *         a variable accessible from the variable manager.
      * @param isParallel
-     *            whether or not the created State is set as parallel.
+     *         whether or not the created State is set as parallel.
      * @param isExhibit
-     *            Whether or not the created State is exhibited or not.
+     *         Whether or not the created State is exhibited or not.
      * @return the created {@link StateUsage}.
      */
     public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
@@ -1146,9 +1158,9 @@ public class ViewToolService extends ToolService {
      * Return the real parent {@link Node} given the current object and the selectedNode.
      *
      * @param self
-     *            the current object.
+     *         the current object.
      * @param selectedNode
-     *            the selectedNode (can be a {@link Node} or null (in case of a {@link Diagram}).
+     *         the selectedNode (can be a {@link Node} or null (in case of a {@link Diagram}).
      * @return the real parent {@link Node} given the current object and the selectedNode.
      */
     public Object getParentViewExpression(Object self, Object selectedNode) {
@@ -1165,7 +1177,7 @@ public class ViewToolService extends ToolService {
      * Service to retrieve the root elements of the selection dialog of the NamespaceImport creation tool.
      *
      * @param editingContext
-     *            the editing context
+     *         the editing context
      * @return the list of resources that contain at least one {@link Package}
      */
     public List<Resource> getNamespaceImportSelectionDialogElements(IEditingContext editingContext) {
@@ -1175,8 +1187,8 @@ public class ViewToolService extends ToolService {
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
         var resources = optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, SysmlPackage.eINSTANCE.getPackage()))
-                .toList())
+                        .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, SysmlPackage.eINSTANCE.getPackage()))
+                        .toList())
                 .orElseGet(ArrayList::new);
         return resources.stream().sorted((r1, r2) -> this.getResourceName(r1).compareTo(this.getResourceName(r2))).toList();
     }
@@ -1185,7 +1197,7 @@ public class ViewToolService extends ToolService {
      * Service to retrieve the children of a given element in the selection dialog of the NamespaceImport creation tool.
      *
      * @param self
-     *            an element of the tree
+     *         an element of the tree
      * @return the list of {@link Package} element found under the given root element.
      */
     public List<Package> getNamespaceImportSelectionDialogChildren(Object self) {
@@ -1251,7 +1263,7 @@ public class ViewToolService extends ToolService {
      * Provides the root elements in the tree of the selection dialog for the StakeholderParameter creation tool.
      *
      * @param editingContext
-     *            the (non-{@code null}) {@link IEditingContext}.
+     *         the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}.
      */
     public List<Resource> getStakeholderSelectionDialogElements(IEditingContext editingContext) {
@@ -1262,9 +1274,9 @@ public class ViewToolService extends ToolService {
      * Provides the children of element in the tree of the selection dialog for the StakeholderParameter creation tool.
      *
      * @param selectionDialogTreeElement
-     *            a (non-{@code null}) selection dialog tree element.
+     *         a (non-{@code null}) selection dialog tree element.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
-     *         {@link PartUsage}.
+     * {@link PartUsage}.
      */
     public List<? extends Object> getStakeholderSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getPartUsage());
@@ -1274,7 +1286,7 @@ public class ViewToolService extends ToolService {
      * Provides the root elements in the tree of the selection dialog for the SubjectParameter creation tool.
      *
      * @param editingContext
-     *            the (non-{@code null}) {@link IEditingContext}.
+     *         the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link Type}.
      */
     public List<Resource> getSubjectSelectionDialogElements(IEditingContext editingContext) {
@@ -1285,9 +1297,9 @@ public class ViewToolService extends ToolService {
      * Provides the children of element in the tree of the selection dialog for the SubjectParameter creation tool.
      *
      * @param selectionDialogTreeElement
-     *            a (non-{@code null}) selection dialog tree element.
+     *         a (non-{@code null}) selection dialog tree element.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
-     *         {@link Usage}.
+     * {@link Usage}.
      */
     public List<? extends Object> getSubjectSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getUsage());
@@ -1297,7 +1309,7 @@ public class ViewToolService extends ToolService {
      * Provides the root elements in the tree of the selection dialog for the ActorParameter creation tool.
      *
      * @param editingContext
-     *            the (non-{@code null}) {@link IEditingContext}.
+     *         the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}.
      */
     public List<Resource> getActorSelectionDialogElements(IEditingContext editingContext) {
@@ -1308,9 +1320,9 @@ public class ViewToolService extends ToolService {
      * Provides the children of element in the tree of the selection dialog for the ActorParameter creation tool.
      *
      * @param selectionDialogTreeElement
-     *            a (non-{@code null}) selection dialog tree element.
+     *         a (non-{@code null}) selection dialog tree element.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
-     *         {@link PartUsage}.
+     * {@link PartUsage}.
      */
     public List<? extends Object> getActorSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getPartUsage());
@@ -1320,7 +1332,7 @@ public class ViewToolService extends ToolService {
      * Provides the root elements in the tree of the selection dialog for the State sub actions creation tool.
      *
      * @param editingContext
-     *            the (non-{@code null}) {@link IEditingContext}.
+     *         the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link ActionUsage}.
      */
     public List<Resource> getStateSubactionReferenceSelectionDialogElements(IEditingContext editingContext) {
@@ -1331,7 +1343,7 @@ public class ViewToolService extends ToolService {
      * Provides the children of element in the tree of the selection dialog for the State sub actions creation tool.
      *
      * @param selectionDialogTreeElement
-     *            a (non-{@code null}) selection dialog tree element.
+     *         a (non-{@code null}) selection dialog tree element.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an {@link ActionUsage}.
      */
     public List<? extends Object> getStateSubactionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
@@ -1347,8 +1359,8 @@ public class ViewToolService extends ToolService {
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
         var resourcesContainingPartUsage = maybeResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifier))
-                .toList())
+                        .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifier))
+                        .toList())
                 .orElseGet(ArrayList::new);
         return resourcesContainingPartUsage.stream().sorted(Comparator.comparing(r -> this.getResourceName(r))).toList();
     }
