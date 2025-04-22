@@ -30,3 +30,6 @@ export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
 export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';
 export { SysMLPackageNodeLayoutHandler } from './nodes/package/SysMLPackageNodeLayoutHandler';
 export { sysMLNodesStyleDocumentTransform } from './nodes/SysMLNodesDocumentTransform';
+export { SysMLViewFrameNode } from './nodes/view_frame/SysMLViewFrameNode';
+export { SysMLViewFrameNodeConverter } from './nodes/view_frame/SysMLViewFrameNodeConverter';
+export { SysMLViewFrameNodeLayoutHandler } from './nodes/view_frame/SysMLViewFrameNodeLayoutHandler';

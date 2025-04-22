@@ -66,7 +66,6 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
-import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -95,6 +94,8 @@ import reactor.test.StepVerifier.Step;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVTopNodeCreationTests extends AbstractIntegrationTests {
+
+    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -143,8 +144,6 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     private DiagramDescription diagramDescription;
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
-
     private static Stream<Arguments> topNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
@@ -181,7 +180,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 4)
+                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
         ).map(TestNameGenerator::namedArguments);
     }
 
@@ -223,9 +223,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     int createdNodesExpectedCount = 1 + compartmentCount;
                     new CheckDiagramElementCount(this.diagramComparator)
-                        .hasNewEdgeCount(0)
-                        .hasNewNodeCount(createdNodesExpectedCount)
-                        .check(this.diagram.get(), newDiagram);
+                            .hasNewEdgeCount(0)
+                            .hasNewNodeCount(createdNodesExpectedCount)
+                            .check(this.diagram.get(), newDiagram);
 
                     String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(eClass);
 
@@ -273,7 +273,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                         this.diagram,
                         null,
                         creationToolId,
-                       List.of(new ToolVariable("selectedObject", libId.get().get(), ToolVariableType.OBJECT_ID)));
+                        List.of(new ToolVariable("selectedObject", libId.get().get(), ToolVariableType.OBJECT_ID)));
             });
 
             Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
@@ -357,7 +357,6 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .flatMap(namespace -> namespace.getOwnedMembership().stream())
-                .map(Membership.class::cast)
                 .flatMap(membership -> membership.getRelatedElement().stream())
                 .filter(LibraryPackage.class::isInstance)
                 .filter(element -> "ISQAcoustics".equals(element.getDeclaredName()))

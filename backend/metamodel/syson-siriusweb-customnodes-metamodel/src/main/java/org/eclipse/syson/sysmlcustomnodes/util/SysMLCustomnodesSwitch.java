@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
+import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -106,6 +107,17 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION: {
+                SysMLViewFrameNodeStyleDescription sysMLViewFrameNodeStyleDescription = (SysMLViewFrameNodeStyleDescription) theEObject;
+                T result = this.caseSysMLViewFrameNodeStyleDescription(sysMLViewFrameNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(sysMLViewFrameNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(sysMLViewFrameNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -154,6 +166,22 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseSysMLImportedPackageNodeStyleDescription(SysMLImportedPackageNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Sys ML View Frame Node Style
+     * Description</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Sys ML View Frame Node Style
+     *         Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSysMLViewFrameNodeStyleDescription(SysMLViewFrameNodeStyleDescription object) {
         return null;
     }
 

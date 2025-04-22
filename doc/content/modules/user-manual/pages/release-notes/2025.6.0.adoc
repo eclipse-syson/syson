@@ -2,9 +2,10 @@
 
 == Key highlights
 
+
 == Breaking changes
 
-- Editing the label of a `TransitionUsage` directly from the diagram is no longer supported.  
+- Editing the label of a `TransitionUsage` directly from the diagram is no longer supported.
 The label aggregates multiple complex elements, including:
 
 * **Accepter**
@@ -24,6 +25,10 @@ Publishing a project with a dependency to a library now correctly produces a lib
 
 
 == New features
+
+- `ViewUsage` may now be displayed and created from the _General View_.
+
+image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
 
 
 == Improvements

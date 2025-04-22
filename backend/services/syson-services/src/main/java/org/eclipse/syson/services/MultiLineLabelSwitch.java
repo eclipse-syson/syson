@@ -70,6 +70,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -227,6 +228,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.assignmentActionUsageDetails(object));
         return label.toString();
     }
+
     @Override
     public String caseCaseDefinition(CaseDefinition object) {
         StringBuilder label = new StringBuilder();
@@ -784,11 +786,26 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         return label.toString();
     }
 
+    @Override
+    public String caseViewUsage(ViewUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append("view")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.SPACE)
+                .append(this.caseElement(object))
+                .append(this.labelService.getTypingLabel(object));
+        return label.toString();
+    }
+
     /**
      * Builds the string value for Parallel StateUsage or StateDefinition.
      *
      * @param isParallel
-     *            Whether the State is parallel or not.
+     *         Whether the State is parallel or not.
      */
     private StringBuilder getIsParallel(boolean isParallel) {
         StringBuilder parallel = new StringBuilder();

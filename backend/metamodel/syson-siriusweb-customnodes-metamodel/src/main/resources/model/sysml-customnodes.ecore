@@ -12,4 +12,8 @@
       eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SysMLViewFrameNodeStyleDescription"
+      eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+  </eClassifiers>
 </ecore:EPackage>

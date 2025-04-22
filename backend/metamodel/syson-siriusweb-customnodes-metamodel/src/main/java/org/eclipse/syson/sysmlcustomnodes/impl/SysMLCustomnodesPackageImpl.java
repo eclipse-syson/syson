@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
+import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -50,6 +51,13 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
      * @generated
      */
     private EClass sysMLImportedPackageNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass sysMLViewFrameNodeStyleDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -184,6 +192,26 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
      * @generated
      */
     @Override
+    public EClass getSysMLViewFrameNodeStyleDescription() {
+        return this.sysMLViewFrameNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSysMLViewFrameNodeStyleDescription_Background() {
+        return (EReference) this.sysMLViewFrameNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public SysMLCustomnodesFactory getSysMLCustomnodesFactory() {
         return (SysMLCustomnodesFactory) this.getEFactoryInstance();
     }
@@ -215,6 +243,9 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
 
         this.sysMLImportedPackageNodeStyleDescriptionEClass = this.createEClass(SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION);
         this.createEReference(this.sysMLImportedPackageNodeStyleDescriptionEClass, SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND);
+
+        this.sysMLViewFrameNodeStyleDescriptionEClass = this.createEClass(SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.sysMLViewFrameNodeStyleDescriptionEClass, SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND);
     }
 
     /**
@@ -252,6 +283,7 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
         this.sysMLPackageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.sysMLNoteNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.sysMLImportedPackageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+        this.sysMLViewFrameNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.sysMLPackageNodeStyleDescriptionEClass, SysMLPackageNodeStyleDescription.class, "SysMLPackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE,
@@ -269,6 +301,12 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
         this.initEReference(this.getSysMLImportedPackageNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1,
                 SysMLImportedPackageNodeStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.sysMLViewFrameNodeStyleDescriptionEClass, SysMLViewFrameNodeStyleDescription.class, "SysMLViewFrameNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSysMLViewFrameNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, SysMLViewFrameNodeStyleDescription.class,
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,14 @@ const backgroundField: SelectionNode = {
   },
 };
 
+const borderRadiusField: SelectionNode = {
+  kind: Kind.FIELD,
+  name: {
+    kind: Kind.NAME,
+    value: 'borderRadius',
+  },
+};
+
 export const sysMLNodesStyleDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     const transformedDocument = visit(document, {
@@ -124,6 +132,21 @@ export const sysMLNodesStyleDocumentTransform = new DocumentTransform((document)
           },
         };
 
+        const sysMLViewFrameNodeStyleInlineFragment: InlineFragmentNode = {
+          kind: Kind.INLINE_FRAGMENT,
+          selectionSet: {
+            kind: Kind.SELECTION_SET,
+            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField, borderRadiusField],
+          },
+          typeCondition: {
+            kind: Kind.NAMED_TYPE,
+            name: {
+              kind: Kind.NAME,
+              value: 'SysMLViewFrameNodeStyle',
+            },
+          },
+        };
+
         return {
           ...field,
           selectionSet: {
@@ -133,6 +156,7 @@ export const sysMLNodesStyleDocumentTransform = new DocumentTransform((document)
               sysMLPackageNodeStyleInlineFragment,
               sysMLImportedPackageNodeStyleInlineFragment,
               sysMLNoteNodeStyleInlineFragment,
+              sysMLViewFrameNodeStyleInlineFragment,
             ],
           },
         };

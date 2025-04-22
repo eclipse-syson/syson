@@ -28,6 +28,7 @@ import {
   treeItemContextMenuEntryExtensionPoint,
   treeItemContextMenuEntryOverrideExtensionPoint,
   TreeItemContextMenuOverrideContribution,
+  GQLTreeItemContextMenuEntry,
 } from '@eclipse-sirius/sirius-components-trees';
 import {
   ApolloClientOptionsConfigurer,
@@ -57,10 +58,11 @@ import {
   SysMLPackageNodeLayoutHandler,
   SysONDiagramPanelMenu,
   SysONNavigationBarMenuIcon,
+  SysMLViewFrameNodeLayoutHandler,
+  SysMLViewFrameNodeConverter,
+  SysMLViewFrameNode,
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
-
-import { GQLTreeItemContextMenuEntry } from '@eclipse-sirius/sirius-components-trees';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
 import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
@@ -176,16 +178,19 @@ const nodeTypeRegistry: NodeTypeRegistry = {
     new SysMLPackageNodeLayoutHandler(),
     new SysMLNoteNodeLayoutHandler(),
     new SysMLImportedPackageNodeLayoutHandler(),
+    new SysMLViewFrameNodeLayoutHandler(),
   ],
   nodeConverters: [
     new SysMLPackageNodeConverter(),
     new SysMLNoteNodeConverter(),
     new SysMLImportedPackageNodeConverter(),
+    new SysMLViewFrameNodeConverter(),
   ],
   nodeTypeContributions: [
     <NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />,
     <NodeTypeContribution component={SysMLNoteNode} type={'sysMLNoteNode'} />,
     <NodeTypeContribution component={SysMLImportedPackageNode} type={'sysMLImportedPackageNode'} />,
+    <NodeTypeContribution component={SysMLViewFrameNode} type={'sysMLViewFrameNode'} />,
   ],
 };
 

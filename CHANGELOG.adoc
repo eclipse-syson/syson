@@ -34,6 +34,7 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1237[#1237] [general-view] Add `ViewUsage` graphical node in the General View diagram.
 
 == v2025.4.0
 
