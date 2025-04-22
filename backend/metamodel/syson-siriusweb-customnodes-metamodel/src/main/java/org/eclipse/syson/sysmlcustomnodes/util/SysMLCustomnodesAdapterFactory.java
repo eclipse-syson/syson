@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
+import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -87,6 +88,11 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseSysMLImportedPackageNodeStyleDescription(SysMLImportedPackageNodeStyleDescription object) {
             return SysMLCustomnodesAdapterFactory.this.createSysMLImportedPackageNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseSysMLViewFrameNodeStyleDescription(SysMLViewFrameNodeStyleDescription object) {
+            return SysMLCustomnodesAdapterFactory.this.createSysMLViewFrameNodeStyleDescriptionAdapter();
         }
 
         @Override
@@ -158,6 +164,20 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSysMLImportedPackageNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription <em>Sys ML View Frame Node Style
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription
+     * @generated
+     */
+    public Adapter createSysMLViewFrameNodeStyleDescriptionAdapter() {
         return null;
     }
 

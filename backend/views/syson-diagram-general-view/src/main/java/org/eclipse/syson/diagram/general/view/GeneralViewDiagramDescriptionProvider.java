@@ -244,7 +244,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getOccurrenceDefinition(),
             SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getStateUsage(),
-            SysmlPackage.eINSTANCE.getStateDefinition()
+            SysmlPackage.eINSTANCE.getStateDefinition(),
+            SysmlPackage.eINSTANCE.getViewUsage()
             ));
 
     public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.ANALYSIS, List.of(
@@ -928,21 +929,21 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(exhibitStateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
         // add "states" compartment node as reusedChild of PartUsage and PartDefinition
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nd ->
-            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
-                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                        .ifPresent(nd.getReusedChildNodeDescriptions()::add)
         );
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition())).ifPresent(nd ->
-            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
-                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                        .ifPresent(nd.getReusedChildNodeDescriptions()::add)
         );
         // add "exhibit states" compartment node as reusedChild of PartUsage and PartDefinition
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nd ->
-            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
-                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                        .ifPresent(nd.getReusedChildNodeDescriptions()::add)
         );
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition())).ifPresent(nd ->
-            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
-                .ifPresent(nd.getReusedChildNodeDescriptions()::add)
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                        .ifPresent(nd.getReusedChildNodeDescriptions()::add)
         );
     }
 

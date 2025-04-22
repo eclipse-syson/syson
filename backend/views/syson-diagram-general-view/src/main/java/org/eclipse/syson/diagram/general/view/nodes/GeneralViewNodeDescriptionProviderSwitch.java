@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -54,6 +55,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -266,6 +268,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseUseCaseUsage(UseCaseUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseViewUsage(ViewUsage object) {
+        return new ViewUsageNodeDescriptionProvider(this.colorProvider, new GVDescriptionNameGenerator());
     }
 
 }
