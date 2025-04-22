@@ -66,7 +66,6 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
-import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -96,54 +95,37 @@ import reactor.test.StepVerifier.Step;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
+    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
     @Autowired
     private IGivenDiagramReference givenDiagram;
-
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
-
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
-
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
-
     @Autowired
     private IIdentityService identityService;
-
     @Autowired
     private IObjectSearchService objectSearchService;
-
     @Autowired
     private NodeCreationTester nodeCreationTester;
-
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
-
     @Autowired
     private DiagramComparator diagramComparator;
-
     @Autowired
     private SelectionDialogTreeEventSubscriptionRunner selectionDialogTreeEventSubscriptionRunner;
-
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
-
     @Autowired
     private IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
-
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
     private Step<DiagramRefreshedEventPayload> verifier;
-
     private AtomicReference<Diagram> diagram;
-
     private DiagramDescription diagramDescription;
-
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
     private static Stream<Arguments> topNodeParameters() {
         return Stream.of(
@@ -180,7 +162,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 4)
+                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
         ).map(TestNameGenerator::namedArguments);
     }
 
@@ -222,9 +205,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     int createdNodesExpectedCount = 1 + compartmentCount;
                     new CheckDiagramElementCount(this.diagramComparator)
-                        .hasNewEdgeCount(0)
-                        .hasNewNodeCount(createdNodesExpectedCount)
-                        .check(this.diagram.get(), newDiagram);
+                            .hasNewEdgeCount(0)
+                            .hasNewNodeCount(createdNodesExpectedCount)
+                            .check(this.diagram.get(), newDiagram);
 
                     String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(eClass);
 
@@ -272,7 +255,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                         this.diagram,
                         null,
                         creationToolId,
-                       List.of(new ToolVariable("selectedObject", libId.get().get(), ToolVariableType.OBJECT_ID)));
+                        List.of(new ToolVariable("selectedObject", libId.get().get(), ToolVariableType.OBJECT_ID)));
             });
 
             Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
@@ -356,7 +339,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .flatMap(namespace -> namespace.getOwnedMembership().stream())
-                .map(Membership.class::cast)
+                .map(t -> t)
                 .flatMap(membership -> membership.getRelatedElement().stream())
                 .filter(LibraryPackage.class::isInstance)
                 .filter(element -> "ISQAcoustics".equals(element.getDeclaredName()))

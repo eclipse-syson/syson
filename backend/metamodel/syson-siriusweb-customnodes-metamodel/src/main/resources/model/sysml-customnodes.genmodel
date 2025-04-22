@@ -22,5 +22,8 @@
     <genClasses ecoreClass="sysml-customnodes.ecore#//SysMLImportedPackageNodeStyleDescription">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml-customnodes.ecore#//SysMLImportedPackageNodeStyleDescription/background"/>
     </genClasses>
+    <genClasses ecoreClass="sysml-customnodes.ecore#//SysMLViewFrameNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml-customnodes.ecore#//SysMLViewFrameNodeStyleDescription/background"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

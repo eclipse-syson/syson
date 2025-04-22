@@ -1,6 +1,23 @@
 = Changelog
 
-== v2025.4.0 (work in progress)
+== v2025.6.0 (work in progress)
+
+=== Shapes
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
+- https://github.com/eclipse-syson/syson/issues/1237[#1237] [general-view] Add `ViewUsage` node in the General View.
+
+
+== v2025.4.0
 
 === Shapes
 

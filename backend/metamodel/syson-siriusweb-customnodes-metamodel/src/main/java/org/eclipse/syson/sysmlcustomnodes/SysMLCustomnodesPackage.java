@@ -270,6 +270,75 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl
+     * <em>Sys ML View Frame Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl
+     * @see org.eclipse.syson.sysmlcustomnodes.impl.SysMLCustomnodesPackageImpl#getSysMLViewFrameNodeStyleDescription()
+     * @generated
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION = 3;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Sys ML View Frame Node Style Description</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Sys ML View Frame Node Style Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription
      * <em>Sys ML Package Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -335,6 +404,28 @@ public interface SysMLCustomnodesPackage extends EPackage {
      * @generated
      */
     EReference getSysMLImportedPackageNodeStyleDescription_Background();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription
+     * <em>Sys ML View Frame Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Sys ML View Frame Node Style Description</em>'.
+     * @see org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription
+     * @generated
+     */
+    EClass getSysMLViewFrameNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription#getBackground
+     * <em>Background</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @see org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription#getBackground()
+     * @see #getSysMLViewFrameNodeStyleDescription()
+     * @generated
+     */
+    EReference getSysMLViewFrameNodeStyleDescription_Background();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -414,6 +505,25 @@ public interface SysMLCustomnodesPackage extends EPackage {
          * @generated
          */
         EReference SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getSysMLImportedPackageNodeStyleDescription_Background();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl <em>Sys ML View Frame
+         * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl
+         * @see org.eclipse.syson.sysmlcustomnodes.impl.SysMLCustomnodesPackageImpl#getSysMLViewFrameNodeStyleDescription()
+         * @generated
+         */
+        EClass SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION = eINSTANCE.getSysMLViewFrameNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getSysMLViewFrameNodeStyleDescription_Background();
 
     }
 

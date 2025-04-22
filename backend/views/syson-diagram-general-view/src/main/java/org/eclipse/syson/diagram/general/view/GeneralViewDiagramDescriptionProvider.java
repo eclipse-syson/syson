@@ -97,6 +97,7 @@ import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionSubject
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageStakeholdersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.ViewFrameNodeDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -240,7 +241,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getOccurrenceDefinition(),
             SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getStateUsage(),
-            SysmlPackage.eINSTANCE.getStateDefinition()
+            SysmlPackage.eINSTANCE.getStateDefinition(),
+            SysmlPackage.eINSTANCE.getViewUsage()
             ));
 
     public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.ANALYSIS, List.of(
@@ -612,6 +614,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         customNodeDescriptionProviders.add(new ReferencingPerformActionUsageNodeDescriptionProvider(colorProvider));
         customNodeDescriptionProviders.add(new ActorNodeDescriptionProvider(colorProvider));
         customNodeDescriptionProviders.add(new ImportedPackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        customNodeDescriptionProviders.add(new ViewFrameNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return customNodeDescriptionProviders;
     }

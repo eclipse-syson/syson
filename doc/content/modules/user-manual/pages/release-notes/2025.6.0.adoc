@@ -1,0 +1,26 @@
+= 2025.6.0 (work in progress)
+
+== Key highlights
+
+
+== Breaking changes
+
+
+== Bug fixes
+
+
+== New features
+
+- `ViewUsage` may now be displayed and created from the _General View_.
+
+image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
+
+
+== Improvements
+
+
+== Dependency update
+
+
+== Technical details
+

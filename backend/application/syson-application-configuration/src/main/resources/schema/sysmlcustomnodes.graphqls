@@ -24,3 +24,13 @@ type SysMLNoteNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
 }
+
+extend union INodeStyle = SysMLViewFrameNodeStyle
+
+type SysMLViewFrameNodeStyle {
+  background: String!
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  borderRadius: Int!
+}
