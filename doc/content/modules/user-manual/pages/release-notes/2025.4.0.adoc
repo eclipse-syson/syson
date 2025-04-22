@@ -430,7 +430,7 @@ image::gv-port-edge-tools.png[Port edge tools, width=60%,height=60%]
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.4[Spring Boot 3.4.4].
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.2.12]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.0]
 - Switch to Turbo 2.4.4
 - Switch to @xyflow 12.4.4
 - Switch to Sirius EMF-JSON 2.4.0
