@@ -36,6 +36,10 @@ import org.eclipse.syson.application.sysmlv2.api.IDefaultSysMLv2ResourceProvider
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.ViewDefinition;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,6 +65,8 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
     private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
 
     private final IDefaultSysMLv2ResourceProvider defaultSysMLv2ResourceProvider;
+
+    private final ElementUtil elementUtil = new ElementUtil();
 
     public SysMLv2ProjectTemplatesInitializer(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService,
             IRepresentationPersistenceService representationPersistenceService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
@@ -101,13 +107,13 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var semanticTarget = this.getRootPackage(resource);
-                        if (semanticTarget.isPresent()) {
+                        var viewUsage = this.getViewUsage(resource);
+                        if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
-                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(VariableManager.SELF, viewUsage);
                             variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -136,13 +142,13 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var semanticTarget = this.getRootPackage(resource);
-                        if (semanticTarget.isPresent()) {
+                        var viewUsage = this.getViewUsage(resource);
+                        if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
-                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(VariableManager.SELF, viewUsage);
                             variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -174,13 +180,13 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var semanticTarget = this.getRootPackage(resource);
-                        if (semanticTarget.isPresent()) {
+                        var viewUsage = this.getViewUsage(resource);
+                        if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
-                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(VariableManager.SELF, viewUsage);
                             variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -224,5 +230,31 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
             }
         }
         return Optional.empty();
+    }
+
+    private Optional<ViewUsage> getViewUsage(Resource resource) {
+        Optional<Package> rootPackage = this.getRootPackage(resource);
+        if (rootPackage.isPresent()) {
+            var viewUsage = this.createViewUsage(rootPackage.get());
+            return Optional.ofNullable(viewUsage);
+        }
+        return Optional.empty();
+    }
+
+    private ViewUsage createViewUsage(Element element) {
+        var viewUsageMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
+        element.getOwnedRelationship().add(viewUsageMembership);
+        viewUsageMembership.getOwnedRelatedElement().add(viewUsage);
+        viewUsage.setDeclaredName("General View");
+        viewUsage.setElementId(ElementUtil.generateUUID(viewUsage).toString());
+
+        var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+        viewUsage.getOwnedRelationship().add(featureTyping);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(element, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        featureTyping.setType(generalViewViewDef);
+        featureTyping.setTypedFeature(viewUsage);
+
+        return viewUsage;
     }
 }

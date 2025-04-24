@@ -43,7 +43,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -53,6 +52,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

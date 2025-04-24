@@ -15,6 +15,7 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -35,7 +36,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.UtilService;
@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -157,10 +158,14 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
         var diagramAfterAddingElement = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                diagramAfterAddingElement,
-                nodeName,
-                this.getNewName(nodeName)));
+        var newName = this.getNewName(nodeName);
+
+        this.verifier.then(() -> {
+            this.nodeCreationTester.renameRootNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                    diagramAfterAddingElement,
+                    nodeName,
+                    newName);
+        });
 
         var diagramAfterRenameElement = this.givenDiagram.getDiagram(this.verifier);
 
@@ -169,7 +174,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
         this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 diagramAfterRenameElement,
-                this.getNewName(nodeName),
+                newName,
                 toolId));
 
         Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
@@ -181,7 +186,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                     EObject eObject = SysmlFactory.eINSTANCE.create(eClass);
                     var definitionEClass = this.utilService.getPartDefinitionEClassFrom((PartUsage) eObject);
                     // should find the PartUsage
-                    var partUsage = semanticRootElement.getOwnedElement().stream().filter(eClass::isInstance).findFirst();
+                    var partUsage = semanticRootElement.getOwnedElement().stream().filter(eClass::isInstance).filter(elt -> Objects.equals(newName, elt.getDeclaredName())).findFirst();
                     assertThat(partUsage).isNotEmpty();
                     // should find the PartDefinition
                     var partDefinition = semanticRootElement.getOwnedElement().stream().filter(definitionEClass::isInstance).findFirst();

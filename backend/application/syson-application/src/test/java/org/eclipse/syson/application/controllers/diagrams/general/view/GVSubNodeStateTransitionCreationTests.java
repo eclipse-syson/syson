@@ -43,7 +43,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -60,7 +59,7 @@ import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
-import org.jetbrains.annotations.NotNull;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -72,6 +71,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.validation.constraints.NotNull;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 

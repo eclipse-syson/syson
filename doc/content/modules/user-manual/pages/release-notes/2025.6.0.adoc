@@ -137,6 +137,8 @@ action a1 {
 
 - Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
 When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
+- Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
+All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 
 - Implement textual export of `TriggerInvocationExpression` such as in the following `TransitionUsage` using as a trigger a `TriggerInvocationExpression`:
 

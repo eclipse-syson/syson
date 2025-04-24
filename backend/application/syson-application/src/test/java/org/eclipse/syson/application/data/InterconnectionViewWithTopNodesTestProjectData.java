@@ -28,7 +28,7 @@ public class InterconnectionViewWithTopNodesTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "ea522a25-80fd-4e16-8256-5a34e4cb687b";
+        public static final String DIAGRAM_ID = "e940992c-8d3c-44c3-a389-75f33be0cc89";
 
     }
 

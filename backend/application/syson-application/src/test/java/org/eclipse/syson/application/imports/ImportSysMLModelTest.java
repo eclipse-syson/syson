@@ -128,6 +128,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void tearDown() {
         IPayload payload = this.projectDeletionService.deleteProject(new DeleteProjectInput(UUID.randomUUID(), this.projectId));
         assertThat(payload).isInstanceOf(SuccessPayload.class);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
     }
 
     @Test

@@ -28,11 +28,11 @@ public class GeneraViewRelationshipTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "27fcdffb-efc6-4852-bfae-b34ff63ce8d6";
+        public static final String DIAGRAM_ID = "f222b9a6-20eb-4ee0-8b14-9eda77f6f5df";
 
-        public static final String OCC_1_ID = "4d243d0c-1ce6-3c73-8ecc-d11e285e9ecb";
+        public static final String OCC_1_ID = "e81f59c4-d9f3-37e9-9f2a-c501b5a0e580";
 
-        public static final String OCC_DEF_1_ID = "9084a9b9-e43c-398f-a3d0-7ff33c19b07e";
+        public static final String OCC_DEF_1_ID = "f4860395-b3dd-36ff-ac28-9df19dc78078";
     }
 
     /**
