@@ -20,6 +20,8 @@
 - https://github.com/eclipse-syson/syson/issues/1222[#1222] [general-view] Add `ItemUsage` as _bordered nodes_ of `ActionUsage` and `ActionDefinition` in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1226[#1226] [general-view] Add the possibility to create `FlowConnectionUsage` as graphical edges from `ItemUsage` _bordered nodes_ on _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1249[#1249] [import][export] Implement textual import/export of `AcceptActionUsage`.
+- https://github.com/eclipse-syson/syson/issues/1247[#1247] [explorer] Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
+When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
 
 === New features
 

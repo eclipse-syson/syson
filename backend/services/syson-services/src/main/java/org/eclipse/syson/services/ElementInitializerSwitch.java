@@ -52,6 +52,9 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewDefinition;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -60,6 +63,12 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author arichard
  */
 public class ElementInitializerSwitch extends SysmlSwitch<Element> {
+
+    private final ElementUtil elementUtil;
+
+    public ElementInitializerSwitch() {
+        this.elementUtil = new ElementUtil();
+    }
 
     @Override
     public Element defaultCase(EObject object) {
@@ -267,6 +276,17 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
         object.setDeclaredName(defaultName + existingElements);
         object.setIsComposite(true);
+        return object;
+    }
+
+    @Override
+    public Element caseViewUsage(ViewUsage object) {
+        this.caseUsage(object);
+        var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+        object.getOwnedRelationship().add(featureTyping);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(object, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        featureTyping.setType(generalViewViewDef);
+        featureTyping.setTypedFeature(object);
         return object;
     }
 

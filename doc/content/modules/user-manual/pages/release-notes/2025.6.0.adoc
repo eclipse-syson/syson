@@ -97,6 +97,9 @@ action a1 {
 }
 ```
 
+- Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
+When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
+
 == Dependency update
 
 == Technical details
