@@ -101,6 +101,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
@@ -169,6 +170,7 @@ public class ViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
 
         List<? extends Element> childElementsToRender = this.getChildElementsToRender(parentElement);
+        childElementsToRender.removeIf(elt -> elt instanceof ViewUsage);
 
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
@@ -273,6 +275,8 @@ public class ViewToolService extends ToolService {
     public Element addExistingElements(Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         final List<? extends Element> childElementsToRender = this.getChildElementsToRender(parentElement);
+        childElementsToRender.removeIf(elt -> elt instanceof ViewUsage);
+
         boolean hasRenderedSynchronizedElement = false;
 
         for (Element childElement : childElementsToRender) {
@@ -597,7 +601,7 @@ public class ViewToolService extends ToolService {
             children.addAll(np.getOwnedImport());
             childElements = children;
         } else {
-            childElements = List.of();
+            childElements = new ArrayList<>();
         }
         return childElements;
     }

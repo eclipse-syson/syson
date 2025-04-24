@@ -13,33 +13,29 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Identifiers for "GeneralViewEmpty" project.
+ * Project data for the "DiagramOnViewUsage-MigrationParticipant-Test" project.
  *
- * @author Arthur Daussy
+ * @author arichard
  */
-public class GeneralViewEmptyTestProjectData {
+public class DiagramOnViewUsageMigrationParticipantTestProjectData {
 
-    public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-Empty.sql";
+    public static final String SCRIPT_PATH = "/scripts/database-content/DiagramOnViewUsage-MigrationParticipant-Test.sql";
 
-    public static final String EDITING_CONTEXT = "38b7db6d-736d-45c3-ad08-d461774c83d9";
+    public static final String EDITING_CONTEXT_ID = "2f9ed992-e0ad-4835-acf2-f53e68c24452";
 
     /**
      * Ids of graphical elements.
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "16d1cfa3-1200-47b5-8877-9b4ff1b273d3";
+        public static final String DIAGRAM_ID = "dc234b37-6325-425e-857e-03f02f0f8063";
     }
 
     /**
      * Ids for the semantic elements.
      */
-    public static class SemanticIds {
+    public static final class SemanticIds {
 
-        public static final String MODEL_ID = "82b6c2a2-43ab-4a8d-baa6-920652fd963f";
-
-        public static final String PACKAGE_1_ID = "528fae42-60c2-40c8-baa3-684d874a950d";
-
+        public static final String PACKAGE_1_ID = "fe94c30c-6f1f-4e77-b08d-7bc9b7a142a5";
     }
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the root node description of the Interconnection View for Definition.
+ * Used to create the root node description of the Interconnection View.
  *
  * @author arichard
  */
@@ -72,7 +72,7 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF + ".owner")
                 .style(this.createPartDefinitionNodeStyle())
                 .conditionalStyles(this.createPartUsageConditionalNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)

@@ -27,25 +27,25 @@ public class GeneralViewFlowConnectionItemUsagesProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "966ea1b6-04d9-4c9f-893f-7026332e07ac";
+        public static final String DIAGRAM_ID = "6b59ec09-86ca-4155-a315-ebc4209a80b8";
 
-        public static final String ACTION_USAGE_1_ID = "4fb95cdd-53a8-3d4c-b233-b4b983d8a108";
+        public static final String ACTION_USAGE_1_ID = "c9d5c8c3-7019-322c-9184-8c49bf1940fd";
 
-        public static final String ACTION_USAGE_1_OUT_ITEM_ID = "ccdfdb4d-a161-3126-b13f-0a96d9375772";
+        public static final String ACTION_USAGE_1_OUT_ITEM_ID = "554af08e-3830-33ca-86f2-2f2aa1469585";
 
-        public static final String ACTION_USAGE_2_ID = "1c181413-f539-3452-ae12-bacc5b00508c";
+        public static final String ACTION_USAGE_2_ID = "6ecd5ce8-cf92-36f4-98d5-81f63382a27e";
 
-        public static final String ACTION_USAGE_2_IN_ITEM_ID = "165d5156-582a-38a2-a8d3-2f83197f5914";
+        public static final String ACTION_USAGE_2_IN_ITEM_ID = "cf13ec0b-ed3f-3341-8fae-f0bbf74155f6";
 
-        public static final String ACTION_USAGE_2_OUT_ITEM_ID = "32611a43-d358-30a8-a50f-eb42c224cfc2";
+        public static final String ACTION_USAGE_2_OUT_ITEM_ID = "bb06c37a-6235-3b64-93e5-bf9018e5ac95";
 
-        public static final String ACTION_USAGE_3_ID = "d832eacf-cdb4-3638-b9e2-e72e2f428cfb";
+        public static final String ACTION_USAGE_3_ID = "8996c5aa-00f3-3812-a60b-bdf8cd472320";
 
-        public static final String ACTION_USAGE_3_IN_ITEM_ID = "a980ce07-fafe-3502-8fc0-8683ce386f0a";
+        public static final String ACTION_USAGE_3_IN_ITEM_ID = "87610918-cc3c-32f3-b9e9-2c8fec982688";
 
-        public static final String ACTION_USAGE_3_OUT_ITEM_ID = "5643b00a-6677-3582-a1d7-3ce0e7a92b0e";
+        public static final String ACTION_USAGE_3_OUT_ITEM_ID = "66aa0a1d-2d8a-320a-80c4-38a2621d64ca";
 
-        public static final String FLOW_CONNECTION_ID = "e14e662c-1114-3742-a87e-dc4381c5cd44";
+        public static final String FLOW_CONNECTION_ID = "7c76055a-494a-3641-89b7-6257db809bca";
     }
 
     /**

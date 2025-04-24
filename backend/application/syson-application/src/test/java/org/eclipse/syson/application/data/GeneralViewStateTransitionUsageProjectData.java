@@ -28,19 +28,19 @@ public class GeneralViewStateTransitionUsageProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "0b0f1d24-863d-4b59-a3dd-6f4d96e01268";
+        public static final String DIAGRAM_ID = "f5a14b27-afda-4c92-bdd9-29a032d57a59";
 
-        public static final String OFF_ON_ID = "5b175ad8-4942-3589-9e3c-ba7f0bd3f6b7";
+        public static final String OFF_ON_ID = "43119e49-8c0e-364c-ad31-b09f9c3f5459";
 
-        public static final String ON_OFF_ID = "b3c6c8dc-3638-3504-a929-ce396b9c63a9";
+        public static final String ON_OFF_ID = "29e21152-187a-37d3-bb6c-3985f2113a96";
 
-        public static final String ON_IDLE_ID = "d08e916a-ca8d-3da6-b904-e1f7eb6168b3";
+        public static final String ON_IDLE_ID = "fc2f49e1-4e12-32bb-af01-d6c1f6482828";
 
-        public static final String OFF_ID = "9a9e9d06-c888-3b40-b8da-56c89381c4ae";
+        public static final String OFF_ID = "7ee32f5e-d60c-3aa0-a16f-f2dc0632736b";
 
-        public static final String IDLE_ID = "d08f526d-0d47-37b8-ab61-697b1b0d9d86";
+        public static final String IDLE_ID = "8ebfe130-07dd-39fd-a2f7-afec85718e0f";
 
-        public static final String ON_ID = "cdde895f-94e1-3db5-8371-abaaad85ba62";
+        public static final String ON_ID = "77a00d5c-d177-334d-b49a-df518cd933b7";
     }
 
     /**

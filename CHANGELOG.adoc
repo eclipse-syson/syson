@@ -64,6 +64,8 @@ At the moment SysON only supports KerML and SysML, and does not support the defi
 - https://github.com/eclipse-syson/syson/issues/1281[#1281] [syson] Prevent the loading of the editing context when querying commands in the omnibox.
 - https://github.com/eclipse-syson/syson/issues/1261[#1261] [import] Improve _New objects from text_ action in order to be able to resolve names against existing elements.
 - https://github.com/eclipse-syson/syson/issues/1294[#1294] [general-view] `StateUsages`, `StateDefinitions` and `ExhibitStates` are now able to display _state transition_ compartment.
+- https://github.com/eclipse-syson/syson/issues/1251[#1251] [explorer] Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
+All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 
 === New features
 

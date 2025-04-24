@@ -28,7 +28,7 @@ public class GeneralViewAddExistingElementsTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "110fea70-b1c2-4740-82da-584030618c80";
+        public static final String DIAGRAM_ID = "a0ca6720-66e0-40b7-a761-807474c0d773";
 
     }
 

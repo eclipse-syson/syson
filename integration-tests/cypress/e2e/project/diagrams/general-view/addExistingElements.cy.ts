@@ -33,8 +33,17 @@ describe('Diagram Panel in General View Tests', () => {
         explorer.expand(batmobile.getProjectLabel());
         explorer.getExplorerView().contains(batmobile.getRootElementLabel());
         explorer.expand(batmobile.getRootElementLabel());
-        explorer.select(diagramLabel);
-        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('exist');
+        explorer.expand(diagramLabel);
+        explorer
+          .getTreeItemByLabel(diagramLabel)
+          .should('have.length', 2)
+          .then(($elements) => {
+            // $elements is a collection of all tree items with the label 'diagramLabel'
+            // we want the second one, corresponding to the diagram
+            const diag = $elements[1];
+            diag?.click();
+          });
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - General View').should('exist');
       })
     );
 
@@ -45,7 +54,7 @@ describe('Diagram Panel in General View Tests', () => {
         diagram
           .getDiagram(diagramLabel)
           .should('exist')
-          .findByTestId('FreeForm - Batmobile')
+          .findByTestId('FreeForm - General View')
           .should('exist')
           .rightclick()
           .rightclick();
@@ -60,7 +69,7 @@ describe('Diagram Panel in General View Tests', () => {
         diagram
           .getDiagram(diagramLabel)
           .should('exist')
-          .findByTestId('FreeForm - Batmobile')
+          .findByTestId('FreeForm - General View')
           .should('not.exist', { timeout: 10000 });
         diagram.arrangeAll();
         cy.getByTestId('arrange-all-circular-loading')

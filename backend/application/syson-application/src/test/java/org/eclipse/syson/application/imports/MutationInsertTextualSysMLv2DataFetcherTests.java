@@ -59,6 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -92,7 +93,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         this.givenInitialServerState.initialize();
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testCreationFromText() {
@@ -106,7 +107,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                 p -> p.getOwnedElement().stream().anyMatch(e -> e instanceof org.eclipse.syson.sysml.Package pack && "importedPackage".equals(pack.getName())));
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("Given a package importing ScalarValues namespace, when importing an attribute with type Real, then the Real type should be correctly resolved")
     @Test
@@ -132,7 +133,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("Given a package, when importing a NamespaceImport, then NamespaceImport should be contained in the ownedRelationships of the Package")
     @Test
@@ -155,7 +156,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("Given a model with two ActionUsages, when creating a succession between those actions, then the successsion should be created")
     @Test
@@ -179,7 +180,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("Given model with two ItemUsages, when creating a FlowConnectionUsage between those items, then the flow should be created")
     @Test
@@ -205,7 +206,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     }
 
-    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("Given a package that do not import ScalarValues namespace, when importing an attribute with type Real, then attribute should be added but a message should be displayed")
     @Test
@@ -237,6 +238,10 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), NewObjectAsTextProjectData.EDITING_CONTEXT_ID, parentElementId, content);
         var result = this.queryRunner.run(input);
 
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
         Map<String, Object> parsed = JsonPath.read(result, "$.data.insertTextualSysMLv2");
 
         assertThat(parsed.get("__typename")).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -246,6 +251,10 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     private void insertTextExpectMessages(String parentElementId, String content, List<Message> expectedMessages) {
         var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), NewObjectAsTextProjectData.EDITING_CONTEXT_ID, parentElementId, content);
         var result = this.queryRunner.run(input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
 
         Map<String, Object> parsed = JsonPath.read(result, "$.data.insertTextualSysMLv2");
 

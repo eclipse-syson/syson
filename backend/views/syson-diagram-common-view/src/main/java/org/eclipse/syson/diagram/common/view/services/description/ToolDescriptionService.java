@@ -178,16 +178,18 @@ public class ToolDescriptionService {
     public NodeTool addExistingElementsTool(boolean recursive, boolean nested) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        String serviceName = "addExistingElements";
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("addExistingElements",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "" + recursive)));
+
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(addExistingelements.build());
+
         String title = "Add existing elements";
         if (nested) {
-            serviceName = "addExistingElements";
             title = "Add existing nested elements";
         }
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression(serviceName,
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "" + recursive)));
 
         String iconURL = "/icons/AddExistingElements.svg";
         if (recursive) {
@@ -198,7 +200,7 @@ public class ToolDescriptionService {
         return builder
                 .name(title)
                 .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
+                .body(changeContextViewUsageOwner.build())
                 .build();
     }
 
@@ -357,9 +359,13 @@ public class ToolDescriptionService {
                 .variableName(NEW_INSTANCE)
                 .children(createView.build(), changeContextNewInstance.build());
 
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build());
+
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(changeContextMembership.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 
@@ -378,7 +384,7 @@ public class ToolDescriptionService {
         return builder
                 .name(toolLabel)
                 .iconURLsExpression(iconPath.toString())
-                .body(changeContexMembership.build())
+                .body(changeContextViewUsageOwner.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
     }
@@ -523,6 +529,10 @@ public class ToolDescriptionService {
                 .variableName("newFeatureMembership")
                 .children(changeContextMembership.build());
 
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(createMembership.build());
+
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 
         if (direction != null) {
@@ -540,7 +550,7 @@ public class ToolDescriptionService {
         return builder
                 .name(toolLabel)
                 .iconURLsExpression(iconPath.toString())
-                .body(createMembership.build())
+                .body(changeContextViewUsageOwner.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
     }

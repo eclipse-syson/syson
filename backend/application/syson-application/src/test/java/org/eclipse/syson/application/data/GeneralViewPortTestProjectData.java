@@ -28,11 +28,11 @@ public class GeneralViewPortTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "a5986063-aed5-48ff-b795-0947acce7289";
+        public static final String DIAGRAM_ID = "a7a58223-9b72-46c3-be76-53ea6b5a467c";
 
-        public static final String PORT_1_BORDER_NODE_ID = "92726a83-12ea-3a4b-b142-9922581d3906";
+        public static final String PORT_1_BORDER_NODE_ID = "9462a470-d7ca-3d9f-8893-4bfa0c3fcbc5";
 
-        public static final String PORT_2_BORDER_NODE_ID = "6b3809dc-20f0-3af1-a488-0e6c04bdfdc7";
+        public static final String PORT_2_BORDER_NODE_ID = "97dde08f-1594-3fae-9edb-f0718ebda1ab";
     }
 
     /**
