@@ -103,6 +103,35 @@ public class ASTTransformer {
         for (EObject root : rootSysmlObjects) {
             this.fixSuccessionUsageImplicitSource(root);
             this.fixConjugatedPorts(root);
+            this.fixParameterFeatureDirection(root);
+            this.fixReturnParameterFeatureDirection(root);
+        }
+    }
+
+    private void fixReturnParameterFeatureDirection(EObject root) {
+        // The default direction of feature owned by a ReturnParameterMembership is out
+        // The AST from SysIDE does not give that "default" direction
+        List<ReturnParameterMembership> parameterMembership = EMFUtils.allContainedObjectOfType(root, ReturnParameterMembership.class)
+                .toList();
+        this.fixDefaultDirection(parameterMembership, FeatureDirectionKind.OUT);
+    }
+
+    private void fixParameterFeatureDirection(EObject root) {
+        // The default direction of feature owned by a ParameterMembership is in (if no a ReturnParameterMembership)
+        // The AST from SysIDE does not give that "default" direction
+        List<ParameterMembership> parameterMembership = EMFUtils.allContainedObjectOfType(root, ParameterMembership.class)
+                .filter(m -> !(m instanceof ReturnParameterMembership))
+                .toList();
+        this.fixDefaultDirection(parameterMembership, FeatureDirectionKind.IN);
+    }
+
+    private void fixDefaultDirection(List<? extends ParameterMembership> parameterMemberships, FeatureDirectionKind direction) {
+        // The default value of the parameter feature is in
+        for (var paramMembership : parameterMemberships) {
+            Feature feature = paramMembership.getOwnedMemberFeature();
+            if (feature != null && feature.getDirection() == null) {
+                feature.setDirection(direction);
+            }
         }
     }
 

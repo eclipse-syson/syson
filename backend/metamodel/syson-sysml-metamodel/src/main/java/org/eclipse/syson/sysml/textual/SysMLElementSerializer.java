@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -159,6 +160,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private final Consumer<Status> reportConsumer;
 
     /**
+     * Collection of Memberships that should be skip when trying to handle the content of an object.
+     * In most case, those  membership has been handled with their parent content.
+     */
+    private final Set<Membership> childrenMembershipToSkip = new HashSet<>();
+
+    /**
      * Simple constructor.
      *
      * @param lineSeparator
@@ -191,6 +198,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             return value;
         }
+    }
+
+    @Override
+    public String caseAcceptActionUsage(AcceptActionUsage acceptActionUsage) {
+        Appender builder = this.newAppender();
+        this.appendOccurrenceUsagePrefix(builder, acceptActionUsage);
+        this.appendAcceptNodeDeclaration(builder, acceptActionUsage);
+        this.appendChildrenContent(builder, acceptActionUsage, acceptActionUsage.getOwnedMembership().stream().toList());
+        return builder.toString();
     }
 
     @Override
@@ -945,7 +961,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(EndFeatureMembership.class::cast)
                 .toList();
 
-        Set<Element> childrenToExclude = new HashSet<>();
 
         if (endFeatureMemberships.size() == 2) {
 
@@ -955,11 +970,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendWithSpaceIfNeeded("first");
                 this.appendConnectorEndMember(builder, first);
             }
-            childrenToExclude.add(first);
+            this.childrenMembershipToSkip.add(first);
 
             builder.appendWithSpaceIfNeeded("then");
             EndFeatureMembership second = endFeatureMemberships.get(1);
-            childrenToExclude.add(second);
+            this.childrenMembershipToSkip.add(second);
             this.appendConnectorEndMember(builder, second);
 
         } else {
@@ -968,7 +983,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
                 .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
-                .filter(e -> !childrenToExclude.contains(e))
                 .toList();
 
         this.appendChildrenContent(builder, successionAsUsage, children);
@@ -2041,6 +2055,41 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return deresolvedName;
     }
 
+    private void appendAcceptNodeDeclaration(Appender builder, AcceptActionUsage acceptActionUsage) {
+        Appender localAppender = this.newAppender();
+        this.appendUsageDeclaration(localAppender, acceptActionUsage);
+        if (!localAppender.isEmpty()) {
+            builder.appendWithSpaceIfNeeded("action ").append(localAppender.toString());
+        }
+
+        builder.appendWithSpaceIfNeeded("accept");
+        this.appendAcceptParameterPart(builder, acceptActionUsage);
+    }
+
+    private void appendAcceptParameterPart(Appender builder, AcceptActionUsage acceptActionUsage) {
+        EList<Feature> parameters = acceptActionUsage.getParameter();
+        if (!parameters.isEmpty()) {
+            ReferenceUsage payload = acceptActionUsage.getPayloadParameter();
+            Appender payloadBuilder = this.newAppender();
+            this.appendUsageDeclaration(payloadBuilder, payload);
+            if (payloadBuilder.toString().startsWith(": ")) {
+                // Set the type only
+                builder.appendWithSpaceIfNeeded(payloadBuilder.toString().substring(2));
+            } else {
+                builder.appendWithSpaceIfNeeded(payloadBuilder.toString());
+            }
+            this.childrenMembershipToSkip.add(parameters.get(0).getOwningMembership());
+
+            if (parameters.size() > 1) {
+                Expression expression = acceptActionUsage.getReceiverArgument();
+                if (expression != null) {
+                    builder.appendWithSpaceIfNeeded("via ").append(this.doSwitch(expression));
+                    this.childrenMembershipToSkip.add(parameters.get(1).getOwningMembership());
+                }
+            }
+        }
+    }
+
     private void appendDefinitionPrefix(Appender builder, Definition def) {
         builder.appendSpaceIfNeeded().append(this.getBasicDefinitionPrefix(def));
 
@@ -2140,7 +2189,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendBasicUsagePrefix(Appender builder, Usage usage) {
         FeatureDirectionKind direction = usage.getDirection();
-        if (direction != null) {
+        if (direction != null && direction != this.getDefaultDirection(usage)) {
             builder.appendWithSpaceIfNeeded(direction.toString());
         }
 
@@ -2166,6 +2215,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    private FeatureDirectionKind getDefaultDirection(Usage usage) {
+        FeatureMembership owningMembership = usage.getOwningFeatureMembership();
+        final FeatureDirectionKind defaultDirection;
+        if (owningMembership instanceof ReturnParameterMembership) {
+            defaultDirection = FeatureDirectionKind.OUT;
+        } else if (owningMembership instanceof ParameterMembership) {
+            defaultDirection = FeatureDirectionKind.IN;
+        } else {
+            defaultDirection = null;
+        }
+        return defaultDirection;
+    }
+
     private void appendChildrenContent(Appender builder, Element element, List<? extends Relationship> childrenRelationships) {
         String content = this.getContent(childrenRelationships, this.lineSeparator);
         if (content != null && !content.isBlank()) {
@@ -2178,7 +2240,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String getContent(List<? extends Relationship> children, String prefix) {
-        return children.stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(this.lineSeparator, prefix, ""));
+        return children.stream().filter(m -> !this.childrenMembershipToSkip.contains(m))
+                .map(this::doSwitch)
+                .filter(Objects::nonNull)
+                .collect(joining(this.lineSeparator, prefix, ""));
     }
 
     private void appendOccurrenceUsageDeclaration(Appender builder, OccurrenceUsage occurrenceUsage) {

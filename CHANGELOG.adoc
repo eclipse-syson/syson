@@ -19,6 +19,7 @@
 - https://github.com/eclipse-syson/syson/issues/1217[#1217] [export] Implement textual export of `MergeNode`.
 - https://github.com/eclipse-syson/syson/issues/1222[#1222] [general-view] Add `ItemUsage` as _bordered nodes_ of `ActionUsage` and `ActionDefinition` in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1226[#1226] [general-view] Add the possibility to create `FlowConnectionUsage` as graphical edges from `ItemUsage` _bordered nodes_ on _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1249[#1249] [import][export] Implement textual import/export of `AcceptActionUsage`.
 
 === New features
 
