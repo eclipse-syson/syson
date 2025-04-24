@@ -66,4 +66,15 @@ public class GetChildCreationSwitchTest {
                 || SysmlPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass));
     }
 
+    @Test
+    public void testViewUsageChildren() {
+        List<EClass> children = new GetChildCreationSwitch().doSwitch(SysmlFactory.eINSTANCE.createViewUsage());
+        List<EClass> expectedChildren = List.of(SysmlPackage.eINSTANCE.getDocumentation(),
+                SysmlPackage.eINSTANCE.getComment(),
+                SysmlPackage.eINSTANCE.getTextualRepresentation(),
+                SysmlPackage.eINSTANCE.getViewUsage());
+        assertThat(children).containsAll(expectedChildren);
+        children.removeAll(expectedChildren);
+        assertThat(children).isEmpty();
+    }
 }

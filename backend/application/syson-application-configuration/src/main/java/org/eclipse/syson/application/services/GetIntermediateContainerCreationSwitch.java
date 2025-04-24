@@ -65,11 +65,6 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     }
 
     @Override
-    public Optional<EClass> caseTextualRepresentation(TextualRepresentation object) {
-        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
-    }
-
-    @Override
     public Optional<EClass> caseEnumerationUsage(EnumerationUsage object) {
         return Optional.of(SysmlPackage.eINSTANCE.getVariantMembership());
     }
@@ -92,6 +87,11 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
 
     @Override
     public Optional<EClass> casePackage(Package object) {
+        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
+    }
+
+    @Override
+    public Optional<EClass> caseTextualRepresentation(TextualRepresentation object) {
         return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
     }
 }

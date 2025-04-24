@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -247,6 +248,16 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralRational());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralString());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseViewUsage(ViewUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getViewUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getTextualRepresentation());

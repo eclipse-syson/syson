@@ -27,6 +27,9 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.ViewDefinition;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +49,8 @@ public class ElementInitializerSwitchTest {
 
     private ElementInitializerSwitch elementInitializerSwitch;
 
+    private ElementUtil elementUtil;
+
     @BeforeEach
     public void setUp() {
         this.rSet = new ResourceSetImpl();
@@ -56,38 +61,26 @@ public class ElementInitializerSwitchTest {
         this.resource = new JsonResourceFactoryImpl().createResource(URI.createURI("ElementInitializerSwitchTest"));
         this.rSet.getResources().add(this.resource);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
+        this.elementUtil = new ElementUtil();
+
     }
 
-    @DisplayName("Given a PartUsage, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("Given an Actor, when it is initialized, then it's name contains the count of the same kind of elements")
     @Test
-    public void testPartUsageDefaultName() {
+    public void testActorDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(root);
         root.setDeclaredName(ROOT);
         var p1 = SysmlFactory.eINSTANCE.createPartUsage();
         this.addInParent(p1, root);
-        var initializedP1 = this.elementInitializerSwitch.doSwitch(p1);
-        assertThat(initializedP1.getDeclaredName()).isEqualTo("part1");
-        var p2 = SysmlFactory.eINSTANCE.createPartUsage();
-        this.addInParent(p2, root);
-        var initializedP2 = this.elementInitializerSwitch.doSwitch(p2);
-        assertThat(initializedP2.getDeclaredName()).isEqualTo("part2");
-    }
-
-    @DisplayName("Given a PartDefinition, when it is initialized, then it's name contains the count of the same kind of elements")
-    @Test
-    public void testPartDefinitionDefaultName() {
-        var root = SysmlFactory.eINSTANCE.createPackage();
-        this.resource.getContents().add(root);
-        root.setDeclaredName(ROOT);
-        var p1 = SysmlFactory.eINSTANCE.createPartDefinition();
-        this.addInParent(p1, root);
-        var initializedP1 = this.elementInitializerSwitch.doSwitch(p1);
-        assertThat(initializedP1.getDeclaredName()).isEqualTo("PartDefinition1");
-        var p2 = SysmlFactory.eINSTANCE.createPartDefinition();
-        this.addInParent(p2, root);
-        var initializedP2 = this.elementInitializerSwitch.doSwitch(p2);
-        assertThat(initializedP2.getDeclaredName()).isEqualTo("PartDefinition2");
+        var a1 = SysmlFactory.eINSTANCE.createPartUsage();
+        this.addInParent(a1, p1, SysmlPackage.eINSTANCE.getActorMembership());
+        var initializedA1 = this.elementInitializerSwitch.doSwitch(a1);
+        assertThat(initializedA1.getDeclaredName()).isEqualTo("actor1");
+        var a2 = SysmlFactory.eINSTANCE.createPartUsage();
+        this.addInParent(a2, p1, SysmlPackage.eINSTANCE.getActorMembership());
+        var initializedA2 = this.elementInitializerSwitch.doSwitch(a2);
+        assertThat(initializedA2.getDeclaredName()).isEqualTo("actor2");
     }
 
     @DisplayName("Given a EnumerationDefinition, when it is initialized, then it's name contains the count of the same kind of elements")
@@ -122,22 +115,36 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedP2.getDeclaredName()).isEqualTo("Package2");
     }
 
-    @DisplayName("Given an Actor, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("Given a PartDefinition, when it is initialized, then it's name contains the count of the same kind of elements")
     @Test
-    public void testActorDefaultName() {
+    public void testPartDefinitionDefaultName() {
+        var root = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(root);
+        root.setDeclaredName(ROOT);
+        var p1 = SysmlFactory.eINSTANCE.createPartDefinition();
+        this.addInParent(p1, root);
+        var initializedP1 = this.elementInitializerSwitch.doSwitch(p1);
+        assertThat(initializedP1.getDeclaredName()).isEqualTo("PartDefinition1");
+        var p2 = SysmlFactory.eINSTANCE.createPartDefinition();
+        this.addInParent(p2, root);
+        var initializedP2 = this.elementInitializerSwitch.doSwitch(p2);
+        assertThat(initializedP2.getDeclaredName()).isEqualTo("PartDefinition2");
+    }
+
+    @DisplayName("Given a PartUsage, when it is initialized, then it's name contains the count of the same kind of elements")
+    @Test
+    public void testPartUsageDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(root);
         root.setDeclaredName(ROOT);
         var p1 = SysmlFactory.eINSTANCE.createPartUsage();
         this.addInParent(p1, root);
-        var a1 = SysmlFactory.eINSTANCE.createPartUsage();
-        this.addInParent(a1, p1, SysmlPackage.eINSTANCE.getActorMembership());
-        var initializedA1 = this.elementInitializerSwitch.doSwitch(a1);
-        assertThat(initializedA1.getDeclaredName()).isEqualTo("actor1");
-        var a2 = SysmlFactory.eINSTANCE.createPartUsage();
-        this.addInParent(a2, p1, SysmlPackage.eINSTANCE.getActorMembership());
-        var initializedA2 = this.elementInitializerSwitch.doSwitch(a2);
-        assertThat(initializedA2.getDeclaredName()).isEqualTo("actor2");
+        var initializedP1 = this.elementInitializerSwitch.doSwitch(p1);
+        assertThat(initializedP1.getDeclaredName()).isEqualTo("part1");
+        var p2 = SysmlFactory.eINSTANCE.createPartUsage();
+        this.addInParent(p2, root);
+        var initializedP2 = this.elementInitializerSwitch.doSwitch(p2);
+        assertThat(initializedP2.getDeclaredName()).isEqualTo("part2");
     }
 
     @DisplayName("Given a Stakeholder, when it is initialized, then it's name contains the count of the same kind of elements")
@@ -156,6 +163,21 @@ public class ElementInitializerSwitchTest {
         this.addInParent(s2, p1, SysmlPackage.eINSTANCE.getStakeholderMembership());
         var initializedS2 = this.elementInitializerSwitch.doSwitch(s2);
         assertThat(initializedS2.getDeclaredName()).isEqualTo("stakeholder2");
+    }
+
+    @DisplayName("Given a ViewUsage, when it is initialized, then it's typed by default with the GeneralView ViewDefinition")
+    @Test
+    public void testViewUsageDefaultType() {
+        var root = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(root);
+        root.setDeclaredName(ROOT);
+        var view1 = SysmlFactory.eINSTANCE.createViewUsage();
+        this.addInParent(view1, root);
+        var initializedView1 = this.elementInitializerSwitch.doSwitch(view1);
+        assertThat(initializedView1).isInstanceOf(ViewUsage.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        assertThat(((ViewUsage) initializedView1).getType()).contains(generalViewViewDef);
+
     }
 
     private void addInParent(Element element, Element parent) {
