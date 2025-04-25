@@ -100,6 +100,20 @@ action a1 {
 - Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
 When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
 
+- Implement textual export of `TriggerInvocationExpression` such as in the following `TransitionUsage` using as a trigger a `TriggerInvocationExpression`:
+
+```
+part part1 {
+    private import ScalarValues::*;
+    action b {
+        attribute f : Boolean;
+    }
+    action a1 {
+        accept when b.f; // <- AcceptActionUsage using a TriggerInvocationExpression : when b.f
+    }
+}
+```
+
 == Dependency update
 
 == Technical details

@@ -18,6 +18,7 @@ import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_I
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_MEMBERSHIP;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_METADATA_USAGE;
 
+import java.lang.Class;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,105 +35,8 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionDefinition;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.ActorMembership;
-import org.eclipse.syson.sysml.AnalysisCaseUsage;
-import org.eclipse.syson.sysml.AssertConstraintUsage;
-import org.eclipse.syson.sysml.AttributeDefinition;
-import org.eclipse.syson.sysml.AttributeUsage;
-import org.eclipse.syson.sysml.CalculationDefinition;
-import org.eclipse.syson.sysml.Classifier;
-import org.eclipse.syson.sysml.CollectExpression;
-import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.ConjugatedPortDefinition;
-import org.eclipse.syson.sysml.ConjugatedPortTyping;
-import org.eclipse.syson.sysml.ConstraintUsage;
-import org.eclipse.syson.sysml.ControlNode;
-import org.eclipse.syson.sysml.DecisionNode;
-import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Documentation;
-import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
-import org.eclipse.syson.sysml.EnumerationDefinition;
-import org.eclipse.syson.sysml.EnumerationUsage;
-import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureChainExpression;
-import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.FeatureDirectionKind;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FeatureReferenceExpression;
-import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.ForkNode;
-import org.eclipse.syson.sysml.Import;
-import org.eclipse.syson.sysml.IncludeUseCaseUsage;
-import org.eclipse.syson.sysml.InterfaceDefinition;
-import org.eclipse.syson.sysml.InvocationExpression;
-import org.eclipse.syson.sysml.ItemDefinition;
-import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.JoinNode;
-import org.eclipse.syson.sysml.LibraryPackage;
-import org.eclipse.syson.sysml.LiteralBoolean;
-import org.eclipse.syson.sysml.LiteralExpression;
-import org.eclipse.syson.sysml.LiteralInfinity;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.MembershipImport;
-import org.eclipse.syson.sysml.MergeNode;
-import org.eclipse.syson.sysml.Metaclass;
-import org.eclipse.syson.sysml.MetadataAccessExpression;
-import org.eclipse.syson.sysml.MetadataDefinition;
-import org.eclipse.syson.sysml.MetadataUsage;
-import org.eclipse.syson.sysml.MultiplicityRange;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.NamespaceImport;
-import org.eclipse.syson.sysml.NullExpression;
-import org.eclipse.syson.sysml.ObjectiveMembership;
-import org.eclipse.syson.sysml.OccurrenceDefinition;
-import org.eclipse.syson.sysml.OccurrenceUsage;
-import org.eclipse.syson.sysml.OperatorExpression;
-import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.*;
 import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.sysml.ParameterMembership;
-import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.PerformActionUsage;
-import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.PortionKind;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.ReferenceUsage;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.RequirementDefinition;
-import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.sysml.ReturnParameterMembership;
-import org.eclipse.syson.sysml.SatisfyRequirementUsage;
-import org.eclipse.syson.sysml.SelectExpression;
-import org.eclipse.syson.sysml.Specialization;
-import org.eclipse.syson.sysml.StakeholderMembership;
-import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.SubjectMembership;
-import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.TransitionFeatureKind;
-import org.eclipse.syson.sysml.TransitionFeatureMembership;
-import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.UseCaseDefinition;
-import org.eclipse.syson.sysml.UseCaseUsage;
-import org.eclipse.syson.sysml.VerificationCaseUsage;
-import org.eclipse.syson.sysml.ViewpointDefinition;
-import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.utils.Appender;
@@ -1037,6 +941,23 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.reportUnhandledType(transitionUsage);
         }
 
+        return builder.toString();
+    }
+
+    @Override
+    public String caseTriggerInvocationExpression(TriggerInvocationExpression triggerInvocationExpression) {
+        var builder = this.newAppender();
+
+        builder.append(triggerInvocationExpression.getKind().toString().toLowerCase());
+        if (triggerInvocationExpression.getKind() == TriggerKind.WHEN) {
+            for (Expression argument : triggerInvocationExpression.getArgument()) {
+                this.appendArgumentExpression(builder, argument);
+            }
+        } else {
+            for (Feature parameter : triggerInvocationExpression.getParameter()) {
+                this.appendArgument(builder, parameter);
+            }
+        }
         return builder.toString();
     }
 
@@ -2071,13 +1992,24 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (!parameters.isEmpty()) {
             ReferenceUsage payload = acceptActionUsage.getPayloadParameter();
             Appender payloadBuilder = this.newAppender();
+            // Payload feature
             this.appendUsageDeclaration(payloadBuilder, payload);
             if (payloadBuilder.toString().startsWith(": ")) {
-                // Set the type only
+                // The type only is defined. To avoid the valid but not pretty notation " : X", we skip the heading ":"
                 builder.appendWithSpaceIfNeeded(payloadBuilder.toString().substring(2));
             } else {
                 builder.appendWithSpaceIfNeeded(payloadBuilder.toString());
             }
+
+            Expression payloadArgument = acceptActionUsage.getPayloadArgument();
+
+            if (payloadArgument != null) {
+                String payloadArgStr = this.doSwitch(payloadArgument);
+                if (payloadArgStr != null) {
+                    builder.appendWithSpaceIfNeeded(payloadArgStr);
+                }
+            }
+
             this.childrenMembershipToSkip.add(parameters.get(0).getOwningMembership());
 
             if (parameters.size() > 1) {
@@ -2258,5 +2190,26 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
         this.appendUsageDeclaration(appender, controlNode);
         this.appendActionNodeBody(appender, controlNode);
+    }
+
+    private void appendArgument(Appender builder, Feature parameter) {
+        FeatureValue valuation = parameter.getValuation();
+        if (valuation != null) {
+            builder.appendWithSpaceIfNeeded(this.doSwitch(valuation.getValue()));
+        }
+    }
+
+    private void appendArgumentExpression(Appender builder, Expression argument) {
+        if (argument instanceof FeatureReferenceExpression refExpression) {
+            Expression expression = refExpression.getOwnedFeatureMembership().stream()
+                    .map(FeatureMembership::getMemberElement)
+                    .filter(Expression.class::isInstance)
+                    .map(Expression.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (expression != null) {
+                builder.appendWithSpaceIfNeeded(this.doSwitch(expression));
+            }
+        }
     }
 }
