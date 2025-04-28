@@ -2,13 +2,13 @@
 
 == Key highlights
 
-- *Model conformance to SysMLv2 Beta 2 version*: the metamodel has been modified to conform to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
-- *New "New objects from text" menu entry*: from elements in _Explorer_ view, allow to insert textual SysMLv2 as objects under the selected element.
-The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.
+- *Model conformance to {sysmlv2} Beta 2 version*: the metamodel has been modified to conform to {sysmlv2} Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and {kerml} Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+- *New "New objects from text" menu entry*: from elements in _Explorer_ view, allow to insert textual {sysmlv2} as objects under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual {sysmlv2}.
 
 image::release-notes-insert-textual-sysmlv2-menu.png[New objects from text menu]
 
-A click on the _Insert_ button converts the textual SysMLv2 into model elements and add them under the selected element.
+A click on the _Insert_ button converts the textual {sysmlv2} into model elements and add them under the selected element.
 
 image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dialog]
 
@@ -31,9 +31,9 @@ image::release-notes-show-hide-inherited-members-from-standard-libraries-in-diag
 - Code refactoring:
 * Rename `ExhibitStatesCompartmentItemNodeDescriptionProvider` to `StatesCompartmentItemNodeDescriptionProvider`.
 * _StatesCompartmentNodeDescriptionProvider_ now handles both exhibit and non-exhibit states.
-- Align metamodel to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
-You may have to fix your existing SysON models/projects by your own means to still be able to open them with SysON.
-Please download all your models/projects before upgrading to 2024.9.0.
+- Align metamodel to {sysmlv2} Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and {kerml} Beta 2 specification released on the 17th of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+You can have to fix your existing {product} models/projects by your own means to still be able to open them with {product}.
+Download all your models/projects before upgrading to 2024.9.0.
 The changes are:
 * AnnotatingElement
 ** add derived reference "ownedAnnotatingRelationship : Annotation"
@@ -64,22 +64,22 @@ The changes are:
 * Deleted `ViewNodeService#isHiddenByDefaultExhibitStates`
 * Deleted `ViewNodeService#isHiddenByDefaultNonExhibitStates`
 * Add new `IViewDiagramElementFinder` parameter to `StateTransitionViewNodeToolSectionSwitch`
-- Migrate frontend to MUI 5, if you contributed React components that use MUI, you should upgrade them to use MUI 5.
+- Migrate front-end to MUI 5, if you contributed React components that use MUI, you should upgrade them to use MUI 5.
 - Ensure that dropped nodes are always collapsed, the following methods have been moved to support this feature
 * The method `ToolService#dropElementFromExplorer` has been moved to `ViewToolService` since it now requires view-related imports that motivated this refactoring.
 * The method `ToolService#dropElementFromDiagram` has been moved to `ViewToolService` for the sake of consistency.
-- Fix _Add Existing Elements_ tool for start and done actions, the following methods have been moved to `UtilService` to make them reusable by different services (they are now used by `ViewNodeService` and `ViewToolService`):
+- Fix _Add Existing Elements_ tool for start and done actions, the following methods have been moved to `UtilService` to make them reusable by different services (they're now used by `ViewNodeService` and `ViewToolService`):
 * `ViewNodeService#getAllStandardStartActions`
 * `ViewNodeService#getAllStandardDoneActions`
 * `ViewNodeService#isAction`
 * `ViewNodeService#isPart`
-* Split `DiagramDirectEditListener#exitExpression` directEdit service into two services : `exitNodeExpression` and `exitListItemExpression` to specify the grahical context of use .
+* Split `DiagramDirectEditListener#exitExpression` directEdit service into two services : `exitNodeExpression` and `exitListItemExpression` to specify the graphical context of use .
 * Add new boolean parameter `isCompartmentItem` to the `LabelService#directEdit` service to clarify the graphical element type to edit.
 * Rename `LabelService#getUsagePrefix` into `getUsageListItemPrefix` to specify the computation of this prefix on list item elements.
 * Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
 - Fix an issue that revealed the _documentation_ compartment when dropping an element on itself, the following method's contract has been updated as part of the fix:
 * `EMFUtils#isAncestor(parent, eObject)` now returns `true` if `parent == eObject`.
-- Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package, the tool _Create Package_ is not available in Action Flow View diagrams anymore.
+- Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package, the tool _Create Package_ isn't available in Action Flow View diagrams anymore.
 
 == Dependencies update
 
@@ -98,11 +98,11 @@ The changes are:
 - Remove owning Usage memberships from inherited memberships of Usages.
 Memberships of a Type are inherited via _Specialization_ or _Conjugation_, not by composition.
 - Fix an issue that allowed to drop an element from the explorer or the diagram on one of its children.
-Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation. 
+Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation.
 - Fix an issue that made the direct edit not working on Constraint and Requirement elements.
 - Fix an issue that made the _addExistingElements_ not work properly for _start_ and _done_ actions inside actions and parts.
 - Fix an issue on constraint expression name resolution that prevented from referencing elements in other containing namespaces than the direct owner of the constraint.
-It is now possible to reference an element in any of the containing namespaces of the constraint.
+It's now possible to reference an element in any of the containing namespaces of the constraint.
 - Fix an issue that deleted the content of an action when it was dropped from the diagram to an action flow compartment.
 - Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 - Fix an issue where ConjugatedPortDefinition labels were rendered as `null` instead of their actual name.
@@ -129,7 +129,7 @@ The drop isn't allowed anymore, and a warning message is displayed.
 - Add label support for referential Usages
 * Nodes that are references now correctly contain the "ref" keyword
 * Elements in lists that are references now correctly contain the "ref" keyword
-* AttributeUsage do not contain the "ref" keyword since they are always referential
+* AttributeUsage don't contain the "ref" keyword since they're always referential
 - Add support for "ref" keyword in direct edit
 * Prefixing the name of an Usage with "ref" sets it as a reference
 * Not setting the "ref" prefix of an Usage sets it as a composite (non-reference)
@@ -149,7 +149,7 @@ image::release-notes-diagram-standard-libraries-elements-qualified-names.png[Qua
 
 - Allow to select existing Action on Perform tool.
 - Allow to set measurement units via direct edit.
-It is now possible to configure the measurement unit for the value of an element, e.g. `mass = 10 [kg]`.
+It's now possible to configure the measurement unit for the value of an element, for example `mass = 10 [kg]`.
 - Allow to select existing _Type_ on Subject tool.
 - Display prefix keywords in label for Usage compartment element
 - Display multiplicity suffix property keywords in label for Usage element
@@ -165,21 +165,21 @@ Actors are represented with a stick figure image, with their label displayed bel
 image::release-notes-actor-representation.png[Actor node on the General View diagram]
 
 - Add support for edges between actors and their containing UseCase/Requirement in the General View diagram.
-The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.
-- Allow to select existing _RequirementUsage_ and _RequirementDefinition_ on Objective tool. 
+The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) can't be reconnected.
+- Allow to select existing _RequirementUsage_ and _RequirementDefinition_ on Objective tool.
 - Add a check to make the build fail if a Cypress test contains `it.only`.
 - Add support for public import in direct edit specializations.
-It is now possible to specialize an element with a qualified name containing namespaces importing the required features.
+It's now possible to specialize an element with a qualified name containing namespaces importing the required features.
 For example, `myAttribute : ISQ::MassValue` now correctly types the attribute with `ISQBase::MassValue`.
-- Improve the support of root `Namespaces` in SysON documents.
-* Root `Namespaces` are now implicitly created at the root of SysON documents.
-* Creating an element at the root of a SysON document now creates it in its root `Namespace`.
+- Improve the support of root `Namespaces` in {product} documents.
+* Root `Namespaces` are now implicitly created at the root of {product} documents.
+* Creating an element at the root of a {product} document now creates it in its root `Namespace`.
 * A new filter is available to hide root `Namespaces` and is enabled by default.
-* It is no longer possible to create `Namespace` from the explorer.
-* It is no longer possible to create a representation on a root `Namespace`.
+* It's no longer possible to create `Namespace` from the explorer.
+* It's no longer possible to create a representation on a root `Namespace`.
 - Improve the drop from the explorer to ensure that dropped nodes are always collapsed.
 - Display prefix keywords in labels of `Definitions` and `Usages` graphical nodes.
-- Ensure that dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
+- Ensure that dropping an element from the explorer on the diagram reveals the corresponding node if it's already on the diagram and hidden.
 A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 - Ignore keywords order during direct edit of prefixes labels of `Definitions` and `Usages` graphical elements.
 - DirectEdit on graphical node or list item authorized only to modify keywords which can be displayed in each label.
@@ -188,7 +188,7 @@ A warning message is now displayed when attempting to drop an element which is a
 
 == New features
 
-- Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in the  diagrams (icons are not part of the SysMLv2 specification).
+- Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in the  diagrams (icons aren't part of the {sysmlv2} specification).
 
 image::release-notes-show-hide-icons-in-diagram.png[Show/Hide Icons in Diagram]
 
@@ -203,12 +203,12 @@ A new edge tool allows to create a flow between two ports.
 - Add documentation property to Core tab of the Details view, allowing to add/edit a documentation for the selected element.
 This property widget will only handle the first documentation associated to the selected element.
 If no documentation is associated to the selected element, then a new value in this widget will also create a _Documentation_ element and will associate it to the selected element.
-- Add new "New objects from text" menu entry on elements in _Explorer_ view, allowing to insert textual SysMLv2 as objects under the selected element.
-The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.
+- Add new "New objects from text" menu entry on elements in _Explorer_ view, allowing to insert textual {sysmlv2} as objects under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual {sysmlv2}.
 
 image::release-notes-insert-textual-sysmlv2-menu.png[New objects from text menu]
 
-A click on the _Insert_ button converts the textual SysMLv2 into model elements and add them under the selected element.
+A click on the _Insert_ button converts the textual {sysmlv2} into model elements and add them under the selected element.
 
 image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dialog]
 

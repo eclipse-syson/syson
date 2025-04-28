@@ -16,7 +16,7 @@ To understand the intent of {product}, see the xref:user-manual:what-is.adoc[Wha
 ====
 The name {product} is a play on words that sounds such as "season" symbolizing a new season for system engineering tools and reflecting progress in the field.
 While "ON" doesn't have a single predefined meaning, it evokes activation and readiness—like “you’re ON.”
-It can also be interpreted as “Systems ON,” highlighting its role as an enabler for digital engineering, or “SysML ON,” reinforcing its connection to SysML.
+It can also be interpreted as “Systems ON,” highlighting its role as an enabler for digital engineering, or {sysml} ON,” reinforcing its connection to {sysml}.
 ====
 
 .*What's the difference between {product} and other {sysml} modeling tools?*

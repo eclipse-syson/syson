@@ -74,9 +74,9 @@ image::release-notes-feature-typing-tool.png[Feature typing tool]
 == New features
 
 - A new filter `Hide Memberships` has been added in Explorer view toolbar to hide membership elements in the Explorer view.
-- A new filter `Hide KerML Standard Libraries` has been added in Explorer view toolbar to hide KerML/SysML libraries in the Explorer view.
+- A new filter `Hide {kerml} Standard Libraries` has been added in Explorer view toolbar to hide {kerml}/{sysml} libraries in the Explorer view.
 
 image::release-notes-filters.png[Explorer filters]
 - `{afv}` diagrams are now available on Package elements.
 - `Requirement view` diagrams are now available on Package elements.
-- It's now possible to import SysMLv2 textual files into {product}, through the existing document upload modal.
+- It's now possible to import {sysmlv2}textual files into {product}, through the existing document upload modal.

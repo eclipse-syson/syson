@@ -7,8 +7,8 @@ By default, publishing a project can be done by using the dedicated command from
 
 image::release-notes-publication-command.png[Publication command, width=65%,height=65%]
 
-Note that it is only available for projects with documents containing SysML elements as their root contents.
-The publication process only publishes the SysML contents.
+Note that it's only available for projects with documents containing {sysml} elements as their root contents.
+The publication process only publishes the {sysml} contents.
 
 image::release-notes-publication-model.png[Publication command, width=30%,height=30%]
 

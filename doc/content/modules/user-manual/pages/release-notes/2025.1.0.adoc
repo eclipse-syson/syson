@@ -13,7 +13,7 @@
 image::release-notes-new-palette.png[New palette tool, width=50%,height=50%]
 
 
-- *New command palette*: With "CTRL + k" or on the top right side of SysON, a search command window will be displayed to help you to quickly process any tool command.
+- *New command palette*: With "CTRL + k" or on the top right side of {product}, a search command window will be displayed to help you to quickly process any tool command.
 
 [NOTE]
 ====
@@ -26,8 +26,8 @@ image::release-notes-command-palette-search.png[Command Palette, width=80%,heigh
 - *New explorer view*: Rework the structure of standard and user libraries in the Explorer view.
 The Explorer view now contains the following directories for libraries:
 * _Libraries_: top-level container for all the libraries used in the project
-** _KerML_: KerML standard libraries
-** _SysML_: SysML standard libraries
+** _{kerml}_: {kerml} standard libraries
+** _{sysml}_: {sysml} standard libraries
 ** _User Libraries_: User-imported libraries
 
 image::release-notes-libraries-directories.png[Libraries Directories in the explorer]
@@ -41,12 +41,12 @@ No breaking changes.
 
 - Fix textual export of `LibraryPackage`: the exported file now correctly contains `library package <Package Name>` instead of `package <Package Name>`.
 - Fix an issue that made the expand action of the explorer not work on specific filter combinations.
-The explorer now correctly allows to expand elements when the _Hide Root Namespaces_ filter is disabled and the `Hide KerML/SysML Standard Libraries` filter is enabled.
+The explorer now correctly allows to expand elements when the _Hide Root Namespaces_ filter is disabled and the `Hide {kerml}/{sysmlv2} Standard Libraries` filter is enabled.
 - Fix an issue where some error messages were displayed when an element with implicit Specialization was selected and the Related Elements View was displayed.
 - Fix deletion of imported models from the explorer.
-Users can now delete imported library _models_ (i.e. models with a `LibraryPackage` element), but they cannot edit them nor delete elements inside them.
-Imported models that do not contain libraries can be modified as regular models created in the project.
-- Ensure that a non-library imported model is not moved into the _User libraries_ directory when a _LibraryPackage_ is created in it.
+Users can now delete imported library _models_ (that's models with a `LibraryPackage` element), but they can't edit them nor delete elements inside them.
+Imported models that don't contain libraries can be modified as regular models created in the project.
+- Ensure that a non-library imported model isn't moved into the _User libraries_ directory when a _LibraryPackage_ is created in it.
 
 
 == New features
@@ -55,7 +55,7 @@ Imported models that do not contain libraries can be modified as regular models 
 
 image::release-notes-namespace-import.png[Namespace import node, width=50%,height=50%]
 
-- A new palette is available in SysON, all tools have been organized in sections.
+- A new palette is available in {product}, all tools have been organized in sections.
 
 image::release-notes-new-palette.png[New palette tool, width=50%,height=50%]
 
@@ -67,23 +67,33 @@ Some actions (delete, edit, ...) are also available as shortcuts.
 
 image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, width=50%,height=50%]
 
-- New SysMLv2 Project Data Versioning-related REST APIs. The new endpoints are:
-* getCommits (GET /api/rest/projects/\{projectId}/commits): Get all commits in the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
-* createCommit (POST /api/rest/projects/\{projectId}/commits): Create a commit in the given project. There is only one commit per project in SysON for now, so the default implementation of this method does nothing.
-* getCommitById (GET /api/rest/projects/\{projectId}/commits/\{commitId}): Get the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
-* getCommitChange (GET /api/rest/projects/\{projectId}/commits/\{commitId}/changes): Get all changes of the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all elements containing in the project, without taking care of data created/updated/deleted since the creation of the project.
-* getCommitChangeById (GET /api/rest/projects/\{projectId}/commits/\{commitId}/changes/\{changeId}): Get the changes associated to the given change Id for the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all changes containing in the project, without taking care of data created/updated/deleted since the creation of the project. The change Id parameter should be randomly generated but constant for an unlimited period. We decided to generate this Id from it's commit Id and element Id, to be able to compute it.
+- New {sysmlv2} Project Data Versioning-related REST APIs. The new endpoints are:
+* getCommits (GET /api/rest/projects/\{projectId}/commits): Get all commits in the given project.
+There is only one commit per project in {product} for now, and its Id is the same as the project Id.
+It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+* createCommit (POST /api/rest/projects/\{projectId}/commits): Create a commit in the given project.
+There is only one commit per project in {product} for now, so the default implementation of this method does nothing.
+* getCommitById (GET /api/rest/projects/\{projectId}/commits/\{commitId}): Get the commit represented by its Id for the given project.
+There is only one commit per project in {product} for now, and its Id is the same as the project Id.
+It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+* getCommitChange (GET /api/rest/projects/\{projectId}/commits/\{commitId}/changes): Get all changes of the commit represented by its Id for the given project.
+There is only one commit per project in {product} for now, and its Id is the same as the project Id.
+The default implementation retrieves all elements containing in the project, without taking care of data created/updated/deleted since the creation of the project.
+* getCommitChangeById (GET /api/rest/projects/\{projectId}/commits/\{commitId}/changes/\{changeId}): Get the changes associated to the given change Id for the commit represented by its Id for the given project.
+There is only one commit per project in {product} for now, and its Id is the same as the project Id.
+The default implementation retrieves all changes containing in the project, without taking care of data created/updated/deleted since the creation of the project. The change Id parameter should be randomly generated but constant for an unlimited period.
+We decided to generate this Id from it's commit Id and element Id, to be able to compute it.
 
 == Improvements
 
-- `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
-- Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
-- Add support of `OccurrenceDefinition` and `OccurrenceUsage` in export from model to textual SysMLv2.
+- `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the {sysmlv2} metamodel to conform to the specification.
+- Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what's imported and the errors encountered.
+- Add support of `OccurrenceDefinition` and `OccurrenceUsage` in export from model to textual {sysmlv2}.
 - Remove 'New objects from text' contextual menu entry for libraries.
 - Allow to import `.kerml` textual files.
 - Remove 'New object' and 'New representation' contextual menu entries for libraries.
 - Remove Sirius Web default explorer.
-The SysON Explorer is now the default explorer for SysON, and the Sirius Web explorer cannot be used anymore.
+The {product} Explorer is now the default explorer for {product}, and the {sw} explorer can't be used anymore.
 
 
 == Dependency update
@@ -92,4 +102,4 @@ The SysON Explorer is now the default explorer for SysON, and the Sirius Web exp
 
 == Technical details
 
-* For technical details on this {product} release please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release see https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

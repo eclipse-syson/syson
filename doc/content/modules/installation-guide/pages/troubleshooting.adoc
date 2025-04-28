@@ -31,7 +31,7 @@ TIP: Check that you are consulting the documentation version that matches the JA
 Refer to the xref:installation-guide:how-tos/install.adoc#start-app[] section for detailed instructions according to your version.
 
 == Empty page in web browser
-If you encounter an empty page while accessing to SysON through your web browser, it might be because you have installed {product} on a local server or machine and want to access it from another one.
+If you encounter an empty page while accessing to {product} through your web browser, it might be because you have installed {product} on a local server or machine and want to access it from another one.
 
 If you open the dev tools of your web browser, you may found the following message: `Uncaught TypeError: crypto.randomUUID is not a function`.
 
@@ -42,5 +42,5 @@ Docker images are build to run on x86_64 architecture.
 If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
 [source, bash]
 ----
-export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----

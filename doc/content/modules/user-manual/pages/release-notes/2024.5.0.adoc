@@ -16,7 +16,7 @@ This promotes better data exchange and collaboration.
 == Breaking changes
 
 - The `requirement-view` diagram has been introduced by error in the last release.
-This diagram isn't defined in the SysMLv2 specification.
+This diagram isn't defined in the {sysmlv2} specification.
 It has been deleted in this release.
 
 == Dependencies update
@@ -33,7 +33,7 @@ It has been deleted in this release.
 image::release-notes-attribut-compartmen-interconnection-view.png[Attribute compartment from {iv}]
 
 - No error is raised anymore when setting a valid new value (with primitive type) in the Details view.
-- The body feature of a `Comment` remove now the "/\*" and "*/" characters while importing a model from SysML textual format.
+- The body feature of a `Comment` remove now the "/\*" and "*/" characters while importing a model from {sysml} textual format.
 - All `Memberships` are now contained in their parent through `ownedRelatedElement` instead of `ownedRelationship` reference.
 - Rename action from explorer is now renaming tree items as expected.
 - `EnumerationDefinition` is now created with a default name.

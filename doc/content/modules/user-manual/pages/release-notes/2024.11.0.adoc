@@ -2,11 +2,11 @@
 
 == Key highlights
 
-- *Model conformance to SysMLv2 Beta 2.2 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.2 specifications released on October 2024.
+- *Model conformance to {sysmlv2} Beta 2.2 version*: the metamodel has been modified to conform to {sysmlv2} and {kerml} Beta 2.2 specifications released on October 2024.
 All standard libraries have also been updated.
-- *Introduce SysMLv2 REST APIs*: introduce partial support of the standard REST APIs from the OMG https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI].
-In this first implementation we have implemented Project-related & Object-related REST APIs.
-Please read the xref:developer-guide:api.adoc[APIs section] in this documentation for more details.
+- *Introduce {sysmlv2} REST APIs*: introduce partial support of the standard REST APIs from the OMG https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI].
+In this first implementation we've implemented Project-related & Object-related REST APIs.
+Read the xref:developer-guide:api.adoc[APIs section] in this documentation for more details.
 
 == Breaking changes
 
@@ -34,7 +34,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 The method `getSuccessionLabel` in `ViewLabelService` has been deleted, succession labels are now computed with the generic `getEdgeLabel` method.
 - Allow the drop of elements on empty diagram nodes.
 Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflect the new use cases of the class.
-- Align metamodel to SysMLv2 and KerML Beta 2.2 specifications.
+- Align metamodel to {sysmlv2} and {kerml} Beta 2.2 specifications.
 The changes are:
 * Import
 ** visibility attribute default value is now `private` instead of `public`
@@ -69,10 +69,10 @@ The changes are:
 - Fix import of some boolean attributes (`Type#isAbstract`, `Feature#isDerived`, `Feature#isEnd`, `Feature#isReadOnly`).
 - Fix an issue where the import failed to resolve `redefinedFeature` references when the `Redefinition` had no name.
 - Fix an issue where `InterfaceUsage` and `FlowConnectionUsage` elements might be created inside the wrong membership in the Interconnection View diagram.
-- Add `declaredName` attribute in `AnnotatingElement` (if present) in export to textual SysMLv2.
+- Add `declaredName` attribute in `AnnotatingElement` (if present) in export to textual {sysmlv2}.
 - Fix visibility issue when resolving name of privately imported element during export.
 - Fix an issue where it was impossible anymore to delete the cardinality of a `Usage` as graphical node through direct edit.
-- Fix an issue where `Subsetting` elements were not deleted at the same time as the deletion of their subsetted `Feature`.
+- Fix an issue where `Subsetting` elements weren't deleted at the same time as the deletion of their subsetted `Feature`.
 
 == Improvements
 
@@ -85,24 +85,24 @@ The changes are:
 - Remove default name of relationships and improve edge labels.
 - Allow to create dependencies from the Explorer view.
 - Allow the drop of elements on empty diagram nodes.
-It is now possible to drop elements from the explorer on the information box visible on empty diagrams.
+It's now possible to drop elements from the explorer on the information box visible on empty diagrams.
 The dropped element is displayed on the diagram, the same way element creation tools on the information box display them on the diagram.
 - Exclude `src/test/resources` from checkstyle.
-This reduces the time required to build SysON, especially when using Spring Tool Suite.
-- Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
+This reduces the time required to build {product}, especially when using Spring Tool Suite.
+- Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that's subset.
 - Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`.
 - Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
-- Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements in export to textual SysMLv2.
-- All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
+- Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements in export to textual {sysmlv2}.
+- All standard libraries have been updated to comply with the {sysml} Beta 2.2 specification.
 - Improve import feature non regression tests.
 Added source sysml file and unaltered ast.json result.
 
 == New features
 
 - Add a new Custom node representing à _Note_ among possible node style descriptions available.
-The custom node is resizable and the text content is wrapped (back to the line) if it is too long compare to the node size.
+The custom node is resizable and the text content is wrapped (back to the line) if it's too long compare to the node size.
 - Represent `Documentation` as _Note_ graphical node.
 The `Documentation` graphical node can appear when user drag and drop `Documentation` element from explorer on the diagram.
 The `Documentation` graphical node is linked to its documented element by an edge and the node can only appear if the documented element is represented on the diagram.
@@ -123,7 +123,7 @@ This property widget will only handle the first `Comment` associated to the sele
 If no `Comment` is associated to the selected element, then a new value in this widget will also create a `Comment` element and will associate it to the selected element.
 - Add an edge tool to add target element as nested usage.
 This complements the existing tool that allows to add the source element as a nested usage of the target.
-- Introduce SysMLv2 REST APIs.
+- Introduce {sysmlv2} REST APIs.
 In this first implementation we will only implement the following REST APIs, thanks to Sirius Web:
 * Project-related REST APIs:
 ** getProjects (GET /api/rest/projects): Get all projects.

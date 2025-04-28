@@ -2,13 +2,13 @@
 
 == Key highlights
 
-- *Expanded Diagram and Model Support*: We've significantly expanded our support for various elements and tools.
+- *Expanded Diagram and Model Support*: We've significantly expanded the support for various elements and tools.
 - *Increased Stability and Reliability*: We've addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
-These improvements help maintain the integrity and accuracy of semantic data.
+These improvements help keep the integrity and accuracy of semantic data.
 
 == Breaking changes
 
-- Add standard libraries and new models now have a root Namespace to conform with KerML/SysML specifications.
+- Add standard libraries and new models now have a root Namespace to conform with {kerml}/{sysml} specifications.
 - Generalization of StateTransition descriptions.
   * Rename `AbstractDiagramDescriptionProvider` `nameGenerator` as `descriptionNameGenerator`. Impacted concrete implementations: `ActionFlowViewDiagramDescriptionProvider`, `GeneralViewDiagramDescriptionProvider`,  `InterconnectionViewForDefinitionDiagramDescriptionProvider`, `InterconnectionViewForUsageDiagramDescriptionProvider`, `StateTransitionViewDiagramDescriptionProvider`.
   * Rename `syson-diagram-statetransition-view` `CompartmentNodeDescriptionProvider` as `StateTransitionActionsCompartmentNodeDescriptionProvider`.
@@ -17,7 +17,7 @@ These improvements help maintain the integrity and accuracy of semantic data.
   * `StateTransitionCompartmentNodeToolProvider` moved to `syson-diagram-common-view`
   * `createState` and `createOwnedAction` services moved to `ViewToolService`
 - Switch to sirius-web domain driven design architecture.
-Please download your existing SysON projects before moving to this new version.
+Download your existing {product} projects before moving to this new version.
 A reset of the database is needed.
 - Code refactoring:
   * Move `AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
@@ -50,15 +50,15 @@ A reset of the database is needed.
 - Switch to `maven-checkstyle-plugin` 3.3.1
 - Switch to `subscriptions-transport-ws` 0.11.0
 - Remove the dependency to `reflect-metadata`
-- Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
+- Add test dependency to Cypress 12.11.0 (only required to run integration tests)
 
 == Bug fixes
 
-- Fix an issue where the direct edit of single digit cardinalities were not taken into account.
+- Fix an issue where the direct edit of single digit cardinalities weren't taken into account.
 
 image::release-notes-direct-edit-cardinality.png[Direct edit cardinality]
 
-- Fix an issue where _Allocate_ edges were not displayed in the Action Flow View diagram.
+- Fix an issue where _Allocate_ edges weren't displayed in the Action Flow View diagram.
 
 image::release-notes-afv-allocate.png[Action Flow View - Allocate edges]
 
@@ -70,8 +70,8 @@ image::release-notes-afv-allocate.png[Action Flow View - Allocate edges]
 - Fix names used during textual export of _FeatureChainExpression_ elements.
 - Fix missing parts of _InvocationExpression_ elements during textual export.
 - Fix missing element names in the _Expression_ element during textual export.
-- Fix an issue where the simple quotes were not escaped when exporting as textual files.
-- Fix an issue where models were exported with a global indentation instead of no indentation. 
+- Fix an issue where the simple quotes weren't escaped when exporting as textual files.
+- Fix an issue where models were exported with a global indentation instead of no indentation.
 - Fix textual import of _Documentation_ elements by removing /* */ around texts.
 - Fix an issue where the _Adjust size_ tool had no effect on Packages nodes.
 
@@ -82,18 +82,18 @@ image::release-notes-diagrams-package-adjust-size.png[Package Adjust size tool]
 
 == Improvements
 
-- Add root _Namespace_ to SysON models and libraries to conform to SysMLv2 specification.
+- Add root _Namespace_ to {product} models and libraries to conform to {sysmlv2} specification.
 
 image::release-notes-root-namespace.png[Root Namespace]
 
 - Improve support for whitespace, quotes, and special characters in direct edit.
 - Handle start and done actions in Action Flow View & General View diagrams.
 - Add _State_ and _StateDefinition_ in the General View diagram.
-- Add Transition source and target to Core properties in the Details view.
+- Add _Transition_ source and target to Core properties in the Details view.
 
 image::release-notes-details-view-transition.png[Details View Transition]
 
-- All _redefines_ references of the SysMLv2 metamodel have been implemented.
+- All _redefines_ references of the {sysmlv2} metamodel have been implemented.
 - The textual import running process have been improved.
 By default, end users don't have to copy _syside-cli.js_ near the _syson-application_ jar anymore.
 The embedded _syside-cli.js_ is copied in a system temp folder and executed from there (with node).
@@ -103,15 +103,16 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 image::release-notes-details-view-typed-by-property.png[Details View Typed by]
 
 - Rename creation tools for Start and Done actions (from Add Start/Done to New Start/Done)
-- Reduce the default height of the Package node in diagrams 
+- Reduce the default height of the Package node in diagrams
 - Move Feature#direction in Core properties tab of the Details view
 - Sort New Object menu entries
 - Add Direct Edit tool in _Control_ (_ForkNode_, _JoinNode_...) nodes palettes
-- Allow multiple occurrences of Start and Done actions in actions compartments.
-- Rewrite textual import. It is still an experimental feature but should now be faster and accurate.
+- Allow several occurrences of Start and Done actions in actions compartments.
+- Rewrite textual import.
+It's still an experimental feature but should now be faster and accurate.
 - Rewrite the _addExistingElement_ tool.
-The tool now works correctly on packages, and doesn't render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).
-- The empty/null values for _Subsetting_/_Redefinition_/_Subclassification_/_FeatureTyping_ are not displayed anymore in diagram node labels.
+The tool now works on packages, and doesn't render sibling elements when their semantic element has been rendered by another node (for example in a compartment).
+- The empty/null values for _Subsetting_/_Redefinition_/_Subclassification_/_FeatureTyping_ aren't displayed anymore in diagram node labels.
 - Add tools for creating Ports with direction
 - Add tools for creation Items with direction
 - Change the default name of the transition element to _source_to_target_
@@ -132,7 +133,7 @@ image::release-notes-visibility-icons.png[Visibility icons]
 
 == New features
 
-- Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks.
+- Add Cypress test infrastructure and run the Cypress tests as part of pull request checks.
 - Add integration test infrastructure
 - Initial contribution of this documentation
 - Handle the _JoinNode_, _MergeNode_, _ForkNode_, _DecisionNode_ elements in actions compartments.

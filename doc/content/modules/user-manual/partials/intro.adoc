@@ -1,4 +1,4 @@
-{product} is a web-based open source graphical modeling environment for authoring Systems Modeling Language - `SysML` version 2 models.
+{product} is a web-based open source graphical modeling environment for authoring Systems Modeling Language - `{sysml}` version 2 models.
 It provides support for {sysmlv2}, a standardized language for modeling complex systems.
 {product} offers features for creating, editing, and visualizing {sysmlv2} models, enabling users to capture system requirements, design architectures, and analyze system behavior.
 
