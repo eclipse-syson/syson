@@ -88,6 +88,8 @@ public class GeneralViewDiagramDescriptionTests {
                 // SuccessionAsUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSuccessionAsUsage()).negate())
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
+                // TransitionUsage has a label but the grammar does not support the direct edit tool yet
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getTransitionUsage()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

@@ -16,19 +16,11 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.Objects;
 import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.syson.services.DiagramDirectEditListener;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.grammars.DirectEditLexer;
-import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -39,7 +31,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.StateSubactionMembership;
-import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -53,6 +44,9 @@ import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
  * @author arichard
  */
 public class ViewLabelService extends LabelService {
+
+    private static final String SPACE = " ";
+
     /**
      * The default separator used when printing a set of Trigger Actions for a TransitionUsage label
      */
@@ -188,8 +182,8 @@ public class ViewLabelService extends LabelService {
      */
     public String getPrefixedCompartmentItemUsageLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
-        if (usage instanceof ActionUsage au && usage.eContainer() instanceof StateSubactionMembership ssm) {
-            label.append(ssm.getKind() + " ");
+        if (usage instanceof ActionUsage && usage.eContainer() instanceof StateSubactionMembership ssm) {
+            label.append(ssm.getKind() + SPACE);
         }
         label.append(this.getCompartmentItemLabel(usage));
         return label.toString();
@@ -259,34 +253,6 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Edit the TransitionUsage based on the provided textual content {@code newLabel}.
-     *
-     * @param element
-     *            The {@link TransitionUsage} to edit
-     * @param newLabel
-     *            The user provided label
-     * @return the given {@link TransitionUsage}.
-     */
-    public Element directEditTransitionEdgeLabel(TransitionUsage element, String newLabel) {
-        DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        DirectEditParser parser = new DirectEditParser(tokens);
-        ParseTree tree = parser.transitionExpression();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        String[] options = new String[] { LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.VALUE_OFF, LabelService.TYPING_OFF };
-        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
-        walker.walk(listener, tree);
-
-        // cleanup deleted elements on empty expression
-        // We do not handle guard at the moment
-        Stream.of(TransitionFeatureKind.TRIGGER, TransitionFeatureKind.EFFECT)
-                .filter(val -> !listener.getVisitedTransitionFeatures().get(val))
-                .forEach(val -> this.utilService.removeTransitionFeaturesOfSpecificKind(element, val));
-
-        return element;
-    }
-
-    /**
      * Computes the label for a {@link TransitionUsage}.
      *
      * @param transition
@@ -295,24 +261,10 @@ public class ViewLabelService extends LabelService {
      *            holds <code>true</code> to display the guard
      */
     public String getTransitionLabel(TransitionUsage transition, boolean displayGuard) {
-        Appender appender = new Appender(" ", " ");
-        EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
-        if (!triggerActions.isEmpty()) {
-            String triggerLabel = this.getTriggerActionsDefaultDirectEditLabel(triggerActions);
-            if (!triggerLabel.isBlank()) {
-                appender.append(triggerLabel);
-            }
-        }
-        if (displayGuard) {
-            EList<Expression> guardExpressions = transition.getGuardExpression();
-            if (!guardExpressions.isEmpty()) {
-                SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(" ", " ", new NameDeresolver(), null);
-                String textGuardExpression = guardExpressions.stream().map(sysmlSerializer::doSwitch)
-                        .filter(Objects::nonNull)
-                        .collect(joining(GUARD_EXPRESSION_SEPARATOR));
-                appender.appendWithSpaceIfNeeded("[").append(textGuardExpression).append("]");
-            }
-        }
+        // trigger-expression '/' ActionUsage
+        Appender appender = new Appender(SPACE, SPACE);
+
+        this.handleTransitionTriggerExpression(transition, displayGuard, appender);
 
         EList<ActionUsage> effectActions = transition.getEffectAction();
         if (!effectActions.isEmpty()) {
@@ -354,7 +306,7 @@ public class ViewLabelService extends LabelService {
     private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
         return elements.stream()
                 .map(action -> {
-                    if (action instanceof AcceptActionUsage aau) {
+                    if (action instanceof AcceptActionUsage aau && aau.getPayloadParameter() != null) {
                         return this.getDefaultInitialDirectEditLabel(aau.getPayloadParameter());
                     }
                     return this.getDefaultInitialDirectEditLabel(action);
@@ -363,26 +315,40 @@ public class ViewLabelService extends LabelService {
                 .orElse("");
     }
 
-    private String getTriggerActionsDefaultDirectEditLabel(EList<AcceptActionUsage> triggerActions) {
-        String triggerLabel;
-        triggerLabel = this.getElementsDefaultInitialDirectEditLabel(triggerActions, (a, b) -> {
-            return a + TRIGGER_ACTION_SEPARATOR + b;
-        });
-        return triggerLabel;
-    }
-
-    private String getGuardExpressionsDefaultDirectEditLabel(EList<Expression> guardExpressions) {
-        var guardLabel = this.getElementsDefaultInitialDirectEditLabel(guardExpressions, (a, b) -> {
-            return a + GUARD_EXPRESSION_SEPARATOR + b;
-        });
-        return guardLabel;
-    }
-
     private String getEffectActionsDefaultDirectEditLabel(EList<ActionUsage> effectActions) {
         String effectLabel;
         effectLabel = this.getElementsDefaultInitialDirectEditLabel(effectActions, (a, b) -> {
             return a + EFFECT_ACTION_SEPARATOR + b;
         });
         return effectLabel;
+    }
+
+    private void handleTransitionTriggerExpression(TransitionUsage transition, boolean displayGuard, Appender appender) {
+        this.handleAcceptParameterPart(transition, appender);
+        if (displayGuard) {
+            this.handleGuardExpression(transition, appender);
+        }
+    }
+
+    private void handleGuardExpression(TransitionUsage transition, Appender appender) {
+        EList<Expression> guardExpressions = transition.getGuardExpression();
+        if (!guardExpressions.isEmpty()) {
+            SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(SPACE, SPACE, new NameDeresolver(), null);
+            String textGuardExpression = guardExpressions.stream().map(sysmlSerializer::doSwitch)
+                    .filter(Objects::nonNull)
+                    .collect(joining(GUARD_EXPRESSION_SEPARATOR));
+            appender.appendWithSpaceIfNeeded("[").append(textGuardExpression).append("]");
+        }
+    }
+
+    private void handleAcceptParameterPart(TransitionUsage transition, Appender appender) {
+        EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
+        if (!triggerActions.isEmpty()) {
+            SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(SPACE, SPACE, new NameDeresolver(), null);
+            String textGuardExpression = triggerActions.stream().map(sysmlSerializer::getAcceptParameterPart)
+                    .filter(Objects::nonNull)
+                    .collect(joining(TRIGGER_ACTION_SEPARATOR));
+            appender.append(textGuardExpression);
+        }
     }
 }

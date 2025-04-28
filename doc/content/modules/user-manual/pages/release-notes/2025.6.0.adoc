@@ -4,7 +4,18 @@
 
 == Breaking changes
 
-No breaking changes.
+- Editing the label of a `TransitionUsage` directly from the diagram is no longer supported.  
+The label aggregates multiple complex elements, including:
+
+* **Accepter**
+* **Payload**
+* **Receiver**
+* **Guard**
+* **Effect**
+
+The current editing infrastructure is not sufficiently robust to manage all of these components reliably.
+To prevent potential loss or corruption of data during editing, this functionality has been disabled.
+Future contributions are planned to introduce enhanced capabilities for editing these properties directly within the diagram.
 
 == Bug fixes
 
@@ -119,6 +130,38 @@ part part1 {
 ```
 - New tools have been introduced in `Behavior` section of State elements (Usage and Definition) to create state sub actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
 Existing tools `New Entry Action`, `New Do Action` and `New Exit Action` have been updated to be aligned with SysMLV2 specification.
+
+- In _General View_ diagram, improve the label of `TransitionUsage` in order to be able to display the _accepter information.
+For example for :
+
+```
+item def TurnOn;
+state def OnOff2 {
+    private import SI::*;
+    private import ScalarValues::*;
+    port commPort;
+    attribute x : Real;
+    state off;
+    state on;
+    state idle;
+    transition off_on
+    	first off
+    	accept TurnOn via commPort
+    	then on;
+    transition on_off
+    	first on
+    	accept after 5 [min]
+    	then off;
+    transition on_idle
+    	first on
+    	if x > 0.0
+    	then idle;
+}
+```
+
+The _General View_ diagram will display `TransitionUsage` as:
+
+image::StateTransitionUsageLabels.png[TransitionUsage labels]
 
 == Dependency update
 

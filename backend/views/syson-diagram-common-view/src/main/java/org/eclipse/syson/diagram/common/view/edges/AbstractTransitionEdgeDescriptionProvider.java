@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -29,7 +28,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -109,27 +107,6 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
     @Override
     protected String getTargetReconnectToolPreconditionExpression() {
         return this.getSourceReconnectToolPreconditionExpression();
-    }
-
-    /**
-     * Label edit tool setting the attributes of an {@linkplain EOperation} based on the provided input. Will allow to
-     * set the {@linkplain EOperation} dataType, parameters, and cardinality values. <br/>
-     * Relies on {@code org.eclipse.emf.ecoretools.design.service.DesignServices.performEdit(EAttribute, String)} or
-     * {@code org.eclipse.emf.ecoretools.design.service.DesignServices.performEdit(EOperation, String)}.
-     *
-     * @return The LabelEditTool for the TransitionEdge
-     */
-    @Override
-    protected LabelEditTool getEdgeEditTool() {
-        var changeContext = this.getViewBuilderHelper().newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEditTransitionEdgeLabel", "newLabel"))
-                .build();
-
-        return this.getDiagramBuilderHelper().newLabelEditTool()
-                .name("Edit TransitionUsage Label")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getTransitionLabel", "false"))
-                .body(changeContext)
-                .build();
     }
 
     /**
