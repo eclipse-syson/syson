@@ -14,6 +14,7 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE_STYLE;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -47,6 +48,7 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -175,6 +177,44 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
             assertThat(this.identityService.getId(flow.getSourceFeature())).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_ID);
             assertThat(this.identityService.getId(flow.getTargetFeature().get(0))).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_ID);
+        });
+    }
+
+    @DisplayName("Given a SysML Project with ItemUsages on ActionUsage, when creating a BindingConnectorAsUsage between them, then an edge should be displayed to represent that new binding")
+    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void checkItemUsageBindingConnectorAsUsage() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()),
+                "New Binding Connector As Usage (bind)");
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                this.diagram,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_2_OUT_ITEM_ID,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID,
+                creationToolId));
+
+        String[] newBinding = new String[1];
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            newBinding[0] = newEdge.getTargetObjectId();
+            assertThat(newEdge)
+                    .hasSourceId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_2_OUT_ITEM_ID)
+                    .hasTargetId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID)
+                    .extracting(Edge::getStyle, EDGE_STYLE)
+                    .hasSourceArrow(ArrowStyle.None)
+                    .hasTargetArrow(ArrowStyle.None);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, BindingConnectorAsUsage.class, () -> newBinding[0], binding -> {
+            assertThat(this.identityService.getId(binding.getSourceFeature()))
+                    .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_OUT_ITEM_ID);
+            assertThat(this.identityService.getId(binding.getTargetFeature().get(0)))
+                    .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
         });
     }
 

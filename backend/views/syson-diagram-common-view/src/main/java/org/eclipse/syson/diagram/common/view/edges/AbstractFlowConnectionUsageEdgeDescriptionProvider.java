@@ -85,10 +85,10 @@ public abstract class AbstractFlowConnectionUsageEdgeDescriptionProvider extends
                 .centerLabelExpression("aql:self.getEdgeLabel()")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression("aql:self.sourceOutputFeature.unwrapReferenceUsage()")
+                .sourceExpression("aql:self.sourceOutputFeature.unwrapFeature()")
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.targetInputFeature.unwrapReferenceUsage()")
+                .targetExpression("aql:self.targetInputFeature.unwrapFeature()")
                 .build();
     }
 
