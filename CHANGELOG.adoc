@@ -12,6 +12,9 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/1258[#1258] [publication] Add required libraries as dependencies when publishing a project.
+Publishing a project that has a dependency to a library now correctly produces a library with the same dependency.
+
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1192[#1192] [general-view] Add `ConnectionDefinition` in _General View_ diagram

@@ -19,6 +19,9 @@ Future contributions are planned to introduce enhanced capabilities for editing 
 
 == Bug fixes
 
+- Fix an issue that made published libraries' dependencies always empty.
+Publishing a project with a dependency to a library now correctly produces a library with the same dependency.
+
 
 == New features
 
