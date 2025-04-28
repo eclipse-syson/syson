@@ -13,7 +13,7 @@
 == Dependencies update
 
 - Switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.1.1[Sirius Web v2024.1.1]
-- {product} SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
+- {product} {sysmlv2} metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
 - Switch to vite 4.5.2
 
 == New features
@@ -22,7 +22,7 @@
 
 image::release-notes-help-background.png[Diagram help background]
 
-- Add support for SysMLv2 standard libraries.
+- Add support for {sysmlv2} standard libraries.
 Some {kerml} libraries have been added:
 `Base`, `BooleanFunctions`, `Clocks`, `CollectionFunctions`, `Collections`, `ComplexFunctions`, `ControlFunctions`, `DataFunctions`, `IntegerFunctions`, `KerML`, `Links`, `NaturalFunctions`, `NumericalFunctions`, `RationalFunctions`, `RealFunctions`, `ScalarFunctions`, `ScalarValues`, `SequenceFunctions`, `StringFunctions`, `TrigFunctions`, `VectorFunctions`, `VectorValues`.
 Some of these libraries might have partial content.

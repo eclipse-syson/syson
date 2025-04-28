@@ -73,7 +73,7 @@ Three filters are available in the {explorer} to filter element by kind:
 
 * Hide Memberships,
 * Hide {kerml} Standard Libraries,
-* Hide SysML Standard Libraries.
+* Hide {sysml} Standard Libraries.
 
 These filters allow to clear the {explorer} view.
 By hiding the technical elements, only the data directly exploited by the user are displayed, which make the model more readable in the {explorer} view.

@@ -1,6 +1,6 @@
 = Create Your First Model
 
-This tutorial provides a beginner-friendly guide on creating your first {sysmlv2} model with {product}, adapted from the example in the https://github.com/MBSE4U/dont-panic-batmobile[Don't Panic - The Absolute Beginner's Guide to SysML v2] book by Tim Weilkiens and Christian Muggeo.
+This tutorial provides a beginner-friendly guide on creating your first {sysmlv2} model with {product}, adapted from the example in the https://github.com/MBSE4U/dont-panic-batmobile[Don't Panic - The Absolute Beginner's Guide to {sysmlv2}] book by Tim Weilkiens and Christian Muggeo.
 The focus is on representing the Batmobile system, the iconic car of Batman.
 
 == Step 1: Create a Project

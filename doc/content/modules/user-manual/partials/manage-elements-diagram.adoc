@@ -8,7 +8,7 @@ User can click on the tool section and then click on the desired creation tool.
 
 image::manage-elements-fromBackground-creation.png[Creation from Diagram Background]
 
-Inside a tool section (e.g. the Structure tool section):
+Inside a tool section (for example the Structure tool section):
 
 image::manage-elements-fromBackground-creation-2.png[Creation from Diagram Background]
 
@@ -51,5 +51,5 @@ image::manage-elements-semantic-deletion.png[Semantic Deletion]
 [TIP]
 ====
 This preference is stored in the local storage of the browser.
-You can reset it by deleting the SysON data in cache of your browser.
+You can reset it by deleting the {product} data in cache of your browser.
 ====

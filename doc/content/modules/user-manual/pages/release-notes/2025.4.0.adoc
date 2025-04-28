@@ -2,9 +2,9 @@
 
 == Key highlights
 
-- *Model conformance to SysMLv2 Beta 2.4 version*: the metamodel has been modified to conform to SysMLv2 and KerML 2024-12 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
-All existing models/projects in SysON will be automatically migrated to this new version.
-In any case, please download all your existing models/projects before upgrading to 2025.4.0 (as always).
+- *Model conformance to {sysmlv2} Beta 2.4 version*: the metamodel has been modified to conform to {sysmlv2} and {kerml} 2024-12 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
+All existing models/projects in {product} will be automatically migrated to this new version.
+In any case, download all your existing models/projects before upgrading to 2025.4.0 (as always).
 
 - *Libraries publication/import*: the SysML contents of a project may now be published as a library.
 After publication, the library is listed in `<baseUrl>/libraries/`.
@@ -16,12 +16,12 @@ More details at xref:user-manual:features/publication.adoc[Publication section] 
 
 - A `SuccessionUsage` now computes its _source_ and _target_ from the properties _sourceFeature_ and _targetFeature_.
 It might causes some `SuccessionUsage` not to be displayed correctly in diagrams if they were starting or ending from an inherited standard library `ActionUsage` (such as `start` or `done)`.
-In such cases, delete the `SuccessionUsage` graphical node and recreate it graphically (e.g. by drag&drop or with _Add existing element_ tool).
+In such cases, delete the `SuccessionUsage` graphical node and recreate it graphically (for example by drag&drop or with _Add existing element_ tool).
 
 == Bug fixes
 
 - Fix an issue while computing the name of `VariantMembership`.
-This has an impact on name resolution against `Element` contained in `VariantMembership` during the textual import process (e.g. for `EnumerationUsage` literals in `EnumerationDefinition`). 
+This has an impact on name resolution against `Element` contained in `VariantMembership` during the textual import process (for example for `EnumerationUsage` literals in `EnumerationDefinition`).
 - Fix resolution of "unrestricted" names. For example, while importing the following model, the reference to _'p 2'::'A 1'_ is now properly resolved.
 
 ```
@@ -32,7 +32,7 @@ package p1 {
     action 'a 2' : 'p 2'::'A 1';
 }
 ```
-- Fix a problem encountered during the import of a SysML textual file in a specific model configuration. The model incorrectly resolved the target of a `Redefinition` when a name conflict was detected.
+- Fix a problem encountered during the import of a {sysml} textual file in a specific model configuration. The model incorrectly resolved the target of a `Redefinition` when a name conflict was detected.
 - Fix an issue that prevented the export functionality to correctly produce qualified name for elements referenced in `FeatureReferenceExpression`.
 - In `Explorer View`, the fold/unfold arrow is now also available for non-sysml model elements.
 - Fix computation of `SuccessionAsUsage.getSourceFeature()` derived reference when using implicit source such as in the following example:
@@ -71,13 +71,13 @@ The attribute is now correctly `true` for elements contained in the ownership tr
 
 == New features
 
-- The SysML contents of a project may now be published as a library.
+- The {sysml} contents of a project may now be published as a library.
 The command palette now contains a dedicated command to do so.
 
 image::release-notes-publication-command.png[Publication command, width=65%,height=65%]
 
-Note that it is only available for projects with documents containing SysML elements as their root contents.
-The publication process only publishes the SysML contents.
+Note that it's only available for projects with documents containing {sysml} elements as their root contents.
+The publication process only publishes the {sysml} contents.
 
 image::release-notes-publication-model.png[Publication command, width=30%,height=30%]
 
@@ -86,7 +86,7 @@ Upon selecting this command, a dialog prompts for the library information.
 image::release-notes-publication-dialog.png[Publication command dialog, width=85%,height=85%]
 
 When the publication is successful, a success notification appears.
-Otherwise, an error notification appears, e.g. when trying to publish a library in a version that already exists.
+Otherwise, an error notification appears, for example when trying to publish a library in a version that already exists.
 
 image::release-notes-publication-success.png[Publication success notification, width=85%,height=85%]
 
@@ -158,8 +158,8 @@ This means projects may become invalid because some of the library elements it w
 
 == Improvements
 
-- Align metamodel to SysMLv2 2024-12 specification released on December 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML 2024-12 specification released on December 2024(see https://www.omg.org/spec/KerML/ for more details).
-Please download all your models/projects before upgrading to 2025.4.0.
+- Align metamodel to {sysmlv2} 2024-12 specification released on December 2024(see https://www.omg.org/spec/SysML/ for more details) and {kerml} 2024-12 specification released on December 2024(see https://www.omg.org/spec/KerML/ for more details).
+Download all your models/projects before upgrading to 2025.4.0.
 The new concepts are:
 * `CrossSubsetting` (inherits from `Subsetting`)
 * `IndexExpression` (inherits from `OperatorExpression`)
@@ -208,17 +208,17 @@ The modifications are:
 * `Definition#ownedConnection` now subsets `Definition#ownedUsage` instead of `Definition#ownedPart`
 * `Annotation#annotatingElement` is now derived
 * `AnnotatingElement#annotation` is now derived
-* `FlowConnectionDefinition` do not inherits from `ConnectionDefinition` anymore
-* `FlowConnectionUsage#flowConnectionDefinition` do not redefines `ConnectionUsage#connectionDefinition` anymore
-- All standard libraries have been updated to comply with the SysMLv2 2024-12 specification.
-- All validation rules have been updated to comply with the SysMLv2 2024-12 specification.
-- In _General View_ and _State Transition View_ diagrams, when `Packages` labels exceed the available space, an ellipsis is added to provide a visual indication that the
+* `FlowConnectionDefinition` don't inherits from `ConnectionDefinition` anymore
+* `FlowConnectionUsage#flowConnectionDefinition` don't redefines `ConnectionUsage#connectionDefinition` anymore
+- All standard libraries have been updated to comply with the {sysmlv2} 2024-12 specification.
+- All validation rules have been updated to comply with the {sysmlv2} 2024-12 specification.
+- In `General View` and `State Transition View` diagrams, when `Packages` labels exceed the available space, an ellipsis is added to offer a visual sign that the
 name is truncated.
 
 image::release-notes-package-name-ellipsis-overflow.png[Package name overflow with ellipsis, width=85%,height=85%]
 
 - In diagrams, the direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:user-manual:hands-on/how-tos/model-management.adoc#direct-edit[user documentation] ).
-- It is now possible to create a _General View_ diagram under root namespace elements.
+- It's now possible to create a `General View` diagram under root namespace elements.
 
 image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram on root namespace element, width=50%, height=50%]
 
@@ -227,7 +227,7 @@ image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram
 image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
 
 - Improve handling of `SuccessionAsUsage` textual import with implicit _source_ property.
-For example importing the following SysMLv2 content would now create a valid semantic model:
+For example importing the following {sysmlv2} content would now create a valid semantic model:
 
 ```
 action def ActionDef1 {
@@ -247,11 +247,10 @@ A new creation tool can be found in the `Requirements` section of the palette.
 
 image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage node creation tool, width=50%, height=50%]
 
-- The _General View_ diagram is now proposed first when creating a diagram.
-- It is now possible, in diagrams, to reduce the width of `Usages` (e.g. `Part`) and `Definition` (e.g. `Part Definition`) graphical nodes with a long name as their label can now be wrapped.
-
+- The `General View` diagram is now proposed first when creating a diagram.
+- It's now possible, in diagrams, to reduce the width of `Usages` (for example `Part`) and `Definition` (for example `Part Definition`) graphical nodes with a long name as their label can now be wrapped.
 - Improve textual import of `SuccessionAsUsage` which define a new target action directly after the 'then' keyword.
-For example importing the following SysML file would now create a valid semantic model:
+For example importing the following {sysml} file would now create a valid semantic model:
 
 ```
 action def ActionDef1 {
@@ -282,7 +281,7 @@ action a0 {
     action a2;
     action a3;
     action a4;
-   
+
     attribute attr1 : Real;
     first a0 then d1;
     decide d1;
@@ -301,31 +300,30 @@ action a0 {
     succession S first start if x < 0.0 then done;
 }
 ```
-- Implement `ConnectionDefinition` derived references and operations in SysON SysMLv2 metamodel.
+- Implement `ConnectionDefinition` derived references and operations in {product} {sysmlv2} metamodel.
 - `TransitionUsages` can now be displayed and created in the _General View_ and _Action Flow_ diagrams.
 Be aware that the guard expressions are displayed in the label but *can't* be edited yet using the direct edit tool.
 
 - Update Batmobile project example by fixing some of the issues found in the model:
 
-* improvements on `SuccessionAsUsage` and `TransitionUsage`
-* represent the "Drive Batmobile" action definition on the _General View_ diagram
+* Improvements on `SuccessionAsUsage` and `TransitionUsage`
+* Improvements of _General View_ diagram to be able to represent the "Drive Batmobile" action definition.
 
 image::DriveBatmobileActionFlow.png[Drive Batmobile ActionDefinition representation, width=85%,height=85%]
 
 - Simplify handling of "start" and "done" `ActionUsages`.
 Those elements can now be displayed without the special `Membership` previously used to "import" them in the parent.
-
-- The tool "Add Existing Elements" is now directly available from the Action Flow compartment in the _General View_ Diagram.
-- Add support for implicit redefinition of `Behavior` and `Step` parameters
+- The tool "Add Existing Elements" is now directly available from the Action Flow compartment in the `General View Diagram`.
+- Add support for implicit redefinition of `Behavior` and `Step` parameters.
 Parameters of `Behavior` and `Step` now implicitly redefine the matching parameters of `Behavior` subclassifications and `Step` specializations.
-See KerML 7.4.7.2 and 7.4.7.3 for more information.
-These implicit redefinitions are not visible in the diagrams nor the explorer (like all the other implicit specializations).
-The importer can now import SysML files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
+See {kerml} 7.4.7.2 and 7.4.7.3 for more information.
+These implicit redefinitions aren't visible in the diagrams nor the explorer (like all the other implicit specializations).
+The importer can now import {sysml} files that contain `FeatureChainingExpression` relying on these implicit redefinitions.
 - An edge is now displayed between `OccurrenceDefinition` its nested `OccurrenceUsages`.
 
 image::NestedOccurrenceUsageEdge.png[Nested Occurrence Usage Edge, width=40%,height=40%]
 
-- It is now possible, in diagrams, to reduce the width of `NamespaceImport` graphical nodes with a long name as their label can now be wrapped.
+- It's now possible, in diagrams, to reduce the width of `NamespaceImport` graphical nodes with a long name as their label can now be wrapped.
 
 image::namespace-import-wrapped-label.png[NamesapceImport wrapped label, width=40%,height=40%]
 
@@ -441,4 +439,4 @@ image::connection-definition-nodes.png[Connection Definition nodes, width=60%,he
 
 == Technical details
 
-* For technical details on this {product} release (including breaking changes) please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release, including breaking changes, see https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

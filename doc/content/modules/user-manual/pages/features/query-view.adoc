@@ -7,8 +7,8 @@ image::query-view-overview.png[Query View, width=85%,height=85%]
 This view allows to write AQL queries (see https://eclipse.dev/acceleo/documentation/[AQL documentation] for more details) and get the results of the queries written.
 [WARNING]
 ====
-This view comes from https://eclipse.dev/sirius/sirius-web.html[Sirius Web], the software on which SysON is based upon.
-It will be improved release after release, with new variables and services, but it is experimental for now.
+This view comes from https://eclipse.dev/sirius/sirius-web.html[{sw}], the software on which {product} is based upon.
+It will be improved release after release, with new variables and services, but it's experimental for now.
 ====
 Three variables are accessible for now, helping to write queries:
 - `self` which represents the selected element in the Explorer and/or any open diagram.
@@ -19,7 +19,7 @@ It always returns a collection of elements (one or several).
 From this context, you can use the following services:
 
  - `Collection<Object> allContents()`: allows to retrieve all contents recursively (documents, and each element of all models) present in your editing context.
-Please use this service very carefully as it can retrieve thousands elements very easily and may also lead to performance issues.
+Use this service very carefully as it can retrieve thousands elements very easily and can also lead to performance issues.
  - `Collection<Object> contents()`: allows to retrieve all contents (documents) present in your editing context.
  - `Object getObjectById(String id)`: from its ID, allows to retrieve an object (a document or a {sysmlv2} model Element) present in your editing context.
 
@@ -47,9 +47,9 @@ image::query-view-getObjectById.png[Query View getObjectById]
 
 The result is visible in the _Evaluation result_ part of the _Query_ view (_Package 1_).
 
-- The following example uses the `ownedMember` reference from the SysMLv2 language, applied on _Package 1_ element:
+- The following example uses the `ownedMember` reference from the {sysmlv2} language, applied on _Package 1_ element:
 
 image::query-view-ownedMember.png[Query View ownedMember]
 
 The result is visible in the _Evaluation result_ part of the _Query_ view (_part1_ and _action1_).
-In this case it corresponds to the members of _Package 1_ that you can also see in the _Explorer_ view on the left side of the screenshot above.
+In this case it corresponds to the members of _Package 1_ that you can also see in the _Explorer_ view on the left side of the preceding screenshot.
