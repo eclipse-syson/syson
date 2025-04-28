@@ -189,7 +189,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), ownedMember, 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 8),

@@ -166,6 +166,10 @@ The _General View_ diagram will display `TransitionUsage` as:
 
 image::StateTransitionUsageLabels.png[TransitionUsage labels]
 
+- Add a `parameters` compartment on `ActionDefinition` in the _General View_ diagram, to display directed features.
+
+image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment on ActionDefinition]
+
 == Dependency update
 
 
