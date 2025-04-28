@@ -1016,6 +1016,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         return builder.toString();
     }
+    
+
+    /**
+     * Get a String representation of the "AcceptParameterPart" BNF rule to be used on {@link AcceptActionUsage}.
+     *
+     * @param acceptActionUsage
+     *            a non null {@link AcceptActionUsage}
+     * @return a String representation of the "AcceptParameterPart"
+     */
+    public String getAcceptParameterPart(AcceptActionUsage acceptActionUsage) {
+        Appender builder = this.newAppender();
+        this.appendAcceptParameterPart(builder, acceptActionUsage);
+        return builder.toString();
+    }
+    
 
     private Appender newAppender() {
         return new Appender(this.lineSeparator, this.indentation);
