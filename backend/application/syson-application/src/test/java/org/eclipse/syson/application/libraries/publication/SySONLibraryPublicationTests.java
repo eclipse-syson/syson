@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.publication;
+package org.eclipse.syson.application.libraries.publication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,11 +39,16 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.ProjectWithUnusedBatmobileLibraryDependencyTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
+import org.eclipse.syson.application.publication.SysONLibraryPublicationHandler;
+import org.eclipse.syson.application.publication.SysONLibraryPublicationListener;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,12 +64,13 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Integration tests for the publication of the SysML contents of a project as a library.
  *
- * @see SySONLibraryPublicationHandler
+ * @see SysONLibraryPublicationHandler
  * @see SysONLibraryPublicationListener
  * @author flatombe
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
 
     private static final String IMPORTED_PROJECT = "afffb8f5-3db6-4b47-b295-55a36984db2e";
@@ -247,4 +253,69 @@ public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
                 .allSatisfy(document -> assertThat(document.getContent()).doesNotContain("\"source\":\"org.eclipse.syson.sysml.imported\""));
     }
 
+    @Test
+    @DisplayName("Given a project with an used dependency to a library, when the library is published, then the library has the same dependency")
+    @Sql(scripts = { ProjectWithUsedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWithUsedDependencyToLibraryWhenLibraryIsPublishedThenItHasTheSameDependency() {
+        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
+        var result = this.publishLibrariesMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Optional<SemanticData> projectLibrarySemanticData = this.librarySearchService.findByNamespaceAndNameAndVersion(ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME, "1.0.0")
+                .map(Library::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(projectLibrarySemanticData).isPresent();
+        assertThat(projectLibrarySemanticData.get().getDependencies()).hasSize(1);
+        SemanticDataDependency dependency = projectLibrarySemanticData.get().getDependencies().get(0);
+
+        // Check that the dependency is in the published library.
+        Optional<Library> dependencyLibrary = this.librarySearchService.findBySemanticData(dependency.dependencySemanticDataId());
+        assertThat(dependencyLibrary).isPresent();
+        assertThat(dependencyLibrary.get().getName()).isEqualTo("Batmobile");
+
+        // Check that the library contains a single document (its proper content).
+        Set<Document> documents = projectLibrarySemanticData.get().getDocuments();
+        assertThat(documents)
+                .hasSize(1)
+                .allSatisfy(document -> assertThat(document.getName()).isEqualTo("SysMLv2.sysml"));
+    }
+
+    @Test
+    @DisplayName("Given a project with an unused dependency to a library, when the library is published, then the library has no dependency")
+    @Sql(scripts = { ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWithUnusedDependencyToLibraryWhenLibraryIsPublishedThenItHasNoDependency() {
+        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
+        var result = this.publishLibrariesMutationRunner.run(input);
+        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        Optional<SemanticData> projectLibrarySemanticData = this.librarySearchService
+                .findByNamespaceAndNameAndVersion(ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_NAME,
+                        "1.0.0")
+                .map(Library::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(projectLibrarySemanticData).isPresent();
+        // Check that there is no dependency in the published library.
+        assertThat(projectLibrarySemanticData.get().getDependencies()).isEmpty();
+
+        // Check that the library contains a single document (its proper content).
+        Set<Document> documents = projectLibrarySemanticData.get().getDocuments();
+        assertThat(documents)
+                .hasSize(1)
+                .allSatisfy(document -> assertThat(document.getName()).isEqualTo("SysMLv2.sysml"));
+
+    }
 }
