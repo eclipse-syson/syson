@@ -74,6 +74,7 @@ import org.eclipse.syson.diagram.general.view.edges.SuccessionEdgeDescriptionPro
 import org.eclipse.syson.diagram.general.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.ActionDefinitionParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActorNodeDescriptionProvider;
@@ -322,6 +323,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
+        this.linkActionDefinitionCompartments(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -395,6 +397,10 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // Compartment "actions" (OwnedAction) is defined for:
         // ActionDefinition
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForOwnedAction(colorProvider));
+
+        // Compartment "parameters" (DirectedFeature) is defined for:
+        // ActionDefinition
+        compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForActionDefinition(colorProvider));
 
         // Compartment "actions" (NestedAction) is defined for:
         // ActionUsage, PartUsage, PerformActionUsage
@@ -492,6 +498,16 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         compartmentNodeDescriptionProviders
                 .add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider,
                         this.getDescriptionNameGenerator()));
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForActionDefinition(IColorProvider colorProvider) {
+        final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        compartmentNodeDescriptionProviders.add(new ActionDefinitionParametersCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter(), colorProvider,
+                this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter(),
+                colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
@@ -928,6 +944,24 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(nd.getReusedChildNodeDescriptions()::add)
         );
+    }
+
+    private void linkActionDefinitionCompartments(IViewDiagramElementFinder cache) {
+        NodeDescription actionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).get();
+        String documentationCompartmentName = this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getElement_Documentation());
+
+        // We want to add the Parameters container just after the documentation. If the documentation is not found, we
+        // will add it at the first index.
+        Integer documentationContainerIndex = actionDefinitionNodeDescription.getReusedChildNodeDescriptions().stream()
+                .filter(nodeDescription -> documentationCompartmentName.equals(nodeDescription.getName()))
+                .findFirst()
+                .map(documentationContainerDescription -> actionDefinitionNodeDescription.getReusedChildNodeDescriptions().indexOf(documentationContainerDescription))
+                .orElse(-1);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
+                .ifPresent(parameterContainerNodeDescription -> {
+                    actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parameterContainerNodeDescription);
+                });
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {

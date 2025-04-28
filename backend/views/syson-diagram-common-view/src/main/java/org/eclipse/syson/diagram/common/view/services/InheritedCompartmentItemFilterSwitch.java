@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -48,6 +50,12 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean caseFeature(Feature object) {
+        // Add this behavior parameter check for each caseXXXUsage.
+        // In this case, we want to display inherited parameters (directed feature) but not all features with the same
+        // type.
+        if (this.isBehaviorParameter()) {
+            return this.isInheritedBehaviorParameter(object);
+        }
         return this.eReference.getEType().equals(object.eClass());
     }
 
@@ -72,6 +80,12 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean casePartUsage(PartUsage object) {
+        // Add this behavior parameter check for each caseXXXUsage.
+        // In this case, we want to display inherited parameters (directed feature) but not all features with the same
+        // type.
+        if (this.isBehaviorParameter()) {
+            return this.isInheritedBehaviorParameter(object);
+        }
         EClassifier eType = this.eReference.getEType();
         EClass eClass = object.eClass();
         return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
@@ -79,8 +93,22 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean caseReferenceUsage(ReferenceUsage object) {
+        // Add this behavior parameter check for each caseXXXUsage.
+        // In this case, we want to display inherited parameters (directed feature) but not all features with the same
+        // type.
+        if (this.isBehaviorParameter()) {
+            return this.isInheritedBehaviorParameter(object);
+        }
         EClassifier eType = this.eReference.getEType();
         EClass eClass = object.eClass();
         return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    private boolean isBehaviorParameter() {
+        return SysmlPackage.eINSTANCE.getBehavior_Parameter().equals(this.eReference);
+    }
+
+    private boolean isInheritedBehaviorParameter(Element object) {
+        return object.getOwner() instanceof Behavior behavior && behavior.getParameter().contains(object);
     }
 }

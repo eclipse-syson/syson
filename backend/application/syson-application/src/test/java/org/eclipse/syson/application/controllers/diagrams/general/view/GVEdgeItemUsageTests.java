@@ -231,7 +231,8 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewBorderNodeCount(1) // One bordered node
-                    .hasNewNodeCount(5) // One border + one root node for Tree Composition (with 3 compartments)
+                    .hasNewNodeCount(6) // One border + one root node for Tree Composition (with 3 compartments) +
+                                        // parameters in the parameters compartment
                     .hasNewEdgeCount(1) // Composite Edge
                     .check(initialDiagram, newDiagram);
             List<Node> newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
@@ -248,9 +249,9 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
             List<Node> otherNewNodes = newNodes.stream().filter(n -> n != rootItem && !rootItem.getChildNodes().contains(n)).toList();
 
             // Check for nested item list node
-            assertThat(otherNewNodes).hasSize(1)
+            assertThat(otherNewNodes).hasSize(2)
+                    .filteredOn(Node::isBorderNode)
                     .first(DiagramInstanceOfAssertFactories.NODE)
-                    .isBorderNode()
                     .hasType("node:image")
                     .hasTargetObjectLabel(ITEM1)
                     .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
