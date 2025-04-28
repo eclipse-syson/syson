@@ -1116,7 +1116,7 @@ public class ViewCreateService {
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
-        Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
+        ReferenceUsage sourceFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
         sourceFeature.setIsEnd(true);
         sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
         this.elementInitializer(sourceFeature);
@@ -1127,7 +1127,7 @@ public class ViewCreateService {
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(targetEndFeatureMembership);
-        Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
+        ReferenceUsage targetFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
         this.elementInitializer(sourceFeature);

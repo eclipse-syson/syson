@@ -73,7 +73,7 @@ public class ViewEdgeService {
      * Get all reachable allocate edge in the {@link ResourceSet} of given {@link EObject}.
      *
      * @param eObject
-     *         the {@link EObject} stored in a {@link ResourceSet}
+     *            the {@link EObject} stored in a {@link ResourceSet}
      * @return a list of allocate edge objects
      */
     public List<AllocationUsage> getAllReachableAllocateEdges(EObject eObject) {
@@ -91,11 +91,11 @@ public class ViewEdgeService {
      * by the same graphical container.
      *
      * @param source
-     *         the source element
+     *            the source element
      * @param target
-     *         the target element
+     *            the target element
      * @param cache
-     *         the DiagramRenderingCache
+     *            the DiagramRenderingCache
      * @return <code>true</code> if contained by the same container
      */
     public boolean isInSameGraphicalContainer(org.eclipse.sirius.components.representations.Element source, org.eclipse.sirius.components.representations.Element target, DiagramRenderingCache cache) {
@@ -113,7 +113,7 @@ public class ViewEdgeService {
      * Get all reachable {@link AllocationUsage} in the {@link ResourceSet} of given {@link EObject}.
      *
      * @param eObject
-     *         the {@link EObject} stored in a {@link ResourceSet}
+     *            the {@link EObject} stored in a {@link ResourceSet}
      * @return a list of {@link AllocationUsage} objects
      */
     public List<AllocationUsage> getAllReachableAllocationUsages(EObject eObject) {
@@ -243,9 +243,9 @@ public class ViewEdgeService {
      * Redefines the target feature of the given source end.
      *
      * @param sourceEnd
-     *         the source end to modify
+     *            the source end to modify
      * @param newTargetFeature
-     *         the new target feature
+     *            the new target feature
      */
     private void setConnectorEndFeature(Feature sourceEnd, Element newTargetFeature) {
         if (sourceEnd instanceof ReferenceUsage refUsage) {
@@ -264,9 +264,9 @@ public class ViewEdgeService {
      * {@code TransitionEdgeDescriptionProvider.createSourceReconnectTool()}
      *
      * @param transition
-     *         the given {@link TransitionUsage}.
+     *            the given {@link TransitionUsage}.
      * @param newSource
-     *         the new target {@link ActionUsage}.
+     *            the new target {@link ActionUsage}.
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectSourceTransitionEdge(TransitionUsage transition, ActionUsage newSource) {
@@ -303,9 +303,9 @@ public class ViewEdgeService {
      * {@code TransitionEdgeDescriptionProvider.createTargetReconnectTool()}
      *
      * @param transition
-     *         the given {@link TransitionUsage}.
+     *            the given {@link TransitionUsage}.
      * @param newTarget
-     *         the new target {@link ActionUsage}.
+     *            the new target {@link ActionUsage}.
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectTargetTransitionEdge(TransitionUsage transition, ActionUsage newTarget) {
@@ -336,9 +336,9 @@ public class ViewEdgeService {
      * but does not seems to be used to filter the {@link TransitionUsage} creation.
      *
      * @param source
-     *         The source of the transition
+     *            The source of the transition
      * @param target
-     *         The target of the transition
+     *            The target of the transition
      * @return
      */
     private boolean checkTransitionEdgeTarget(Element source, Element target) {
@@ -356,7 +356,7 @@ public class ViewEdgeService {
      * Checks that if a given transition is targeting a {@link StateUsage}.
      *
      * @param transition
-     *         a transition
+     *            a transition
      * @return <code>true</code> if targeting a {@link StateUsage}.
      */
     public boolean isTransitionUsageForState(TransitionUsage transition) {
@@ -364,18 +364,23 @@ public class ViewEdgeService {
     }
 
     /**
-     * Unwrap the given {@link ReferenceUsage} to its referenced element.
+     * Unwrap the given {@link Feature} to its referenced element. If the feature is a {@link ReferenceUsage} return the
+     * reference feature.
      *
      * @param input
-     *            the input {@link ReferenceUsage}
+     *            the input {@link Feature}
      * @return a {@link Feature} or <code>null</code>
      */
-    public Feature unwrapReferenceUsage(ReferenceUsage input) {
-        return input.getOwnedRedefinition().stream()
-                .map(Redefinition::getRedefinedFeature)
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+    public Feature unwrapFeature(Feature input) {
+        if (input instanceof ReferenceUsage) {
+            return input.getOwnedRedefinition().stream()
+                    .map(Redefinition::getRedefinedFeature)
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            return input;
+        }
     }
 
     /**
@@ -383,7 +388,7 @@ public class ViewEdgeService {
      * {@link InterfaceUsage}).
      *
      * @param bind
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @return the source {@link Usage} if found, <code>null</code> otherwise.
      */
     public Usage getSourcePort(ConnectorAsUsage bind) {
@@ -421,7 +426,7 @@ public class ViewEdgeService {
      * {@link InterfaceUsage}).
      *
      * @param bind
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @return the target {@link Usage} if found, <code>null</code> otherwise.
      */
     public Usage getTargetPort(ConnectorAsUsage bind) {
@@ -495,13 +500,13 @@ public class ViewEdgeService {
     }
 
     /**
-     * Set a new source {@link Element} for the given {@link ConnectorAsUsage}. Also move the given connector
-     * into the parent (i.e. should be a PartUsage) of the new source.
+     * Set a new source {@link Element} for the given {@link ConnectorAsUsage}. Also move the given connector into the
+     * parent (i.e. should be a PartUsage) of the new source.
      *
      * @param bind
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @param newSource
-     *         the new target {@link Element}.
+     *            the new target {@link Element}.
      * @return the given {@link ConnectorAsUsage}.
      */
     public ConnectorAsUsage setSourcePort(ConnectorAsUsage bind, Element newSource) {
@@ -535,9 +540,9 @@ public class ViewEdgeService {
      * Set a new target {@link Element} for the given {@link ConnectorAsUsage}.
      *
      * @param bind
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @param newTarget
-     *         the new target {@link Element}.
+     *            the new target {@link Element}.
      * @return the given {@link ConnectorAsUsage}.
      */
     public ConnectorAsUsage setTargetPort(ConnectorAsUsage bind, Element newTarget) {

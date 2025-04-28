@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.edges;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,19 +39,24 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider extends AbstractBind
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
+    @Override
     public String getName() {
         return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
     }
 
     @Override
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        return optPortUsageBorderNodeDescription.map(List::of).orElseGet(List::of);
+        List<NodeDescription> nodes = new ArrayList<>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
+        return nodes;
     }
 
     @Override
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        return optPortUsageBorderNodeDescription.map(List::of).orElseGet(List::of);
+        List<NodeDescription> nodes = new ArrayList<>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
+        return nodes;
     }
 }

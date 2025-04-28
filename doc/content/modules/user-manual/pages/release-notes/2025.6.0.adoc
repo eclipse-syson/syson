@@ -20,8 +20,12 @@ Future contributions are planned to introduce enhanced capabilities for editing 
 
 == Bug fixes
 
+
 - Fix an issue that made published libraries' dependencies always empty.
 Publishing a project with a dependency to a library now correctly produces a library with the same dependency.
+- In _General View_ diagram, fix an issue where _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create graphical edge between `ItemUsage` bordered nodes.
+
+image::BindingConnectorAsUsageOnItemUsage.png[BindingConnectorAsUsage between two ItemUsages]
 
 
 == New features
