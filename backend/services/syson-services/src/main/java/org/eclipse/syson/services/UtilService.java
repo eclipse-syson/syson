@@ -51,6 +51,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -847,4 +848,23 @@ public class UtilService {
         return FeatureDirectionKind.INOUT.equals(feature.getDirection());
     }
 
+    /**
+     * Retrieve all {@link org.eclipse.syson.sysml.PerformActionUsage} elements that are directly accessible from an object.
+     *
+     * @param eObject
+     *            The {@link Element} to start from
+     * @return The list of all {@link PerformActionUsage} elements
+     */
+    public List<PerformActionUsage> getAllPerformActions(Element eObject) {
+        List<ActionUsage> candidates = new ArrayList<>();
+        if (eObject instanceof Usage usage) {
+            candidates = usage.getNestedAction();
+        } else if (eObject instanceof Definition def) {
+            candidates = def.getOwnedAction();
+        }
+        return candidates.stream().filter(PerformActionUsage.class::isInstance)
+                .map(PerformActionUsage.class::cast)
+                .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
+                .toList();
+    }
 }
