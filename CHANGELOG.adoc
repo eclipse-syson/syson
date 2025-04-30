@@ -33,8 +33,9 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1252[#1252] [exort] Implement textual export of `TriggerInvocationExpression`.
 - https://github.com/eclipse-syson/syson/issues/1233[#1233] [general-view] Add a creation tool of State sub actions with referenced action inside State elements
 - https://github.com/eclipse-syson/syson/issues/1255[#1255] [general-view] Improve label of `TransitionUsage` to display the "AcceptParameterPart".
-- https://github.com/eclipse-syson/syson/issues/1210[#1210] general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1210[#1210] [general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1267[#1267] [general-view] Improve the New Perform tool selection dialog to display existing actions in a tree.
+- https://github.com/eclipse-syson/syson/issues/1257[#1257] [general-view] Add the `perform actions` compartment on `Part` in the _General View_ diagram.
 
 === New features
 

@@ -127,7 +127,7 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> occurrenceDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 8))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 9))
                 .map(TestNameGenerator::namedArguments);
     }
 
