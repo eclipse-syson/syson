@@ -15,7 +15,8 @@
 - https://github.com/eclipse-syson/syson/issues/1258[#1258] [publication] Add required libraries as dependencies when publishing a project.
 Publishing a project that has a dependency to a library now correctly produces a library with the same dependency.
 - https://github.com/eclipse-syson/syson/issues/1259[#1259] [general-view] Fix an issue where _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create graphical edge between `ItemUsage` bordered nodes.
-
+- https://github.com/eclipse-syson/syson/issues/1269[#1269] [general-view] Automatically reveal new `Perform Actions` with reference from `Parts`.
+When creating a new `Perform Action` referencing an existing `Action`, all compartments containing this new element are now expanded to reveal it.
 
 === Improvements
 
