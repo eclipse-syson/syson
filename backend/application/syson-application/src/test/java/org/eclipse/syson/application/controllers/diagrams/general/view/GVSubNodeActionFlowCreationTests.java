@@ -410,7 +410,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         String creationToolName = "New Perform";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
         List<ToolVariable> variables = new ArrayList<>();
-        variables.add(new ToolVariable("selectedObject", "e00ffabe-b4e8-40ab-b7b8-5a21dcc4c141", ToolVariableType.OBJECT_ID));
+        variables.add(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
 
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
 
@@ -425,6 +425,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withCompartmentName(ACTIONS_COMPARTMENT)
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
+                    .isRevealed()
                     .check(initialDiagram, newDiagram);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
@@ -432,6 +433,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(4)
+                    .isRevealed()
                     .check(initialDiagram, newDiagram);
         };
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
@@ -460,6 +462,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withCompartmentName(ACTIONS_COMPARTMENT)
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
+                    .isRevealed()
                     .check(initialDiagram, newDiagram);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(childEClass);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
@@ -467,6 +470,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(4)
+                    .isRevealed()
                     .check(initialDiagram, newDiagram);
         };
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);

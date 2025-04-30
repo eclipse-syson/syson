@@ -27,6 +27,7 @@ Publishing a project with a dependency to a library now correctly produces a lib
 
 image::BindingConnectorAsUsageOnItemUsage.png[BindingConnectorAsUsage between two ItemUsages]
 
+- Fix an issue where some compartments (containing the new element created) were not revealed when the _New Perform Action_ tool was executed.
 
 == New features
 

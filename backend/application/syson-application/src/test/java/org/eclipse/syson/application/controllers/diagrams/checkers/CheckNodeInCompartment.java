@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -42,6 +43,8 @@ public class CheckNodeInCompartment implements IDiagramChecker {
     private String nodeDescriptionName;
 
     private int compartmentCount;
+
+    private boolean isRevealed;
 
     public CheckNodeInCompartment(DiagramDescriptionIdProvider diagramDescriptionIdProvider, DiagramComparator diagramComparator) {
         this.diagramDescriptionIdProvider = diagramDescriptionIdProvider;
@@ -68,6 +71,11 @@ public class CheckNodeInCompartment implements IDiagramChecker {
         return this;
     }
 
+    public CheckNodeInCompartment isRevealed() {
+        this.isRevealed = true;
+        return this;
+    }
+
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
@@ -80,5 +88,8 @@ public class CheckNodeInCompartment implements IDiagramChecker {
             assertThat(childNode.getChildNodes()).hasSize(this.compartmentCount);
             assertThat(newNodes).contains(childNode);
         });
+        if (this.isRevealed) {
+            assertThat(compartmentNode.getState()).isEqualTo(ViewModifier.Normal);
+        }
     }
 }

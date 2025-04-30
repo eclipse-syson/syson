@@ -91,9 +91,12 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
         var createView = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params));
 
+        var reveal = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("newInstance", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, "convertedNodes")));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(createView.build(), createReferenceSubsettingInstance.build());
+                .children(createView.build(), createReferenceSubsettingInstance.build(), reveal.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPerformActionUsage()))
@@ -116,14 +119,10 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build());
 
-        var reveal = this.viewBuilderHelper.newChangeContext()
-                .expression(
-                        AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, "convertedNodes")));
-
         return builder
                 .name(this.getLabel())
                 .iconURLsExpression(this.getIconPath())
-                .body(changeContexMembership.build(), reveal.build())
+                .body(changeContexMembership.build())
                 .dialogDescription(selectExistingStateUsage.build())
                 .preconditionExpression(this.getPreconditionServiceCallExpression())
                 .build();
