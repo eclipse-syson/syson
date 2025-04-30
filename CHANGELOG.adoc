@@ -33,6 +33,7 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1233[#1233] [general-view] Add a creation tool of State sub actions with referenced action inside State elements
 - https://github.com/eclipse-syson/syson/issues/1255[#1255] [general-view] Improve label of `TransitionUsage` to display the "AcceptParameterPart".
 - https://github.com/eclipse-syson/syson/issues/1210[#1210] general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1267[#1267] [general-view] Improve the New Perform tool selection dialog to display existing actions in a tree.
 
 === New features
 

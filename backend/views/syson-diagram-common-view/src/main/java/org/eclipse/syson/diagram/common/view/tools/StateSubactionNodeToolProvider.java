@@ -92,8 +92,8 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
 
     private DialogDescription getExistingActionSelectionDialog() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getStateSubactionReferenceSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getStateSubactionReferenceSelectionDialogChildren"))
+                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActionReferenceSelectionDialogElements"))
+                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getActionReferenceSelectionDialogChildren"))
                 .build();
 
         var selectExistingActionUsage = this.diagramBuilderHelper.newSelectionDialogDescription()

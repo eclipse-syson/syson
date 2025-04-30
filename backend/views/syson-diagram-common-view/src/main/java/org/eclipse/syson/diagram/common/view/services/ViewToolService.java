@@ -1317,24 +1317,24 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Provides the root elements in the tree of the selection dialog for the State sub actions creation tool.
+     * Provides the root elements in the tree of the selection dialog for presenting all existing ActionUsage.
      *
      * @param editingContext
      *            the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link ActionUsage}.
      */
-    public List<Resource> getStateSubactionReferenceSelectionDialogElements(IEditingContext editingContext) {
+    public List<Resource> getActionReferenceSelectionDialogElements(IEditingContext editingContext) {
         return this.getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getActionUsage());
     }
 
     /**
-     * Provides the children of element in the tree of the selection dialog for the State sub actions creation tool.
+     * Provides the children of element in the tree of the selection dialog for presenting all existing ActionUsage.
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an {@link ActionUsage}.
      */
-    public List<? extends Object> getStateSubactionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
+    public List<? extends Object> getActionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getActionUsage());
     }
 
