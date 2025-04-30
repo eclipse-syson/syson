@@ -407,7 +407,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
         String parentLabel = "action";
-        String creationToolName = "New Perfom";
+        String creationToolName = "New Perform";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
         List<ToolVariable> variables = new ArrayList<>();
         variables.add(new ToolVariable("selectedObject", "e00ffabe-b4e8-40ab-b7b8-5a21dcc4c141", ToolVariableType.OBJECT_ID));
@@ -445,7 +445,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
         String parentLabel = "action";
-        String creationToolName = "New Perfom action";
+        String creationToolName = "New Perform action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
 
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
