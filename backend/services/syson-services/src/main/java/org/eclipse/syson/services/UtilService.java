@@ -51,6 +51,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -177,18 +178,18 @@ public class UtilService {
     }
 
     /**
-     * Retrieve all exhibited {@link StateUsage} directly accessible from an object.
+     * Retrieve all exhibited {@link StateUsage} directly accessible from an element.
      *
-     * @param eObject
+     * @param element
      *            The {@link Element} to start from
      * @return The list of exhibited {@link StateUsage}
      */
-    public List<StateUsage> getAllExhibitedStates(Element eObject) {
+    public List<StateUsage> getAllExhibitedStates(Element element) {
         List<StateUsage> result = new ArrayList<>();
         List<StateUsage> candidates = new ArrayList<>();
-        if (eObject instanceof Usage usage) {
+        if (element instanceof Usage usage) {
             candidates = usage.getNestedState();
-        } else if (eObject instanceof Definition def) {
+        } else if (element instanceof Definition def) {
             candidates = def.getOwnedState();
         }
         candidates.stream().filter(ExhibitStateUsage.class::isInstance)
@@ -200,18 +201,18 @@ public class UtilService {
 
     /**
      * Retrieve all {@link StateUsage} elements that are not {@link ExhibitStateUsage} directly accessible from an
-     * object.
+     * element.
      *
-     * @param eObject
+     * @param element
      *            The {@link Element} to start from
      * @return The list of all {@link StateUsage} elements that are not {@link ExhibitStateUsage}
      */
-    public List<StateUsage> getAllNonExhibitStates(Element eObject) {
+    public List<StateUsage> getAllNonExhibitStates(Element element) {
         List<StateUsage> result = new ArrayList<>();
         List<StateUsage> candidates = new ArrayList<>();
-        if (eObject instanceof Usage usage) {
+        if (element instanceof Usage usage) {
             candidates = usage.getNestedState();
-        } else if (eObject instanceof Definition def) {
+        } else if (element instanceof Definition def) {
             candidates = def.getOwnedState();
         }
         candidates.stream().filter(c -> !(c instanceof ExhibitStateUsage))
@@ -847,4 +848,24 @@ public class UtilService {
         return FeatureDirectionKind.INOUT.equals(feature.getDirection());
     }
 
+    /**
+     * Retrieve all {@link org.eclipse.syson.sysml.PerformActionUsage} elements that are directly accessible from an
+     * element.
+     *
+     * @param element
+     *            The {@link Element} to start from
+     * @return The list of all {@link PerformActionUsage} elements
+     */
+    public List<PerformActionUsage> getAllPerformActions(Element element) {
+        List<ActionUsage> candidates = new ArrayList<>();
+        if (element instanceof Usage usage) {
+            candidates = usage.getNestedAction();
+        } else if (element instanceof Definition def) {
+            candidates = def.getOwnedAction();
+        }
+        return candidates.stream().filter(PerformActionUsage.class::isInstance)
+                .map(PerformActionUsage.class::cast)
+                .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
+                .toList();
+    }
 }

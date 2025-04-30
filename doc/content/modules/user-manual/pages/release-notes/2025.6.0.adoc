@@ -20,7 +20,6 @@ Future contributions are planned to introduce enhanced capabilities for editing 
 
 == Bug fixes
 
-
 - Fix an issue that made published libraries' dependencies always empty.
 Publishing a project with a dependency to a library now correctly produces a library with the same dependency.
 - In _General View_ diagram, fix an issue where _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create graphical edge between `ItemUsage` bordered nodes.
@@ -181,6 +180,10 @@ image::StateTransitionUsageLabels.png[TransitionUsage labels]
 image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment on ActionDefinition]
 
 - In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
+
+- Add a `perform actions` compartment `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the _General View_ diagram.
+
+image::gv-parts-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
 
 == Dependency update
 
