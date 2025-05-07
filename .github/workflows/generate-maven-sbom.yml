@@ -58,14 +58,14 @@ jobs:
         shell: bash
         run: |
           event="${{ github.event_name }}"
+          event_workflow_run_head_branch="${{ github.event.workflow_run.head_branch }}"
           ref="${{ github.ref }}"
           input="${{ github.event.inputs.version }}"
 
           VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/target/bom.json)"
 
-          if [[ "$event" == "push" && "$ref" == refs/heads/* ]] || \
-            [[ "$event" == "workflow_run" && "$ref" == refs/heads/* ]] || \
-            [[ "$event" == "workflow_dispatch" && ! "$input" =~ ^v ]]; then
+          if [[ "$event" == "workflow_run" && "$ref" == refs/heads/* && "$event_workflow_run_head_branch" != v*]]
+          then
             VERSION="${VERSION}@dev"
           fi
 
