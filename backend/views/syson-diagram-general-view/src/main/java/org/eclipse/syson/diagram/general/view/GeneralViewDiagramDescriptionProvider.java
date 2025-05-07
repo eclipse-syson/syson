@@ -155,7 +155,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
-            SysmlPackage.eINSTANCE.getStateUsage()
+            SysmlPackage.eINSTANCE.getStateUsage(),
+            SysmlPackage.eINSTANCE.getViewUsage()
             );
 
     public static final List<EClass> ANNOTATINGS = List.of(
@@ -959,7 +960,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .map(documentationContainerDescription -> actionDefinitionNodeDescription.getReusedChildNodeDescriptions().indexOf(documentationContainerDescription))
                 .orElse(-1);
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
                 .ifPresent(parameterContainerNodeDescription -> {
                     actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parameterContainerNodeDescription);
                 });
