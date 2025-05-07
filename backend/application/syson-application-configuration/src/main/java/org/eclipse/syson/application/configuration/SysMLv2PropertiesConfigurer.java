@@ -132,12 +132,13 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(SysMLv2PropertiesConfigurer.class.getCanonicalName().getBytes()));
         Resource resource = new XMIResourceImpl(uri);
         View view = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView();
-        resource.getContents().add(view);
-        view.getDescriptions().add(viewFormDescription);
 
         view.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
+
+        resource.getContents().add(view);
+        view.getDescriptions().add(viewFormDescription);
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),

@@ -18,8 +18,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.eclipse.syson.application.libraries.imports.SySONLibraryImportTests;
-import org.eclipse.syson.application.libraries.update.SySONLibraryUpdateTests;
+import org.eclipse.syson.application.libraries.imports.SysONLibraryImportTests;
+import org.eclipse.syson.application.libraries.update.SysONLibraryUpdateTests;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -27,8 +27,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 /**
  * Annotation to setup the SysON server for testing the import of a published library.
  *
- * @see SySONLibraryImportTests
- * @see SySONLibraryUpdateTests
+ * @see SysONLibraryImportTests
+ * @see SysONLibraryUpdateTests
  * @author flatombe
  */
 @Documented

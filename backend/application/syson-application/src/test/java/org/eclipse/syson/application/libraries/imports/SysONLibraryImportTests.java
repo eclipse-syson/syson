@@ -42,11 +42,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 /**
  * Partial {@link AbstractIntegrationTests} implementation for testing the import of a published library into a project.
  *
- * @see SySONLibraryImportByCopyTests
- * @see SySONLibraryImportByReferenceTests
+ * @see SysONLibraryImportByCopyTests
+ * @see SysONLibraryImportByReferenceTests
  * @author flatombe
  */
-public abstract class SySONLibraryImportTests extends AbstractIntegrationTests {
+public abstract class SysONLibraryImportTests extends AbstractIntegrationTests {
 
     protected IEditingContext projectEditingContext;
 

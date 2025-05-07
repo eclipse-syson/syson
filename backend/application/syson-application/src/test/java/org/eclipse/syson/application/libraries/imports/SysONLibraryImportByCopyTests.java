@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * {@link SySONLibraryImportTests} implementation for library import-by-copy.
+ * {@link SysONLibraryImportTests} implementation for library import-by-copy.
  *
  * @author flatombe
  */
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class SySONLibraryImportByCopyTests extends SySONLibraryImportTests {
+public class SysONLibraryImportByCopyTests extends SysONLibraryImportTests {
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
