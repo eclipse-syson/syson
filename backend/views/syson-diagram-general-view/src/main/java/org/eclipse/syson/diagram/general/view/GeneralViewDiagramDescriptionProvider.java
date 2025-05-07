@@ -327,8 +327,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
-        this.linkActionDefinitionCompartments(cache);
+        this.linkActionDefinitionParametersCompartment(cache);
         this.linkPartPerformActionsCompartment(cache);
+        this.linkActionPerformActionsCompartment(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -460,6 +461,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
+                } else if ((SysmlPackage.eINSTANCE.getActionUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedAction().equals(eReference))
+                        || (SysmlPackage.eINSTANCE.getActionDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedAction().equals(eReference))) {
+                    compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+                    compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else {
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
@@ -953,7 +961,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         );
     }
 
-    private void linkActionDefinitionCompartments(IViewDiagramElementFinder cache) {
+    private void linkActionDefinitionParametersCompartment(IViewDiagramElementFinder cache) {
         NodeDescription actionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).get();
         String documentationCompartmentName = this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getElement_Documentation());
 
@@ -990,6 +998,29 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                             .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getPartDefinition()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getPartDefinition()))
                             .forEach(partDefinition -> {
                                 this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, partDefinition);
+                            });
+                });
+    }
+
+    private void linkActionPerformActionsCompartment(IViewDiagramElementFinder cache) {
+        // perform actions compartment in ActionUsages
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) +
+                PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    USAGES.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getActionUsage()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getActionUsage()))
+                            .forEach(actionUsage -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, actionUsage);
+                            });
+                });
+        // perform actions compartment in ActionDefinitions
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) +
+                PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    DEFINITIONS.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getActionDefinition()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getActionDefinition()))
+                            .forEach(actionDefinition -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, actionDefinition);
                             });
                 });
     }

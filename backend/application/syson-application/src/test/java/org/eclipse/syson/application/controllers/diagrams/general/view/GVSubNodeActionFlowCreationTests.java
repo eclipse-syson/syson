@@ -162,8 +162,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionUsageListAndFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
@@ -179,8 +179,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionDefinitionListAndFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
@@ -415,7 +415,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 6;
+            int createdNodesExpectedCount = 8;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(initialDiagram, newDiagram);
@@ -432,7 +432,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
-                    .hasCompartmentCount(4)
+                    .hasCompartmentCount(5)
                     .isRevealed()
                     .check(initialDiagram, newDiagram);
         };
@@ -452,7 +452,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 6;
+            int createdNodesExpectedCount = 8;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(initialDiagram, newDiagram);
@@ -469,7 +469,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
-                    .hasCompartmentCount(4)
+                    .hasCompartmentCount(5)
                     .isRevealed()
                     .check(initialDiagram, newDiagram);
         };
