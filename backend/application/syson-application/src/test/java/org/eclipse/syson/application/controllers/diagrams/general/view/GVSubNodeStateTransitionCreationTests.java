@@ -238,8 +238,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         String[] subActionId = new String[1];
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    // only the new subaction should be created
-                    .hasNewNodeCount(1)
+                    // the new subaction is created in two compartments (actions and perform actions)
+                    .hasNewNodeCount(2)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             var node = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);
@@ -264,8 +264,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         String[] subActionId = new String[1];
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    // only the new subaction should be created
-                    .hasNewNodeCount(1)
+                    // the new subaction is created in two compartments (actions and perform actions)
+                    .hasNewNodeCount(2)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             var node = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);
