@@ -15,6 +15,7 @@ package org.eclipse.syson.tree.explorer.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
@@ -22,14 +23,17 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
@@ -57,17 +61,20 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     private final ISysONExplorerFilterService filterService;
 
     private final UtilService utilService = new UtilService();
-    
+
     private final ISysONResourceService sysONResourceService;
 
+    private final IObjectService objectService;
+
     public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
-            ISysONExplorerFilterService filterService, final ISysONResourceService sysONResourceService) {
+            ISysONExplorerFilterService filterService, final ISysONResourceService sysONResourceService, IObjectService objectService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.filterService = Objects.requireNonNull(filterService);
         this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     @Override
@@ -89,10 +96,22 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     @Override
-    public String getTreeItemId(Object self) {
+    public String getTreeItemId(Object self, IEditingContext editingContext) {
         String id = null;
         if (self instanceof ISysONExplorerFragment fragment) {
             id = fragment.getId();
+        } else if (self instanceof ViewUsage viewUsage) {
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+            if (optionalSemanticDataId.isPresent()) {
+                String viewUsageId = this.identityService.getId(viewUsage);
+                id = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), viewUsageId)
+                        .stream()
+                        .map(RepresentationMetadata::getId)
+                        .filter(Objects::nonNull)
+                        .map(UUID::toString)
+                        .findAny()
+                        .orElse(viewUsageId);
+            }
         } else {
             id = this.explorerServices.getTreeItemId(self);
         }
@@ -135,33 +154,27 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             hasChildren = !this.filterService.applyFilters(resource.getContents(), activeFilterIds).isEmpty();
         } else if (self instanceof Element element) {
             List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
-            hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
-                || this.hasRepresentation(element, editingContext);
-        } else {
-            hasChildren = explorerServices.hasChildren(self, editingContext);
+            hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation));
+        } else if (self instanceof EObject eObject) {
+            hasChildren = !eObject.eContents().isEmpty();
         }
         return hasChildren;
-    }
-
-    private boolean hasRepresentation(EObject self, IEditingContext editingContext) {
-        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
-        if (optionalSemanticDataId.isPresent()) {
-            String id = this.identityService.getId(self);
-            return this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id);
-        }
-        return false;
     }
 
     @Override
     public List<Object> getChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
-        String id = this.getTreeItemId(self);
+        String id = this.getTreeItemId(self, editingContext);
         if (self instanceof ISysONExplorerFragment fragment) {
             if (expandedIds.contains(id)) {
                 result.addAll(fragment.getChildren(editingContext, expandedIds, activeFilterIds));
             }
+        } else if (self instanceof ViewUsage) {
+            if (expandedIds.contains(id)) {
+                result.addAll(this.objectService.getContents(self));
+            }
         } else {
-            result.addAll(this.explorerServices.getDefaultChildren(self, editingContext, expandedIds));
+            result.addAll(this.explorerServices.getDefaultChildren(self, editingContext, expandedIds).stream().filter(child -> !(child instanceof RepresentationMetadata)).toList());
         }
 
         result = this.filterService.applyFilters(result, activeFilterIds);
@@ -201,10 +214,10 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         } else if (self instanceof Resource resource) {
             result = !(this.filterService.isUserLibrary(resource))
                     && resource.getContents().stream()
-                            .filter(Namespace.class::isInstance)
-                            .map(Namespace.class::cast)
-                            .flatMap(namespace -> namespace.getOwnedElement().stream())
-                            .noneMatch(ElementUtil::isFromStandardLibrary);
+                    .filter(Namespace.class::isInstance)
+                    .map(Namespace.class::cast)
+                    .flatMap(namespace -> namespace.getOwnedElement().stream())
+                    .noneMatch(ElementUtil::isFromStandardLibrary);
         }
         return result;
     }

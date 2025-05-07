@@ -56,16 +56,14 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Tests the {@link SysONExplorerFilterService} class.
- * 
+ *
  * @author dvojtise
  */
 public class SysONDefaultExplorerServicesTest {
 
-    private static EditingContext editingContext;
-
-    private SysONDefaultExplorerServices sysONDefaultExplorerServices;
-    
     private final ISysONResourceService sysONResourceService = new SysONResourceService();
+    private static EditingContext editingContext;
+    private SysONDefaultExplorerServices sysONDefaultExplorerServices;
 
     @BeforeAll
     static void createEditingContext() {
@@ -99,9 +97,9 @@ public class SysONDefaultExplorerServicesTest {
         EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
         c1.getEStructuralFeatures().add(c1a2);
 
-        assertThat(sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of())).isTrue();
-        assertThat(sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of())).isTrue();
-        assertThat(sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of())).isFalse();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of())).isTrue();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of())).isTrue();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of())).isFalse();
     }
 
     /**
@@ -163,7 +161,8 @@ public class SysONDefaultExplorerServicesTest {
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
-        sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService, this.sysONResourceService);
+        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService,
+                this.sysONResourceService, new IObjectService.NoOp());
     }
 
 }
