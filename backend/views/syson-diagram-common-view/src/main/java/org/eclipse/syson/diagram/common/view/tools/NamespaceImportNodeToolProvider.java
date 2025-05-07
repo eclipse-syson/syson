@@ -63,12 +63,15 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
                 .expression(AQLUtils.getSelfServiceCallExpression("createNamespaceImport", "selectedObject"))
                 .children(createView.build());
 
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(changeContextNewInstance.build());
 
         return this.diagramBuilderHelper.newNodeTool()
                 .name(this.descriptionNameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .dialogDescription(this.getSelectionDialogDescription())
-                .body(changeContextNewInstance.build())
+                .body(changeContextViewUsageOwner.build())
                 .build();
     }
 

@@ -40,7 +40,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -53,6 +52,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

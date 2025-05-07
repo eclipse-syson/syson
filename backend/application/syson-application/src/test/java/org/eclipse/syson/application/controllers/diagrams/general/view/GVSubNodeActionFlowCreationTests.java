@@ -49,7 +49,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
-import org.eclipse.syson.application.data.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
@@ -70,6 +69,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

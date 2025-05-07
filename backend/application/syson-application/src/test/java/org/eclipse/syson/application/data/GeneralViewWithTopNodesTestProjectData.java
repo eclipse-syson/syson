@@ -28,11 +28,11 @@ public class GeneralViewWithTopNodesTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "f798f221-9992-4d47-9831-0312e7f9f726";
+        public static final String DIAGRAM_ID = "fa8c8a8d-2813-404c-876f-c04e8b297134";
 
-        public static final String PART_USAGE_ID = "ecc65ee9-10f3-3712-8c4b-12e0f90a1df4";
+        public static final String PART_USAGE_ID = "4c4fe0d5-4974-377e-9113-9ab022c75f8c";
 
-        public static final String PART_DEFINITION_TEXTUAL_REP_ID = "787f539a-6444-3a62-8e24-3a4693414c77";
+        public static final String PART_DEFINITION_TEXTUAL_REP_ID = "3a992e49-95fa-384a-bb54-47284825bf17";
     }
 
     /**

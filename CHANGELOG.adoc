@@ -33,6 +33,8 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1233[#1233] [general-view] Add a creation tool of State sub actions with referenced action inside State elements
 - https://github.com/eclipse-syson/syson/issues/1255[#1255] [general-view] Improve label of `TransitionUsage` to display the "AcceptParameterPart".
 - https://github.com/eclipse-syson/syson/issues/1210[#1210] general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1251[#1251] [explorer] Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
+All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 
 === New features
 

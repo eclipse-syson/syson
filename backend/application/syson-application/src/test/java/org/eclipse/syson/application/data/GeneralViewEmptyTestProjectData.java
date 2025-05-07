@@ -28,7 +28,7 @@ public class GeneralViewEmptyTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "e92f36f4-48ea-4a57-89b1-0acf98f86f6d";
+        public static final String DIAGRAM_ID = "16d1cfa3-1200-47b5-8877-9b4ff1b273d3";
     }
 
     /**

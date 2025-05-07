@@ -28,23 +28,23 @@ public class ActionFlowCompartmentTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "cbd3d33f-970e-438d-9e25-6c19ac2fbe32";
+        public static final String DIAGRAM_ID = "8e46de8d-1be1-49af-bca6-9fa3c2c0a9a2";
 
-        public static final String START_ID = "3a97ff70-bc26-3d04-bf64-939a686cb10c";
+        public static final String START_ID = "eb7e2c4e-74b5-3797-a24f-0987b67a982c";
 
-        public static final String DONE_ID = "5f4c2780-f6f7-3977-8876-69f90c36d3eb";
+        public static final String DONE_ID = "bf826cfe-81bd-3a3c-9804-cf980e18c9ff";
 
-        public static final String SUB_ACTION1_ID = "b7f0f687-c99e-3772-9fa0-a500a176cbf8";
+        public static final String SUB_ACTION1_ID = "291d41bb-db2e-3a94-a4a2-ece9960e1c59";
 
-        public static final String SUB_ACTION2_ID = "59f212f4-9203-3f41-88b5-8ff19a764f29";
+        public static final String SUB_ACTION2_ID = "cb89fbed-59e2-3588-b20f-8ed619142811";
 
-        public static final String SUB_ACTION3_ID = "58196f0c-d839-3962-bc73-1eb506bacb11";
+        public static final String SUB_ACTION3_ID = "1de69c8c-1acd-3cac-88cf-9a44791f705e";
 
-        public static final String SUCCESSION_A1_A2_ID = "cdafcc5a-49c9-367a-bb1c-e047d3ac8c7c";
+        public static final String SUCCESSION_A1_A2_ID = "606c192d-f87b-393d-bcf2-cd085379cdf2";
 
-        public static final String TRANSITION_A2_A3_ID = "11c55416-2702-32e7-9ae7-770c4967b9bd";
+        public static final String TRANSITION_A2_A3_ID = "4dfdabc0-ecca-3ea2-be04-52ca152d5572";
 
-        public static final String ROOT_ACTION_USAGE = "f3c59470-977b-3e8d-b459-07d4e2bc103b";
+        public static final String ROOT_ACTION_USAGE = "3d50519e-5a5d-312a-a17a-970119851df0";
     }
 
     /**

@@ -82,6 +82,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
@@ -139,10 +140,27 @@ public class ViewCreateService {
     }
 
     /**
+     * This service is called by most of the tools. It allows the get the real semantic element container of the tool
+     * executed. If the given element is a ViewUSage, then it should be the owner of the ViewUSage, otherwise it should
+     * be the given element itself.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the newly created {@link Membership}.
+     */
+    public Element getViewUsageOwner(Element element) {
+        Element viewUsageOwner = element;
+        if (element instanceof ViewUsage viewUsage) {
+            viewUsageOwner = viewUsage.getOwner();
+        }
+        return viewUsageOwner;
+    }
+
+    /**
      * Create the appropriate {@link Membership} child according to the given {@link Element}.
      *
      * @param element
-     *         the given {@link Element}.
+     *            the given {@link Element}.
      * @return the newly created {@link Membership}.
      */
     public Membership createMembership(Element element) {

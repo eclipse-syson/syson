@@ -100,12 +100,16 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build());
 
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(changeContextMembership.build());
+
         var toolLabel = this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getExhibitStateUsage()) + " with referenced State";
 
         return builder
                 .name(toolLabel)
                 .iconURLsExpression("/icons/full/obj16/ExhibitStateUsage.svg")
-                .body(changeContextMembership.build())
+                .body(changeContextViewUsageOwner.build())
                 .dialogDescription(selectExistingStateUsage.build())
                 .build();
     }

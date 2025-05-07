@@ -28,11 +28,11 @@ public class GeneralViewEdgeOnEdgeTestProjectData {
      */
     public static class GraphicalIds {
 
-        public static final String DIAGRAM_ID = "3edc2a3e-e59c-4d7b-8f98-7efb1dc46521";
+        public static final String DIAGRAM_ID = "a7284713-f29b-4313-9bc6-8d2cdc85b511";
 
-        public static final String DEPENDENCY_1_ID = "9f4d57b4-1e1b-338c-a600-0fc68348fd17";
+        public static final String DEPENDENCY_1_ID = "5b096973-9e3d-3fca-8160-83ccdc0d0e21";
 
-        public static final String TRANSITION_USAGE_1_ID = "87e29d58-53f5-3a14-a43c-9f7b9cff344a";
+        public static final String TRANSITION_USAGE_1_ID = "7b8569fa-22e9-3e90-812d-8525b99a2681";
     }
 
     /**
