@@ -18,6 +18,7 @@ import {
   INodeLayoutHandler,
   NodeData,
   computeNodesBox,
+  computePreviousPosition,
   computePreviousSize,
   findNodeIndex,
   getBorderNodeExtent,
@@ -93,6 +94,7 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
+      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -100,14 +102,15 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
         if (child.position.y < borderWidth + headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint + rectangularNodePadding };
         }
-      } else if (previousNode) {
-        child.position = previousNode.position;
+        if (child.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
+        }
+      } else if (previousPosition) {
+        child.position = previousPosition;
         if (previousNode && previousNode.position.y < headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
-        } else {
-          child.position = child.position;
         }
-        if (previousNode && previousNode.position.x < 0) {
+        if (child.position.x < 0) {
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {

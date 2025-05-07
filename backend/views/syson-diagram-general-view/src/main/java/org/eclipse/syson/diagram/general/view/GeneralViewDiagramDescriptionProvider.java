@@ -104,6 +104,7 @@ import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageStakeholders
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -158,7 +159,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
-            SysmlPackage.eINSTANCE.getStateUsage()
+            SysmlPackage.eINSTANCE.getStateUsage(),
+            SysmlPackage.eINSTANCE.getViewUsage()
             );
 
     public static final List<EClass> ANNOTATINGS = List.of(
@@ -426,7 +428,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // State Usage
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
                 colorProvider, this.getDescriptionNameGenerator()));
-        
+
         // Compartment "state transition" (OwnedState) is defined for:
         // State Definition
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(),
@@ -988,7 +990,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .map(documentationContainerDescription -> actionDefinitionNodeDescription.getReusedChildNodeDescriptions().indexOf(documentationContainerDescription))
                 .orElse(-1);
         cache.getNodeDescription(
-                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
+                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
                 .ifPresent(parameterContainerNodeDescription -> {
                     actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parameterContainerNodeDescription);
                 });
@@ -1113,7 +1115,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).orElse(null);
         if (nodeDescription != null) {
             NodeTool nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, element);
-            nodeTool.setPreconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable", "'" + element.getName() + "'"));
+            var preconditionExpresion = new StringBuilder();
+            preconditionExpresion.append(AQLConstants.AQL_SELF);
+            preconditionExpresion.append(".getViewUsageOwner()");
+            preconditionExpresion.append(".toolShouldBeAvailable('");
+            preconditionExpresion.append(element.getName());
+            preconditionExpresion.append("')");
+            nodeTool.setPreconditionExpression(preconditionExpresion.toString());
             elementCreationTools.add(nodeTool);
             if (DIRECTIONAL_ELEMENTS.contains(element)) {
                 // this element has a direction, we need to create also 3 more tools for each direction.

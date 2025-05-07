@@ -69,7 +69,8 @@ All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection 
 
 === New features
 
-- https://github.com/eclipse-syson/syson/issues/1237[#1237] [general-view] Add `ViewUsage` graphical node in the General View diagram.
+- https://github.com/eclipse-syson/syson/issues/1237[#1237] [general-view] Add `ViewUsage` graphical node in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1279[#1279] [general-view] Support `ViewUsage` graphical contents in the _General View_ diagram.
 
 == v2025.4.0
 

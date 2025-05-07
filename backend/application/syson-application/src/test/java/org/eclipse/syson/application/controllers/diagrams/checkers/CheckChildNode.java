@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,8 @@ public class CheckChildNode implements IDiagramChecker {
 
     private String parentLabel;
 
+    private String parentNodeId;
+
     private String nodeDescriptionName;
 
     private int compartmentCount;
@@ -48,6 +50,11 @@ public class CheckChildNode implements IDiagramChecker {
 
     public CheckChildNode withParentLabel(String expectedParentLabel) {
         this.parentLabel = expectedParentLabel;
+        return this;
+    }
+
+    public CheckChildNode withParentNodeId(String expectedParentNodeId) {
+        this.parentNodeId = expectedParentNodeId;
         return this;
     }
 
@@ -65,7 +72,12 @@ public class CheckChildNode implements IDiagramChecker {
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-        Node parentNode = diagramNavigator.nodeWithTargetObjectLabel(this.parentLabel).getNode();
+        Node parentNode;
+        if (this.parentNodeId != null) {
+            parentNode = diagramNavigator.nodeWithId(this.parentNodeId).getNode();
+        } else {
+            parentNode = diagramNavigator.nodeWithTargetObjectLabel(this.parentLabel).getNode();
+        }
         assertThat(parentNode).isNotNull();
         assertThat(parentNode.getChildNodes()).anySatisfy(childNode -> {
             assertThat(childNode).hasDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName));
