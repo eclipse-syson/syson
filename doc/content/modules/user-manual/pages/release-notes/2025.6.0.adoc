@@ -45,6 +45,10 @@ They are now named:
 
 image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
 
+- `ViewUsage` may now display graphical contents in _General View_ diagram.
+
+image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%,height=65%]
+
 
 == Improvements
 

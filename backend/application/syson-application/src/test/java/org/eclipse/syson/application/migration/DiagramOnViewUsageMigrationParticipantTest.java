@@ -40,7 +40,9 @@ import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.DiagramOnViewUsageMigrationParticipantTestProjectData;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +78,8 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
 
     @Autowired
     private IRepresentationSearchService representationSearchService;
+
+    private final ElementUtil elementUtil = new ElementUtil();
 
     @Test
     @DisplayName("GIVEN a project with a diagram associated to a Package, WHEN the model is loaded, THEN a ViewUsage is created under the Package and the diagram is now associated to this new ViewUsage")
@@ -125,6 +129,11 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
 
         var viewUsage = optionalViewUsage.get();
         assertEquals(this.objectService.getId(viewUsage), targetObjectId);
+
+        var viewDef = viewUsage.getType();
+        assertEquals(1, viewDef.size());
+        var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        assertEquals(generalViewViewDef, viewDef.get(0));
 
         // diagram contains partA (PartUsage), partB (PartUsage), PartDefinition1 (PartDefinition) as root nodes (3)
         var rootNodes = diagram.getNodes();
