@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -91,6 +92,8 @@ import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
 import org.eclipse.syson.diagram.general.view.nodes.ItemUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ReferencingPerformActionUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionActorsCompartmentNodeDescriptionProvider;
@@ -324,7 +327,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
-        this.linkActionDefinitionCompartments(cache);
+        this.linkActionDefinitionParametersCompartment(cache);
+        this.linkPartPerformActionsCompartment(cache);
+        this.linkActionPerformActionsCompartment(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -448,12 +453,21 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     compartmentNodeDescriptionProviders.add(new ActionItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
                     compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else if ((SysmlPackage.eINSTANCE.getPartUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference))
                         || (SysmlPackage.eINSTANCE.getPartDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedState().equals(eReference))) {
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
+                } else if ((SysmlPackage.eINSTANCE.getActionUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedAction().equals(eReference))
+                        || (SysmlPackage.eINSTANCE.getActionDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedAction().equals(eReference))) {
+                    compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+                    compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else {
                     compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
@@ -947,7 +961,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         );
     }
 
-    private void linkActionDefinitionCompartments(IViewDiagramElementFinder cache) {
+    private void linkActionDefinitionParametersCompartment(IViewDiagramElementFinder cache) {
         NodeDescription actionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).get();
         String documentationCompartmentName = this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getElement_Documentation());
 
@@ -962,6 +976,59 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
                 .ifPresent(parameterContainerNodeDescription -> {
                     actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parameterContainerNodeDescription);
+                });
+    }
+
+    private void linkPartPerformActionsCompartment(IViewDiagramElementFinder cache) {
+        // perform actions compartment in PartUsages
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) +
+                        PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    USAGES.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getPartUsage()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getPartUsage()))
+                            .forEach(partUsage -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, partUsage);
+                            });
+                });
+        // perform actions compartment in PartDefinitions
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) +
+                        PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    DEFINITIONS.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getPartDefinition()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getPartDefinition()))
+                            .forEach(partDefinition -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, partDefinition);
+                            });
+                });
+    }
+
+    private void linkActionPerformActionsCompartment(IViewDiagramElementFinder cache) {
+        // perform actions compartment in ActionUsages
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) +
+                        PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    USAGES.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getActionUsage()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getActionUsage()))
+                            .forEach(actionUsage -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, actionUsage);
+                            });
+                });
+        // perform actions compartment in ActionDefinitions
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) +
+                        PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_NAME)
+                .ifPresent(compartmentNodeDescription -> {
+                    DEFINITIONS.stream()
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getActionDefinition()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getActionDefinition()))
+                            .forEach(actionDefinition -> {
+                                this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, actionDefinition);
+                            });
+                });
+    }
+
+    private void addCompartmentNodeDescriptionInNodeDescription(IViewDiagramElementFinder cache, NodeDescription compartmentNodeDescription, EClass eClass) {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(eClass))
+                .ifPresent(nodeDescription -> {
+                    nodeDescription.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
                 });
     }
 

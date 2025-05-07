@@ -182,6 +182,14 @@ image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment o
 
 - In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
 
+- New compartment in `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the General view diagram.
+
+image::gv-parts-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
+
+- New compartment in `ActionUsage` and `ActionDefinition` to display `PerformActionUsage` in the General view diagram.
+
+image::gv-actions-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
+
 == Dependency update
 
 
