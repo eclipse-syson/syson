@@ -66,7 +66,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class SySONLibraryUpdateTests extends AbstractIntegrationTests {
+public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
 
     protected IEditingContext projectEditingContext;
 

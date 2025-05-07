@@ -10,6 +10,23 @@
 
 === Dependency update
 
+- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.2]
+- [releng] Switch `@mui/material` to `7.0.2`
+- [releng] Switch `@mui/icons-material` to `7.0.2`
+- [releng] Switch `@mui/x-tree-view` to `7.29.1`
+- [releng] Switch `tss-react` to `4.9.16`
+- [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
+- [releng] Switch to EMFJson 2.5.0.
+The following dependencies have been updated:
+* `org.eclipse.emf.ecore.xmi` from `2.16.0` to `2.38.0`
+* `org.eclipse.emf.common` from `2.21.0` to `2.31.0`
+* `org.eclipse.emf.ecore` from `2.23.0` to `2.37.0`
+* `org.eclipse.emf.edit` from `2.16.0` to `2.22.0`
+* `org.eclipse.emf.ecore.edit` from `2.13.0` to `2.15.0`
+* `org.eclipse.emf.codegen` from `2.23.0` to `2.24.0`
+* `org.eclipse.emf.codegen.ecore` from `2.25.0` to `2.39.0`
+
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1258[#1258] [publication] Add required libraries as dependencies when publishing a project.

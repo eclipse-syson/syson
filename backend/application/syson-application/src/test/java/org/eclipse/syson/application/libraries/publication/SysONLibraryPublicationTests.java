@@ -71,7 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class SySONLibraryPublicationTests extends AbstractIntegrationTests {
+public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
 
     private static final String IMPORTED_PROJECT = "afffb8f5-3db6-4b47-b295-55a36984db2e";
 

@@ -191,6 +191,10 @@ image::gv-actions-perform-actions-compartment.png[perform actions compartment in
 
 == Dependency update
 
+- Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.2]
+- Switch to `Sirius EMF-JSON 2.5.0`
+- Switch to `@mui/material 7.0.2`
 
 == Technical details
 
