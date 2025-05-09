@@ -4,3 +4,4 @@ New to {product}?
 These starter guides are the perfect way to get some hands-on experience in the editor.
 
 * xref:hands-on/tutorials/batmobile.adoc[Create Your First Model]
+* xref:hands-on/tutorials/flashlight.adoc[Model Your First System]

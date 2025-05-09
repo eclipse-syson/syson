@@ -1,0 +1,227 @@
+= Model Your First System
+
+This tutorial provides a beginner-friendly guide to creating your first system with {sysmlv2} and {product}, adapted from the training https://de-bok.org/asset/cea7b8e36bf22cb43cc0ca277528bb57127fb292[{sysmlv2} Introductory Training Flashlight Starter Model] by Sanford Friedenthal.
+The focus is on representing a flashlight.
+
+== Step 1: Create a Project
+. Open the {homepage} and xref:hands-on/how-tos/project-management.adoc#create-template-project[create a new {sysmlv2} project] by clicking on the {sysmlv2} card.
+. The {editor} automatically opens, creating a new project named `{sysmlv2}` with a package `Package1`.
+A default `{gv}` representation associated with the package is opened in the main editor area.
+. From the project toolbar, xref:hands-on/how-tos/project-management.adoc#rename-project[rename the project] to `Flashlight`.
+. From the {explorer}, xref:hands-on/how-tos/model-management.adoc#rename-model[rename the model] to `Flashlight.sysml` and the xref:hands-on/how-tos/model-management.adoc#rename-element[package] to `Flashlight_StarterModel`.
+
+== Step 2: Model Organization (Package Structure)
+
+. In the main editor area, right-click on the diagram background to open the palette.
+. Click on `Structure` -> `New Package` to create a new package.
+. Rename the package to `FlashlightSpecificationAndDesign`.
+. Right-click on the `FlashlightSpecificationAndDesign` package, select `Structure` -> `New Package` to create a new package inside it.
+. Rename it to `Requirements`.
+. Right-click again on the `FlashlightSpecificationAndDesign`, and use the quick access tool `New Package`.
+. Rename it to `ActionTree`.
+. Repeat the earlier step to create and rename the following packages inside `FlashlightSpecificationAndDesign`:
+** `PartsTree`
+** `RequirementsAllocation`
+. Click on the `Arrange all elements` menu in the global toolbar at the top of the diagram.
+
+image::flashlight-model-organization.png[Flashlight Model Organization]
+
+== Step 3: Flashlight Requirements Tree
+
+. In the explorer, select the `Requirements` package, click the "more" menu, and choose `New representation`
+. Create a new `General View` and open it.
+. In the main editor area, right-click on the diagram background to open the palette.
+. Click on `Requirements` -> `New Requirement` to create a new requirement.
+. Rename it to `flashlightSpecification`.
+. Right-click on the `flashlightSpecification` requirement, then select `Requirements` -> `New Requirement` to create a nested requirement.
+. Rename the new requirement to `userInterface`.
+. In the explorer, select `flashlightSpecification`, click the "more" menu, and choose `New objects from text`.
+. In the modal input box, paste the following content:
+[source, sysml]
+----
+requirement illumination{
+ requirement fieldOfView{
+  doc /* The flashlight field of view shall be 0 - 20 degrees.*/
+ }
+requirement lightPower{
+ doc /* The light power shall be a minimum of TBD lumens.*/
+ }
+}
+requirement physical{
+ requirement portability;
+ requirement size{
+  doc /* The flashlight shall be less than 6 inches in length.*/
+ }
+ requirement weight;
+}
+requirement reliability;
+requirement cost;
+----
+. Select the newly created elements (`illumination`, `physical`, `reliability`, `cost`, `portability`, `size`, `weight`, `fieldOfView`, `lightPower`) in the explorer (Ctrl + Click), and drag-and-drop them into the diagram.
+. Use the `Arrange all elements` tool from the diagram toolbar to auto layout the diagram.
+. Right-click on the `size` requirement and select `Show/Hide -> Show valued content` to display the documentation in the diagram.
+. Repeat the operation for the children of `illumination`: `fieldOfView` and `lightPower`.
+. Right-click on the `weight` requirement and select the `New Documentation` tool.
+.  In the newly created `doc` element, enter the text:  `The weight shall be less than 0.25 kg.`
+. Right-click on the `weight` requirement again and choose `Structure -> New Attribute`.
+. Edit the new attribute to `actualweight :> mass`.
+. Select the `Requirements` package, click the `New object` menu to create a `Namespace Import` to import the `SI` package from the standard libraries.
+. Use the palette filter to locate the `New Required Constraint` tool, and apply it to the `weight` requirement.
+. Edit the constraint to: `actualweight<=0.25[kg]`
+
+image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
+
+== Step 4: Produce Directed Light Action Flow
+
+. In the explorer, select the `ActionTree` package, click the "more" menu, and choose `New representation`.
+. Create a new `General View` and open it.
+. In the main editor area, right-click on the diagram background to open the palette.
+. Click on `Behavior` -> `New Action` to create a new action.
+. Rename it `produceDirectedLight`.
+. Right-click on the `produceDirectedLight` action, then select `Behavior` -> `New Start Action`.
+. Right-click again on `produceDirectedLight`, then select `Behavior` -> `New Fork`.
+. Rename the fork to `fork1`.
+. Select the start node and use the connection tool to create a succession between the start action and the fork node.
+. Right-click on the `produceDirectedLight` and select `Behavior` -> `New Action` to create a nested action.
+. Rename the nested action to `provideDCPwr`.
+. Select `fork1` and use the connection tool to create a succession to the `provideDCPwr` action.
+. Right-click on `provideDCPwr`, then select `Structure`-> `New Item Out`.
+. Rename the item to `outdcPwr`.
+. In the explorer, select the `produceDirectedLight` action, click the "more" menu, and choose `New objects from text`.
+. In the model input box, paste the following content:
+[source,sysml]
+----
+in item onOffCmd;
+out item lightOut;
+action connectDCPwr {
+  	in item onOffCmd;
+  	in item dcPwrIn;
+  	out item dcPwrOut;
+}
+action generateLight{
+  	in item dcPwrIn;
+  	out item light;
+}
+action directLight{
+  	in item lightIn;
+  	out item lightOut;
+}
+----
+. Drag and drop the newly created actions `connectDCPwr`, `generateLight`, `directLight` into the action flow compartment of `produceDirectedLight`.
+. Create a new transition between `fork1` and `connectDCPwr`.
+. Create a `Binding Connector As Usage (bind)` between the `onOffCmd` input item of `produceDirectedLight` and the `onOffCmd` input of `connectDCPwr`.
+. Create a `Flow Connection (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
+. Create a `Flow Connection (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
+. Create a `Binding Connector As Usage (bind)` between `lightOut` output item of `directLight` and the `lightOut` item of `produceDirectedLight`.
+
+image::flashlight-action-tree.png[Flashlight Requirements Tree]
+
+== Step 5: Flashlight Interconnection
+
+. In the explorer, select the `PartsTree` package, click the "more" menu, and choose `New representation`.
+. Create a new `General View` and open it.
+. In the main editor area, right-click on the diagram background to open the palette.
+. Click on `Structure`-> `New Part` to create a new part usage.
+. Rename it to `flashlight`.
+. Right-click on `flashlight`, then select `Structure` -> `New Attribute`.
+. Edit it to `mass :> ISQ::mass`
+. Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `fov:Real`.
+. Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `illuminationLevel:Real`.
+. Right-click on `flashlight`, then select the `Behavior` -> `New Perform` and select the action `produceDirectedLight` created earlier.
+. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New representation`.
+. Create a new `Interconnection View` and open it.
+. Right-click on `flashlight`, then select the `Structure` -> `New Port`.
+. Rename it `cmdPort`.
+. Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
+. Rename it `switch`.
+. Right-click on `switch`, then select the `Structure` -> `New Port`.
+. Rename it `cmdPort`.
+. Create a new binding between the `cmdPort` of `flashlight` and the `cmdPort` of the `switch`.
+. Right-click on `switch`, then select the `Structure` -> `New Port In`.
+. Rename it `inPort`.
+. Right-click on `switch`, then select the `Structure` -> `New Port Out`.
+. Rename it `outPort`.
+. Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
+. Rename it `battery`.
+. In the `Details` view, select the `Advanced` tab and uncheck the `Is Composite` property, to declare that this is a reference.
+. Edit it to `battery[2]` to declare that the part has a multiplicity equal to 2.
+. Right-click on `battery`, then select the `Structure` -> `New Port Out`.
+. Rename it `dcPwrOutPort`.
+. Select `dcPwrOutPort`, create a flow between `dcPwrOutPort` and `inPort`.
+. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New objects from text`.
+. In the model input box, paste the following content:
+[source,sysml]
+----
+port lightOutPort;
+port handPort;
+part lamp{
+  attribute efficiency:Real;
+  in port dcPwrInPort;
+  out port lightOutPort;
+}
+part optics{
+  in port lightInPort;
+  out port lightOutPort;
+  part reflector{
+  	attribute radius :> ISQ::length;
+  }
+  part lens;
+}
+part structure{
+	port handPort;
+  part frontHousing;
+  part middleHousing;
+  part backHousing;
+}
+
+bind lightOutPort = optics.lightOutPort;
+bind handPort = structure.handPort;
+----
+. Drag and drop the newly created parts `lamp`, `optics`, `structure` into the `flashlight` part.
+
+image::flashlight-interconnection.png[Flashlight Interconnection]
+
+== Step 6: Flashlight States
+
+. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New representation`.
+. Create a new `General View` and open it.
+. In the main editor area, right-click on the diagram background to open the palette.
+. Click on `Behavior`-> `New Exhibit State` to create an exhibit state usage.
+. Rename it to `flashlightStates`.
+. Right-click on `flashlightStates`, then select the `Behavior` -> `New State` to create a three nested states.
+. Rename them to `initial`, `off`, and `on`.
+. Create transition named `init` between the `initial` state and the `off` state.
+. Create the following transitions between the `on` state and the `off` state.
+.. transition `off_To_on` from `off` to `on`
+.. transition `on_To_off` from `on` to `off`
+. Right-click on the `on` state, select the `Behavior` -> `Do Action with referenced action`, and select the `produceDirectedLight` action defined earlier .
+
+image::flashlight-states.png[Flashlight States]
+
+== Step 7: Flashlight Requirements Allocation
+
+. In the explorer, select the `RequirementsAllocation` package, click the "more" menu, and choose `New representation`.
+. Create a new `General View` and open it.
+. Drag and drop the following elements from the explorer to the diagram :
+** *Requirements*:
+*** `flashlightSpecification`,
+*** `illumination`,
+*** `fieldofView`,
+*** `lightPower`,
+*** `physical`,
+*** `weight`;
+** *Part*:
+*** `flashlight`;
+** *Attributes* of `flashlight`:
+*** `mass`,
+*** `illuminationLevel`,
+*** `fov`;
+** *Action*:
+*** `produceDirectedLight`.
+. Create the following allocations:
+** `illumination` -> `produceDirectedLight`,
+** `weight` -> `mass`,
+** `fieldOfView` -> `fov`,
+** `lightPower` -> `illuminationLevel`.
+
+image::flashlight-requirements-allocation.png[Flashlight Requirements Allocation]
