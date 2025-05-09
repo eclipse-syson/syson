@@ -59,6 +59,7 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1287[#1287] [general-view] Reduce the initial width of the `Package` graphical node.
 - https://github.com/eclipse-syson/syson/issues/1244[#1244] [details] Make `LibraryPackage`'s `isStandard` checkbox read-only in the _Details_ view.
 At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
+- https://github.com/eclipse-syson/syson/issues/1281[#1281] [syson] Prevent the loading of the editing context when querying commands in the omnibox.
 
 === New features
 

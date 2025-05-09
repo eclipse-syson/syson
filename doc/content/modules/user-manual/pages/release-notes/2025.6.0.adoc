@@ -204,6 +204,7 @@ image::package-node-width-before.png[Package node before change, width=400]
 .After
 image::package-node-width-after.png[Package node after change, width=300]
 
+- Improve the time required to display the available commands in the omnibox.
 
 == Dependency update
 

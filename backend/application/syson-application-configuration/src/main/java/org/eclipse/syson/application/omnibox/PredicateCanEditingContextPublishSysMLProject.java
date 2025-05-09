@@ -12,14 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.application.omnibox;
 
+import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.syson.application.omnibox.api.IPredicateCanEditingContextPublishSysMLProject;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.springframework.stereotype.Service;
@@ -33,29 +30,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class PredicateCanEditingContextPublishSysMLProject implements IPredicateCanEditingContextPublishSysMLProject {
 
-    private final IEditingContextSearchService editingContextSearchService;
+    private final ISemanticDataSearchService semanticDataSearchService;
 
-    public PredicateCanEditingContextPublishSysMLProject(final IEditingContextSearchService editingContextSearchService) {
-        this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
+    public PredicateCanEditingContextPublishSysMLProject(final ISemanticDataSearchService semanticDataSearchService) {
+        this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
     }
 
     @Override
     public boolean test(final String editingContextId) {
-        return this.editingContextSearchService.findById(editingContextId)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
-                .map(EditingDomain::getResourceSet)
-                .map(resourceSet -> resourceSet.getResources().stream()
-                        .anyMatch(resource -> this.isSysMLResource(resource)))
+        return new UUIDParser().parse(editingContextId)
+                .map(uuid -> this.semanticDataSearchService.isUsingDomains(uuid, List.of(SysmlPackage.eNS_URI)))
                 .orElse(false);
     }
-
-    private boolean isSysMLResource(final Resource resource) {
-        return resource.getContents().stream()
-                .map(EObject::eClass)
-                .map(EClass::getEPackage)
-                .anyMatch(ePackage -> ePackage == SysmlPackage.eINSTANCE);
-    }
-
 }
