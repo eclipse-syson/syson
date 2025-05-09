@@ -181,6 +181,7 @@ image::StateTransitionUsageLabels.png[TransitionUsage labels]
 image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment on ActionDefinition]
 
 - In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
+- Improve the time required to display the available commands in the omnibox.
 
 == Dependency update
 
