@@ -155,6 +155,12 @@ public class DetailsViewService {
             isReadOnly = true;
         } else if (SysmlPackage.eINSTANCE.getPortConjugation_OriginalPortDefinition().equals(eStructuralFeature)) {
             isReadOnly = true;
+        } else if (SysmlPackage.eINSTANCE.getLibraryPackage_IsStandard().equals(eStructuralFeature)) {
+            // Based on KerML 8.3.4.13.3, this feature should be set for LibraryPackages in the standard Kernel Model
+            // Libraries or normative model libraries for a language built on KerML.
+            // SysON only allows to work with SysML at the moment, and does not support the definition of other
+            // normative model libraries.
+            isReadOnly = true;
         } else {
             isReadOnly = eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable();
         }

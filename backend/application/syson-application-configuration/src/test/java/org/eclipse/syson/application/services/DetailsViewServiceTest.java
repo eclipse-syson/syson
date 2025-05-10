@@ -92,4 +92,9 @@ public class DetailsViewServiceTest {
         ElementUtil.setIsImported(resource, true);
         assertThat(this.detailsViewService.isReadOnly(pack)).isFalse();
     }
+
+    @Test
+    public void isReadOnlyLibraryPackageIsStandardEAttribute() {
+        assertThat(this.detailsViewService.isReadOnly(SysmlPackage.eINSTANCE.getLibraryPackage_IsStandard()));
+    }
 }

@@ -35,6 +35,8 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1255[#1255] [general-view] Improve label of `TransitionUsage` to display the "AcceptParameterPart".
 - https://github.com/eclipse-syson/syson/issues/1210[#1210] general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1267[#1267] [general-view] Improve the New Perform tool selection dialog to display existing actions in a tree.
+- https://github.com/eclipse-syson/syson/issues/1244[#1244] [details] Make LibraryPackage's `isStandard` checkbox read-only in the details view.
+At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
 
 === New features
 
