@@ -737,4 +737,12 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 attribute myAttribute = "value";""";
         this.checker.check(input, input);
     }
+
+    @Test
+    @DisplayName("Given a model with a PartUsage containing a Multiplicity with LiteralInteger bounds, when importing and exporting the model, then the exported text file should be the same as the imported one")
+    public void checkMultiplicityRangeWithLiteralIntegerBounds() throws IOException {
+        var input = """
+                part myPart [1..2];""";
+        this.checker.check(input, input);
+    }
 }
