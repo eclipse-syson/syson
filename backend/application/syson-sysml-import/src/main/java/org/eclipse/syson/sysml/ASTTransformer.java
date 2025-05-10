@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
 import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
@@ -161,6 +163,36 @@ public class ASTTransformer {
     private void postResolvingFixingPhase(List<? extends EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixTransitionUsageImplicitSource(root);
+            this.fixOperatorExpressionUsedAsRanges(root);
+        }
+    }
+
+    private void fixOperatorExpressionUsedAsRanges(EObject root) {
+        // Only get the OperatorExpressions used in MultiplicityRange. Based on KerML 8.2.5.8.1 OperatorExpression
+        // referring to the ".." function can exist, but the specification does not allow them in MultiplicityRange (see
+        // SysML 8.2.2.6.6 and KerML 8.2.5.11).
+        List<OperatorExpression> operatorExpressions = EMFUtils.allContainedObjectOfType(root, MultiplicityRange.class)
+                .flatMap(multiplicityRange -> multiplicityRange.getOwnedMember().stream())
+                .filter(OperatorExpression.class::isInstance)
+                .map(OperatorExpression.class::cast)
+                .filter(operatorExpression -> Objects.equals(operatorExpression.getOperator(), ".."))
+                .toList();
+        for (OperatorExpression operatorExpression : operatorExpressions) {
+            Element owner = operatorExpression.getOwner();
+            for (Feature parameter : operatorExpression.getParameter()) {
+                Expression parameterValue = parameter.getValuation().getValue();
+                // Only LiteralExpressions and FeatureReferenceExpressions can be used in a MultiplicityRange
+                if (parameterValue instanceof LiteralExpression || parameterValue instanceof FeatureReferenceExpression) {
+                    OwningMembership newOwningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    owner.getOwnedRelationship().add(newOwningMembership);
+                    newOwningMembership.getOwnedRelatedElement().add(parameterValue);
+                }
+            }
+            if (operatorExpression.getOwningMembership() != null) {
+                new DeleteService().deleteFromModel(operatorExpression.getOwningMembership());
+            } else {
+                new DeleteService().deleteFromModel(operatorExpression);
+            }
         }
         this.logger.info("Post resolving fixing phase done");
     }

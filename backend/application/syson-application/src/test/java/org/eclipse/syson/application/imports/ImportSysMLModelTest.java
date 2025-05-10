@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Expression;
@@ -47,6 +49,7 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
@@ -639,6 +642,89 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(literalStrings).hasSize(1);
             LiteralString literalString = literalStrings.get(0);
             assertThat(literalString.getValue()).doesNotContain("\"");
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a PartUsage with a Multiplicity with LiteralInteger bounds, when importing the model, then the Multiplicity value is set")
+    public void checkPartUsageMultiplicityLiteralIntegerBoundsValueTest() throws IOException {
+        var input = """
+                part myPart[1..2];
+                """;
+        this.checker.checkImportedModel(resource -> {
+            List<PartUsage> partUsages = EMFUtils.allContainedObjectOfType(resource, PartUsage.class).toList();
+            assertThat(partUsages).hasSize(1);
+            PartUsage partUsage = partUsages.get(0);
+            assertThat(partUsage.getMultiplicity()).isInstanceOf(MultiplicityRange.class);
+            MultiplicityRange multiplicityRange = (MultiplicityRange) partUsage.getMultiplicity();
+            assertThat(multiplicityRange.getLowerBound()).isInstanceOf(LiteralInteger.class);
+            LiteralInteger multiplicityRangerLowerBound = (LiteralInteger) multiplicityRange.getLowerBound();
+            assertThat(multiplicityRangerLowerBound.getValue()).isEqualTo(1);
+            assertThat(multiplicityRange.getUpperBound()).isInstanceOf(LiteralInteger.class);
+            LiteralInteger multiplicityRangeUpperBound = (LiteralInteger) multiplicityRange.getUpperBound();
+            assertThat(multiplicityRangeUpperBound.getValue()).isEqualTo(2);
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a PartUsage with a Multiplicity with FeatureReferenceExpression bounds, when importing the model, then the Multiplicity value is set")
+    public void checkPartUsageMultiplicityChainedFeatureReferenceExpressionBoundsTest() throws IOException {
+        // The result of the bound expression(s) of a MultiplicityRange must be typed by ScalarValues::Integer (see
+        // KerML 8.3.4.11.2).
+        var input = """
+                part bounds {
+                    attribute lower:ScalarValues::Integer = 1;
+                    part upperBounds {
+                        attribute upper:ScalarValues::Integer = 2;
+                    }
+                }
+
+                part myPart[bounds::lower..bounds::upperBounds::upper];
+                """;
+        this.checker.checkImportedModel(resource -> {
+            Optional<PartUsage> optionalPartUsage = EMFUtils.allContainedObjectOfType(resource, PartUsage.class)
+                    .filter(partUsage -> Objects.equals(partUsage.getName(), "myPart"))
+                    .findFirst();
+            assertThat(optionalPartUsage).isPresent();
+            assertThat(optionalPartUsage.get().getMultiplicity()).isInstanceOf(MultiplicityRange.class);
+            MultiplicityRange multiplicityRange = (MultiplicityRange) optionalPartUsage.get().getMultiplicity();
+            assertThat(multiplicityRange.getLowerBound()).isInstanceOf(FeatureReferenceExpression.class);
+            FeatureReferenceExpression multiplicityRangeLowerBound = (FeatureReferenceExpression) multiplicityRange.getLowerBound();
+            assertThat(multiplicityRangeLowerBound.getReferent())
+                    .isInstanceOf(AttributeUsage.class)
+                    .returns("lower", Feature::getName);
+            assertThat(multiplicityRange.getUpperBound()).isInstanceOf(FeatureReferenceExpression.class);
+            FeatureReferenceExpression multiplicityRangeUpperBound = (FeatureReferenceExpression) multiplicityRange.getUpperBound();
+            assertThat(multiplicityRangeUpperBound.getReferent())
+                    .isInstanceOf(AttributeUsage.class)
+                    .returns("upper", Feature::getName);
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a PartUsage with a Multiplicity with top-level FeatureReferenceExpression bounds, when importing the model, then the Multiplicity value is set ")
+    public void checkPartUsageMultiplicityTopLevelFeatureReferenceExpressionBoundTest() throws IOException {
+        var input = """
+                attribute lower:ScalarValues::Integer = 1;
+                attribute upper:ScalarValues::Integer = 2;
+                part myPart[lower..upper];
+                """;
+        this.checker.checkImportedModel(resource -> {
+            List<PartUsage> partUsages = EMFUtils.allContainedObjectOfType(resource, PartUsage.class).toList();
+            assertThat(partUsages).hasSize(1);
+            PartUsage partUsage = partUsages.get(0);
+            assertThat(partUsage.getMultiplicity()).isInstanceOf(MultiplicityRange.class);
+            MultiplicityRange multiplicityRange = (MultiplicityRange) partUsage.getMultiplicity();
+            assertThat(multiplicityRange.getLowerBound()).isInstanceOf(FeatureReferenceExpression.class);
+            FeatureReferenceExpression multiplicityRangeLowerBound = (FeatureReferenceExpression) multiplicityRange.getLowerBound();
+            assertThat(multiplicityRangeLowerBound.getReferent())
+                    .isInstanceOf(AttributeUsage.class)
+                    .returns("lower", Feature::getName);
+            assertThat(multiplicityRange.getUpperBound()).isInstanceOf(FeatureReferenceExpression.class);
+            FeatureReferenceExpression multiplicityRangeUpperBound = (FeatureReferenceExpression) multiplicityRange.getUpperBound();
+            assertThat(multiplicityRangeUpperBound.getReferent())
+                    .isInstanceOf(AttributeUsage.class)
+                    .returns("upper", Feature::getName);
         }).check(input);
     }
 
