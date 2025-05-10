@@ -183,6 +183,8 @@ image::StateTransitionUsageLabels.png[TransitionUsage labels]
 image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment on ActionDefinition]
 
 - In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
+- Make LibraryPackage's `isStandard` checkbox read-only in the details view.
+At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
 
 - Add a `perform actions` compartment `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the _General View_ diagram.
 

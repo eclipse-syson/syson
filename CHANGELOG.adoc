@@ -56,6 +56,8 @@ When end-users click on _New Object_ on a semantic element, and select a `ViewUs
 - https://github.com/eclipse-syson/syson/issues/1257[#1257] [general-view] Add the `perform actions` compartment on `PartUsage` and `PartDefinition` graphical nodes in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1277[#1277] [general-view] Add the `perform actions` compartment on `ActionUsage` and `ActionDefinition` graphical nodes in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1287[#1287] [general-view] Reduce the initial width of the `Package` graphical node.
+- https://github.com/eclipse-syson/syson/issues/1244[#1244] [details] Make `LibraryPackage`'s `isStandard` checkbox read-only in the _Details_ view.
+At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
 
 === New features
 
