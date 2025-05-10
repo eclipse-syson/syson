@@ -21,11 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -91,6 +93,54 @@ public class ASTTransformer {
     private void postResolvingFixingPhase(List<EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixTransitionUsageImplicitSource(root);
+            this.fixOperatorExpressionUsedAsRanges(root);
+        }
+    }
+
+    private void fixOperatorExpressionUsedAsRanges(EObject root) {
+        // Only get the OperatorExpressions used in MultiplicityRange. Based on KerML 8.2.5.8.1 OperatorExpression
+        // referring to the ".." function can exist, but the specification does not allow them in MultiplicityRange (see
+        // SysML 8.2.2.6.6 and KerML 8.2.5.11).
+        List<OperatorExpression> operatorExpressions = EMFUtils.allContainedObjectOfType(root, MultiplicityRange.class)
+                .flatMap(multiplicityRange -> multiplicityRange.getOwnedMember().stream())
+                .filter(OperatorExpression.class::isInstance)
+                .map(OperatorExpression.class::cast)
+                .filter(operatorExpression -> Objects.equals(operatorExpression.getOperator(), ".."))
+                .toList();
+        for (OperatorExpression operatorExpression : operatorExpressions) {
+            Element owner = operatorExpression.getOwner();
+            if (owner != null) {
+                for (Feature parameter : operatorExpression.getParameter()) {
+                    Expression parameterValue = parameter.getValuation().getValue();
+                    // Only LiteralExpressions and FeatureReferenceExpressions can be used in a MultiplicityRange
+                    if (parameterValue instanceof LiteralExpression || parameterValue instanceof FeatureReferenceExpression) {
+                        OwningMembership newOwningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                        owner.getOwnedRelationship().add(newOwningMembership);
+                        newOwningMembership.getOwnedRelatedElement().add(parameterValue);
+                    } else if (parameterValue instanceof FeatureChainExpression featureChainExpression) {
+                        // Based on SysML 8.2.2.6.6 and KerML 8.2.5.11, a feature can only be added in a
+                        // MultiplicityRange as a FeatureReferenceExpression.
+                        // If the OperatorExpression contains a FeatureChainExpression we need to create a
+                        // FeatureReferenceExpression referring to the target of the FeatureChainExpression.
+                        OwningMembership newOwningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                        owner.getOwnedRelationship().add(newOwningMembership);
+                        FeatureReferenceExpression featureReferenceExpression = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+                        newOwningMembership.getOwnedRelatedElement().add(featureReferenceExpression);
+                        Membership featureReferenceExpressionMembership = SysmlFactory.eINSTANCE.createMembership();
+                        featureReferenceExpression.getOwnedRelationship().add(featureReferenceExpressionMembership);
+                        // getFeatureTarget accesses the target of the feature regardless of whether the feature itself
+                        // is the target or if it contains FeatureChaining elements.
+                        featureReferenceExpressionMembership.setMemberElement(featureChainExpression.getTargetFeature().getFeatureTarget());
+                    }
+                }
+            }
+            if (operatorExpression.getOwningMembership() != null) {
+                // Do not use EcoreUtil#delete here: it relies on the UsageCrossReferencer that traverses the
+                // ResourceSet to delete all the references to the element.
+                EcoreUtil.remove(operatorExpression.getOwningMembership());
+            } else {
+                EcoreUtil.remove(operatorExpression);
+            }
         }
     }
 
