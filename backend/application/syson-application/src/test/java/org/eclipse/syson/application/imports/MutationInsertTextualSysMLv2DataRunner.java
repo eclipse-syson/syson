@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,14 +31,20 @@ public class MutationInsertTextualSysMLv2DataRunner implements IMutationRunner<I
             mutation insertTextualSysMLv2($input: InsertTextualSysMLv2Input!) {
                     insertTextualSysMLv2(input: $input) {
                       __typename
-                       ... on ErrorPayload {
-                            messages {
-                              level
-                              body
+                          ... on SuccessPayload {
+                              messages {
+                                level
+                                body
+                              }
                             }
+                        ... on ErrorPayload {
+                          messages {
+                            level
+                            body
+                          }
+                        }
                     }
                 }
-            }
             """;
 
     private final IGraphQLRequestor graphQLRequestor;

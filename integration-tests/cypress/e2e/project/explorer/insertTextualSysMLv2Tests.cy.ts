@@ -38,6 +38,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
       it("Then we can perform the 'New objects from text' menu entry", { retries: 3 }, () => {
         const explorer = new Explorer();
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
+        cy.getByTestId('new-object-from-text-close').click();
         cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
         explorer.getExplorerView().contains('myAttribute', { timeout: 6000 });
       });
@@ -51,6 +52,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
             sysmlv2.getRootElementLabel(),
             'import ScalarValues::*; attribute myAttribute : String;'
           );
+          cy.getByTestId('new-object-from-text-close').click();
           cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
           explorer.getExplorerView().contains('myAttribute');
           explorer.expand('myAttribute');

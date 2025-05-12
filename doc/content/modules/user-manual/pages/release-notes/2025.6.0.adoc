@@ -187,6 +187,21 @@ image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment o
 - In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
 - Make LibraryPackage's `isStandard` checkbox read-only in the details view.
 At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
+- Improve _New objects from text_ action in order to be able to resolve names against existing elements.
+For example, in the following context:
+
+```
+action def ActionDefinition1 {
+			action action1 {
+				out item item1Out;
+			}
+			action action2 {
+				in item item1In;
+			}
+		}
+```
+
+Using _New objects from text_ from _ActionDefinition1_ with the following content `flow action1.item1Out to action2.item1In;`, will properly resolve the end features of the created `FlowConnectionUsage`.
 
 - Add a `perform actions` compartment `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the _General View_ diagram.
 

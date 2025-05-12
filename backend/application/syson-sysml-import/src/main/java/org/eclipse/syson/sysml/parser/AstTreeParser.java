@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -188,10 +188,10 @@ public class AstTreeParser {
     private void printResolutionError(List<ProxiedReference> proxiedReferences) {
 
         for (ProxiedReference pr : proxiedReferences) {
-            String msg = MessageFormat.format("[Unable to resolve following proxy] Owner ''{0}'' to qualifiedName ''{1}'' for reference ''{2}''", this.logNameProvider.getName(pr.owner()),
+            String msg = MessageFormat.format("Unable to resolve name ''{1}'' for reference ''{2}'' on element ''{0}''", this.logNameProvider.getName(pr.owner()),
                     pr.targetProxy().eProxyURI().fragment(),
                     pr.reference().getName());
-            this.messageReporter.error(msg);
+            this.messageReporter.warning(msg);
             // Unset this proxy
             EReference ref = pr.reference();
             if (ref.isMany()) {
