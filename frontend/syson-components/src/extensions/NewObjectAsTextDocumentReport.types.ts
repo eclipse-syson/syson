@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,22 +13,11 @@
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
-export interface UseInsertTextualSysMLv2Value {
-  insertTextualSysMLv2: (editingContextId: string, objectId: string, textualContent: string) => void;
-  loading: boolean;
-  textualSysMLv2Inserted: boolean;
+export interface NewObjectAsTextReportProps {
   messages: GQLMessage[];
+  success: Boolean;
 }
 
-export interface GQLInsertTextualSysMLv2MutationData {
-  insertTextualSysMLv2: GQLInsertTextualSysMLv2Payload;
-}
-
-export interface GQLInsertTextualSysMLv2Payload {
-  __typename: string;
-  messages: GQLMessage[];
-}
-
-export interface GQLErrorPayload extends GQLInsertTextualSysMLv2Payload {
-  messages: GQLMessage[];
+export interface NewObjectAsTextReportState {
+  downloaded: boolean;
 }

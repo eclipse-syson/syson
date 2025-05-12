@@ -268,7 +268,7 @@ public class ASTTransformerTest {
         // On error is raised
         assertEquals(1, this.transformer.getTransformationMessages().size());
         Message errorMessage = this.transformer.getTransformationMessages().get(0);
-        assertEquals(MessageLevel.ERROR, errorMessage.level());
+        assertEquals(MessageLevel.WARNING, errorMessage.level());
         assertTrue(errorMessage.body().contains("FakeType"));
 
     }

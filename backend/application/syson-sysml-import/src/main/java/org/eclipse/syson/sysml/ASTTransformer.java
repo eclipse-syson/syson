@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -71,27 +72,97 @@ public class ASTTransformer {
                 this.logger.info("Create the Root eObject containment structure");
                 final List<EObject> rootSysmlObjects = this.astTreeParser.parseAst(astJson);
                 result = new JSONResourceFactory().createResourceFromPath(null);
+                this.logger.info("File Parsed");
                 resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
 
-                this.preResolvingFixingPhase(rootSysmlObjects);
+                this.fixAndResolve(rootSysmlObjects);
 
-                this.logger.info("File Parsed");
-                List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
-                this.logger.info("{} references to resolve.", proxiedReferences.size());
-                this.astTreeParser.resolveAllReference(proxiedReferences);
-                this.logger.info("End of references resolving");
-
-                this.postResolvingFixingPhase(rootSysmlObjects);
             }
         }
         return result;
     }
 
-    private void postResolvingFixingPhase(List<EObject> rootSysmlObjects) {
+    /**
+     * Convert the given SysML text into Elements and add them into the given parent.
+     *
+     * @param input
+     *            the textual representation
+     * @param resourceSet
+     *            the current {@link ResourceSet}
+     * @param parentElement
+     *            the parent element in which created element will be added.
+     * @return the list of the created elements
+     */
+    public List<Element> convertToElements(final InputStream input, final ResourceSet resourceSet, Element parentElement) {
+        List<Element> result = List.of();
+        if (input != null) {
+            final JsonNode astJson = this.readAst(input);
+            if (astJson != null) {
+                this.logger.info("Create the Root eObject containment structure");
+                result = this.extractContent(this.astTreeParser.parseAst(astJson));
+                this.logger.info("File Parsed");
+                for (Element root : result) {
+                    this.addInParent(parentElement, root);
+                }
+                this.logger.info("Elements added in parent");
+
+                this.fixAndResolve(result);
+            }
+        }
+        return result;
+    }
+
+    private void fixAndResolve(List<? extends EObject> result) {
+        this.preResolvingFixingPhase(result);
+
+        List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
+        this.logger.info("{} references to resolve.", proxiedReferences.size());
+        this.astTreeParser.resolveAllReference(proxiedReferences);
+        this.logger.info("End of references resolving");
+
+        this.postResolvingFixingPhase(result);
+    }
+
+    private List<Element> extractContent(List<EObject> roots) {
+        return roots.stream().filter(Namespace.class::isInstance)
+                .map(Namespace.class::cast)
+                .flatMap(ns -> ns.getOwnedRelationship().stream())
+                .flatMap(r -> this.getChildren(r).stream())
+                .toList();
+    }
+
+    private List<Element> getChildren(Relationship relationship) {
+        List<Element> children = new ArrayList<>();
+        if (relationship instanceof OwningMembership) {
+            children.addAll(relationship.getOwnedRelatedElement());
+        } else {
+            children.add(relationship);
+        }
+        return children;
+    }
+
+    private void addInParent(Element parent, Element child) {
+        if (child instanceof Import imp) {
+            parent.getOwnedRelationship().add(imp);
+        } else if (child instanceof Feature && parent instanceof Type) {
+            Membership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            parent.getOwnedRelationship().add(membership);
+            membership.getOwnedRelatedElement().add(child);
+        } else if (parent instanceof Package || SysmlPackage.eINSTANCE.getNamespace().equals(parent.eClass())) {
+            Membership membership = SysmlFactory.eINSTANCE.createOwningMembership();
+            membership.getOwnedRelatedElement().add(child);
+            parent.getOwnedRelationship().add(membership);
+        } else if (child instanceof Relationship rel) {
+            parent.getOwnedRelationship().add(rel);
+        }
+    }
+
+    private void postResolvingFixingPhase(List<? extends EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixTransitionUsageImplicitSource(root);
         }
+        this.logger.info("Post resolving fixing phase done");
     }
 
     private void fixTransitionUsageImplicitSource(EObject root) {
@@ -99,13 +170,14 @@ public class ASTTransformer {
         this.fixImplicitTransitionSourceFeature(transitionUsages);
     }
 
-    private void preResolvingFixingPhase(List<EObject> rootSysmlObjects) {
+    private void preResolvingFixingPhase(List<? extends EObject> rootSysmlObjects) {
         for (EObject root : rootSysmlObjects) {
             this.fixSuccessionUsageImplicitSource(root);
             this.fixConjugatedPorts(root);
             this.fixParameterFeatureDirection(root);
             this.fixReturnParameterFeatureDirection(root);
         }
+        this.logger.info("Pre resolving fixing phase done");
     }
 
     private void fixReturnParameterFeatureDirection(EObject root) {

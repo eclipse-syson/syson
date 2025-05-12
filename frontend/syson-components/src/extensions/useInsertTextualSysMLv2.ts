@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
   GQLErrorPayload,
@@ -26,6 +26,12 @@ const insertTextualSysMLv2Mutation = gql`
     insertTextualSysMLv2(input: $input) {
       __typename
       ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
         messages {
           body
           level
@@ -69,10 +75,11 @@ export const useInsertTextualSysMLv2 = (): UseInsertTextualSysMLv2Value => {
   };
 
   const textualSysMLv2Inserted: boolean = data?.insertTextualSysMLv2.__typename === 'SuccessPayload';
-
+  const messages: GQLMessage[] = data?.insertTextualSysMLv2.messages || [];
   return {
     insertTextualSysMLv2,
     loading,
     textualSysMLv2Inserted,
+    messages,
   };
 };

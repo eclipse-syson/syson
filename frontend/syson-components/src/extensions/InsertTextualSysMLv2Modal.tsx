@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import { InsertTextualSysMLv2ModalProps, InsertTextualSysMLv2ModalState } from './InsertTextualSysMLv2Modal.types';
 import { useInsertTextualSysMLv2 } from './useInsertTextualSysMLv2';
+import { NewObjectAsTextReport } from './NewObjectAsTextDocumentReport';
 
 const useInsertTextualSysMLv2ModalStyles = makeStyles()((theme: Theme) => ({
   form: {
@@ -43,12 +44,7 @@ const useInsertTextualSysMLv2ModalStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
-export const InsertTextualSysMLv2Modal = ({
-  editingContextId,
-  item,
-  onTextualSysMLv2Inserted,
-  onClose,
-}: InsertTextualSysMLv2ModalProps) => {
+export const InsertTextualSysMLv2Modal = ({ editingContextId, item, onClose }: InsertTextualSysMLv2ModalProps) => {
   const { classes } = useInsertTextualSysMLv2ModalStyles();
 
   const [state, setState] = useState<InsertTextualSysMLv2ModalState>({
@@ -56,7 +52,7 @@ export const InsertTextualSysMLv2Modal = ({
     textualContent: '',
   });
 
-  const { insertTextualSysMLv2, loading, textualSysMLv2Inserted } = useInsertTextualSysMLv2();
+  const { insertTextualSysMLv2, loading, textualSysMLv2Inserted, messages } = useInsertTextualSysMLv2();
 
   const onInsertTextualSysMLv2 = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -65,11 +61,13 @@ export const InsertTextualSysMLv2Modal = ({
   };
 
   useEffect(() => {
-    setState((prevState) => ({ ...prevState, insertInProgress: false }));
-    if (textualSysMLv2Inserted) {
-      onTextualSysMLv2Inserted();
-    }
-  }, [textualSysMLv2Inserted, onTextualSysMLv2Inserted]);
+    setState((prevState) => ({
+      ...prevState,
+      insertInProgress: false,
+      messages: messages,
+      success: textualSysMLv2Inserted,
+    }));
+  }, [textualSysMLv2Inserted]);
 
   return (
     <>
@@ -86,6 +84,7 @@ export const InsertTextualSysMLv2Modal = ({
             <TextField
               id="insert-textual-sysmlv2-modal-textarea"
               data-testid="insert-textual-sysmlv2-modal-textarea"
+              disabled={loading || textualSysMLv2Inserted}
               className={classes.textarea}
               autoFocus
               multiline
@@ -95,6 +94,7 @@ export const InsertTextualSysMLv2Modal = ({
               onChange={(event) => setState((prevState) => ({ ...prevState, textualContent: event.target.value }))}
             />
           </div>
+          <NewObjectAsTextReport messages={messages} success={textualSysMLv2Inserted} />
         </DialogContent>
         <DialogActions className={classes.actions}>
           <Button
@@ -111,6 +111,15 @@ export const InsertTextualSysMLv2Modal = ({
               )
             }>
             Create Objects
+          </Button>
+          <Button
+            variant={'contained'}
+            color="primary"
+            type="button"
+            form="upload-form-id"
+            data-testid="new-object-from-text-close"
+            onClick={() => onClose()}>
+            Close
           </Button>
         </DialogActions>
       </Dialog>

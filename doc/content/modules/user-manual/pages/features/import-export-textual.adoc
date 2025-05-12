@@ -70,8 +70,13 @@ From there, a popup is opened, allowing to type any textual {sysmlv2} content:
 image::import-textual-new-objects-from-text-2.png[Textual Import New Objects from text, width=85%,height=85%]
 
 Then, just click on _CREATE OBJECTS_ button, and wait for the process to end.
-If something went wrong, the popup will display an error message.
-If everything is ok, the popup will close.
+
+* If the creation is complete the message "The new object has been successfully created" is displayed at the bottom of the dialog.
+* If the creation is partial (some elements have been created with errors), the message "The new object has been partially created (X limitations)" is displayed.
+The error report can be downloaded using the _DOWNLOAD REPORT_ button.
+* If the creation failed, a popup will display an error message.
+
+In all cases, click on _CLOSE_ button to close this dialog.
 
 Back on the _Explorer_ view, the new objects are visible under the selected element:
 

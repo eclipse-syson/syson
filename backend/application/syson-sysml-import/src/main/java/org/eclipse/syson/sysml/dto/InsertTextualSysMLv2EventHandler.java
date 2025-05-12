@@ -13,11 +13,9 @@
 package org.eclipse.syson.sysml.dto;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -25,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -35,13 +32,6 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.OwningMembership;
-import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.SysmlToAst;
 import org.springframework.stereotype.Service;
 
@@ -62,17 +52,14 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
 
     private final ICollaborativeMessageService messageService;
 
-    private final IFeedbackMessageService feedbackMessageService;
-
     private final SysmlToAst sysmlToAst;
 
     private final Counter counter;
 
-    public InsertTextualSysMLv2EventHandler(IObjectSearchService objectSearchService, ICollaborativeMessageService messageService, IFeedbackMessageService feedbackMessageService,
+    public InsertTextualSysMLv2EventHandler(IObjectSearchService objectSearchService, ICollaborativeMessageService messageService,
             SysmlToAst sysmlToAst, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.sysmlToAst = Objects.requireNonNull(sysmlToAst);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -99,27 +86,17 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
             var parentElement = this.getParentElement(parentObjectId, emfEditingContext);
             if (parentElement != null) {
                 var tranformer = new ASTTransformer();
-                var resource = this.convert(insertTextualInput, emfEditingContext, tranformer);
-                if (resource != null && !resource.getContents().isEmpty()) {
-                    // Workaround for https://github.com/eclipse-syson/syson/issues/860
-                    tranformer.logTransformationMessages();
-                    var rootElements = this.extractContent(resource);
-                    rootElements.forEach(element -> {
-                        var membership = this.createMembership(parentElement);
-                        membership.getOwnedRelatedElement().add(element);
-                    });
-                    if (!rootElements.isEmpty()) {
-                        payload = new SuccessPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
-                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                var newObjects = this.convert(insertTextualInput, emfEditingContext, tranformer, parentElement);
+                if (!newObjects.isEmpty()) {
+                    messages = tranformer.getTransformationMessages();
+                    payload = new SuccessPayload(input.id(), messages);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                } else {
+                    if (!tranformer.getTransformationMessages().isEmpty()) {
+                        messages = tranformer.getTransformationMessages();
                     } else {
                         messages = List.of(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
                     }
-                    // We don't want the new resource to stay in the resource set and create a new document
-                    var resourceSet = emfEditingContext.getDomain().getResourceSet();
-                    resource.getContents().clear();
-                    resourceSet.getResources().remove(resource);
-                } else {
-                    messages = List.of(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
                 }
             }
         }
@@ -143,43 +120,12 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
         return null;
     }
 
-    private Resource convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer tranformer) {
+    private List<Element> convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer tranformer, Element parentElement) {
         var textualContent = insertTextualInput.textualContent();
         var resourceSet = emfEditingContext.getDomain().getResourceSet();
         var inputStream = new ByteArrayInputStream(textualContent.getBytes());
         var astStream = this.sysmlToAst.convert(inputStream, ".sysml");
-        var resource = tranformer.convertResource(astStream, resourceSet);
-        return resource;
-    }
-
-    private Membership createMembership(Element element) {
-        Membership membership = null;
-        if (element instanceof Package || SysmlPackage.eINSTANCE.getNamespace().equals(element.eClass())) {
-            membership = SysmlFactory.eINSTANCE.createOwningMembership();
-        } else {
-            membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        }
-        element.getOwnedRelationship().add(membership);
-        return membership;
-    }
-
-    private List<Element> extractContent(Resource resource) {
-        var roots = resource.getContents().stream()
-                .filter(Namespace.class::isInstance)
-                .map(Namespace.class::cast)
-                .flatMap(ns -> ns.getOwnedRelationship().stream())
-                .flatMap(r -> this.getChildren(r).stream())
-                .toList();
-        return roots;
-    }
-
-    private List<Element> getChildren(Relationship relationship) {
-        List<Element> children = new ArrayList<>();
-        if (relationship instanceof OwningMembership) {
-            children.addAll(relationship.getOwnedRelatedElement());
-        } else {
-            children.add(relationship);
-        }
-        return children;
+        var newObjects = tranformer.convertToElements(astStream, resourceSet, parentElement);
+        return newObjects;
     }
 }
