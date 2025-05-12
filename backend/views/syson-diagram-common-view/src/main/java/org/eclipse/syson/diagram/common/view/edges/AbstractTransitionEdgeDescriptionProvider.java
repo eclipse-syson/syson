@@ -68,6 +68,7 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
                 .isDomainBasedEdge(true)
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getTransitionLabel"))
                 .name(this.getEdgeDescriptionName())
+                .preconditionExpression("aql:graphicalEdgeSource.isInSameGraphicalContainer(graphicalEdgeTarget,cache)")
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + ".source")
                 .style(this.createDefaultEdgeStyle())

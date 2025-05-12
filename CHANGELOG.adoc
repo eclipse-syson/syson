@@ -34,6 +34,7 @@ Publishing a project that has a dependency to a library now correctly produces a
 - https://github.com/eclipse-syson/syson/issues/1259[#1259] [general-view] Fix an issue where _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create graphical edge between `ItemUsage` bordered nodes.
 - https://github.com/eclipse-syson/syson/issues/1269[#1269] [general-view] Automatically reveal new `Perform Actions` with reference from `Parts`.
 When creating a new `Perform Action` referencing an existing `Action`, all compartments containing this new element are now expanded to reveal it.
+- https://github.com/eclipse-syson/syson/issues/1272[#1272] [general-view] Fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
 
 === Improvements
 

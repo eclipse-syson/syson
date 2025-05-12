@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -339,7 +341,8 @@ public class UtilService {
             List<SuccessionAsUsage> successions = type.getOwnedFeature().stream()
                     .filter(SuccessionAsUsage.class::isInstance)
                     .map(SuccessionAsUsage.class::cast)
-                    .toList();
+                    .collect(toList());
+
             for (SuccessionAsUsage succession : successions) {
                 Feature source = succession.getSourceFeature();
                 if (source != null) {
@@ -347,6 +350,20 @@ public class UtilService {
                 }
                 result.addAll(succession.getTargetFeature());
             }
+
+            type.getOwnedFeature().stream()
+                    .filter(TransitionUsage.class::isInstance)
+                    .map(TransitionUsage.class::cast)
+                    .forEach(transition -> {
+                        ActionUsage source = transition.getSource();
+                        if (source != null) {
+                            result.add(transition.getSource());
+                        }
+                        ActionUsage target = transition.getTarget();
+                        if (target != null) {
+                            result.add(target);
+                        }
+                    });
         }
         return result;
     }
