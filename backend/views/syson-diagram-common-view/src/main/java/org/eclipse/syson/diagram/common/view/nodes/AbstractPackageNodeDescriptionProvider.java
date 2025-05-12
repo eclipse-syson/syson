@@ -128,7 +128,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .collapsible(true)
                 .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("101")
-                .defaultWidthExpression("300")
+                .defaultWidthExpression("200")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))

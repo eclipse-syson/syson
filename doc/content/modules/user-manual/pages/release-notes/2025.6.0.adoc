@@ -189,6 +189,15 @@ image::gv-parts-perform-actions-compartment.png[perform actions compartment in p
 
 image::gv-actions-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
 
+- The initial `Package` graphical node width has been reduced of 1/3 to be more compact.
+
+.Before
+image::package-node-width-before.png[Package node before change, width=400]
+
+.After
+image::package-node-width-after.png[Package node after change, width=300]
+
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
