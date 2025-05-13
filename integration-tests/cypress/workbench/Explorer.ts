@@ -68,8 +68,9 @@ export class Explorer {
     cy.getByTestId('create-object').should('not.be.disabled');
 
     // Use get because Sirius Web doesn't provide a usable data-testid
+    cy.get('input[name="suggested"]').should('exist').should('be.checked');
     cy.get('input[name="suggested"]').should('exist').click();
-    cy.getByTestId('CheckBoxOutlineBlankIcon').should('exist');
+    cy.get('input[name="suggested"]').should('exist').should('not.be.checked');
     cy.getByTestId('type').should('not.be.disabled').contains('Accept Action');
     cy.getByTestId('type').should('not.be.disabled').click();
     cy.getByTestId('type').children('[role="combobox"]').should('have.attr', 'aria-expanded', 'true');
@@ -83,9 +84,14 @@ export class Explorer {
     this.getTreeItemByLabel(objectTreeItemLabel).first().find('button').click();
     cy.getByTestId('new-object').click();
 
-    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
+      .should('exist')
+      .children('[role="combobox"]')
+      .invoke('text')
+      .should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').should('exist').click();
+    cy.getByTestId('childCreationDescription')
+      .should('exist')
       .get(`[data-value="${childCreationDescriptionLabel}"]`)
       .should('exist')
       .click();
