@@ -1,0 +1,25 @@
+= ADR-002 - Support representation only through ViewUsage
+
+== Context
+
+In the SysMLv2 specification, the `ViewDefinition` concept allows defining how to render elements (textual, graphical...) and `ViewUsage` is an instance of a `ViewDefinition`.
+
+== Decision
+
+* Explorer in SysON should not provide representation anymore.
+Change the behavior of the Sysml custom explorer defined in `SysONExplorerTreeDescriptionProvider` to filter representation from children.
+
+* `ViewUsage` should open child representation.
+A `ViewUsage` can only manage exactly one representation.
+
+NOTE: The limitation of a single representation per `ViewUsage` should be ensured by the representation creation mechanism that automatically creates a `ViewUsage` as parent.
+In the same way, the creation of a `ViewUsage` must automatically create a representation as its child.
+
+To open a representation, the `selection` must be set to the representation id.
+Change the behavior in `SysONExplorerTreeDescriptionProvider` to return by the `treeItemIdExpression` the representation id for `ViewUsage` elements.
+The problem with changing only the `treeId` so that it points to the representation id instead of the semantic object id is that all other mechanisms (like the tree's
+`getChildren` or `dropElementFromExplorer`, for example) no longer work.
+All these mechanisms need to be customized to manage `ViewUsage`.
+
+NOTE: When selecting a `ViewUsage`, the detail views only display properties from the representation.
+

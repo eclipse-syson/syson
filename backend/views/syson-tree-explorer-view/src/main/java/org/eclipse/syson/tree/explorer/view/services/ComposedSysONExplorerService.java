@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,10 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
     }
 
     @Override
-    public String getTreeItemId(Object self) {
+    public String getTreeItemId(Object self, IEditingContext editingContext) {
         return this.getDelegate(self)
                 .map(delegate -> delegate.getTreeItemId(self))
-                .orElseGet(() -> this.defaultExplorerService.getTreeItemId(self));
+                .orElseGet(() -> this.defaultExplorerService.getTreeItemId(self, editingContext));
     }
 
     @Override
