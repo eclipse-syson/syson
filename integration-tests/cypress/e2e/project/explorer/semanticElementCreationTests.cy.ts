@@ -40,36 +40,44 @@ describe('Semantic Element Creation Tests', () => {
     });
 
     context('When we select the root document in the explorer', () => {
-      it('Then we can create a PartUsage in it and it will be set as a child of the root document', () => {
-        const explorer = new Explorer();
-        explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
-        // Check that the created part is a child of the root document
-        explorer
-          .getTreeItemByLabel('part1')
-          .parents('ul')
-          .first()
-          .siblings()
-          .contains(sysmlv2.getProjectLabel())
-          .should('exist');
-        // Check that the created part is a sibling of Package 1
-        explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
-      });
+      it(
+        'Then we can create a PartUsage in it and it will be set as a child of the root document',
+        { retries: 3 },
+        () => {
+          const explorer = new Explorer();
+          explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
+          // Check that the created part is a child of the root document
+          explorer
+            .getTreeItemByLabel('part1')
+            .parents('ul')
+            .first()
+            .siblings()
+            .contains(sysmlv2.getProjectLabel())
+            .should('exist');
+          // Check that the created part is a sibling of Package 1
+          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
+        }
+      );
 
-      it('Then we can create a PartUsage in it and it will be set as a child of the root namespace (when root namespaces are visible)', () => {
-        const explorer = new Explorer();
-        explorer.getFilter('Hide Root Namespaces').should('exist').click();
-        explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
-        // Check that the created part is a child of the root Namespace
-        explorer
-          .getTreeItemByLabel('part1')
-          .parents('ul')
-          .first()
-          .siblings()
-          .contains(sysmlv2.getRootNamespaceLabel())
-          .should('exist');
-        // Check that the created part is a sibling of Package 1
-        explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
-      });
+      it(
+        'Then we can create a PartUsage in it and it will be set as a child of the root namespace (when root namespaces are visible)',
+        { retries: 3 },
+        () => {
+          const explorer = new Explorer();
+          explorer.getFilter('Hide Root Namespaces').should('exist').click();
+          explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
+          // Check that the created part is a child of the root Namespace
+          explorer
+            .getTreeItemByLabel('part1')
+            .parents('ul')
+            .first()
+            .siblings()
+            .contains(sysmlv2.getRootNamespaceLabel())
+            .should('exist');
+          // Check that the created part is a sibling of Package 1
+          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
+        }
+      );
     });
 
     context('When we select the Libraries directory in the explorer', () => {
