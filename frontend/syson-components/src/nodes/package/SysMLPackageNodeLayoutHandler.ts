@@ -33,6 +33,7 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
+  computePreviousPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Rect } from '@xyflow/react';
 import { SysMLPackageNodeData } from './SysMLPackageNode.types';
@@ -96,6 +97,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
+      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -103,14 +105,15 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         if (child.position.y < borderWidth + headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint + rectangularNodePadding };
         }
-      } else if (previousNode) {
-        child.position = previousNode.position;
-        if (previousNode && previousNode.position.y < headerHeightFootprint + rectangularNodePadding) {
-          child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
-        } else {
-          child.position = child.position;
+        if (child.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
         }
-        if (previousNode && previousNode.position.x < 0) {
+      } else if (previousPosition) {
+        child.position = previousPosition;
+        if (child.position.y < headerHeightFootprint + rectangularNodePadding) {
+          child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
+        }
+        if (child.position.x < 0) {
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {
