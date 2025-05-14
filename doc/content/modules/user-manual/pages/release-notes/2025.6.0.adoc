@@ -39,6 +39,10 @@ If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage` they 
 
 image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
 
+- `ViewUsage` may now display graphical contents in _General View_ diagram.
+
+image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%,height=65%]
+
 
 == Improvements
 

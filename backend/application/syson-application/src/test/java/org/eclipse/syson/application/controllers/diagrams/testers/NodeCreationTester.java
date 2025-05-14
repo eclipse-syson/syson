@@ -69,10 +69,14 @@ public class NodeCreationTester {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
             diagramElementId = diagramNavigator.nodeWithTargetObjectLabel(selectedNodeTargetObjectLabel).getNode().getId();
         }
+        this.createNode(editingContextId, diagram.get().getId(), diagramElementId, toolId, variables);
+    }
+
+    public void createNode(String editingContextId, String diagramId, String diagramElementId, String toolId, List<ToolVariable> variables) {
         var createElementInput = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
                 editingContextId,
-                diagram.get().getId(),
+                diagramId,
                 diagramElementId,
                 toolId,
                 0,
