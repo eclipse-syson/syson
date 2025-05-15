@@ -146,21 +146,29 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> stateUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Parallel State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit Parallel State"))
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation", 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit State", 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit Parallel State", 1),
+                /*
+                 * 8 new nodes = 1 item node for new state + 1 rectangular node in the "state transition compartment"
+                 * and its 6 compartments
+                 */
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New State", 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Parallel State", 8))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> stateDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Parallel State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit State"),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit Parallel State"))
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation", 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit State", 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit Parallel State", 1),
+                /*
+                 * 8 new nodes = 1 item node for new state + 1 rectangular node in the "state transition compartment"
+                 * and its 6 compartments
+                 */
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New State", 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Parallel State", 8))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -291,14 +299,13 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("stateUsageChildNodeParameters")
-    public void createStateUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+    public void createStateUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName, int expectedNumberOfNewNodes) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getStateUsage();
         String parentLabel = "state";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int expectedNodeCount = 1;
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(expectedNodeCount)
+                    .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
@@ -325,14 +332,13 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("stateDefinitionChildNodeParameters")
-    public void createStateDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+    public void createStateDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName, int expectedNumberOfNewNodes) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getStateDefinition();
         String parentLabel = "StateDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int expectedNodeCount = 1;
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(expectedNodeCount)
+                    .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);

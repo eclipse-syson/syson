@@ -203,8 +203,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ownedMember, 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getNamespaceImport(), SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
