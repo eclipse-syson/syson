@@ -145,8 +145,8 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), null),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), null),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), "New Assumed constraint"),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), "New Required constraint"))
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), "New Assume constraint"),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), "New Require constraint"))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -155,8 +155,8 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), null),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), null),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirements", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), null),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), "New Assumed constraint"),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), "New Required constraint"))
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), "New Assume constraint"),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), "New Require constraint"))
                 .map(TestNameGenerator::namedArguments);
     }
 
