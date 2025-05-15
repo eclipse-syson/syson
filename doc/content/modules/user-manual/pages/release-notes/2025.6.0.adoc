@@ -26,11 +26,12 @@ Publishing a project with a dependency to a library now correctly produces a lib
 
 image::BindingConnectorAsUsageOnItemUsage.png[BindingConnectorAsUsage between two ItemUsages]
 
-- Fix an issue where some compartments (containing the new element created) were not revealed when the _New Perform Action_ tool was executed.
-- Fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
+- In all diagrams, fix an issue where some compartments (containing the new element created) were not revealed when the _New Perform Action_ tool was executed.
+- In all diagrams, fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
 If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage` they are now added to the _Action Flow_ compartment.
-- Fix an issue of `TransitionUsage` were displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
-- Fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
+- In all diagrams, fix an issue of `TransitionUsage` were displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
+- In all diagrams, fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
+- In all diagrams, fix wrong tool section name found in some compartments' palette.
 
 == New features
 

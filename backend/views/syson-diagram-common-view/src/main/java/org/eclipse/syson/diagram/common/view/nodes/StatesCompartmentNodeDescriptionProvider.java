@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -92,20 +94,20 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
     @Override
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         var palette = this.diagramBuilderHelper.newNodePalette().dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
+        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
         if (this.showsExhibitOnly) {
-            palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                    .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
-                            new StateTransitionCompartmentNodeToolProvider(true, true).create(cache))
-                    .build());
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true, true).create(cache));
         } else {
-            palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                    .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache),
-                            new StateTransitionCompartmentNodeToolProvider(true, false).create(cache))
-                    .build());
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true, false).create(cache));
         }
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 
-        return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection()).build();
+        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
+                .build();
     }
 }
