@@ -36,6 +36,7 @@ Publishing a project that has a dependency to a library now correctly produces a
 When creating a new `Perform Action` referencing an existing `Action`, all compartments containing this new element are now expanded to reveal it.
 - https://github.com/eclipse-syson/syson/issues/1272[#1272] [general-view] Fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
 - https://github.com/eclipse-syson/syson/issues/1297[#1297] Fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
+- https://github.com/eclipse-syson/syson/issues/1300[#1300] [general-view] Fix wrong tool section name found in some compartments' palette.
 
 === Improvements
 
