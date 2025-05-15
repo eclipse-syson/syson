@@ -30,7 +30,6 @@ image::BindingConnectorAsUsageOnItemUsage.png[BindingConnectorAsUsage between tw
 - Fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
 If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage` they are now added to the _Action Flow_ compartment.
 - Fix an issue of `TransitionUsage` were displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
-
 - Fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
 
 == New features
@@ -145,10 +144,10 @@ part part1 {
     }
 }
 ```
-- New tools have been introduced in `Behavior` section of State elements (Usage and Definition) to create state sub actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
+- New tools have been introduced in `Behavior` section of `State` elements (Usage and Definition) to create state sub actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
 Existing tools `New Entry Action`, `New Do Action` and `New Exit Action` have been updated to be aligned with SysMLV2 specification.
 
-- In _General View_ diagram, improve the label of `TransitionUsage` in order to be able to display the _accepter information.
+- In the _General View_ diagram, improve the label of `TransitionUsage` in order to be able to display the _accepter information.
 For example for :
 
 ```
@@ -211,7 +210,7 @@ image::gv-parts-perform-actions-compartment.png[perform actions compartment in p
 
 image::gv-actions-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
 
-- The initial `Package` graphical node width has been reduced of 1/3 to be more compact.
+- In all diagrams, the initial `Package` graphical node width has been reduced of 1/3 to be more compact.
 
 .Before
 image::package-node-width-before.png[Package node before change, width=400]
@@ -220,6 +219,14 @@ image::package-node-width-before.png[Package node before change, width=400]
 image::package-node-width-after.png[Package node after change, width=300]
 
 - Improve the time required to display the available commands in the omnibox.
+
+- In the _General View_ diagram, _state transition_ compartment is now available on :
+
+* `StateUsage`
+* `StateDefinition`
+* `ExhibitStateUsage`
+
+image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefintion and ExhibitStateUsage]
 
 == Dependency update
 

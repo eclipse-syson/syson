@@ -422,6 +422,21 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
                 colorProvider, this.getDescriptionNameGenerator()));
 
+        // Compartment "state transition" (NestedState) is defined for:
+        // State Usage
+        compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        
+        // Compartment "state transition" (OwnedState) is defined for:
+        // State Definition
+        compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(),
+                colorProvider, this.getDescriptionNameGenerator()));
+
+        // Compartment "state transition" (NestedState) is defined for:
+        // Exhibit State Usage
+        compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
+                colorProvider, this.getDescriptionNameGenerator()));
+
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForListItems(colorProvider));
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForMergedListItems(colorProvider));
 
