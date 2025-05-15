@@ -32,6 +32,12 @@ If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage` they 
 - In all diagrams, fix an issue of `TransitionUsage` were displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
 - In all diagrams, fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
 - In all diagrams, fix wrong tool section name found in some compartments' palette.
+- In all diagrams, fix the name of the `Constraint` creation tools inside `Requirements`.
+They are now named:
+
+* `New Require constraint`
+* `New Assume constraint`
+
 
 == New features
 
