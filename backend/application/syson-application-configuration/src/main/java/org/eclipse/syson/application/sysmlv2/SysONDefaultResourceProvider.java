@@ -56,7 +56,7 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
         var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
         var migrationService = new MigrationService(this.migrationParticipants);
 
-        resourceMetadataAdapter.setMigrationData(migrationService.getMostRecentParticipantMigrationData());
+        resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());
 
         resource.eAdapters().add(resourceMetadataAdapter);
 
