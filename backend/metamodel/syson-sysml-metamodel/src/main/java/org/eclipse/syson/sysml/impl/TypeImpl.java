@@ -634,6 +634,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
             EList<Type> supertypes = this.supertypes(false);
             supertypes.removeAll(excludedSelf);
             var directions = supertypes.stream()
+                    .filter(Objects::nonNull)
                     .map(s -> s.directionOfExcluding(feature, excludedSelf))
                     .filter(Objects::nonNull)
                     .toList();

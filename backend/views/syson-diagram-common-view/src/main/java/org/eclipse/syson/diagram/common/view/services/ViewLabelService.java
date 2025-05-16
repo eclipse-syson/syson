@@ -20,7 +20,6 @@ import java.util.function.BinaryOperator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.LabelService;
-import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -62,13 +61,10 @@ public class ViewLabelService extends LabelService {
      */
     private static final String EFFECT_ACTION_SEPARATOR = ", ";
 
-    private final UtilService utilService;
-
     private final ShowDiagramsIconsService showDiagramsIconsService;
 
     public ViewLabelService(IFeedbackMessageService feedbackMessageService, ShowDiagramsIconsService showDiagramsIconsService) {
         super(feedbackMessageService);
-        this.utilService = new UtilService();
         this.showDiagramsIconsService = Objects.requireNonNull(showDiagramsIconsService);
     }
 
@@ -143,7 +139,9 @@ public class ViewLabelService extends LabelService {
      */
     private String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
         StringBuilder label = new StringBuilder();
-        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+        if (constraintUsage == null) {
+            label.append("");
+        } else if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
             label.append(this.getValue(expression));
         } else {
             // The constraint doesn't have an expression, we use its name as default label.

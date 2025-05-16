@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -329,42 +330,43 @@ public class UtilService {
 
 
     /**
-     * Collects all the sources and targets of all {@link SuccessionAsUsage} contained in the given object.
+     * Collects all the sources and targets of all {@link SuccessionAsUsage} contained in the given {@link Type}.
      *
-     * @param self
-     *            the container
+     * @param type
+     *            the type for which we want to collect all the sources and targets of all {@link SuccessionAsUsage}
      * @return a list of {@link Element}s
      */
-    public List<Element> collectSuccesionSourceAndTarget(Namespace self) {
+    public List<Element> collectSuccessionSourceAndTarget(Type type) {
         List<Element> result = new ArrayList<>();
-        if (self instanceof Type type) {
-            List<SuccessionAsUsage> successions = type.getOwnedFeature().stream()
-                    .filter(SuccessionAsUsage.class::isInstance)
-                    .map(SuccessionAsUsage.class::cast)
-                    .collect(toList());
+        List<SuccessionAsUsage> successions = type.getOwnedFeature().stream()
+                .filter(SuccessionAsUsage.class::isInstance)
+                .map(SuccessionAsUsage.class::cast)
+                .collect(toList());
 
-            for (SuccessionAsUsage succession : successions) {
-                Feature source = succession.getSourceFeature();
-                if (source != null) {
-                    result.add(source);
-                }
-                result.addAll(succession.getTargetFeature());
+        for (SuccessionAsUsage succession : successions) {
+            Feature source = succession.getSourceFeature();
+            if (source != null) {
+                result.add(source);
             }
-
-            type.getOwnedFeature().stream()
-                    .filter(TransitionUsage.class::isInstance)
-                    .map(TransitionUsage.class::cast)
-                    .forEach(transition -> {
-                        ActionUsage source = transition.getSource();
-                        if (source != null) {
-                            result.add(transition.getSource());
-                        }
-                        ActionUsage target = transition.getTarget();
-                        if (target != null) {
-                            result.add(target);
-                        }
-                    });
+            EList<Feature> target = succession.getTargetFeature();
+            if (target != null && !target.isEmpty()) {
+                result.addAll(target.stream().filter(Objects::nonNull).toList());
+            }
         }
+
+        type.getOwnedFeature().stream()
+                .filter(TransitionUsage.class::isInstance)
+                .map(TransitionUsage.class::cast)
+                .forEach(transition -> {
+                    ActionUsage source = transition.getSource();
+                    if (source != null) {
+                        result.add(source);
+                    }
+                    ActionUsage target = transition.getTarget();
+                    if (target != null) {
+                        result.add(target);
+                    }
+                });
         return result;
     }
 
