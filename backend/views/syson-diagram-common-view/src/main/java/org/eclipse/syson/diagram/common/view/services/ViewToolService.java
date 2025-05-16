@@ -579,13 +579,13 @@ public class ViewToolService extends ToolService {
             Usage usage = (Usage) parentElement;
             List<Element> children = new ArrayList<>();
             children.addAll(usage.getNestedUsage());
-            children.addAll(this.utilService.collectSuccesionSourceAndTarget(usage));
+            children.addAll(this.utilService.collectSuccessionSourceAndTarget(usage));
             childElements = children;
         } else if (parentElement instanceof ActionDefinition || parentElement instanceof PartDefinition) {
             Definition definition = (Definition) parentElement;
             List<Element> children = new ArrayList<>();
             children.addAll(definition.getOwnedUsage());
-            children.addAll(this.utilService.collectSuccesionSourceAndTarget(definition));
+            children.addAll(this.utilService.collectSuccessionSourceAndTarget(definition));
             childElements = children;
         } else if (parentElement instanceof Usage usage) {
             childElements = usage.getNestedUsage();
