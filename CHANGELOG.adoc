@@ -10,7 +10,7 @@
 
 === Dependency update
 
-- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.3]
+- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.4]
 - [releng] Switch `@mui/material` to `7.0.2`
 - [releng] Switch `@mui/icons-material` to `7.0.2`
 - [releng] Switch `@mui/x-tree-view` to `7.29.1`
