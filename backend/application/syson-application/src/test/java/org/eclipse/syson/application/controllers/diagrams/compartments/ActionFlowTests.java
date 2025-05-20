@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.controllers.diagrams.general.view;
+package org.eclipse.syson.application.controllers.diagrams.compartments;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
@@ -69,13 +69,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
 /**
- * Tests several actions on the Action Flow compartment of the General View diagram.
+ * Tests several actions on the Action Flow compartment on an Interconnection View diagram.
  *
  * @author Arthur Daussy
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GVActionFlowTests extends AbstractIntegrationTests {
+public class ActionFlowTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -138,7 +138,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
         this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
-                ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE);
+                ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE_ID);
     }
 
     @AfterEach
@@ -172,7 +172,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE, rootActionUsage -> {
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE_ID, rootActionUsage -> {
             assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
         });
     }
@@ -200,7 +200,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE, rootActionUsage -> {
+        this.semanticCheckerService.checkElement(this.verifier, ActionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.ROOT_ACTION_USAGE_ID, rootActionUsage -> {
             assertThat(EMFUtils.allContainedObjectOfType(rootActionUsage, SuccessionAsUsage.class).count()).isEqualTo(1);
         });
     }
@@ -470,7 +470,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @DisplayName("GIVEN a sub action node and a done action, WHEN using the 'New Transition' tool between them, THEN a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is stored in the container action")
+    @DisplayName("GIVEN a sub action node and a done action, WHEN using the 'New Transition' tool between them, THEN a TransitionUsage is created between the sub action to the 'done' element. The new TransitionUsage is stored in the container action")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

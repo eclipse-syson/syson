@@ -39,7 +39,7 @@ import org.eclipse.syson.diagram.actionflow.view.edges.SubclassificationEdgeDesc
 import org.eclipse.syson.diagram.actionflow.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SuccessionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.TransitionEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.DefinitionNodeDescriptionProvider;
@@ -152,7 +152,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
                 colorProvider, this.getDescriptionNameGenerator()));
 
-        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
@@ -162,7 +162,8 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         diagramElementDescriptionProviders.add(new DecisionActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ReferencingPerformActionUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
-        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DefinitionOwnedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {

@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services.nodeactions.managevisibility;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionsProvider;
@@ -30,9 +33,6 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Node action to open the manage visibility modal.

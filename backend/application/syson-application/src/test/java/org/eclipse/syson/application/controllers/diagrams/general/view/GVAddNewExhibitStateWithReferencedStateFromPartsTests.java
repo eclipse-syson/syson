@@ -35,7 +35,7 @@ import org.eclipse.syson.application.controller.editingContext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -84,7 +84,7 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -143,7 +143,7 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartUsage() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Exhibit State with referenced State");
         assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "part",
                 creationToolId,
@@ -174,7 +174,7 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartDefinition() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State with referenced State");
         assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartDefinition").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "part",
                 creationToolId,

@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
@@ -66,7 +65,7 @@ import reactor.test.StepVerifier;
  * @author frouene
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVEdgePortUsageTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();

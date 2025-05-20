@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
@@ -64,6 +63,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifier.Step;
 
 /**
  * Tests on {@link FlowUsage} on the General View Diagram.
@@ -71,7 +71,7 @@ import reactor.test.StepVerifier;
  * @author Arthur Daussy
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVFlowUsageTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
@@ -116,7 +116,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
     private DiagramCheckerService diagramCheckerService;
 
-    private StepVerifier.Step<DiagramRefreshedEventPayload> verifier;
+    private Step<DiagramRefreshedEventPayload> verifier;
 
     private SemanticCheckerService semanticCheckerService;
 

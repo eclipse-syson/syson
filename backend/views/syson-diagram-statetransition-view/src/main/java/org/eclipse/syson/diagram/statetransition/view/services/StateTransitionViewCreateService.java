@@ -15,16 +15,13 @@ package org.eclipse.syson.diagram.statetransition.view.services;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -35,26 +32,9 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class StateTransitionViewCreateService extends ViewCreateService {
 
-    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
+    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService, ISysMLReadOnlyService readOnlyService,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService msgService) {
-        super(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService, msgService);
-    }
-
-    /**
-     * Check if the diagram associated to the given {@link IDiagramContext} contains nodes.
-     *
-     * @param element
-     *            the element on which this service has been called.
-     * @param editingContext
-     *            the {@link IEditingContext} retrieved from the Variable Manager.
-     * @param diagramContext
-     *            the {@link IDiagramContext} retrieved from the Variable Manager.
-     * @param previousDiagram
-     *            the previous {@link Diagram} retrieved from the Variable Manager.
-     * @return the given {@link Element} if the diagram is empty, <code>null</code> otherwise.
-     */
-    public Element getDiagramEmptyCandidate(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Diagram previousDiagram) {
-        return this.getDiagramEmptyCandidate(element, editingContext, diagramContext, previousDiagram, StateTransitionViewEmptyDiagramNodeDescriptionProvider.NAME);
+        super(viewDiagramDescriptionSearchService, objectSearchService, readOnlyService, showDiagramsInheritedMembersService, msgService);
     }
 
     @Override

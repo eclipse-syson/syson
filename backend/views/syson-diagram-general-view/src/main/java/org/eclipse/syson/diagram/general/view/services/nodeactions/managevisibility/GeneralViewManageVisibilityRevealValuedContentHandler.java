@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services.nodeactions.managevisibility;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions.IManageVisibilityMenuActionHandler;
@@ -22,11 +27,6 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Handler for the menu action on the manage visibility modal that will reveal children that also have children.

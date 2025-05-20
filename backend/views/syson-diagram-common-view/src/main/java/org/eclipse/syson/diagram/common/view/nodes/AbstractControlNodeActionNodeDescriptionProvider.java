@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -98,10 +100,11 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .defaultHeightExpression(this.getDefaultHeightExpression())
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName()))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getExposedElements",
+                        List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)))
                 .style(this.createImageNodeStyleDescription(this.getImagePath()))
                 .userResizable(this.isNodeResizable())
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 
@@ -123,9 +126,10 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        // this nodeDescription has not been added to the diagramDescription children but to the fakeNodeDescription
+        // children instead
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName())).ifPresent(nodeDescription -> {
             nodeDescription.setPalette(this.createNodePalette(cache));
-            diagramDescription.getNodeDescriptions().add(nodeDescription);
         });
     }
 

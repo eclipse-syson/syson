@@ -140,9 +140,9 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     nodeId.set(diagram.getNodes().get(0).getId());
                     assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(5);
                     var children = diagram.getNodes().get(0).getChildNodes();
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(3);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(4);
                     assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Normal))).hasSize(1);
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(1);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(0);
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)

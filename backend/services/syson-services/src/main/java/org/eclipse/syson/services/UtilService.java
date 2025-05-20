@@ -878,7 +878,8 @@ public class UtilService {
         } else if (element instanceof Definition def) {
             candidates = def.getOwnedAction();
         }
-        return candidates.stream().filter(PerformActionUsage.class::isInstance)
+        return candidates.stream()
+                .filter(PerformActionUsage.class::isInstance)
                 .map(PerformActionUsage.class::cast)
                 .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
                 .toList();
