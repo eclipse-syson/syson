@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -77,8 +78,10 @@ import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -97,6 +100,8 @@ public class ViewCreateService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final ISysMLReadOnlyService readOnlyService;
+
     private final ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService;
 
     private final ElementInitializerSwitch elementInitializerSwitch;
@@ -107,11 +112,12 @@ public class ViewCreateService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
+    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService, ISysMLReadOnlyService readOnlyService,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService feedbackMessageService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.readOnlyService = Objects.requireNonNull(readOnlyService);
         this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
@@ -142,7 +148,7 @@ public class ViewCreateService {
 
     /**
      * This service is called by most of the tools. It allows the get the real semantic element container of the tool
-     * executed. If the given element is a ViewUSage, then it should be the owner of the ViewUSage, otherwise it should
+     * executed. If the given element is a ViewUsage, then it should be the owner of the ViewUsage, otherwise it should
      * be the given element itself.
      *
      * @param element
@@ -497,7 +503,7 @@ public class ViewCreateService {
 
     /**
      * Create a new IncludeUseCaseUsage.
-     * 
+     *
      * @param source
      *            the source usage.
      * @param target
@@ -1168,6 +1174,124 @@ public class ViewCreateService {
             return performAction;
         }
         return null;
+    }
+
+    /**
+     * Create a new TransitionUsage and set it as the child of the parent of the source {@link Feature}. Sets its source
+     * and target.
+     *
+     * @param sourceUsage
+     *            the {@link Feature} used as a source for the transition
+     * @param targetUsage
+     *            the {@link Feature} used as a target for the transition
+     * @param source
+     *            the node of the source
+     * @param target
+     *            the node of the target
+     * @param diagramService
+     *            service used to navigate inside the diagram
+     * @param editingContext
+     *            the current editing context
+     * @return the given source {@link Feature}.
+     */
+    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService, IEditingContext editingContext) {
+        if (this.isInSameGraphicalContainer(source, target, diagramService)) {
+            // Check source and target have the same parent
+            Element semanticContainer = this.getEdgeSemanticContainer(source, target, diagramService.getDiagramContext().getDiagram(), editingContext);
+            if (semanticContainer != null) {
+                Element sourceParentElement = sourceUsage.getOwner();
+                if (this.utilService.isParallelState(sourceParentElement)) {
+                    // Should probably not be here as the transition creation should not be allowed.
+                    return sourceUsage;
+                }
+                // Create transition usage and add it to the parent element
+                // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
+                TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+                var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
+                sourceParentElement.getOwnedRelationship().add(featureMembership);
+
+                // Create EndFeature
+                // TransitionUsage <>-> Membership -> MemberElement = sourceAction
+                var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
+                newTransitionUsage.getOwnedRelationship().add(sourceMembership);
+                sourceMembership.setMemberElement(sourceUsage);
+
+                // Create Succession
+                // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
+                Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+                this.elementInitializerSwitch.doSwitch(succession);
+                var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                successionFeatureMembership.getOwnedRelatedElement().add(succession);
+                newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
+
+                // Set Succession Source and Target Features
+                succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
+                succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
+                this.elementInitializerSwitch.doSwitch(newTransitionUsage);
+            } else {
+                this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable semantic owner for the new transition", MessageLevel.WARNING));
+            }
+
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container TransitionUsage", MessageLevel.WARNING));
+        }
+
+        return sourceUsage;
+    }
+
+    private Element getEdgeSemanticContainer(Node source, Node target, Diagram diagram, IEditingContext editingContext) {
+        final Element semanticContainer;
+        Element semanticSourceGraphicalParent = this.getGraphicalContainerSemanticElement(source, diagram, editingContext);
+        if (semanticSourceGraphicalParent != null && !this.readOnlyService.isReadOnly(semanticSourceGraphicalParent)) {
+            semanticContainer = semanticSourceGraphicalParent;
+        } else {
+            Element semanticTargetGraphicalParent = this.getGraphicalContainerSemanticElement(target, diagram, editingContext);
+            if (semanticTargetGraphicalParent != null && !this.readOnlyService.isReadOnly(semanticTargetGraphicalParent)) {
+                semanticContainer = semanticTargetGraphicalParent;
+            } else {
+                semanticContainer = null;
+            }
+        }
+        return semanticContainer;
+    }
+
+    private Element getGraphicalContainerSemanticElement(Node node, Diagram diagram, IEditingContext editingContext) {
+        Object parent = new NodeFinder(diagram).getParent(node);
+        final Element semanticParent;
+        if (parent instanceof Node parentNode) {
+            semanticParent = this.objectSearchService.getObject(editingContext, parentNode.getTargetObjectId())
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .orElse(null);
+        } else if (parent instanceof Diagram parentDiagram) {
+            semanticParent = this.objectSearchService.getObject(editingContext, parentDiagram.getTargetObjectId())
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .orElse(null);
+
+        } else {
+            semanticParent = null;
+        }
+        return semanticParent;
+    }
+
+    /**
+     * <>-> EndFeatureMembership -> RelatedElement = Feature <>-> ReferenceSubsetting -> ReferencedFeature = feature
+     *
+     * @param feature
+     *            The feature to reference subset
+     * @return
+     */
+    private EndFeatureMembership createConnectorEndFeatureMembership(Feature feature) {
+        var successionSourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var successionSourceEndFeatureFeature = SysmlFactory.eINSTANCE.createFeature();
+        successionSourceEndFeatureMembership.getOwnedRelatedElement().add(successionSourceEndFeatureFeature);
+
+        var successionSourceRefSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        successionSourceRefSubsetting.setReferencedFeature(feature);
+        successionSourceEndFeatureFeature.getOwnedRelationship().add(successionSourceRefSubsetting);
+        return successionSourceEndFeatureMembership;
     }
 
     private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {

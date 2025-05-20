@@ -44,7 +44,8 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the annotating node description in all diagrams.
+ * Used to create the annotating node description in all diagrams. This node description is UNSYNCHRONIZED as the most
+ * of the time it is not named. And if it is not, it can't be referenced by its name and so it can't be exposed.
  *
  * @author jmallet
  */

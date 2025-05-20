@@ -28,7 +28,7 @@ import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.InterconnectionViewWithTopNodesTestProjectData;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -78,7 +78,7 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -124,7 +124,7 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
     public void givenASysMLProjectWhenNewInterfaceToolIsRequestedOnAPartUsageThenANewPartUsageAndAInterfaceEdgeAreCreated() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Interface");
         assertThat(creationToolId).as("The tool 'New Interface' should exist on a first level PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "part1",
                 creationToolId));
@@ -156,14 +156,14 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
 
         var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Interface");
         assertThat(creationToolId).as("The tool 'New Interface' should exist on a nested PartUsage").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagramAfterNestedPartUsageCreation,
                 "part1",
                 creationToolId));

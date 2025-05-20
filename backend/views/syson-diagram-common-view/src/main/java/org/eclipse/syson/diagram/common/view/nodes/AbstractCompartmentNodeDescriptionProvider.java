@@ -66,7 +66,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
-        this.eReference = Objects.requireNonNull(eReference);
+        this.eReference = eReference;
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
         this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }

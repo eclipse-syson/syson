@@ -13,14 +13,15 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Ids for project "GeneralViewActionTransitionUsages".
+ * Ids for project "ActionTransitionUsages".
  *
  * @author Arthur Daussy
  */
-public class GeneralViewActionTransitionUsagesProjectData {
+public class ActionTransitionUsagesProjectData {
+
     public static final String EDITING_CONTEXT_ID = "ef1d0fa6-3417-44f8-8751-192ee8d2f41b";
 
-    public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-ActionTransitionUsages.sql";
+    public static final String SCRIPT_PATH = "/scripts/database-content/ActionTransitionUsages.sql";
 
     /**
      * Ids of the graphical elements elements.

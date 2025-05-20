@@ -27,7 +27,9 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
@@ -87,8 +89,14 @@ public class InterconnectionViewCreateServiceTests {
             }
         };
         var objectSearchService = new IObjectSearchService.NoOp();
+        var readOnlyService = new ISysMLReadOnlyService() {
+            @Override
+            public boolean isReadOnly(Element element) {
+                return false;
+            }
+        };
         var showDiagramsInheritedMembersService = new ShowDiagramsInheritedMembersService();
-        this.interconnectionViewCreateService = new InterconnectionViewCreateService(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService,
+        this.interconnectionViewCreateService = new InterconnectionViewCreateService(viewDiagramDescriptionSearchService, objectSearchService, readOnlyService, showDiagramsInheritedMembersService,
                 new IFeedbackMessageService.NoOp());
         this.builder = new ModelBuilder();
         this.build();

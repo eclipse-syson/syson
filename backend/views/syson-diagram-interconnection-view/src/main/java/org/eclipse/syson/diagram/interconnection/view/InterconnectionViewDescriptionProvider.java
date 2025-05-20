@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InterconnectionViewDescriptionProvider implements IViewDescriptionProvider {
 
+    @Override
     public String getViewDiagramId() {
         return "InterconnectionViewDiagram";
     }

@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -63,7 +62,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    private final ToolDescriptionService toolDescriptionService;
+    protected final ToolDescriptionService toolDescriptionService;
 
     public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
@@ -132,10 +131,11 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getExposedElements",
+                        List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)))
                 .style(this.createPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 
@@ -269,30 +269,18 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var parentViewExpression = "aql:selectedNode";
-        if (SysmlPackage.eINSTANCE.getComment().equals(eClass)) {
-            // when a comment is Created from a Package Node, the new Comment node should be represented outside of the
-            // Package
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, IDiagramContext.DIAGRAM_CONTEXT));
-        }
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression(parentViewExpression)
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
+                .children(updateExposedElements.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+                .children(changeContextNewInstance.build());
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")
@@ -304,10 +292,18 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .variableName("newOwningMembership")
                 .children(changeContexMembership.build());
 
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(createMembership.build());
+
+        var changeContextRoot = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self")
+                .children(changeContextViewUsageOwner.build());
+
         return this.diagramBuilderHelper.newNodeTool()
                 .name(this.descriptionNameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
+                .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
     }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.controllers.diagrams.general.view;
+package org.eclipse.syson.application.controllers.diagrams.compartments;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -31,8 +31,8 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.data.GeneralViewActionTransitionUsagesProjectData;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
+import org.eclipse.syson.application.data.ActionTransitionUsagesProjectData;
 import org.eclipse.syson.diagram.common.view.services.NodeFinder;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -56,13 +56,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
 /**
- * Tests TransitionUsage on the General View diagram.
+ * Tests TransitionUsage on the "action flow" compartment.
  *
  * @author Arthur Daussy
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
+public class ActionTransitionUsagesTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -83,7 +83,7 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
 
@@ -99,12 +99,12 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewActionTransitionUsagesProjectData.EDITING_CONTEXT_ID,
-                GeneralViewActionTransitionUsagesProjectData.GraphicalIds.DIAGRAM_ID);
+                ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID,
+                ActionTransitionUsagesProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewActionTransitionUsagesProjectData.EDITING_CONTEXT_ID,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
@@ -117,37 +117,37 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewActionTransitionUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+    @Sql(scripts = { ActionTransitionUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a model with TransitionUsage ending on 'start' or 'done' ActionUsage, WHEN adding existing nested element on the parent of the TransitionUsage, THEN the 'start' and 'done' node should be added to the ActionFlow compartment.")
     @Test
-    public void addExistingElementsOnDiagram() {
+    public void addExistingNestedElementsOnActionUsage() {
         this.givenCommittedTransaction.commit();
-
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
+        var toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
                 "Add existing nested elements");
-        assertThat(creationToolId).as("The tool 'Add existing elements' should exist on Action Usage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, this.diagram, "a0", creationToolId));
+        assertThat(toolId).as("The tool 'Add existing elements' should exist on Action Usage").isNotNull();
+
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, this.diagram, "a0", toolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(newDiagram -> {
                     Node a0ActionFlowCmp = new NodeFinder(newDiagram)
-                            .getOneNodeMatching(n -> GeneralViewActionTransitionUsagesProjectData.GraphicalIds.A0_ACTION_FLOW_CMP_ID.equals(n.getId()))
+                            .getOneNodeMatching(n -> ActionTransitionUsagesProjectData.GraphicalIds.A0_ACTION_FLOW_CMP_ID.equals(n.getId()))
                             .get();
-                    assertThat(a0ActionFlowCmp.getChildNodes()).as("5 nodes should be visible on this action flow compartiment").hasSize(5);
+                    assertThat(a0ActionFlowCmp.getChildNodes()).as("5 nodes should be visible on this action flow compartment").hasSize(5);
                     assertThat(a0ActionFlowCmp.getChildNodes())
                             .as("Should contain a start node")
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), GeneralViewActionTransitionUsagesProjectData.SemanticIds.START_ACTION_USAGE_ID))
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), ActionTransitionUsagesProjectData.SemanticIds.START_ACTION_USAGE_ID))
                             .as("Should contain a done node")
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), GeneralViewActionTransitionUsagesProjectData.SemanticIds.DONE_ACTION_USAGE_ID))
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), ActionTransitionUsagesProjectData.SemanticIds.DONE_ACTION_USAGE_ID))
                             .as("Should contain a1")
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), GeneralViewActionTransitionUsagesProjectData.SemanticIds.A1_ID))
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), ActionTransitionUsagesProjectData.SemanticIds.A1_ID))
                             .as("Should contain a2")
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), GeneralViewActionTransitionUsagesProjectData.SemanticIds.A2_ID))
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), ActionTransitionUsagesProjectData.SemanticIds.A2_ID))
                             .as("Should contain a3")
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), GeneralViewActionTransitionUsagesProjectData.SemanticIds.A3_ID));
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectId(), ActionTransitionUsagesProjectData.SemanticIds.A3_ID));
 
                     // Should contain only 3 edges
                     assertThat(newDiagram.getEdges()).as("Should contain only 3 edges (Start -> a1 (once), a1 -> Done , Start -> a4 (once))").hasSize(3);
