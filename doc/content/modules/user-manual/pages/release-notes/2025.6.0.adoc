@@ -241,6 +241,8 @@ image::package-node-width-after.png[Package node after change, width=300]
 
 image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefintion and ExhibitStateUsage]
 
+- The `ViewUsage` feature `exposedElement` is no longer derived in the metamodel.
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].

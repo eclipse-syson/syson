@@ -2197,7 +2197,7 @@
       <eParameters name="element" ordered="false" lowerBound="1" eType="#//Element"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="exposedElement" upperBound="-1"
-        eType="#//Element" changeable="false" volatile="true" transient="true" derived="true">
+        eType="#//Element">
       <eAnnotations source="subsets" references="#//Namespace/member"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="satisfiedViewpoint" upperBound="-1"

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ public interface ViewUsage extends PartUsage {
      *
      * @return the value of the '<em>Exposed Element</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewUsage_ExposedElement()
-     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
+     * @model annotation="subsets"
      * @generated
      */
     EList<Element> getExposedElement();
