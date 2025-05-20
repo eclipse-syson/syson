@@ -84,14 +84,15 @@ public class InterconnectionViewToolService extends ViewToolService {
         PartUsage childPart = SysmlFactory.eINSTANCE.createPartUsage();
         membership.getOwnedRelatedElement().add(childPart);
         this.elementInitializerSwitch.doSwitch(childPart);
-        Node parentNode = this.getRealParentNode(childPart, partUsage, selectedNode, convertedNodes);
+        Node parentNode = this.getRealParentNode(childPart, partUsage, selectedNode, convertedNodes, editingContext, diagramContext);
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
         }
         return childPart;
     }
 
-    private Node getRealParentNode(Element childElement, Element parentElement, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    private Node getRealParentNode(Element childElement, Element parentElement, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes,
+            IEditingContext editingContext, IDiagramContext diagramContext) {
         Node parentNode = null;
         Optional<NodeDescription> nodeDescription = convertedNodes.values().stream()
                 .filter(description -> Objects.equals(description.getId(), selectedNode.getDescriptionId()))
@@ -103,8 +104,8 @@ public class InterconnectionViewToolService extends ViewToolService {
                 .toList())
                 .orElse(List.of());
 
-        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
-        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(childElement, parentElement, allChildNodeDescriptions, convertedNodes);
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
+        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(childElement, parentElement, allChildNodeDescriptions, convertedNodes, editingContext, diagramContext);
         if (!compartmentCandidates.isEmpty()) {
             if (compartmentCandidates.size() > 1) {
                 this.logger.warn("Multiple compartment candidates found for {} in {}.", childElement.eClass().getName(), selectedNode.toString());

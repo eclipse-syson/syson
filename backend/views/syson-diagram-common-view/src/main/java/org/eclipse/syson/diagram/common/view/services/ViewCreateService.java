@@ -142,7 +142,7 @@ public class ViewCreateService {
 
     /**
      * This service is called by most of the tools. It allows the get the real semantic element container of the tool
-     * executed. If the given element is a ViewUSage, then it should be the owner of the ViewUSage, otherwise it should
+     * executed. If the given element is a ViewUsage, then it should be the owner of the ViewUsage, otherwise it should
      * be the given element itself.
      *
      * @param element
@@ -497,7 +497,7 @@ public class ViewCreateService {
 
     /**
      * Create a new IncludeUseCaseUsage.
-     * 
+     *
      * @param source
      *            the source usage.
      * @param target

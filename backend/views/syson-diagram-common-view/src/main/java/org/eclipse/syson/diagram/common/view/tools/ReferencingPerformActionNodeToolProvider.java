@@ -83,15 +83,8 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
         var changeContextInitializeNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
-        var params = List.of(
-                AQLUtils.aqlString(this.compartmentName),
-                Node.SELECTED_NODE,
-                IEditingContext.EDITING_CONTEXT,
-                IDiagramContext.DIAGRAM_CONTEXT,
-                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
-
-        var createView = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params));
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE)));
 
         var reveal = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
@@ -99,15 +92,13 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(createView.build(), createReferenceSubsettingInstance.build(), reveal.build());
+                .children(addToExposedElements.build(), createReferenceSubsettingInstance.build(), reveal.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPerformActionUsage()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build(), changeContextInitializeNewInstance.build());
-
-        var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getActionUsage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActionReferenceSelectionDialogElements"))

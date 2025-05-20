@@ -78,19 +78,19 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     @Override
     protected List<ToolSectionDescription> getToolSections() {
         return List.of(
-                GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS);
+                GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTION);
     }
 
     @Override
     protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
-        } else if (GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
+        } else if (GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache));
         }

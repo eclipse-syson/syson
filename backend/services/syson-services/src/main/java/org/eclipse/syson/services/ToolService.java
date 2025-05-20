@@ -328,7 +328,7 @@ public class ToolService {
      */
     protected Optional<String> getChildNodeDescriptionIdForRendering(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object parent,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
         List<NodeDescription> candidates = new ArrayList<>();
         final Object parentObject;
 
@@ -338,14 +338,14 @@ public class ToolService {
                     .findFirst()
                     .orElse(null);
             parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
-            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
+            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
             NodeDescription parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
             parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
-            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
+            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else {
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
             parentObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
@@ -355,7 +355,7 @@ public class ToolService {
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions)
                     .orElse(List.of())
                     .stream()
-                    .filter(nodeDescription -> nodeDescriptionService.canNodeDescriptionRenderElement(nodeDescription, element, parentObject))
+                    .filter(nodeDescription -> nodeDescriptionService.canNodeDescriptionRenderElement(nodeDescription, element, parentObject, editingContext, diagramContext))
                     .toList();
         }
 

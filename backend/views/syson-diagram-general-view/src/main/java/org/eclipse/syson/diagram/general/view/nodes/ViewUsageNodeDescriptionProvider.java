@@ -42,7 +42,11 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsGeneralViewToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsInterconnectionViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -62,9 +66,12 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
+    protected final ToolDescriptionService toolDescriptionService;
+
     public ViewUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override
@@ -77,10 +84,11 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getNodeDescriptionName())
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getExposedElements",
+                        List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)))
                 .style(this.createViewFrameNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 
@@ -95,7 +103,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         });
     }
 
-    private String getNodeDescriptionName() {
+    protected String getNodeDescriptionName() {
         return this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage());
     }
 
@@ -128,7 +136,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .build();
     }
 
-    private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+    protected NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
@@ -161,7 +169,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .build();
     }
 
-    private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
+    protected NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<NodeToolSection>();
 
         this.getToolSections().forEach(sectionTool -> {
@@ -170,14 +178,17 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                     .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
+
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsGeneralViewToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsInterconnectionViewToolProvider().create(cache));
+
         sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);
     }
 
-    private List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+    protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new ArrayList<NodeDescription>();
-
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(reusedChildren::add));
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(reusedChildren::add));
         GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(reusedChildren::add));
@@ -185,28 +196,28 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         return reusedChildren;
     }
 
-    private List<ToolSectionDescription> getToolSections() {
+    protected List<ToolSectionDescription> getToolSections() {
         return List.of(
-                GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS);
+                GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTION,
+                GeneralViewDiagramDescriptionProvider.VIEW_AS_TOOL_SECTION);
     }
 
-    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
+    protected NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition))
                 .ifPresent(nodeDescription -> nodeTools.add(this.createNodeTool(nodeDescription, definition))));
-
 
         nodeTools.sort(Comparator.comparing(Tool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
     }
 
-    private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
+    protected NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
         if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(eClass)) {
             return new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(null);
         }

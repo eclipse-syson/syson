@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -139,7 +140,128 @@ public class ViewToolService extends ToolService {
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
-        this.nodeDescriptionService = new NodeDescriptionService();
+        this.nodeDescriptionService = new NodeDescriptionService(objectSearchService);
+    }
+
+    /**
+     * For the given element, search its ViewUsage (if this service has been called from the diagram background it will
+     * be the ViewUsage itself), then get its container and add all container's children to the exposed elements of the
+     * ViewUsage.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param recursive
+     *            if the process should add elements recursively.
+     * @return the given {@link Element}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive) {
+        var viewUsage = this.getViewUsage(element);
+        if (viewUsage != null) {
+            var viewUsageOwner = viewUsage.getOwner();
+            var ownedMembership = viewUsageOwner.getOwnedRelationship().stream().filter(Membership.class::isInstance).map(Membership.class::cast).toList();
+            for (Membership membership : ownedMembership) {
+                if (!Objects.equals(viewUsage, membership.getMemberElement())) {
+                    var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                    membershipExpose.setImportedMembership(membership);
+                    viewUsage.getOwnedRelationship().add(membershipExpose);
+                }
+            }
+        }
+        return element;
+    }
+
+    private ViewUsage getViewUsage(Element element) {
+        ViewUsage viewUsage = null;
+        if (element instanceof ViewUsage vu) {
+            viewUsage = vu;
+        } else if (element != null) {
+            viewUsage = this.getViewUsage(element.getOwner());
+        }
+        return viewUsage;
+    }
+
+    /**
+     * For the given element, search its ViewUsage (if this service has been called from the diagram background it will
+     * be the ViewUsage itself), and add the given element to the exposed elements of this ViewUsage.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the given {@link Element}.
+     */
+    public Element expose(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode) {
+        Optional<ViewUsage> optViewUsage = Optional.empty();
+        if (selectedNode == null) {
+            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+                    .filter(ViewUsage.class::isInstance)
+                    .map(ViewUsage.class::cast);
+        } else {
+            optViewUsage = this.getViewUsage(editingContext, diagramContext, selectedNode);
+        }
+        if (optViewUsage.isPresent()) {
+            var owningMembership = element.getOwningMembership();
+            var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+            membershipExpose.setImportedMembership(owningMembership);
+            optViewUsage.get().getOwnedRelationship().add(membershipExpose);
+        }
+        return element;
+    }
+
+    /**
+     * Search and retrieve the ViewUsage corresponding to the parent Node/diagram of the given Node.
+     *
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param node
+     *            the given Node.
+     * @return an Optional ViewUsage if found, an empty Optional otherwise.
+     */
+    private Optional<ViewUsage> getViewUsage(IEditingContext editingContext, IDiagramContext diagramContext, Node node) {
+        Optional<ViewUsage> optViewUsage = this.objectSearchService.getObject(editingContext, node.getTargetObjectId())
+                .filter(ViewUsage.class::isInstance)
+                .map(ViewUsage.class::cast);
+        if (optViewUsage.isEmpty()) {
+            List<Node> rootNodes = diagramContext.getDiagram().getNodes();
+            for (Node rootNode : rootNodes) {
+                if (Objects.equals(rootNode, node)) {
+                    optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+                            .filter(ViewUsage.class::isInstance)
+                            .map(ViewUsage.class::cast);
+                    break;
+                }
+            }
+        }
+        if (optViewUsage.isEmpty()) {
+            List<Node> rootNodes = diagramContext.getDiagram().getNodes();
+            List<Node> allSubNodes = this.getAllSubNodes(rootNodes);
+            for (Node subNode : allSubNodes) {
+                if (subNode.getChildNodes().contains(node)) {
+                    optViewUsage = this.getViewUsage(editingContext, diagramContext, subNode);
+                    if (optViewUsage.isPresent()) {
+                        break;
+                    }
+                }
+            }
+        }
+        return optViewUsage;
+    }
+
+    /**
+     * Get all sub nodes (nod border nodes, only child nodes) of the given list of nodes.
+     *
+     * @param nodes
+     *            the given list of nodes.
+     * @return all sub nodes of the given list of nodes.
+     */
+    private List<Node> getAllSubNodes(List<Node> nodes) {
+        var allSubNodes = new LinkedList<Node>();
+        for (Node node : nodes) {
+            var children = new LinkedList<Node>();
+            children.addAll(node.getChildNodes());
+            allSubNodes.addAll(this.getAllSubNodes(children));
+        }
+        return allSubNodes;
     }
 
     /**
@@ -200,7 +322,7 @@ public class ViewToolService extends ToolService {
                         // created by a request.
                         Element owner = this.utilService.getOwningElement(childElement);
                         List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement,
-                                owner, List.of(convertedNodes.get(compartmentNodeDescription)), convertedNodes);
+                                owner, List.of(convertedNodes.get(compartmentNodeDescription)), convertedNodes, editingContext, diagramContext);
                         if (!candidates.isEmpty()) {
                             String parentElementId = this.getParentElementId(parentViewCreationRequest,
                                     diagramContext);
@@ -294,7 +416,7 @@ public class ViewToolService extends ToolService {
 
                         Element owner = this.utilService.getOwningElement(childElement);
                         List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement, owner, List.of(compartmentNodeDescription),
-                                convertedNodes);
+                                convertedNodes, editingContext, diagramContext);
                         for (NodeDescription candidate : candidates) {
                             // Ignore synchronized nodes, this avoids unnecessary recursions that could create
                             // rendering issues when attempting to add an element as a child of a synchronized
@@ -928,48 +1050,6 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Create a new graphical view for an element inside a compartment given its label.
-     *
-     * @param childElement
-     *            the semantic object for which the view is created.
-     * @param compartmentName
-     *            the label of the compartment in which the view should be created.
-     * @param selectedNode
-     *            the {@link Node} where the tool was triggered. It can be an element or the compartment itself.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool
-     * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     */
-    public Element createViewInFreeFormCompartment(Element childElement, String compartmentName, Node selectedNode,
-            IEditingContext editingContext,
-            IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-
-        Node parentNode = null;
-
-        if (selectedNode.getInsideLabel() != null && Objects.equals(selectedNode.getInsideLabel().getText(), compartmentName)) {
-            parentNode = selectedNode;
-        } else {
-            parentNode = selectedNode.getChildNodes().stream()
-                    .filter(child -> child.getInsideLabel() != null)
-                    .filter(child -> Objects.equals(child.getInsideLabel().getText(), compartmentName))
-                    .findFirst()
-                    .orElse(null);
-        }
-
-        if (parentNode != null) {
-            this.createView(childElement, editingContext, diagramContext, parentNode, convertedNodes);
-        }
-
-        return childElement;
-    }
-
-    /**
      * Create a new TransitionUsage and set it as the child of the parent of the source {@link Feature}. Sets its source
      * and target.
      *
@@ -1352,12 +1432,12 @@ public class ViewToolService extends ToolService {
     private List<Resource> getAllResourcesWithInstancesOf(IEditingContext editingContext, EClassifier eClassifier) {
         Objects.requireNonNull(editingContext);
 
-        var maybeResourceSet = Optional.of(editingContext)
+        var optResourceSet = Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
-        var resourcesContainingPartUsage = maybeResourceSet.map(resourceSet -> resourceSet.getResources().stream()
+        var resourcesContainingPartUsage = optResourceSet.map(resourceSet -> resourceSet.getResources().stream()
                 .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifier))
                 .toList())
                 .orElseGet(ArrayList::new);
