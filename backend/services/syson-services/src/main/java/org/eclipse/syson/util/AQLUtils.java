@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,18 @@ public class AQLUtils {
      */
     public static String aqlString(String string) {
         return '\'' + string + '\'';
+    }
+
+    /**
+     * Returns the AQL expression calling the reference exposedElement on <code>self</code> (i.e. self MUST be a
+     * ViewUsage) and then filtering on the given domainType.
+     *
+     * @param domainType
+     *            The domainType (e.g sysml::PartUsage) to filter
+     * @return An AQL expression (<code>String</code>).
+     */
+    public static String getSelfExposedElementWithDomainType(String domainType) {
+        return AQLConstants.AQL_SELF + ".exposedElement->select(elt | elt.eClass().eContainer().name + '::' + elt.eClass().name == '" + domainType + "')";
     }
 
     /**

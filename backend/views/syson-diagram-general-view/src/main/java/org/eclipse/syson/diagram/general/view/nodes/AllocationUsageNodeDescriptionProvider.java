@@ -29,6 +29,6 @@ public class AllocationUsageNodeDescriptionProvider extends UsageNodeDescription
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachableAllocationUsages");
+        return AQLUtils.getSelfServiceCallExpression("getExposedAllocationUsages");
     }
 }

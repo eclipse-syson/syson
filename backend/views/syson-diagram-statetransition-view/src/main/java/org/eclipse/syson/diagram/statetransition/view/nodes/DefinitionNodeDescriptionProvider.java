@@ -28,6 +28,7 @@ import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagram
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -43,7 +44,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return AQLUtils.getSelfExposedElementWithDomainType(domainType);
     }
 
     @Override

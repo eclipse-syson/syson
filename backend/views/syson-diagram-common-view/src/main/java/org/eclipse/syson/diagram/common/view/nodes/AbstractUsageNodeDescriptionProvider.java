@@ -169,7 +169,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .preconditionExpression(this.createPreconditionExpression())
                 .style(this.createUsageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         if (this.precondition != null) {
             builder.preconditionExpression(this.precondition);
         }

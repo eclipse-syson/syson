@@ -35,6 +35,7 @@ import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -50,7 +51,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return AQLUtils.getSelfExposedElementWithDomainType(domainType);
     }
 
     @Override

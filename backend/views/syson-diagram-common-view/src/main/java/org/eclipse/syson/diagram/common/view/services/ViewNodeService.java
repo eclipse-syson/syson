@@ -23,7 +23,6 @@ import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
@@ -40,13 +39,16 @@ import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,7 +167,7 @@ public class ViewNodeService {
      *            The elements onto which the content is gathered
      * @param contents
      *            The content to assemble
-     * @return
+     * @return all the {@link Element} elements from {@code contents} removing the null content.
      */
     public List<Element> getAllContentsByReferences(Element self, List<Object> contents) {
         List<Element> result = new ArrayList<>();
@@ -179,9 +181,17 @@ public class ViewNodeService {
         return result;
     }
 
-    public List<PerformActionUsage> getAllReferencingPerformActionUsages(Element self) {
-        List<EObject> allPerformActionUsages = this.utilService.getAllReachable(self, SysmlPackage.eINSTANCE.getPerformActionUsage());
-        return allPerformActionUsages.stream()
+    /**
+     * Retrieve all exposed elements of the given {@link ViewUsage} that are {@link PerformActionUsage}s declaring a
+     * {@link ReferenceSubsetting} pointing to an {@link ActionUsage}.
+     *
+     * @param self
+     *            the given {@link ViewUsage}.
+     * @return All exposed elements that are PerformActionUsage and declared a ReferenceSubsetting pointing to an
+     *         ActionUsage.
+     */
+    public List<PerformActionUsage> getExposedReferencingPerformActionUsages(ViewUsage self) {
+        return self.getExposedElement().stream()
                 .filter(PerformActionUsage.class::isInstance)
                 .map(PerformActionUsage.class::cast)
                 .filter(this::isReferencingPerformActionUsage)
@@ -223,19 +233,32 @@ public class ViewNodeService {
     }
 
     /**
-     * Get all the actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}.
+     * Get all Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
      *
-     * @param eObject
-     *            the contextual eObject
-     * @return the list of actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}
+     * @param viewUsage
+     *            the {@link ViewUsage} for which we want the Actors.
+     * @return the list of Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
      */
-    public List<PartUsage> getAllReachableActors(EObject eObject) {
-        String type = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
-        var allPartUsage = this.utilService.getAllReachable(eObject, type);
-        return allPartUsage.stream()
+    public List<PartUsage> getExposedActors(ViewUsage viewUsage) {
+        return viewUsage.getExposedElement().stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .filter(this::isActor)
+                .toList();
+    }
+
+    /**
+     * Get all {@link AllocationUsage}s in {@link ViewUsage}'s exposed elements.
+     *
+     * @param viewUsage
+     *            the {@link ViewUsage} for which we want the AllocationUsages.
+     * @return a list of {@link AllocationUsage} objects.
+     */
+    public List<AllocationUsage> getExposedAllocationUsages(ViewUsage viewUsage) {
+        return viewUsage.getExposedElement().stream()
+                .filter(AllocationUsage.class::isInstance)
+                .map(AllocationUsage.class::cast)
+                .filter(au -> !this.isAnAllocateEdge(au))
                 .toList();
     }
 
@@ -356,5 +379,21 @@ public class ViewNodeService {
             }
         }
         return null;
+    }
+
+    private boolean isAnAllocateEdge(AllocationUsage allocationUsage) {
+        // an allocate edge is an AllocationUsage that contains 2 EndFeaturesMembership
+        return this.getFeatures(allocationUsage).size() == 2;
+    }
+
+    private List<Feature> getFeatures(AllocationUsage allocationUsage) {
+        var features = allocationUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .flatMap(efm -> efm.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+        return features;
     }
 }

@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -82,14 +83,15 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getViewUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .defaultHeightExpression("476")
                 .defaultWidthExpression("1061")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:if(editingContext <> null) then self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram) else Sequence{} endif")
+                .preconditionExpression("aql:self.exposedElement->size() == 0")
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEmptyDiagramNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

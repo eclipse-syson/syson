@@ -132,10 +132,10 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .semanticCandidatesExpression(AQLUtils.getSelfExposedElementWithDomainType(domainType))
                 .style(this.createPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 

@@ -110,7 +110,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachableActors");
+        return AQLUtils.getSelfServiceCallExpression("getExposedActors");
     }
 
     @Override

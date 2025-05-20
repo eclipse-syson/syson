@@ -87,6 +87,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -140,6 +141,41 @@ public class ViewToolService extends ToolService {
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
         this.nodeDescriptionService = new NodeDescriptionService();
+    }
+
+    /**
+     * For the given element, search its ViewUsage (if this service has been called from the diagram background it will
+     * be the ViewUsage itself), then get its container and add all container's children to the exposed elements of the
+     * ViewUsage.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param recursive
+     *            if the process should add elements recursively.
+     * @return the given {@link Element}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive) {
+        var viewUsage = this.getViewUsage(element);
+        if (viewUsage != null) {
+            var viewUsageOwner = viewUsage.getOwner();
+            var ownedRelationship = viewUsageOwner.getOwnedRelationship();
+            for (Relationship relationship : ownedRelationship) {
+                var ownedRelatedElement = relationship.getOwnedRelatedElement();
+                viewUsage.getExposedElement().addAll(ownedRelatedElement);
+                viewUsage.getExposedElement().remove(viewUsage);
+            }
+        }
+        return element;
+    }
+
+    private ViewUsage getViewUsage(Element element) {
+        ViewUsage viewUsage = null;
+        if (element instanceof ViewUsage vu) {
+            viewUsage = vu;
+        } else if (element != null) {
+            viewUsage = this.getViewUsage(element.getOwner());
+        }
+        return viewUsage;
     }
 
     /**

@@ -29,6 +29,7 @@ import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeTool
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node description provider for all SysMLv2 Definitions elements in the Action Flow View diagram.
@@ -43,7 +44,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return AQLUtils.getSelfExposedElementWithDomainType(domainType);
     }
 
     @Override

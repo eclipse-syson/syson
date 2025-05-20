@@ -48,7 +48,7 @@ public class ReferencingPerformActionUsageNodeDescriptionProvider extends UsageN
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReferencingPerformActionUsages");
+        return AQLUtils.getSelfServiceCallExpression("getExposedReferencingPerformActionUsages");
     }
 
     @Override

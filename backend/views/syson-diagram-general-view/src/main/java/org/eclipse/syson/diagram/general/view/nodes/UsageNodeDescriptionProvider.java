@@ -37,6 +37,7 @@ import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectio
 import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node description provider for all SysMLv2 Usage elements in the General View diagram.
@@ -51,7 +52,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return AQLUtils.getSelfExposedElementWithDomainType(domainType);
     }
 
     @Override
