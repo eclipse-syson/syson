@@ -64,7 +64,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    private final ToolDescriptionService toolDescriptionService;
+    protected final ToolDescriptionService toolDescriptionService;
 
     public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);

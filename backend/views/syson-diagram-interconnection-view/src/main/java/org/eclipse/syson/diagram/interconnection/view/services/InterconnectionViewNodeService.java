@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
@@ -35,8 +36,8 @@ public class InterconnectionViewNodeService extends ViewNodeService {
 
     private final Logger logger = LoggerFactory.getLogger(InterconnectionViewNodeService.class);
 
-    public InterconnectionViewNodeService(IObjectSearchService objectSearchService) {
-        super(objectSearchService);
+    public InterconnectionViewNodeService(IObjectSearchService objectSearchService, IIdentityService identityService) {
+        super(objectSearchService, identityService);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 
 /**
- * Used to create the Allocation usage edge description in General View diagram.
+ * Used to create the Allocation usage node description in General View diagram.
  *
  * @author Jerome Gout
  */
@@ -29,6 +29,6 @@ public class AllocationUsageNodeDescriptionProvider extends UsageNodeDescription
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachableAllocationUsages");
+        return AQLUtils.getSelfServiceCallExpression("getExposedAllocationUsages");
     }
 }

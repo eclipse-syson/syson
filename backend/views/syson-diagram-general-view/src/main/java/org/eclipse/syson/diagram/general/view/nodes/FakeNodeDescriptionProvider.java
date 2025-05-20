@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
@@ -173,6 +174,7 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)).ifPresent(childrenNodes::add);
     }
 
     private void addReusableBorderedNode(IViewDiagramElementFinder cache, GVDescriptionNameGenerator nameGenerator, ArrayList<NodeDescription> childrenNodes) {

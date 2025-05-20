@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,15 +22,18 @@ import java.util.stream.Stream;
 
 import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -40,14 +44,24 @@ import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,11 +76,142 @@ public class ViewNodeService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final IIdentityService identityService;
+
     private final UtilService utilService;
 
-    public ViewNodeService(IObjectSearchService objectSearchService) {
+    private final ElementUtil elementUtil;
+
+    public ViewNodeService(IObjectSearchService objectSearchService, IIdentityService identityService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.utilService = new UtilService();
+        this.elementUtil = new ElementUtil();
+    }
+
+    public List<Element> getExposedElements(Element element, EClass domainType, IEditingContext editingContext, IDiagramContext diagramContext) {
+        return this.getExposedElements(element, null, domainType, editingContext, diagramContext);
+    }
+
+    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, IEditingContext editingContext, IDiagramContext diagramContext) {
+        List<Element> elementsToExpose = new ArrayList<>();
+        if (element instanceof ViewUsage viewUsage) {
+            var exposedElements = viewUsage.getExposedElement();
+            var filteredExposedElements = viewUsage.getExposedElement().stream()
+                    .filter(elt -> Objects.equals(elt.eClass(), domainType) && (parent == null || parent.getOwnedElement().contains(elt)))
+                    .toList();
+            boolean isGeneralView = this.isView(viewUsage, "StandardViewDefinitions::GeneralView", editingContext, diagramContext);
+            elementsToExpose.addAll(filteredExposedElements);
+            if (!isGeneralView) {
+                for (Element filteredExposedElement : filteredExposedElements) {
+                    for (Element exposedElement : exposedElements) {
+                        if (!Objects.equals(exposedElement, filteredExposedElement) && (parent == null && EMFUtils.isAncestor(exposedElement, filteredExposedElement))) {
+                            elementsToExpose.remove(filteredExposedElement);
+                        }
+                    }
+                }
+            }
+        } else {
+            // Retrieve ViewUsages exposing the given element
+            var viewUsagesContainingElement = this.getViewUsagesContaingElement(element);
+
+            // Retrieve Nodes with targetObjectId pointing to a ViewUsage from the previous list
+            var viewUsageNodesContainingElement = this.getViewUsageNodes(diagramContext, viewUsagesContainingElement);
+
+            // Expose all elements of the first ViewUsage found, as we don't know which one of the list should be taken.
+            if (!viewUsageNodesContainingElement.isEmpty()) {
+                String targetObjectId = viewUsageNodesContainingElement.get(0).getTargetObjectId();
+                Optional<ViewUsage> viewUsage = this.objectSearchService.getObject(editingContext, targetObjectId).filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast);
+                if (viewUsage.isPresent()) {
+                    elementsToExpose.addAll(this.getExposedElements(viewUsage.get(), element, domainType, editingContext,
+                            diagramContext));
+                }
+            }
+        }
+        return elementsToExpose;
+    }
+
+    private List<Node> getViewUsageNodes(IDiagramContext diagramContext, List<ViewUsage> viewUsages) {
+        viewUsages.stream().map(t -> this.identityService.getId(t)).toList();
+        Diagram diagram = diagramContext.getDiagram();
+        var nodes = this.getAllNodes(diagram.getNodes());
+        var viewUsageNodesContainingElement = nodes.stream().filter(n -> {
+            return viewUsages.stream().anyMatch(vu -> Objects.equals(n.getTargetObjectId(), this.identityService.getId(vu)));
+        }).toList();
+        return viewUsageNodesContainingElement;
+    }
+
+    private List<ViewUsage> getViewUsagesContaingElement(Element element) {
+        List<ViewUsage> viewUsagesContainingElement = new ArrayList<>();
+        var inverse = EMFUtils.getInverse(element.getOwningMembership(), SysmlPackage.eINSTANCE.getMembershipImport_ImportedMembership());
+        for (Setting setting : inverse) {
+            EObject inverseObject = setting.getEObject();
+            if (inverseObject instanceof MembershipExpose membershipExpose) {
+                EObject owner = membershipExpose.eContainer();
+                if (owner instanceof ViewUsage viewUsageOwner) {
+                    viewUsagesContainingElement.add(viewUsageOwner);
+                }
+            }
+        }
+        return viewUsagesContainingElement;
+    }
+
+    private List<Node> getAllNodes(List<Node> nodes) {
+        var allNodes = new LinkedList<Node>();
+        for (Node node : nodes) {
+            var children = new LinkedList<Node>();
+            allNodes.add(node);
+            children.addAll(node.getChildNodes());
+            allNodes.addAll(this.getAllNodes(children));
+        }
+        return allNodes;
+    }
+
+    public boolean isView(Element element, String viewDefinition, IEditingContext editingContext, IDiagramContext diagramContext) {
+        boolean isView = false;
+        if (element instanceof ViewUsage viewUsage) {
+            var types = viewUsage.getType();
+            if ((types == null || types.isEmpty()) && Objects.equals("StandardViewDefinitions::GeneralView", viewDefinition)) {
+                isView = true;
+            } else {
+                var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, viewDefinition, ViewDefinition.class);
+                Type type = types.get(0);
+                isView = Objects.equals(type, generalViewViewDef);
+            }
+        } else {
+            // Retrieve ViewUsages exposing the given element
+            var viewUsagesContainingElement = this.getViewUsagesContaingElement(element);
+
+            // Retrieve Nodes with targetObjectId pointing to a ViewUsage from the previous list
+            var viewUsageNodesContainingElement = this.getViewUsageNodes(diagramContext, viewUsagesContainingElement);
+
+            // Expose all elements of the first ViewUsage found, as we don't know which one of the list should be taken.
+            if (!viewUsageNodesContainingElement.isEmpty()) {
+                String targetObjectId = viewUsageNodesContainingElement.get(0).getTargetObjectId();
+                Optional<ViewUsage> viewUsage = this.objectSearchService.getObject(editingContext, targetObjectId).filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast);
+                if (viewUsage.isPresent()) {
+                    isView = this.isView(viewUsage.get(), viewDefinition, editingContext, diagramContext);
+                }
+            }
+        }
+        return isView;
+    }
+
+    public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
+        var types = viewUsage.getType();
+        var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, newViewDefinition, ViewDefinition.class);
+        if (types == null || types.isEmpty()) {
+            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            viewUsage.getOwnedRelationship().add(featureTyping);
+            featureTyping.setType(generalViewViewDef);
+            featureTyping.setTypedFeature(viewUsage);
+        } else {
+            Relationship relationship = viewUsage.getOwnedRelationship().get(0);
+            if (relationship instanceof FeatureTyping featureTyping) {
+                featureTyping.setType(generalViewViewDef);
+            }
+        }
+        return viewUsage;
     }
 
     /**
@@ -166,7 +311,7 @@ public class ViewNodeService {
      *            The elements onto which the content is gathered
      * @param contents
      *            The content to assemble
-     * @return
+     * @return all the {@link Element} elements from {@code contents} removing the null content.
      */
     public List<Element> getAllContentsByReferences(Element self, List<Object> contents) {
         List<Element> result = new ArrayList<>();
@@ -178,15 +323,6 @@ public class ViewNodeService {
             }
         });
         return result;
-    }
-
-    public List<PerformActionUsage> getAllReferencingPerformActionUsages(Element self) {
-        List<EObject> allPerformActionUsages = this.utilService.getAllReachable(self, SysmlPackage.eINSTANCE.getPerformActionUsage());
-        return allPerformActionUsages.stream()
-                .filter(PerformActionUsage.class::isInstance)
-                .map(PerformActionUsage.class::cast)
-                .filter(this::isReferencingPerformActionUsage)
-                .toList();
     }
 
     /**
@@ -224,20 +360,53 @@ public class ViewNodeService {
     }
 
     /**
-     * Get all the actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}.
+     * Get all Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
      *
-     * @param eObject
-     *            the contextual eObject
-     * @return the list of actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}
+     * @param viewUsage
+     *            the {@link ViewUsage} for which we want the Actors.
+     * @return the list of Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
      */
-    public List<PartUsage> getAllReachableActors(EObject eObject) {
-        String type = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
-        var allPartUsage = this.utilService.getAllReachable(eObject, type);
-        return allPartUsage.stream()
+    public List<PartUsage> getExposedActors(ViewUsage viewUsage) {
+        return viewUsage.getExposedElement().stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
                 .filter(this::isActor)
                 .toList();
+    }
+
+    /**
+     * Get all {@link AllocationUsage}s in {@link ViewUsage}'s exposed elements.
+     *
+     * @param viewUsage
+     *            the {@link ViewUsage} for which we want the AllocationUsages.
+     * @return a list of {@link AllocationUsage} objects.
+     */
+    public List<AllocationUsage> getExposedAllocationUsages(ViewUsage viewUsage) {
+        return viewUsage.getExposedElement().stream()
+                .filter(AllocationUsage.class::isInstance)
+                .map(AllocationUsage.class::cast)
+                .filter(au -> !this.isAnAllocateEdge(au))
+                .toList();
+    }
+
+    /**
+     * Retrieve all exposed elements of the given {@link ViewUsage} that are {@link PerformActionUsage}s declaring a
+     * {@link ReferenceSubsetting} pointing to an {@link ActionUsage}.
+     *
+     * @param self
+     *            the given {@link ViewUsage}.
+     * @return All exposed elements that are PerformActionUsage and declared a ReferenceSubsetting pointing to an
+     *         ActionUsage.
+     */
+    public List<PerformActionUsage> getExposedReferencingPerformActionUsages(Element element) {
+        if (element instanceof ViewUsage viewUsage) {
+            return viewUsage.getExposedElement().stream()
+                    .filter(PerformActionUsage.class::isInstance)
+                    .map(PerformActionUsage.class::cast)
+                    .filter(this::isReferencingPerformActionUsage)
+                    .toList();
+        }
+        return null;
     }
 
     public List<Element> getAllReachableRequirements(EObject eObject) {
@@ -382,5 +551,21 @@ public class ViewNodeService {
             }
         }
         return null;
+    }
+
+    private boolean isAnAllocateEdge(AllocationUsage allocationUsage) {
+        // an allocate edge is an AllocationUsage that contains 2 EndFeaturesMembership
+        return this.getFeatures(allocationUsage).size() == 2;
+    }
+
+    private List<Feature> getFeatures(AllocationUsage allocationUsage) {
+        var features = allocationUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .flatMap(efm -> efm.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+        return features;
     }
 }

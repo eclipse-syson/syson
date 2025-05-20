@@ -143,6 +143,43 @@ public class ViewToolService extends ToolService {
     }
 
     /**
+     * For the given element, search its ViewUsage (if this service has been called from the diagram background it will
+     * be the ViewUsage itself), then get its container and add all container's children to the exposed elements of the
+     * ViewUsage.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param recursive
+     *            if the process should add elements recursively.
+     * @return the given {@link Element}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive) {
+        var viewUsage = this.getViewUsage(element);
+        if (viewUsage != null) {
+            var viewUsageOwner = viewUsage.getOwner();
+            var ownedMembership = viewUsageOwner.getOwnedRelationship().stream().filter(Membership.class::isInstance).map(Membership.class::cast).toList();
+            for (Membership membership : ownedMembership) {
+                if (!Objects.equals(viewUsage, membership.getMemberElement())) {
+                    var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                    membershipExpose.setImportedMembership(membership);
+                    viewUsage.getOwnedRelationship().add(membershipExpose);
+                }
+            }
+        }
+        return element;
+    }
+
+    private ViewUsage getViewUsage(Element element) {
+        ViewUsage viewUsage = null;
+        if (element instanceof ViewUsage vu) {
+            viewUsage = vu;
+        } else if (element != null) {
+            viewUsage = this.getViewUsage(element.getOwner());
+        }
+        return viewUsage;
+    }
+
+    /**
      * Add the nodes representing {@code parentElement}'s children that are not present in the diagram or the
      * {@code parentViewCreationRequest}.
      * <p>

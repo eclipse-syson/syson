@@ -158,7 +158,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 

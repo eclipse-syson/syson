@@ -44,6 +44,8 @@ import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolPr
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsGeneralViewToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsInterconnectionViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StakeholdersCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
@@ -82,6 +84,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the General View diagram.
@@ -708,6 +711,21 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.creatRequirementUsageAsObjectiveWithBaseRequirementNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.createToolsForCompartmentItems(object, sections, this.cache);
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseViewUsage(ViewUsage object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.creatRequirementUsageAsObjectiveWithBaseRequirementNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsGeneralViewToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsInterconnectionViewToolProvider().create(this.cache));
         this.createToolsForCompartmentItems(object, sections, this.cache);
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);

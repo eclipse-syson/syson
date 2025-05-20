@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -117,6 +117,16 @@ public interface IDescriptionNameGenerator {
      * @return a string used to name a compartment {@link NodeDescription}.
      */
     String getFreeFormCompartmentName(EClass eClass, EReference eReference);
+
+    /**
+     * Returns the name of a free form compartment {@link NodeDescription} based on the given name.
+     *
+     * @param name
+     *            the name used to compute the name of the {@link NodeDescription}.
+     *
+     * @return a string used to name a compartment {@link NodeDescription}.
+     */
+    String getFreeFormCompartmentName(String name);
 
     /**
      * Returns the name of a compartment item {@link NodeDescription} using the given {@link EClass} and
