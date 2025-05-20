@@ -24,18 +24,17 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.InterconnectionViewWithTopNodesTestProjectData;
-import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
@@ -57,10 +56,10 @@ import reactor.test.StepVerifier.Step;
  * @author Jerome Gout
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractIntegrationTests {
 
-    private static final int PART_USAGE_COMPARTMENT_COUNT = 3;
+    private static final int PART_USAGE_COMPARTMENT_COUNT = 12;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -78,7 +77,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -91,7 +90,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
     private AtomicReference<Diagram> diagram;
 
-    private final IVDescriptionNameGenerator descriptionNameGenerator = new IVDescriptionNameGenerator();
+    private final SDVDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     @BeforeEach
     public void setUp() {
@@ -103,7 +102,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID);
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
     }
@@ -122,9 +121,10 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Binding Connector As Usage");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
+                "New Binding Connector As Usage");
         assertThat(creationToolId).as("The tool 'New Binding Connector As Usage' should exist on a first level PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "part1",
                 creationToolId));
@@ -148,20 +148,20 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {
-        String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
+        String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
 
         this.verifier.then(() -> this.nodeCreationTester.renameNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "part1", "firstLevelPart"));
 
         var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Binding Connector As Usage");
         assertThat(creationToolId).as("The tool 'New Binding Connector As Usage' should exist on a nested PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagramAfterNestedPartUsageCreation,
                 "part1",
                 creationToolId));

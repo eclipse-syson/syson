@@ -32,7 +32,6 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
     private final boolean isExhibit;
 
     public StateTransitionCompartmentNodeToolProvider(boolean isParallel, boolean isExhibit) {
-        super();
         this.isParallel = isParallel;
         this.isExhibit = isExhibit;
     }

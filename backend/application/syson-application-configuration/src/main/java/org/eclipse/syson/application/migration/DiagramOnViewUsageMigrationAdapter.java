@@ -23,7 +23,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 /**
  * Adapter to add on every Element that is candidate for the {@link DiagramOnViewUsageMigrationParticipant}/
  * {@link DiagramOnViewUsageMigrationHook}. In {@link DiagramOnViewUsageMigrationParticipant}, the adapter should be
- * added on Element having diagrams and on which the new ViewUsage will be created. Then Then in
+ * added on Element having diagrams and on which the new ViewUsage will be created. Then in
  * {@link DiagramOnViewUsageMigrationHook}, the adapter is used to move the semantic Element associated to existing
  * diagrams, then the adapter is deleted.
  *

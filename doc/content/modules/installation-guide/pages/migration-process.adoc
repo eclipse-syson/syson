@@ -4,10 +4,18 @@ If you're upgrading from an older version of {product} to the latest release, th
 
 In any case, it is strongly recommended to back up your data before proceeding with any migration.
 
+== 2025.10.0 (work in progress)
+
+All diagram descriptions (General View, Interconnection View, Action Flow View, State Transition View) have been merged into one.
+Automatic migration process is provided to update your existing diagrams.
+
+But in any case, please download all your models/projects and back up your database before upgrading to 2025.10.0.
+
 == 2025.8.0
 
 Align metamodel to SysMLv2 2025-04 specification released on April 2025(see https://www.omg.org/spec/SysML/ for more details) and KerML 2025-04 specification released on April 2025(see https://www.omg.org/spec/KerML/ for more details).
 Automatic migration process is provided to update your existing SysON models/projects to the new metamodel.
+
 But in any case, please download all your models/projects and back up your database before upgrading to 2025.8.0.
 
 == 2025.6.0

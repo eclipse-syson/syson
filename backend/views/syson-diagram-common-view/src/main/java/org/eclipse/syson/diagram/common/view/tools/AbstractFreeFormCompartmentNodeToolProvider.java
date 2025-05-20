@@ -29,7 +29,7 @@ import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to define a creation tool for a free form compartment of an element inside diagrams.
+ * Used to define a creation tool for a free form compartment of an element inside a diagram.
  *
  * @author Jerome Gout
  */
@@ -110,26 +110,18 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var params = List.of(
-                AQLUtils.aqlString(this.compartmentName),
-                Node.SELECTED_NODE,
-                IEditingContext.EDITING_CONTEXT,
-                IDiagramContext.DIAGRAM_CONTEXT,
-                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
-
-        var createViewOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
-                .build();
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(
                         AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                                List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)))
-                .build();
+                                List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getCreationServiceCallExpression())
-                .children(createViewOperation, revealOperation);
+                .children(addToExposedElements.build(), revealOperation.build());
 
         String preconditionExpression = this.getPreconditionServiceCallExpression();
 

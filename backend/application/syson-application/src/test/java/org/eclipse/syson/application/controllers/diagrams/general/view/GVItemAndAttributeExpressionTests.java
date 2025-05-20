@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -238,7 +239,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                 "a2_1 = 45 [kilogram]");
     }
 
-    @DisplayName("GIVEN an ItemUsage, WHEN with a value referencing another ItemUsage, THEN an edge should connect the ItemUsage")
+    @DisplayName("GIVEN an ItemUsage, WHEN direct editing with a value referencing another ItemUsage, THEN an edge should connect the ItemUsage")
     @Test
     @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -274,7 +275,6 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void deleteFeatureValueEdge() {
-
         this.deleteFromDiagramTester.checkRemoveFromDiagram(this.verifier, List.of(), List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE),
                 payload -> Optional.of(payload)
                         .map(DiagramRefreshedEventPayload::diagram)
@@ -287,7 +287,6 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                             // No more edge starting from a2_2
                             assertThat(newDiagram.getEdges()).noneMatch(s -> GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_2_BORDERED_NODE_ID.equals(s.getSourceId()));
                         }, () -> fail("Missing diagram")));
-
     }
 
     private Consumer<DiagramRefreshedEventPayload> buildEdgeChecker(String nodeToCheckForLabel, String expectedLabel, String sourceNodeId, String targetNodeId) {
@@ -299,14 +298,14 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                     InsideLabel newLabel = diagramNavigator.nodeWithId(nodeToCheckForLabel).getNode().getInsideLabel();
                     assertThat(newLabel.getText()).isEqualTo(expectedLabel);
 
-                    // Check new edge
-                    List<Edge> newEdges = this.diagramComparator.newEdges(this.diagram.get(), newDiagram);
+                    // Check new edges
+                    List<Edge> newEdges = this.diagramComparator.newEdges(this.diagram.get(), newDiagram).stream().filter(e -> ViewModifier.Normal.equals(e.getState())).toList();
                     assertThat(newEdges).hasSize(1)
                             .first()
                             .satisfies(edge -> {
                                 assertThat(edge.getSourceId()).as("Should start from A2_1").isEqualTo(sourceNodeId);
                             }, edge -> {
-                                assertThat(edge.getTargetId()).as("Should end to A1_1").isEqualTo(targetNodeId);
+                                assertThat(edge.getTargetId()).as("Should end to A1_1 or A1_2 depending on the test").isEqualTo(targetNodeId);
                             });
                 }, () -> fail("Missing diagram"));
     }

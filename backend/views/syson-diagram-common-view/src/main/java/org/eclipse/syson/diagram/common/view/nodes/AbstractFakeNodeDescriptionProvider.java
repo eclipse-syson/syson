@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.nodes;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -36,8 +38,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public AbstractFakeNodeDescriptionProvider(IColorProvider colorProvider) {
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public AbstractFakeNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     /**
@@ -76,7 +81,6 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getName()).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
-
             nodeDescription.getChildrenDescriptions().addAll(this.getChildrenDescription(cache));
         });
     }
@@ -105,5 +109,20 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
                 .borderRadius(0)
                 .background(this.colorProvider.getColor("transparent"))
                 .build();
+    }
+
+    protected void addReusableCustomNodes(IViewDiagramElementFinder cache, List<NodeDescription> childrenNodes) {
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
     }
 }

@@ -87,7 +87,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
                 .isDomainBasedEdge(true)
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getDependencyLabel"))
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

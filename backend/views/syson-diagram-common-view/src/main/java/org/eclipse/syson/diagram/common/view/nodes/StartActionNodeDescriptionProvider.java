@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -67,9 +66,10 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        // this nodeDescription has not been added to the diagramDescription children but to the fakeNodeDescription
+        // children instead
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME)).ifPresent(nodeDescription -> {
             nodeDescription.setPalette(this.createNodePalette(cache));
-            diagramDescription.getNodeDescriptions().add(nodeDescription);
         });
     }
 
@@ -111,7 +111,6 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME)).ifPresent(targets::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(targets::add);
         return targets;
     }
 }

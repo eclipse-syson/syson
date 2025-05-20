@@ -67,13 +67,13 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
     }
 
     private void assertResourceAndAllContentsCanBeHandled(final Resource resource, final boolean expectedCanBeHandled) {
-        Assertions.assertThat(EMFUtils.eAllContentSteamWithSelf(resource).map(objectUnderTest -> this.readOnlyObjectPredicateDelegate.canHandle(objectUnderTest)))
+        Assertions.assertThat(EMFUtils.eAllContentStreamWithSelf(resource).map(objectUnderTest -> this.readOnlyObjectPredicateDelegate.canHandle(objectUnderTest)))
                 .allMatch(actualCanBeHandled -> actualCanBeHandled == expectedCanBeHandled);
     }
 
     private void assertResourceAndAllContentsIsReadOnly(final Resource resource, final boolean expectedIsReadOnly) {
         this.assertResourceAndAllContentsCanBeHandled(resource, true);
-        Assertions.assertThat(EMFUtils.eAllContentSteamWithSelf(resource).map(objectUnderTest -> this.readOnlyObjectPredicateDelegate.test(objectUnderTest)))
+        Assertions.assertThat(EMFUtils.eAllContentStreamWithSelf(resource).map(objectUnderTest -> this.readOnlyObjectPredicateDelegate.test(objectUnderTest)))
                 .allMatch(actualIsReadOnly -> actualIsReadOnly == expectedIsReadOnly);
     }
 
@@ -195,7 +195,7 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                     resource.getContents().add(createSysmlProjet());
 
                     // Arbitrary EAnnotation to ensure EAnnotations on SysML elements are also supported.
-                    EMFUtils.eAllContentSteamWithSelf(resource).filter(EModelElement.class::isInstance).map(EModelElement.class::cast).forEach(eModelElement -> {
+                    EMFUtils.eAllContentStreamWithSelf(resource).filter(EModelElement.class::isInstance).map(EModelElement.class::cast).forEach(eModelElement -> {
                         final EAnnotation eAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
                         eAnnotation.setSource("source");
                         eModelElement.getEAnnotations().add(eAnnotation);

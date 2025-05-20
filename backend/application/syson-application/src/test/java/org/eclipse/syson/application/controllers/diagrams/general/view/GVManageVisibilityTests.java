@@ -36,8 +36,8 @@ import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisi
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.GeneralViewManageVisibilityTestsProjectData;
-import org.eclipse.syson.diagram.general.view.services.nodeactions.managevisibility.GeneralViewManageVisibilityRevealValuedContentAction;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.services.nodeactions.managevisibility.ManageVisibilityRevealValuedContentAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -117,7 +117,7 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     .isNotEmpty()
                     .contains(ManageVisibilityRevealAllAction.ACTION_ID)
                     .contains(ManageVisibilityHideAllAction.ACTION_ID)
-                    .contains(GeneralViewManageVisibilityRevealValuedContentAction.ACTION_ID);
+                    .contains(ManageVisibilityRevealValuedContentAction.ACTION_ID);
 
             assertThat(actionsLabels)
                     .isNotEmpty()
@@ -127,7 +127,7 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
         };
 
         Runnable invokeRevealValuedContentAction = () -> {
-            var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), GeneralViewManageVisibilityTestsProjectData.EDITING_CONTEXT_ID, GeneralViewManageVisibilityTestsProjectData.GraphicalIds.DIAGRAM_ID, nodeId.get(), GeneralViewManageVisibilityRevealValuedContentAction.ACTION_ID);
+            var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), GeneralViewManageVisibilityTestsProjectData.EDITING_CONTEXT_ID, GeneralViewManageVisibilityTestsProjectData.GraphicalIds.DIAGRAM_ID, nodeId.get(), ManageVisibilityRevealValuedContentAction.ACTION_ID);
             var result = this.invokeActionMutationRunner.run(input);
             String typename = JsonPath.read(result, "$.data.invokeManageVisibilityAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -140,9 +140,9 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     nodeId.set(diagram.getNodes().get(0).getId());
                     assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(5);
                     var children = diagram.getNodes().get(0).getChildNodes();
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(3);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(4);
                     assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Normal))).hasSize(1);
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(1);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(0);
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)

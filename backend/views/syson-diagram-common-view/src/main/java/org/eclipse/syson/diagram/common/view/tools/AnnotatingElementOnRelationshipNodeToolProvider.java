@@ -18,15 +18,13 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -50,10 +48,7 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
     // The kind of AnnotatingElement to instantiate.
     private final EClass annotatingElement;
 
-    private final NodeDescription nodeDescription;
-
-    public AnnotatingElementOnRelationshipNodeToolProvider(NodeDescription nodeDescription, EClass annotatingElement, IDescriptionNameGenerator descriptionNameGenerator) {
-        this.nodeDescription = Objects.requireNonNull(nodeDescription);
+    public AnnotatingElementOnRelationshipNodeToolProvider(EClass annotatingElement, IDescriptionNameGenerator descriptionNameGenerator) {
         this.annotatingElement = Objects.requireNonNull(annotatingElement);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
@@ -63,19 +58,12 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, Edge.SELECTED_EDGE, IDiagramContext.DIAGRAM_CONTEXT));
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(this.nodeDescription)
-                .parentViewExpression(parentViewExpression)
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
+                .children(updateExposedElements.build());
 
         var setAnnotatedElement = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement().getName())
@@ -85,7 +73,7 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(this.annotatingElement))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+                .children(changeContextNewInstance.build());
 
         var changeContextAnnotation = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newAnnotation")

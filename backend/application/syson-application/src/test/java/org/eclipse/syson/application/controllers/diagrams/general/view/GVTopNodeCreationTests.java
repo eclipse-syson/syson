@@ -53,16 +53,16 @@ import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventS
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
@@ -94,7 +94,7 @@ import reactor.test.StepVerifier.Step;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -121,7 +121,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     private IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -145,41 +145,41 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> topNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
-                // A package doesn't have a compartment: it is handled as a custom node
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
+                // A package doesn't have a compartment: it is handled as a custom node
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
         ).map(TestNameGenerator::namedArguments);
     }
@@ -213,7 +213,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void createTopNode(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 this.diagram,
                 creationToolId));
 
@@ -268,7 +268,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
         if (libId.get().isPresent()) {
             this.verifier.then(() -> {
-                this.nodeCreationTester.createNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                         this.diagram,
                         null,
                         creationToolId,

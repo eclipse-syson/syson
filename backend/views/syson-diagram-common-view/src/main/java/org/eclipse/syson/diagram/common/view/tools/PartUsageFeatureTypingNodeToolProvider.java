@@ -23,9 +23,8 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -42,13 +41,10 @@ public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    private final NodeDescription definitionNodeDescription;
-
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public PartUsageFeatureTypingNodeToolProvider(NodeDescription definitionNodeDescription, IDescriptionNameGenerator descriptionNameGenerator) {
+    public PartUsageFeatureTypingNodeToolProvider(IDescriptionNameGenerator descriptionNameGenerator) {
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-        this.definitionNodeDescription = Objects.requireNonNull(definitionNodeDescription);
     }
 
     @Override
@@ -56,18 +52,12 @@ public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("self", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(this.definitionNodeDescription)
-                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, IDiagramContext.DIAGRAM_CONTEXT)))
-                .semanticElementExpression(AQLConstants.AQL_SELF)
-                .variableName("newView");
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var creationFeatureTypingServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createPartDefinitionAndFeatureTyping"))
-                .children(createView.build(), updateExposedElements.build());
+                .children(updateExposedElements.build());
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)

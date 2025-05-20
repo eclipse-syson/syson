@@ -32,15 +32,15 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckChildNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewViewTestProjectData;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -67,7 +67,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVViewUsageTests extends AbstractIntegrationTests {
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -85,7 +85,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -100,40 +100,40 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> childNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
         ).map(TestNameGenerator::namedArguments);
     }
@@ -164,12 +164,12 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    @DisplayName("GIVEN a General View with view usage node, WHEN child nodes are created, THEN nodes are added to the diagram")
+    @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram.get().getId(),
                 GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
                 creationToolId, List.of()));

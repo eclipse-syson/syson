@@ -15,17 +15,17 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -76,21 +76,44 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
      */
     @Override
     public EList<Element> getExposedElement() {
-        List<Element> data = new ArrayList<>();
+        List<Element> exposedElements = new ArrayList<>();
         var exposed = this.getOwnedImport().stream()
                 .filter(Expose.class::isInstance)
                 .map(Expose.class::cast)
                 .toList();
         for (Expose expose : exposed) {
-            var importedMemberships = expose.importedMemberships(new UniqueEList<>());
-            for (Membership importedMembership : importedMemberships) {
-                var memberElement = importedMembership.getMemberElement();
-                if (memberElement != null) {
-                    data.add(memberElement);
+            // var importedMemberships = expose.importedMemberships(new UniqueEList<>());
+            // returns elements inherited from the standard libraries.
+            // In case of a simple empty Package, it returns a list of around 2500 elements.
+            // We don't want that in this computation.
+            // So below we compute our own tailored list of exposed memberships.
+            if (expose instanceof MembershipExpose membershipExpose) {
+                var importedMembership = membershipExpose.getImportedMembership();
+                if (importedMembership != null) {
+                    var memberElement = importedMembership.getMemberElement();
+                    if (memberElement != null) {
+                        exposedElements.add(memberElement);
+                        if (expose.isIsRecursive()) {
+                            exposedElements.addAll(this.getRecursiveContents(memberElement));
+                        }
+                    }
                 }
             }
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getViewUsage_ExposedElement(), data.size(), data.toArray());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getViewUsage_ExposedElement(), exposedElements.size(), exposedElements.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private List<Element> getRecursiveContents(Element element) {
+        var contents = new ArrayList<Element>();
+        var ownedElements = element.getOwnedElement().stream().filter(Objects::nonNull).toList();
+        contents.addAll(ownedElements);
+        ownedElements.forEach(oe -> {
+            contents.addAll(this.getRecursiveContents(oe));
+        });
+        return contents;
     }
 
     /**

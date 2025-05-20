@@ -38,8 +38,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks.Many;
 
 /**
- * {@link IInputPreProcessor} and {@link IInputPostProcessor} allowing to create a ViewUsage element when creating a new SysON SysMLv2 diagram. The
- * SysON SysMLv2 diagram is then attached to this new ViewUsage.
+ * {@link IInputPreProcessor} and {@link IInputPostProcessor} allowing to create a ViewUsage element when creating a new
+ * SysON SysMLv2 diagram. The SysON SysMLv2 diagram is then attached to this new ViewUsage.
  *
  * @author arichard
  */
@@ -61,17 +61,21 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
     @Override
     public IInput preProcess(IEditingContext editingContext, IInput input, Many<ChangeDescription> changeDescriptionSink) {
         if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && canHandle(createRepresentationInput)) {
-            var optElement = getObject(editingContext, createRepresentationInput);
+            var optElement = this.getObject(editingContext, createRepresentationInput);
             if (optElement.isPresent()) {
                 Element containerElement = optElement.get();
-                if (containerElement instanceof ViewUsage) {
+                ViewUsage viewUsage = null;
+                if (containerElement instanceof ViewUsage containerVU) {
                     // In case of a ViewUsage we want to follow the nominal case.
+                    viewUsage = containerVU;
                 } else {
-                    // In other cases we want to  create a new ViewUsage and associated the new Diagram to this new ViewUsage.
-                    var viewUsage = createViewUsage(input, containerElement, createRepresentationInput.representationName());
-                    return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), createRepresentationInput.representationDescriptionId(), viewUsage.getElementId(),
-                            createRepresentationInput.representationName());
+                    // In other cases we want to create a new ViewUsage and associated the new Diagram to this new
+                    // ViewUsage.
+                    viewUsage = this.createViewUsage(input, containerElement, createRepresentationInput.representationName());
                 }
+                // In any case we want to create the only "real" diagram
+                return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID,
+                        viewUsage.getElementId(), createRepresentationInput.representationName());
             }
         }
         return input;
@@ -79,7 +83,7 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
 
     @Override
     public void postProcess(IEditingContext editingContext, IInput input, Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && canHandle(createRepresentationInput)) {
+        if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && this.canHandle(createRepresentationInput)) {
             this.editingContextPersistenceService.persist(createRepresentationInput, editingContext);
         }
     }
@@ -100,9 +104,36 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
     }
 
     private Optional<Element> getObject(IEditingContext editingContext, CreateRepresentationInput input) {
-        return objectSearchService.getObject(editingContext, input.objectId())
+        return this.objectSearchService.getObject(editingContext, input.objectId())
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast);
+    }
+
+    private ViewUsage createViewUsage(IInput input, Element containerElement, String viewUsageName) {
+        var getIntermediateContainerCreationSwitch = new GetIntermediateContainerCreationSwitch(containerElement);
+        var intermediateContainerClass = getIntermediateContainerCreationSwitch.doSwitch(containerElement.eClass());
+        if (intermediateContainerClass.isPresent()) {
+            EObject intermediateContainerEObject = SysmlFactory.eINSTANCE.create(intermediateContainerClass.get());
+            if (intermediateContainerEObject instanceof Relationship intermediateContainer) {
+                var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
+                viewUsage.setDeclaredName(viewUsageName);
+                containerElement.getOwnedRelationship().add(intermediateContainer);
+                intermediateContainer.getOwnedRelatedElement().add(viewUsage);
+                this.setViewDefinition(containerElement, viewUsage, input);
+                return viewUsage;
+            }
+        }
+        return null;
+    }
+
+    private void setViewDefinition(Element containerElement, ViewUsage viewUsage, IInput input) {
+        var viewDefinition = this.getViewDefinition(containerElement, (CreateRepresentationInput) input);
+        if (viewDefinition.isPresent()) {
+            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            viewUsage.getOwnedRelationship().add(featureTyping);
+            featureTyping.setType(viewDefinition.get());
+            featureTyping.setTypedFeature(viewUsage);
+        }
     }
 
     private Optional<ViewDefinition> getViewDefinition(Element containerElement, CreateRepresentationInput input) {
@@ -122,32 +153,5 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
             optViewDef = Optional.ofNullable(generalViewViewDef);
         }
         return optViewDef;
-    }
-
-    private ViewUsage createViewUsage(IInput input, Element containerElement, String viewUsageName) {
-        var getIntermediateContainerCreationSwitch = new GetIntermediateContainerCreationSwitch(containerElement);
-        var intermediateContainerClass = getIntermediateContainerCreationSwitch.doSwitch(containerElement.eClass());
-        if (intermediateContainerClass.isPresent()) {
-            EObject intermediateContainerEObject = SysmlFactory.eINSTANCE.create(intermediateContainerClass.get());
-            if (intermediateContainerEObject instanceof Relationship intermediateContainer) {
-                var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
-                viewUsage.setDeclaredName(viewUsageName);
-                containerElement.getOwnedRelationship().add(intermediateContainer);
-                intermediateContainer.getOwnedRelatedElement().add(viewUsage);
-                setViewDefinition(containerElement, viewUsage, input);
-                return viewUsage;
-            }
-        }
-        return null;
-    }
-
-    private void setViewDefinition(Element containerElement, ViewUsage viewUsage, IInput input) {
-        var viewDefinition = getViewDefinition(containerElement, (CreateRepresentationInput) input);
-        if (viewDefinition.isPresent()) {
-            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-            viewUsage.getOwnedRelationship().add(featureTyping);
-            featureTyping.setType(viewDefinition.get());
-            featureTyping.setTypedFeature(viewUsage);
-        }
     }
 }

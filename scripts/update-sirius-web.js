@@ -38,11 +38,8 @@ projects.set("syson-siriusweb-customnodes-metamodel-edit", "metamodel");
 projects.set("syson-direct-edit-grammar", "services");
 projects.set("syson-services", "services");
 projects.set("syson-sysml-rest-api-services", "services");
-projects.set("syson-diagram-actionflow-view", "views");
 projects.set("syson-diagram-common-view", "views");
-projects.set("syson-diagram-general-view", "views");
-projects.set("syson-diagram-interconnection-view", "views");
-projects.set("syson-diagram-statetransition-view", "views");
+projects.set("syson-standard-diagram-views", "views");
 projects.set("syson-tree-explorer-view", "views");
 projects.set("syson-diagram-tests", "views");
 

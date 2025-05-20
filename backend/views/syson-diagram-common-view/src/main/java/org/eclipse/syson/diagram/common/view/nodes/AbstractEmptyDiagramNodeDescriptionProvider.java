@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -27,7 +28,6 @@ import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -35,9 +35,11 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -85,14 +87,15 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getViewUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .defaultHeightExpression("476")
                 .defaultWidthExpression("1061")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:if(editingContext <> null) then self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram) else Sequence{} endif")
+                .preconditionExpression("aql:self.exposedElement->size() == 0")
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEmptyDiagramNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -143,23 +146,18 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
+                .children(updateExposedElements.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+                .children(changeContextNewInstance.build());
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")
