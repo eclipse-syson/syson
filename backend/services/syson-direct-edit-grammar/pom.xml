@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-direct-edit-grammar</artifactId>
-	<version>2025.4.2</version>
+	<version>2025.4.4</version>
 	<name>syson-direct-edit-grammar</name>
 	<description>SysON Direct Edit Grammar</description>
 
