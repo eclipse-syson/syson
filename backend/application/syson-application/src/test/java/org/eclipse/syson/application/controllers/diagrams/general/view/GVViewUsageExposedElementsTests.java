@@ -46,7 +46,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ViewUsageExposedElementsTestProjectData;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -102,7 +102,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester toolTester;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -160,7 +160,8 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     public void newPartToolShouldUpdateExposedElements() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
         assertThat(creationToolId).as("The tool 'New Part' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+
+        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 creationToolId));
 
@@ -182,7 +183,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         this.verifier.then(semanticChecker);
     }
 
-    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) tool is executed, THEN a the ViewUsage#exposedElements is updated with partA")
+    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) tool is executed, THEN the ViewUsage#exposedElements is updated with partA")
     @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -190,7 +191,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsToolShouldUpdateExposedElements() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 creationToolId));
 
@@ -220,7 +221,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsRecursivelyToolShouldUpdateExposedElements() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 creationToolId));
 

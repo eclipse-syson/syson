@@ -14,6 +14,7 @@ package org.eclipse.syson.services;
 
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.services.api.MoveStatus;
@@ -21,9 +22,11 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +40,14 @@ public class SysMLMoveElementService implements ISysMLMoveElementService {
 
     private final ISysMLReadOnlyService readOnlyService;
 
+    private final DeleteService deleteService;
+
+    private final UtilService utilService;
+
     public SysMLMoveElementService(ISysMLReadOnlyService readOnlyService) {
         this.readOnlyService = Objects.requireNonNull(readOnlyService);
+        this.deleteService = new DeleteService();
+        this.utilService = new UtilService();
     }
 
     /**
@@ -89,7 +98,6 @@ public class SysMLMoveElementService implements ISysMLMoveElementService {
         final MoveStatus moveStatus;
 
         if (element.eContainer() instanceof Membership currentMembership) {
-            DeleteService deleteService = new DeleteService();
             if (parent instanceof Package) {
                 // the expected membership should be an OwningMembership
                 if (currentMembership instanceof FeatureMembership) {
@@ -100,7 +108,15 @@ public class SysMLMoveElementService implements ISysMLMoveElementService {
                     parent.getOwnedRelationship().add(owningMembership);
                     moveStatus = MoveStatus.buildSuccess();
                     owningMembership.getOwnedRelatedElement().add(element);
-                    deleteService.deleteFromModel(currentMembership);
+                    // If the currentMembership is exposed, we need to add new links between the MembershipExposes and
+                    // the new owningMembership
+                    var eInverseRelatedElements = this.utilService.getEInverseRelatedElements(currentMembership, SysmlPackage.eINSTANCE.getMembershipImport_ImportedMembership());
+                    for (EObject eObject : eInverseRelatedElements) {
+                        if (eObject instanceof MembershipExpose membershipExpose) {
+                            membershipExpose.setImportedMembership(owningMembership);
+                        }
+                    }
+                    this.deleteService.deleteFromModel(currentMembership);
                 } else {
                     parent.getOwnedRelationship().add(currentMembership);
                     moveStatus = MoveStatus.buildSuccess();
@@ -115,7 +131,15 @@ public class SysMLMoveElementService implements ISysMLMoveElementService {
                     parent.getOwnedRelationship().add(featureMembership);
                     moveStatus = MoveStatus.buildSuccess();
                     featureMembership.getOwnedRelatedElement().add(element);
-                    deleteService.deleteFromModel(currentMembership);
+                    // If the currentMembership is exposed, we need to add new links between the MembershipExposes and
+                    // the new featureMembership
+                    var eInverseRelatedElements = this.utilService.getEInverseRelatedElements(currentMembership, SysmlPackage.eINSTANCE.getMembershipImport_ImportedMembership());
+                    for (EObject eObject : eInverseRelatedElements) {
+                        if (eObject instanceof MembershipExpose membershipExpose) {
+                            membershipExpose.setImportedMembership(featureMembership);
+                        }
+                    }
+                    this.deleteService.deleteFromModel(currentMembership);
                 }
             }
         } else {

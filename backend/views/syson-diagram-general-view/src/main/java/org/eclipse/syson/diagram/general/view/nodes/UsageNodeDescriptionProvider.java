@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -37,6 +39,7 @@ import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectio
 import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node description provider for all SysMLv2 Usage elements in the General View diagram.
@@ -51,7 +54,8 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return AQLUtils.getSelfServiceCallExpression("getExposedElements",
+                List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT));
     }
 
     @Override
@@ -75,6 +79,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 });
             }
         });
+
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
@@ -100,13 +105,18 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     @Override
     protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
         var borderNodes = new LinkedHashSet<NodeDescription>();
-
-        if (SysmlPackage.eINSTANCE.getPartUsage().equals(this.eClass)) {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
-        } else if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    if (eReference.equals(SysmlPackage.eINSTANCE.getUsage_NestedPort())) {
+                        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
+                    }
+                });
+            }
+        });
+        if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(borderNodes::add);
         }
-
         return borderNodes;
     }
 

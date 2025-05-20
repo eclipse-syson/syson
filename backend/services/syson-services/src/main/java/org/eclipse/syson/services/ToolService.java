@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -37,12 +37,14 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
+import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
@@ -59,19 +61,29 @@ public class ToolService {
 
     protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    protected final IDiagramDescriptionService diagramDescriptionService;
+
     protected final IFeedbackMessageService feedbackMessageService;
 
     protected final ISysMLMoveElementService moveService;
 
-    protected final DeleteService deleteService = new DeleteService();
+    protected final DeleteService deleteService;
 
-    public ToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService,
-                       ISysMLMoveElementService moveService) {
+    protected final UtilService utilService;
+
+    protected final NodeDescriptionService nodeDescriptionService;
+
+    public ToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            IDiagramDescriptionService diagramDescriptionService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.moveService = Objects.requireNonNull(moveService);
+        this.deleteService = new DeleteService();
+        this.utilService = new UtilService();
+        this.nodeDescriptionService = new NodeDescriptionService(objectSearchService);
     }
 
     /**
@@ -130,60 +142,6 @@ public class ToolService {
                     .orElse(null);
         }
         return parentNode;
-    }
-
-    /**
-     * Add the given "newExposedElement" to the exposedElements reference of the {@link ViewUsage} that is the target of
-     * the given {@link IDiagramContext}.
-     *
-     * @param element
-     *            the current context of the service.
-     * @param newExposedElement
-     *            the new Element to be exposed.
-     * @param editingContext
-     *            the given {@link IEditingContext} in which this service has been called.
-     * @param diagramContext
-     *            the given {@link IDiagramContext}.
-     * @return the current context of the service.
-     */
-    public EObject updateExposedElements(EObject eObject, Element newExposedElement, IEditingContext editingContext, IDiagramContext diagramContext) {
-        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
-        if (optDiagramTargetObject.isPresent()) {
-            var diagramTargetObject = optDiagramTargetObject.get();
-            if (diagramTargetObject instanceof ViewUsage viewUsage && !this.isExposed(newExposedElement, viewUsage)) {
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
-                viewUsage.getOwnedRelationship().add(membershipExpose);
-            }
-        }
-        return eObject;
-    }
-
-    /**
-     * Add the given "newExposedElement" to the exposedElements reference of the {@link ViewUsage} that is the target of
-     * the given {@link Node}.
-     *
-     * @param eObject
-     *            the current context of the service.
-     * @param newExposedElement
-     *            the new Element to be exposed.
-     * @param editingContext
-     *            the given {@link IEditingContext} in which this service has been called.
-     * @param viewUsageNode
-     *            the given {@link Node}.
-     * @return the current context of the service.
-     */
-    public EObject updateExposedElements(EObject eObject, Element newExposedElement, IEditingContext editingContext, Node viewUsageNode) {
-        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, viewUsageNode.getTargetObjectId());
-        if (optDiagramTargetObject.isPresent()) {
-            var diagramTargetObject = optDiagramTargetObject.get();
-            if (diagramTargetObject instanceof ViewUsage viewUsage && !this.isExposed(newExposedElement, viewUsage)) {
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
-                viewUsage.getOwnedRelationship().add(membershipExpose);
-            }
-        }
-        return eObject;
     }
 
     /**
@@ -257,9 +215,9 @@ public class ToolService {
 
     protected ViewCreationRequest createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, NodeContainmentKind nodeKind) {
-        var parentElementId = this.getParentElementId(selectedNode, diagramContext);
         var optDescriptionId = this.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode, convertedNodes);
         if (optDescriptionId.isPresent()) {
+            var parentElementId = this.getParentElementId(selectedNode, diagramContext);
             return this.createView(element, parentElementId, optDescriptionId.get(), editingContext, diagramContext, nodeKind);
         } else {
             return null;
@@ -268,14 +226,23 @@ public class ToolService {
 
     protected ViewCreationRequest createView(Element element, String parentElementId, String descriptionId, IEditingContext editingContext, IDiagramContext diagramContext,
             NodeContainmentKind nodeKind) {
-        var request = ViewCreationRequest.newViewCreationRequest()
-                .containmentKind(nodeKind)
-                .descriptionId(descriptionId)
-                .parentElementId(parentElementId)
-                .targetObjectId(this.identityService.getId(element))
-                .build();
-        diagramContext.getViewCreationRequests().add(request);
-        this.updateExposedElements(element, element, editingContext, diagramContext);
+        ViewCreationRequest request = null;
+        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId())
+                .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast);
+        var nodeDescription = this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription.get(), descriptionId)
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .filter(nd -> Objects.equals(nd.getSynchronizationPolicy(), SynchronizationPolicy.UNSYNCHRONIZED));
+        if (nodeDescription.isPresent()) {
+            request = ViewCreationRequest.newViewCreationRequest()
+                    .containmentKind(nodeKind)
+                    .descriptionId(descriptionId)
+                    .parentElementId(parentElementId)
+                    .targetObjectId(this.identityService.getId(element))
+                    .build();
+            diagramContext.getViewCreationRequests().add(request);
+        }
         return request;
     }
 
@@ -328,7 +295,6 @@ public class ToolService {
      */
     protected Optional<String> getChildNodeDescriptionIdForRendering(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object parent,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
         List<NodeDescription> candidates = new ArrayList<>();
         final Object parentObject;
 
@@ -338,14 +304,14 @@ public class ToolService {
                     .findFirst()
                     .orElse(null);
             parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
-            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
+            candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
             NodeDescription parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
             parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
-            candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
+            candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else {
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
             parentObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
@@ -355,7 +321,7 @@ public class ToolService {
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions)
                     .orElse(List.of())
                     .stream()
-                    .filter(nodeDescription -> nodeDescriptionService.canNodeDescriptionRenderElement(nodeDescription, element, parentObject))
+                    .filter(nodeDescription -> this.nodeDescriptionService.canNodeDescriptionRenderElement(nodeDescription, element, parentObject, editingContext, diagramContext))
                     .toList();
         }
 
@@ -491,6 +457,28 @@ public class ToolService {
 
     protected boolean isExposed(Element element, ViewUsage viewUsage) {
         return viewUsage.getExposedElement().contains(element);
+    }
+
+    /**
+     * Check if the given {@link Element} is represented by an unsynchronized node.
+     *
+     * @param element
+     *            the given {@link Element}
+     * @return <code>true</code> if the given {@link Element} is represented by an unsynchronized node,
+     *         <code>false</code> otherwise.
+     */
+    protected boolean isUnsynchronized(Element element) {
+        boolean isUnsynchronized = false;
+        if (Objects.equals(element, this.utilService.retrieveStandardStartAction(element))) {
+            isUnsynchronized = true;
+        } else if (Objects.equals(element, this.utilService.retrieveStandardDoneAction(element))) {
+            isUnsynchronized = true;
+        } else if (element instanceof NamespaceImport) {
+            isUnsynchronized = true;
+        } else if (element instanceof AnnotatingElement) {
+            isUnsynchronized = true;
+        }
+        return isUnsynchronized;
     }
 
     protected void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {

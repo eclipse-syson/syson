@@ -33,7 +33,6 @@ public class StateTransitionActionCompartmentToolProvider extends AbstractCompar
     private final EStructuralFeature actionStructuralFeature;
 
     public StateTransitionActionCompartmentToolProvider(EStructuralFeature actionStructuralFeature) {
-        super();
         this.actionStructuralFeature = actionStructuralFeature;
     }
 

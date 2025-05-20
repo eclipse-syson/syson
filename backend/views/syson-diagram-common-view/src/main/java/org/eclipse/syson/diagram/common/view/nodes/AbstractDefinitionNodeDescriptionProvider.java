@@ -132,19 +132,6 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      */
     protected abstract String getSemanticCandidatesExpression(String domainType);
 
-    /**
-     * Shall retrieve a list of {@link NodeDescription} containing the {@link NodeDescription} of nodes that can be
-     * dropped form the Diagram to this {@link NodeDescription}. DEfault implementation returns an empty list, to be
-     * overridden by implementors.
-     *
-     * @param cache
-     *            The cache
-     * @return The list of droppable nodes.
-     */
-    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
-        return new ArrayList<>();
-    }
-
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
@@ -158,7 +145,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 
@@ -178,6 +165,19 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
             }
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
         });
+    }
+
+    /**
+     * Shall retrieve a list of {@link NodeDescription} containing the {@link NodeDescription} of nodes that can be
+     * dropped form the Diagram to this {@link NodeDescription}. DEfault implementation returns an empty list, to be
+     * overridden by implementors.
+     *
+     * @param cache
+     *            The cache
+     * @return The list of droppable nodes.
+     */
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        return new ArrayList<>();
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {
@@ -256,8 +256,8 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
         return this.descriptionNameGenerator;
     }
 
-    private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
+    protected List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        var edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
         return edgeToolSwitch.doSwitch(this.eClass);
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      *            The cache
      * @return The created {@link DropNodeTool}
      */
-    private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
+    protected DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
                         List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT,

@@ -6,6 +6,37 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/1314[#1314] [diagrams] (Almost) All node descriptions are now synchronized (based on the exposed elements of ViewUsages).
+This contribution allows to switch from one _ViewDefinition_ to another one in a _ViewUsage_ without having to re-create the diagram.
+
+The following module have been deleted:
+
+* `syson-diagram-interconnection-view`
+* `syson-diagram-actionflow-view`
+* `syson-diagram-statetransition-view`
+
+`syson-diagram-general-view` handles all the graphical nodes and edges of the previous modules.
+
+This contribution introduces some breaking changes:
+
+* `AllocationUsageNodeDescriptionProvider` has been deleted. It is now handled as any other `UsageNodeDescriptionProvider`.
+* `UsageNestedActionUsageEdgeDescriptionProvider` has been deleted. It is now handled as any other `UsageNestedUsageEdgeDescriptionProvider`.
+* `SynchronizeExposedElementsInputProcessor`, `SynchronizedExposedElementsEventHandler` and `SynchronizedExposedElementsDiagramInput` have been deleted. With the new synchronization mechanism, it is no longer necessary to manually synchronize the exposed elements of a `ViewUsage` with graphical nodes of its associated diagram.
+* In `ViewCreateService`
+** `getDiagramEmptyCandidate` has been deleted
+* In `ViewEdgeService`
+** `getAllReachableAllocationUsages` has been deleted
+* In `ViewNodeService`
+** `getAllReferencingPerformActionUsages` has been deleted
+** `getAllReachableActors` has been deleted
+* In `ViewToolService`
+** `addExistingElements` has been deleted and replaced by `addToExposedElements`
+** `createTransitionUsage` has been moved to `ViewCreateService`
+** `createViewInFreeFormCompartment` has been deleted
+* In `ToolService`
+** `updateExposedElements` has been deleted and replaced by `ViewToolService#expose`
+* `NodeCreationTester` has been renamed to `ToolTester`
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.1]
@@ -24,6 +55,8 @@ This issue was not visible in SysON but could appear in downstream applications 
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1314[#1314] [diagrams] (Almost) All node descriptions are now synchronized (based on the exposed elements of ViewUsages).
+This contribution allows to switch from one _ViewDefinition_ to another one in a _ViewUsage_ without having to re-create the diagram.
 
 == v2025.8.0
 
@@ -116,7 +149,6 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 * SysONDocumentTreeItemContextMenuContribution
 * SysONExtensionRegistryMergeStrategy
 * SysONObjectTreeItemContextMenuContribution
-
 
 === Dependency update
 

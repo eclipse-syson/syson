@@ -57,8 +57,7 @@ public class GeneralViewNodeToolsWithoutSectionSwitch extends AbstractViewNodeTo
 
     @Override
     public List<NodeTool> caseDependency(Dependency object) {
-        var commentNodeTool = new AnnotatingElementOnRelationshipNodeToolProvider(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
-                this.descriptionNameGenerator).create(this.cache);
+        var commentNodeTool = new AnnotatingElementOnRelationshipNodeToolProvider(SysmlPackage.eINSTANCE.getComment(), this.descriptionNameGenerator).create(this.cache);
         return List.of(commentNodeTool);
     }
 

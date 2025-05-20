@@ -417,3 +417,68 @@ STV Node ExhibitStateUsage => siriusComponents://nodeDescription?sourceKind=view
 STV Node StateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=c35c5f46-ca7d-31f2-b595-dcccb6b440ab
 STV Node Comment => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=b1b78629-c8d0-37f8-8807-6f60006de3d5
 STV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=4652804a-4fb7-3725-a56f-69d2973acb81
+GV Edge Definition Owned ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=88a4781f-f2b6-3bcd-9ab6-67a9037c9d16
+GV Edge Definition Owned AllocationUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f4a99e5e-f368-3e49-b099-fa076118d288
+GV Edge Definition Owned AttributeUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e5ee41d-2a77-3c1d-9416-2bba6b787e64
+GV Edge Definition Owned RequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=42a3cb91-3f7f-39be-aa0d-0503a7ad12da
+GV Edge Definition Owned ConstraintUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d9104392-fd59-301d-bca8-f33001050d36
+GV Edge Definition Owned InterfaceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f3e2e482-aa7f-340f-b08f-cd3d000d0144
+GV Edge Definition Owned ItemUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=64e436e5-4ba8-3787-9c63-01b15e2973b0
+GV Edge Definition Owned PartUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2cd630f1-5cc1-3ab4-b300-b1fd983d33c1
+GV Edge Definition Owned PortUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2e37f280-2f87-39f6-a6dc-bf0a8263dd7c
+GV Edge Definition Owned SatisfyRequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ac099b06-ff94-32da-b720-46bb114421f0
+GV Edge Definition Owned StateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fe0927e9-3dcb-3fbd-95aa-5ee1b8044dfa
+GV Edge Definition Owned ExhibitStateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5b69aa20-a316-37ef-a0eb-d03981114fe1
+GV Edge Definition Owned OccurrenceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cb6e98a3-bb0a-343f-9ba7-46e498572897
+GV Edge Usage Nested ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ec59747a-cd33-3796-8fea-22b865b70d97
+GV Edge Usage Nested AllocationUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=41fab817-81ac-3598-8ede-2edc7f6b4b47
+GV Edge Usage Nested AttributeUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6066e53e-d353-3ba9-9a59-1cd4177c573f
+GV Edge Usage Nested ConstraintUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3e2ac6e0-354a-35eb-adbd-cb23902e4775
+GV Edge Usage Nested ExhibitStateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=81c6321b-fadf-3d5a-bf72-28e5f8b0bf96
+GV Edge Usage Nested ItemUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=432ef012-6be7-3eb7-8c00-1a99d3a796a6
+GV Edge Usage Nested OccurrenceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=77c752dc-f2bb-3eab-83a0-382b30aad154
+GV Edge Usage Nested PartUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=919980e7-dd23-3ff4-9b86-ad2baa653052
+GV Edge Usage Nested PortUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c16e94e3-392a-36af-9aa4-0246fd2a66a5
+GV Edge Usage Nested RequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f815b1c4-d181-3d02-8a0e-1e144a356baa
+GV Edge Usage Nested SatisfyRequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ea83c4b9-f602-3798-81d0-e2bed832e159
+GV Edge Usage Nested StateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e114c083-60b2-3602-8906-1e98d11d8899
+GV Edge Nested Actor CaseUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=78c3c190-ad7a-38e6-b5e7-4b3fb4dd4c5d
+GV Edge Nested Actor UseCaseUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3d5ccd28-143a-37e6-a5bd-9f7cec72a2da
+GV Edge Nested Actor CaseDefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5a0c9f5b-abb9-3986-8214-835bc0cc5bc8
+GV Edge Nested Actor UseCaseDefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a4c9fa93-a457-383f-b74c-034bfbacc7fd
+GV Edge Nested Actor RequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38fd9b14-2119-35e5-852c-7bc3c9a9fe92
+GV Edge Nested Actor RequirementDefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5f8a3c7f-2dcb-39cf-bd4c-af5e60492f9d
+GV Edge Nested Actor SatisfyRequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=092ba7bb-12f4-34b8-9b0f-6577226060c1
+GV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2a32ca7e-3477-3476-88ec-a853059c2aa7
+GV Edge Dependency => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9938eddb-e21d-3a4e-8817-f5d5479aad24
+GV Edge Subclassification => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=194d1364-4339-3e48-bd4b-6a531ba5980a
+GV Edge Redefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2162691c-43fa-324b-80ca-be17ac78c649
+GV Edge Subsetting => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a148cedb-7ba1-3fbd-bdaf-5aa334bee373
+GV Edge FeatureTyping => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2b13316a-930e-3a51-bcdf-e71b0b0b965a
+GV Edge Allocate => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e9f39f3e-f71f-39fc-b99c-cea5c3ef22f1
+GV Edge Succession => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a361ab0c-4bae-397b-bd98-17f5628f16d9
+GV Edge TransitionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=18f3a5a7-1685-3ba3-8b35-9358bc9f7f12
+GV Edge InterfaceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d359306e-ac2e-3f04-b485-d37d7d9cc2e3
+GV Edge FlowUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ae78d7f3-ee33-3f50-9749-8c4203f1ca9c
+GV Edge BindingConnectorAsUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c4e981ca-ce0c-394c-b896-1e84f56ff5d4
+GV Edge FeatureValue => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6fde9074-7fd4-375f-9ba0-c70c4408ca66
+GV Edge IncludeUseCaseUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=72e2d57a-8fd1-3b99-b9de-e6575a97ff10
+IV Edge BindingConnectorAsUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=3d1c5a31-5567-3e8a-8cd5-011bc74140f3
+IV Edge Allocate => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=18aff0ee-115d-302a-9fe2-75b9a5184984
+IV Edge InterfaceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=7db99014-f420-3870-a82d-e89fe629a555
+IV Edge FlowUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=77bd31fb-d0b9-3afc-868a-b8fb398a0602
+IV Edge Succession => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=523eb30e-8d48-33c6-b64d-15c24b8e1fbb
+IV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=b9e95cbb-c9d2-3b22-bd62-47b30baee16f
+AFV Edge Allocate => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a24f16cc-8f14-3719-9909-0220050ba4ed
+AFV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=32e30f33-b509-30e3-8c68-4c3fb1bdb0f8
+AFV Edge Dependency => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a9cb500b-be1b-3a1b-a202-04d211ab1d7b
+AFV Edge FeatureTyping => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a1eac075-8069-31ef-8331-a2346429b537
+AFV Edge Redefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=2c32d93d-2958-3e66-b2a4-e6890ae09649
+AFV Edge Subclassification => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=6fa4882e-8179-3d67-b866-7a908781cc31
+AFV Edge Subsetting => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=19f78067-e535-3b21-b8d8-40cbf4bc92f8
+AFV Edge Succession => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=256d51db-fd16-3cf4-bd03-962515b60944
+AFV Edge TransitionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=80cd07ef-f41c-32ab-a371-a3eb0a772e12
+AFV Edge Usage Nested ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a19e91d5-5d8f-3cf9-9816-dced604596c9
+AFV Edge Definition Owned ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=1d535a64-8693-30d6-8742-265e64568923
+STV Edge TransitionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=cab5bcd7-f3e2-39a2-8849-5cef695ade57
+STV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=8065fd0d-9fa4-3d02-9e3a-2791881af581

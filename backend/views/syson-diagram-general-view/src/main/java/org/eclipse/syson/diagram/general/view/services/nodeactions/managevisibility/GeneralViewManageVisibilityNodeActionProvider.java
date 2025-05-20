@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services.nodeactions.managevisibility;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -31,9 +34,6 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-
 /**
  * Node action to open the manage visibility modal.
  *
@@ -44,14 +44,15 @@ public class GeneralViewManageVisibilityNodeActionProvider implements IActionsPr
 
     private static final String ACTION_ID = "siriusweb_manage_visibility";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final IDiagramIdProvider idProvider;
 
-    public GeneralViewManageVisibilityNodeActionProvider(IObjectService objectService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramIdProvider idProvider) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public GeneralViewManageVisibilityNodeActionProvider(IObjectSearchService objectSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
+            IDiagramIdProvider idProvider) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.idProvider = Objects.requireNonNull(idProvider);
     }
@@ -60,7 +61,7 @@ public class GeneralViewManageVisibilityNodeActionProvider implements IActionsPr
     @Transactional(readOnly = true)
     public boolean canHandle(IEditingContext editingContext, DiagramDescription diagramDescription, IDiagramElement diagramElement) {
         if (diagramElement instanceof Node node && !node.getChildNodes().isEmpty()) {
-            var semanticObject = objectService.getObject(editingContext, node.getTargetObjectId());
+            var semanticObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
             var nodeDescriptionId = node.getDescriptionId();
             var optionalNodeDescription = diagramDescription.getNodeDescriptions().stream()
                     .filter(nd -> nd.getId().equals(nodeDescriptionId))
@@ -70,7 +71,7 @@ public class GeneralViewManageVisibilityNodeActionProvider implements IActionsPr
                 if (eObject instanceof Definition || eObject instanceof Usage) {
                     var viewDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescription.getId());
                     if (viewDiagramDescription.isPresent() && viewDiagramDescription.get().getName().equals(GeneralViewDiagramDescriptionProvider.DESCRIPTION_NAME)) {
-                        return isNodeDescriptionSimpleNode(viewDiagramDescription.get(), nodeDescriptionId, eObject.eClass());
+                        return this.isNodeDescriptionSimpleNode(viewDiagramDescription.get(), nodeDescriptionId, eObject.eClass());
                     }
                 }
             }

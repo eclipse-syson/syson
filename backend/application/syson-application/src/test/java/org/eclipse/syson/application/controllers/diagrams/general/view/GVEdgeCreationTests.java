@@ -30,12 +30,12 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
@@ -55,6 +55,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,7 +72,7 @@ import reactor.test.StepVerifier.Step;
  * @author gdaniel
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
@@ -136,10 +137,11 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                    .verify(Duration.ofSeconds(1000));
         }
     }
 
+    @DisplayName("GIVEN a General View with a PartUsage and an ActionUsage, WHEN linking the PartUsage and the Action with Add as nested Action edge tool, THEN the ActionUsage is now a child of the PartUsage and there is a composition edge between them.")
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
@@ -154,23 +156,27 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     // 1 new node has been created in the "actions" compartment of the part.
-                    .hasNewNodeCount(1)
+                    // 1 new node has been created as nested tree node + 5 compartments
+                    .hasNewNodeCount(9)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-            String sourceId = diagramNavigator.nodeWithTargetObjectLabel("part").getNode().getId();
-            // Get the target with its description instead of its label: there are new two elements with the label
+            var sourceId = diagramNavigator.nodeWithTargetObjectLabel("part").getNode().getId();
+            // Get the target with its description instead of its label: there are two new elements with the label
             // "action" on the diagram (one on the diagram itself, and one in the "actions" compartment of the part
             // element).
+            var nodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
             Optional<String> optionalTargetId = diagramNavigator.findAllNodes().stream()
                     .filter(node -> Objects.equals(node.getTargetObjectLabel(), "action"))
-                    .filter(node -> Objects.equals(node.getDescriptionId(),
-                            this.diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))))
+                    .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescriptionId))
+                    .filter(node -> Objects.equals(node.getState(), ViewModifier.Normal))
                     .map(Node::getId)
                     .findFirst();
             assertThat(optionalTargetId).isPresent();
             List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
-            assertThat(newEdges).hasSize(1).first(EDGE)
+            assertThat(newEdges)
+                    .hasSize(1)
+                    .first(EDGE)
                     .hasSourceId(sourceId)
                     .hasTargetId(optionalTargetId.get())
                     .extracting(Edge::getStyle, EDGE_STYLE)

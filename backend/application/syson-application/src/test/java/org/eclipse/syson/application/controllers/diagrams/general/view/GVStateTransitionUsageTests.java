@@ -67,7 +67,12 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
-                    assertThat(diagram.getEdges()).hasSize(3);
+                    /**
+                     * 3 compositions edges. 3 successions/transitions edges on the diagram background. 3
+                     * successions/transitions edges on the state transition compartment.
+                     */
+                    assertThat(diagram.getEdges()).hasSize(9);
+                    // We want to test the edges on the diagram background.
                     Edge offOnEdge = diagram.getEdges().stream()
                             .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ON_ID.equals(e.getId()))
                             .findFirst()

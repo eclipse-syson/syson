@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLUtils;
 
 /**
@@ -37,32 +36,22 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    public ActionFlowCompartmentNodeToolProvider() {
-        super();
-    }
-
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var params = List.of(
-                AQLUtils.aqlString(ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL),
-                Node.SELECTED_NODE,
-                IEditingContext.EDITING_CONTEXT,
-                IDiagramContext.DIAGRAM_CONTEXT,
-                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
-
-        var createViewOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
-                .build();
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
-                .build();
+                .expression(
+                        AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                                List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createSubActionUsage"))
-                .children(createViewOperation, revealOperation)
+                .children(addToExposedElements.build(), revealOperation.build())
                 .build();
 
         return builder.name("New Action")

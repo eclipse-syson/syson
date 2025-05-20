@@ -83,6 +83,9 @@ public class MembershipExposeItemProvider extends MembershipImportItemProvider {
                     labelBuilder.append(memberElement.eClass().getName());
                 }
             }
+            if (membershipExpose.isIsRecursive()) {
+                labelBuilder.append("::**");
+            }
             return labelBuilder.toString();
         }
         String label = membershipExpose.getName();

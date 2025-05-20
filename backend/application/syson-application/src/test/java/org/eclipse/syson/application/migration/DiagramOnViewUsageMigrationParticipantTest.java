@@ -49,7 +49,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -86,15 +85,14 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
 
     @Test
     @DisplayName("GIVEN a project with a diagram associated to a Package, WHEN the model is loaded, THEN a ViewUsage is created under the Package and the diagram is now associated to this new ViewUsage")
-    @Sql(scripts = { DiagramOnViewUsageMigrationParticipantTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { DiagramOnViewUsageMigrationParticipantTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void migrationParticpantTest() {
         this.givenCommittedTransaction.commit();
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
+        this.givenCommittedTransaction.commit();
 
         BiFunction<IEditingContext, IInput, IPayload> checkFunction = (editingContext, executeEditingContextFunctionInput) -> {
             assertThat(this.testIsMigrationSuccessful(editingContext));
