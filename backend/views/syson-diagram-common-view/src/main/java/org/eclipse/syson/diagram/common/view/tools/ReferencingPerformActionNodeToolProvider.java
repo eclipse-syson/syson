@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -41,7 +40,7 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
 
     @Override
     protected String getNodeDescriptionName() {
-        return this.getDescriptionNameGenerator().getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME);
+        return this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage());
     }
 
     @Override
@@ -83,15 +82,9 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
         var changeContextInitializeNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
-        var params = List.of(
-                AQLUtils.aqlString(this.compartmentName),
-                Node.SELECTED_NODE,
-                IEditingContext.EDITING_CONTEXT,
-                IDiagramContext.DIAGRAM_CONTEXT,
-                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
-
-        var createView = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params));
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var reveal = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
@@ -99,15 +92,13 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(createView.build(), createReferenceSubsettingInstance.build(), reveal.build());
+                .children(addToExposedElements.build(), createReferenceSubsettingInstance.build(), reveal.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPerformActionUsage()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build(), changeContextInitializeNewInstance.build());
-
-        var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getActionUsage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActionReferenceSelectionDialogElements"))

@@ -2,9 +2,50 @@
 
 == Key highlights
 
+- *Standard diagram switching*: in diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
+
+
 == Breaking changes
 
+- In diagrams, (almost) all node descriptions are now synchronized (based on the exposed elements of _ViewUsages_).
+This contribution allows to switch from one _ViewDefinition_ to another one in a _ViewUsage_ without having to re-create the diagram.
+
+The following modules have been deleted:
+
+* `syson-diagram-general-view`
+* `syson-diagram-interconnection-view`
+* `syson-diagram-actionflow-view`
+* `syson-diagram-statetransition-view`
+
+New `syson-standard-diagrams-view` module handles all the graphical nodes and edges of the previous modules.
+
+All existing diagrams of these modules are automatically migrated to the remaining `syson-standard-diagrams-view` module.
+During this migration, you may lost some graphical nodes and edges that were not handled by the synchronization mechanism.
+
+This contribution introduces some breaking changes:
+
+* `AllocationUsageNodeDescriptionProvider` has been deleted. It is now handled as any other `UsageNodeDescriptionProvider`.
+* `UsageNestedActionUsageEdgeDescriptionProvider` has been deleted. It is now handled as any other `UsageNestedUsageEdgeDescriptionProvider`.
+* `SynchronizeExposedElementsInputProcessor`, `SynchronizedExposedElementsEventHandler` and `SynchronizedExposedElementsDiagramInput` have been deleted. With the new synchronization mechanism, it is no longer necessary to manually synchronize the exposed elements of a `ViewUsage` with graphical nodes of its associated diagram.
+* In `ViewCreateService`
+** `getDiagramEmptyCandidate` has been deleted
+* In `ViewEdgeService`
+** `getAllReachableAllocationUsages` has been deleted
+* In `ViewNodeService`
+** `getAllReferencingPerformActionUsages` has been deleted
+** `getAllReachableActors` has been deleted
+* In `ViewToolService`
+** `addExistingElements` has been deleted and replaced by `addToExposedElements`
+** `createTransitionUsage` has been moved to `ViewCreateService`
+** `createViewInFreeFormCompartment` has been deleted
+* In `ToolService`
+** `updateExposedElements` has been deleted and replaced by `ViewToolService#expose`
+* `NodeCreationTester` has been renamed to `ToolTester`
+
 == New features
+
+- In diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
+
 
 == Bug fixes
 

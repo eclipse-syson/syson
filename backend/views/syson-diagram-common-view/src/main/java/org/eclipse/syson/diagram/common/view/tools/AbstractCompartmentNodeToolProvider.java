@@ -38,9 +38,6 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
 
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    public AbstractCompartmentNodeToolProvider() {
-    }
-
     /**
      * Return the AQL service call expression that is interpreted to perform the node tool.
      *
@@ -49,35 +46,11 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     protected abstract String getServiceCallExpression();
 
     /**
-     * Returns the selection dialog to display as part of the tool's execution.
-     * <p>
-     * No selection dialog will be displayed if this method returns {@code null}.
-     * </p>
-     *
-     * @return the selection dialog to display as part of the tool's execution
-     */
-    protected SelectionDialogDescription getSelectionDialogDescription() {
-        // No selection dialog by default.
-        return null;
-    }
-
-    /**
      * Return the node tool label visible in the compartment palette.
      *
      * @return the name of the node tool.
      */
     protected abstract String getNodeToolName();
-
-    /**
-     * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
-     * By default no precondition expression is provided. Implementers might override this method to explicitly provide
-     * this precondition expression.
-     *
-     * @return the node tool precondition expression.
-     */
-    protected String getPreconditionExpression() {
-        return null;
-    }
 
     /**
      * Whether the tool will reveal its associated node compartment after its execution or not.
@@ -98,20 +71,17 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         var builder = this.diagramBuilderHelper.newNodeTool();
         builder.dialogDescription(this.getSelectionDialogDescription());
 
-        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("self", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+        var revealOperation = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                        List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getServiceCallExpression());
-
-        if (this.revealOnCreate()) {
-            var revealOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                            List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
-            creationCompartmentItemServiceCall.children(revealOperation.build(), updateExposedElements.build());
-        } else {
-            creationCompartmentItemServiceCall.children(updateExposedElements.build());
-        }
+                .expression(this.getServiceCallExpression())
+                .children(addToExposedElements.build(), revealOperation.build());
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
@@ -123,5 +93,29 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
                 .body(rootChangContext)
                 .preconditionExpression(this.getPreconditionExpression())
                 .build();
+    }
+
+    /**
+     * Returns the selection dialog to display as part of the tool's execution.
+     * <p>
+     * No selection dialog will be displayed if this method returns {@code null}.
+     * </p>
+     *
+     * @return the selection dialog to display as part of the tool's execution
+     */
+    protected SelectionDialogDescription getSelectionDialogDescription() {
+        // No selection dialog by default.
+        return null;
+    }
+
+    /**
+     * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
+     * By default no precondition expression is provided. Implementers might override this method to explicitly provide
+     * this precondition expression.
+     *
+     * @return the node tool precondition expression.
+     */
+    protected String getPreconditionExpression() {
+        return null;
     }
 }

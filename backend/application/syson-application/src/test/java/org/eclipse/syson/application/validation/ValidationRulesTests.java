@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -65,6 +66,9 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
             """;
 
     @Autowired
+    private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
     @Autowired
@@ -91,6 +95,8 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
                 .map(DataFetcherResult::getData)
                 .filter(ValidationRefreshedEventPayload.class::isInstance)
                 .map(ValidationRefreshedEventPayload.class::cast);
+
+        this.givenCommittedTransaction.commit();
 
         Consumer<ValidationRefreshedEventPayload> validationContentConsumer = payload -> Optional.of(payload)
                 .map(ValidationRefreshedEventPayload::validation)
@@ -121,6 +127,8 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
                 .map(DataFetcherResult::getData)
                 .filter(ValidationRefreshedEventPayload.class::isInstance)
                 .map(ValidationRefreshedEventPayload.class::cast);
+
+        this.givenCommittedTransaction.commit();
 
         Consumer<ValidationRefreshedEventPayload> validationContentConsumer = payload -> Optional.of(payload)
                 .map(ValidationRefreshedEventPayload::validation)

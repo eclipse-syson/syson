@@ -81,27 +81,26 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
-                        + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + "," + "cache"
-                        + ")")
+                        + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + ", cache)")
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(this.edgeName);
-        var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
-        var sourceNodes = new ArrayList<NodeDescription>();
+        cache.getEdgeDescription(this.edgeName).ifPresent(edgeDescription -> {
+            var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
 
-        this.getEdgeSources().forEach(usage -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourceNodes::add);
+            var sourceNodes = new ArrayList<NodeDescription>();
+            this.getEdgeSources().forEach(usage -> {
+                cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourceNodes::add);
+            });
+
+            diagramDescription.getEdgeDescriptions().add(edgeDescription);
+            edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+            edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
+
+            edgeDescription.setPalette(this.createEdgePalette(cache));
         });
-
-        EdgeDescription edgeDescription = optEdgeDescription.get();
-        diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
-
-        edgeDescription.setPalette(this.createEdgePalette(cache));
     }
 
     private EdgeStyle createEdgeStyle() {

@@ -111,23 +111,6 @@ public class ViewEdgeService {
         return true;
     }
 
-    /**
-     * Get all reachable {@link AllocationUsage} in the {@link ResourceSet} of given {@link EObject}.
-     *
-     * @param eObject
-     *            the {@link EObject} stored in a {@link ResourceSet}
-     * @return a list of {@link AllocationUsage} objects
-     */
-    public List<AllocationUsage> getAllReachableAllocationUsages(EObject eObject) {
-        String type = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAllocationUsage());
-        var allAllocationUsages = this.utilService.getAllReachable(eObject, type);
-        return allAllocationUsages.stream()
-                .filter(AllocationUsage.class::isInstance)
-                .map(AllocationUsage.class::cast)
-                .filter(au -> !this.isAnAllocateEdge(au))
-                .toList();
-    }
-
     public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
         var features = this.getFeatures(allocationUsage);
         if (features.size() == 2) {

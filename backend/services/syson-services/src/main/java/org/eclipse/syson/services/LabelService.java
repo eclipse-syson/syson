@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditParser;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -39,6 +40,7 @@ import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -481,6 +483,9 @@ public class LabelService {
      */
     protected String getIdentificationLabel(Element element) {
         StringBuilder label = new StringBuilder();
+        if (element instanceof ActionUsage && element.eContainer() instanceof StateSubactionMembership ssm) {
+            label.append(ssm.getKind());
+        }
         label.append(this.getShortNameLabel(element));
         String declaredName = element.getDeclaredName();
         if (declaredName != null) {

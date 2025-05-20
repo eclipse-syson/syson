@@ -34,9 +34,8 @@ import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -44,6 +43,7 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.PartUsage;
@@ -94,7 +94,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     private IObjectSearchService objectSearchService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -110,7 +110,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
     private AtomicReference<Diagram> diagram;
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private final UtilService utilService = new UtilService();
 
@@ -152,7 +152,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 this.diagram,
                 creationToolId));
 
@@ -172,7 +172,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
         String toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
         assertThat(toolId).as("The tool 'New Feature Typing' should exist on a ").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 diagramAfterRenameElement,
                 newName,
                 toolId));

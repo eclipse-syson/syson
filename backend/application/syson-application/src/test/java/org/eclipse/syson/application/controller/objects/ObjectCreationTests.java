@@ -93,8 +93,6 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenImportedDocumentWhenRootObjectIsCreatedThenItIsCreatedProperlyAndDocumentIsNotImported() {
-        this.givenCommittedTransaction.commit();
-
         this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Optional<Resource> optResource = this.getResource(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
@@ -103,6 +101,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                     ElementUtil.setIsImported(resource, true);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 }).run();
+        this.givenCommittedTransaction.commit();
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
@@ -112,6 +111,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                 "SysMLv2EditService-Package");
 
         var result = this.createRootObjectMutationRunner.run(input);
+        this.givenCommittedTransaction.commit();
 
         String typename = JsonPath.read(result, "$.data.createRootObject.__typename");
         assertThat(typename).isEqualTo(CreateRootObjectSuccessPayload.class.getSimpleName());
@@ -140,8 +140,6 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createGeneralViewDiagramAtTheSameTimeAsViewUsage() {
-        this.givenCommittedTransaction.commit();
-
         Optional<UUID> optionalSemanticData = new UUIDParser().parse(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
         assertThat(optionalSemanticData).isPresent();
         var representationMetadatas = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticData.get()));
@@ -154,6 +152,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
                 SysMLv2EditService.ID_PREFIX + "ViewUsage");
         var result = this.createChildMutationRunner.run(input);
+        this.givenCommittedTransaction.commit();
 
         String typename = JsonPath.read(result, "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
@@ -169,8 +168,9 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=sysml&entity=ViewUsage");
 
         representationMetadatas = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticData.get()));
-        assertThat(representationMetadatas).hasSize(2);
-        assertThat(representationMetadatas.get(1)).extracting("label").isEqualTo("view2");
+        assertThat(representationMetadatas).hasSize(2)
+                .anySatisfy(mdt -> mdt.getLabel().equals("General View"))
+                .anySatisfy(mdt -> mdt.getLabel().equals("view2"));
 
     }
 

@@ -30,13 +30,15 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckBorderNode;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -44,6 +46,7 @@ import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -67,7 +70,7 @@ import reactor.test.StepVerifier.Step;
  * @author arichard
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static final String ATTRIBUTES_COMPARTMENT = "attributes";
@@ -93,7 +96,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private IObjectSearchService objectSearchService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -111,7 +114,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private NodeCreationTestsService creationTestsService;
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private DiagramCheckerService diagramCheckerService;
 
@@ -141,7 +144,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> itemDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 3))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -154,9 +157,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> itemUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getElement_OwnedElement(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -169,42 +171,48 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
+    private static Stream<Arguments> itemUsageBorderAndChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getPortUsage()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> packageChildNodeParameters() {
         EReference ownedMember = SysmlPackage.eINSTANCE.getNamespace_OwnedMember();
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), ownedMember, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), ownedMember, 8),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), ownedMember, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), ownedMember, 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 9),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 9),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), ownedMember, 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ownedMember, 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ownedMember, 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 6),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getNamespaceImport(), SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -219,7 +227,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 9))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -233,7 +241,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUsage(), 9))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -272,7 +280,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("attributeDefinitionChildNodeParameters")
@@ -287,7 +296,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("attributeUsageChildNodeParameters")
@@ -303,7 +313,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("enumerationDefinitionChildNodeParameters")
@@ -317,7 +328,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("itemDefinitionSiblingNodeParameters")
@@ -330,7 +342,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("itemDefinitionChildNodeParameters")
@@ -344,7 +357,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("itemUsageSiblingNodeParameters")
@@ -357,7 +371,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("itemUsageChildNodeParameters")
@@ -371,7 +386,40 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("itemUsageBorderAndChildNodeParameters")
+    public void createItemUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
+        String parentLabel = "item";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(2)
+                    .hasNewBorderNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+            String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(compartmentNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
+            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .hasBorderNodeDescriptionName(borderNodeDescription)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("packageChildNodeParameters")
@@ -389,7 +437,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partDefinitionChildNodeParameters")
@@ -403,7 +452,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partDefinitionSiblingNodeParameters")
@@ -416,7 +466,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partUsageChildNodeParameters")
@@ -430,7 +481,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partUsageSiblingNodeParameters")
@@ -443,7 +495,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("directedPortsInPartDefinitionChildNodeParameters")

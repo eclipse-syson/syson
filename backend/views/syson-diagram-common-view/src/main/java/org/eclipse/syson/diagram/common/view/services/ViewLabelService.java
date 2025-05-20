@@ -32,7 +32,6 @@ import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -178,22 +177,6 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Return the label for the given {@link Usage} prefixed with additional content.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label for the given {@link Usage}.
-     */
-    public String getPrefixedCompartmentItemUsageLabel(Usage usage) {
-        StringBuilder label = new StringBuilder();
-        if (usage instanceof ActionUsage && usage.eContainer() instanceof StateSubactionMembership ssm) {
-            label.append(ssm.getKind() + SPACE);
-        }
-        label.append(this.getCompartmentItemLabel(usage));
-        return label.toString();
-    }
-
-    /**
      * Get the value to display when a direct edit has been called on the given item list {@link Usage}.
      *
      * @param usage
@@ -299,8 +282,11 @@ public class ViewLabelService extends LabelService {
      */
     public String getBorderNodeUsageLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
+        String declaredName = usage.getDeclaredName();
+        if (declaredName != null && !declaredName.isBlank()) {
+            label.append(declaredName);
+        }
         label
-                .append(usage.getDeclaredName())
                 .append(this.getTypingLabel(usage))
                 .append(this.getRedefinitionLabel(usage))
                 .append(this.getSubsettingLabel(usage));
@@ -357,7 +343,7 @@ public class ViewLabelService extends LabelService {
 
     /**
      * Send a feedback message to the user with a textual representation of an element.
-     * 
+     *
      * @param msg
      *            using the {@link MessageFormat} convention to inject the textual representation of the given object
      *            (that is to say "{0}")

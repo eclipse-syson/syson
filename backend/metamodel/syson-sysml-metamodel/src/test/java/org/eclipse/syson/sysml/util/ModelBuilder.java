@@ -67,7 +67,7 @@ public class ModelBuilder {
     private final SysmlFactory fact = SysmlFactory.eINSTANCE;
 
     static {
-        CLASS_TO_ECLASS = EMFUtils.eAllContentSteamWithSelf(SysmlPackage.eINSTANCE).filter(e -> e instanceof EClass eClass && !eClass.isAbstract() && !eClass.isInterface()).map(EClass.class::cast)
+        CLASS_TO_ECLASS = EMFUtils.eAllContentStreamWithSelf(SysmlPackage.eINSTANCE).filter(e -> e instanceof EClass eClass && !eClass.isAbstract() && !eClass.isInterface()).map(EClass.class::cast)
                 .collect(toMap(EClass::getInstanceClass, e -> e));
     }
 

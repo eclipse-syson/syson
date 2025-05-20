@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,16 +26,10 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewJavaServiceProvider;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.GeneralViewJavaServiceProvider;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewJavaServiceProvider;
-import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewJavaServiceProvider;
 import org.eclipse.syson.services.ColorProvider;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.SDVJavaServiceProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,22 +50,13 @@ public class JavaServiceTests {
         ViewBuilder viewBuilder = new ViewBuilder();
         this.view = viewBuilder.build();
         IColorProvider colorProvider = new ColorProvider(this.view);
-        List<IRepresentationDescriptionProvider> representationDescriptionProviders = List.of(
-                new ActionFlowViewDiagramDescriptionProvider(),
-                new GeneralViewDiagramDescriptionProvider(),
-                new InterconnectionViewDiagramDescriptionProvider(),
-                new StateTransitionViewDiagramDescriptionProvider()
-        );
+        List<IRepresentationDescriptionProvider> representationDescriptionProviders = List.of(new SDVDiagramDescriptionProvider());
         representationDescriptionProviders.forEach(provider -> {
             RepresentationDescription description = provider.create(colorProvider);
             this.view.getDescriptions().add(description);
         });
 
-        List<IJavaServiceProvider> javaServiceProviders = List.of(
-                new ActionFlowViewJavaServiceProvider(),
-                new GeneralViewJavaServiceProvider(),
-                new InterconnectionViewJavaServiceProvider(),
-                new StateTransitionViewJavaServiceProvider());
+        List<IJavaServiceProvider> javaServiceProviders = List.of(new SDVJavaServiceProvider());
         this.serviceClasses = javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(this.view).stream())
                 .collect(Collectors.toSet());

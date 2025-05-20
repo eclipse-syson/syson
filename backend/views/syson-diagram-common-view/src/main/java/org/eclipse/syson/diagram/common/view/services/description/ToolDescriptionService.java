@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -77,6 +76,7 @@ public class ToolDescriptionService {
         allToolSections.add(this.buildBehaviorSection());
         allToolSections.add(this.buildAnalysisSection());
         allToolSections.add(this.buildExtensionSection());
+        allToolSections.add(this.buildViewAsSection());
         return allToolSections;
     }
 
@@ -181,13 +181,14 @@ public class ToolDescriptionService {
     public NodeTool addExistingElementsTool(boolean recursive, boolean nested) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("addExistingElements",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, "" + recursive)));
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(
+                        AQLUtils.getSelfServiceCallExpression("addToExposedElements", List.of("" + recursive, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
-                .children(addExistingelements.build());
+                .children(addToExposedElements.build());
 
         String title = "Add existing elements";
         if (nested) {
@@ -278,6 +279,21 @@ public class ToolDescriptionService {
     public NodeToolSection buildExtensionSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name(ToolConstants.EXTENSION)
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    /**
+     * Return a tool section used to store Behavior related tools.
+     *
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
+     *
+     * @return the {@link ToolSection}.
+     */
+    public NodeToolSection buildViewAsSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.VIEW_AS)
                 .nodeTools(nodeTools)
                 .build();
     }
@@ -404,15 +420,12 @@ public class ToolDescriptionService {
     }
 
     public NodeTool createNodeToolFromDiagramWithDirection(NodeDescription nodeDescription, EClass eClass, FeatureDirectionKind direction) {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
         // make sure that the given element is a feature to avoid error at runtime.
         if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
             return this.createNodeToolFromDiagramBackground(nodeDescription, eClass);
         }
-
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of(NEW_INSTANCE, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
 
         var setDirection = this.viewBuilderHelper.newSetValue()
                 .featureName("direction");
@@ -421,25 +434,24 @@ public class ToolDescriptionService {
             setDirection.valueExpression(direction.getLiteral());
         }
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
         if (direction != null) {
-            changeContextNewInstance.children(setDirection.build());
+            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build());
+        } else {
+            changeContextNewInstance.children(updateExposedElements.build());
         }
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName(NEW_INSTANCE)
-                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+                .children(changeContextNewInstance.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
@@ -448,6 +460,10 @@ public class ToolDescriptionService {
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
                 .children(changeContextMembership.build());
+
+        var changeContextRoot = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self")
+                .children(changeContextViewUsageOwner.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 
@@ -466,8 +482,10 @@ public class ToolDescriptionService {
         return builder
                 .name(toolLabel)
                 .iconURLsExpression(iconPath.toString())
-                .body(changeContextViewUsageOwner.build())
+                .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
                 .build();
     }
 
@@ -495,39 +513,30 @@ public class ToolDescriptionService {
 
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of(NEW_INSTANCE, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
-
         var setDirection = this.viewBuilderHelper.newSetValue().featureName("direction");
 
         if (direction != null) {
             setDirection.valueExpression(direction.getLiteral());
         }
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
         if (direction != null) {
-            changeContextNewInstance.children(setDirection.build());
+            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build());
+        } else {
+            changeContextNewInstance.children(updateExposedElements.build());
         }
-
-        var parentViewExpression = "aql:selectedNode";
-        if (nodeKind == null) {
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, Edge.SELECTED_EDGE, IDiagramContext.DIAGRAM_CONTEXT));
-        }
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(nodeKind)
-                .elementDescription(nodeDescription)
-                .parentViewExpression(parentViewExpression)
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName(NEW_INSTANCE)
-                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+                .children(changeContextNewInstance.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newFeatureMembership")
@@ -542,6 +551,10 @@ public class ToolDescriptionService {
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
                 .children(createMembership.build());
+
+        var changeContextRoot = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self")
+                .children(changeContextViewUsageOwner.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 
@@ -560,8 +573,10 @@ public class ToolDescriptionService {
         return builder
                 .name(toolLabel)
                 .iconURLsExpression(iconPath.toString())
-                .body(changeContextViewUsageOwner.build())
+                .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
                 .build();
     }
 }

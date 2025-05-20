@@ -30,20 +30,19 @@ import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOf
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Feature;
@@ -62,6 +61,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifier.Step;
 
 /**
  * Tests the creation of ItemUsage parameters on {@link ActionDefinition} and {@link ActionUsage} in the General View
@@ -70,12 +70,12 @@ import reactor.test.StepVerifier;
  * @author Arthur Daussy
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     private static final String ITEM1 = "item1";
 
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -93,7 +93,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -108,7 +108,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     private DiagramCheckerService diagramCheckerService;
 
-    private StepVerifier.Step<DiagramRefreshedEventPayload> verifier;
+    private Step<DiagramRefreshedEventPayload> verifier;
 
     private SemanticCheckerService semanticCheckerService;
 
@@ -197,25 +197,34 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     private void checkItemParameterOnActionUsage(String kind) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Item " + kind);
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "action", creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "action", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewBorderNodeCount(1)
-                    .hasNewNodeCount(2)
-                    .hasNewEdgeCount(0)
+                    .hasNewBorderNodeCount(1) // One bordered node
+                    .hasNewNodeCount(7) // One border + one root node for Tree Composition (with 4 compartments) +
+                                        // new item in the items compartment
+                    .hasNewEdgeCount(1) // Composite Edge
                     .check(initialDiagram, newDiagram);
+
             List<Node> newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
-            // Check for bordered node
-            assertThat(newNodes).hasSize(2)
-                    .last(DiagramInstanceOfAssertFactories.NODE)
-                    .isBorderNode()
-                    .hasTargetObjectLabel(ITEM1 + kind)
-                    .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
-            // Check for nested item list node
-            assertThat(newNodes).hasSize(2)
-                    .first(DiagramInstanceOfAssertFactories.NODE)
+
+            // First node is the root element
+            Node rootItem = newNodes.get(0);
+            // Check for root node node
+            assertThat(rootItem)
                     .isNotBorderNode()
+                    .hasTargetObjectLabel(ITEM1 + kind)
+                    .hasType("node:rectangle")
+                    .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
+            // Skip all containedCompartement
+            List<Node> otherNewNodes = newNodes.stream().filter(n -> n != rootItem && !rootItem.getChildNodes().contains(n)).toList();
+
+            // Check for nested item list node
+            assertThat(otherNewNodes).hasSize(2)
+                    .filteredOn(Node::isBorderNode)
+                    .first(DiagramInstanceOfAssertFactories.NODE)
+                    .hasType("node:image")
                     .hasTargetObjectLabel(ITEM1 + kind)
                     .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
 
@@ -232,15 +241,16 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     private void checkItemParameterOnActionDefinition(String kind) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Item " + kind);
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "ActionDefinition", creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "ActionDefinition", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewBorderNodeCount(1) // One bordered node
-                    .hasNewNodeCount(6) // One border + one root node for Tree Composition (with 3 compartments) +
-                                        // parameters in the parameters compartment
+                    .hasNewNodeCount(7) // One border + one root node for Tree Composition (with 4 compartments) + new
+                                        // item in the parameters compartment
                     .hasNewEdgeCount(1) // Composite Edge
                     .check(initialDiagram, newDiagram);
+
             List<Node> newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
 
             // First node is the root element

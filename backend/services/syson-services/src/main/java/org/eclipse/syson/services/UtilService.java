@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +19,6 @@ import java.util.Objects;
 
 import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -29,8 +26,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -53,6 +53,7 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
@@ -76,6 +77,9 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
@@ -342,17 +346,17 @@ public class UtilService {
      */
     public List<Element> collectSuccessionSourceAndTarget(Type type) {
         List<Element> result = new ArrayList<>();
-        List<SuccessionAsUsage> successions = type.getOwnedFeature().stream()
+        var successions = type.getOwnedFeature().stream()
                 .filter(SuccessionAsUsage.class::isInstance)
                 .map(SuccessionAsUsage.class::cast)
-                .collect(toList());
+                .toList();
 
         for (SuccessionAsUsage succession : successions) {
             Feature source = succession.getSourceFeature();
             if (source != null) {
                 result.add(source);
             }
-            EList<Feature> target = succession.getTargetFeature();
+            var target = succession.getTargetFeature();
             if (target != null && !target.isEmpty()) {
                 result.addAll(target.stream().filter(Objects::nonNull).toList());
             }
@@ -878,7 +882,8 @@ public class UtilService {
         } else if (element instanceof Definition def) {
             candidates = def.getOwnedAction();
         }
-        return candidates.stream().filter(PerformActionUsage.class::isInstance)
+        return candidates.stream()
+                .filter(PerformActionUsage.class::isInstance)
                 .map(PerformActionUsage.class::cast)
                 .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
                 .toList();
@@ -940,6 +945,76 @@ public class UtilService {
     public void setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Type connectorContainer) {
         this.addConnectorEnd(connectorAsUsage, source, connectorContainer);
         this.addConnectorEnd(connectorAsUsage, target, connectorContainer);
+    }
+
+    /**
+     * This service is called by most of the tools. It allows the get the real semantic element container of the tool
+     * executed. If the given element is a ViewUsage, then it should be the owner of the ViewUsage, otherwise it should
+     * be the given element itself.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the newly created {@link Membership}.
+     */
+    public Element getViewUsageOwner(Element element) {
+        Element viewUsageOwner = element;
+        if (element instanceof ViewUsage viewUsage) {
+            viewUsageOwner = viewUsage.getOwner();
+        }
+        return viewUsageOwner;
+    }
+
+    /**
+     * Return the {@link ViewDefinitionKind} corresponding to the given {@link Element} displayed in the given
+     * {@link IDiagramContext}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param ancestors
+     *            the list of ancestors of the element (semantic elements corresponding to graphical ancestors). It
+     *            corresponds to a variable accessible from the variable manager.
+     * @param editingContext
+     *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @return true if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
+     *         {@link ViewDefinition}, false otherwise.
+     */
+    public ViewDefinitionKind getViewDefinitionKind(Element element, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+        ViewDefinitionKind kind = ViewDefinitionKind.GENERAL_VIEW;
+        if (element instanceof ViewUsage viewUsage) {
+            var types = viewUsage.getType();
+            if (types != null && !types.isEmpty()) {
+                Type type = types.get(0);
+                kind = ViewDefinitionKind.getKind(type.getQualifiedName());
+            }
+        } else {
+            // Retrieve ViewUsage exposing the given element
+            var viewUsageContainingElement = ancestors.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast).findFirst();
+            if (viewUsageContainingElement.isPresent()) {
+                ViewUsage viewUsage = viewUsageContainingElement.get();
+                kind = this.getViewDefinitionKind(viewUsage, List.of(), editingContext, diagramContext);
+            }
+        }
+        return kind;
+    }
+
+    /**
+     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an
+     * objective requirement or not.
+     *
+     * @param self
+     *            a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
+     * @return {@code true} if the given use case contains an objective and {@code false} otherwise.
+     */
+    public boolean isEmptyObjectiveRequirement(Element self) {
+        return self.getOwnedRelationship().stream()
+                .filter(ObjectiveMembership.class::isInstance)
+                .map(ObjectiveMembership.class::cast)
+                .findFirst()
+                .isEmpty();
     }
 
     private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {

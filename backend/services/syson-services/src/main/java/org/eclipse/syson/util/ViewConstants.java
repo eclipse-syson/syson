@@ -21,6 +21,8 @@ public class ViewConstants {
 
     public static final String DEFAULT_NODE_WIDTH = "155";
 
+    public static final String DEFAULT_FREE_FORM_COMPARTMENT_NODE_HEIGHT = "150";
+
     public static final String DEFAULT_COMPARTMENT_NODE_HEIGHT = "60";
 
     public static final String DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT = "15";

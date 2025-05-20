@@ -68,10 +68,6 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .variableName("newRefSubsetting")
                 .children(initializeReferenceSubsetting.build(), changeContextReferenceSubsetting.build());
 
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
-                .children(createReferenceSubsettingInstance.build());
-
         var nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getExhibitStateUsage())).orElse(null);
 
         var createView = this.diagramBuilderHelper.newCreateView()
@@ -86,13 +82,18 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                         List.of("newInstance", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
+                .children(createReferenceSubsettingInstance.build(), updateExposedElements.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getExhibitStateUsage()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build(), revealOperation.build(), updateExposedElements.build());
+                .children(createView.build(), changeContextNewInstance.build(), revealOperation.build());
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 

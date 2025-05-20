@@ -13,13 +13,13 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Project data for the "GeneralView-ActionFlowCompartmentTest" project.
+ * Project data for the "ActionFlowCompartmentTest" project.
  *
  * @author Arthur Daussy
  */
 public class ActionFlowCompartmentTestProjectData {
 
-    public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-ActionFlowCompartmentTest.sql";
+    public static final String SCRIPT_PATH = "/scripts/database-content/ActionFlowCompartmentTest.sql";
 
     public static final String EDITING_CONTEXT_ID = "4aac66a2-7511-44e4-b5a2-9c9c494cce3a";
 
@@ -30,9 +30,9 @@ public class ActionFlowCompartmentTestProjectData {
 
         public static final String DIAGRAM_ID = "8e46de8d-1be1-49af-bca6-9fa3c2c0a9a2";
 
-        public static final String START_ID = "eb7e2c4e-74b5-3797-a24f-0987b67a982c";
+        public static final String START_ID = "0129ac76-f1cc-3f18-ab06-9d2b8ba68cc5";
 
-        public static final String DONE_ID = "bf826cfe-81bd-3a3c-9804-cf980e18c9ff";
+        public static final String DONE_ID = "23dc74a6-4bd6-320b-8c46-094aea7e9910";
 
         public static final String SUB_ACTION1_ID = "291d41bb-db2e-3a94-a4a2-ece9960e1c59";
 
@@ -66,7 +66,7 @@ public class ActionFlowCompartmentTestProjectData {
 
         public static final String SUB_ACTION2_NAME = "subAction2";
 
-        public static final String ROOT_ACTION_USAGE = "17fab5b2-d11f-4ee1-a778-e78810a8fe66";
+        public static final String ROOT_ACTION_USAGE_ID = "17fab5b2-d11f-4ee1-a778-e78810a8fe66";
     }
 
 }

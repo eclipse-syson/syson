@@ -41,7 +41,7 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String P1_1_X1_ID = "632c779a-2810-3c1e-b897-21492656a05b";
 
-        public static final String A2_1_BORDERED_NODE_ID = "4821cc4e-bb48-3df4-81c4-6462f2b46997";
+        public static final String A2_1_BORDERED_NODE_ID = "697dd8fe-9e20-3d55-8820-c55005c6ab51";
 
         public static final String A1_1_BORDERED_NODE_ID = "0fdf46cf-f146-3554-8635-a141d632ae7d";
 
