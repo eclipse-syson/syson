@@ -69,7 +69,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression("150")
+                .defaultHeightExpression(ViewConstants.DEFAULT_FREE_FORM_COMPARTMENT_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())

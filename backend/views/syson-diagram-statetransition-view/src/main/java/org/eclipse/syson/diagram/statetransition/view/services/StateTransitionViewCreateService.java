@@ -25,6 +25,7 @@ import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembe
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -35,9 +36,9 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class StateTransitionViewCreateService extends ViewCreateService {
 
-    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
+    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService, ISysMLReadOnlyService readOnlyService,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService msgService) {
-        super(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService, msgService);
+        super(viewDiagramDescriptionSearchService, objectSearchService, readOnlyService, showDiagramsInheritedMembersService, msgService);
     }
 
     /**

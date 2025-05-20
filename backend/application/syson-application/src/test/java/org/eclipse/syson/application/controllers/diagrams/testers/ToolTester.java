@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
 import reactor.test.StepVerifier;
 
 /**
- * Creates a node on a diagram.
+ * Service class to test tool invocation.
  * <p>
  * This class should be used as part of a subscription verification (see
  * {@link StepVerifier#create(org.reactivestreams.Publisher)}).
@@ -47,7 +47,7 @@ import reactor.test.StepVerifier;
  * @author gdaniel
  */
 @Service
-public class NodeCreationTester {
+public class ToolTester {
 
     @Autowired
     private EditLabelMutationRunner editLabelMutationRunner;
@@ -55,24 +55,24 @@ public class NodeCreationTester {
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
-    public void createNodeOnDiagram(String editingContextId, AtomicReference<Diagram> diagram, String toolId) {
-        this.createNode(editingContextId, diagram, null, toolId);
+    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String toolId) {
+        this.invokeTool(editingContextId, diagram, null, toolId);
     }
 
-    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId) {
-        this.createNode(editingContextId, diagram, selectedNodeTargetObjectLabel, toolId, List.of());
+    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId) {
+        this.invokeTool(editingContextId, diagram, selectedNodeTargetObjectLabel, toolId, List.of());
     }
 
-    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
+    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
         String diagramElementId = diagram.get().getId();
         if (selectedNodeTargetObjectLabel != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
             diagramElementId = diagramNavigator.nodeWithTargetObjectLabel(selectedNodeTargetObjectLabel).getNode().getId();
         }
-        this.createNode(editingContextId, diagram.get().getId(), diagramElementId, toolId, variables);
+        this.invokeTool(editingContextId, diagram.get().getId(), diagramElementId, toolId, variables);
     }
 
-    public void createNode(String editingContextId, String diagramId, String diagramElementId, String toolId, List<ToolVariable> variables) {
+    public void invokeTool(String editingContextId, String diagramId, String diagramElementId, String toolId, List<ToolVariable> variables) {
         var createElementInput = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
                 editingContextId,

@@ -130,7 +130,7 @@ public class EMFUtils {
      *            a resource
      * @return a stream
      */
-    public static Stream<Notifier> eAllContentSteamWithSelf(Resource r) {
+    public static Stream<Notifier> eAllContentStreamWithSelf(Resource r) {
         if (r == null) {
             return Stream.empty();
         }
@@ -145,14 +145,14 @@ public class EMFUtils {
      *            a notifier
      * @return a stream
      */
-    public static Stream<Notifier> eAllContentSteamWithSelf(Notifier n) {
+    public static Stream<Notifier> eAllContentStreamWithSelf(Notifier n) {
         Stream<Notifier> result = Stream.empty();
         if (n instanceof Resource resource) {
-            result = eAllContentSteamWithSelf(resource);
+            result = eAllContentStreamWithSelf(resource);
         } else if (n instanceof EObject eObject) {
             result = eAllContentStreamWithSelf(eObject).map(Notifier.class::cast);
         } else if (n instanceof ResourceSet resourceSet) {
-            result = eAllContentSteamWithSelf(resourceSet);
+            result = eAllContentStreamWithSelf(resourceSet);
         }
         return result;
     }
@@ -164,7 +164,7 @@ public class EMFUtils {
      *            a resource set
      * @return a stream
      */
-    public static Stream<Notifier> eAllContentSteamWithSelf(ResourceSet rs) {
+    public static Stream<Notifier> eAllContentStreamWithSelf(ResourceSet rs) {
         if (rs == null) {
             return Stream.empty();
         }
@@ -191,9 +191,9 @@ public class EMFUtils {
         if (self instanceof EObject eObject) {
             result = eAllContentStreamWithSelf(eObject).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
         } else if (self instanceof Resource resource) {
-            result = eAllContentSteamWithSelf(resource).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
+            result = eAllContentStreamWithSelf(resource).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
         } else if (self instanceof ResourceSet resourceSet) {
-            result = eAllContentSteamWithSelf(resourceSet).filter(e -> type.isInstance(e))
+            result = eAllContentStreamWithSelf(resourceSet).filter(e -> type.isInstance(e))
                     .map(e -> type.cast(e));
         } else {
             result = Stream.empty();

@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckChildNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewViewTestProjectData;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
@@ -85,7 +85,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -164,12 +164,12 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    @DisplayName("GIVEN a General View with view usage node, WHEN child nodes are created, THEN nodes are added to the diagram")
+    @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram.get().getId(),
                 GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
                 creationToolId, List.of()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,20 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.List;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -31,9 +38,6 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
 
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    public AbstractCompartmentNodeToolProvider() {
-    }
-
     /**
      * Return the AQL service call expression that is interpreted to perform the node tool.
      *
@@ -42,35 +46,11 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     protected abstract String getServiceCallExpression();
 
     /**
-     * Returns the selection dialog to display as part of the tool's execution.
-     * <p>
-     * No selection dialog will be displayed if this method returns {@code null}.
-     * </p>
-     *
-     * @return the selection dialog to display as part of the tool's execution
-     */
-    protected SelectionDialogDescription getSelectionDialogDescription() {
-        // No selection dialog by default.
-        return null;
-    }
-
-    /**
      * Return the node tool label visible in the compartment palette.
      *
      * @return the name of the node tool.
      */
     protected abstract String getNodeToolName();
-
-    /**
-     * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
-     * By default no precondition expression is provided. Implementers might override this method to explicitly provide
-     * this precondition expression.
-     *
-     * @return the node tool precondition expression.
-     */
-    protected String getPreconditionExpression() {
-        return null;
-    }
 
     /**
      * Whether the tool will reveal its associated node compartment after its execution or not.
@@ -91,15 +71,17 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         var builder = this.diagramBuilderHelper.newNodeTool();
         builder.dialogDescription(this.getSelectionDialogDescription());
 
-        var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getServiceCallExpression());
+        var revealOperation = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                        List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
-        if (this.revealOnCreate()) {
-            var revealOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
-                    .build();
-            creationCompartmentItemServiceCall.children(revealOperation);
-        }
+        var addToExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("expose",
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+
+        var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(this.getServiceCallExpression())
+                .children(addToExposedElements.build(), revealOperation.build());
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
@@ -111,5 +93,29 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
                 .body(rootChangContext)
                 .preconditionExpression(this.getPreconditionExpression())
                 .build();
+    }
+
+    /**
+     * Returns the selection dialog to display as part of the tool's execution.
+     * <p>
+     * No selection dialog will be displayed if this method returns {@code null}.
+     * </p>
+     *
+     * @return the selection dialog to display as part of the tool's execution
+     */
+    protected SelectionDialogDescription getSelectionDialogDescription() {
+        // No selection dialog by default.
+        return null;
+    }
+
+    /**
+     * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
+     * By default no precondition expression is provided. Implementers might override this method to explicitly provide
+     * this precondition expression.
+     *
+     * @return the node tool precondition expression.
+     */
+    protected String getPreconditionExpression() {
+        return null;
     }
 }

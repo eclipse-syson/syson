@@ -19,8 +19,8 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -33,8 +33,8 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProvider {
 
-    public FakeNodeDescriptionProvider(IColorProvider colorProvider) {
-        super(colorProvider);
+    public FakeNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider, descriptionNameGenerator);
     }
 
     @Override
@@ -44,141 +44,142 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
 
     @Override
     protected List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache) {
-        var nameGenerator = new GVDescriptionNameGenerator();
         var childrenNodes = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
-            listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
+            listItems.forEach(eReference -> cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
-            listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
+            listItems.forEach(eReference -> cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
-        this.addReusableCompartments(cache, nameGenerator, childrenNodes);
-        this.addReusableBorderedNode(cache, nameGenerator, childrenNodes);
+        this.addReusableCustomNodes(cache, childrenNodes);
+        this.addReusableCompartments(cache, this.descriptionNameGenerator, childrenNodes);
+        this.addReusableBorderedNode(cache, this.descriptionNameGenerator, childrenNodes);
         return childrenNodes;
     }
 
-    private void addReusableCompartments(IViewDiagramElementFinder cache, GVDescriptionNameGenerator nameGenerator, ArrayList<NodeDescription> childrenNodes) {
+    private void addReusableCompartments(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
         // don't forget to add custom compartments
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction())
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction())
                 + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())
                 + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
 
-        this.addCustomCompartmentsForParts(cache, nameGenerator, childrenNodes);
+        this.addCustomCompartmentsForParts(cache, descriptionNameGenerator, childrenNodes);
     }
 
-    private void addCustomCompartmentsForParts(IViewDiagramElementFinder cache, IDescriptionNameGenerator nameGenerator, List<NodeDescription> childrenNodes) {
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+    private void addCustomCompartmentsForParts(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)).ifPresent(childrenNodes::add);
     }
 
-    private void addReusableBorderedNode(IViewDiagramElementFinder cache, GVDescriptionNameGenerator nameGenerator, ArrayList<NodeDescription> childrenNodes) {
-        cache.getNodeDescription(nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+    private void addReusableBorderedNode(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()))
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()))
                 .ifPresent(childrenNodes::add);
     }
 }

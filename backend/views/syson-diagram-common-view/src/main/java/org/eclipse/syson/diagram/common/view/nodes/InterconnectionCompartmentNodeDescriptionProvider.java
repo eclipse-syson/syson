@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -31,28 +33,28 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the 'state transition' free form compartment that contains nested/owned states.
+ * Used to create the 'interconnection' free form compartment that contains many usages and definitions.
  *
- * @author gdaniel
+ * @author arichard
  */
-public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public static final String STATE_COMPARTMENT_NAME = "state transition";
+    public static final String COMPARTMENT_NAME = "interconnection";
 
-    private final String name;
+    private final String compartmentName;
 
-    public StateTransitionCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(eClass, eReference, colorProvider, descriptionNameGenerator);
-        this.name = descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
+    public InterconnectionCompartmentNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, null, colorProvider, descriptionNameGenerator);
+        this.compartmentName = descriptionNameGenerator.getFreeFormCompartmentName(COMPARTMENT_NAME);
     }
 
     @Override
@@ -62,8 +64,11 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
-                .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
-                .name(this.name)
+                .name(this.compartmentName)
+                .preconditionExpression(
+                        AQLUtils.getSelfServiceCallExpression("isView",
+                                List.of("'StandardViewDefinitions::InterconnectionView'", org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
+                                        IDiagramContext.DIAGRAM_CONTEXT)))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
@@ -73,25 +78,38 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(this.compartmentName).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
 
     @Override
+    protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
+        var palette = this.diagramBuilderHelper.newNodePalette()
+                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
+
+        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        toolSections.add(this.toolDescriptionService.relatedElementsNodeToolSection(false));
+
+        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
+
+        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
+                .build();
+    }
+
+    @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
     @Override
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(STATE_COMPARTMENT_NAME)
+                .labelExpression(COMPARTMENT_NAME)
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .textAlign(LabelTextAlign.CENTER)
@@ -112,21 +130,10 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     }
 
     @Override
-    protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-        var palette = this.diagramBuilderHelper.newNodePalette().dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
-        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
-
-        // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(cache));
-
-        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
-        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
-
-        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
-                .build();
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new ActionFlowCompartmentNodeToolProvider());
+        return creationToolProviders;
     }
 
     @Override

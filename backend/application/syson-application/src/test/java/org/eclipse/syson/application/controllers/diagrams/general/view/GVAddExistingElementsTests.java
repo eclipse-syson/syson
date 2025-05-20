@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -92,7 +92,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
 
@@ -130,7 +130,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -154,7 +154,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsRecursiveOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)

@@ -22,6 +22,7 @@ import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembe
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 
 /**
@@ -31,9 +32,9 @@ import org.eclipse.syson.sysml.Element;
  */
 public class GeneralViewCreateService extends ViewCreateService {
 
-    public GeneralViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
+    public GeneralViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService, ISysMLReadOnlyService readOnlyService,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService msgService) {
-        super(viewDiagramDescriptionSearchService, objectSearchService, showDiagramsInheritedMembersService, msgService);
+        super(viewDiagramDescriptionSearchService, objectSearchService, readOnlyService, showDiagramsInheritedMembersService, msgService);
     }
 
     /**

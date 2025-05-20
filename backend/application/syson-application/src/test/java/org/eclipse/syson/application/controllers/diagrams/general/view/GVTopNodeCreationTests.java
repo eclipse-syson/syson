@@ -53,7 +53,7 @@ import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventS
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
@@ -121,7 +121,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     private IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private ToolTester nodeCreationTester;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -213,7 +213,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void createTopNode(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 this.diagram,
                 creationToolId));
 
@@ -268,7 +268,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
         if (libId.get().isPresent()) {
             this.verifier.then(() -> {
-                this.nodeCreationTester.createNode(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                         this.diagram,
                         null,
                         creationToolId,

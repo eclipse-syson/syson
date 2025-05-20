@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -29,10 +30,8 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
-import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -49,13 +48,10 @@ public class InterconnectionViewToolService extends ViewToolService {
 
     private final Logger logger = LoggerFactory.getLogger(InterconnectionViewToolService.class);
 
-    private final ElementInitializerSwitch elementInitializerSwitch;
-
     public InterconnectionViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService,
-            ISysMLReadOnlyService readOnlyService) {
-        super(identityService, objectSearchService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService, moveService, readOnlyService);
-        this.elementInitializerSwitch = new ElementInitializerSwitch();
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService,
+            IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+        super(identityService, objectSearchService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, diagramDescriptionService, feedbackMessageService, moveService);
     }
 
     /**
@@ -84,14 +80,15 @@ public class InterconnectionViewToolService extends ViewToolService {
         PartUsage childPart = SysmlFactory.eINSTANCE.createPartUsage();
         membership.getOwnedRelatedElement().add(childPart);
         this.elementInitializerSwitch.doSwitch(childPart);
-        Node parentNode = this.getRealParentNode(childPart, partUsage, selectedNode, convertedNodes);
+        Node parentNode = this.getRealParentNode(childPart, partUsage, selectedNode, convertedNodes, editingContext, diagramContext);
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
         }
         return childPart;
     }
 
-    private Node getRealParentNode(Element childElement, Element parentElement, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    private Node getRealParentNode(Element childElement, Element parentElement, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes,
+            IEditingContext editingContext, IDiagramContext diagramContext) {
         Node parentNode = null;
         Optional<NodeDescription> nodeDescription = convertedNodes.values().stream()
                 .filter(description -> Objects.equals(description.getId(), selectedNode.getDescriptionId()))
@@ -103,8 +100,8 @@ public class InterconnectionViewToolService extends ViewToolService {
                 .toList())
                 .orElse(List.of());
 
-        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
-        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(childElement, parentElement, allChildNodeDescriptions, convertedNodes);
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
+        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(childElement, parentElement, allChildNodeDescriptions, convertedNodes, editingContext, diagramContext);
         if (!compartmentCandidates.isEmpty()) {
             if (compartmentCandidates.size() > 1) {
                 this.logger.warn("Multiple compartment candidates found for {} in {}.", childElement.eClass().getName(), selectedNode.toString());
