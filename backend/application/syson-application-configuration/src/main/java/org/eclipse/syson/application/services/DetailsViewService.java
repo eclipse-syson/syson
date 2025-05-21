@@ -126,6 +126,8 @@ public class DetailsViewService {
             }
             if (eStructuralFeature.getEType() instanceof EEnum && eStructuralFeature.isUnsettable() && !(valueToSet instanceof Enumerator)) {
                 element.eUnset(eStructuralFeature);
+            } else if (eStructuralFeature.isMany() && newValue instanceof List<?> newListValue) {
+                ((List<Object>) element.eGet(eStructuralFeature)).addAll(newListValue);
             } else {
                 if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
                     valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
@@ -185,9 +187,9 @@ public class DetailsViewService {
      * and isReadOnly(EStructuralFeature).
      *
      * @param element
-     *            The {@link Element} to check
+     *         The {@link Element} to check
      * @param eStructuralFeature
-     *            The {@link EStructuralFeature} to check
+     *         The {@link EStructuralFeature} to check
      * @return
      */
     public boolean isReadOnly(Element element, EStructuralFeature eStructuralFeature) {
@@ -227,11 +229,7 @@ public class DetailsViewService {
 
     public boolean isMultilineStringAttribute(Element element, EStructuralFeature eStructuralFeature) {
         boolean isMultiline = false;
-        if (this.isBodyField(eStructuralFeature)) {
-            isMultiline = true;
-        } else {
-            isMultiline = false;
-        }
+        isMultiline = this.isBodyField(eStructuralFeature);
         return isMultiline;
     }
 
@@ -343,9 +341,9 @@ public class DetailsViewService {
      * feature.
      *
      * @param feature
-     *            the current {@link Feature}.
+     *         the current {@link Feature}.
      * @param newValue
-     *            the newValue to set.
+     *         the newValue to set.
      * @return the real element (i.e. a FeatureTyping) that holds the property to set.
      */
     public Element handleFeatureTypingNewValue(Feature feature, Object newValue) {
@@ -369,7 +367,7 @@ public class DetailsViewService {
      * Get the real owner of the reference widget for the extra property "Typed by".
      *
      * @param element
-     *            the current {@link Element}.
+     *         the current {@link Element}.
      * @return the real element that holds the property.
      */
     public Element getFeatureTypingOwnerExpression(Element element) {
@@ -437,7 +435,6 @@ public class DetailsViewService {
             // Update transition source
             transitionUsage.getOwnedMembership().stream()
                     .filter(Objects::nonNull)
-                    .map(Membership.class::cast)
                     .findFirst()
                     .ifPresent(mem -> mem.setMemberElement(au));
             // Update succession source
@@ -583,7 +580,7 @@ public class DetailsViewService {
      * Returns the element that owns the visibility feature of the given element.
      *
      * @param self
-     *            An element for which the visibility owner is being searched.
+     *         An element for which the visibility owner is being searched.
      * @return the element that owns the visibility feature of the given element
      */
     public Element getVisibilityPropertyOwner(Element self) {
@@ -597,7 +594,7 @@ public class DetailsViewService {
      * Returns the enumeration literals for the visibility feature of the given element.
      *
      * @param self
-     *            An element for which the list of visibility literals are being searched.
+     *         An element for which the list of visibility literals are being searched.
      * @return the enumeration literals for the visibility feature of the given element.
      */
     public List<EEnumLiteral> getVisibilityEnumLiterals(Element self) {
@@ -612,7 +609,7 @@ public class DetailsViewService {
      * Returns the visibility value of the given element.
      *
      * @param self
-     *            An element for which the list of visibility literals are being searched.
+     *         An element for which the list of visibility literals are being searched.
      * @return the current value of the visibility feature of the given element.
      */
     public EEnumLiteral getVisibilityValue(Element self) {
@@ -627,11 +624,11 @@ public class DetailsViewService {
      * Sets the visibility value of the given element.
      *
      * @param self
-     *            An element for which the list of visibility literals are being searched.
+     *         An element for which the list of visibility literals are being searched.
      * @param newValue
-     *            the value to set.
+     *         the value to set.
      * @return <code>true</code> if the visibility feature of the given element has been properly set and
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     public boolean setVisibilityValue(Element self, Object newValue) {
         boolean result = false;
@@ -668,7 +665,7 @@ public class DetailsViewService {
      * guarantee that it is well formed after its call.
      *
      * @param aau
-     *            an {@link AcceptActionUsage}
+     *         an {@link AcceptActionUsage}
      */
     private void checkAndRepairAcceptActionUsageStructure(AcceptActionUsage aau) {
         this.checkAndRepairAcceptActionUsagePayload(aau);

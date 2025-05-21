@@ -42,6 +42,7 @@ When creating a new `Perform Action` referencing an existing `Action`, all compa
 - https://github.com/eclipse-syson/syson/issues/1324[#1324] [details] Fix an issue that prevents ending up with a `null` reference in the reference widget.
 - https://github.com/eclipse-syson/syson/issues/1090[#1090] [import] Fix the textual import of `MultiplicityRange` with lower and upper bounds.
 The import now correctly creates a `MultiplicityRange` containing `LiteralInteger` elements for integer bounds, and `FeatureReferenceExpression` elements for feature bounds.
+- https://github.com/eclipse-syson/syson/issues/1318[#1318] [details] Fix an issue that prevents adding a new value to a multi-valued reference in the reference widget.
 
 === Improvements
 
