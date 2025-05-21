@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
@@ -126,6 +128,56 @@ public class ToolService {
         return parentNode;
     }
 
+    /**
+     * Add the given "newExposedElement" to the exposedElements reference of the {@link ViewUsage} that is the target of
+     * the given {@link IDiagramContext}.
+     *
+     * @param element
+     *            the current context of the service.
+     * @param newExposedElement
+     *            the new Element to be exposed.
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link IDiagramContext}.
+     * @return the current context of the service.
+     */
+    public EObject updateExposedElements(EObject eObject, Element newExposedElement, IEditingContext editingContext, IDiagramContext diagramContext) {
+        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+        if (optDiagramTargetObject.isPresent()) {
+            var diagramTargetObject = optDiagramTargetObject.get();
+            if (diagramTargetObject instanceof ViewUsage viewUsage) {
+                viewUsage.getExposedElement().add(newExposedElement);
+            }
+        }
+        return eObject;
+    }
+
+    /**
+     * Add the given "newExposedElement" to the exposedElements reference of the {@link ViewUsage} that is the target of
+     * the given {@link Node}.
+     *
+     * @param element
+     *            the current context of the service.
+     * @param newExposedElement
+     *            the new Element to be exposed.
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param viewUsageNode
+     *            the given {@link Node}.
+     * @return the current context of the service.
+     */
+    public EObject updateExposedElements(EObject eObject, Element newExposedElement, IEditingContext editingContext, Node viewUsageNode) {
+        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, viewUsageNode.getTargetObjectId());
+        if (optDiagramTargetObject.isPresent()) {
+            var diagramTargetObject = optDiagramTargetObject.get();
+            if (diagramTargetObject instanceof ViewUsage viewUsage) {
+                viewUsage.getExposedElement().add(newExposedElement);
+            }
+        }
+        return eObject;
+    }
+
     protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
         List<Node> nodes = nodeContainer.getChildNodes();
         if (nodes.contains(diagramElement)) {
@@ -157,6 +209,7 @@ public class ToolService {
         return nodes.stream().anyMatch(node -> node.getTargetObjectId().equals(this.identityService.getId(element)));
     }
 
+
     protected ViewCreationRequest createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.createView(element, editingContext, diagramContext, selectedNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
@@ -167,13 +220,14 @@ public class ToolService {
         var parentElementId = this.getParentElementId(selectedNode, diagramContext);
         var optDescriptionId = this.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode, convertedNodes);
         if (optDescriptionId.isPresent()) {
-            return this.createView(element, parentElementId, optDescriptionId.get(), diagramContext, nodeKind);
+            return this.createView(element, parentElementId, optDescriptionId.get(), editingContext, diagramContext, nodeKind);
         } else {
             return null;
         }
     }
 
-    protected ViewCreationRequest createView(Element element, String parentElementId, String descriptionId, IDiagramContext diagramContext, NodeContainmentKind nodeKind) {
+    protected ViewCreationRequest createView(Element element, String parentElementId, String descriptionId, IEditingContext editingContext, IDiagramContext diagramContext,
+            NodeContainmentKind nodeKind) {
         var request = ViewCreationRequest.newViewCreationRequest()
                 .containmentKind(nodeKind)
                 .descriptionId(descriptionId)
@@ -181,6 +235,7 @@ public class ToolService {
                 .targetObjectId(this.identityService.getId(element))
                 .build();
         diagramContext.getViewCreationRequests().add(request);
+        this.updateExposedElements(element, element, editingContext, diagramContext);
         return request;
     }
 

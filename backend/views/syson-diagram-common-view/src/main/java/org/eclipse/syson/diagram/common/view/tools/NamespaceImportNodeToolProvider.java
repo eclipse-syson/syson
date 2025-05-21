@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -53,6 +56,9 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
     public NodeTool create(IViewDiagramElementFinder cache) {
         EClass eClass = SysmlPackage.eINSTANCE.getNamespaceImport();
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("self", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(this.nodeDescription)
@@ -61,7 +67,7 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createNamespaceImport", "selectedObject"))
-                .children(createView.build());
+                .children(createView.build(), updateExposedElements.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))

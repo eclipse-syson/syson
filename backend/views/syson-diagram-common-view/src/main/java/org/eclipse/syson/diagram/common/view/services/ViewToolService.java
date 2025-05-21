@@ -217,7 +217,7 @@ public class ViewToolService extends ToolService {
                                 if (candidate.getSynchronizationPolicy().equals(SynchronizationPolicy.SYNCHRONIZED)) {
                                     hasRenderedSynchronizedElement = true;
                                 } else {
-                                    creationRequests.add(this.createView(childElement, compartmentNodeId, candidate.getId(), diagramContext, NodeContainmentKind.CHILD_NODE));
+                                    creationRequests.add(this.createView(childElement, compartmentNodeId, candidate.getId(), editingContext, diagramContext, NodeContainmentKind.CHILD_NODE));
                                 }
                             }
                         }
@@ -303,7 +303,7 @@ public class ViewToolService extends ToolService {
                             if (candidate.getSynchronizationPolicy().equals(SynchronizationPolicy.SYNCHRONIZED)) {
                                 hasRenderedSynchronizedElement = true;
                             } else {
-                                creationRequests.add(this.createView(childElement, compartmentNode.getId(), candidate.getId(), diagramContext, NodeContainmentKind.CHILD_NODE));
+                                creationRequests.add(this.createView(childElement, compartmentNode.getId(), candidate.getId(), editingContext, diagramContext, NodeContainmentKind.CHILD_NODE));
                             }
                         }
                     }
@@ -392,6 +392,7 @@ public class ViewToolService extends ToolService {
                 }
                 if (optElementToDrop.isPresent()) {
                     this.dropElementFromExplorerInTarget(optElementToDrop.get(), targetElement, editingContext, diagramContext, selectedNode, convertedNodes);
+                    this.updateExposedElements(targetElement, optElementToDrop.get(), editingContext, diagramContext);
                 }
             }
         }
@@ -466,7 +467,7 @@ public class ViewToolService extends ToolService {
      *            the dropped {@link Node}.
      * @param targetElement
      *            the new semantic container.
-     * @param targetElement
+     * @param targetNode
      *            the new graphical container.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -482,14 +483,21 @@ public class ViewToolService extends ToolService {
     public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         final Element result;
+        final Element realTargetElement;
+        // If the target element is a ViewUsage, then we must drop the dropped element in its owner.
+        if (targetElement instanceof ViewUsage viewUsage) {
+            realTargetElement = viewUsage.getOwner();
+        } else {
+            realTargetElement = targetElement;
+        }
         // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
         // to prevent the drop.
-        if (EMFUtils.isAncestor(droppedElement, targetElement)) {
-            this.logAncestorError(droppedElement, targetElement);
+        if (EMFUtils.isAncestor(droppedElement, realTargetElement)) {
+            this.logAncestorError(droppedElement, realTargetElement);
             // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
             result = null;
         } else {
-            this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            this.moveElement(droppedElement, droppedNode, realTargetElement, targetNode, editingContext, diagramContext, convertedNodes);
             result = droppedElement;
         }
         return result;

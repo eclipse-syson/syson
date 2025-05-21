@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
@@ -209,8 +210,11 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
             return new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(null);
         }
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, "selectedNode")));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var parentViewExpression = "aql:selectedNode";
         if (SysmlPackage.eINSTANCE.getComment().equals(eClass) || SysmlPackage.eINSTANCE.getDocumentation().equals(eClass) || SysmlPackage.eINSTANCE.getTextualRepresentation().equals(eClass)) {
@@ -229,7 +233,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")

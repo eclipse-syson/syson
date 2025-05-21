@@ -46,6 +46,7 @@ import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -293,6 +294,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getType_IsAbstract());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseViewUsage(ViewUsage object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseFeature(object));
+        features.add(SysmlPackage.eINSTANCE.getViewUsage_ExposedElement());
         return features;
     }
 }
