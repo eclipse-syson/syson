@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -139,8 +142,11 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
     private NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClass eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
@@ -153,7 +159,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")

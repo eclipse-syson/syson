@@ -70,6 +70,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
@@ -200,6 +201,8 @@ public class DetailsViewService {
                     || (element instanceof StateDefinition && SysmlPackage.eINSTANCE.getStateDefinition_IsParallel().equals(eStructuralFeature))) {
                 isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().anyMatch(TransitionUsage.class::isInstance);
             } else if (element instanceof FeatureMembership && SysmlPackage.eINSTANCE.getFeaturing_Feature().equals(eStructuralFeature)) {
+                isReadOnly = true;
+            } else if (element instanceof ViewUsage && SysmlPackage.eINSTANCE.getViewUsage_ExposedElement().equals(eStructuralFeature)) {
                 isReadOnly = true;
             }
         }

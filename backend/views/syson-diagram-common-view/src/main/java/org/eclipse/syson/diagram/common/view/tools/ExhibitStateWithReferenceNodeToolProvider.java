@@ -15,6 +15,8 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -80,11 +82,14 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
         var revealOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("newInstance", "diagramContext", "editingContext", "convertedNodes")));
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getExhibitStateUsage()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build(), revealOperation.build());
+                .children(createView.build(), changeContextNewInstance.build(), revealOperation.build(), updateExposedElements.build());
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 

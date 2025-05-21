@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -53,6 +54,9 @@ public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("self", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(this.definitionNodeDescription)
@@ -62,12 +66,11 @@ public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider
 
         var creationFeatureTypingServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createPartDefinitionAndFeatureTyping"))
-                .children(createView.build())
-                .build();
+                .children(createView.build(), updateExposedElements.build());
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(creationFeatureTypingServiceCall)
+                .children(creationFeatureTypingServiceCall.build())
                 .build();
 
         return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))

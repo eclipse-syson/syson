@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -59,6 +60,9 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
@@ -79,7 +83,7 @@ public class AnnotatingElementOnRelationshipNodeToolProvider implements INodeToo
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(this.annotatingElement))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
 
         var changeContextAnnotation = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newAnnotation")

@@ -69,6 +69,7 @@ At the moment SysON only supports KerML and SysML, and does not support the defi
 - https://github.com/eclipse-syson/syson/issues/1251[#1251] [explorer] Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
 All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 - https://github.com/eclipse-syson/syson/issues/1310[#1310] [metamodel] Remove derived flag for `ViewUsage#exposedElement` feature.
+- https://github.com/eclipse-syson/syson/issues/1314[#1314] [general-view] Update `ViewUsage#exposedElement` when manipulating _General View_ diagram.
 
 === New features
 

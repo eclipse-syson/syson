@@ -265,8 +265,11 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
             return new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(null);
         }
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var parentViewExpression = "aql:selectedNode";
         if (SysmlPackage.eINSTANCE.getComment().equals(eClass)) {
@@ -286,7 +289,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")

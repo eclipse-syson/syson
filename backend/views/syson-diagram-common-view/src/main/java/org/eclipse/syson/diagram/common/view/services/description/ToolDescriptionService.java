@@ -311,85 +311,6 @@ public class ToolDescriptionService {
     }
 
     /**
-     * Create a {@link NodeTool} to create a new instance of type {@code eClass} represented using the provided
-     * {@code nodeDescription}.
-     *
-     * @param nodeDescription
-     *            THe {@link NodeDescription} used to represent the element created using the built {@link NodeTool}
-     * @param eClass
-     *            The {@link EClassifier} of the created semantic element
-     * @return The created {@link NodeTool}
-     */
-    public NodeTool createNodeToolFromDiagramBackground(NodeDescription nodeDescription, EClass eClass) {
-        return this.createNodeToolFromDiagramWithDirection(nodeDescription, eClass, null);
-    }
-
-    public NodeTool createNodeToolFromDiagramWithDirection(NodeDescription nodeDescription, EClass eClass, FeatureDirectionKind direction) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        // make sure that the given element is a feature to avoid error at runtime.
-        if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
-            return this.createNodeToolFromDiagramBackground(nodeDescription, eClass);
-        }
-
-        var setDirection = this.viewBuilderHelper.newSetValue()
-                .featureName("direction");
-
-        if (direction != null) {
-            setDirection.valueExpression(direction.getLiteral());
-        }
-
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
-
-        if (direction != null) {
-            changeContextNewInstance.children(setDirection.build());
-        }
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName(NEW_INSTANCE)
-                .children(createView.build(), changeContextNewInstance.build());
-
-        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
-                .children(createEClassInstance.build());
-
-        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
-                .children(changeContextMembership.build());
-
-        String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
-
-        if (direction != null) {
-            toolLabel += " " + StringUtils.capitalize(direction.getLiteral());
-        }
-
-        StringBuilder iconPath = new StringBuilder();
-        iconPath.append("/icons/full/obj16/");
-        iconPath.append(eClass.getName());
-        if (direction != null) {
-            iconPath.append(StringUtils.capitalize(direction.getLiteral()));
-        }
-        iconPath.append(".svg");
-
-        return builder
-                .name(toolLabel)
-                .iconURLsExpression(iconPath.toString())
-                .body(changeContextViewUsageOwner.build())
-                .elementsToSelectExpression("aql:newInstance")
-                .build();
-    }
-
-    /**
      * Returns the creation node tool description for the given Node Description to build a new child node for the given
      * EClass.
      *
@@ -465,6 +386,88 @@ public class ToolDescriptionService {
     }
 
     /**
+     * Create a {@link NodeTool} to create a new instance of type {@code eClass} represented using the provided
+     * {@code nodeDescription}.
+     *
+     * @param nodeDescription
+     *            THe {@link NodeDescription} used to represent the element created using the built {@link NodeTool}
+     * @param eClass
+     *            The {@link EClassifier} of the created semantic element
+     * @return The created {@link NodeTool}
+     */
+    public NodeTool createNodeToolFromDiagramBackground(NodeDescription nodeDescription, EClass eClass) {
+        return this.createNodeToolFromDiagramWithDirection(nodeDescription, eClass, null);
+    }
+
+    public NodeTool createNodeToolFromDiagramWithDirection(NodeDescription nodeDescription, EClass eClass, FeatureDirectionKind direction) {
+        // make sure that the given element is a feature to avoid error at runtime.
+        if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
+            return this.createNodeToolFromDiagramBackground(nodeDescription, eClass);
+        }
+
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of(NEW_INSTANCE, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
+        var setDirection = this.viewBuilderHelper.newSetValue()
+                .featureName("direction");
+
+        if (direction != null) {
+            setDirection.valueExpression(direction.getLiteral());
+        }
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
+
+        if (direction != null) {
+            changeContextNewInstance.children(setDirection.build());
+        }
+
+        var createView = this.diagramBuilderHelper.newCreateView()
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .elementDescription(nodeDescription)
+                .parentViewExpression("aql:selectedNode")
+                .semanticElementExpression("aql:newInstance")
+                .variableName("newInstanceView");
+
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName(NEW_INSTANCE)
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
+
+        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
+                .children(createEClassInstance.build());
+
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(changeContextMembership.build());
+
+        String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
+
+        if (direction != null) {
+            toolLabel += " " + StringUtils.capitalize(direction.getLiteral());
+        }
+
+        StringBuilder iconPath = new StringBuilder();
+        iconPath.append("/icons/full/obj16/");
+        iconPath.append(eClass.getName());
+        if (direction != null) {
+            iconPath.append(StringUtils.capitalize(direction.getLiteral()));
+        }
+        iconPath.append(".svg");
+
+        return builder
+                .name(toolLabel)
+                .iconURLsExpression(iconPath.toString())
+                .body(changeContextViewUsageOwner.build())
+                .elementsToSelectExpression("aql:newInstance")
+                .build();
+    }
+
+    /**
      * Returns the creation node tool description for the given Node Description to build a new node for the given
      * EClass (which must be a {@link Feature}).
      *
@@ -487,6 +490,9 @@ public class ToolDescriptionService {
         }
 
         var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of(NEW_INSTANCE, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
 
         var setDirection = this.viewBuilderHelper.newSetValue().featureName("direction");
 
@@ -517,7 +523,7 @@ public class ToolDescriptionService {
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName(NEW_INSTANCE)
-                .children(createView.build(), changeContextNewInstance.build());
+                .children(createView.build(), changeContextNewInstance.build(), updateExposedElements.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newFeatureMembership")
