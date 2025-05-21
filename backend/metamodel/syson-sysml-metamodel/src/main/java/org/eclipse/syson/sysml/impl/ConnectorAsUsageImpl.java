@@ -307,6 +307,7 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
                 .map(Feature::getOwnedReferenceSubsetting)
                 .filter(Objects::nonNull)
                 .map(ReferenceSubsetting::getSubsettedFeature)
+                .filter(Objects::nonNull)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_RelatedFeature(), data.size(), data.toArray());
     }

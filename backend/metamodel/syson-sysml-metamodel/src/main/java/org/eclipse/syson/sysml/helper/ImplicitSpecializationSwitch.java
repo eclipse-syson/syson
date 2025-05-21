@@ -70,6 +70,7 @@ import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Multiplicity;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -1584,12 +1585,12 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private Feature computeSourceFeature(SuccessionAsUsage successionAsUsage) {
-        Type owningType = successionAsUsage.getOwningType();
-        if (owningType instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
+        Namespace owningNamespace = successionAsUsage.getOwningNamespace();
+        if (owningNamespace instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
             return transitionUsage.getSource();
         }
-        if (owningType != null) {
-            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+        if (owningNamespace != null) {
+            EList<Membership> ownedMemberships = owningNamespace.getOwnedMembership();
             int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
             if (index > 0) {
                 ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
@@ -1605,11 +1606,11 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private Feature computeTargetFeature(SuccessionAsUsage successionAsUsage) {
-        Type owningType = successionAsUsage.getOwningType();
-        if (owningType instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
+        Namespace owningNamespace = successionAsUsage.getOwningNamespace();
+        if (owningNamespace instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
             return transitionUsage.getTarget();
-        } else if (owningType != null) {
-            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+        } else if (owningNamespace != null) {
+            EList<Membership> ownedMemberships = owningNamespace.getOwnedMembership();
             int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
             if (index > 0 && ownedMemberships.size() > index) {
                 ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();

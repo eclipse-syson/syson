@@ -71,7 +71,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSuccessionAsUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
-                .preconditionExpression("aql:graphicalEdgeSource.isInSameGraphicalContainer(graphicalEdgeTarget,cache)")
+                .preconditionExpression("aql:graphicalEdgeSource.isInSameGraphicalContainer(graphicalEdgeTarget,cache) and not self.getOwningElement().oclIsKindOf(sysml::TransitionUsage)")
                 .isDomainBasedEdge(true)
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getEdgeLabel"))
                 .name(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))

@@ -73,5 +73,16 @@ describe('Details View Tests', () => {
         }
       );
     });
+    context('When we open the references of a widget reference', () => {
+      beforeEach(() => explorer.select('Batman'));
+
+      it('Then all references are accessible.', { retries: 3 }, () => {
+        details.getGroup('Item Definition Properties').should('be.visible');
+        details.getReferenceWidget('Specializes').should('exist');
+        details.openReferenceWidgetOptions('Specializes');
+        details.selectReferenceWidgetOption('Power');
+        details.getReferenceWidgetSelectedValue('Specializes', 'Power').should('exist');
+      });
+    });
   });
 });
