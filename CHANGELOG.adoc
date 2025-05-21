@@ -39,6 +39,7 @@ When creating a new `Perform Action` referencing an existing `Action`, all compa
 - https://github.com/eclipse-syson/syson/issues/1297[#1297] Fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
 - https://github.com/eclipse-syson/syson/issues/1300[#1300] [general-view] Fix wrong tool section name found in some compartments' palette.
 - https://github.com/eclipse-syson/syson/issues/1303[#1303] [general-view] Fix the name of `Constraint` creation tools inside `Requirement`.
+- https://github.com/eclipse-syson/syson/issues/1324[#1324] [details] Fix an issue that prevents ending up with a `null` reference in the reference widget.
 
 === Improvements
 

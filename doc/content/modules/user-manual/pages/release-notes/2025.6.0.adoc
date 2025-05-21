@@ -38,6 +38,7 @@ They are now named:
 * `New Require constraint`
 * `New Assume constraint`
 
+- In the _Details_ view, fix an issue that prevents opening the candidates on a reference widget.
 
 == New features
 
