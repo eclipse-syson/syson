@@ -149,7 +149,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsages nested in each other,"
@@ -178,7 +179,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsages nested in each other,"
@@ -207,7 +209,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsage,"
@@ -242,7 +245,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a TransitionUsage,"
@@ -274,7 +278,41 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given a TransitionUsage,"
+            + "when reconnecting the target, "
+            + "then the reconnection to a TransitionUsage should be forbidden")
+    public void reconnectTransitionUsageTargetOnTransitionForbidden() {
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ReconnectEdgeKind.TARGET));
+
+        IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            Edge existingEdge = newDiagram.getEdges().stream().filter(e -> e.getId().equals(ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID)).findFirst().get();
+            assertThat(existingEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
+            assertThat(existingEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION3_ID);
+            assertThat(existingEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION3_ID);
+        });
+    }
+
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a TransitionUsage,"
@@ -306,7 +344,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given two ActionUsage,"
@@ -342,7 +381,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given SuccessionAsUsage from 2 ActionUsages,"
@@ -375,7 +415,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a start action and an ActionUsage,"
@@ -410,7 +451,8 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a start action and  ActionUsage,"
@@ -448,12 +490,13 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a sub action node and a done action,"
             + "when using the 'New Transition' tool between them, "
-            + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is store in the container action")
+            + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is stored in the container action")
     public void createTransitionUsageToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
