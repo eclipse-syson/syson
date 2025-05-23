@@ -270,7 +270,7 @@ public class ViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectSourceTransitionEdge(TransitionUsage transition, ActionUsage newSource) {
-        if (!(newSource instanceof ActionUsage) || !this.checkTransitionEdgeTarget(newSource, transition.getTarget())) {
+        if (!(newSource instanceof ActionUsage) || newSource instanceof TransitionUsage || !this.checkTransitionEdgeTarget(newSource, transition.getTarget())) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new source for transition", MessageLevel.WARNING));
             return transition;
         }
@@ -309,7 +309,7 @@ public class ViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage reconnectTargetTransitionEdge(TransitionUsage transition, ActionUsage newTarget) {
-        if (!(newTarget instanceof ActionUsage) || !this.checkTransitionEdgeTarget(transition.getSource(), newTarget)) {
+        if (!(newTarget instanceof ActionUsage) || newTarget instanceof TransitionUsage || !this.checkTransitionEdgeTarget(transition.getSource(), newTarget)) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new target for transition", MessageLevel.WARNING));
             return transition;
         }

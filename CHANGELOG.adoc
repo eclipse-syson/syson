@@ -40,6 +40,7 @@ When creating a new `Perform Action` referencing an existing `Action`, all compa
 - https://github.com/eclipse-syson/syson/issues/1300[#1300] [general-view] Fix wrong tool section name found in some compartments' palette.
 - https://github.com/eclipse-syson/syson/issues/1303[#1303] [general-view] Fix the name of `Constraint` creation tools inside `Requirement`.
 - https://github.com/eclipse-syson/syson/issues/1324[#1324] [details] Fix an issue that prevents ending up with a `null` reference in the reference widget.
+- https://github.com/eclipse-syson/syson/issues/1321[#1321] [general-view] Prevent `TransitionUsage` source/target reconnection to another `TransitionUsage`.
 
 === Improvements
 

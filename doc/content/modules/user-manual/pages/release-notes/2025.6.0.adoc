@@ -40,6 +40,10 @@ They are now named:
 
 - In the _Details_ view, fix an issue that prevents opening the candidates on a reference widget.
 
+- Prevent `TransitionUsage` edges to be reconnected to another `TransitionUsage`.
+In the previous implementation, it was possible during an edge reconnection to drop the source or target to another `TransitionUsage.
+The semantic of the `TransitionUsage` being reconnected was changed and the edge was removed from the diagram.
+
 == New features
 
 - `ViewUsage` may now be displayed and created from the _General View_.
