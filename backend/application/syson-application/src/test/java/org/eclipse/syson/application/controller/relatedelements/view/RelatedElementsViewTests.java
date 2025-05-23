@@ -67,7 +67,8 @@ public class RelatedElementsViewTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given an empty SysML Project, when the Related Elements View is requested, then no error is returned")
-    @Sql(scripts = { InterconnectionViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { InterconnectionViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getRelatedElementsView() {
