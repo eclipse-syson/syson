@@ -63,9 +63,15 @@ public class CreateRepresentationInputPreProcessor implements IInputPreProcessor
         if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && canHandle(createRepresentationInput)) {
             var optElement = getObject(editingContext, createRepresentationInput);
             if (optElement.isPresent()) {
-                var viewUsage = createViewUsage(input, optElement.get(), createRepresentationInput.representationName());
-                return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), createRepresentationInput.representationDescriptionId(), viewUsage.getElementId(),
-                        createRepresentationInput.representationName());
+                Element containerElement = optElement.get();
+                if (containerElement instanceof ViewUsage) {
+                    // In case of a ViewUsage we want to follow the nominal case.
+                } else {
+                    // In other cases we want to  create a new ViewUsage and associated the new Diagram to this new ViewUsage.
+                    var viewUsage = createViewUsage(input, containerElement, createRepresentationInput.representationName());
+                    return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), createRepresentationInput.representationDescriptionId(), viewUsage.getElementId(),
+                            createRepresentationInput.representationName());
+                }
             }
         }
         return input;

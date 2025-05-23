@@ -42,13 +42,15 @@ public class ViewUsageExposedElementsTestProjectData {
      */
     public static final class SemanticIds {
 
-        public static final String PACKAGE_1_ID = "f3d97864-09f0-4af7-95bd-44b1a3243fdb";
+        public static final String PACKAGE_1_ELEMENT_ID = "f3d97864-09f0-4af7-95bd-44b1a3243fdb";
 
-        public static final String VIEW_USAGE_GV_ID = "b469efdb-1310-458e-a689-afd6e9f1702d";
+        public static final String VIEW_USAGE_GV_ELEMENT_ID = "b469efdb-1310-458e-a689-afd6e9f1702d";
 
-        public static final String PART_A_ID = "b2457be8-314c-4061-a307-54b79663790a";
+        public static final String PART_A_ELEMENT_ID = "b2457be8-314c-4061-a307-54b79663790a";
 
-        public static final String PART_B_ID = "6209e9eb-446d-4b20-a90d-c211923b42f1";
+        public static final String PART_A_SIRIUS_ID = "8d3666ea-8d30-4008-81bb-58294282f884";
+
+        public static final String PART_B_ELEMENT_ID = "6209e9eb-446d-4b20-a90d-c211923b42f1";
     }
 
 }

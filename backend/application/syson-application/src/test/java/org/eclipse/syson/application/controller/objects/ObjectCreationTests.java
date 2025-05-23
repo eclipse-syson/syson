@@ -78,7 +78,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Test
     @DisplayName("Given an imported document, when a root object is created, then it is created properly and the document is not imported anymore")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenImportedDocumentWhenRootObjectIsCreatedThenItIsCreatedProperlyAndDocumentIsNotImported() {
         this.givenCommittedTransaction.commit();
