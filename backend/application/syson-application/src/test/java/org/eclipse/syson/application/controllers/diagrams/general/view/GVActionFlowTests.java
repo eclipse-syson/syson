@@ -278,6 +278,38 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     @DisplayName("Given a TransitionUsage,"
+            + "when reconnecting the target, "
+            + "then the reconnection to a TransitionUsage should be forbidden")
+    public void reconnectTransitionUsageTargetOnTransitionForbidden() {
+        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                this.diagram,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID,
+                ReconnectEdgeKind.TARGET));
+
+        IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            Edge existingEdge = newDiagram.getEdges().stream().filter(e -> e.getId().equals(ActionFlowCompartmentTestProjectData.GraphicalIds.TRANSITION_A2_A3_ID)).findFirst().get();
+            assertThat(existingEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
+            assertThat(existingEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION3_ID);
+            assertThat(existingEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
+
+        this.semanticCheckerService.checkElement(this.verifier, TransitionUsage.class, () -> ActionFlowCompartmentTestProjectData.SemanticIds.TRANSITION_A2_A3_ID, transitionUsage -> {
+            assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID);
+            assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION3_ID);
+        });
+    }
+
+    @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("Given a TransitionUsage,"
             + "when reconnecting the source, "
             + "then the new source of the TransitionUsage is correct")
     public void reconnectTransitionUsageSource() {
