@@ -43,6 +43,10 @@ They are now named:
 The textual import now correctly creates a `MultiplicityRange` containing `LiteralInteger` elements for integer bounds, and `FeatureReferenceExpression` elements for feature bounds.
 - Fix an issue where dragging and dropping a `Definition` element from the _Explorer view_ on a _General View_ did not create the associated node.
 
+- In diagrams, prevent `TransitionUsage` graphical edges to be reconnected to another `TransitionUsage`.
+In the previous implementation, it was possible during a graphical edge reconnection to drop the source or target to another `TransitionUsage`.
+The semantic of the `TransitionUsage` being reconnected was changed and the graphical edge was removed from the diagram.
+
 == New features
 
 - `ViewUsage` may now be displayed and created from the _General View_.
