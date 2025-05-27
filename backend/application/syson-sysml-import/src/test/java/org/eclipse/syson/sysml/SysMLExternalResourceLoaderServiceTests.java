@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,15 +29,32 @@ import org.junit.jupiter.api.Test;
  */
 public class SysMLExternalResourceLoaderServiceTests {
 
+    private static final String PACKAGE_P1 = "package p1;";
+
     @Test
     public void testCandHandle() {
         // Incorrect content
         assertFalse(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream("{}".getBytes()), URI.createFileURI("/test/model.sysml"), new ResourceSetImpl()));
         // Incorrect extension
-        assertFalse(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream("package p1;".getBytes()), URI.createFileURI("/test/model.sysml2"),
+        assertFalse(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml2"),
                 new ResourceSetImpl()));
         // Valid file
-        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream("package p1;".getBytes()), URI.createFileURI("/test/model.sysml"),
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.sysml"),
+                new ResourceSetImpl()));
+        // Valid file
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.kerml"),
+                new ResourceSetImpl()));
+        // Valid file
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SYSML"),
+                new ResourceSetImpl()));
+        // Valid file
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KERML"),
+                new ResourceSetImpl()));
+        // Valid file
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.SysML"),
+                new ResourceSetImpl()));
+        // Valid file
+        assertTrue(new SysMLExternalResourceLoaderService(new SysmlToAst(null)).canHandle(new ByteArrayInputStream(PACKAGE_P1.getBytes()), URI.createFileURI("/test/model.KerML"),
                 new ResourceSetImpl()));
     }
 
