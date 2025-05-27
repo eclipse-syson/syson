@@ -73,7 +73,7 @@ At the moment SysON only supports KerML and SysML, and does not support the defi
 All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 - https://github.com/eclipse-syson/syson/issues/1310[#1310] [metamodel] Remove derived flag for `ViewUsage#exposedElement` feature.
 - https://github.com/eclipse-syson/syson/issues/1314[#1314] [diagrams] Update `ViewUsage#exposedElement` when manipulating any SysMLv2 diagram (_General View_, _Interconnection View_, ...).
-
+- https://github.com/eclipse-syson/syson/issues/1322[#1322] [import] Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
 
 === New features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
             canHandle = false;
         }
         if (canHandle) {
-            canHandle = resourceURI != null && (resourceURI.toString().endsWith(".sysml") || resourceURI.toString().endsWith(".kerml"));
+            canHandle = resourceURI != null && (resourceURI.toString().toLowerCase().endsWith(".sysml") || resourceURI.toString().toLowerCase().endsWith(".kerml"));
         }
         return canHandle;
     }
