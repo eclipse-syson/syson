@@ -51,9 +51,9 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.application.services.DetailsViewService;
 import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
@@ -111,15 +111,15 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final UtilService utilService;
 
-    private final ISysONResourceService sysONResourceService;
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            ILabelService labelService, final ISysONResourceService sysONResourceService) {
+            ILabelService labelService, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.utilService = new UtilService();
     }
 
@@ -142,7 +142,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.sysONResourceService), this.labelService, this.utilService),
+                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService),
                 List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
@@ -250,7 +250,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setValueExpression(AQLUtils.getSelfServiceCallExpression("getEnumValue", Strings.quote(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName())));
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setNewValue", List.of(Strings.quote(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName()), "newValue.instance")));
+        setNewValueOperation
+                .setExpression(AQLUtils.getSelfServiceCallExpression("setNewValue", List.of(Strings.quote(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName()), "newValue.instance")));
         radio.getBody().add(setNewValueOperation);
 
         group.getChildren().add(radio);
@@ -523,6 +524,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         textArea.getBody().add(setNewValueOperation);
         return textArea;
     }
+
     private WidgetDescription createTextfieldWidget() {
         TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
         textfield.setName("TextfieldWidget");

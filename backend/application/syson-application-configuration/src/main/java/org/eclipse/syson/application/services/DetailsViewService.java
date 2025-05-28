@@ -30,17 +30,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
-import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Annotation;
@@ -71,7 +69,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link SysMLv2PropertiesConfigurer}.
@@ -90,12 +87,13 @@ public class DetailsViewService {
 
     private final EEnumLiteral unsetEnumLiteral;
 
-    private final ISysONResourceService sysONResourceService;
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
-    public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService, final ISysONResourceService sysONResourceService) {
+    public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService,
+            final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.importService = new ImportService();
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
@@ -171,15 +169,7 @@ public class DetailsViewService {
     }
 
     public boolean isReadOnly(Element element) {
-        boolean isReadOnly = false;
-        Resource resource = element.eResource();
-        if (resource != null) {
-            String uri = resource.getURI().toString();
-            isReadOnly = uri.startsWith(ElementUtil.SYSML_LIBRARY_SCHEME)
-                    || uri.startsWith(ElementUtil.KERML_LIBRARY_SCHEME)
-                    || this.isImportedLibrary(resource);
-        }
-        return isReadOnly;
+        return this.readOnlyObjectPredicate.test(element);
     }
 
     /**
@@ -778,10 +768,6 @@ public class DetailsViewService {
             receiverFeature.setDirection(FeatureDirectionKind.OUT);
             receiverReturn.getOwnedRelatedElement().add(receiverFeature);
         }
-    }
-
-    private boolean isImportedLibrary(Resource resource) {
-        return resource != null && this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
     }
 
     private boolean isBodyField(EStructuralFeature eStructuralFeature) {
