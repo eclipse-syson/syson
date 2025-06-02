@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
@@ -23,8 +25,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.syson.services.data.SmallFlashlightExample;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
-import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -38,17 +40,19 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.util.NamedProxy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -173,6 +177,43 @@ public class DiagramDirectEditListenerTest {
         assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
         LiteralInteger literalInteger = (LiteralInteger) operatorExpression.getArgument().get(1);
         assertThat(literalInteger.getValue()).isEqualTo(1);
+    }
+
+    @DisplayName("Given a ConstraintUsage, when it is edited with 'myAttribute >= 1 [nm]', then its expression is correctly built")
+    @Test
+    public void testDirectEditConstraintUsageWithBracketExpression() {
+
+        SmallFlashlightExample smallFlashlightExample = new SmallFlashlightExample();
+        ConstraintUsage constraint = smallFlashlightExample.getFlashlightConstraint();
+
+        this.doDirectEditOnConstraint(constraint, "actualWeight <= 0.25 [nm]");
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
+                .hasSize(1)
+                .allMatch(OperatorExpression.class::isInstance);
+        OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
+        assertThat(operatorExpression.getOperator()).isEqualTo("<=");
+        assertThat(operatorExpression.getArgument()).hasSize(2);
+
+        Expression firstParam = operatorExpression.getArgument().get(0);
+        assertThat(firstParam).isInstanceOf(FeatureReferenceExpression.class);
+        FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) operatorExpression.getArgument().get(0);
+        assertThat(featureReferenceExpression.getReferent()).isInstanceOf(AttributeUsage.class);
+        assertThat(featureReferenceExpression.getReferent().getName()).isEqualTo("actualWeight");
+
+        Expression secondParam = operatorExpression.getArgument().get(1);
+        assertThat(secondParam).isInstanceOf(OperatorExpression.class);
+        OperatorExpression bracketExpression = (OperatorExpression) secondParam;
+        assertThat(bracketExpression.getOperator()).isEqualTo("[");
+
+        assertThat(bracketExpression.getParameter().get(0).getValuation().getValue())
+                .isInstanceOf(LiteralRational.class)
+                .extracting(l -> ((LiteralRational) l).getValue())
+                .isEqualTo(0.25);
+
+        assertThat(bracketExpression.getParameter().get(1).getValuation().getValue())
+                .isInstanceOf(FeatureReferenceExpression.class)
+                .extracting(l -> ((FeatureReferenceExpression) l).getReferent())
+                .isEqualTo(smallFlashlightExample.getNumAttributeUsage());
     }
 
     @DisplayName("Given a ConstraintUsage and an AttributeUsage in a Namespace, when the ConstraintUsage is edited with 'externalAttribute >= 1', then its expression is set")
@@ -342,6 +383,157 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
+    @DisplayName("Given a PartUsage with complex name (with spaces or reserved keywords), when edited without the escaping char ('), then the name is correctly set")
+    @Test
+    public void testDirectEditPartUsageComplexName() {
+        PartUsage partUsage = this.createFlashlight();
+
+        // Using space would required to use ' in a textual format but we want the direct edit to work on this case
+        this.doDirectEditOnNode(partUsage, "My new flashlight");
+        assertThat(partUsage.getName()).isEqualTo("My new flashlight");
+
+        // 'default' is a keyword
+        this.doDirectEditOnNode(partUsage, "default new flashlight");
+        assertThat(partUsage.getName()).isEqualTo("default new flashlight");
+
+        // 'first' is a keyword
+        this.doDirectEditOnNode(partUsage, "first new flashlight");
+        assertThat(partUsage.getName()).isEqualTo("first new flashlight");
+    }
+
+    @DisplayName("Given a PartUsage, when editing with 'flashlight : Flashlight', then the type of flashlight should be set to Flashlight")
+    @Test
+    public void testDirectEditTyping() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, "flashlight : Flashlight");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.getType()).hasSize(1).allMatch(type -> type == flashlightExample.getFlashLightDefinition());
+    }
+
+    @DisplayName("Given a PartUsage, when editing with 'flashlight :> superFlashlight', then flashlight should subset superFlashlight")
+    @Test
+    public void testDirectEditSubsetting() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, "flashlight :> superFlashlight");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(type -> type == flashlightExample.getSuperFlashLightPartUsage());
+    }
+
+    @DisplayName("Given a PartUsage, when editing with ': Flashlight', then the type of flashlight should be set to Flashlight")
+    @Test
+    public void testPartialDirectEditTyping() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, ": Flashlight");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.getType()).hasSize(1).allMatch(type -> type == flashlightExample.getFlashLightDefinition());
+    }
+
+    @DisplayName("Given a PartUsage, when editing with ':> superFlashlight', then flashlight should specialize superFlashlight")
+    @Test
+    public void testPartialDirectEditSubsetting() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, ":> superFlashlight");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(type -> type == flashlightExample.getSuperFlashLightPartUsage());
+    }
+
+    @DisplayName("Given a PartUsage, when editing with 'flashlight : Flashlight2', then the type of flashlight should be set to a newly created Flashlight2")
+    @Test
+    public void testDirectEditTypingWithCreation() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, "flashlight : Flashlight2");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.getType()).hasSize(1).allMatch(type -> "Flashlight2".equals(type.getName())
+                && type.getOwningNamespace() == flashlightExample.getP1()
+                && type instanceof PartDefinition);
+    }
+
+    @DisplayName("Given a PartUsage, when editing with 'flashlight :> superFlashlight2', then flashlight should subset a newly created part superFlashlight2")
+    @Test
+    public void testDirectEditSubsettingWithCreation() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, "flashlight :> superFlashlight2");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(type -> "superFlashlight2".equals(type.getName())
+                && type.getOwningNamespace() == flashlightExample.getP1()
+                && type instanceof PartUsage);
+    }
+
+    @DisplayName("Given a PartUsage, when editing with ': Flashlight2', then the type of flashlight should be set to a newly created Flashlight2")
+    @Test
+    public void testPartialDirectEditTypingWithCreation() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, ": Flashlight2");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.getType()).hasSize(1).allMatch(type -> "Flashlight2".equals(type.getName())
+                && type.getOwningNamespace() == flashlightExample.getP1()
+                && type instanceof PartDefinition);
+    }
+
+    @DisplayName("Given a PartUsage, when editing with ':> superFlashlight2', then flashlight should specialize a newly created part superFlashlight2")
+    @Test
+    public void testPartialDirectEditSubsettingWithCreation() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        this.doDirectEditOnNode(partUsage, ":> superFlashlight2");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.supertypes(true)).hasSize(1)
+                .allMatch(type -> "superFlashlight2".equals(type.getName())
+                        && type.getOwningNamespace() == flashlightExample.getP1()
+                        && type instanceof PartUsage);
+    }
+
+    @DisplayName("Given a PartUsage with a type, when editing with ':', then type should be removed")
+    @Test
+    public void testDirectEditRemoveType() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightType();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        assertThat(partUsage.getType()).hasSize(1);
+        this.doDirectEditOnNode(partUsage, ":");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.getType()).isEmpty();
+    }
+
+    @DisplayName("Given a PartUsage with a subsetting, when editing with ':>', then subsetting should be removed")
+    @Test
+    public void testDirectEditRemoveSubsetting() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightSubsetting();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        assertThat(partUsage.supertypes(true)).hasSize(1);
+        this.doDirectEditOnNode(partUsage, ":>");
+        assertThat(partUsage.getName()).isEqualTo(SmallFlashlightExample.FLASHLIGHT_PART_USAGE_NAME);
+        assertThat(partUsage.supertypes(true)).isEmpty();
+    }
+
+    @DisplayName("Given a PartUsage with a subsetting, when editing with 'flashlight2', then subsetting should not be removed and the name should change")
+    @Test
+    public void testPartialDirectEditName() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightSubsetting();
+
+        PartUsage partUsage = flashlightExample.getFlashlightPartUsage();
+        assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(t -> t == flashlightExample.getSuperFlashLightPartUsage());
+        this.doDirectEditOnNode(partUsage, "flashlight2");
+        assertThat(partUsage.getName()).isEqualTo("flashlight2");
+        assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(t -> t == flashlightExample.getSuperFlashLightPartUsage());
+    }
+
     @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '[4]', then its multiplicity is set")
     @Test
     public void testDirectEditPartUsageListItemWithMultiplicity() {
@@ -394,7 +586,10 @@ public class DiagramDirectEditListenerTest {
      * @return the created constraint
      */
     private ConstraintUsage createConstraintUsageWithContext() {
+        SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
+
         RequirementUsage requirementUsage = SysmlFactory.eINSTANCE.createRequirementUsage();
+        flashlightExample.addToRoot(requirementUsage);
         requirementUsage.setDeclaredName("myRequirement");
         // Create the constraint inside the requirement
         RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
@@ -411,7 +606,7 @@ public class DiagramDirectEditListenerTest {
         FeatureTyping referenceFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
         referenceUsage.getOwnedRelationship().add(referenceFeatureTyping);
         referenceFeatureTyping.setSpecific(referenceUsage);
-        referenceFeatureTyping.setType(this.createFlashlight());
+        referenceFeatureTyping.setType(flashlightExample.getFlashlightPartUsage());
         // Create the attribute of the requirement
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         requirementUsage.getOwnedRelationship().add(featureMembership);
@@ -432,28 +627,7 @@ public class DiagramDirectEditListenerTest {
      * @return the part representing the flashlight
      */
     private PartUsage createFlashlight() {
-        PartUsage flashlight = SysmlFactory.eINSTANCE.createPartUsage();
-        flashlight.setDeclaredName("flashlight");
-        FeatureMembership actualWeightMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        flashlight.getOwnedRelationship().add(actualWeightMembership);
-        actualWeightMembership.setVisibility(VisibilityKind.PUBLIC);
-        AttributeUsage actualWeight = SysmlFactory.eINSTANCE.createAttributeUsage();
-        actualWeightMembership.getOwnedRelatedElement().add(actualWeight);
-        actualWeight.setDeclaredName("actualWeight");
-        AttributeDefinition massDefinition = SysmlFactory.eINSTANCE.createAttributeDefinition();
-        massDefinition.setDeclaredName("Mass");
-        FeatureMembership numMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        massDefinition.getOwnedRelationship().add(numMembership);
-        numMembership.setVisibility(VisibilityKind.PUBLIC);
-        AttributeUsage num = SysmlFactory.eINSTANCE.createAttributeUsage();
-        numMembership.getOwnedRelatedElement().add(num);
-        num.setDeclaredName("num");
-        // Set the type of actualWeight to mass
-        FeatureTyping actualWeightTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-        actualWeight.getOwnedRelationship().add(actualWeightTyping);
-        actualWeightTyping.setSpecific(actualWeight);
-        actualWeightTyping.setType(massDefinition);
-        return flashlight;
+        return new SmallFlashlightExample().getFlashlightPartUsage();
     }
 
     private void doDirectEditOnNode(Element element, String input) {
@@ -482,8 +656,12 @@ public class DiagramDirectEditListenerTest {
 
     private void doDirectEdit(Element element, ParseTree tree) {
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());
+        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());
         walker.walk(listener, tree);
+        List<NamedProxy> unresolvedProxies = listener.resolveProxies();
+        if (!unresolvedProxies.isEmpty()) {
+            fail("Failing to resolve the follwing proxies : \n" + unresolvedProxies.stream().map(proxy -> proxy.nameToResolve() + " on " + proxy.context().getQualifiedName()).collect(joining("\n")));
+        }
     }
 
     private void hasIntegerValue(FeatureValue featureValue, int value) {

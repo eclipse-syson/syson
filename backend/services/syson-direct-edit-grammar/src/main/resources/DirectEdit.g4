@@ -79,7 +79,7 @@ referenceExpression :
 ;
 
 multiplicityExpression :
-	'[' (lowerBound=multiplicityExpressionMember '..') ? upperBound=multiplicityExpressionMember ']'
+	LBRACKET (lowerBound=multiplicityExpressionMember DOTDOT)? upperBound=multiplicityExpressionMember RBRACKET
 ;
 
 multiplicityPropExpression :
@@ -95,7 +95,7 @@ nonuniqueMultiplicityExpression :
 ;
 
 multiplicityExpressionMember :
-	Integer | '*'
+	Integer | STAR
 ;
 
 featureExpressions :
@@ -104,23 +104,23 @@ featureExpressions :
 ;
 
 subsettingExpression :
-	':>' qualifiedName
+	SUBSETS_OP qualifiedName
 ;
 
 redefinitionExpression :
-	':>>' qualifiedName
+	REDEFINES_OP qualifiedName
 ;
 
 typingExpression :
-	':' qualifiedName
+	COLON qualifiedName
 ;
 
 valueExpression :
-	'=' literalExpression ('[' measurementExpression ']')?
+	EQUALS literalExpression (LBRACKET measurementExpression RBRACKET)?
 ;
 
 featureValueExpression :
-	(DEFAULT_SUFFIX)? ('='|':=') literalExpression ('[' measurementExpression ']')?
+	(DEFAULT_SUFFIX)? (EQUALS|ASSIGN_OP) literalExpression (LBRACKET measurementExpression RBRACKET)?
 ;
 
 literalExpression : 
@@ -128,36 +128,55 @@ literalExpression :
 ;
 
 measurementExpression : 
-	~(']')+
+	~(RBRACKET)+
 ;
 
 // This rule is used as a top-level rule to parse constraint expressions.
 constraintExpression : 
-	operand operatorExpression operand
+	expression
 ;
 
+expression
+    : expression op=(POWER | STAR | DIV | MOD | XOR | PLUS | MINUS | PIPE | AMP | XOR_KEYWORD | DOTDOT | EQ | NEQ | EQ_STRICT | NEQ_STRICT | LT | GT | LTE | GTE ) expression       # BinaryOperationExpr
+    | primaryExpression                                   # PrimaryExpr
+    ;
+
+primaryExpression
+    : featureChainExpression
+    | bracketAccessExpression
+    | literalExpression
+    | LPAREN expression RPAREN
+    ;
+
+bracketAccessExpression
+    : primaryAtom LBRACKET sequenceExpressionList RBRACKET
+    ;
+
+primaryAtom
+    : featureChainExpression
+    | literalExpression
+    | LPAREN expression RPAREN
+    ;
+
+sequenceExpressionList
+    : expression (COMMA expression)*
+    ;
+
 operand :
-	(literalExpression ('[' measurementExpression ']')? | featureChainExpression)
+	(literalExpression (LBRACKET measurementExpression RBRACKET)? | featureChainExpression)
 ;
 
 featureChainExpression:
-	featureReference ('.' featureChainExpression)?
+	refName (DOT featureChainExpression)?
 ;
 
-featureReference :
-	~('<=' | '>=' | '<' | '>' | '==' | '.')+
-;
 
-operatorExpression : 
-	'<=' | '>=' | '<' | '>' | '=='
-;
-	
 transitionExpression :
 	(triggerExpression)? (guardExpression)? (effectExpression)?
 ;
 
 triggerExpression :
-	triggerExpressionName ('|' triggerExpressionName)*
+	triggerExpressionName (PIPE triggerExpressionName)*
 ;
 
 triggerExpressionName :
@@ -165,23 +184,84 @@ triggerExpressionName :
 ;
 
 guardExpression :
-	'[' valueExpression ']'
+	LBRACKET valueExpression RBRACKET
 ;
 
 effectExpression :
-	'/' qualifiedName (',' qualifiedName)*
+	SLASH qualifiedName (COMMA qualifiedName)*
 ;
 
+qualifiedName :
+	name (NAMESPACE_SEP name)*
+;
+
+shortName :
+	LT name? GT
+;
+
+refName :
+	REFNAME | ESPACED_NAME
+	;
+	
+
+name :
+	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
+	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
+	// handle the input.
+	~(COLON | SUBSETS_OP | NAMESPACE_SEP | REDEFINES_OP | EQUALS | ASSIGN_OP | LBRACKET | DEFAULT_SUFFIX | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
+;
+
+// LEXER RULES
+
+ESPACED_NAME : '\'' (~['\r\n])* '\'' ;
+
+// Whitespace
 WS :
 	[ \t\r\n\u000C]+ -> skip
 ;
 
+// Operators and punctuation
+LBRACKET : '[';
+RBRACKET : ']';
+LPAREN : '(';
+RPAREN : ')';
+LT : '<';
+GT : '>';
+COMMA : ',';
+DOT : '.';
+COLON : ':';
+EQUALS : '=';
+PLUS : '+';
+MINUS : '-';
+STAR : '*';
+DIV : '/';
+MOD : '%';
+PIPE : '|';
+AMP : '&';
+SLASH : '/';
+SINGLE_QUOTE : '\'';
+
+// Multi-character operators
+DOTDOT : '..';
+NAMESPACE_SEP : '::';
+SUBSETS_OP : ':>';
+REDEFINES_OP : ':>>';
+ASSIGN_OP : ':=';
+POWER : '**';
+EQ : '==';
+NEQ : '!=';
+EQ_STRICT : '===';
+NEQ_STRICT : '!==';
+LTE : '<=';
+GTE : '>=';
+
+// Literals
 Boolean :
 	TRUE|FALSE
 ;
 
 Integer :
-	[0-9]+
+	('-')?[0-9]+
 ;
 
 Real :
@@ -192,24 +272,9 @@ DoubleQuotedString :
 	'"' (~[\r\n"] | '""')* '"'
 ;
 
-qualifiedName :
-	name ('::' name)*
-;
-
-shortName :
-	'<' name? '>'
-;
-
-name :
-	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
-	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
-	// handle the input.
-	~(':' | ':>' | '::>' | ':>>' | '=' | ':=' | '[' | DEFAULT_SUFFIX | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
-;
 
 
 // Reserved Keywords
-
 ABOUT : 'about';
 ABSTRACT : 'abstract';
 ABSTRACT_PREFIX : ABSTRACT WS;
@@ -321,7 +386,12 @@ VARIATION : 'variation';
 VARIATION_PREFIX : VARIATION WS;
 VARIANT : 'variant';
 VARIANT_PREFIX : VARIANT WS;
-XOR: 'xor';
+XOR_KEYWORD: 'xor';
+
+REFNAME :
+	[a-zA-Z_][a-zA-Z_0-9\-]*
+;
+
 
 // This rule is required to make sure the parser rule "name" can match any input (since it is defined as a negation we 
 // need a dedicated rule to match anything).
