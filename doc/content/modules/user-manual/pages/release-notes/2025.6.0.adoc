@@ -59,6 +59,11 @@ image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%
 
 - In the _Details_ view, fix an issue that prevents adding a new value to a multi-valued reference on a reference widget.
 
+- `ManageVisibility` node action may now be displayed from the _General View_ on `Definition` and `Usage`  graphical nodes.
+This node action open a modal that can be used to reveal or hide the graphical node children's.
+
+image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
+
 == Improvements
 
 - In _General View_ diagram, `ConnectionDefinition` are now also represented as graphical elements:
