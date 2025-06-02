@@ -20,6 +20,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
@@ -46,7 +47,7 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
-import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -71,7 +72,6 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getViewUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("101")
                 .defaultWidthExpression("300")
                 .domainType(domainType)
@@ -100,11 +100,11 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     }
 
     protected NodeStyleDescription createViewFrameNodeStyle() {
-
-        SysMLViewFrameNodeStyleDescription nodeStyleDescription = SysMLCustomnodesFactory.eINSTANCE.createSysMLViewFrameNodeStyleDescription();
+        var nodeStyleDescription = SysMLCustomnodesFactory.eINSTANCE.createSysMLViewFrameNodeStyleDescription();
         nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
         nodeStyleDescription.setBorderRadius(10);
         nodeStyleDescription.setBackground(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
+        nodeStyleDescription.setChildrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build());
         return nodeStyleDescription;
     }
 
@@ -155,8 +155,9 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .toolSections(this.createToolSections(cache))
                 .nodeTools(nodesWithoutSection.toArray(NodeTool[]::new))
+                .quickAccessTools(this.getDeleteFromDiagramTool())
+                .toolSections(this.createToolSections(cache))
                 .build();
     }
 
@@ -211,15 +212,15 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, "selectedNode")));
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, Node.SELECTED_NODE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
-        var parentViewExpression = "aql:selectedNode";
+        var parentViewExpression = AQLConstants.AQL + Node.SELECTED_NODE;
         if (SysmlPackage.eINSTANCE.getComment().equals(eClass) || SysmlPackage.eINSTANCE.getDocumentation().equals(eClass) || SysmlPackage.eINSTANCE.getTextualRepresentation().equals(eClass)) {
             // when a comment, documentation or textualRepresentation is created, the new node should be represented outside
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT));
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, IDiagramContext.DIAGRAM_CONTEXT));
         }
 
         var createView = this.diagramBuilderHelper.newCreateView()

@@ -13,11 +13,13 @@
 package org.eclipse.syson.sysmlcustomnodes.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
@@ -37,6 +39,8 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
  * Size</em>}</li>
  * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl#getBorderLineStyle
  * <em>Border Line Style</em>}</li>
+ * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl#getChildrenLayoutStrategy
+ * <em>Children Layout Strategy</em>}</li>
  * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLViewFrameNodeStyleDescriptionImpl#getBackground
  * <em>Background</em>}</li>
  * </ul>
@@ -46,23 +50,55 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLViewFrameNodeStyleDescription;
 public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container implements SysMLViewFrameNodeStyleDescription {
 
     /**
+     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderColor()
+     * @generated
+     * @ordered
+     */
+    protected UserColor borderColor;
+
+    /**
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
+
+    /**
+     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBorderRadius()
+     * @generated
+     * @ordered
+     */
+    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
+
+    /**
+     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBorderSize()
+     * @generated
+     * @ordered
+     */
+    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -72,50 +108,34 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
      * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
-    /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderColor()
-     */
-    protected UserColor borderColor;
-    /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderRadius()
-     */
-    protected int borderRadius = BORDER_RADIUS_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBorderSize()
-     */
-    protected int borderSize = BORDER_SIZE_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getChildrenLayoutStrategy()
+     * @generated
+     * @ordered
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
 
     /**
      * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBackground()
      * @generated
      * @ordered
-     * @see #getBackground()
      */
     protected UserColor background;
 
@@ -253,6 +273,58 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public LayoutStrategyDescription getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
+        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
+        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
+                    oldChildrenLayoutStrategy, newChildrenLayoutStrategy);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy) {
+        if (newChildrenLayoutStrategy != this.childrenLayoutStrategy) {
+            NotificationChain msgs = null;
+            if (this.childrenLayoutStrategy != null)
+                msgs = ((InternalEObject) this.childrenLayoutStrategy).eInverseRemove(this,
+                        EOPPOSITE_FEATURE_BASE - SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            if (newChildrenLayoutStrategy != null)
+                msgs = ((InternalEObject) newChildrenLayoutStrategy).eInverseAdd(this,
+                        EOPPOSITE_FEATURE_BASE - SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, null, msgs);
+            msgs = this.basicSetChildrenLayoutStrategy(newChildrenLayoutStrategy, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, newChildrenLayoutStrategy,
+                    newChildrenLayoutStrategy));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public UserColor getBackground() {
         if (this.background != null && this.background.eIsProxy()) {
             InternalEObject oldBackground = (InternalEObject) this.background;
@@ -283,6 +355,20 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
      *
      * @generated
      */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.basicSetChildrenLayoutStrategy(null, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public UserColor basicGetBackground() {
         return this.background;
     }
@@ -305,6 +391,8 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getBorderSize();
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.getChildrenLayoutStrategy();
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 if (resolve)
                     return this.getBackground();
@@ -333,6 +421,9 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle((LineStyle) newValue);
                 return;
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
+                return;
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
@@ -349,7 +440,7 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                this.setBorderColor(null);
+                this.setBorderColor((UserColor) null);
                 return;
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -360,8 +451,11 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                return;
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND:
-                this.setBackground(null);
+                this.setBackground((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -383,6 +477,8 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
                 return this.borderSize != BORDER_SIZE_EDEFAULT;
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
+            case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
+                return this.childrenLayoutStrategy != null;
             case SysMLCustomnodesPackage.SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 return this.background != null;
         }
@@ -399,14 +495,15 @@ public class SysMLViewFrameNodeStyleDescriptionImpl extends MinimalEObjectImpl.C
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (borderRadius: " +
-                this.borderRadius +
-                ", borderSize: " +
-                this.borderSize +
-                ", borderLineStyle: " +
-                this.borderLineStyle +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (borderRadius: ");
+        result.append(this.borderRadius);
+        result.append(", borderSize: ");
+        result.append(this.borderSize);
+        result.append(", borderLineStyle: ");
+        result.append(this.borderLineStyle);
+        result.append(')');
+        return result.toString();
     }
 
 } // SysMLViewFrameNodeStyleDescriptionImpl

@@ -32,7 +32,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 
-import { SysMLViewFrameNodeData, GQLSysMLViewFrameNodeStyle } from './SysMLViewFrameNode.types';
+import { GQLSysMLViewFrameNodeStyle, SysMLViewFrameNodeData } from './SysMLViewFrameNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -96,7 +96,7 @@ const toViewFrameNode = (
     labelEditable,
     isNew,
     resizedByUser,
-    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,

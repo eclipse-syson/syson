@@ -76,6 +76,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }

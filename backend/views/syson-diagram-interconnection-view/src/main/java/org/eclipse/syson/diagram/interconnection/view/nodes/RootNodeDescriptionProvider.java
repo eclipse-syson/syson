@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -66,7 +65,6 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("400")
                 .defaultWidthExpression("700")
                 .domainType(domainType)
@@ -126,6 +124,7 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
                 .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .childrenLayoutStrategy(this.diagramBuilderHelper.newFreeFormLayoutStrategyDescription().build())
                 .build();
     }
 

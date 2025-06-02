@@ -46,6 +46,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -280,11 +281,18 @@ public class ViewNodeService {
         if (element instanceof AnnotatingElement ae && diagramContext != null && editingContext != null) {
             EList<Element> annotatedElements = ae.getAnnotatedElement();
             IDiagramElement matchingDiagramElement = null;
-            for (Node node : diagramContext.getDiagram().getNodes()) {
-                matchingDiagramElement = this.getOneMatchingAnnotatedNodes(node, annotatedElements, diagramContext, editingContext);
-                if (matchingDiagramElement != null) {
-                    displayAnnotatingNode = true;
-                    break;
+
+            // specific case of an AnnotatingNode related to the ViewUsage corresponding to the diagram or the container
+            // of the ViewUsage.
+            displayAnnotatingNode = this.isAnnotatingNodeOnRoot(diagramContext, editingContext, annotatedElements);
+
+            if (!displayAnnotatingNode) {
+                for (Node node : diagramContext.getDiagram().getNodes()) {
+                    matchingDiagramElement = this.getOneMatchingAnnotatedNode(node, annotatedElements, diagramContext, editingContext);
+                    if (matchingDiagramElement != null) {
+                        displayAnnotatingNode = true;
+                        break;
+                    }
                 }
             }
             if (!displayAnnotatingNode) {
@@ -303,6 +311,24 @@ public class ViewNodeService {
         return displayAnnotatingNode;
     }
 
+    private boolean isAnnotatingNodeOnRoot(IDiagramContext diagramContext, IEditingContext editingContext, EList<Element> annotatedElements) {
+        boolean isAnnotatingNodeOnRoot = false;
+        String diagramTargetObjectId = diagramContext.getDiagram().getTargetObjectId();
+        Element diagramTargetObject = this.objectSearchService.getObject(editingContext, diagramTargetObjectId).stream()
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (diagramTargetObject instanceof ViewUsage viewUsage) {
+            if (annotatedElements.contains(viewUsage)) {
+                isAnnotatingNodeOnRoot = true;
+            } else {
+                isAnnotatingNodeOnRoot = annotatedElements.contains(viewUsage.getOwner());
+            }
+        }
+        return isAnnotatingNodeOnRoot;
+    }
+
     private boolean isReferencingPerformActionUsage(PerformActionUsage pau) {
         // the given PerformActionUsage is a referencing PerformActionUsage if it contains a reference subsetting
         // pointing to an action.
@@ -310,14 +336,14 @@ public class ViewNodeService {
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage;
     }
 
-    private Edge getOneMatchingAnnotatedEdge(Edge edge, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    private Edge getOneMatchingAnnotatedEdge(Edge edge, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
         Edge matchingAnnotatedEdge = null;
         Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
         if (semanticNodeOpt.isPresent()) {
             if (annotatedElements.contains(semanticNodeOpt.get())) {
-                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream() //
+                boolean isDeletingAnnotatingEdge = diagramContext.getViewDeletionRequests().stream()
                         .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), edge.getId()));
-                if (!isDeletingAnnotatingNode) {
+                if (!isDeletingAnnotatingEdge) {
                     // annotating edge is present and it is not planned to be removed
                     matchingAnnotatedEdge = edge;
                 }
@@ -328,12 +354,12 @@ public class ViewNodeService {
         return matchingAnnotatedEdge;
     }
 
-    private Node getOneMatchingAnnotatedNodes(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    private Node getOneMatchingAnnotatedNode(Node node, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
         Node matchingAnnotatedNode = null;
         Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
         if (semanticNodeOpt.isPresent()) {
             if (annotatedElements.contains(semanticNodeOpt.get())) {
-                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream() //
+                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream()
                         .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), node.getId()));
                 if (!isDeletingAnnotatingNode) {
                     // annotating node is present and it is not planned to be removed
@@ -343,14 +369,14 @@ public class ViewNodeService {
                 return matchingAnnotatedNode;
             }
         }
-        matchingAnnotatedNode = this.geFirstMatchingChildAnnotatedNode(node, annotatedElements, diagramContext, editingContext);
+        matchingAnnotatedNode = this.getFirstMatchingChildAnnotatedNode(node, annotatedElements, diagramContext, editingContext);
         return matchingAnnotatedNode;
     }
 
-    private Node geFirstMatchingChildAnnotatedNode(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    private Node getFirstMatchingChildAnnotatedNode(Node node, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
         List<Node> childrenNodes = Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream()).toList();
         for (Node childNode : childrenNodes) {
-            Node matchingChildAnnotatedNode = this.getOneMatchingAnnotatedNodes(childNode, annotatedElements, diagramContext, editingContext);
+            Node matchingChildAnnotatedNode = this.getOneMatchingAnnotatedNode(childNode, annotatedElements, diagramContext, editingContext);
             if (matchingChildAnnotatedNode != null) {
                 return matchingChildAnnotatedNode;
             }

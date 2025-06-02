@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
@@ -76,7 +77,6 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
                 .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression("150")
@@ -126,14 +126,12 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
         List<NodeDescription> growableNodes = new ArrayList<>();
         nodeDescription.getReusedChildNodeDescriptions().stream()
-                .filter(nodeDesc -> nodeDesc.getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)
+                .filter(nodeDesc -> nodeDesc.getStyle().getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)
                 .forEach(growableNodes::add);
-
-        ListLayoutStrategyDescription layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
-                .areChildNodesDraggableExpression("false")
-                .growableNodes(growableNodes.toArray(NodeDescription[]::new))
-                .build();
-        nodeDescription.setChildrenLayoutStrategy(layoutStrategy);
+        var childrenLayoutStrategy = nodeDescription.getStyle().getChildrenLayoutStrategy();
+        if (childrenLayoutStrategy instanceof ListLayoutStrategyDescription listLayout) {
+            listLayout.getGrowableNodes().addAll(growableNodes);
+        }
     }
 
     private InsideLabelDescription createInsideLabelDescription() {
@@ -156,10 +154,16 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
     }
 
     private NodeStyleDescription createChildUsageNodeStyle() {
+        var layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("false")
+                .growableNodes(new ArrayList<>().toArray(NodeDescription[]::new))
+                .build();
+
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(10)
                 .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .childrenLayoutStrategy(layoutStrategy)
                 .build();
     }
 
@@ -191,9 +195,10 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .deleteTool(deleteTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
-                .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .edgeTools(this.getEdgeTools(nodeDescription, cache).toArray(EdgeTool[]::new))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
+                .quickAccessTools(this.getDeleteFromDiagramTool())
+                .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }
 
@@ -225,7 +230,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram", List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT,
-                        "convertedNodes")));
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")

@@ -50,6 +50,7 @@ describe('Details View Tests', () => {
         'Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.',
         { retries: 3 },
         () => {
+          explorer.select(batmobile.getRootElementLabel());
           explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
           explorer.select('part4');
           details.getGroup('Part Properties').should('be.visible');

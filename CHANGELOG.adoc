@@ -8,9 +8,24 @@
 
 === Breaking changes
 
+- Some APIs have changed, impacting downstream applications:
+
+* `org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService`
+** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+* `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment`
+** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+* `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService`
+** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+* `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate`
+** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
+
 === Dependency update
 
-- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.6]
+- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.7]
 - [releng] Switch `@xyflow/react` to `12.6.0`
 - [releng] Switch `@mui/material` to `7.0.2`
 - [releng] Switch `@mui/icons-material` to `7.0.2`

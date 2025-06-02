@@ -189,7 +189,7 @@ public class ViewToolService extends ToolService {
             if (parentViewCreationRequest == null) {
                 creationRequests.add(this.createView(childElement, editingContext, diagramContext, null, convertedNodes));
             } else {
-                if (parentNodeDescription.getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription) {
+                if (parentNodeDescription.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription) {
                     // The parent node has compartments, we want to add elements inside them if possible.
                     List<org.eclipse.sirius.components.view.diagram.NodeDescription> allChildren = Stream
                             .concat(parentNodeDescription.getChildrenDescriptions().stream(), parentNodeDescription.getReusedChildNodeDescriptions().stream()).toList();
@@ -284,7 +284,7 @@ public class ViewToolService extends ToolService {
             if (selectedNode == null) {
                 creationRequests.add(this.createView(childElement, editingContext, diagramContext, selectedNode, convertedNodes));
             } else {
-                if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                if (selectedNode.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
                     for (Node compartmentNode : selectedNode.getChildNodes()) {
 
                         NodeDescription compartmentNodeDescription = convertedNodes.values().stream()

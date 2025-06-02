@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
@@ -126,7 +128,6 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("101")
                 .defaultWidthExpression("200")
                 .domainType(domainType)
@@ -175,6 +176,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
         nodeStyleDescription.setBorderRadius(0);
         nodeStyleDescription.setBackground(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
+        nodeStyleDescription.setChildrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build());
         return nodeStyleDescription;
     }
 
@@ -207,6 +209,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .toolSections(this.createToolSections(cache))
                 .nodeTools(nodesWithoutSection.toArray(NodeTool[]::new))
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .build();
     }
@@ -219,7 +222,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "convertedNodes")));
+                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT,
+                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
@@ -275,7 +279,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         if (SysmlPackage.eINSTANCE.getComment().equals(eClass)) {
             // when a comment is Created from a Package Node, the new Comment node should be represented outside of the
             // Package
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT));
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of(Node.SELECTED_NODE, IDiagramContext.DIAGRAM_CONTEXT));
         }
 
         var createView = this.diagramBuilderHelper.newCreateView()

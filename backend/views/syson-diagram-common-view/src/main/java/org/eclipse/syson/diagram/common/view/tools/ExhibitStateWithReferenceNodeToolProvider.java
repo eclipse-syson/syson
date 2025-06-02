@@ -17,12 +17,14 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -75,12 +77,13 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
-                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentViewExpression", "selectedNode"))
+                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentViewExpression", Node.SELECTED_NODE))
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("newInstance", "diagramContext", "editingContext", "convertedNodes")));
+                .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                        List.of("newInstance", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("newInstance", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));

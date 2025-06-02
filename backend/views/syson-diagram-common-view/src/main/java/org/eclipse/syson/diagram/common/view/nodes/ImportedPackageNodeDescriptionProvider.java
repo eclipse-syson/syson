@@ -122,6 +122,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.createToolSections(cache))
                 .build();
     }

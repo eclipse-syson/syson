@@ -185,13 +185,12 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
             nodeDescription.getReusedBorderNodeDescriptions().addAll(this.getReusedBorderNodes(cache));
             List<NodeDescription> growableNodes = new ArrayList<>();
             nodeDescription.getReusedChildNodeDescriptions().stream()
-                    .filter(nodeDesc -> nodeDesc.getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)
+                    .filter(nodeDesc -> nodeDesc.getStyle().getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)
                     .forEach(growableNodes::add);
-            ListLayoutStrategyDescription layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
-                    .areChildNodesDraggableExpression("false")
-                    .growableNodes(growableNodes.toArray(NodeDescription[]::new))
-                    .build();
-            nodeDescription.setChildrenLayoutStrategy(layoutStrategy);
+            var childrenLayoutStrategy = nodeDescription.getStyle().getChildrenLayoutStrategy();
+            if (childrenLayoutStrategy instanceof ListLayoutStrategyDescription listLayout) {
+                listLayout.getGrowableNodes().addAll(growableNodes);
+            }
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
         });
     }
@@ -229,10 +228,16 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     }
 
     private NodeStyleDescription createUsageNodeStyle() {
+        var layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("false")
+                .growableNodes(new ArrayList<>().toArray(NodeDescription[]::new))
+                .build();
+
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(10)
                 .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .childrenLayoutStrategy(layoutStrategy)
                 .build();
     }
 
@@ -268,6 +273,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

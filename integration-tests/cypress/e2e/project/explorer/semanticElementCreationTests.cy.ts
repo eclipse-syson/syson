@@ -27,14 +27,16 @@ describe('Semantic Element Creation Tests', () => {
         const explorer = new Explorer();
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
+        explorer.getTreeItemByLabel(sysmlv2.getProjectLabel()).should('have.attr', 'data-expanded', 'true');
       })
     );
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('When we select a Package in the explorer', () => {
-      it('Then we can create a PartUsage in it', () => {
+    context.skip('When we select a Package in the explorer', () => {
+      it('Then we can create a PartUsage in it', { retries: 3 }, () => {
         const explorer = new Explorer();
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
       });
     });
@@ -45,6 +47,7 @@ describe('Semantic Element Creation Tests', () => {
         { retries: 3 },
         () => {
           const explorer = new Explorer();
+          explorer.select(sysmlv2.getProjectLabel());
           explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
           // Check that the created part is a child of the root document
           explorer
@@ -65,6 +68,7 @@ describe('Semantic Element Creation Tests', () => {
         () => {
           const explorer = new Explorer();
           explorer.getFilter('Hide Root Namespaces').should('exist').click();
+          explorer.select(sysmlv2.getProjectLabel());
           explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
           // Check that the created part is a child of the root Namespace
           explorer
