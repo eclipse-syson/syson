@@ -342,6 +342,78 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBinaryOperationExpr(DirectEditParser.BinaryOperationExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOperationExpr(DirectEditParser.BinaryOperationExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrimaryExpr(DirectEditParser.PrimaryExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimaryExpr(DirectEditParser.PrimaryExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrimaryExpression(DirectEditParser.PrimaryExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimaryExpression(DirectEditParser.PrimaryExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBracketAccessExpression(DirectEditParser.BracketAccessExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBracketAccessExpression(DirectEditParser.BracketAccessExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrimaryAtom(DirectEditParser.PrimaryAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimaryAtom(DirectEditParser.PrimaryAtomContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSequenceExpressionList(DirectEditParser.SequenceExpressionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSequenceExpressionList(DirectEditParser.SequenceExpressionListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOperand(DirectEditParser.OperandContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -361,30 +433,6 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFeatureReference(DirectEditParser.FeatureReferenceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFeatureReference(DirectEditParser.FeatureReferenceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOperatorExpression(DirectEditParser.OperatorExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOperatorExpression(DirectEditParser.OperatorExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -469,6 +517,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitShortName(DirectEditParser.ShortNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRefName(DirectEditParser.RefNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRefName(DirectEditParser.RefNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

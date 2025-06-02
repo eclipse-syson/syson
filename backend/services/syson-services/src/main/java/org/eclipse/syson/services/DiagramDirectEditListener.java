@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import java.text.MessageFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,12 +31,15 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditBaseListener;
 import org.eclipse.syson.services.grammars.DirectEditParser.AbstractPrefixExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.BinaryOperationExprContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.BracketAccessExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ConstraintExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.DerivedPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.DirectionPrefixExpressionContext;
@@ -50,7 +55,6 @@ import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressi
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.NodeExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.NonuniqueMultiplicityExpressionContext;
-import org.eclipse.syson.services.grammars.DirectEditParser.OperandContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.OrderedMultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ReadonlyPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
@@ -100,16 +104,25 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.util.NamedProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.
+ * <p>
+ * <br>
+ * Be aware that this parser may create some proxies that need to be handled in a second step by calling the method
+ * {@link #resolveProxies()}</br>
+ * </p>
  *
  * @author arichard
  */
 public class DiagramDirectEditListener extends DirectEditBaseListener {
+
+    private static final int NB_RESOLUTION_TRY = 10;
 
     private final Logger logger = LoggerFactory.getLogger(DiagramDirectEditListener.class);
 
@@ -124,6 +137,13 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     private final ElementInitializerSwitch elementInitializer;
 
     private final Map<TransitionFeatureKind, Boolean> visitedTransitionFeatures;
+
+    private final List<NamedProxy> proxiesToResolve = new ArrayList<>();
+
+    /**
+     * The evaluation stack used to hold temporary results.
+     */
+    private final Deque<Expression> expressionStack = new ArrayDeque<>();
 
     private List<String> options;
 
@@ -242,6 +262,16 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         super.exitAbstractPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitBinaryOperationExpr(BinaryOperationExprContext ctx) {
+        this.handleBinaryExpression(ctx.op.getText());
+    }
+
+    @Override
+    public void exitBracketAccessExpression(BracketAccessExpressionContext ctx) {
+        this.handleBinaryExpression("[");
     }
 
     @Override
@@ -399,38 +429,70 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     public void exitConstraintExpression(ConstraintExpressionContext ctx) {
         if (this.element instanceof ConstraintUsage constraintUsage) {
             constraintUsage.getOwnedRelationship().clear();
-            if (ctx.operand(0) != null && !ctx.operand(0).getText().isBlank()) {
+            if (ctx.expression() != null && !this.expressionStack.isEmpty()) {
                 ResultExpressionMembership resultExpressionMembership = SysmlFactory.eINSTANCE.createResultExpressionMembership();
-                OperatorExpression operatorExpression = SysmlFactory.eINSTANCE.createOperatorExpression();
-                resultExpressionMembership.getOwnedRelatedElement().add(operatorExpression);
-                operatorExpression.setOperator(ctx.operatorExpression().getText());
+                Expression expression = this.expressionStack.pop();
+                resultExpressionMembership.getOwnedRelatedElement().add(expression);
+                constraintUsage.getOwnedRelationship().add(resultExpressionMembership);
+            }
+        }
+    }
 
-                Element leftOperandElement = this.handleOperandExpression(ctx.operand(0), constraintUsage);
-                if (leftOperandElement != null) {
-                    ParameterMembership p1 = SysmlFactory.eINSTANCE.createParameterMembership();
-                    operatorExpression.getOwnedRelationship().add(p1);
-                    Feature x = SysmlFactory.eINSTANCE.createFeature();
-                    p1.getOwnedRelatedElement().add(x);
-                    x.setDeclaredName("x");
-                    x.setDirection(FeatureDirectionKind.IN);
-                    FeatureValue xValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                    x.getOwnedRelationship().add(xValue);
-                    xValue.getOwnedRelatedElement().add(leftOperandElement);
-                    // Add the expression in the constraint only if at least one operand has been correctly parsed.
-                    constraintUsage.getOwnedRelationship().add(resultExpressionMembership);
-                }
+    @Override
+    public void exitFeatureChainExpression(FeatureChainExpressionContext ctx) {
+        // Only handle top level featureChainExpressions. Nested featureChainExpressions will be handle by the root expression
+        if (!(ctx.parent instanceof FeatureChainExpressionContext)) {
+            if (ctx.featureChainExpression() == null) {
+                // Only create a feature reference
+                FeatureReferenceExpression referenceExpression = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+                Membership xFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
+                referenceExpression.getOwnedRelationship().add(xFeatureReferenceMembership);
 
-                if (ctx.operand().get(1) != null && !ctx.operand(1).getText().isBlank()) {
-                    Element rightOperandElement = this.handleOperandExpression(ctx.operand(1), constraintUsage);
-                    ParameterMembership p2 = SysmlFactory.eINSTANCE.createParameterMembership();
-                    operatorExpression.getOwnedRelationship().add(p2);
-                    Feature y = SysmlFactory.eINSTANCE.createFeature();
-                    p2.getOwnedRelatedElement().add(y);
-                    y.setDeclaredName("y");
-                    y.setDirection(FeatureDirectionKind.IN);
-                    FeatureValue yValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                    y.getOwnedRelationship().add(yValue);
-                    yValue.getOwnedRelatedElement().add(rightOperandElement);
+                this.createProxy(xFeatureReferenceMembership, SysmlPackage.eINSTANCE.getMembership_MemberElement(), ctx.refName().getText());
+                this.pushExpression(referenceExpression);
+            } else {
+                // This is a chained feature access, we need to create the corresponding FeatureChainExpression.
+                FeatureChainExpression featureChainExpression = SysmlFactory.eINSTANCE.createFeatureChainExpression();
+
+                ParameterMembership parameterMembership = SysmlFactory.eINSTANCE.createParameterMembership();
+                featureChainExpression.getOwnedRelationship().add(parameterMembership);
+                Feature source = SysmlFactory.eINSTANCE.createFeature();
+                parameterMembership.getOwnedRelatedElement().add(source);
+                source.setDeclaredName("source");
+                source.setDirection(FeatureDirectionKind.IN);
+                FeatureValue sourceValue = SysmlFactory.eINSTANCE.createFeatureValue();
+                source.getOwnedRelationship().add(sourceValue);
+
+                FeatureReferenceExpression xFeatureReference = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+                sourceValue.getOwnedRelatedElement().add(xFeatureReference);
+                Membership xFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
+                xFeatureReference.getOwnedRelationship().add(xFeatureReferenceMembership);
+
+                this.createProxy(xFeatureReferenceMembership, SysmlPackage.eINSTANCE.getMembership_MemberElement(), ctx.refName().getText());
+                this.pushExpression(featureChainExpression);
+
+                FeatureChainExpressionContext firstExpressionContext = ctx.featureChainExpression();
+                if (firstExpressionContext.featureChainExpression() == null) {
+                    // The chained feature access contains a single element, this is a special case that is handled with
+                    // a Membership added in the FeatureChainExpression.
+                    Membership firstChainFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
+                    featureChainExpression.getOwnedRelationship().add(firstChainFeatureReferenceMembership);
+                    this.createProxy(firstChainFeatureReferenceMembership, SysmlPackage.eINSTANCE.getMembership_MemberElement(), ctx.featureChainExpression().refName().getText());
+                } else {
+                    // The chained feature access contains multiple elements, we create FeatureChainings to represent
+                    // them.
+                    OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    featureChainExpression.getOwnedRelationship().add(owningMembership);
+                    Feature feature = SysmlFactory.eINSTANCE.createFeature();
+                    FeatureChainExpressionContext currentFeatureChainContext = firstExpressionContext;
+                    while (currentFeatureChainContext != null) {
+                        FeatureChaining featureChaining = SysmlFactory.eINSTANCE.createFeatureChaining();
+                        this.createProxy(featureChaining, SysmlPackage.eINSTANCE.getFeatureChaining_ChainingFeature(), currentFeatureChainContext.refName().getText());
+                        feature.getOwnedRelationship().add(featureChaining);
+
+                        currentFeatureChainContext = currentFeatureChainContext.featureChainExpression();
+                    }
+                    owningMembership.getOwnedRelatedElement().add(feature);
                 }
             }
         }
@@ -455,6 +517,15 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             this.handleSubsetting(ctx, subsettingUsage);
         } else if (this.element instanceof Definition subclassificationDef) {
             this.handleSubclassification(ctx, subclassificationDef);
+        }
+    }
+
+    @Override
+    public void exitLiteralExpression(LiteralExpressionContext ctx) {
+        super.exitLiteralExpression(ctx);
+        LiteralExpression result = this.createLiteralExpression(ctx);
+        if (result != null) {
+            this.pushExpression(result);
         }
     }
 
@@ -587,6 +658,30 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     /**
+     * Resolve all the proxies created during parsing process.
+     *
+     * @return a list of all unresolved proxies.
+     *
+     */
+    public List<NamedProxy> resolveProxies() {
+        ListIterator<NamedProxy> proxyIterator = this.proxiesToResolve.listIterator();
+        int tryNb = 0;
+        while (proxyIterator.hasNext() && tryNb < NB_RESOLUTION_TRY) {
+            if (this.resolveProxy(proxyIterator.next())) {
+                proxyIterator.remove();
+            }
+        }
+
+        List<NamedProxy> unresolvedProxies = this.proxiesToResolve.stream().toList();
+        this.proxiesToResolve.clear();
+        return unresolvedProxies;
+    }
+
+    private void createProxy(Element context, EReference ref, String name) {
+        this.proxiesToResolve.add(new NamedProxy(context, ref, name));
+    }
+
+    /**
      * Returns the full text contained in the provided {@code ctx}.
      * <p>
      * The full text includes whitespaces that are skipped by the lexer. It is used to handle KerML unrestricted names
@@ -607,119 +702,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private Element handleOperandExpression(OperandContext operandContext, Namespace context) {
-        Element result = null;
-        if (operandContext.featureChainExpression() != null && !operandContext.featureChainExpression().getText().isBlank()) {
-            result = this.handleFeatureChainExpression(operandContext.featureChainExpression(), context);
-        } else if (operandContext.literalExpression() != null && !operandContext.literalExpression().getText().isBlank()) {
-            LiteralExpression literalExpression = this.createLiteralExpression(operandContext.literalExpression());
-            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(operandContext.measurementExpression(), context, literalExpression);
-            if (optMeasurementOperator.isPresent()) {
-                result = optMeasurementOperator.get();
-            } else {
-                result = literalExpression;
-            }
-        }
-
-        return result;
-
-    }
-
-    private Element handleFeatureChainExpression(FeatureChainExpressionContext featureChainExpressionContext, Namespace context) {
-        Element result = null;
-        Element baseElement = Optional.ofNullable(context.resolve(featureChainExpressionContext.featureReference().getText()))
-                .map(Membership::getMemberElement)
-                .orElse(null);
-        if (baseElement == null) {
-            this.logMissingFeatureReference(this.getFullText(featureChainExpressionContext.featureReference()), context.getOwningNamespace());
-        } else {
-            FeatureReferenceExpression xFeatureReference = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
-            Membership xFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
-            xFeatureReference.getOwnedRelationship().add(xFeatureReferenceMembership);
-            xFeatureReferenceMembership.setMemberElement(baseElement);
-            if (featureChainExpressionContext.featureChainExpression() == null) {
-                // This is a simple feature access, there is no chained expressions.
-                result = xFeatureReference;
-            } else {
-                // This is a chained feature access, we need to create the corresponding FeatureChainExpression.
-                FeatureChainExpression featureChainExpression = SysmlFactory.eINSTANCE.createFeatureChainExpression();
-                result = featureChainExpression;
-
-                ParameterMembership parameterMembership = SysmlFactory.eINSTANCE.createParameterMembership();
-                featureChainExpression.getOwnedRelationship().add(parameterMembership);
-                Feature source = SysmlFactory.eINSTANCE.createFeature();
-                parameterMembership.getOwnedRelatedElement().add(source);
-                source.setDeclaredName("source");
-                source.setDirection(FeatureDirectionKind.IN);
-                FeatureValue sourceValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                source.getOwnedRelationship().add(sourceValue);
-                sourceValue.getOwnedRelatedElement().add(xFeatureReference);
-
-                if (featureChainExpressionContext.featureChainExpression().featureChainExpression() == null) {
-                    // The chained feature access contains a single element, this is a special case that is handled with
-                    // a Membership added in the FeatureChainExpression.
-                    if (baseElement instanceof Namespace namespace) {
-                        this.getNamespaceMember(namespace, featureChainExpressionContext.featureChainExpression().featureReference().getText())
-                                .ifPresentOrElse(member -> {
-                                    Membership featureChainMembership = SysmlFactory.eINSTANCE.createMembership();
-                                    featureChainExpression.getOwnedRelationship().add(featureChainMembership);
-                                    featureChainMembership.setMemberElement(member);
-                                }, () -> {
-                                    this.logMissingFeatureReference(this.getFullText(featureChainExpressionContext.featureChainExpression().featureReference()), namespace);
-                                });
-                    }
-                } else {
-                    // The chained feature access contains multiple elements, we create FeatureChainings to represent
-                    // them.
-                    List<FeatureChaining> featureChainings = this.getFeatureChainings(featureChainExpressionContext.featureChainExpression(), baseElement);
-                    OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                    featureChainExpression.getOwnedRelationship().add(owningMembership);
-                    Feature feature = SysmlFactory.eINSTANCE.createFeature();
-                    owningMembership.getOwnedRelatedElement().add(feature);
-                    feature.getOwnedRelationship().addAll(featureChainings);
-                }
-            }
-        }
-        return result;
-    }
-
-    private Optional<Element> getNamespaceMember(Namespace namespace, String memberName) {
-        return namespace.getMember().stream()
-                .filter(e -> Objects.equals(e.getName(), memberName))
-                .findFirst();
-    }
-
-    private void logMissingFeatureReference(String referenceName, Namespace namespace) {
-        String errorMessage = MessageFormat.format("Cannot find the element matching expression {0} in Namespace {1}",
-                referenceName,
-                namespace.getName());
-        this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
-        this.logger.warn(errorMessage);
-    }
-
-    private List<FeatureChaining> getFeatureChainings(FeatureChainExpressionContext featureChainExpressionContext, Element context) {
-        return this.getFeatureChainings(featureChainExpressionContext, context, new ArrayList<>());
-    }
-
-    private List<FeatureChaining> getFeatureChainings(FeatureChainExpressionContext featureChainExpressionContext, Element context, List<FeatureChaining> accumulator) {
-        if (context instanceof Namespace namespace) {
-            Optional<Feature> chainedFeature = namespace.getMember().stream()
-                    .filter(Feature.class::isInstance)
-                    .map(Feature.class::cast)
-                    .filter(e -> Objects.equals(e.getName(), featureChainExpressionContext.featureReference().getText()))
-                    .findFirst();
-            if (chainedFeature.isPresent()) {
-                FeatureChaining featureChaining = SysmlFactory.eINSTANCE.createFeatureChaining();
-                featureChaining.setChainingFeature(chainedFeature.get());
-                accumulator.add(featureChaining);
-                if (featureChainExpressionContext.featureChainExpression() != null) {
-                    this.getFeatureChainings(featureChainExpressionContext.featureChainExpression(), chainedFeature.get(), accumulator);
-                }
-            } else {
-                this.logMissingFeatureReference(this.getFullText(featureChainExpressionContext.featureReference()), namespace);
-            }
-        }
-        return accumulator;
+    private void handleBinaryExpression(String operator) {
+        Expression lastArg = this.popExpression();
+        Expression firstArg = this.popExpression();
+        this.pushExpression(this.createBinaryOperationExpression("x", firstArg, operator, "y", lastArg));
     }
 
     private Optional<OperatorExpression> handleMeasurementExpression(MeasurementExpressionContext measurementExpressionContext, Element context, Expression valueExpression) {
@@ -805,7 +791,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subclassificationDef.eClass().getName());
                 if (eClassifier instanceof EClass eClass) {
-                    definition = (Definition) SysmlFactory.eINSTANCE.create(eClass);
+                    definition = (Classifier) SysmlFactory.eINSTANCE.create(eClass);
                     definition.setDeclaredName(definitionAsString);
                     newMembership.getOwnedRelatedElement().add(definition);
                 }
@@ -833,7 +819,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
                 if (eClassifier instanceof EClass eClass) {
-                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                    usage = (Feature) SysmlFactory.eINSTANCE.create(eClass);
                     usage.setDeclaredName(usageAsString);
                     newMembership.getOwnedRelatedElement().add(usage);
                 }
@@ -861,7 +847,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());
                 if (eClassifier instanceof EClass eClass) {
-                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                    usage = (Feature) SysmlFactory.eINSTANCE.create(eClass);
                     usage.setDeclaredName(usageAsString);
                     newMembership.getOwnedRelatedElement().add(usage);
                 }
@@ -1252,6 +1238,34 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         return expression == null && featureExpressions.exception instanceof NoViableAltException && symbol.equals(featureExpressions.getChild(0).getText());
     }
 
+    private Expression popExpression() {
+        return this.expressionStack.removeLast();
+    }
+
+    private void pushExpression(Expression obj) {
+        this.expressionStack.addLast(obj);
+    }
+
+    private OperatorExpression createBinaryOperationExpression(String param1, Expression v1, String operator, String param2, Expression v2) {
+        OperatorExpression operatorExpression = SysmlFactory.eINSTANCE.createOperatorExpression();
+        operatorExpression.setOperator(operator);
+        operatorExpression.getOwnedRelationship().add(this.createParameter(param1, v1));
+        operatorExpression.getOwnedRelationship().add(this.createParameter(param2, v2));
+        return operatorExpression;
+    }
+
+    private ParameterMembership createParameter(String name, Expression value) {
+        ParameterMembership p1 = SysmlFactory.eINSTANCE.createParameterMembership();
+        Feature x = SysmlFactory.eINSTANCE.createFeature();
+        p1.getOwnedRelatedElement().add(x);
+        x.setDeclaredName(name);
+        x.setDirection(FeatureDirectionKind.IN);
+        FeatureValue xValue = SysmlFactory.eINSTANCE.createFeatureValue();
+        x.getOwnedRelationship().add(xValue);
+        xValue.getOwnedRelatedElement().add(value);
+        return p1;
+    }
+
     private LiteralExpression createLiteralExpression(LiteralExpressionContext literalExpressionContext) {
         LiteralExpression result = null;
         if (literalExpressionContext != null) {
@@ -1280,6 +1294,14 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         return result;
+    }
+
+    private void eSetReference(EObject owner, EReference ref, EObject value) {
+        if (ref.isMany()) {
+            ((List<Object>) owner.eGet(ref)).add(value);
+        } else {
+            owner.eSet(ref, value);
+        }
     }
 
     private MultiplicityRange getOrCreateMultiplicityRange(Element elt) {
@@ -1352,5 +1374,27 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             membership.getOwnedRelatedElement().add(literalInfinity);
         }
         return literalInfinity;
+    }
+
+    private boolean resolveProxy(NamedProxy proxy) {
+        Element context = proxy.context();
+        final List<Namespace> deresolvingNamespaces;
+        if (context instanceof Namespace namespace) {
+            deresolvingNamespaces = List.of(namespace);
+        } else {
+            deresolvingNamespaces = new DeresolvingNamespaceProvider().getDeresolvingNamespaces(context);
+        }
+        for (Namespace deresolvingNamespace : deresolvingNamespaces) {
+            Membership candidate = deresolvingNamespace.resolve(proxy.nameToResolve());
+            if (candidate != null) {
+                Element candidateMember = candidate.getMemberElement();
+                EClassifier eType = proxy.ref().getEType();
+                if (eType != null && eType.isInstance(candidateMember)) {
+                    this.eSetReference(context, proxy.ref(), candidateMember);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

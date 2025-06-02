@@ -22,8 +22,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
-import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -197,8 +198,11 @@ public class LabelService {
             tree = parser.nodeExpression();
         }
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
+        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
+        listener.resolveProxies().forEach(proxy -> {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to resolve  " + proxy.nameToResolve() + " from " + proxy.context().getQualifiedName(), MessageLevel.WARNING));
+        });
         return element;
     }
 

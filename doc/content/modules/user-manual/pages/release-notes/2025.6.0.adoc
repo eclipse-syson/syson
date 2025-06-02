@@ -254,6 +254,21 @@ image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage
 - The `ViewUsage#exposedElement` feature is now updated to reflect the contents of the diagram (_General View_, _Interconnection View_...) on which it is associated.
 - Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
 - Make the _Details_ view more extensible in how it determines whether a SysML _Element_ is editable or not.
+- In diagrams, improve _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
+It is now possible to use the following type of expressions in a `ConstraintUsage`:
+
+* `BinaryOperatorExpression`
+* `BracketExpression`
+* `FeatureChainExpression`
+
+For example:
+
+```
+requirement weight{
+    attribute actualWeight :> ISQ::mass;
+    require constraint {actualWeight <= 0.25 [lb]}
+}
+```
 
 == Dependency update
 

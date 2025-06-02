@@ -282,6 +282,70 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitConstraintExpression(DirectEditParser.ConstraintExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code BinaryOperationExpr}
+	 * labeled alternative in {@link DirectEditParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryOperationExpr(DirectEditParser.BinaryOperationExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BinaryOperationExpr}
+	 * labeled alternative in {@link DirectEditParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryOperationExpr(DirectEditParser.BinaryOperationExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code PrimaryExpr}
+	 * labeled alternative in {@link DirectEditParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimaryExpr(DirectEditParser.PrimaryExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code PrimaryExpr}
+	 * labeled alternative in {@link DirectEditParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimaryExpr(DirectEditParser.PrimaryExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#primaryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimaryExpression(DirectEditParser.PrimaryExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#primaryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimaryExpression(DirectEditParser.PrimaryExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#bracketAccessExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBracketAccessExpression(DirectEditParser.BracketAccessExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#bracketAccessExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBracketAccessExpression(DirectEditParser.BracketAccessExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#primaryAtom}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimaryAtom(DirectEditParser.PrimaryAtomContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#primaryAtom}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimaryAtom(DirectEditParser.PrimaryAtomContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#sequenceExpressionList}.
+	 * @param ctx the parse tree
+	 */
+	void enterSequenceExpressionList(DirectEditParser.SequenceExpressionListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#sequenceExpressionList}.
+	 * @param ctx the parse tree
+	 */
+	void exitSequenceExpressionList(DirectEditParser.SequenceExpressionListContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#operand}.
 	 * @param ctx the parse tree
 	 */
@@ -301,26 +365,6 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#featureReference}.
-	 * @param ctx the parse tree
-	 */
-	void enterFeatureReference(DirectEditParser.FeatureReferenceContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#featureReference}.
-	 * @param ctx the parse tree
-	 */
-	void exitFeatureReference(DirectEditParser.FeatureReferenceContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#operatorExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterOperatorExpression(DirectEditParser.OperatorExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#operatorExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitOperatorExpression(DirectEditParser.OperatorExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#transitionExpression}.
 	 * @param ctx the parse tree
@@ -391,6 +435,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitShortName(DirectEditParser.ShortNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#refName}.
+	 * @param ctx the parse tree
+	 */
+	void enterRefName(DirectEditParser.RefNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#refName}.
+	 * @param ctx the parse tree
+	 */
+	void exitRefName(DirectEditParser.RefNameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#name}.
 	 * @param ctx the parse tree
