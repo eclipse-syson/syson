@@ -44,7 +44,7 @@ export const InsertTextualSysMLMenuContribution = forwardRef(
     return (
       <Fragment key="insert-textual-sysmlv2-context-menu-contribution">
         <MenuItem
-          key="insert-textual-sysmlv2"
+          key="insert-textual-sysmlv2-menu"
           onClick={() => setModal(true)}
           data-testid="insert-textual-sysmlv2-menu"
           disabled={readOnly}

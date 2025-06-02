@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.application.nodes;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.view.FixedColor;
@@ -42,7 +43,7 @@ public class SysMLNoteNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
@@ -58,7 +59,9 @@ public class SysMLNoteNodeStyleProvider implements INodeStyleProvider {
                             .map(FixedColor::getValue)
                             .orElse("black"))
                     .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral())).build());
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .childrenLayoutStrategy(childrenLayoutStrategy)
+                    .build());
         }
 
         return iNodeStyle;

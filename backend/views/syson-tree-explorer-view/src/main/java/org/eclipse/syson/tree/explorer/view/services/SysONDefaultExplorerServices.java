@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
@@ -80,7 +81,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
                     .filter(r -> !this.sysONResourceService.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
-            if (librariesDirectory.hasChildren(editingContext, List.of(), activeFilterIds)) {
+            if (librariesDirectory.hasChildren(editingContext, List.of(), List.of(), activeFilterIds)) {
                 // Do not display the libraries directory if is has no children.
                 results.add(librariesDirectory);
             }
@@ -127,10 +128,10 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     @Override
-    public boolean hasChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds) {
+    public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         boolean hasChildren = false;
         if (self instanceof ISysONExplorerFragment fragment) {
-            hasChildren = fragment.hasChildren(editingContext, expandedIds, activeFilterIds);
+            hasChildren = fragment.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds);
         } else if (self instanceof Resource resource) {
             hasChildren = !this.filterService.applyFilters(resource.getContents(), activeFilterIds).isEmpty();
         } else if (self instanceof Element element) {
@@ -138,7 +139,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
                 || this.hasRepresentation(element, editingContext);
         } else {
-            hasChildren = explorerServices.hasChildren(self, editingContext);
+            hasChildren = this.explorerServices.hasChildren(self, editingContext, existingRepresentations);
         }
         return hasChildren;
     }
@@ -153,15 +154,15 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     @Override
-    public List<Object> getChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds) {
+    public List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
         String id = this.getTreeItemId(self);
         if (self instanceof ISysONExplorerFragment fragment) {
             if (expandedIds.contains(id)) {
-                result.addAll(fragment.getChildren(editingContext, expandedIds, activeFilterIds));
+                result.addAll(fragment.getChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds));
             }
         } else {
-            result.addAll(this.explorerServices.getDefaultChildren(self, editingContext, expandedIds));
+            result.addAll(this.explorerServices.getDefaultChildren(self, editingContext, expandedIds, existingRepresentations));
         }
 
         result = this.filterService.applyFilters(result, activeFilterIds);

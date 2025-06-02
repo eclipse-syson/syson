@@ -152,6 +152,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }

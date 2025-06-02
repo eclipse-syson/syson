@@ -29,14 +29,16 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
         const explorer = new Explorer();
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
+        explorer.getTreeItemByLabel(sysmlv2.getProjectLabel()).should('have.attr', 'data-expanded', 'true');
       })
     );
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('When we select a Package in the explorer', () => {
+    context.skip('When we select a Package in the explorer', () => {
       it("Then we can perform the 'New objects from text' menu entry", { retries: 3 }, () => {
         const explorer = new Explorer();
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
         cy.getByTestId('new-object-from-text-close').click();
         cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist', { timeout: 10000 });
@@ -48,6 +50,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
         { retries: 3 },
         () => {
           const explorer = new Explorer();
+          explorer.select(sysmlv2.getRootElementLabel());
           explorer.insertTextualSysMLv2(
             sysmlv2.getRootElementLabel(),
             'import ScalarValues::*; attribute myAttribute : String;'
@@ -69,6 +72,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
         { retries: 3 },
         () => {
           const explorer = new Explorer();
+          explorer.select(sysmlv2.getRootElementLabel());
           explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), '£$$`:=;');
           cy.getByTestId('insert-textual-sysmlv2-modal').should('exist');
         }

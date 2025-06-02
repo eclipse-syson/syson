@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
  * <em>Background</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage#getSysMLViewFrameNodeStyleDescription()
  * @model
  * @generated
- * @see org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage#getSysMLViewFrameNodeStyleDescription()
  */
 public interface SysMLViewFrameNodeStyleDescription extends NodeStyleDescription {
 
@@ -37,10 +37,10 @@ public interface SysMLViewFrameNodeStyleDescription extends NodeStyleDescription
      * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Background</em>' reference.
-     * @model
-     * @generated
      * @see #setBackground(UserColor)
      * @see org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage#getSysMLViewFrameNodeStyleDescription_Background()
+     * @model
+     * @generated
      */
     UserColor getBackground();
 
@@ -49,9 +49,9 @@ public interface SysMLViewFrameNodeStyleDescription extends NodeStyleDescription
      * <em>Background</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Background</em>' reference.
-     * @generated
+     *            the new value of the '<em>Background</em>' reference.
      * @see #getBackground()
+     * @generated
      */
     void setBackground(UserColor value);
 

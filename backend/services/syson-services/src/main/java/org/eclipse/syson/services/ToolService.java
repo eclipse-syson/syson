@@ -157,7 +157,7 @@ public class ToolService {
      * Add the given "newExposedElement" to the exposedElements reference of the {@link ViewUsage} that is the target of
      * the given {@link Node}.
      *
-     * @param element
+     * @param eObject
      *            the current context of the service.
      * @param newExposedElement
      *            the new Element to be exposed.
@@ -178,6 +178,37 @@ public class ToolService {
         return eObject;
     }
 
+    /**
+     * Remove the given Element from the exposedElements reference of the {@link ViewUsage} that is the target of the
+     * given {@link IDiagramContext}. Also removes potential children that are sub-nodes of the given selectedNode
+     * corresponding to the given Element.
+     *
+     * @param element
+     *            the current context of the service.
+     * @param selectedNode
+     *            the selectedNode corresponding to the given Element
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link IDiagramContext}.
+     * @return <code>true</code> if the given Element has been removed, <code>false</code> otherwise.
+     */
+    public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
+        boolean removeFromExposedElements = false;
+        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+        if (optDiagramTargetObject.isPresent()) {
+            var diagramTargetObject = optDiagramTargetObject.get();
+            if (diagramTargetObject instanceof ViewUsage viewUsage) {
+                removeFromExposedElements = viewUsage.getExposedElement().remove(element);
+                if (removeFromExposedElements) {
+                    // remove potential children that are sub-nodes of the given selectedNode
+                    this.removeFromExposedElements(selectedNode, editingContext, viewUsage);
+                }
+            }
+        }
+        return removeFromExposedElements;
+    }
+
     protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
         List<Node> nodes = nodeContainer.getChildNodes();
         if (nodes.contains(diagramElement)) {
@@ -194,7 +225,7 @@ public class ToolService {
         var childNodes = new ArrayList<Node>();
         if (selectedNode instanceof Node node) {
             childNodes.addAll(node.getChildNodes());
-            if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+            if (node.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
                 // childNodes are compartments, so also add childNodes of childNodes
                 node.getChildNodes().stream().forEach(cn -> childNodes.addAll(cn.getChildNodes()));
             }
@@ -447,5 +478,13 @@ public class ToolService {
             }
         }
         return sourceNode;
+    }
+
+    private void removeFromExposedElements(Node currentNode, IEditingContext editingContext, ViewUsage viewUsage) {
+        List<Node> childNodes = currentNode.getChildNodes();
+        for (Node childNode : childNodes) {
+            this.objectSearchService.getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> viewUsage.getExposedElement().remove(childElt));
+            this.removeFromExposedElements(childNode, editingContext, viewUsage);
+        }
     }
 }

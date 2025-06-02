@@ -14,6 +14,7 @@ package org.eclipse.syson.application.nodes;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.view.FixedColor;
@@ -41,7 +42,7 @@ public class SysMLViewFrameNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
@@ -59,6 +60,7 @@ public class SysMLViewFrameNodeStyleProvider implements INodeStyleProvider {
                     .borderSize(nodeStyle.getBorderSize())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .borderRadius(nodeStyle.getBorderRadius())
+                    .childrenLayoutStrategy(childrenLayoutStrategy)
                     .build());
         }
 

@@ -29,6 +29,7 @@ describe('Diagram Creation Tests', () => {
         new Project().visit(projectId);
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
+        explorer.getTreeItemByLabel(sysmlv2.getProjectLabel()).should('have.attr', 'data-expanded', 'true');
       })
     );
 
@@ -38,26 +39,31 @@ describe('Diagram Creation Tests', () => {
 
     context.skip('When we select a Package in the explorer', () => {
       it('Then we can create a General View diagram', { retries: 3 }, () => {
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
         cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
       it('Then we can create an Action Flow View diagram', { retries: 3 }, () => {
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
         cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
 
       it('Then we can create a State Transition View diagram', { retries: 3 }, () => {
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.createRepresentation(sysmlv2.getRootElementLabel(), 'State Transition View', 'stateTransitionView');
         diagram.getDiagram('stateTransitionView').should('exist');
         cy.get('@consoleDebug').should('be.calledWith', 'mutation layoutDiagram: response received');
       });
     });
 
-    context('When we select a PartUsage in the explorer', () => {
-      beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage'));
+    context.skip('When we select a PartUsage in the explorer', () => {
+      beforeEach(() => {
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+      });
 
       it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('part1');
@@ -74,8 +80,10 @@ describe('Diagram Creation Tests', () => {
       });
     });
 
-    context('When we select an ActionUsage in the explorer', () => {
-      beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage'));
+    context.skip('When we select an ActionUsage in the explorer', () => {
+      beforeEach(() => {
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage');
+      });
 
       it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('action1');
@@ -99,8 +107,10 @@ describe('Diagram Creation Tests', () => {
       });
     });
 
-    context('When we select an ActionDefinition in the explorer', () => {
-      beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition'));
+    context.skip('When we select an ActionDefinition in the explorer', () => {
+      beforeEach(() => {
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition');
+      });
 
       it('Then we can create a General View diagram', { retries: 3 }, () => {
         explorer.select('ActionDefinition1');

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,11 +53,11 @@ public class SysONExplorerTreeDescriptionProvider {
     private TreeDescription build() {
         TreeDescription description = new TreeDescriptionBuilder()
                 .name(SYSON_EXPLORER)
-                .childrenExpression("aql:self.getChildren(editingContext, expanded, activeFilterIds))")
+                .childrenExpression("aql:self.getChildren(editingContext, existingRepresentations, expanded, activeFilterIds))")
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .elementsExpression("aql:editingContext.getElements(activeFilterIds)")
-                .hasChildrenExpression("aql:self.hasChildren(editingContext, expanded, activeFilterIds)")
+                .hasChildrenExpression("aql:self.hasChildren(editingContext, existingRepresentations, expanded, activeFilterIds)")
                 .treeItemIconExpression("aql:self.getImageURL()")
                 .kindExpression("aql:self.getKind()")
                 .parentExpression("aql:self.getParent(id, editingContext)")

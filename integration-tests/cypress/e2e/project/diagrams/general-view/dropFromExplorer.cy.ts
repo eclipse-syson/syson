@@ -18,7 +18,7 @@ import { Explorer } from '../../../../workbench/Explorer';
 import { Workbench } from '../../../../workbench/Workbench';
 
 // D&D does not work anymore with Cypress APIs
-describe('Drop From Explorer Tests', () => {
+describe.skip('Drop From Explorer Tests', () => {
   const sysmlv2 = new SysMLv2();
   const diagramLabel = 'General View';
 
@@ -53,7 +53,9 @@ describe('Drop From Explorer Tests', () => {
 
     context('When we create a PartUsage with an AttributeUsage in the root Package in the explorer', () => {
       beforeEach(() => {
+        explorer.select(sysmlv2.getRootElementLabel());
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+        explorer.select('part1');
         explorer.createObject('part1', 'SysMLv2EditService-AttributeUsage');
         explorer.getTreeItemByLabel('part1').should('exist');
         explorer
@@ -75,7 +77,7 @@ describe('Drop From Explorer Tests', () => {
         diagram.getNodes(diagramLabel, sysmlv2.getRootElementLabel()).should('exist');
       });
 
-      it('Then we can drop the PartUsage on the diagram, and its compartment are not visible', () => {
+      it('Then we can drop the PartUsage on the diagram, and its compartment are not visible', { retries: 3 }, () => {
         const dataTransfer = new DataTransfer();
         explorer.dragTreeItem('part1', dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);

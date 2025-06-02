@@ -36,6 +36,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IContentService;
+import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -46,12 +47,14 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
@@ -99,9 +102,9 @@ public class SysONDefaultExplorerServicesTest {
         EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
         c1.getEStructuralFeatures().add(c1a2);
 
-        assertThat(sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of())).isTrue();
-        assertThat(sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of())).isTrue();
-        assertThat(sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of())).isFalse();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
     }
 
     /**
@@ -112,37 +115,34 @@ public class SysONDefaultExplorerServicesTest {
         IIdentityService identityService = new IIdentityService.NoOp();
         IContentService contentService = new IContentService.NoOp();
         IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService() {
-
             @Override
             public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
                 return Optional.empty();
             }
-
             @Override
             public Optional<RepresentationMetadata> findMetadataById(UUID id) {
                 return Optional.empty();
             }
-
             @Override
             public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
                 return null;
             }
-
             @Override
             public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
                 return null;
             }
-
+            @Override
+            public Window<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData, KeysetScrollPosition position, int limit) {
+                return null;
+            }
             @Override
             public boolean existsByIdAndKind(UUID id, List<String> kinds) {
                 return false;
             }
-
             @Override
             public boolean existsById(UUID id) {
                 return false;
             }
-
             @Override
             public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
                 return false;
@@ -159,11 +159,13 @@ public class SysONDefaultExplorerServicesTest {
                 return false;
             }
         };
-        IExplorerServices explorerServices = new ExplorerServices(objectService, urlParser, representationImageProviders, representationMetadataSearchService, readOnlyObjectPredicate);
+        IDefaultObjectSearchService defaultObjectSearchService = new IDefaultObjectSearchService.NoOp();
+
+        IExplorerServices explorerServices = new ExplorerServices(objectService, urlParser, representationImageProviders, representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
-        sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService, this.sysONResourceService);
+        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService, this.sysONResourceService);
     }
 
 }

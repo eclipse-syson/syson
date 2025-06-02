@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 
 /**
  * A fragment displayed in the SysON explorer.
@@ -33,9 +34,9 @@ public interface ISysONExplorerFragment {
 
     List<String> getIconURL();
 
-    boolean hasChildren(IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds);
+    boolean hasChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
-    List<Object> getChildren(IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds);
+    List<Object> getChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
     boolean isEditable();
 

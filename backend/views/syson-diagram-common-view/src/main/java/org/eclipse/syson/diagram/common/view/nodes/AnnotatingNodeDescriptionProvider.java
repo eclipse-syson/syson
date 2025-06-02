@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,7 +68,6 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_NOTE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NOTE_WIDTH)
                 .domainType(domainType)
@@ -116,6 +115,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
         nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
         nodeStyleDescription.setBorderRadius(0);
         nodeStyleDescription.setBackground(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
+        nodeStyleDescription.setChildrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build());
         return nodeStyleDescription;
     }
 
@@ -167,6 +167,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
+                .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

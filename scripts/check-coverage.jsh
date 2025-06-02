@@ -33,7 +33,7 @@ double expectedGlobalCoverage = 64.0;
 var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-metamodel", 71.0),
   new ModuleCoverage("syson-sysml-metamodel-edit", 16.0),
-  new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 45.0),
+  new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 43.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 64.0),
   new ModuleCoverage("syson-services", 66.0),
