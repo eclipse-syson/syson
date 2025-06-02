@@ -41,6 +41,7 @@ They are now named:
 - In the _Details_ view, fix an issue that prevents opening the candidates on a reference widget.
 - Fix an issue in the textual import of `MultiplicityRange` with explicit lower and upper bounds.
 The textual import now correctly creates a `MultiplicityRange` containing `LiteralInteger` elements for integer bounds, and `FeatureReferenceExpression` elements for feature bounds.
+- Fix an issue where dragging and dropping a `Definition` element from the _Explorer view_ on a _General View_ did not create the associated node.
 
 == New features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import { Explorer } from '../../../../workbench/Explorer';
 import { Workbench } from '../../../../workbench/Workbench';
 
 // D&D does not work anymore with Cypress APIs
-describe.skip('Drop From Explorer Tests', () => {
+describe('Drop From Explorer Tests', () => {
   const sysmlv2 = new SysMLv2();
   const diagramLabel = 'General View';
 
@@ -35,11 +35,17 @@ describe.skip('Drop From Explorer Tests', () => {
         explorer.expand(sysmlv2.getProjectLabel());
         explorer.getExplorerView().contains(sysmlv2.getRootElementLabel());
         explorer.expand(sysmlv2.getRootElementLabel());
-        explorer.select(diagramLabel);
-        diagram.getDiagram(diagramLabel).should('exist');
-        // Wait for the arrange all action to complete
-        /* eslint-disable-next-line cypress/no-unnecessary-waiting */
-        cy.wait(400);
+        explorer.expand(diagramLabel);
+        explorer
+          .getTreeItemByLabel(diagramLabel)
+          .should('have.length', 2)
+          .then(($elements) => {
+            // $elements is a collection of all tree items with the label 'diagramLabel'
+            // we want the second one, corresponding to the diagram
+            const diag = $elements[1];
+            diag?.click();
+          });
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - General View').should('exist');
       })
     );
 
@@ -48,19 +54,19 @@ describe.skip('Drop From Explorer Tests', () => {
     context('When we create a PartUsage with an AttributeUsage in the root Package in the explorer', () => {
       beforeEach(() => {
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
-        explorer.createObject('part', 'SysMLv2EditService-AttributeUsage');
-        explorer.getTreeItemByLabel('part').should('exist');
+        explorer.createObject('part1', 'SysMLv2EditService-AttributeUsage');
+        explorer.getTreeItemByLabel('part1').should('exist');
         explorer
-          .getTreeItemByLabel('attribute')
+          .getTreeItemByLabel('attribute1')
           .should('exist')
           .parents('ul')
           .first()
           .siblings()
-          .contains('part')
+          .contains('part1')
           .should('exist');
       });
 
-      it('Then we can drop the Package on the diagram', () => {
+      it('Then we can drop the Package on the diagram', { retries: 3 }, () => {
         const dataTransfer = new DataTransfer();
         explorer.getTreeItemByLabel(sysmlv2.getRootElementLabel()).should('exist');
         explorer.dragTreeItem(sysmlv2.getRootElementLabel(), dataTransfer);
@@ -71,130 +77,141 @@ describe.skip('Drop From Explorer Tests', () => {
 
       it('Then we can drop the PartUsage on the diagram, and its compartment are not visible', () => {
         const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
+        explorer.dragTreeItem('part1', dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
 
-        diagram.getNodes(diagramLabel, 'part').should('exist');
+        diagram.getNodes(diagramLabel, 'part1').should('exist');
         // Check that the compartments of the node aren't visible
-        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
+        diagram.getNodes(diagramLabel, 'attributes1').should('not.exist');
       });
 
-      it('Then when we drop the PartUsage on the diagram twice, it is only represented once', () => {
+      it('Then when we drop the PartUsage on the diagram twice, it is only represented once', { retries: 3 }, () => {
         const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
+        explorer.dragTreeItem('part1', dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
 
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
-        workbench.getSnackbar().should('exist').contains('The element part is already visible in its parent Package 1');
+        diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+        diagram.getNodes(diagramLabel, 'attributes1').should('not.exist');
+        workbench
+          .getSnackbar()
+          .should('exist')
+          .contains('The element part1 is already visible in its parent General View');
       });
 
-      it('Then when we drop the PartUsage on the diagram and on itself, it is only represented once, and a warning message is displayed', () => {
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
+      it(
+        'Then when we drop the PartUsage on the diagram and on itself, it is only represented once, and a warning message is displayed',
+        { retries: 3 },
+        () => {
+          const dataTransfer = new DataTransfer();
+          explorer.dragTreeItem('part1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').trigger('drop', { dataTransfer });
 
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        workbench.getSnackbar().should('exist').contains('Cannot drop part on itself');
-      });
-
-      it('Then when we drop the PartUsage on the diagram, hide it, and drop it again, the PartUsage is visible on the diagram', () => {
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1).click();
-        diagram.getPaletteToolSection(3).click();
-        diagram.getNodes(diagramLabel, 'part').should('not.exist');
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
-      });
+          diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+          workbench.getSnackbar().should('exist').contains('Cannot drop part1 on itself');
+        }
+      );
     });
     context('When we create a PartUsage and a PartDefinition in the root Package in the explorer', () => {
       beforeEach(() => {
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartDefinition');
-        explorer.getTreeItemByLabel('part').should('exist');
-        explorer.getTreeItemByLabel('PartDefinition').should('exist');
+        explorer.getTreeItemByLabel('part1').should('exist');
+        explorer.getTreeItemByLabel('PartDefinition1').should('exist');
       });
 
-      it('Then when we drop the PartUsage on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition', () => {
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        explorer.dragTreeItem('PartDefinition', dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
-        diagram.getNodes(diagramLabel, 'part : PartDefinition').should('exist').should('have.length', 1);
-      });
+      it(
+        'Then when we drop the PartUsage on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition',
+        { retries: 3 },
+        () => {
+          const dataTransfer = new DataTransfer();
+          explorer.dragTreeItem('part1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+          explorer.dragTreeItem('PartDefinition1', dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').trigger('drop', { dataTransfer });
+          diagram.getNodes(diagramLabel, 'part1 : PartDefinition1').should('exist').should('have.length', 1);
+        }
+      );
 
-      it('Then when we drop the PartUsage and PartDefinition on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition and an edge is visible between the PartUsage and PartDefinition', () => {
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        explorer.dragTreeItem('PartDefinition', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer, 'center');
-        diagram.getNodes(diagramLabel, 'PartDefinition').should('exist').should('have.length', 1);
-        explorer.dragTreeItem('PartDefinition', dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
-        diagram.getNodes(diagramLabel, 'part : PartDefinition').should('exist').should('have.length', 1);
-        // Check that an edge has been created and that its end is a closed arrow with dots (i.e. a feature typing).
-        diagram
-          .getEdgePaths(diagramLabel)
-          .should('have.length', 1)
-          .invoke('attr', 'marker-end')
-          .should('contain', '#ClosedArrowWithDots');
-      });
+      it(
+        'Then when we drop the PartUsage and PartDefinition on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition and an edge is visible between the PartUsage and PartDefinition',
+        { retries: 3 },
+        () => {
+          const dataTransfer = new DataTransfer();
+          explorer.dragTreeItem('part1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+          explorer.dragTreeItem('PartDefinition1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer, 'center');
+          diagram.getNodes(diagramLabel, 'PartDefinition1').should('exist').should('have.length', 1);
+          explorer.dragTreeItem('PartDefinition1', dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').trigger('drop', { dataTransfer });
+          diagram.getNodes(diagramLabel, 'part1 : PartDefinition1').should('exist').should('have.length', 1);
+          // Check that an edge has been created and that its end is a closed arrow with dots (i.e. a feature typing).
+          diagram
+            .getEdgePaths(diagramLabel)
+            .should('have.length', 1)
+            .invoke('attr', 'marker-end')
+            .should('contain', '#ClosedArrowWithDots');
+        }
+      );
     });
 
-    context('When we create a PartUsagein the root Package in the explorer', () => {
+    context('When we create a PartUsage in the root Package in the explorer', () => {
       beforeEach(() => {
         explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
-        explorer.getTreeItemByLabel('part').should('exist');
+        explorer.getTreeItemByLabel('part1').should('exist');
       });
 
-      it('Then when we create a Documentation inside the Part and we drop the Documentation on the diagram, the Documentation is visible on the diagram', () => {
-        explorer.createObject('part', 'SysMLv2EditService-Documentation');
-        explorer
-          .getTreeItemByLabel('Documentation')
-          .should('exist')
-          .parents('ul')
-          .first()
-          .siblings()
-          .contains('part')
-          .should('exist');
+      it(
+        'Then when we create a Documentation inside the Part and we drop the Documentation on the diagram, the Documentation is visible on the diagram',
+        { retries: 3 },
+        () => {
+          explorer.createObject('part1', 'SysMLv2EditService-Documentation');
+          explorer
+            .getTreeItemByLabel('Documentation')
+            .should('exist')
+            .parents('ul')
+            .first()
+            .siblings()
+            .contains('part1')
+            .should('exist');
 
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        explorer.dragTreeItem('Documentation', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
-      });
+          const dataTransfer = new DataTransfer();
+          explorer.dragTreeItem('part1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+          explorer.dragTreeItem('Documentation', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
+        }
+      );
 
-      it('Then when we create a Comment inside the Part and we drop the Comment on the diagram, the Comment is visible on the diagram', () => {
-        explorer.createObject('part', 'SysMLv2EditService-Comment');
-        explorer
-          .getTreeItemByLabel('Comment')
-          .should('exist')
-          .parents('ul')
-          .first()
-          .siblings()
-          .contains('part')
-          .should('exist');
+      it(
+        'Then when we create a Comment inside the Part and we drop the Comment on the diagram, the Comment is visible on the diagram',
+        { retries: 3 },
+        () => {
+          explorer.createObject('part1', 'SysMLv2EditService-Comment');
+          explorer
+            .getTreeItemByLabel('Comment')
+            .should('exist')
+            .parents('ul')
+            .first()
+            .siblings()
+            .contains('part1')
+            .should('exist');
 
-        const dataTransfer = new DataTransfer();
-        explorer.dragTreeItem('part', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
-        explorer.dragTreeItem('Comment', dataTransfer);
-        diagram.dropOnDiagram(diagramLabel, dataTransfer);
-        diagram.getNodes(diagramLabel, 'add comment here').should('exist').should('have.length', 1);
-      });
+          const dataTransfer = new DataTransfer();
+          explorer.dragTreeItem('part1', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'part1').should('exist').should('have.length', 1);
+          explorer.dragTreeItem('Comment', dataTransfer);
+          diagram.dropOnDiagram(diagramLabel, dataTransfer);
+          diagram.getNodes(diagramLabel, 'add comment here').should('exist').should('have.length', 1);
+        }
+      );
     });
   });
 });

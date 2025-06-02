@@ -427,7 +427,7 @@ public class ViewToolService extends ToolService {
      */
     private void dropElementFromExplorerInTarget(Element sourceElement, Element targetElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (sourceElement instanceof Definition definition && targetElement instanceof Usage usage) {
+        if (sourceElement instanceof Definition definition && targetElement instanceof Usage usage && !(targetElement instanceof ViewUsage)) {
             // Dropping a definition on a usage types the usage with the definition. It doesn't create a new node on the
             // diagram.
             this.utilService.setFeatureTyping(usage, definition);
