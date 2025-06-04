@@ -13,7 +13,7 @@ services:
     networks:
       - syson
   app:
-    image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.4.6}"
+    image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.4.7}"
     ports:
       - "8080:8080"
     environment:

@@ -1,7 +1,7 @@
 {
   "name": "@eclipse-syson/syson",
   "author": "Eclipse SysON",
-  "version": "2025.4.6",
+  "version": "2025.4.7",
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "@eclipse-sirius/sirius-components-widget-reference": "2025.4.7",
     "@eclipse-sirius/sirius-components-widget-table": "2025.4.7",
     "@eclipse-sirius/sirius-web-application": "2025.4.7",
-    "@eclipse-syson/syson-components": "2025.4.6",
+    "@eclipse-syson/syson-components": "2025.4.7",
     "@lexical/react": "0.8.1",
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
