@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-frontend</artifactId>
-	<version>2025.4.6</version>
+	<version>2025.4.7</version>
 	<name>syson-frontend</name>
 	<description>SysON Frontend</description>
 
