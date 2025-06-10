@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Subclassification;
@@ -78,6 +79,15 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
             if (object.eContainer() instanceof Membership membership) {
                 relatedElements.add(membership);
             }
+        }
+        return relatedElements;
+    }
+
+    @Override
+    public Set<EObject> caseMembershipExpose(MembershipExpose object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getMembershipImport_ImportedMembership())) {
+            relatedElements.add(object);
         }
         return relatedElements;
     }
@@ -137,7 +147,7 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Target())
                 || this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Source())) {
             // Handle the case where the succession source or target has already been deleted
-            if (this.hasBeenAlreadyDeleted(object.getSource()) || this.hasBeenAlreadyDeleted(object.getTarget())) {
+            if (this.hasAlreadyBeenDeleted(object.getSource()) || this.hasAlreadyBeenDeleted(object.getTarget())) {
                 return relatedElements;
             }
             relatedElements.add(object);
@@ -154,7 +164,7 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
         return relatedElements;
     }
 
-    private boolean hasBeenAlreadyDeleted(List<Element> ends) {
+    private boolean hasAlreadyBeenDeleted(List<Element> ends) {
         return !ends.isEmpty() && !(ends.get(0) instanceof Membership) && ends.get(0).getOwner() == null;
     }
 }
