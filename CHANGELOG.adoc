@@ -25,7 +25,7 @@
 
 === Dependency update
 
-- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.7]
+- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.8]
 - [releng] Switch `@xyflow/react` to `12.6.0`
 - [releng] Switch `@mui/material` to `7.0.2`
 - [releng] Switch `@mui/icons-material` to `7.0.2`
