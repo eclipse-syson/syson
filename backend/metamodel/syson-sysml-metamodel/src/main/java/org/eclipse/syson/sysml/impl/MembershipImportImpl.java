@@ -183,6 +183,18 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     }
 
     /**
+     * @generated NOT
+     */
+    @Override
+    public Element basicGetImportedElement() {
+        var importedMmbrship = this.getImportedMembership();
+        if (importedMmbrship != null) {
+            return importedMmbrship.getMemberElement();
+        }
+        return null;
+    }
+
+    /**
      * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
      *
      * @generated NOT

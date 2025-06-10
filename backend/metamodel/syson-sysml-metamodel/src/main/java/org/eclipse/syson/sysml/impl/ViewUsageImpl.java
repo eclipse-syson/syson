@@ -18,11 +18,14 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -73,7 +76,20 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
      */
     @Override
     public EList<Element> getExposedElement() {
-        List<Usage> data = new ArrayList<>();
+        List<Element> data = new ArrayList<>();
+        var exposed = this.getOwnedImport().stream()
+                .filter(Expose.class::isInstance)
+                .map(Expose.class::cast)
+                .toList();
+        for (Expose expose : exposed) {
+            var importedMemberships = expose.importedMemberships(new UniqueEList<>());
+            for (Membership importedMembership : importedMemberships) {
+                var memberElement = importedMembership.getMemberElement();
+                if (memberElement != null) {
+                    data.add(memberElement);
+                }
+            }
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getViewUsage_ExposedElement(), data.size(), data.toArray());
     }
 

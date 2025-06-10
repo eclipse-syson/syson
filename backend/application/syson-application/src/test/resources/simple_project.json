@@ -126,7 +126,9 @@
                 "@id": "ec12f223-8639-42a3-96c2-34163c6eccce"
             }
         ],
-        "importedElement": null,
+        "importedElement": {
+            "@id": "ec12f223-8639-42a3-96c2-34163c6eccce"
+        },
         "importOwningNamespace": {
             "@id": "127c38e7-0e15-4232-aa02-76b342e3324a"
         },

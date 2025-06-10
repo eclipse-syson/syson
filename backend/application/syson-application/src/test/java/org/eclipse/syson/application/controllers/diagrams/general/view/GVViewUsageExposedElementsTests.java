@@ -57,6 +57,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -243,7 +244,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         this.verifier.then(semanticChecker);
     }
 
-    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN the ViewUsage#exposedElements is updated with partA, THEN the GV diagram is upadted with a new partA node.")
+    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN the ViewUsage#exposedElements is updated with partA, THEN the GV diagram is updated with a new partA node.")
     @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -257,7 +258,9 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
             Object partAObject = this.objectSearchService.getObject(editingContext, ViewUsageExposedElementsTestProjectData.SemanticIds.PART_A_ELEMENT_ID).orElse(null);
             assertThat(partAObject).isInstanceOf(PartUsage.class);
             PartUsage partA = (PartUsage) partAObject;
-            viewUsage.getExposedElement().add(partA);
+            var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+            membershipExpose.setImportedMembership(partA.getOwningMembership());
+            viewUsage.getOwnedRelationship().add(membershipExpose);
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
         };
 

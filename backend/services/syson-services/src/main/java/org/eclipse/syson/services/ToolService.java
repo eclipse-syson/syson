@@ -41,6 +41,8 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
@@ -60,6 +62,8 @@ public class ToolService {
     protected final IFeedbackMessageService feedbackMessageService;
 
     protected final ISysMLMoveElementService moveService;
+
+    protected final DeleteService deleteService = new DeleteService();
 
     public ToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService,
                        ISysMLMoveElementService moveService) {
@@ -147,7 +151,9 @@ public class ToolService {
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
             if (diagramTargetObject instanceof ViewUsage viewUsage) {
-                viewUsage.getExposedElement().add(newExposedElement);
+                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
+                viewUsage.getOwnedRelationship().add(membershipExpose);
             }
         }
         return eObject;
@@ -172,7 +178,9 @@ public class ToolService {
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
             if (diagramTargetObject instanceof ViewUsage viewUsage) {
-                viewUsage.getExposedElement().add(newExposedElement);
+                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
+                viewUsage.getOwnedRelationship().add(membershipExpose);
             }
         }
         return eObject;
@@ -191,22 +199,21 @@ public class ToolService {
      *            the given {@link IEditingContext} in which this service has been called.
      * @param diagramContext
      *            the given {@link IDiagramContext}.
-     * @return <code>true</code> if the given Element has been removed, <code>false</code> otherwise.
      */
-    public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
-        boolean removeFromExposedElements = false;
+    public void removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
         var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
             if (diagramTargetObject instanceof ViewUsage viewUsage) {
-                removeFromExposedElements = viewUsage.getExposedElement().remove(element);
-                if (removeFromExposedElements) {
-                    // remove potential children that are sub-nodes of the given selectedNode
-                    this.removeFromExposedElements(selectedNode, editingContext, viewUsage);
-                }
+                var exposed = viewUsage.getOwnedImport().stream()
+                        .filter(Expose.class::isInstance)
+                        .map(Expose.class::cast)
+                        .toList();
+                this.deleteExpose(exposed, element);
+                // remove potential children that are sub-nodes of the given selectedNode
+                this.removeFromExposedElements(selectedNode, editingContext, exposed);
             }
         }
-        return removeFromExposedElements;
     }
 
     protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
@@ -480,11 +487,21 @@ public class ToolService {
         return sourceNode;
     }
 
-    private void removeFromExposedElements(Node currentNode, IEditingContext editingContext, ViewUsage viewUsage) {
+    private void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {
         List<Node> childNodes = currentNode.getChildNodes();
         for (Node childNode : childNodes) {
-            this.objectSearchService.getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> viewUsage.getExposedElement().remove(childElt));
-            this.removeFromExposedElements(childNode, editingContext, viewUsage);
+            this.objectSearchService.getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> {
+                this.deleteExpose(exposed, childElt);
+            });
+            this.removeFromExposedElements(childNode, editingContext, exposed);
+        }
+    }
+
+    private void deleteExpose(List<Expose> exposed, Object exposedElement) {
+        for (Expose expose : exposed) {
+            if (Objects.equals(exposedElement, expose.getImportedElement())) {
+                this.deleteService.deleteFromModel(expose);
+            }
         }
     }
 }

@@ -182,6 +182,14 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
     }
 
     /**
+     * @generated NOT
+     */
+    @Override
+    public Element basicGetImportedElement() {
+        return this.getImportedNamespace();
+    }
+
+    /**
      * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
      *
      * @generated NOT
