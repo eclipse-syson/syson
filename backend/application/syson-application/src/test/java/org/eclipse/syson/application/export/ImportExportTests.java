@@ -218,6 +218,28 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with ViewUsage, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
+    public void checkViewUsage() throws IOException {
+        var input = """
+                package AxleAssembly_1 {
+                    private import Views::*;
+                    part def AxleAssembly;
+                    part def Differential;
+                    part rearAxleAssembly : AxleAssembly {
+                        part differential : Differential;
+                        part rearAxle;
+                    }
+                    view 'First-Level-All' {
+                        expose rearAxleAssembly;
+                        expose rearAxleAssembly::rearAxle;
+                        expose rearAxleAssembly::differential;
+                        render asTreeDiagram;
+                    }
+                } """;
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("Given a model with AcceptActionUsage, when importing/exporting the file, then the exported text file should be the same as the imported one.")
     public void checkAcceptActionUsage() throws IOException {
         var input = """

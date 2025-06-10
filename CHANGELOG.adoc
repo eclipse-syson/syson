@@ -73,7 +73,7 @@ The import now correctly creates a `MultiplicityRange` containing `LiteralIntege
 - https://github.com/eclipse-syson/syson/issues/1249[#1249] [import][export] Implement textual import/export of `AcceptActionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1247[#1247] [explorer] Type new `ViewUsage` from _Explorer_ view with _General View_ `ViewDefinition`.
 When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
-- https://github.com/eclipse-syson/syson/issues/1252[#1252] [exort] Implement textual export of `TriggerInvocationExpression`.
+- https://github.com/eclipse-syson/syson/issues/1252[#1252] [export] Implement textual export of `TriggerInvocationExpression`.
 - https://github.com/eclipse-syson/syson/issues/1233[#1233] [general-view] Add a creation tool of State sub actions with referenced action inside State elements
 - https://github.com/eclipse-syson/syson/issues/1255[#1255] [general-view] Improve label of `TransitionUsage` to display the "AcceptParameterPart".
 - https://github.com/eclipse-syson/syson/issues/1210[#1210] [general-view] Add the `parameters` compartment on `ActionDefinition` in the _General View_ diagram.
@@ -93,6 +93,7 @@ All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection 
 - https://github.com/eclipse-syson/syson/issues/1339[#1339] [details] Make the _Details_ view more extensible in how it determines whether an _Element_ is read-only or not.
 - https://github.com/eclipse-syson/syson/issues/1346[#1346] [general-view] Improve _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
 - https://github.com/eclipse-syson/syson/issues/1310[#1310] [metamodel] Revert remove derived flag for `ViewUsage#exposedElement` feature.
+- https://github.com/eclipse-syson/syson/issues/1359[#1359] [export] Implement textual export of `ViewUsage`.
 
 === New features
 
