@@ -495,7 +495,7 @@ public class ViewCreateService {
     }
 
     public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
-        var owner = this.getSourceOwner(sourceNode, editingContext, diagramService);
+        var owner = source.getOwner();
         var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         owner.getOwnedRelationship().add(ownerMembership);
         var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
@@ -519,15 +519,17 @@ public class ViewCreateService {
     }
 
     /**
-     * Retrieve the parent node semantic element of the given node
+     * Retrieve the parent node's semantic element of the given node
      *
      * @param sourceNode
-     *         a {@link Node}
+     *            a {@link Node}
      * @param editingContext
-     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable manager.
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
      * @param diagramService
-     *         the {@link IDiagramService} used to retrieve diagram
-     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find it.
+     *            the {@link IDiagramService} used to retrieve diagram
+     * @return the semantic element of the parent graphical node of the given Node or <code>null</code> if unable to
+     *         find it.
      */
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
         Diagram diagram = diagramService.getDiagramContext().getDiagram();
@@ -849,30 +851,6 @@ public class ViewCreateService {
         featureMembership.getOwnedRelatedElement().add(newActionUsage);
         this.elementInitializerSwitch.doSwitch(newActionUsage);
         return newActionUsage;
-    }
-
-    /**
-     * Removal service for Start action inside an action usage or definition.
-     *
-     * @param selectedNode
-     *         the node element that represents the start action in the diagram.
-     * @param editingContext
-     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable manager.
-     * @param diagramService
-     *         the {@link IDiagramService} used to retrieve diagram
-     * @return the element that owned the start action.
-     */
-    public Element removeStartAction(Node selectedNode, IEditingContext editingContext, IDiagramService diagramService) {
-        Element owner = this.getSourceOwner(selectedNode, editingContext, diagramService);
-        owner.getOwnedRelationship().stream()
-                .filter(Membership.class::isInstance)
-                .map(Membership.class::cast)
-                .filter(m -> {
-                    return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
-                })
-                .findFirst()
-                .ifPresent(this.deleteService::deleteFromModel);
-        return owner;
     }
 
     /**
