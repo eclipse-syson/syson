@@ -90,11 +90,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         return edgeTools;
     }
 
-    private void addFeatureTypingEdgeToolForActionUsageSubType(List<EdgeTool> edgeTools) {
-        Optional<NodeDescription> optActionDefinitionNodeDescription = this.edgeToolService.getNodeDescription(SysmlPackage.eINSTANCE.getActionDefinition());
-        optActionDefinitionNodeDescription.ifPresent(nd -> edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(nd))));
-    }
-
     @Override
     public List<EdgeTool> caseActionUsage(ActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
@@ -102,26 +97,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), this.getSuccessionEdgeTargets()));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
-    }
-
-    private List<NodeDescription> getSuccessionEdgeTargets() {
-        return this.allNodeDescriptions.stream()
-                .filter(this::isSuccessionTargetNodeDescription)
-                .toList();
-    }
-
-    private boolean isSuccessionTargetNodeDescription(NodeDescription nodeDesc) {
-        boolean result = this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage());
-        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage());
-        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAssignmentActionUsage());
-        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPerformActionUsage());
-        result = result || this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName());
-        result = result || this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName());
-        result = result || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
-        result = result || this.nameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
-        result = result || this.nameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
-        result = result || this.nameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME).equals(nodeDesc.getName());
-        return result;
     }
 
     @Override
@@ -309,5 +284,30 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         isSpecial = isSpecial || this.nameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
         isSpecial = isSpecial || this.nameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
         return !isSpecial;
+    }
+
+    private void addFeatureTypingEdgeToolForActionUsageSubType(List<EdgeTool> edgeTools) {
+        Optional<NodeDescription> optActionDefinitionNodeDescription = this.edgeToolService.getNodeDescription(SysmlPackage.eINSTANCE.getActionDefinition());
+        optActionDefinitionNodeDescription.ifPresent(nd -> edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(nd))));
+    }
+
+    private List<NodeDescription> getSuccessionEdgeTargets() {
+        return this.allNodeDescriptions.stream()
+                .filter(this::isSuccessionTargetNodeDescription)
+                .toList();
+    }
+
+    private boolean isSuccessionTargetNodeDescription(NodeDescription nodeDesc) {
+        boolean result = this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAssignmentActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPerformActionUsage());
+        result = result || this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME).equals(nodeDesc.getName());
+        return result;
     }
 }
