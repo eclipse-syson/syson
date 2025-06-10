@@ -149,6 +149,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     public List<EStructuralFeature> caseMembership(Membership object) {
         var features = new ArrayList<EStructuralFeature>();
         features.add(SysmlPackage.eINSTANCE.getMembership_Visibility());
+        features.add(SysmlPackage.eINSTANCE.getMembership_MemberElement());
         return features;
     }
 

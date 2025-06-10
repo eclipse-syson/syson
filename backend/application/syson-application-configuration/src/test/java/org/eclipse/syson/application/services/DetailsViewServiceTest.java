@@ -63,8 +63,16 @@ public class DetailsViewServiceTest {
     public void getCoreFeaturesOfFeatureValue() {
         List<EStructuralFeature> coreStructuralFeatures = this.detailsViewService.getCoreFeatures(SysmlFactory.eINSTANCE.createFeatureValue());
         assertThat(coreStructuralFeatures).containsOnly(SysmlPackage.eINSTANCE.getMembership_Visibility(),
+                SysmlPackage.eINSTANCE.getMembership_MemberElement(),
                 SysmlPackage.eINSTANCE.getFeatureValue_IsDefault(),
                 SysmlPackage.eINSTANCE.getFeatureValue_IsInitial());
+    }
+
+    @Test
+    public void getCoreFeaturesOfMembership() {
+        List<EStructuralFeature> coreStructuralFeatures = this.detailsViewService.getCoreFeatures(SysmlFactory.eINSTANCE.createOwningMembership());
+        assertThat(coreStructuralFeatures).containsOnly(SysmlPackage.eINSTANCE.getMembership_Visibility(),
+                SysmlPackage.eINSTANCE.getMembership_MemberElement());
     }
 
     @Test
