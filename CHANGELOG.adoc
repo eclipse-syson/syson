@@ -23,6 +23,9 @@
 ** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
 ** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
 
+- https://github.com/eclipse-syson/syson/issues/1350[#1350] [metamodel] _org.eclipse.syson.sysml.textual.SysMLElementSerializer.SysMLElementSerializer_ now requires to be given an implementation of _INameDeresover_ as a constructor parameter.
+The constructor with implicit parameters has disappeared and need to be replaced by the constructor with all parameters.
+
 === Dependency update
 
 - [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.8]
@@ -94,6 +97,7 @@ All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection 
 - https://github.com/eclipse-syson/syson/issues/1346[#1346] [general-view] Improve _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
 - https://github.com/eclipse-syson/syson/issues/1310[#1310] [metamodel] Revert remove derived flag for `ViewUsage#exposedElement` feature.
 - https://github.com/eclipse-syson/syson/issues/1359[#1359] [export] Implement textual export of `ViewUsage`.
+- https://github.com/eclipse-syson/syson/issues/1350[#1350] [general-view] Improve _direct edit_ tool on `Feature` to be able to edit `FeatureValue` with basic expressions.
 
 === New features
 

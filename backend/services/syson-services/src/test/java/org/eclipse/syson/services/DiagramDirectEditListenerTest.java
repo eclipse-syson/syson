@@ -25,6 +25,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.syson.services.data.ItemAndAttributesModelTest;
 import org.eclipse.syson.services.data.SmallFlashlightExample;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditParser;
@@ -35,6 +36,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -69,7 +71,7 @@ public class DiagramDirectEditListenerTest {
 
     private static final String CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE = "The constraint should have 1 owned OperatorExpression";
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with '1 >= 2', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with '1 >= 2', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithBooleanExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
@@ -88,7 +90,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger2.getValue()).isEqualTo(2);
     }
 
-    @DisplayName("Given a Feature with a FeatureValue, when it is edited with ':=' symbol, then its FeatureValue should have its isInital property modified")
+    @DisplayName("GIVEN a Feature with a FeatureValue, WHEN it is edited with ':=' symbol, THEN its FeatureValue should have its isInital property modified")
     @Test
     public void testDirectEditFeatureWithInitialValue() {
         Feature feature = SysmlFactory.eINSTANCE.createFeature();
@@ -116,7 +118,7 @@ public class DiagramDirectEditListenerTest {
         this.hasIntegerValue(featureValue, 3);
     }
 
-    @DisplayName("Given a Feature with a FeatureValue, when it is edited with 'default' symbol, then its FeatureValue should have its isDefault property modified")
+    @DisplayName("GIVEN a Feature with a FeatureValue, WHEN it is edited with 'default' symbol, THEN its FeatureValue should have its isDefault property modified")
     @Test
     public void testDirectEditFeatureWithDefaultValue() {
         Feature feature = SysmlFactory.eINSTANCE.createFeature();
@@ -138,7 +140,7 @@ public class DiagramDirectEditListenerTest {
         this.hasIntegerValue(featureValue, 2);
     }
 
-    @DisplayName("Given an Element, when editing its name with the symbol 'default', then it should be allowed if not suffixed with a ' ' ")
+    @DisplayName("GIVEN an Element, WHEN editing its name with the symbol 'default', THEN it should be allowed if not suffixed with a ' ' ")
     @Test
     public void testDirectEditElementWithNameAndDefaultSymbole() {
         Feature feature = SysmlFactory.eINSTANCE.createFeature();
@@ -159,7 +161,7 @@ public class DiagramDirectEditListenerTest {
         this.hasIntegerValue(featureValue, 3);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'myAttribute >= 1', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'myAttribute >= 1', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithAttributeReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
@@ -179,7 +181,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'myAttribute >= 1 [nm]', then its expression is correctly built")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'myAttribute >= 1 [nm]', THEN its expression is correctly built")
     @Test
     public void testDirectEditConstraintUsageWithBracketExpression() {
 
@@ -216,7 +218,7 @@ public class DiagramDirectEditListenerTest {
                 .isEqualTo(smallFlashlightExample.getNumAttributeUsage());
     }
 
-    @DisplayName("Given a ConstraintUsage and an AttributeUsage in a Namespace, when the ConstraintUsage is edited with 'externalAttribute >= 1', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage and an AttributeUsage in a Namespace, WHEN the ConstraintUsage is edited with 'externalAttribute >= 1', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithExternalAttributeReferenceExpression() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
@@ -245,7 +247,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'subject >= 1', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'subject >= 1', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithSubjectReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
@@ -265,7 +267,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'feature1.feature2 >= 1', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'feature1.feature2 >= 1', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithSingleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
@@ -294,7 +296,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'feature1.feature2.feature3 >= 1', then its expression is set")
+    @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with 'feature1.feature2.feature3 >= 1', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithMultipleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
@@ -327,7 +329,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
-    @DisplayName("Given a PartUsage as graphical node, when it is edited with '[4]', then its multiplicity is set")
+    @DisplayName("GIVEN a PartUsage as graphical node, WHEN it is edited with '[4]', THEN its multiplicity is set")
     @Test
     public void testDirectEditPartUsageNodeWithMultiplicity() {
         PartUsage partUsage = this.createFlashlight();
@@ -347,7 +349,7 @@ public class DiagramDirectEditListenerTest {
         assertEquals(4, lowerBoundLiteral.getValue());
     }
 
-    @DisplayName("Given a PartUsage as graphical node, when it is edited with '[]', then its multiplicity is deleted")
+    @DisplayName("GIVEN a PartUsage as graphical node, WHEN it is edited with '[]', THEN its multiplicity is deleted")
     @Test
     public void testDirectEditPartUsageNodeWithMultiplicityDeleted() {
         PartUsage partUsage = this.createFlashlight();
@@ -362,7 +364,7 @@ public class DiagramDirectEditListenerTest {
         assertTrue(optMultiplicityRange.isEmpty());
     }
 
-    @DisplayName("Given a PartUsage as graphical node, when it is edited with '<1.1>', then its short name is set and its name is unchanged")
+    @DisplayName("GIVEN a PartUsage as graphical node, WHEN it is edited with '<1.1>', THEN its short name is set and its name is unchanged")
     @Test
     public void testDirectEditPartUsageNodeWithShortName() {
         PartUsage partUsage = this.createFlashlight();
@@ -372,7 +374,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
-    @DisplayName("Given a PartUsage with a short name as graphical node, when it is edited with '<>', then its short name is deleted and its name is unchanged")
+    @DisplayName("GIVEN a PartUsage with a short name as graphical node, WHEN it is edited with '<>', THEN its short name is deleted and its name is unchanged")
     @Test
     public void testDirectEditPartUsageNodeRemoveShortName() {
         PartUsage partUsage = this.createFlashlight();
@@ -383,7 +385,127 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
-    @DisplayName("Given a PartUsage with complex name (with spaces or reserved keywords), when edited without the escaping char ('), then the name is correctly set")
+    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a qualified name'x1 = RootPackage::p1::p11::x1', THEN the expression is correctly created")
+    @Test
+    public void testFeatureQualifiedNameInExpression() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        assertThat(model.getX1().getName()).isEqualTo("x1");
+        this.doDirectEditOnNode(model.getX1(), "x1 = RootPackage::p1::p1_1::x1");
+        assertThat(model.getX1().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(FeatureReferenceExpression.class)
+                .extracting(exp -> ((FeatureReferenceExpression) exp).getReferent())
+                .isEqualTo(model.getA2x1());
+
+    }
+
+    @DisplayName("GIVEN an ItemUsage, WHEN editing with a FeatureChain expression with 2 segments, THEN the expression is correctly created")
+    @Test
+    public void testFeature2SegmentsFeatureChainPartialEdit() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        this.doDirectEditOnNode(model.getA21(), "= a1.a1_2");
+        assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
+        assertThat(model.getA21().getName()).isEqualTo("a2_1");
+        assertThat(model.getA21().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(FeatureChainExpression.class)
+                .extracting(exp -> ((FeatureChainExpression) exp).getTargetFeature().getFeatureTarget())
+                .isEqualTo(model.getA12());
+
+    }
+
+    @DisplayName("GIVEN an ItemUsage, WHEN editing with a FeatureChain expression with 4 segments, THEN the expression is correctly created")
+    @Test
+    public void testFeature4SegmentsFeatureChainPatialEdit() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        this.doDirectEditOnNode(model.getA21(), "= a1.a1_3.i2_1.i3_1");
+        assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
+        assertThat(model.getA21().getName()).isEqualTo("a2_1");
+        assertThat(model.getA21().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(FeatureChainExpression.class)
+                .extracting(exp -> ((FeatureChainExpression) exp).getTargetFeature().getFeatureTarget())
+                .isEqualTo(model.getI31());
+
+    }
+
+    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a qualified name'x1 = RootPackage::a1::a2::x1', THEN the expression is correctly created")
+    @Test
+    public void testFeatureQualifiedNameInExpressionPartialEdit() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1");
+        assertThat(model.getX1().getName()).isEqualTo("x1");
+        assertThat(model.getX1().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(FeatureReferenceExpression.class)
+                .extracting(exp -> ((FeatureReferenceExpression) exp).getReferent())
+                .isEqualTo(model.getA2x1());
+
+    }
+
+    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a simple operator expression 'x1 = RootPackage::a1::a2::x1 + x2', THEN the expression is correctly created")
+    @Test
+    public void testFeatureSimpleOperatorExpression() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1 + 1");
+        assertThat(model.getX1().getName()).isEqualTo("x1");
+        assertThat(model.getX1().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(OperatorExpression.class)
+                .extracting(exp -> (OperatorExpression) exp)
+                .matches(epExp -> "+".equals(epExp.getOperator()));
+
+        assertThat(model.getX1().getValuation().getValue().getParameter())
+                .hasSize(2)
+                .extracting(p -> p.getValuation().getValue())
+                .satisfies(params -> {
+                    assertThat(params.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getA2x1());
+                    assertThat(params.get(1)).matches(second -> second instanceof LiteralInteger intLit && intLit.getValue() == 1);
+                });
+
+    }
+
+    @DisplayName("GIVEN an AttributeUsage, WHEN editing with a simple operator expression 'x1 = x2 + x3 - 10.5', THEN the expression is correctly created")
+    @Test
+    public void testFeatureNestedOperatorExpression() {
+        ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
+        this.doDirectEditOnNode(model.getX1(), "= x2 + x3 - 10.5");
+        assertThat(model.getX1().getName()).isEqualTo("x1");
+        assertThat(model.getX1().getValuation())
+                .isNotNull()
+                .extracting(FeatureValue::getValue)
+                .isInstanceOf(OperatorExpression.class)
+                .extracting(exp -> (OperatorExpression) exp)
+                .matches(epExp -> "-".equals(epExp.getOperator()));
+
+        assertThat(model.getX1().getValuation().getValue().getParameter())
+                .hasSize(2)
+                .extracting(p -> p.getValuation().getValue())
+                .satisfies(params -> {
+                    // Check x2 + x3
+                    assertThat(params.get(0))
+                            .isInstanceOf(OperatorExpression.class)
+                            .extracting(exp -> (OperatorExpression) exp)
+                            .matches(epExp -> "+".equals(epExp.getOperator()));
+                    assertThat(params.get(0).getParameter())
+                            .hasSize(2)
+                            .extracting(p -> p.getValuation().getValue())
+                            .satisfies(param2 -> {
+                                assertThat(param2.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX2());
+                                assertThat(param2.get(1)).matches(second -> second instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX3());
+                            });
+                    // Check 10.5
+                    assertThat(params.get(1)).matches(second -> second instanceof LiteralRational ratLit && ratLit.getValue() == 10.5);
+                });
+
+    }
+
+    @DisplayName("GIVEN a PartUsage with complex name (with spaces or reserved keywords), WHEN edited without the escaping char ('), THEN the name is correctly set")
     @Test
     public void testDirectEditPartUsageComplexName() {
         PartUsage partUsage = this.createFlashlight();
@@ -401,7 +523,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getName()).isEqualTo("first new flashlight");
     }
 
-    @DisplayName("Given a PartUsage, when editing with 'flashlight : Flashlight', then the type of flashlight should be set to Flashlight")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with 'flashlight : Flashlight', THEN the type of flashlight should be set to Flashlight")
     @Test
     public void testDirectEditTyping() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -412,7 +534,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getType()).hasSize(1).allMatch(type -> type == flashlightExample.getFlashLightDefinition());
     }
 
-    @DisplayName("Given a PartUsage, when editing with 'flashlight :> superFlashlight', then flashlight should subset superFlashlight")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with 'flashlight :> superFlashlight', THEN flashlight should subset superFlashlight")
     @Test
     public void testDirectEditSubsetting() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -423,7 +545,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(type -> type == flashlightExample.getSuperFlashLightPartUsage());
     }
 
-    @DisplayName("Given a PartUsage, when editing with ': Flashlight', then the type of flashlight should be set to Flashlight")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with ': Flashlight', THEN the type of flashlight should be set to Flashlight")
     @Test
     public void testPartialDirectEditTyping() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -434,7 +556,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getType()).hasSize(1).allMatch(type -> type == flashlightExample.getFlashLightDefinition());
     }
 
-    @DisplayName("Given a PartUsage, when editing with ':> superFlashlight', then flashlight should specialize superFlashlight")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with ':> superFlashlight', THEN flashlight should specialize superFlashlight")
     @Test
     public void testPartialDirectEditSubsetting() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -445,7 +567,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(type -> type == flashlightExample.getSuperFlashLightPartUsage());
     }
 
-    @DisplayName("Given a PartUsage, when editing with 'flashlight : Flashlight2', then the type of flashlight should be set to a newly created Flashlight2")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with 'flashlight : Flashlight2', THEN the type of flashlight should be set to a newly created Flashlight2")
     @Test
     public void testDirectEditTypingWithCreation() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -458,7 +580,7 @@ public class DiagramDirectEditListenerTest {
                 && type instanceof PartDefinition);
     }
 
-    @DisplayName("Given a PartUsage, when editing with 'flashlight :> superFlashlight2', then flashlight should subset a newly created part superFlashlight2")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with 'flashlight :> superFlashlight2', THEN flashlight should subset a newly created part superFlashlight2")
     @Test
     public void testDirectEditSubsettingWithCreation() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -471,7 +593,7 @@ public class DiagramDirectEditListenerTest {
                 && type instanceof PartUsage);
     }
 
-    @DisplayName("Given a PartUsage, when editing with ': Flashlight2', then the type of flashlight should be set to a newly created Flashlight2")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with ': Flashlight2', THEN the type of flashlight should be set to a newly created Flashlight2")
     @Test
     public void testPartialDirectEditTypingWithCreation() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -484,7 +606,7 @@ public class DiagramDirectEditListenerTest {
                 && type instanceof PartDefinition);
     }
 
-    @DisplayName("Given a PartUsage, when editing with ':> superFlashlight2', then flashlight should specialize a newly created part superFlashlight2")
+    @DisplayName("GIVEN a PartUsage, WHEN editing with ':> superFlashlight2', THEN flashlight should specialize a newly created part superFlashlight2")
     @Test
     public void testPartialDirectEditSubsettingWithCreation() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample();
@@ -498,7 +620,7 @@ public class DiagramDirectEditListenerTest {
                         && type instanceof PartUsage);
     }
 
-    @DisplayName("Given a PartUsage with a type, when editing with ':', then type should be removed")
+    @DisplayName("GIVEN a PartUsage with a type, WHEN editing with ':', THEN type should be removed")
     @Test
     public void testDirectEditRemoveType() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightType();
@@ -510,7 +632,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getType()).isEmpty();
     }
 
-    @DisplayName("Given a PartUsage with a subsetting, when editing with ':>', then subsetting should be removed")
+    @DisplayName("GIVEN a PartUsage with a subsetting, WHEN editing with ':>', THEN subsetting should be removed")
     @Test
     public void testDirectEditRemoveSubsetting() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightSubsetting();
@@ -522,7 +644,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.supertypes(true)).isEmpty();
     }
 
-    @DisplayName("Given a PartUsage with a subsetting, when editing with 'flashlight2', then subsetting should not be removed and the name should change")
+    @DisplayName("GIVEN a PartUsage with a subsetting, WHEN editing with 'flashlight2', THEN subsetting should not be removed and the name should change")
     @Test
     public void testPartialDirectEditName() {
         SmallFlashlightExample flashlightExample = new SmallFlashlightExample().addFlashlightSubsetting();
@@ -534,7 +656,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.supertypes(true)).hasSize(1).allMatch(t -> t == flashlightExample.getSuperFlashLightPartUsage());
     }
 
-    @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '[4]', then its multiplicity is set")
+    @DisplayName("GIVEN a PartUsage as graphical compartment list item, WHEN it is edited with '[4]', THEN its multiplicity is set")
     @Test
     public void testDirectEditPartUsageListItemWithMultiplicity() {
         PartUsage partUsage = this.createFlashlight();
@@ -554,7 +676,7 @@ public class DiagramDirectEditListenerTest {
         assertEquals(4, lowerBoundLiteral.getValue());
     }
 
-    @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '<1.1>', then its short name is set and its name is unchanged")
+    @DisplayName("GIVEN a PartUsage as graphical compartment list item, WHEN it is edited with '<1.1>', THEN its short name is set and its name is unchanged")
     @Test
     public void testDirectEditPartUsageListItemWithShortName() {
         PartUsage partUsage = this.createFlashlight();
@@ -564,7 +686,7 @@ public class DiagramDirectEditListenerTest {
         assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
-    @DisplayName("Given a PartUsage with a short name as graphical compartment list item, when it is edited with '<>', then its short name is deleted and its name is unchanged")
+    @DisplayName("GIVEN a PartUsage with a short name as graphical compartment list item, WHEN it is edited with '<>', THEN its short name is deleted and its name is unchanged")
     @Test
     public void testDirectEditPartUsageListItemRemoveShortName() {
         PartUsage partUsage = this.createFlashlight();

@@ -12,9 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import java.util.List;
+import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -31,21 +30,12 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
-import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
-import org.eclipse.syson.sysml.LiteralInfinity;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MultiplicityRange;
-import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -55,9 +45,13 @@ import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
+import org.eclipse.syson.sysml.textual.utils.INameDeresolver;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Label-related Java services used by SysON representations.
@@ -79,6 +73,8 @@ public class LabelService {
     public static final String VALUE_OFF = "VALUE_OFF";
 
     public static final String TRANSITION_EXPRESSION_OFF = "TRANSITION_EXPRESSION_OFF";
+
+    private final Logger logger = LoggerFactory.getLogger(LabelService.class);
 
     private final IFeedbackMessageService feedbackMessageService;
 
@@ -201,7 +197,7 @@ public class LabelService {
         DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
         listener.resolveProxies().forEach(proxy -> {
-            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to resolve  " + proxy.nameToResolve() + " from " + proxy.context().getQualifiedName(), MessageLevel.WARNING));
+            this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to resolve `{0}`", proxy.nameToResolve()), MessageLevel.WARNING));
         });
         return element;
     }
@@ -219,13 +215,13 @@ public class LabelService {
             builder.append(this.getBasicNamePrefix(usage));
         }
         builder.append(this.getIdentificationLabel(element));
-        builder.append(this.getMultiplicityLabel(element));
+        builder.append(this.getMultiplicityStringRepresentation(element, true));
         builder.append(this.getTypingLabel(element));
         builder.append(this.getRedefinitionLabel(element));
         builder.append(this.getSubsettingLabel(element));
         builder.append(this.getSubclassificationLabel(element));
         if (element instanceof Usage usage) {
-            builder.append(this.getValueLabel(usage));
+            builder.append(this.getValueStringRepresentation(usage, true));
         }
         return builder.toString();
     }
@@ -261,6 +257,20 @@ public class LabelService {
      *         otherwise.
      */
     public String getMultiplicityLabel(Element element) {
+        return this.getMultiplicityStringRepresentation(element, false);
+    }
+
+    /**
+     * Return the label of the multiplicity part of the given {@link Element}.
+     *
+     * @param element
+     *            element the given {@link Element}.
+     * @param directEditInput
+     *            holds <code>true</code> if the label is used as a direct edit input
+     * @return the label of the multiplicity part of the given {@link Element} if there is one, an empty string
+     *         otherwise.
+     */
+    public String getMultiplicityStringRepresentation(Element element, boolean directEditInput) {
         StringBuilder label = new StringBuilder();
         var optMultiplicityRange = element.getOwnedRelationship().stream()
                 .filter(OwningMembership.class::isInstance)
@@ -282,10 +292,10 @@ public class LabelService {
                     .map(LiteralExpression.class::cast)
                     .toList();
             if (bounds.size() == 1) {
-                firstBound = this.getValue(bounds.get(0));
+                firstBound = this.getSysmlTextualRepresentation(bounds.get(0), directEditInput);
             } else if (bounds.size() == 2) {
-                firstBound = this.getValue(bounds.get(0));
-                secondBound = this.getValue(bounds.get(1));
+                firstBound = this.getSysmlTextualRepresentation(bounds.get(0), directEditInput);
+                secondBound = this.getSysmlTextualRepresentation(bounds.get(1), directEditInput);
             }
             label.append(LabelConstants.OPEN_BRACKET);
             if (firstBound != null) {
@@ -380,6 +390,67 @@ public class LabelService {
             label.append(LabelConstants.END + LabelConstants.SPACE);
         }
         this.getReferenceUsagePrefix(usage, label);
+        return label.toString();
+    }
+
+    /**
+     * Get the SysML textual representation of the given element.
+     *
+     * @param element
+     *            the element to convert to textual format
+     * @param resolvableName
+     *            holds <code>true</code> to compute resolvable names for references, otherwise simple name are used to
+     *            reference an element.
+     * @return a textual representation or <code>null</code> if none
+     */
+    public String getSysmlTextualRepresentation(Element element, boolean resolvableName) {
+        return this.buildSerializer(resolvableName).doSwitch(element);
+    }
+
+    /**
+     * Return the label of the value part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    public String getValueLabel(Usage usage) {
+        return this.getValueStringRepresentation(usage, false);
+    }
+
+    /**
+     * Return the label of the value part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @param directEditInput
+     *            if the label is being used as direct edit input
+     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    public String getValueStringRepresentation(Usage usage, boolean directEditInput) {
+        StringBuilder label = new StringBuilder();
+        var featureValue = usage.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst();
+        if (featureValue.isPresent()) {
+            var expression = featureValue.get().getValue();
+            String valueAsString = null;
+            if (expression != null) {
+                valueAsString = this.getSysmlTextualRepresentation(expression, directEditInput);
+            }
+
+            if (featureValue.get().isIsDefault()) {
+                label
+                        .append(LabelConstants.SPACE)
+                        .append(LabelConstants.DEFAULT);
+            }
+            label
+                    .append(LabelConstants.SPACE)
+                    .append(this.getFeatureValueRelationshipSymbol(featureValue.get()))
+                    .append(LabelConstants.SPACE)
+                    .append(valueAsString);
+        }
         return label.toString();
     }
 
@@ -551,37 +622,23 @@ public class LabelService {
     }
 
     /**
-     * Return the label of the value part of the given {@link Usage}.
+     * Builds a SysMLSerializer.
      *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
+     * @param resolvableName
+     *            holds <code>true</code> to compute resolvable names for references, otherwise simple name are used to
+     *            reference an element.
+     * @return a new {@link SysMLElementSerializer}.
      */
-    protected String getValueLabel(Usage usage) {
-        StringBuilder label = new StringBuilder();
-        var featureValue = usage.getOwnedRelationship().stream()
-                .filter(FeatureValue.class::isInstance)
-                .map(FeatureValue.class::cast)
-                .findFirst();
-        if (featureValue.isPresent()) {
-            var expression = featureValue.get().getValue();
-            String valueAsString = null;
-            if (expression != null) {
-                valueAsString = this.getValue(expression);
-            }
-
-            if (featureValue.get().isIsDefault()) {
-                label
-                        .append(LabelConstants.SPACE)
-                        .append(LabelConstants.DEFAULT);
-            }
-            label
-                    .append(LabelConstants.SPACE)
-                    .append(this.getFeatureValueRelationshipSymbol(featureValue.get()))
-                    .append(LabelConstants.SPACE)
-                    .append(valueAsString);
+    protected SysMLElementSerializer buildSerializer(boolean resolvableName) {
+        final INameDeresolver nameDeresolver;
+        if (resolvableName) {
+            nameDeresolver = new FileNameDeresolver();
+        } else {
+            nameDeresolver = new SimpleNameDeresolver();
         }
-        return label.toString();
+        return new SysMLElementSerializer("\n", " ", nameDeresolver, s -> {
+            this.logger.info(s.message());
+        });
     }
 
     private String getFeatureValueRelationshipSymbol(FeatureValue featureValueMembership) {
@@ -593,91 +650,6 @@ public class LabelService {
             affectationSymbole = LabelConstants.EQUAL;
         }
         return affectationSymbole;
-    }
-
-    /**
-     * Get the value of the given {@link Expression} as a string.
-     *
-     * @param expression
-     *            the given {@link Expression}.
-     * @return the value of the given {@link Expression} as a string.
-     */
-    protected String getValue(Expression expression) {
-        String value = null;
-        if (expression instanceof LiteralInteger literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (expression instanceof LiteralRational literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (expression instanceof LiteralBoolean literal) {
-            value = String.valueOf(literal.isValue());
-        } else if (expression instanceof LiteralString literal) {
-            value = "\"" + String.valueOf(literal.getValue()) + "\"";
-        } else if (expression instanceof LiteralInfinity) {
-            value = "*";
-        } else if (expression instanceof OperatorExpression operatorExpression) {
-            value = this.getValue(operatorExpression);
-        } else if (expression instanceof FeatureReferenceExpression featureReferenceExpression) {
-            value = this.getValue(featureReferenceExpression);
-        }
-        return value;
-    }
-
-    private String getValue(OperatorExpression operatorExpression) {
-        StringBuilder value = new StringBuilder();
-        if (operatorExpression instanceof FeatureChainExpression featureChainExpression) {
-            value = this.getValue(featureChainExpression);
-        } else {
-            var argument = operatorExpression.getArgument();
-            if (argument.size() > 1 && Objects.equals(operatorExpression.getOperator(), LabelConstants.OPEN_BRACKET)) {
-                value.append(this.getValue(argument.get(0)));
-                value.append(LabelConstants.SPACE);
-                value.append(LabelConstants.OPEN_BRACKET);
-                value.append(this.getValue(operatorExpression.getArgument().get(1)));
-                value.append(LabelConstants.CLOSE_BRACKET);
-            } else if (argument.size() > 1 && List.of("<=", ">=", "<", ">", "==").contains(operatorExpression.getOperator())) {
-                value.append(this.getValue(argument.get(0)));
-                value.append(LabelConstants.SPACE);
-                value.append(operatorExpression.getOperator());
-                value.append(LabelConstants.SPACE);
-                value.append(this.getValue(operatorExpression.getArgument().get(1)));
-            }
-        }
-        return value.toString();
-    }
-
-    private StringBuilder getValue(FeatureChainExpression featureChainExpression) {
-        StringBuilder value = new StringBuilder();
-        var argument = featureChainExpression.getArgument();
-        if (!argument.isEmpty()) {
-            value.append(this.getValue(argument.get(0)));
-            value.append(".");
-        }
-        Feature targetFeature = featureChainExpression.getTargetFeature();
-        if (targetFeature.getChainingFeature().isEmpty()) {
-            value.append(targetFeature.getName());
-        } else {
-            value.append(targetFeature.getChainingFeature().stream()
-                    .map(Feature::getName)
-                    .collect(Collectors.joining(".")));
-        }
-        return value;
-    }
-
-    private String getValue(FeatureReferenceExpression featureReferenceExpression) {
-        String value = null;
-        boolean isInMeasurementExpression = EMFUtils.getAncestors(OperatorExpression.class, featureReferenceExpression,
-                ancestor -> ancestor instanceof OperatorExpression operatorExpression && Objects.equals(operatorExpression.getOperator(), "[")).size() > 0;
-        if (isInMeasurementExpression) {
-            // We use short name for measurements if it exists
-            value = featureReferenceExpression.getReferent().getShortName();
-            if (value == null || value.isBlank()) {
-                // If the short name is not set we use the regular name
-                value = featureReferenceExpression.getReferent().getName();
-            }
-        } else {
-            value = featureReferenceExpression.getReferent().getName();
-        }
-        return value;
     }
 
     protected String getDeclaredNameLabel(Element element) {

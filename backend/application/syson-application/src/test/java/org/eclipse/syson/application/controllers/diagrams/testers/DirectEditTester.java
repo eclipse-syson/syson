@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 
@@ -49,11 +50,26 @@ public class DirectEditTester {
         this.editingContextId = Objects.requireNonNull(editingContextId);
     }
 
-    public void checkDirectEdit(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String expectedNodeLabel) {
+    public void checkDirectEditInsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String insideLabel) {
+        this.checkDirectEdit(verifier, diagram, mainNodeId, inputLabel, insideLabel, true);
+    }
+
+    public void checkDirectEditOutsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String outsideLabel) {
+        this.checkDirectEdit(verifier, diagram, mainNodeId, inputLabel, outsideLabel, false);
+    }
+
+    private void checkDirectEdit(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String expectedLabel, boolean isInsideLabel) {
         Runnable requestDirectEdit = () -> {
 
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-            String labelId = diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel().getId();
+            final String labelId;
+            if (isInsideLabel) {
+                labelId = diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel().getId();
+
+            } else {
+                labelId = diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0).id();
+
+            }
 
             EditLabelInput input = new EditLabelInput(UUID.randomUUID(), this.editingContextId, diagram.get().getId(), labelId, inputLabel);
             var result = this.editLabelMutationRunner.run(input);
@@ -65,9 +81,16 @@ public class DirectEditTester {
         Consumer<DiagramRefreshedEventPayload> diagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(newDiagram -> {
-                    DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-                    InsideLabel newLabel = diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel();
-                    assertThat(newLabel.getText()).isEqualTo(expectedNodeLabel);
+                    DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+                    if (isInsideLabel) {
+
+                        InsideLabel newLabel = diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel();
+                        assertThat(newLabel.getText()).isEqualTo(expectedLabel);
+                    } else {
+
+                        OutsideLabel newLabel = diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0);
+                        assertThat(newLabel.text()).isEqualTo(expectedLabel);
+                    }
                 }, () -> fail("Missing diagram"));
 
         verifier.then(requestDirectEdit);

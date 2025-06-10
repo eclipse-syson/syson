@@ -546,16 +546,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         return result;
                     });
 
-            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
-            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
-            if (optMeasurementOperator.isPresent()) {
+            if (!this.expressionStack.isEmpty()) {
                 featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
-            } else {
-                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
-                // cannot be found.
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(literalExpression);
+                featureValue.getOwnedRelatedElement().add(this.popExpression());
             }
             // Check for isDefault token;
             int childCount = ctx.getChildCount();

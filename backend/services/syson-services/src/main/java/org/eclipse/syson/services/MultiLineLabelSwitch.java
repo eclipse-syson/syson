@@ -905,10 +905,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .map(LiteralExpression.class::cast)
                     .toList();
             if (bounds.size() == 1) {
-                firstBound = this.labelService.getValue(bounds.get(0));
+                firstBound = this.labelService.getSysmlTextualRepresentation(bounds.get(0), false);
             } else if (bounds.size() == 2) {
-                firstBound = this.labelService.getValue(bounds.get(0));
-                secondBound = this.labelService.getValue(bounds.get(1));
+                firstBound = this.labelService.getSysmlTextualRepresentation(bounds.get(0), false);
+                secondBound = this.labelService.getSysmlTextualRepresentation(bounds.get(1), false);
             }
             label.append(LabelConstants.OPEN_BRACKET);
             if (firstBound != null) {
@@ -970,7 +970,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         if (expression != null) {
             // At the moment, we do not have the service to retrieve the textual representation of an
             // expression. This code should be enhanced to cover all kind of expression.
-            var value = this.labelService.getValue(expression);
+            var value = this.labelService.getSysmlTextualRepresentation(expression, false);
             if (value != null) {
                 label.append(value);
             }

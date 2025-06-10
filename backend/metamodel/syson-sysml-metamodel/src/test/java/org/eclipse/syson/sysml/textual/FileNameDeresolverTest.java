@@ -26,18 +26,18 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
+import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for {@link NameDeresolver}.
+ * Test class for {@link FileNameDeresolver}.
  *
  * @author Arthur Daussy
  */
-public class NameDeresolverTest {
+public class FileNameDeresolverTest {
 
     private static final String P2_DEF2 = "p2::def2";
 
@@ -624,7 +624,7 @@ public class NameDeresolverTest {
     }
 
     private String getDeresolvedName(Element toDeresolve, Element context) {
-        return new NameDeresolver().getDeresolvedName(toDeresolve, context);
+        return new FileNameDeresolver().getDeresolvedName(toDeresolve, context);
     }
 
     /**

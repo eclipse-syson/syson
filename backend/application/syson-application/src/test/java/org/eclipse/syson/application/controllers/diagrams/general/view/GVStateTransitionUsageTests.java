@@ -78,7 +78,7 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
                             .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_OFF_ID.equals(e.getId()))
                             .findFirst()
                             .get();
-                    assertThat(onOffEdge.getCenterLabel().getText()).isEqualTo("after 5 [minute] via ");
+                    assertThat(onOffEdge.getCenterLabel().getText()).isEqualTo("after 5 [min] via ");
                     assertThat(onOffEdge.getSourceId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_ID);
                     assertThat(onOffEdge.getTargetId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ID);
                     Edge onIdleEdge = diagram.getEdges().stream()

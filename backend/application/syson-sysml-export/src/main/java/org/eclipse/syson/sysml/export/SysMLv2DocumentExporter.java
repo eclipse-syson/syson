@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentExporter;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class SysMLv2DocumentExporter implements IDocumentExporter {
         if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Element element) {
 
             List<Status> status = new ArrayList<>();
-            String textualForm = new SysMLElementSerializer(status::add).doSwitch(element);
+            String textualForm = new SysMLElementSerializer(System.lineSeparator(), "\t", new FileNameDeresolver(), status::add).doSwitch(element);
             if (textualForm == null) {
                 textualForm = "";
             }

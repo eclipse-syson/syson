@@ -88,6 +88,7 @@
 			<artifactId>syson-direct-edit-grammar</artifactId>
 			<version>2025.4.7</version>
 		</dependency>
+		<!-- Tests -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -96,6 +97,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-metamodel</artifactId>
+			<version>2025.4.7</version>
+			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

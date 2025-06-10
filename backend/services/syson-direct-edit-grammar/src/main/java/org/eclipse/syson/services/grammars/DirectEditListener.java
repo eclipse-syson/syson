@@ -346,16 +346,6 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitSequenceExpressionList(DirectEditParser.SequenceExpressionListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#operand}.
-	 * @param ctx the parse tree
-	 */
-	void enterOperand(DirectEditParser.OperandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#operand}.
-	 * @param ctx the parse tree
-	 */
-	void exitOperand(DirectEditParser.OperandContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#featureChainExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -445,6 +435,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRefName(DirectEditParser.RefNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#qualifiedName2}.
+	 * @param ctx the parse tree
+	 */
+	void enterQualifiedName2(DirectEditParser.QualifiedName2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#qualifiedName2}.
+	 * @param ctx the parse tree
+	 */
+	void exitQualifiedName2(DirectEditParser.QualifiedName2Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#name}.
 	 * @param ctx the parse tree

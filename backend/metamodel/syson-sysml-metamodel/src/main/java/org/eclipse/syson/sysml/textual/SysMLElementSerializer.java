@@ -40,7 +40,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.utils.Appender;
-import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
+import org.eclipse.syson.sysml.textual.utils.INameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.eclipse.syson.sysml.textual.utils.SysMLKeywordSwitch;
 import org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates;
@@ -57,7 +57,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private final String indentation;
 
-    private final NameDeresolver nameDeresolver;
+    private final INameDeresolver nameDeresolver;
 
     private final SysMLKeywordSwitch keywordProvider = new SysMLKeywordSwitch();
 
@@ -77,7 +77,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @param indentation
      *            the string used to indent the file
      */
-    public SysMLElementSerializer(String lineSeparator, String indentation, NameDeresolver nameDeresolver, Consumer<Status> reportConsumer) {
+    public SysMLElementSerializer(String lineSeparator, String indentation, INameDeresolver nameDeresolver, Consumer<Status> reportConsumer) {
         super();
         this.lineSeparator = lineSeparator;
         this.indentation = indentation;
@@ -88,10 +88,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             this.reportConsumer = reportConsumer;
         }
-    }
-
-    public SysMLElementSerializer(Consumer<Status> reportConsumer) {
-        this(System.lineSeparator(), "\t", new NameDeresolver(), reportConsumer);
     }
 
     @Override
@@ -2038,13 +2034,17 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @return a name
      */
     private String getDeresolvableName(Element toDeresolve, Element context) {
-        String deresolvedName = this.nameDeresolver.getDeresolvedName(toDeresolve, context);
-
-        if (deresolvedName == null || deresolvedName.isBlank()) {
-            this.reportConsumer.accept(Status.warning("Empty deresolved name for an {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
+        final String result;
+        if (toDeresolve == null) {
+            result = null;
+        } else {
+            String deresolvedName = this.nameDeresolver.getDeresolvedName(toDeresolve, context);
+            if (deresolvedName == null || deresolvedName.isBlank()) {
+                this.reportConsumer.accept(Status.warning("Empty deresolved name for {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
+            }
+            result = deresolvedName;
         }
-
-        return deresolvedName;
+        return result;
     }
 
     private void appendAcceptNodeDeclaration(Appender builder, AcceptActionUsage acceptActionUsage) {

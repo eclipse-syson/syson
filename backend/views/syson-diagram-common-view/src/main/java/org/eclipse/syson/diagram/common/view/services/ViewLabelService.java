@@ -35,7 +35,6 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.textual.utils.Appender;
-import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
 
 /**
  * Label-related Java services used in diagrams.
@@ -87,20 +86,24 @@ public class ViewLabelService extends LabelService {
      * @return the label for the given {@link Usage}.
      */
     public String getCompartmentItemLabel(Usage usage) {
+        return this.getCompartmentItemStringRepresentation(usage, false);
+    }
+
+    private String getCompartmentItemStringRepresentation(Usage usage, boolean directEditInput) {
         StringBuilder label = new StringBuilder();
         if (usage instanceof ConstraintUsage constraintUsage
                 && usage.getOwningMembership() instanceof RequirementConstraintMembership) {
             // Use the constraint-specific rendering only if the element is a constraint owned by a requirement. Other
             // constraints (including requirements) are rendered as regular elements.
-            label.append(this.getCompartmentItemLabel(constraintUsage));
+            label.append(this.getCompartmentItemLabel(constraintUsage, directEditInput));
         } else {
             label.append(this.getUsageListItemPrefix(usage));
             label.append(this.getIdentificationLabel(usage));
-            label.append(this.getMultiplicityLabel(usage));
+            label.append(this.getMultiplicityStringRepresentation(usage, directEditInput));
             label.append(this.getTypingLabel(usage));
             label.append(this.getRedefinitionLabel(usage));
             label.append(this.getSubsettingLabel(usage));
-            label.append(this.getValueLabel(usage));
+            label.append(this.getValueStringRepresentation(usage, directEditInput));
         }
         return label.toString();
     }
@@ -137,12 +140,12 @@ public class ViewLabelService extends LabelService {
      *            the given {@link ConstraintUsage}
      * @return the label for the given {@link ConstraintUsage}
      */
-    private String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
+    private String getCompartmentItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
         StringBuilder label = new StringBuilder();
         if (constraintUsage == null) {
             label.append("");
         } else if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            label.append(this.getValue(expression));
+            label.append(this.getSysmlTextualRepresentation(expression, directEditInput));
         } else {
             // The constraint doesn't have an expression, we use its name as default label.
             label.append(this.getIdentificationLabel(constraintUsage));
@@ -198,17 +201,17 @@ public class ViewLabelService extends LabelService {
         String result;
         if (usage instanceof ConstraintUsage constraintUsage &&
                 usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            result = this.getInitialDirectEditListItemLabel(constraintUsage);
+            result = this.getInitialDirectEditListItemLabel(constraintUsage, true);
         } else {
-            result = this.getCompartmentItemLabel(usage);
+            result = this.getCompartmentItemStringRepresentation(usage, true);
         }
         return result;
     }
 
-    private String getInitialDirectEditListItemLabel(ConstraintUsage constraintUsage) {
+    private String getInitialDirectEditListItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
         String result;
         if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            result = this.getValue(expression);
+            result = this.getSysmlTextualRepresentation(expression, directEditInput);
         } else {
             // The constraint doesn't have an expression, we set an initial empty string for the direct edit.
             result = "";
@@ -239,7 +242,7 @@ public class ViewLabelService extends LabelService {
     }
 
     public String getMultiplicityRangeInitialDirectEditLabel(Element element) {
-        return this.getMultiplicityLabel(element);
+        return this.getMultiplicityRangeInitialDirectEditLabel(element);
     }
 
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
@@ -262,7 +265,7 @@ public class ViewLabelService extends LabelService {
         // trigger-expression '/' ActionUsage
         Appender appender = new Appender(SPACE, SPACE);
 
-        this.handleTransitionTriggerExpression(transition, displayGuard, appender);
+        this.handleTransitionTriggerExpression(transition, displayGuard, appender, false);
 
         EList<ActionUsage> effectActions = transition.getEffectAction();
         if (!effectActions.isEmpty()) {
@@ -321,28 +324,27 @@ public class ViewLabelService extends LabelService {
         return effectLabel;
     }
 
-    private void handleTransitionTriggerExpression(TransitionUsage transition, boolean displayGuard, Appender appender) {
-        this.handleAcceptParameterPart(transition, appender);
+    private void handleTransitionTriggerExpression(TransitionUsage transition, boolean displayGuard, Appender appender, boolean directEditInput) {
+        this.handleAcceptParameterPart(transition, appender, directEditInput);
         if (displayGuard) {
-            this.handleGuardExpression(transition, appender);
+            this.handleGuardExpression(transition, appender, directEditInput);
         }
     }
 
-    private void handleGuardExpression(TransitionUsage transition, Appender appender) {
+    private void handleGuardExpression(TransitionUsage transition, Appender appender, boolean directEditInput) {
         EList<Expression> guardExpressions = transition.getGuardExpression();
         if (!guardExpressions.isEmpty()) {
-            SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(SPACE, SPACE, new NameDeresolver(), null);
-            String textGuardExpression = guardExpressions.stream().map(sysmlSerializer::doSwitch)
+            String textGuardExpression = guardExpressions.stream().map(exp -> this.getSysmlTextualRepresentation(exp, directEditInput))
                     .filter(Objects::nonNull)
                     .collect(joining(GUARD_EXPRESSION_SEPARATOR));
             appender.appendWithSpaceIfNeeded("[").append(textGuardExpression).append("]");
         }
     }
 
-    private void handleAcceptParameterPart(TransitionUsage transition, Appender appender) {
+    private void handleAcceptParameterPart(TransitionUsage transition, Appender appender, boolean directEditInput) {
         EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
         if (!triggerActions.isEmpty()) {
-            SysMLElementSerializer sysmlSerializer = new SysMLElementSerializer(SPACE, SPACE, new NameDeresolver(), null);
+            SysMLElementSerializer sysmlSerializer = this.buildSerializer(directEditInput);
             String textGuardExpression = triggerActions.stream().map(sysmlSerializer::getAcceptParameterPart)
                     .filter(Objects::nonNull)
                     .collect(joining(TRIGGER_ACTION_SEPARATOR));
