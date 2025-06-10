@@ -14,14 +14,12 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -49,17 +47,6 @@ import org.eclipse.syson.sysml.ViewpointUsage;
  * @generated
  */
 public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
-
-    /**
-     * The cached value of the '{@link #getExposedElement() <em>Exposed Element</em>}' reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getExposedElement()
-     */
-    protected EList<Element> exposedElement;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -82,14 +69,12 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Element> getExposedElement() {
-        if (this.exposedElement == null) {
-            this.exposedElement = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT);
-        }
-        return this.exposedElement;
+        List<Usage> data = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getViewUsage_ExposedElement(), data.size(), data.toArray());
     }
 
     /**
@@ -203,43 +188,11 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT:
-                this.getExposedElement().clear();
-                this.getExposedElement().addAll((Collection<? extends Element>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void eUnset(int featureID) {
-        switch (featureID) {
-            case SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT:
-                this.getExposedElement().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT:
-                return this.exposedElement != null && !this.exposedElement.isEmpty();
+                return !this.getExposedElement().isEmpty();
             case SysmlPackage.VIEW_USAGE__SATISFIED_VIEWPOINT:
                 return !this.getSatisfiedViewpoint().isEmpty();
             case SysmlPackage.VIEW_USAGE__VIEW_CONDITION:

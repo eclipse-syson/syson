@@ -39,7 +39,7 @@ public interface ViewUsage extends PartUsage {
      *
      * @return the value of the '<em>Exposed Element</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewUsage_ExposedElement()
-     * @model annotation="subsets"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Element> getExposedElement();
