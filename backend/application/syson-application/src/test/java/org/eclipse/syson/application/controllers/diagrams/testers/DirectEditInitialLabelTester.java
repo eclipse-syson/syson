@@ -43,6 +43,13 @@ public class DirectEditInitialLabelTester {
         this.initialDirectEditElementLabelQueryRunner = Objects.requireNonNull(initialDirectEditElementLabelQueryRunner);
         this.editingContextId = Objects.requireNonNull(editingContextId);
     }
+    
+    public void checkDirectEditInitialLabelOnBorderedNode(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String expectedLabel) {
+        this.checkDirectEditInitialLabel(verifier, diagram, () -> {
+            DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
+            return diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0).id();
+        }, expectedLabel);
+    }
 
     public void checkDirectEditInitialLabelOnNode(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String expectedLabel) {
         this.checkDirectEditInitialLabel(verifier, diagram, () -> {

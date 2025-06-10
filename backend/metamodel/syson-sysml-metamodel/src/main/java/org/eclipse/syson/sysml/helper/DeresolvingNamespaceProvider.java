@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -194,14 +194,19 @@ public class DeresolvingNamespaceProvider {
         // Membership, Subsetting or Conjugation) was the context Relationship (see above).
         // Otherwise, the local Namespace is the chainingFeature of the previous FeatureChaining in the
         // ownedFeatureChaining list.
-        Feature featureChained = featureChaining.getFeatureChained();
-        int indexOf = featureChained.getOwnedFeatureChaining().indexOf(featureChaining);
+        var featureChained = featureChaining.getFeatureChained();
+        var ownedFeatureChaining = featureChained.getOwnedFeatureChaining();
+        int indexOf = ownedFeatureChaining.indexOf(featureChaining);
         if (indexOf != -1) {
-
             if (indexOf == 0) {
                 result = this.getDeresolvingNamespaces(featureChained.getOwningRelationship());
             } else {
-                result = List.of(featureChained.getOwnedFeatureChaining().get(indexOf - 1).getChainingFeature());
+                var chainingFeature = ownedFeatureChaining.get(indexOf - 1).getChainingFeature();
+                if (chainingFeature != null) {
+                    result = List.of(chainingFeature);
+                } else {
+                    result = List.of();
+                }
             }
         } else {
             result = List.of(element.getOwningNamespace());

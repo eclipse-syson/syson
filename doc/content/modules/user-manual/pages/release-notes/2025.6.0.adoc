@@ -259,7 +259,7 @@ image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage
 - Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
 - Make the _Details_ view more extensible in how it determines whether a SysML _Element_ is editable or not.
 - In diagrams, improve _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
-It is now possible to use the following type of expressions in a `ConstraintUsage`:
+It is now possible to use the following type of expressions in a `ConstraintUsage:
 
 * `BinaryOperatorExpression`
 * `BracketExpression`
@@ -271,6 +271,40 @@ For example:
 requirement weight{
     attribute actualWeight :> ISQ::mass;
     require constraint {actualWeight <= 0.25 [lb]}
+}
+```
+
+- In diagrams, improve _direct edit_ tool on `Feature` such as `AttributeUsage` or `ItemUsage` to be able to edit `FeatureValue` with basic expressions.
+It is now possible to use the following type of expressions in a `Feature`:
+
+* `BinaryOperatorExpression`
+* `BracketExpression`
+* `FeatureChainExpression`
+
+Here are some examples:
+
+```
+package P0 {
+    part p1 {
+            attribute x1 =  x3 - x2 - 4.5; // Nested BinaryOperatorExpression
+            attribute x2 = 25 [SI::kg] + 15 [SI::kg]; // BracketExpression
+            attribute x3;
+    }
+    item def I2 {
+        in item i2_1 : I3;
+    }
+
+    item def I3 {
+        in item i3_1;
+    }
+}
+...
+action a1 {
+    in item a1_3 : P0::I2;
+}
+
+action a2 {
+    in item a2_1 = a1.a1_3.i2_1.i3_1; // FeatureChainExpression
 }
 ```
 

@@ -204,9 +204,10 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID,
                 "add textual representation here");
 
-        this.directEditTester.checkDirectEdit(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID, "Some textual representation", "«rep»\n"
+        this.directEditTester.checkDirectEditInsideLabel(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID, "Some textual representation",
+                "«rep»\n"
                 + "\n"
-                + "add textual representation here");
+                + "Some textual representation");
 
         ISemanticChecker semanticChecker = (editingContext) -> {
             Object element = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_TEXTUAL_REP_ID).orElse(null);

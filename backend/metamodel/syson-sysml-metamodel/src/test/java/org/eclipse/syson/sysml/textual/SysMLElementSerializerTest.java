@@ -98,7 +98,7 @@ import org.eclipse.syson.sysml.textual.models.UseCaseDefinitionTestModel;
 import org.eclipse.syson.sysml.textual.models.sample.CameraModel;
 import org.eclipse.syson.sysml.textual.models.sample.ItemTest;
 import org.eclipse.syson.sysml.textual.models.sample.PictureTakingModel;
-import org.eclipse.syson.sysml.textual.utils.NameDeresolver;
+import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Severity;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.eclipse.syson.sysml.util.ModelBuilder;
@@ -846,7 +846,7 @@ public class SysMLElementSerializerTest {
     }
 
     private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer("\n", "    ", new NameDeresolver(), this.status::add).doSwitch(source);
+        return new SysMLElementSerializer("\n", "    ", new FileNameDeresolver(), this.status::add).doSwitch(source);
     }
 
     private String convertToText(Element source) {

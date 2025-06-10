@@ -49,9 +49,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Arthur Daussy
  */
-public class NameDeresolver {
+public class FileNameDeresolver implements INameDeresolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NameDeresolver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileNameDeresolver.class);
 
     /**
      * Keep a cache of the visible memberships of a given Namespace identified by its elementId.
@@ -71,6 +71,7 @@ public class NameDeresolver {
 
     private final DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
 
+    @Override
     public String getDeresolvedName(Element element, Element context) {
 
         if (element == null) {

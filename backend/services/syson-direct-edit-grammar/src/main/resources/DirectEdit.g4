@@ -120,7 +120,7 @@ valueExpression :
 ;
 
 featureValueExpression :
-	(DEFAULT_SUFFIX)? (EQUALS|ASSIGN_OP) literalExpression (LBRACKET measurementExpression RBRACKET)?
+	(DEFAULT_SUFFIX)? (EQUALS|ASSIGN_OP) expression
 ;
 
 literalExpression : 
@@ -162,10 +162,6 @@ sequenceExpressionList
     : expression (COMMA expression)*
     ;
 
-operand :
-	(literalExpression (LBRACKET measurementExpression RBRACKET)? | featureChainExpression)
-;
-
 featureChainExpression:
 	refName (DOT featureChainExpression)?
 ;
@@ -200,9 +196,12 @@ shortName :
 ;
 
 refName :
-	REFNAME | ESPACED_NAME
+	REFNAME | ESPACED_NAME | qualifiedName2
 	;
-	
+
+qualifiedName2 :
+	(REFNAME | ESPACED_NAME) (NAMESPACE_SEP (REFNAME | ESPACED_NAME))+
+;
 
 name :
 	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
