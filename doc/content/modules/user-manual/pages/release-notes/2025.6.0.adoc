@@ -274,6 +274,17 @@ requirement weight{
 }
 ```
 
+- Implement textual export of `ViewUsage` such as:
+
+```
+view rearAxleAssemblyDiagram {
+    expose rearAxleAssembly;
+    expose rearAxleAssembly::rearAxle;
+    expose rearAxleAssembly::differential;
+    render asTreeDiagram;
+}
+```
+
 == Dependency update
 
 - [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.8]

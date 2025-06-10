@@ -109,7 +109,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
         this.appendOccurrenceUsagePrefix(builder, acceptActionUsage);
         this.appendAcceptNodeDeclaration(builder, acceptActionUsage);
-        this.appendChildrenContent(builder, acceptActionUsage, acceptActionUsage.getOwnedMembership().stream().toList());
+        this.appendChildrenContent(builder, acceptActionUsage, acceptActionUsage.getOwnedMembership());
         return builder.toString();
     }
 
@@ -283,6 +283,23 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseEnumerationUsage(EnumerationUsage enumUsage) {
         Appender builder = this.newAppender();
         this.appendDefaultUsage(builder, enumUsage);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseExpose(Expose aExpose) {
+        Appender builder = this.newAppender();
+
+        builder.appendSpaceIfNeeded().append("expose ");
+
+        if (aExpose instanceof NamespaceExpose namespaceExpose) {
+            this.appendNamespaceExpose(builder, namespaceExpose);
+        } else if (aExpose instanceof MembershipExpose membershipExpose) {
+            this.appendMembershipExpose(builder, membershipExpose);
+        }
+
+        this.appendChildrenContent(builder, aExpose, aExpose.getOwnedRelationship());
+
         return builder.toString();
     }
 
@@ -738,6 +755,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseRenderingUsage(RenderingUsage rendering) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        builder.append("render");
+        this.appendOwnedReferenceSubsetting(builder, rendering.getOwnedReferenceSubsetting());
+        this.appendChildrenContent(builder, rendering, rendering.getOwnedRelationship());
+        return builder.toString();
+    }
+
+    @Override
     public String caseRequirementDefinition(RequirementDefinition requirement) {
         Appender builder = this.newAppender();
 
@@ -980,7 +1006,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseUseCaseUsage(UseCaseUsage useCaseUsage) {
-
         Appender builder = this.newAppender();
 
         this.appendOccurrenceUsagePrefix(builder, useCaseUsage);
@@ -1003,6 +1028,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseViewUsage(ViewUsage viewUsage) {
+        Appender builder = this.newAppender();
+        this.appendOccurrenceUsagePrefix(builder, viewUsage);
+        builder.appendSpaceIfNeeded().append("view");
+        this.appendUsageDeclaration(builder, viewUsage);
+        this.appendChildrenContent(builder, viewUsage, viewUsage.getOwnedRelationship());
+        return builder.toString();
+    }
+
+    @Override
     public String caseViewpointDefinition(ViewpointDefinition vp) {
         Appender builder = this.newAppender();
 
@@ -1016,7 +1051,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         return builder.toString();
     }
-    
+
 
     /**
      * Get a String representation of the "AcceptParameterPart" BNF rule to be used on {@link AcceptActionUsage}.
@@ -1030,7 +1065,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendAcceptParameterPart(builder, acceptActionUsage);
         return builder.toString();
     }
-    
+
 
     private Appender newAppender() {
         return new Appender(this.lineSeparator, this.indentation);
@@ -1687,11 +1722,32 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendMembershipImport(Appender builder, MembershipImport membershipImport) {
-
         Membership importedMembership = membershipImport.getImportedMembership();
         if (importedMembership != null) {
             String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(Objects::nonNull).findFirst()
                     .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipImport)).orElse("");
+
+            builder.appendSpaceIfNeeded().append(qnName);
+        }
+    }
+
+    private void appendNamespaceExpose(Appender builder, NamespaceExpose namespaceExpose) {
+        Namespace exposeedNamespace = namespaceExpose.getImportedNamespace();
+        if (exposeedNamespace != null) {
+            builder.appendSpaceIfNeeded().append(this.buildImportContextRelativeQualifiedName(exposeedNamespace, namespaceExpose)).append("::");
+        }
+        if (namespaceExpose.isIsImportAll()) {
+            builder.append("*");
+        } else if (namespaceExpose.isIsRecursive()) {
+            builder.append("**");
+        }
+    }
+
+    private void appendMembershipExpose(Appender builder, MembershipExpose membershipExpose) {
+        Membership importedMembership = membershipExpose.getImportedMembership();
+        if (importedMembership != null) {
+            String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(Objects::nonNull).findFirst()
+                    .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipExpose)).orElse("");
 
             builder.appendSpaceIfNeeded().append(qnName);
         }
