@@ -199,8 +199,9 @@ public class ToolService {
      *            the given {@link IEditingContext} in which this service has been called.
      * @param diagramContext
      *            the given {@link IDiagramContext}.
+     * @return always <code>true</code>.
      */
-    public void removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
         var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
@@ -214,6 +215,7 @@ public class ToolService {
                 this.removeFromExposedElements(selectedNode, editingContext, exposed);
             }
         }
+        return true;
     }
 
     protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
