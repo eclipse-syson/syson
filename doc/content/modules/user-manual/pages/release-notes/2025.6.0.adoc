@@ -250,7 +250,6 @@ image::package-node-width-after.png[Package node after change, width=300]
 
 image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefintion and ExhibitStateUsage]
 
-- The `ViewUsage#exposedElement` feature is no longer derived in the metamodel.
 - The `ViewUsage#exposedElement` feature is now updated to reflect the contents of the diagram (_General View_, _Interconnection View_...) on which it is associated.
 - Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
 - Make the _Details_ view more extensible in how it determines whether a SysML _Element_ is editable or not.
