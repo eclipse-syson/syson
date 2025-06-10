@@ -14,6 +14,8 @@ package org.eclipse.syson.application.services;
 
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicateDelegate;
@@ -26,12 +28,13 @@ import org.springframework.stereotype.Service;
 /**
  * {@link IReadOnlyObjectPredicateDelegate} implementation for SysON.
  * <p>
- * It ensures that the following {@link Element SysML elements} are considered read-only by the
- * {@link IReadOnlyObjectPredicate} implementation (used for the <i>Explorer</i> and <i>Details</i> views):
+ * It ensures that a {@link Resource}, an {@link EAnnotation} or a {@link Element SysML element} is considered read-only
+ * by the {@link IReadOnlyObjectPredicate} implementation (used for the <i>Explorer</i> and <i>Details</i> views) when
+ * it is (or belongs to) a {@link Resource} matching at least one of the following criterias:
  * <ul>
- * <li>All elements from the SysML and KerML standard libraries</li>
- * <li>All elements from an {@link org.eclipse.syson.services.api.ISysONResourceService#isImported(Resource) imported
- * resource} containing {@link org.eclipse.syson.sysml.LibraryPackage libraries}.</li>
+ * <li>From the SysML and KerML standard libraries</li>
+ * <li>From an {@link org.eclipse.syson.services.api.ISysONResourceService#isImported(Resource) imported resource}
+ * containing {@link org.eclipse.syson.sysml.LibraryPackage libraries}.</li>
  * </ul>
  *
  * @author flatombe
@@ -47,19 +50,25 @@ public class SysONReadOnlyObjectPredicateDelegate implements IReadOnlyObjectPred
 
     @Override
     public boolean canHandle(Object candidate) {
-        return candidate instanceof Element;
+        return candidate instanceof Element || candidate instanceof Resource || candidate instanceof EAnnotation;
     }
 
     @Override
     public boolean test(Object candidate) {
-        if (candidate instanceof Element element) {
-            final Resource resource = element.eResource();
-            return ElementUtil.isStandardLibraryResource(resource)
-                    || (resource != null && this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty());
-        } else {
-            // In general, elements are not read-only.
-            return false;
+        // In general, elements are not read-only.
+        boolean isReadOnly = false;
+
+        if (candidate instanceof Resource resource) {
+            isReadOnly = ElementUtil.isStandardLibraryResource(resource)
+                    || this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
+        } else if (candidate instanceof Element || candidate instanceof EAnnotation) {
+            // Derive editability from the editability of the containing resource.
+            final EObject eObject = (EObject) candidate;
+            final Resource resource = eObject.eResource();
+            isReadOnly = this.test(resource);
         }
+
+        return isReadOnly;
     }
 
 }
