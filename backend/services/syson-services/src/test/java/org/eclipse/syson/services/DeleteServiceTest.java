@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,5 +63,39 @@ public class DeleteServiceTest {
 
         this.deleteService.deleteFromModel(part2);
         assertThat(this.resource.getContents()).hasSize(1).contains(part1);
+    }
+
+    @DisplayName("GIVEN a part1 that has been exposed by a ViewUsage, WHEN part1 is deleted, THEN the MembershipExpose should also be deleted.")
+    @Test
+    void testMembershipExpose() {
+        var pkg1 = SysmlFactory.eINSTANCE.createPackage();
+        pkg1.setDeclaredName("Pkg1");
+        this.resource.getContents().add(pkg1);
+
+        var part1Membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        pkg1.getOwnedRelationship().add(part1Membership);
+        var view1Membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        pkg1.getOwnedRelationship().add(view1Membership);
+
+        var part1 = SysmlFactory.eINSTANCE.createPartUsage();
+        part1.setDeclaredName("part1");
+        part1Membership.getOwnedRelatedElement().add(part1);
+
+        var view1 = SysmlFactory.eINSTANCE.createViewUsage();
+        view1.setDeclaredName("view1");
+        view1Membership.getOwnedRelatedElement().add(view1);
+
+        var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+        view1.getOwnedRelationship().add(membershipExpose);
+        membershipExpose.setImportedMembership(part1Membership);
+
+        assertThat(this.resource.getContents()).hasSize(1).contains(pkg1);
+        assertThat(pkg1.getMember()).hasSize(2);
+        assertThat(view1.getExposedElement()).isNotEmpty();
+
+        this.deleteService.deleteFromModel(part1);
+        assertThat(pkg1.getMember()).hasSize(1).contains(view1);
+        assertThat(view1.getExposedElement()).isEmpty();
+
     }
 }

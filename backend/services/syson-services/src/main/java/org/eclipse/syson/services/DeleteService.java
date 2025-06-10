@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,11 +42,12 @@ public class DeleteService {
      */
     public EObject deleteFromModel(Element element) {
         Set<EObject> elementsToDelete = new HashSet<>();
+        Set<EObject> relatedElements = new HashSet<>();
         elementsToDelete.add(element);
         if (element.eContainer() instanceof Membership membership) {
             elementsToDelete.add(membership);
+            this.collectRelatedElements(membership, relatedElements);
         }
-        Set<EObject> relatedElements = new HashSet<>();
         this.collectRelatedElements(element, relatedElements);
         element.eAllContents().forEachRemaining(eObject -> this.collectRelatedElements(eObject, relatedElements));
         elementsToDelete.addAll(relatedElements);
