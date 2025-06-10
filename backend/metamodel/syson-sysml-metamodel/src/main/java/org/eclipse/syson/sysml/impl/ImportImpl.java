@@ -137,12 +137,10 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Element basicGetImportedElement() {
-        // TODO: implement this method to return the 'Imported Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        // implemented in sub classes
         return null;
     }
 
