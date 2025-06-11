@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -64,11 +65,27 @@ public class MembershipExposeItemProvider extends MembershipImportItemProvider {
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getText(Object object) {
-        String label = ((MembershipExpose) object).getName();
+        MembershipExpose membershipExpose = (MembershipExpose) object;
+        Membership importedMembership = membershipExpose.getImportedMembership();
+        StringBuilder labelBuilder = new StringBuilder();
+        labelBuilder.append("expose ");
+        if (importedMembership != null) {
+            String memberName = importedMembership.getMemberName();
+            if (memberName != null && !memberName.isBlank()) {
+                labelBuilder.append(memberName);
+            } else {
+                var memberElement = importedMembership.getMemberElement();
+                if (memberElement != null) {
+                    labelBuilder.append(memberElement.eClass().getName());
+                }
+            }
+            return labelBuilder.toString();
+        }
+        String label = membershipExpose.getName();
         return label == null || label.length() == 0 ? this.getString("_UI_MembershipExpose_type") : this.getString("_UI_MembershipExpose_type") + " " + label;
     }
 
