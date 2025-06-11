@@ -2040,7 +2040,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             String deresolvedName = this.nameDeresolver.getDeresolvedName(toDeresolve, context);
             if (deresolvedName == null || deresolvedName.isBlank()) {
-                this.reportConsumer.accept(Status.warning("Empty deresolved name for {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
+                this.reportConsumer.accept(Status.warning("Empty deresolved name for {0} with id {1}", toDeresolve.eClass().getName(), toDeresolve.getElementId()));
             }
             result = deresolvedName;
         }

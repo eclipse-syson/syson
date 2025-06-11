@@ -62,10 +62,10 @@ public class ContainmentReferenceHandler {
 
     public EObject handleContainmentReference(final EObject eObject, String referenceName, final JsonNode astValue) {
         final EObject newObject;
-        final EObject refrenceTypeInstance = this.typeBuilder.createObject(astValue);
+        final EObject referenceTypeInstance = this.typeBuilder.createObject(astValue);
 
-        if (refrenceTypeInstance != null) {
-            newObject = this.addChild(eObject, referenceName, astValue, refrenceTypeInstance);
+        if (referenceTypeInstance != null) {
+            newObject = this.addChild(eObject, referenceName, astValue, referenceTypeInstance);
         } else {
             String msg = MessageFormat.format("Unexpected child type in {0} with reference {1} for holding {2}", this.logNameProvider.getName(eObject), referenceName, astValue);
             this.messageReporter.error(msg);
