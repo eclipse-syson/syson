@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +55,8 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
     @Override
     public String getLabel(Object object) {
         String label = null;
-        if (object instanceof NamespaceImport nsImport) {
-            Adapter adapter = this.composedAdapterFactory.adapt(nsImport, IItemLabelProvider.class);
+        if (object instanceof Import imprt) {
+            Adapter adapter = this.composedAdapterFactory.adapt(imprt, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
                 label = labelProvider.getText(object);
             }

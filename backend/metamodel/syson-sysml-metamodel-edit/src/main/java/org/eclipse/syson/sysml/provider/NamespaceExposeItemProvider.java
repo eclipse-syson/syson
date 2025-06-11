@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,9 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceExpose;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -64,10 +66,22 @@ public class NamespaceExposeItemProvider extends NamespaceImportItemProvider {
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getText(Object object) {
+        Namespace importedNamespace = ((NamespaceExpose) object).getImportedNamespace();
+        if (importedNamespace != null) {
+            StringBuilder text = new StringBuilder();
+            text.append("expose ");
+            text.append(importedNamespace.getQualifiedName());
+            if (((NamespaceImport) object).isIsRecursive()) {
+                text.append("::**");
+            } else {
+                text.append("::*");
+            }
+            return text.toString();
+        }
         String label = ((NamespaceExpose) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_NamespaceExpose_type") : this.getString("_UI_NamespaceExpose_type") + " " + label;
     }
