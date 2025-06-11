@@ -93,17 +93,13 @@ public class AstTreeParser {
 
     private List<EObject> parseJsonObject(final JsonNode astJson) {
         final List<EObject> result = new ArrayList<>();
-
         final EObject eObject = this.typeBuilder.createObject(astJson);
         if (eObject != null) {
-
             this.fillElementWith(astJson, eObject);
-
             result.add(eObject);
         } else {
             this.messageReporter.error("Error building the object " + astJson);
         }
-
         return result;
     }
 
@@ -135,7 +131,7 @@ public class AstTreeParser {
                 }
 
             } else {
-                LOGGER.trace("Ingoring field " + key);
+                LOGGER.trace("Ignoring field " + key);
             }
         }
     }
