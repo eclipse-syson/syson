@@ -60,6 +60,7 @@ image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%
 
 - `ManageVisibility` node action may now be displayed from the _General View_ on `Definition` and `Usage`  graphical nodes.
 This node action open a modal that can be used to reveal or hide the graphical node children's.
+Menu actions can be used to `reveal all content`, `reveal valued content only` or `hide all content`.
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
 
