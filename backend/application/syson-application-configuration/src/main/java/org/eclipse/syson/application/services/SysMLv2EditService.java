@@ -24,13 +24,21 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
@@ -40,8 +48,10 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,7 +62,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMLv2EditService implements IEditServiceDelegate {
 
-    private static final String ID_PREFIX = "SysMLv2EditService-";
+    public static final String ID_PREFIX = "SysMLv2EditService-";
 
     private final IDefaultEditService defaultEditService;
 
@@ -60,14 +70,28 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final IEMFKindService emfKindService;
 
+    private final IDiagramCreationService diagramCreationService;
+
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final DeleteService deleteService;
 
     private final UtilService utilService;
 
-    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IEMFKindService emfKindService) {
+    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IEMFKindService emfKindService, IDiagramCreationService diagramCreationService,
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
+            IRepresentationPersistenceService representationPersistenceService) {
         this.defaultEditService = Objects.requireNonNull(defaultEditService);
         this.labelService = Objects.requireNonNull(labelService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
     }
@@ -152,6 +176,9 @@ public class SysMLv2EditService implements IEditServiceDelegate {
             // model from an imported SysML file does not make it an imported user library.
             ElementUtil.setIsImported(eObject.eResource(), false);
             new ElementInitializerSwitch().doSwitch(eObject);
+            if (eObject instanceof ViewUsage viewUsage) {
+                this.createDiagram(editingContext, viewUsage);
+            }
             return Optional.of(eObject);
         }
         return this.defaultEditService.createChild(editingContext, object, childCreationDescriptionId);
@@ -209,5 +236,31 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         return Optional.ofNullable(SysmlPackage.eINSTANCE.getEClassifier(eClassName))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast);
+    }
+
+    /**
+     * Create a General View diagram and associate it to the given ViewUsage.
+     */
+    private void createDiagram(IEditingContext editingContext, ViewUsage viewUsage) {
+        this.representationDescriptionSearchService.findById(editingContext, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID)
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .ifPresent(diagramDescription -> {
+                    var variableManager = new VariableManager();
+                    variableManager.put(VariableManager.SELF, viewUsage);
+                    variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
+                    String label = diagramDescription.getLabelProvider().apply(variableManager);
+                    List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
+
+                    Diagram diagram = this.diagramCreationService.create(viewUsage, diagramDescription, editingContext);
+                    var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                            .kind(diagram.getKind())
+                            .label(label)
+                            .descriptionId(diagram.getDescriptionId())
+                            .iconURLs(iconURLs)
+                            .build();
+                    this.representationMetadataPersistenceService.save(null, editingContext, representationMetadata, diagram.getTargetObjectId());
+                    this.representationPersistenceService.save(null, editingContext, diagram);
+                });
     }
 }

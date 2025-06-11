@@ -49,7 +49,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider extends ExplorerTreeI
     @Override
     public boolean canHandle(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX)
-                && Objects.equals(tree.getDescriptionId(), sysONTreeViewDescriptionProvider.getDescriptionId());
+                && Objects.equals(tree.getDescriptionId(), this.sysONTreeViewDescriptionProvider.getDescriptionId());
     }
 
 }

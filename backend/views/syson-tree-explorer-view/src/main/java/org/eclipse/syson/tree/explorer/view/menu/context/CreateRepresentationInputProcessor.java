@@ -38,13 +38,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Sinks.Many;
 
 /**
- * {@link IInputPreProcessor} allowing to create a ViewUsage element when creating a new SysON SysMLv2 diagram. The
+ * {@link IInputPreProcessor} and {@link IInputPostProcessor} allowing to create a ViewUsage element when creating a new SysON SysMLv2 diagram. The
  * SysON SysMLv2 diagram is then attached to this new ViewUsage.
  *
  * @author arichard
  */
 @Service
-public class CreateRepresentationInputPreProcessor implements IInputPreProcessor, IInputPostProcessor {
+public class CreateRepresentationInputProcessor implements IInputPreProcessor, IInputPostProcessor {
 
     private final IObjectSearchService objectSearchService;
 
@@ -52,7 +52,7 @@ public class CreateRepresentationInputPreProcessor implements IInputPreProcessor
 
     private final ElementUtil elementUtil;
 
-    public CreateRepresentationInputPreProcessor(IObjectSearchService objectSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
+    public CreateRepresentationInputProcessor(IObjectSearchService objectSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.elementUtil = new ElementUtil();

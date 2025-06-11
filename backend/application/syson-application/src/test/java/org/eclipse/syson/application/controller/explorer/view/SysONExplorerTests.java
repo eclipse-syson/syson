@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -51,7 +52,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -70,13 +70,16 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
+    private IGivenCommittedTransaction givenCommittedTransaction;
+
+    @Autowired
     private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
 
     @Autowired
-    private RepresentationIdBuilder representationIdBuilder;
+    private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
 
     @Autowired
-    private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
+    private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
     private SysONTreeViewDescriptionProvider sysonTreeViewDescriptionProvider;
@@ -101,14 +104,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .toList();
     }
 
-    @DisplayName("Given an empty SysML Project, when the available explorers are requested, then the SysON explorer is returned")
+    @DisplayName("GIVEN an empty SysML Project, WHEN the available explorers are requested, THEN the SysON explorer is returned")
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getAvailableExplorersForSysMLv2Project() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
+        this.givenCommittedTransaction.commit();
+
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
@@ -117,14 +119,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         assertThat(explorerIds).contains(this.treeDescriptionId);
     }
 
-    @DisplayName("Given a SysON Studio Project, when the available explorers are requested, then the Sirius Web explorer is returned")
+    @DisplayName("GIVEN a SysON Studio Project, WHEN the available explorers are requested, THEN the Sirius Web explorer is returned")
     @Sql(scripts = { SysonStudioTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getAvailableExplorersForStudioProject() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
+        this.givenCommittedTransaction.commit();
+
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", SysonStudioTestProjectData.EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
@@ -133,12 +134,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         assertThat(explorerIds).contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
     }
 
-    @DisplayName("Given an empty SysML Project, when the explorer is displayed, then the libraries are visible and the root namespace and memberships are not visible")
+    @DisplayName("GIVEN an empty SysML Project, WHEN the explorer is displayed, THEN the libraries are visible and the root namespace and memberships are not visible")
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithDefaultFilters() {
-
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), this.defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -213,12 +213,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     }
 
-    @DisplayName("Given an empty SysML Project, when the explorer is displayed with its root model expanded and the hide memberships and hide KerML libraries filters, then the root model is visible and is expanded")
+    @DisplayName("GIVEN an empty SysML Project, WHEN the explorer is displayed with its root model expanded and the hide memberships and hide KerML libraries filters, THEN the root model is visible and is expanded")
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
-
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
