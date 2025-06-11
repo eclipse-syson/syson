@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-import</artifactId>
-	<version>2025.4.7</version>
+	<version>2025.4.8</version>
 	<name>syson-sysml-import</name>
 	<description>SysON SysML Import</description>
 
@@ -65,12 +65,12 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.4.7</version>
+			<version>2025.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2025.4.7</version>
+			<version>2025.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application-configuration</artifactId>
-			<version>2025.4.7</version>
+			<version>2025.4.8</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
