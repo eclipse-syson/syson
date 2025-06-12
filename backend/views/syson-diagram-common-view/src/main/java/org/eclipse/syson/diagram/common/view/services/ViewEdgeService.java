@@ -32,9 +32,13 @@ import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
@@ -419,6 +423,30 @@ public class ViewEdgeService {
             }
         }
         return sourcePort;
+    }
+
+    /**
+     * Get the target of a {@link FeatureValue} edge.
+     *
+     * @param featureValue
+     *            a {@link FeatureValue}
+     * @return a target or <code>null</code>.
+     */
+    public Feature getFeatureValueTarget(FeatureValue featureValue) {
+        Expression value = featureValue.getValue();
+        Feature result = null;
+        if (!featureValue.isIsDefault()) {
+            // Only handle FeatureChainExpression and FeatureReferenceExpression for the moment
+            if (value instanceof FeatureChainExpression featureChainExpression) {
+                Feature targetFeature = featureChainExpression.getTargetFeature();
+                if (targetFeature != null) {
+                    result = targetFeature.getFeatureTarget();
+                }
+            } else if (value instanceof FeatureReferenceExpression featureRef) {
+                result = featureRef.getReferent();
+            }
+        }
+        return result;
     }
 
     /**

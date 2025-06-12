@@ -100,6 +100,7 @@ All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection 
 - https://github.com/eclipse-syson/syson/issues/1350[#1350] [general-view] Improve _direct edit_ tool on `Feature` to be able to edit `FeatureValue` with basic expressions.
 - https://github.com/eclipse-syson/syson/issues/1363[#1363] [general-view] Add a reveal only valued content action on the manage visibility node action that will hide empty graphical compartments and will reveal the others.
 - https://github.com/eclipse-syson/syson/issues/1357[#1357] [syson] Add support for `Resource` and `EAnnotation` in `SysONReadOnlyObjectPredicateDelegate`.
+- https://github.com/eclipse-syson/syson/issues/1368[#1368] [general-view] Add an edge representation for `FeatureValue` linking two `Features`.
 
 === New features
 

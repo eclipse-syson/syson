@@ -14,11 +14,14 @@ package org.eclipse.syson.diagram.common.view.services;
 
 import static java.util.stream.Collectors.joining;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -291,7 +294,7 @@ public class ViewLabelService extends LabelService {
      * Return the label for the given {@link Usage} represented as a border node.
      *
      * @param usage
-     *         the given {@link Usage}.
+     *            the given {@link Usage}.
      * @return the label for the given {@link Usage}.
      */
     public String getBorderNodeUsageLabel(Usage usage) {
@@ -350,5 +353,22 @@ public class ViewLabelService extends LabelService {
                     .collect(joining(TRIGGER_ACTION_SEPARATOR));
             appender.append(textGuardExpression);
         }
+    }
+
+    /**
+     * Send a feedback message to the user with a textual representation of an element.
+     * 
+     * @param msg
+     *            using the {@link MessageFormat} convention to inject the textual representation of the given object
+     *            (that is to say "{0}")
+     * @param level
+     *            the message level
+     * @param element
+     *            the element to convert to a textual format
+     * @return the element itself
+     */
+    public Element sendMessageWithTextualRepresentation(String msg, String level, Element element) {
+        this.getFeedbackMessageService().addFeedbackMessage(new Message(MessageFormat.format(msg, this.getSysmlTextualRepresentation(element, false)), MessageLevel.valueOf(level)));
+        return element;
     }
 }

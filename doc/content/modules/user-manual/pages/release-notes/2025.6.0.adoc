@@ -89,6 +89,17 @@ Menu actions can be used to `reveal all content`, `reveal valued content only`, 
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
 
+- In diagrams, a `FeatureValue` connecting two `Features` now displays its _implicit_ `BindingConnectorAsUsage_` as a graphical edge.
+Note that the _implicit_ `BindingConnectorAsUsage_` is not added to the model, but is only represented in the diagram.
+
+image::FeatureValueEdge.png[Feature Value Edges, width=65%,height=65%]
+
+- In the _Details_ view, a new widget displays the value of a `Feature` using its SysML textual format.
+Currently, this widget is _read-only_.
+It may become editable in a future release.
+
+image::FeatureValueDetailView.png[Feature Value Widget, width=65%,height=65%]
+
 == Improvements
 
 - In _General View_ diagram, `ConnectionDefinition` are now also represented as graphical elements:
