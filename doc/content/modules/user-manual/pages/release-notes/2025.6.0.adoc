@@ -2,6 +2,27 @@
 
 == Key highlights
 
+- *ViewUsages*: `ViewUsage` elements can now be created and displayed in the _General View_ diagram.
+
+image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%,height=65%]
+
+Furthermore, when a diagram is created from the _Explorer_ view, a new `ViewUsage` element is also created and the new diagram is attached to this new `ViewUsage`.
+When a `ViewUsage` is created, it is automatically typed with the _General View_ `ViewDefinition` from the standard library.
+When a `ViewUsage` is created, a new _General View_ diagram is also created and the new diagram is attached to this new `ViewUsage`.
+- *Manage Visibility*: A new action allows users to manage the visibility of graphical nodes and their children in the _General View_ diagram.
+
+image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
+
+- *Textual import/export*: Improved support for textual import/export of various elements, including `ViewUsage`, `MultiplicityRange`, `AcceptActionUsage`, and `TriggerInvocationExpression`.
+
+- *Customized appearance on graphical nodes*: A new tool (in the new _Appearance_ section of the _Palette_) allows users to manage the appearance of graphical nodes in diagrams.
+This is a first version that will be improved in the future.
+
+image::appearance_tool_section.png[Customized appearance on graphical nodes, width=65%,height=65%]
+
+Once applied:
+
+image::appearance_custom_applied.png[Customized appearance applied, width=65%,height=65%]
 
 == Breaking changes
 
@@ -43,7 +64,6 @@ They are now named:
 - Fix an issue in the textual import of `MultiplicityRange` with explicit lower and upper bounds.
 The textual import now correctly creates a `MultiplicityRange` containing `LiteralInteger` elements for integer bounds, and `FeatureReferenceExpression` elements for feature bounds.
 - Fix an issue where dragging and dropping a `Definition` element from the _Explorer view_ on a _General View_ did not create the associated node.
-
 - In diagrams, prevent `TransitionUsage` graphical edges to be reconnected to another `TransitionUsage`.
 In the previous implementation, it was possible during a graphical edge reconnection to drop the source or target to another `TransitionUsage`.
 The semantic of the `TransitionUsage` being reconnected was changed and the graphical edge was removed from the diagram.
@@ -57,6 +77,11 @@ image::view-usage-nodes.png[ViewUsage nodes, width=65%,height=65%]
 - `ViewUsage` may now display graphical contents in _General View_ diagram.
 
 image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%,height=65%]
+
+- When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
+A _General View_ diagram will also be created and associated to the `ViewUsage`.
+- Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
+All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
 
 - `ManageVisibility` node action may now be displayed from the _General View_ on `Definition` and `Usage`  graphical nodes.
 This node action open a modal that can be used to reveal or hide the graphical node children's.
@@ -153,11 +178,6 @@ action a1 {
 }
 ```
 
-- When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
-A _General View_ diagram will also be created and associated to the `ViewUsage`.
-- Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
-All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
-
 - Implement textual export of `TriggerInvocationExpression` such as in the following `TransitionUsage` using as a trigger a `TriggerInvocationExpression`:
 
 ```
@@ -246,14 +266,13 @@ image::package-node-width-before.png[Package node before change, width=400]
 image::package-node-width-after.png[Package node after change, width=300]
 
 - Improve the time required to display the available commands in the omnibox.
-
 - In the _General View_ diagram, _state transition_ compartment is now available on :
 
 * `StateUsage`
 * `StateDefinition`
 * `ExhibitStateUsage`
 
-image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefintion and ExhibitStateUsage]
+image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefinition and ExhibitStateUsage]
 
 - The `ViewUsage#exposedElement` feature is now updated to reflect the contents of the diagram (_General View_, _Interconnection View_, _Action Flow View_...) on which it is associated.
 - Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
@@ -322,15 +341,15 @@ view rearAxleAssemblyDiagram {
 
 == Dependency update
 
-- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.9]
-- [releng] Switch `@xyflow/react` to `12.6.0`
-- [releng] Switch `@mui/material` to `7.0.2`
-- [releng] Switch `@mui/icons-material` to `7.0.2`
-- [releng] Switch `@mui/x-tree-view` to `7.29.1`
-- [releng] Switch `tss-react` to `4.9.16`
-- [releng] Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
-- [releng] Switch to EMFJson 2.5.1.
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.9]
+- Switch `@xyflow/react` to `12.6.0`
+- Switch `@mui/material` to `7.0.2`
+- Switch `@mui/icons-material` to `7.0.2`
+- Switch `@mui/x-tree-view` to `7.29.1`
+- Switch `tss-react` to `4.9.16`
+- Switch to https://www.jacoco.org/jacoco/trunk/doc/changes.html[JaCoCo 0.8.13].
+- Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.5[Spring Boot 3.4.5].
+- Switch to EMFJson 2.5.1.
 
 == Technical details
 
