@@ -8,7 +8,7 @@ image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%
 
 Furthermore, when a diagram is created from the _Explorer_ view, a new `ViewUsage` element is also created and the new diagram is attached to this new `ViewUsage`.
 When a `ViewUsage` is created, it is automatically typed with the _General View_ `ViewDefinition` from the standard library.
-When a `ViewUsage` is created, a new _General View_ diagram is also created and the new diagram is attached to this new `ViewUsage`.
+When a `ViewUsage` is created, a new _General View_ diagram is also created and the diagram is attached to this new `ViewUsage`.
 - *Manage Visibility*: A new action allows users to manage the visibility of graphical nodes and their children in the _General View_ diagram.
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
@@ -44,17 +44,17 @@ Future contributions are planned to introduce enhanced capabilities for editing 
 - Fix an issue that made published libraries' dependencies always empty.
 Publishing a project with a dependency to a library now correctly produces a library with the same dependency.
 - In the _Details_ view, fix an issue that prevents adding a new value to a multi-valued reference on a reference widget.
-- In _General View_ diagram, fix an issue where _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create graphical edge between `ItemUsage` bordered nodes.
+- In _General View_ diagram, fix an issue where the _New Binding Connector As Usage (bind)_ tool accessible on `ItemUsage` bordered nodes was failing to create a graphical edge between `ItemUsage` bordered nodes.
 
 image::BindingConnectorAsUsageOnItemUsage.png[BindingConnectorAsUsage between two ItemUsages]
 
 - In all diagrams, fix an issue where some compartments (containing the new element created) were not revealed when the _New Perform Action_ tool was executed.
-- In all diagrams, fix an issue where the execution of _Add existing elements_ tool adding `Succession` with guard involving 'start' or 'done' were not well displayed.
-If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage` they are now added to the _Action Flow_ compartment.
-- In all diagrams, fix an issue of `TransitionUsage` were displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
-- In all diagrams, fix an issue where the children of the `Package` graphical node lost their position when diagram is rendered after tab switching.
-- In all diagrams, fix wrong tool section name found in some compartments' palette.
-- In all diagrams, fix the name of the `Constraint` creation tools inside `Requirements`.
+- In all diagrams, fix an issue where the execution of the _Add existing elements_ tool adding `Succession` with a guard involving 'start' or 'done' was not well displayed.
+If a _start_ or _done_ `ActionUsage` is used by an owned `TransitionUsage`, they are now added to the _Action Flow_ compartment.
+- In all diagrams, fix an issue where `TransitionUsage` was displayed twice if the _source_ or _target_ of the `TransitionUsage` was displayed multiple times in the same diagram.
+- In all diagrams, fix an issue where the children of the `Package` graphical node lost their position when the diagram is rendered after tab switching.
+- In all diagrams, fix wrong tool section names found in some compartments' palettes.
+- In all diagrams, fix the names of the `Constraint` creation tools inside `Requirements`.
 They are now named:
 
 * `New Require constraint`
@@ -64,9 +64,9 @@ They are now named:
 - Fix an issue in the textual import of `MultiplicityRange` with explicit lower and upper bounds.
 The textual import now correctly creates a `MultiplicityRange` containing `LiteralInteger` elements for integer bounds, and `FeatureReferenceExpression` elements for feature bounds.
 - Fix an issue where dragging and dropping a `Definition` element from the _Explorer view_ on a _General View_ did not create the associated node.
-- In diagrams, prevent `TransitionUsage` graphical edges to be reconnected to another `TransitionUsage`.
-In the previous implementation, it was possible during a graphical edge reconnection to drop the source or target to another `TransitionUsage`.
-The semantic of the `TransitionUsage` being reconnected was changed and the graphical edge was removed from the diagram.
+- In diagrams, prevent `TransitionUsage` graphical edges from being reconnected to another `TransitionUsage`.
+In the previous implementation, it was possible during a graphical edge reconnection to drop the source or target onto another `TransitionUsage`.
+The semantics of the `TransitionUsage` being reconnected was changed and the graphical edge was removed from the diagram.
 
 == New features
 
@@ -81,11 +81,11 @@ image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%
 - When end-users click on _New Object_ on a semantic element, and select a `ViewUsage`, then a `ViewUsage` typed by default with the _General View_ `ViewDefinition` from the standard library will be created.
 A _General View_ diagram will also be created and associated to the `ViewUsage`.
 - Create `ViewUsage` semantic element in addition to _Diagram_ on _New representation_ menu in _Explorer_ view.
-All existing SysON _DiagramDescriptions_ (i.g. _General View_, _Interconnection View_...) have been updated to reflect the fact that they now be associated to `ViewUsages`.
+All existing SysON _DiagramDescriptions_ (i.e. _General View_, _Interconnection View_...) have been updated to reflect the fact that they can now be associated with `ViewUsages`.
 
 - `ManageVisibility` node action may now be displayed from the _General View_ on `Definition` and `Usage`  graphical nodes.
-This node action open a modal that can be used to reveal or hide the graphical node children's.
-Menu actions can be used to `reveal all content`, `reveal valued content only` or `hide all content`.
+This node action opens a modal that can be used to reveal or hide the graphical node's children.
+Menu actions can be used to `reveal all content`, `reveal valued content only`, or `hide all content`.
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
 
@@ -96,7 +96,7 @@ image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,he
 image::connection-definition-nodes.png[Connection Definition graphical elements, width=60%,height=60%]
 
 - New tool `New Exhibit State with referenced State` has been added to the palette of the `Part Usage` (inside the `Behavior` section).
-This tool allows to create a new `Exhibit State` element referencing an existing `State Usage` selected using a dedicated selection dialog.
+This tool allows users to create a new `Exhibit State` element referencing an existing `State Usage` selected using a dedicated selection dialog.
 
 - Implement textual export of `ForkNode` such as:
 
@@ -156,9 +156,9 @@ action action1 {
 
 - Add `ItemUsage` as _bordered nodes_ on `ActionUsage` and `ActionDefinition` in the _General View_ diagram.
 
-image::ItemParameters.png[ItemUsage on ActionUsage and ActionUsage]
+image::ItemParameters.png[ItemUsage on ActionUsage and ActionDefinition]
 
-- Add `FlowConnectionUsage` from `ItemUsage` on _General View_ Diagram.
+- Add `FlowConnectionUsage` from `ItemUsage` on the _General View_ diagram.
 
 image::FlowConnectionUsageOnItems.png[FlowConnectionUsage on ItemUsages]
 
@@ -191,11 +191,11 @@ part part1 {
     }
 }
 ```
-- New tools have been introduced in `Behavior` section of `State` elements (Usage and Definition) to create state sub actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
-Existing tools `New Entry Action`, `New Do Action` and `New Exit Action` have been updated to be aligned with SysMLV2 specification.
+- New tools have been introduced in the `Behavior` section of `State` elements (Usage and Definition) to create state sub-actions (`Entry`, `Do`, and `Exit`) referencing an existing `ActionUsage`.
+Existing tools `New Entry Action`, `New Do Action`, and `New Exit Action` have been updated to be aligned with the SysMLV2 specification.
 
-- In the _General View_ diagram, improve the label of `TransitionUsage` in order to be able to display the _accepter information.
-For example for :
+- In the _General View_ diagram, improve the label of `TransitionUsage` in order to be able to display the _accepter_ information.
+For example, for:
 
 ```
 item def TurnOn;
@@ -226,14 +226,14 @@ The _General View_ diagram will display `TransitionUsage` as:
 
 image::StateTransitionUsageLabels.png[TransitionUsage labels]
 
-- Add a `parameters` compartment on `ActionDefinition` in the _General View_ diagram, to display directed features.
+- Add a `parameters` compartment on `ActionDefinition` in the _General View_ diagram to display directed features.
 
 image::release-notes-GV-actionDefinition-parameters.png[Parameters compartment on ActionDefinition]
 
-- In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present those `Actions` in a hierarchical way.
+- In the _General View_ diagram, the selection dialog to reference an existing `Action` when creating a new `Perform Action` has been improved to present these `Actions` in a hierarchical way.
 - Make LibraryPackage's `isStandard` checkbox read-only in the details view.
-At the moment SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
-- Improve _New objects from text_ action in order to be able to resolve names against existing elements.
+At the moment, SysON only supports KerML and SysML, and does not support the definition of other normative model libraries.
+- Improve the _New objects from text_ action in order to be able to resolve names against existing elements.
 For example, in the following context:
 
 ```
@@ -247,17 +247,17 @@ action def ActionDefinition1 {
 		}
 ```
 
-Using _New objects from text_ from _ActionDefinition1_ with the following content `flow action1.item1Out to action2.item1In;`, will properly resolve the end features of the created `FlowConnectionUsage`.
+Using _New objects from text_ from _ActionDefinition1_ with the following content `flow action1.item1Out to action2.item1In;` will properly resolve the end features of the created `FlowConnectionUsage`.
 
-- Add a `perform actions` compartment `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the _General View_ diagram.
+- Add a `perform actions` compartment to `PartUsage` and `PartDefinition` to display `PerformActionUsage` in the _General View_ diagram.
 
 image::gv-parts-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
 
-- New compartment in `ActionUsage` and `ActionDefinition` to display `PerformActionUsage` in the General view diagram.
+- New compartment in `ActionUsage` and `ActionDefinition` to display `PerformActionUsage` in the _General View_ diagram.
 
 image::gv-actions-perform-actions-compartment.png[perform actions compartment in parts, width=70%, align="center"]
 
-- In all diagrams, the initial `Package` graphical node width has been reduced of 1/3 to be more compact.
+- In all diagrams, the initial `Package` graphical node width has been reduced by 1/3 to be more compact.
 
 .Before
 image::package-node-width-before.png[Package node before change, width=400]
@@ -266,7 +266,7 @@ image::package-node-width-before.png[Package node before change, width=400]
 image::package-node-width-after.png[Package node after change, width=300]
 
 - Improve the time required to display the available commands in the omnibox.
-- In the _General View_ diagram, _state transition_ compartment is now available on :
+- In the _General View_ diagram, the _state transition_ compartment is now available on:
 
 * `StateUsage`
 * `StateDefinition`
@@ -275,11 +275,11 @@ image::package-node-width-after.png[Package node after change, width=300]
 image:StateTransitionsCmpOnStates.png[State Transition Compartment on StateUsage, StateDefinition and ExhibitStateUsage]
 
 - The `ViewUsage#exposedElement` feature is now updated to reflect the contents of the diagram (_General View_, _Interconnection View_, _Action Flow View_...) on which it is associated.
-- Make file extension check case-insensitive on textual import (i.e. allows to import .SYSML, .SysML, .KERML...)
+- Make file extension check case-insensitive on textual import (i.e. allow importing .SYSML, .SysML, .KERML...)
 - Make the _Details_ view more extensible in how it determines whether a SysML _Element_ is editable or not.
 Also improve the kind of elements for which SysON is able to determine whether they are editable or not.
-- In diagrams, improve _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
-It is now possible to use the following type of expressions in a `ConstraintUsage:
+- In diagrams, improve the _direct edit_ tool on `ConstraintUsage` to be able to edit basic expressions.
+It is now possible to use the following types of expressions in a `ConstraintUsage`:
 
 * `BinaryOperatorExpression`
 * `BracketExpression`
@@ -294,8 +294,8 @@ requirement weight{
 }
 ```
 
-- In diagrams, improve _direct edit_ tool on `Feature` such as `AttributeUsage` or `ItemUsage` to be able to edit `FeatureValue` with basic expressions.
-It is now possible to use the following type of expressions in a `Feature`:
+- In diagrams, improve the _direct edit_ tool on `Feature` such as `AttributeUsage` or `ItemUsage` to be able to edit `FeatureValue` with basic expressions.
+It is now possible to use the following types of expressions in a `Feature`:
 
 * `BinaryOperatorExpression`
 * `BracketExpression`
@@ -353,4 +353,4 @@ view rearAxleAssemblyDiagram {
 
 == Technical details
 
-* For technical details on this {product} release (including breaking changes) please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
