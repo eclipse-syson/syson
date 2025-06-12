@@ -172,6 +172,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraRequirementConstraintMembershipPropertiesGroup());
         pageCore.getGroups().add(this.createExtraAcceptActionUsagePropertiesGroup());
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
+        pageCore.getGroups().add(this.createFeatureValuePropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setName("SysON-DetailsView-Advanced");
@@ -184,6 +185,29 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         form.getPages().add(pageAdvanced);
 
         return form;
+    }
+
+    /**
+     * Creates a group to display the value of a Feature or FeatureValue.
+     * 
+     * @return a {@link GroupDescription}
+     */
+    private GroupDescription createFeatureValuePropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName("Value");
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getFeatureValue"));
+
+        TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
+        expressionWidget.setName("ValueExpression");
+        expressionWidget.setLabelExpression("Value");
+        expressionWidget.setValueExpression(AQLUtils.getSelfServiceCallExpression("getValueExpression"));
+        expressionWidget.setIsEnabledExpression("aql:false");
+
+        group.getChildren().add(expressionWidget);
+
+        return group;
     }
 
     private GroupDescription createCorePropertiesGroup() {

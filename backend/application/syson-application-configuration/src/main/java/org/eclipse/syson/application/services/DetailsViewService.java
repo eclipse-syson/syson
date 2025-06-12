@@ -69,6 +69,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link SysMLv2PropertiesConfigurer}.
@@ -567,10 +569,48 @@ public class DetailsViewService {
     }
 
     /**
+     * Gets the {@link FeatureValue} from a {@link Feature} with a {@link FeatureValue} or a {@link FeatureValue}.
+     * 
+     * @param self
+     *            a {@link FeatureValue} or {@link Feature}
+     * @return a {@link FeatureValue} or <code>null</code>
+     */
+    public Element getFeatureValue(Element self) {
+        Element result = null;
+        if (self instanceof FeatureValue featureValue && featureValue.getValue() != null) {
+            result = featureValue;
+        } else if (self instanceof Feature feature && feature.getValuation() != null && feature.getValuation().getValue() != null) {
+            result = feature.getValuation();
+        }
+        return result;
+    }
+
+    /**
+     * Gets the textual representation of the value of a {@link FeatureValue}.
+     * 
+     * @param featureValue
+     *            a {@link FeatureValue}
+     * @return a textual representation of the value (or empty string if none)
+     */
+    public String getValueExpressionTextualRepresentation(FeatureValue featureValue) {
+        Expression value = featureValue.getValue();
+        String result = "";
+        if (value != null) {
+            String textualFormat = new SysMLElementSerializer("\n", "\t", new FileNameDeresolver(), s -> {
+                // Do nothing for now
+            }).doSwitch(value);
+            if (textualFormat != null) {
+                result = textualFormat;
+            }
+        }
+        return result;
+    }
+
+    /**
      * Returns the element that owns the visibility feature of the given element.
      *
      * @param self
-     *         An element for which the visibility owner is being searched.
+     *            An element for which the visibility owner is being searched.
      * @return the element that owns the visibility feature of the given element
      */
     public Element getVisibilityPropertyOwner(Element self) {
@@ -584,7 +624,7 @@ public class DetailsViewService {
      * Returns the enumeration literals for the visibility feature of the given element.
      *
      * @param self
-     *         An element for which the list of visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @return the enumeration literals for the visibility feature of the given element.
      */
     public List<EEnumLiteral> getVisibilityEnumLiterals(Element self) {
@@ -599,7 +639,7 @@ public class DetailsViewService {
      * Returns the visibility value of the given element.
      *
      * @param self
-     *         An element for which the list of visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @return the current value of the visibility feature of the given element.
      */
     public EEnumLiteral getVisibilityValue(Element self) {
@@ -614,11 +654,11 @@ public class DetailsViewService {
      * Sets the visibility value of the given element.
      *
      * @param self
-     *         An element for which the list of visibility literals are being searched.
+     *            An element for which the list of visibility literals are being searched.
      * @param newValue
-     *         the value to set.
+     *            the value to set.
      * @return <code>true</code> if the visibility feature of the given element has been properly set and
-     * <code>false</code> otherwise.
+     *         <code>false</code> otherwise.
      */
     public boolean setVisibilityValue(Element self, Object newValue) {
         boolean result = false;
@@ -655,7 +695,7 @@ public class DetailsViewService {
      * guarantee that it is well formed after its call.
      *
      * @param aau
-     *         an {@link AcceptActionUsage}
+     *            an {@link AcceptActionUsage}
      */
     private void checkAndRepairAcceptActionUsageStructure(AcceptActionUsage aau) {
         this.checkAndRepairAcceptActionUsagePayload(aau);

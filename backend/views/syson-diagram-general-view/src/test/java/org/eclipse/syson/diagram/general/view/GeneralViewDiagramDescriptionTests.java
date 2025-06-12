@@ -90,6 +90,8 @@ public class GeneralViewDiagramDescriptionTests {
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
                 // TransitionUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getTransitionUsage()).negate())
+                // No direct edit tool, this element is implicit
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFeatureValue()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

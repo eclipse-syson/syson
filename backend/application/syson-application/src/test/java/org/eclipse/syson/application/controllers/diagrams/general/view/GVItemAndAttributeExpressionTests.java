@@ -12,20 +12,32 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.controllers.diagrams.testers.DeleteFromDiagramRunner;
+import org.eclipse.syson.application.controllers.diagrams.testers.DeleteFromDiagramTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
+import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.junit.jupiter.api.AfterEach;
@@ -65,6 +77,12 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     @Autowired
     private EditLabelMutationRunner editLabelMutationRunner;
 
+    @Autowired
+    private DiagramComparator diagramComparator;
+
+    @Autowired
+    private DeleteFromDiagramRunner deleteFromDiagramRunner;
+
     private Step<DiagramRefreshedEventPayload> verifier;
 
     private AtomicReference<Diagram> diagram;
@@ -72,6 +90,8 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     private DirectEditInitialLabelTester directEditInitialLabelTester;
 
     private DirectEditTester directEditTester;
+
+    private DeleteFromDiagramTester deleteFromDiagramTester;
 
     @BeforeEach
     public void setUp() {
@@ -84,6 +104,8 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
         this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
         this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
+        this.deleteFromDiagramTester = new DeleteFromDiagramTester(this.deleteFromDiagramRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
     }
 
     @AfterEach
@@ -214,5 +236,95 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
                 "a2_1 = 45 [kilogram]");
+    }
+
+    @DisplayName("GIVEN an ItemUsage, WHEN with a value referencing another ItemUsage, THEN an edge should connect the ItemUsage")
+    @Test
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void itemFeatureChainBindingEdge() {
+
+        // Create an edge using direct edit
+        this.directEditTester.checkDirectEditInsideLabel(this.verifier, this.diagram,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
+                "in a2_1 = a1.a1_1",
+                this.buildEdgeChecker(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1 = a1.a1_1",
+                        GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID, GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_1_BORDERED_NODE_ID));
+
+        // Change the edge to a new target
+        this.directEditTester.checkDirectEditInsideLabel(this.verifier, this.diagram,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
+                "in a2_1 = a1.a1_2",
+                this.buildEdgeChecker(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1 = a1.a1_2",
+                        GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID, GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_2_BORDERED_NODE_ID));
+
+        // Remove edge
+        this.directEditTester.checkDirectEditInsideLabel(this.verifier, this.diagram,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
+                "in a2_1 =",
+                this.buildNoEdgeStartingFromChecker(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1",
+                        GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID));
+
+    }
+
+    @DisplayName("GIVEN an ItemUsage, WHEN deleting an edge representing a FeatureValue, THEN the FeatureValue should be deleted and the label of the ItemUsage should be updated updated")
+    @Test
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void deleteFeatureValueEdge() {
+
+        this.deleteFromDiagramTester.checkRemoveFromDiagram(this.verifier, List.of(), List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE),
+                payload -> Optional.of(payload)
+                        .map(DiagramRefreshedEventPayload::diagram)
+                        .ifPresentOrElse(newDiagram -> {
+                            // Check label no more FeatureValue (the = part is gone)
+                            DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+                            InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_2_ICON_AND_LABEL_ID).getNode().getInsideLabel();
+                            assertThat(newLabel.getText()).isEqualTo("out a2_2");
+
+                            // No more edge starting from a2_2
+                            assertThat(newDiagram.getEdges()).noneMatch(s -> GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_2_BORDERED_NODE_ID.equals(s.getSourceId()));
+                        }, () -> fail("Missing diagram")));
+
+    }
+
+    private Consumer<DiagramRefreshedEventPayload> buildEdgeChecker(String nodeToCheckForLabel, String expectedLabel, String sourceNodeId, String targetNodeId) {
+        return payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(newDiagram -> {
+                    // Check label
+                    DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+                    InsideLabel newLabel = diagramNavigator.nodeWithId(nodeToCheckForLabel).getNode().getInsideLabel();
+                    assertThat(newLabel.getText()).isEqualTo(expectedLabel);
+
+                    // Check new edge
+                    List<Edge> newEdges = this.diagramComparator.newEdges(this.diagram.get(), newDiagram);
+                    assertThat(newEdges).hasSize(1)
+                            .first()
+                            .satisfies(edge -> {
+                                assertThat(edge.getSourceId()).as("Should start from A2_1").isEqualTo(sourceNodeId);
+                            }, edge -> {
+                                assertThat(edge.getTargetId()).as("Should end to A1_1").isEqualTo(targetNodeId);
+                            });
+                }, () -> fail("Missing diagram"));
+    }
+
+    private Consumer<DiagramRefreshedEventPayload> buildNoEdgeStartingFromChecker(String nodeToCheckForLabel, String expectedLabel, String sourceNodeId) {
+        return payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(newDiagram -> {
+                    // Check label
+                    DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+                    InsideLabel newLabel = diagramNavigator.nodeWithId(nodeToCheckForLabel).getNode().getInsideLabel();
+                    assertThat(newLabel.getText()).isEqualTo(expectedLabel);
+
+                    // Check there is starting from the given source
+                    List<Edge> newEdges = this.diagramComparator.newEdges(this.diagram.get(), newDiagram);
+
+                    assertThat(newDiagram.getEdges()).noneMatch(s -> sourceNodeId.equals(s.getSourceId()));
+                    assertThat(newEdges).hasSize(0);
+                }, () -> fail("Missing diagram"));
     }
 }

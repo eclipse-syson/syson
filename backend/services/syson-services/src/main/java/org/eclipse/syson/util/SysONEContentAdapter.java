@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Membership;
 
 /**
@@ -40,7 +41,9 @@ public class SysONEContentAdapter extends EContentAdapter {
     @Override
     protected void addAdapter(Notifier notifier) {
         super.addAdapter(notifier);
-        if (notifier instanceof Element element && !(notifier instanceof Membership)) {
+        // We need to keep FeatureValue since they may be displayed in representations
+        // This adapter is used for semantic candidate expression
+        if (notifier instanceof Element element && (!(notifier instanceof Membership) || notifier instanceof FeatureValue)) {
             EClass eClass = element.eClass();
             List<EObject> value;
             if (this.cache.containsKey(eClass)) {
@@ -55,7 +58,7 @@ public class SysONEContentAdapter extends EContentAdapter {
 
     @Override
     protected void removeAdapter(Notifier notifier) {
-        if (notifier instanceof Element element && !(notifier instanceof Membership)) {
+        if (notifier instanceof Element element && (!(notifier instanceof Membership) || notifier instanceof FeatureValue)) {
             EClass eClass = element.eClass();
             List<EObject> value;
             if (this.cache.containsKey(eClass)) {

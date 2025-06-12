@@ -20,6 +20,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -108,14 +109,16 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->The Feature to be provided a value. - {subsets membershipOwningNamespace} <!--
+     * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetFeatureWithValue() {
-        // TODO: implement this method to return the 'Feature With Value' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Namespace membershipOwningName = this.getMembershipOwningNamespace();
+        if (membershipOwningName instanceof Feature featureNamespace) {
+            return featureNamespace;
+        }
         return null;
     }
 

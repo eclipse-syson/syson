@@ -43,7 +43,19 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String A2_1_BORDERED_NODE_ID = "4821cc4e-bb48-3df4-81c4-6462f2b46997";
 
+        public static final String A1_1_BORDERED_NODE_ID = "0fdf46cf-f146-3554-8635-a141d632ae7d";
+
+        public static final String A1_2_BORDERED_NODE_ID = "a23fdc86-fb52-363e-8c1d-21b5d30964bb";
+
+        public static final String A1_3_BORDERED_NODE_ID = "057fe580-0e2b-353c-8136-c15925b72720";
+
+        public static final String A2_2_BORDERED_NODE_ID = "91daf240-eed6-349e-9869-415e5b471def";
+
         public static final String A2_1_ICON_AND_LABEL_ID = "6f121831-91b7-3710-9ba7-136db0a7b46f";
+
+        public static final String A2_2_ICON_AND_LABEL_ID = "c4838f87-784b-3a30-b4a0-c8ab93c15dd6";
+
+        public static final String FEATURE_VALUE_A2_2_TO_A1_4_EDGE = "8a737b89-6a9b-36ca-b31e-01bb6e39de27";
 
     }
 
