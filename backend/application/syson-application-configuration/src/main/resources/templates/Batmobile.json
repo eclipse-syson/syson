@@ -1,10 +1,6 @@
 {
   "json": { "version": "1.0", "encoding": "utf-8" },
   "ns": { "sysml": "http://www.eclipse.org/syson/sysml" },
-  "migration": {
-    "lastMigrationPerformed": "AnnotationAnnotatingElementMigrationParticipant",
-    "migrationVersion": "2025.4.0-202503140000"
-  },
   "content": [
     {
       "id": "7cff06e6-65e2-492a-9970-23b64c30f96b",
@@ -110,8 +106,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "0928bcfd-2d98-467a-98ac-9954c58e0e59",
-                                                  "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///a269cb9d-5a98-33e9-95e8-8701328ddda6#7d7c5549-269c-5916-a3f2-f3132b59f113",
-                                                  "subsettingFeature": "fa9c173b-5021-4e26-99ad-ed5bb59c15cc"
+                                                  "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///a269cb9d-5a98-33e9-95e8-8701328ddda6#4566e1a8-485c-45b4-9367-f2dc6da7a94c",
+                                                  "subsettingFeature": "04596bd1-5c7d-4578-a774-1fbd18292c7a"
                                                 }
                                               }
                                             ],
@@ -158,8 +154,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "775ea645-9c42-4e52-8cd8-de30ed8b865b",
-                                                  "type": "80078007-9a1f-42eb-9456-1d0b8d63703d",
-                                                  "typedFeature": "f7339e5f-bc29-429a-bb89-6ce3398c844c"
+                                                  "type": "b966a2dd-cd51-4996-8449-d4e9d5b48588",
+                                                  "typedFeature": "d2d36e0c-f2d2-4c9a-b043-343e2377d418"
                                                 }
                                               }
                                             ],
@@ -188,8 +184,8 @@
                                                 "eClass": "sysml:ConjugatedPortTyping",
                                                 "data": {
                                                   "elementId": "3d1ecb4f-4e63-4380-bc02-413bf34379a8",
-                                                  "typedFeature": "bad36892-8b41-4d73-9b8a-7c4a2d7a3753",
-                                                  "conjugatedPortDefinition": "95758796-ce8a-4029-b327-d97028ae8bbf"
+                                                  "typedFeature": "47a2afb8-e45f-4ce8-a332-cbcaff34a577",
+                                                  "conjugatedPortDefinition": "864ca047-9a26-4874-86a8-8cd0a33d8929"
                                                 }
                                               }
                                             ],
@@ -229,8 +225,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "91b986a0-bb13-40a5-86ad-ea7715fdb06f",
-                                                              "type": "944c07c7-c224-4d45-abbf-6502c56a82ea",
-                                                              "typedFeature": "65930cfb-5790-4d46-9967-c389bffb22b3"
+                                                              "type": "892966ac-eca5-4c74-a85d-38ea8ca758ec",
+                                                              "typedFeature": "44af6db9-ccea-4810-b4ee-153b272043b6"
                                                             }
                                                           }
                                                         ]
@@ -256,8 +252,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "dfe57fd0-d7ad-4c87-a484-baa54a076000",
-                                                              "subsettingFeature": "0e44eb4f-9154-4328-a917-f891b4d1b899",
-                                                              "referencedFeature": "f7339e5f-bc29-429a-bb89-6ce3398c844c"
+                                                              "subsettingFeature": "679b1e06-c1c5-41c5-a9ee-016e5fde9246",
+                                                              "referencedFeature": "d2d36e0c-f2d2-4c9a-b043-343e2377d418"
                                                             }
                                                           },
                                                           {
@@ -277,8 +273,8 @@
                                                                         "eClass": "sysml:Redefinition",
                                                                         "data": {
                                                                           "elementId": "cfcae329-6325-48fc-a426-f6c1732abeb9",
-                                                                          "redefinedFeature": "4a1344de-a425-48c4-b07b-e35fb244c6af",
-                                                                          "redefiningFeature": "caa58fba-f30d-4f9a-b80e-c4b698eb5e4a"
+                                                                          "redefinedFeature": "65cd0a34-a554-44c3-8dd1-fbc836097abf",
+                                                                          "redefiningFeature": "b485518f-1540-429d-b99d-e5217edf2390"
                                                                         }
                                                                       }
                                                                     ],
@@ -311,8 +307,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "b530bc77-77e6-48e0-85ff-dada94bd1644",
-                                                              "subsettingFeature": "64ddea7d-86a4-41e1-b03c-f1bc28959f95",
-                                                              "referencedFeature": "bad36892-8b41-4d73-9b8a-7c4a2d7a3753"
+                                                              "subsettingFeature": "46b217d9-ac1e-42fd-bdf4-43ed77d3fec7",
+                                                              "referencedFeature": "47a2afb8-e45f-4ce8-a332-cbcaff34a577"
                                                             }
                                                           },
                                                           {
@@ -332,8 +328,8 @@
                                                                         "eClass": "sysml:Redefinition",
                                                                         "data": {
                                                                           "elementId": "ad4df326-7bb4-4513-b013-15af0a1c3d39",
-                                                                          "redefinedFeature": "4a1344de-a425-48c4-b07b-e35fb244c6af",
-                                                                          "redefiningFeature": "0062f2dd-ab61-40a1-bdf0-9ca3a5819b57"
+                                                                          "redefinedFeature": "65cd0a34-a554-44c3-8dd1-fbc836097abf",
+                                                                          "redefiningFeature": "fa984a9a-ef8c-48b2-9dcc-b543341137e2"
                                                                         }
                                                                       }
                                                                     ],
@@ -393,8 +389,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "c28ad131-e150-4a86-b06b-d3970ead17e5",
-                                                  "type": "944c07c7-c224-4d45-abbf-6502c56a82ea",
-                                                  "typedFeature": "4a1344de-a425-48c4-b07b-e35fb244c6af"
+                                                  "type": "892966ac-eca5-4c74-a85d-38ea8ca758ec",
+                                                  "typedFeature": "65cd0a34-a554-44c3-8dd1-fbc836097abf"
                                                 }
                                               }
                                             ],
@@ -422,8 +418,8 @@
                                                 "eClass": "sysml:PortConjugation",
                                                 "data": {
                                                   "elementId": "9c51119e-f71d-4d83-be8e-efaf7b39c445",
-                                                  "conjugatedType": "95758796-ce8a-4029-b327-d97028ae8bbf",
-                                                  "originalPortDefinition": "80078007-9a1f-42eb-9456-1d0b8d63703d"
+                                                  "conjugatedType": "864ca047-9a26-4874-86a8-8cd0a33d8929",
+                                                  "originalPortDefinition": "b966a2dd-cd51-4996-8449-d4e9d5b48588"
                                                 }
                                               }
                                             ]
@@ -590,7 +586,7 @@
                                                                                                 "eClass": "sysml:Membership",
                                                                                                 "data": {
                                                                                                   "elementId": "d5bd3028-3ca6-4f36-a083-c47c61fd6bfa",
-                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#0d6a1209-73f8-585a-8f77-2fa0f2789307"
+                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#aa6e7835-cdb8-45dd-bea8-16d5b287bfb4"
                                                                                                 }
                                                                                               }
                                                                                             ]
@@ -618,8 +614,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "2d0a6f26-9bc8-495c-b4a0-5e87e26c3571",
-                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#6d71de37-badf-52c2-a11f-52f831a778c7",
-                                                              "redefiningFeature": "9cd8cd6a-8fba-4053-adbb-b734ddeb6ec8"
+                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#d96210d5-9047-448d-8452-fa4c44d86d4e",
+                                                              "redefiningFeature": "7e8b389c-80ae-41c5-bab6-606be5658e27"
                                                             }
                                                           },
                                                           {
@@ -627,8 +623,8 @@
                                                             "eClass": "sysml:Subsetting",
                                                             "data": {
                                                               "elementId": "4f23f422-2dca-4340-8725-c7c365f840c9",
-                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#04e5e2ff-9907-5f48-a055-47bba44803af",
-                                                              "subsettingFeature": "9cd8cd6a-8fba-4053-adbb-b734ddeb6ec8"
+                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#75e42971-8ac0-4bc4-88b0-25b252bf6d16",
+                                                              "subsettingFeature": "7e8b389c-80ae-41c5-bab6-606be5658e27"
                                                             }
                                                           }
                                                         ],
@@ -727,7 +723,7 @@
                                                                                                 "eClass": "sysml:Membership",
                                                                                                 "data": {
                                                                                                   "elementId": "602a3bb5-0279-4dc1-8998-429800ab5241",
-                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#0d6a1209-73f8-585a-8f77-2fa0f2789307"
+                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#aa6e7835-cdb8-45dd-bea8-16d5b287bfb4"
                                                                                                 }
                                                                                               }
                                                                                             ]
@@ -755,8 +751,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "18672759-11b7-45d9-ae8d-58ae982afd05",
-                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#73140040-23e7-5242-9130-6a850ecf8e8b",
-                                                              "redefiningFeature": "35f72f2e-395c-46e2-bafa-aaedc07d8392"
+                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#44418731-720a-480e-84d7-1285d95aee77",
+                                                              "redefiningFeature": "dfc0e638-6989-41cb-8cb9-bfd973ae09bc"
                                                             }
                                                           },
                                                           {
@@ -764,8 +760,8 @@
                                                             "eClass": "sysml:Subsetting",
                                                             "data": {
                                                               "elementId": "6bafe4e6-7376-4ed3-b1c9-fe57b07277ff",
-                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#04e5e2ff-9907-5f48-a055-47bba44803af",
-                                                              "subsettingFeature": "35f72f2e-395c-46e2-bafa-aaedc07d8392"
+                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#75e42971-8ac0-4bc4-88b0-25b252bf6d16",
+                                                              "subsettingFeature": "dfc0e638-6989-41cb-8cb9-bfd973ae09bc"
                                                             }
                                                           }
                                                         ],
@@ -864,7 +860,7 @@
                                                                                                 "eClass": "sysml:Membership",
                                                                                                 "data": {
                                                                                                   "elementId": "f28c6775-1283-427f-ab3a-9dc094697c6a",
-                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#0d6a1209-73f8-585a-8f77-2fa0f2789307"
+                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#aa6e7835-cdb8-45dd-bea8-16d5b287bfb4"
                                                                                                 }
                                                                                               }
                                                                                             ]
@@ -892,8 +888,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "04ec0cf5-45b9-48cb-a438-5c1452c006d7",
-                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#585c1027-11fd-5c81-beb8-db622a83c626",
-                                                              "redefiningFeature": "1728152f-59fe-4d31-8595-bf89e77347a2"
+                                                              "redefinedFeature": "sysml:AttributeUsage sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#35425d4b-a959-42a1-8b4b-b64c9595e133",
+                                                              "redefiningFeature": "27eeb6f3-d633-4ac4-8cac-45678ab0d7e2"
                                                             }
                                                           },
                                                           {
@@ -901,8 +897,8 @@
                                                             "eClass": "sysml:Subsetting",
                                                             "data": {
                                                               "elementId": "5e0b1cf3-0c77-4889-84f8-2a5c77baf921",
-                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#04e5e2ff-9907-5f48-a055-47bba44803af",
-                                                              "subsettingFeature": "1728152f-59fe-4d31-8595-bf89e77347a2"
+                                                              "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///531a3217-7782-3bbe-bcd3-e31b1d78d517#75e42971-8ac0-4bc4-88b0-25b252bf6d16",
+                                                              "subsettingFeature": "27eeb6f3-d633-4ac4-8cac-45678ab0d7e2"
                                                             }
                                                           }
                                                         ],
@@ -917,8 +913,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "764f49ee-d194-4ed9-b4f6-4e54e5452ba9",
-                                                  "type": "sysml:ItemDefinition sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#5a45cf86-990c-5a86-abf4-8c1f4f3ad708",
-                                                  "typedFeature": "66951cd0-2a6c-41a0-9c73-63e293bcd355"
+                                                  "type": "sysml:ItemDefinition sysmllibrary:///a1c50db3-eeb1-3bf2-9225-9e769ae865df#a03c76bf-56fd-466b-86b0-d9044b03de0d",
+                                                  "typedFeature": "a572125a-5148-42da-9d66-a765fb5215a3"
                                                 }
                                               },
                                               {
@@ -926,8 +922,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "5136a430-58e2-4548-a68c-7718e7c7e67a",
-                                                  "subsettedFeature": "sysml:ItemUsage sysmllibrary:///e6b02dfd-1953-3a59-8693-6b555c462097#1857138d-05fc-5cd2-bcb1-10546541a5ae",
-                                                  "subsettingFeature": "66951cd0-2a6c-41a0-9c73-63e293bcd355"
+                                                  "subsettedFeature": "sysml:ItemUsage sysmllibrary:///e6b02dfd-1953-3a59-8693-6b555c462097#80ccb7cc-9900-48be-bde5-58dad43c4d76",
+                                                  "subsettingFeature": "a572125a-5148-42da-9d66-a765fb5215a3"
                                                 }
                                               },
                                               {
@@ -1076,7 +1072,7 @@
                                                                                                 "eClass": "sysml:Membership",
                                                                                                 "data": {
                                                                                                   "elementId": "c4ee1316-d230-46d6-a97b-07790fa835fd",
-                                                                                                  "memberElement": "0f31d482-33f3-420c-afd8-c3e1f8eebf1d"
+                                                                                                  "memberElement": "ca5f6656-ec3b-46d6-8b51-b32addf5bcf6"
                                                                                                 }
                                                                                               }
                                                                                             ]
@@ -1097,7 +1093,7 @@
                                                                         "eClass": "sysml:Membership",
                                                                         "data": {
                                                                           "elementId": "dbc62660-49a0-47eb-9007-5c47ba7af340",
-                                                                          "memberElement": "f3870946-19cf-41bb-b88c-5e81bc8dca71"
+                                                                          "memberElement": "abe2ddf7-3efb-49cc-aa2c-f433a65160a3"
                                                                         }
                                                                       }
                                                                     ]
@@ -1111,8 +1107,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "38c69742-039e-4405-a6a6-1a971b291027",
-                                                              "type": "303ef983-22a8-41af-9e7f-44cec657665d",
-                                                              "typedFeature": "06be60b6-c670-4c18-8cc5-c4ebc0206fe1"
+                                                              "type": "8762e8b5-587b-4ce1-9860-429e92545d2c",
+                                                              "typedFeature": "267fa794-dec8-4426-8137-83dfa6106303"
                                                             }
                                                           }
                                                         ],
@@ -1161,8 +1157,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "5c85b1f9-5b5e-4b65-a63f-8b42f2aa7988",
-                                                              "type": "303ef983-22a8-41af-9e7f-44cec657665d",
-                                                              "typedFeature": "f3870946-19cf-41bb-b88c-5e81bc8dca71"
+                                                              "type": "8762e8b5-587b-4ce1-9860-429e92545d2c",
+                                                              "typedFeature": "abe2ddf7-3efb-49cc-aa2c-f433a65160a3"
                                                             }
                                                           }
                                                         ],
@@ -1251,8 +1247,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "c85e2295-9ebb-4040-8c59-f833e042b55b",
-                                                  "redefinedFeature": "e8d53827-b4cf-4830-a18d-3f8bdf19a5bd",
-                                                  "redefiningFeature": "2a68fcc5-bfb0-4fee-bf56-e085be3ef388"
+                                                  "redefinedFeature": "77b244e3-fec5-4ef3-9d43-523bc20969bc",
+                                                  "redefiningFeature": "dc8c3827-20b3-4053-aca5-0e062efeb538"
                                                 }
                                               }
                                             ],
@@ -1297,8 +1293,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "e1a3e3df-3fd7-4142-8ce2-ab8827aa92e0",
-                                                  "redefinedFeature": "f369bc1e-23ca-4ee6-b724-b4bd52736b5e",
-                                                  "redefiningFeature": "923f128c-b8f2-49a2-b55d-f6c722c897f7"
+                                                  "redefinedFeature": "aa315a52-ae21-4550-803a-77c22cd62ffd",
+                                                  "redefiningFeature": "653638fe-fdb4-41ad-b541-eb44f1c7a682"
                                                 }
                                               }
                                             ],
@@ -1434,8 +1430,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "0a50f4a6-9ad2-4a86-9a75-b5562607491e",
-                                                  "type": "38616dec-4cca-48f9-afd2-6baa3e78623c",
-                                                  "typedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215"
+                                                  "type": "eaed2104-a3c8-4164-bb5a-a3510e826f5e",
+                                                  "typedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6"
                                                 }
                                               }
                                             ],
@@ -1463,8 +1459,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "dde0c054-a59f-4f91-bcb3-b89ca37ec021",
-                                                  "subsettedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "subsettingFeature": "9f4a57e6-0804-4b58-8f0e-687d83c795ca"
+                                                  "subsettedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "subsettingFeature": "b0dbd5ea-0108-4fbd-9a7e-4c76f645d6b1"
                                                 }
                                               }
                                             ],
@@ -1492,8 +1488,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "8848ac1f-1c60-4bac-9038-94524db8cbee",
-                                                  "subsettedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "subsettingFeature": "806b5991-1a1d-4872-9bd3-1586bf006293"
+                                                  "subsettedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "subsettingFeature": "d6486090-0fc4-4ec7-89c4-b57241491104"
                                                 }
                                               }
                                             ],
@@ -1521,8 +1517,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "f93e32ab-36f2-44c4-a3e3-a75d6028805e",
-                                                  "subsettedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "subsettingFeature": "06c6c943-18c4-4eaf-88f2-49f5c88a0600"
+                                                  "subsettedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "subsettingFeature": "fbfd2bc2-66b3-4200-bacb-67b76dcf0370"
                                                 }
                                               }
                                             ],
@@ -1550,8 +1546,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "b1041f9e-8c71-43b4-b6f9-b02ded92b47f",
-                                                  "subsettedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "subsettingFeature": "26897c99-9c03-4927-8fa8-1766500441d6"
+                                                  "subsettedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "subsettingFeature": "0f91b6a4-faec-4ade-a667-71e244309aa7"
                                                 }
                                               }
                                             ],
@@ -1592,8 +1588,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "3d01d24b-81be-44a6-8ffb-e517e6db7283",
-                                                              "type": "80078007-9a1f-42eb-9456-1d0b8d63703d",
-                                                              "typedFeature": "5b048264-6cd7-40e8-9feb-d67ac92ea24e"
+                                                              "type": "b966a2dd-cd51-4996-8449-d4e9d5b48588",
+                                                              "typedFeature": "17490cb8-dabe-46e3-b2f0-07948101766c"
                                                             }
                                                           }
                                                         ],
@@ -1659,8 +1655,8 @@
                                                             "eClass": "sysml:ConjugatedPortTyping",
                                                             "data": {
                                                               "elementId": "a17cd76d-77ca-4dfb-8f8f-83efd341ddf6",
-                                                              "typedFeature": "a4e6049f-52cc-42a4-a396-3c5367b6f2fc",
-                                                              "conjugatedPortDefinition": "95758796-ce8a-4029-b327-d97028ae8bbf"
+                                                              "typedFeature": "54eea5e0-ccac-4010-9848-40284ed7f77d",
+                                                              "conjugatedPortDefinition": "864ca047-9a26-4874-86a8-8cd0a33d8929"
                                                             }
                                                           }
                                                         ],
@@ -1675,8 +1671,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "f067666e-0ee7-4d2a-9c02-5e4e019f83a8",
-                                                  "type": "9c52ca68-f775-4647-a701-bcf2b714496f",
-                                                  "typedFeature": "26e3729c-9cac-44d0-acab-3ca92049ec4d"
+                                                  "type": "89f37ec0-c93f-482f-9e8f-3aa25c241d83",
+                                                  "typedFeature": "3a9b7cd3-e1f7-4071-b7dc-0a00d913df17"
                                                 }
                                               },
                                               {
@@ -1684,8 +1680,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "e7e09d0e-5991-443a-82d9-1a337cd51b1e",
-                                                  "redefinedFeature": "8d99fc0b-ffd5-42ad-a82f-f48494785a1e",
-                                                  "redefiningFeature": "26e3729c-9cac-44d0-acab-3ca92049ec4d"
+                                                  "redefinedFeature": "30e55176-1713-4566-bffb-26f9de32459c",
+                                                  "redefiningFeature": "3a9b7cd3-e1f7-4071-b7dc-0a00d913df17"
                                                 }
                                               }
                                             ],
@@ -1737,7 +1733,7 @@
                                                                         "eClass": "sysml:FeatureChaining",
                                                                         "data": {
                                                                           "elementId": "7f12c149-f4ee-4cc8-9041-82eeb7ec5978",
-                                                                          "chainingFeature": "cc15eb28-3a7d-4575-ad7f-f03224ffc38e"
+                                                                          "chainingFeature": "5bdce649-979b-457c-b7f5-5e1c82304db7"
                                                                         }
                                                                       },
                                                                       {
@@ -1745,14 +1741,14 @@
                                                                         "eClass": "sysml:FeatureChaining",
                                                                         "data": {
                                                                           "elementId": "f89d013e-97c3-4a3f-98b2-ed3d214c23ca",
-                                                                          "chainingFeature": "5b048264-6cd7-40e8-9feb-d67ac92ea24e"
+                                                                          "chainingFeature": "17490cb8-dabe-46e3-b2f0-07948101766c"
                                                                         }
                                                                       }
                                                                     ]
                                                                   }
                                                                 }
                                                               ],
-                                                              "subsettingFeature": "96fd2560-6375-4ca2-a6ef-8aeb65a62dbe"
+                                                              "subsettingFeature": "239d9f42-9ce1-4eb9-90e1-9c4d9208be7d"
                                                             }
                                                           }
                                                         ],
@@ -1791,7 +1787,7 @@
                                                                         "eClass": "sysml:FeatureChaining",
                                                                         "data": {
                                                                           "elementId": "29fafc58-f587-4fe9-b5b0-cee3e7421fa9",
-                                                                          "chainingFeature": "26e3729c-9cac-44d0-acab-3ca92049ec4d"
+                                                                          "chainingFeature": "3a9b7cd3-e1f7-4071-b7dc-0a00d913df17"
                                                                         }
                                                                       },
                                                                       {
@@ -1799,14 +1795,14 @@
                                                                         "eClass": "sysml:FeatureChaining",
                                                                         "data": {
                                                                           "elementId": "b65bd050-3ab7-4fb8-8929-0286e5a5c823",
-                                                                          "chainingFeature": "a4e6049f-52cc-42a4-a396-3c5367b6f2fc"
+                                                                          "chainingFeature": "54eea5e0-ccac-4010-9848-40284ed7f77d"
                                                                         }
                                                                       }
                                                                     ]
                                                                   }
                                                                 }
                                                               ],
-                                                              "subsettingFeature": "00134aa1-a2b8-46c6-8b37-4efe83bcb83f"
+                                                              "subsettingFeature": "c489984f-5102-4e90-89d7-9fdd2f490764"
                                                             }
                                                           }
                                                         ],
@@ -1821,8 +1817,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "151bed99-64b0-426d-a694-87e6381d6792",
-                                                  "type": "ad26eb83-39c9-40aa-82e4-b24eb96435a4",
-                                                  "typedFeature": "ff1fd09a-2997-4601-a10d-4c48a385ff36"
+                                                  "type": "aa44b08a-c56f-41f0-bb37-2ac2839c5450",
+                                                  "typedFeature": "abfe575a-5245-4a5b-bd6b-7e7f62ef0f7e"
                                                 }
                                               }
                                             ],
@@ -1837,8 +1833,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "691eafe8-487e-49a9-ae74-975553c4fa1a",
-                                      "subclassifier": "96b332d0-b8d0-491b-9364-5d5458d15d03",
-                                      "superclassifier": "d9ab184b-220a-4ec9-97d6-220599663b88"
+                                      "subclassifier": "61b48d82-20b0-4418-b0c1-1c804ad355fd",
+                                      "superclassifier": "b58b65bd-f47c-476e-8397-4ac9a8c6a1f0"
                                     }
                                   },
                                   {
@@ -1846,8 +1842,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "cc677c3b-5db3-4eee-abae-79079300f639",
-                                      "subclassifier": "96b332d0-b8d0-491b-9364-5d5458d15d03",
-                                      "superclassifier": "6ca7158d-51fe-4405-869f-1be4b01cb9bf"
+                                      "subclassifier": "61b48d82-20b0-4418-b0c1-1c804ad355fd",
+                                      "superclassifier": "bba78a67-524f-4d3f-96a9-de5f9d2d615f"
                                     }
                                   }
                                 ]
@@ -1940,8 +1936,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "5612f5c7-32d1-4a8f-9f3f-16a6f96e8203",
-                                                  "redefinedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "redefiningFeature": "077d7792-c97a-4831-b4ac-a40dbb005edc"
+                                                  "redefinedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "redefiningFeature": "5cc0c27c-dccf-4476-80ed-557d99b3fadc"
                                                 }
                                               }
                                             ],
@@ -1956,8 +1952,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "53b0a613-27d5-4eff-b468-e27b3945520b",
-                                      "subclassifier": "3ae2b6e0-3790-4cdb-9b86-ca2bb9668841",
-                                      "superclassifier": "96b332d0-b8d0-491b-9364-5d5458d15d03"
+                                      "subclassifier": "e5cee37c-bb4c-49cc-922a-2964f4dc301f",
+                                      "superclassifier": "61b48d82-20b0-4418-b0c1-1c804ad355fd"
                                     }
                                   }
                                 ]
@@ -2021,8 +2017,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "934ed45d-a3e2-4e37-b008-9da313648bfd",
-                                      "subclassifier": "12d305c6-8cc2-4cc0-87d6-66008172649e",
-                                      "superclassifier": "8f1dfc34-507c-4cc2-83ae-a1251e648dd0"
+                                      "subclassifier": "6ef70927-772e-4c19-9fab-a99266132606",
+                                      "superclassifier": "8a363868-24ce-41a3-b0b4-e1d9392d969b"
                                     }
                                   }
                                 ],
@@ -2092,8 +2088,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "9da273b1-8d10-486b-ae35-d63a341c8876",
-                                                              "redefinedFeature": "8971e911-8e99-4064-ba15-5afbcb821e48",
-                                                              "redefiningFeature": "03afa975-a088-46c9-81f3-1f7ecef62033"
+                                                              "redefinedFeature": "99879dc2-6d7d-474e-bc4e-42a7c3cedb72",
+                                                              "redefiningFeature": "83de0633-fa70-46a1-b69e-2dea1d02ad6b"
                                                             }
                                                           },
                                                           {
@@ -2101,8 +2097,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "b8391169-6145-491b-a1fd-2949ac1bd56a",
-                                                              "type": "12d305c6-8cc2-4cc0-87d6-66008172649e",
-                                                              "typedFeature": "03afa975-a088-46c9-81f3-1f7ecef62033"
+                                                              "type": "6ef70927-772e-4c19-9fab-a99266132606",
+                                                              "typedFeature": "83de0633-fa70-46a1-b69e-2dea1d02ad6b"
                                                             }
                                                           }
                                                         ],
@@ -2213,7 +2209,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "b49f780a-8fdc-4f01-b7bd-40a23331430c",
-                                                                                                              "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#ea703710-bbc3-5e2e-b22b-83704936e549"
+                                                                                                              "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#9802e18b-73fe-4a5e-8c29-095c2c5708a2"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -2253,7 +2249,7 @@
                                                                                     "eClass": "sysml:FeatureChaining",
                                                                                     "data": {
                                                                                       "elementId": "23b9723a-2169-4ed2-ba87-767f44f8af4c",
-                                                                                      "chainingFeature": "cc15eb28-3a7d-4575-ad7f-f03224ffc38e"
+                                                                                      "chainingFeature": "5bdce649-979b-457c-b7f5-5e1c82304db7"
                                                                                     }
                                                                                   },
                                                                                   {
@@ -2261,14 +2257,14 @@
                                                                                     "eClass": "sysml:FeatureChaining",
                                                                                     "data": {
                                                                                       "elementId": "71fdd227-9146-4a09-a1df-982a2b838733",
-                                                                                      "chainingFeature": "92301d5c-0118-4f2d-a631-a10c9d075e33"
+                                                                                      "chainingFeature": "41867cff-08d2-4d19-848f-02a929f59f96"
                                                                                     }
                                                                                   }
                                                                                 ]
                                                                               }
                                                                             }
                                                                           ],
-                                                                          "redefiningFeature": "8b857688-c186-4da2-8360-a941e2fe0bc8"
+                                                                          "redefiningFeature": "f2e1666e-fc07-4cc5-a215-011da647cb34"
                                                                         }
                                                                       }
                                                                     ],
@@ -2283,8 +2279,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "3f264bb0-6595-4036-b68b-3a516ee16fdf",
-                                                              "redefinedFeature": "sysml:PartUsage sysmllibrary:///aaa2616e-4ab8-307b-8c03-04cd78bf022d#ed80d442-d498-5236-96ae-71a8a52531d2",
-                                                              "redefiningFeature": "43bdd8a1-3c94-4700-96a1-e23ef8eeb65c"
+                                                              "redefinedFeature": "sysml:PartUsage sysmllibrary:///aaa2616e-4ab8-307b-8c03-04cd78bf022d#02b5e269-adbf-4abe-acb8-0e82cf94f69f",
+                                                              "redefiningFeature": "d43da476-9c74-4365-90d6-ff7f7b6193e1"
                                                             }
                                                           }
                                                         ],
@@ -2396,7 +2392,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "05d9eb69-d977-49af-bc0f-d739572ac83a",
-                                                                                                              "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#ea703710-bbc3-5e2e-b22b-83704936e549"
+                                                                                                              "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#9802e18b-73fe-4a5e-8c29-095c2c5708a2"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -2436,7 +2432,7 @@
                                                                                     "eClass": "sysml:FeatureChaining",
                                                                                     "data": {
                                                                                       "elementId": "06d65555-cd7d-4c1c-9ecc-6b6c3cde70af",
-                                                                                      "chainingFeature": "cc15eb28-3a7d-4575-ad7f-f03224ffc38e"
+                                                                                      "chainingFeature": "5bdce649-979b-457c-b7f5-5e1c82304db7"
                                                                                     }
                                                                                   },
                                                                                   {
@@ -2444,14 +2440,14 @@
                                                                                     "eClass": "sysml:FeatureChaining",
                                                                                     "data": {
                                                                                       "elementId": "a31be9d1-fea1-4035-b569-a03e120b91de",
-                                                                                      "chainingFeature": "92301d5c-0118-4f2d-a631-a10c9d075e33"
+                                                                                      "chainingFeature": "41867cff-08d2-4d19-848f-02a929f59f96"
                                                                                     }
                                                                                   }
                                                                                 ]
                                                                               }
                                                                             }
                                                                           ],
-                                                                          "redefiningFeature": "adbb0630-9dc2-4dbc-bb4d-f902275e1867"
+                                                                          "redefiningFeature": "79a36ee4-2f77-4252-8282-fcc77a883b6d"
                                                                         }
                                                                       }
                                                                     ],
@@ -2466,8 +2462,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "b8847805-e237-47f6-b1a6-be047d842a82",
-                                                              "redefinedFeature": "sysml:PartUsage sysmllibrary:///aaa2616e-4ab8-307b-8c03-04cd78bf022d#dd677401-a352-5fe3-846a-dad08d3eab06",
-                                                              "redefiningFeature": "313a60e6-b5e3-49d7-8bf6-a7a9757c3207"
+                                                              "redefinedFeature": "sysml:PartUsage sysmllibrary:///aaa2616e-4ab8-307b-8c03-04cd78bf022d#df12071e-c67f-4f85-96b1-75f0f5c2e1bc",
+                                                              "redefiningFeature": "fb38a7d7-67fc-4492-8eb7-de465944a293"
                                                             }
                                                           }
                                                         ],
@@ -2583,8 +2579,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "07a14126-e953-4d33-8a35-5d5dface543c",
-                                                              "redefinedFeature": "8971e911-8e99-4064-ba15-5afbcb821e48",
-                                                              "redefiningFeature": "86713785-d179-49d0-89d3-bb77244fd303"
+                                                              "redefinedFeature": "99879dc2-6d7d-474e-bc4e-42a7c3cedb72",
+                                                              "redefiningFeature": "8dd31c44-50c3-406f-abce-b43bfff5dc79"
                                                             }
                                                           }
                                                         ],
@@ -2607,8 +2603,8 @@
                                     "eClass": "sysml:FeatureTyping",
                                     "data": {
                                       "elementId": "aabf387d-b17f-46c0-bf1c-b17e6b936fff",
-                                      "type": "96b332d0-b8d0-491b-9364-5d5458d15d03",
-                                      "typedFeature": "89cfde44-873b-4e50-bef4-32acb5758965"
+                                      "type": "61b48d82-20b0-4418-b0c1-1c804ad355fd",
+                                      "typedFeature": "6cfb8cad-68bb-45a1-99b0-c8f9a461aebe"
                                     }
                                   }
                                 ],
@@ -2636,7 +2632,7 @@
                                     "eClass": "sysml:Membership",
                                     "data": {
                                       "elementId": "bbae985b-e546-407c-b624-4a8a1e45da0a",
-                                      "memberElement": "sysml:ActionUsage sysmllibrary:///ea54fd17-52d6-3366-82aa-494d0678e42d#9a0d2905-0f9c-5bb4-af74-9780d6db1817"
+                                      "memberElement": "sysml:ActionUsage sysmllibrary:///ea54fd17-52d6-3366-82aa-494d0678e42d#03262155-734a-473f-9535-262925cd5b8b"
                                     }
                                   },
                                   {
@@ -2796,8 +2792,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "8c4d6d1e-9b82-4c01-96db-910fbafecbd2",
-                                                              "type": "c242964c-f89d-491c-8837-05dddb06faed",
-                                                              "typedFeature": "3aac694e-ebea-44c3-b888-c1c3d5bec66b"
+                                                              "type": "6679cf9e-f986-4051-bccd-5288b966c24c",
+                                                              "typedFeature": "80b8583b-0889-4346-bae2-43728df18c8e"
                                                             }
                                                           }
                                                         ],
@@ -2903,7 +2899,7 @@
                                                 "eClass": "sysml:Membership",
                                                 "data": {
                                                   "elementId": "63c1e9b7-4bd1-4a65-856e-9d6f0ee90b32",
-                                                  "memberElement": "8154d056-379b-4524-b0da-e324ddac8a4f"
+                                                  "memberElement": "b4d1bf9e-db72-4a5a-87bd-c7d72285dffa"
                                                 }
                                               },
                                               {
@@ -2971,7 +2967,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "a04abb84-716a-4e7a-a89b-e56997b63973",
-                                                                                                              "memberElement": "27e57545-b325-4100-9ba9-21abbe05d9f7"
+                                                                                                              "memberElement": "2ff72cb6-1ef6-4abf-a1ab-a76661d6624f"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -2992,7 +2988,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "ebb4f571-8076-4223-a7d0-538bb620fd78",
-                                                                                      "memberElement": "3aac694e-ebea-44c3-b888-c1c3d5bec66b"
+                                                                                      "memberElement": "80b8583b-0889-4346-bae2-43728df18c8e"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -3037,7 +3033,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "c039a0b7-4031-44f6-904c-6664292bae11",
-                                                                                      "memberElement": "9fa396fc-1bad-4be8-90e9-1f3421e6a207"
+                                                                                      "memberElement": "baf0ee33-f871-41de-9ea5-6661eb37bb67"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -3106,8 +3102,8 @@
                                                                         "eClass": "sysml:ReferenceSubsetting",
                                                                         "data": {
                                                                           "elementId": "d95063b9-72bb-4a3c-8824-7f6457bdab43",
-                                                                          "subsettingFeature": "30030678-a0f7-4e92-803c-dc965ee25bfc",
-                                                                          "referencedFeature": "3155074b-2918-4a3a-8e78-06b7fb499e1f"
+                                                                          "subsettingFeature": "2724add8-c41e-402e-b8da-90fc7947d001",
+                                                                          "referencedFeature": "4fbd080f-a12b-4995-817b-7a13bb021fbb"
                                                                         }
                                                                       }
                                                                     ],
@@ -3165,7 +3161,7 @@
                                                 "eClass": "sysml:Membership",
                                                 "data": {
                                                   "elementId": "6d3247bb-6463-4d51-9ff8-4fe25527e2f3",
-                                                  "memberElement": "8154d056-379b-4524-b0da-e324ddac8a4f"
+                                                  "memberElement": "b4d1bf9e-db72-4a5a-87bd-c7d72285dffa"
                                                 }
                                               },
                                               {
@@ -3233,7 +3229,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "b982c24d-ec76-4fd8-8312-94db31553f18",
-                                                                                                              "memberElement": "27e57545-b325-4100-9ba9-21abbe05d9f7"
+                                                                                                              "memberElement": "2ff72cb6-1ef6-4abf-a1ab-a76661d6624f"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -3254,7 +3250,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "7264144a-3da4-4f82-8b2b-d868ae8caec3",
-                                                                                      "memberElement": "3aac694e-ebea-44c3-b888-c1c3d5bec66b"
+                                                                                      "memberElement": "80b8583b-0889-4346-bae2-43728df18c8e"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -3299,7 +3295,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "6305f8ea-c1ab-4a9b-8476-4dff6f427647",
-                                                                                      "memberElement": "a8a6d714-05d4-489f-a588-2290adad7dae"
+                                                                                      "memberElement": "a278739f-4cb1-4f61-890b-1154bf09f59e"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -3368,8 +3364,8 @@
                                                                         "eClass": "sysml:ReferenceSubsetting",
                                                                         "data": {
                                                                           "elementId": "f89402c8-0777-4d38-a085-e385aa6cc2cd",
-                                                                          "subsettingFeature": "a79775b6-c324-44a6-805c-70cbf9feb053",
-                                                                          "referencedFeature": "a636cc88-7cc4-40b2-97b5-ae4ec7f8bc85"
+                                                                          "subsettingFeature": "6ea06938-b9cd-414a-a2d0-099adbbc47c6",
+                                                                          "referencedFeature": "4290ab80-1f3d-4cc7-9a93-a75fa350ce8b"
                                                                         }
                                                                       }
                                                                     ],
@@ -3476,8 +3472,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "c3bf58c8-29ae-4448-b1b2-f4048741d460",
-                                                              "subsettingFeature": "5b3867d8-4947-4e87-bad8-af509eda020f",
-                                                              "referencedFeature": "329c3429-320b-453a-8804-4ba5282494d5"
+                                                              "subsettingFeature": "319dca04-c680-433b-88e3-67305498f4aa",
+                                                              "referencedFeature": "6750bd6c-bdfb-4513-8b59-e96038d9eb63"
                                                             }
                                                           }
                                                         ],
@@ -3560,8 +3556,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "bb0a9794-c5ea-4ddf-97e0-25ded9130669",
-                                                              "subsettingFeature": "1ede52a4-4cf9-4f0a-ad94-f5e699795d7b",
-                                                              "referencedFeature": "329c3429-320b-453a-8804-4ba5282494d5"
+                                                              "subsettingFeature": "3a7177a2-b789-4e16-aa10-5600f396ffc9",
+                                                              "referencedFeature": "6750bd6c-bdfb-4513-8b59-e96038d9eb63"
                                                             }
                                                           }
                                                         ],
@@ -3644,8 +3640,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "2aecee06-4ddb-4c87-b6ed-b02bd89fe3f8",
-                                                              "subsettingFeature": "661cc8d4-16ed-4fcc-a655-67984c940bcc",
-                                                              "referencedFeature": "sysml:ActionUsage sysmllibrary:///ea54fd17-52d6-3366-82aa-494d0678e42d#0cdc3cd3-b06c-5c32-beda-0cf4ba164a64"
+                                                              "subsettingFeature": "9803a77d-e466-4436-8a05-41208eb7d350",
+                                                              "referencedFeature": "sysml:ActionUsage sysmllibrary:///ea54fd17-52d6-3366-82aa-494d0678e42d#6f9d8315-c293-4910-9688-668196eb8ec5"
                                                             }
                                                           }
                                                         ],
@@ -3754,8 +3750,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "7581cbc3-9fc8-4467-ac20-c7969df0082c",
-                                                  "type": "96b332d0-b8d0-491b-9364-5d5458d15d03",
-                                                  "typedFeature": "ae740e97-90b2-4448-8379-1592d8fae708"
+                                                  "type": "61b48d82-20b0-4418-b0c1-1c804ad355fd",
+                                                  "typedFeature": "835738da-db9d-4fe9-b4d8-c2adaf2f889f"
                                                 }
                                               }
                                             ],
@@ -3783,8 +3779,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "c44365f0-fac6-4c6e-a961-0f4e16a2c42e",
-                                                  "type": "12d305c6-8cc2-4cc0-87d6-66008172649e",
-                                                  "typedFeature": "c339104a-688d-4a01-8b37-2f5f7f844639"
+                                                  "type": "6ef70927-772e-4c19-9fab-a99266132606",
+                                                  "typedFeature": "5aa4c22e-2390-48d2-8f32-dc50226912fe"
                                                 }
                                               }
                                             ],
@@ -3854,7 +3850,7 @@
                                     "eClass": "sysml:Membership",
                                     "data": {
                                       "elementId": "52e9ac9c-6097-4735-993f-7d4c61125b7a",
-                                      "memberElement": "sysml:UseCaseUsage sysmllibrary:///69a27756-cd79-32d9-87ac-f09fd14ad628#8507a333-e9b7-5591-9b15-57b03c67f53e"
+                                      "memberElement": "sysml:UseCaseUsage sysmllibrary:///69a27756-cd79-32d9-87ac-f09fd14ad628#1da893cf-8152-4acb-b3e8-6db4f2807641"
                                     }
                                   },
                                   {
@@ -4049,8 +4045,8 @@
                                                             "eClass": "sysml:ReferenceSubsetting",
                                                             "data": {
                                                               "elementId": "313290fb-59ae-4a77-8ad2-a56835081323",
-                                                              "subsettingFeature": "f4313635-66bf-4cd4-b0e5-7764eb3edf7d",
-                                                              "referencedFeature": "sysml:UseCaseUsage sysmllibrary:///69a27756-cd79-32d9-87ac-f09fd14ad628#e03c2665-c39d-526e-bee8-f6ba2de4f7aa"
+                                                              "subsettingFeature": "3dbfacbe-cf71-4e32-bcf6-d62d6a1c228a",
+                                                              "referencedFeature": "sysml:UseCaseUsage sysmllibrary:///69a27756-cd79-32d9-87ac-f09fd14ad628#84108a18-97f5-4c66-a397-6c2df0fcfbf6"
                                                             }
                                                           }
                                                         ],
@@ -4072,8 +4068,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "7bede924-af7b-49f6-96e6-186eb507dd07",
-                                      "subclassifier": "6a5860c2-d9d9-42d5-bc81-1bb5b8354266",
-                                      "superclassifier": "751401df-9844-485c-b921-d8abb991f2f2"
+                                      "subclassifier": "ebd51219-643e-49e7-b043-a93c0ebb7ddd",
+                                      "superclassifier": "78a58bb5-f7a5-4dc2-b845-4eb41de69847"
                                     }
                                   }
                                 ]
@@ -4130,8 +4126,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "640c0531-cf31-4cd7-be6e-2d8cc34804b4",
-                                                  "type": "d9ab184b-220a-4ec9-97d6-220599663b88",
-                                                  "typedFeature": "2e167656-2044-4ec3-b2e6-8d6ee08c025f"
+                                                  "type": "b58b65bd-f47c-476e-8397-4ac9a8c6a1f0",
+                                                  "typedFeature": "c75751bb-5edd-4ab3-b122-d978256ac550"
                                                 }
                                               }
                                             ],
@@ -4159,8 +4155,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "e202e317-fcd9-4705-b8f5-b92c6de7cc82",
-                                                  "type": "bbdd85c3-31c5-46d9-bd39-79d307ef7d98",
-                                                  "typedFeature": "57d8b63b-507a-4540-9786-7f1beb791088"
+                                                  "type": "38699ec1-0d75-4efd-8aa1-c6ab041eae44",
+                                                  "typedFeature": "5cc3a442-2abe-4e00-8cbc-efb30e5eb65f"
                                                 }
                                               }
                                             ],
@@ -4188,8 +4184,8 @@
                                                 "eClass": "sysml:Subsetting",
                                                 "data": {
                                                   "elementId": "021d0adc-ed02-46e4-bf74-9c866ead162b",
-                                                  "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///a269cb9d-5a98-33e9-95e8-8701328ddda6#7d7c5549-269c-5916-a3f2-f3132b59f113",
-                                                  "subsettingFeature": "12204587-4859-406d-95e4-f68bd1ad4f7c"
+                                                  "subsettedFeature": "sysml:AttributeUsage sysmllibrary:///a269cb9d-5a98-33e9-95e8-8701328ddda6#4566e1a8-485c-45b4-9367-f2dc6da7a94c",
+                                                  "subsettingFeature": "1c66d4ec-b3d4-4e62-a36d-927f3ca3fef3"
                                                 }
                                               }
                                             ],
@@ -4276,7 +4272,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "ac3c084d-91d5-43c4-adce-59d98f195bf1",
-                                                                                                              "memberElement": "2e167656-2044-4ec3-b2e6-8d6ee08c025f"
+                                                                                                              "memberElement": "c75751bb-5edd-4ab3-b122-d978256ac550"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -4297,7 +4293,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "d654e27b-c8f3-4bb7-bcd2-48b63ad796f5",
-                                                                                      "memberElement": "fa9c173b-5021-4e26-99ad-ed5bb59c15cc"
+                                                                                      "memberElement": "04596bd1-5c7d-4578-a774-1fbd18292c7a"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -4342,7 +4338,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "bb5d4197-4a1d-4238-8dd6-ddddbe04f6d4",
-                                                                                      "memberElement": "12204587-4859-406d-95e4-f68bd1ad4f7c"
+                                                                                      "memberElement": "1c66d4ec-b3d4-4e62-a36d-927f3ca3fef3"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -4511,7 +4507,7 @@
                                                                                                 "eClass": "sysml:Membership",
                                                                                                 "data": {
                                                                                                   "elementId": "8bc558c2-14d8-41a2-8395-a876dc0a3bd8",
-                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#8bf44d53-d503-554f-bd9c-3cd85a1748ca"
+                                                                                                  "memberElement": "sysml:AttributeUsage sysmllibrary:///012a4481-2eb9-3abd-8d59-ad313ecfbfd6#15945cf5-9320-4854-85d2-cacdfa36fa08"
                                                                                                 }
                                                                                               }
                                                                                             ]
@@ -4539,8 +4535,8 @@
                                                             "eClass": "sysml:Redefinition",
                                                             "data": {
                                                               "elementId": "812909c4-7fee-4eb9-8edb-8460f400ece2",
-                                                              "redefinedFeature": "12204587-4859-406d-95e4-f68bd1ad4f7c",
-                                                              "redefiningFeature": "1429276b-5aef-4b38-b8f8-c91182e1bd45"
+                                                              "redefinedFeature": "1c66d4ec-b3d4-4e62-a36d-927f3ca3fef3",
+                                                              "redefiningFeature": "88c61f89-9a82-48a0-aac0-083cd01985af"
                                                             }
                                                           }
                                                         ],
@@ -4555,8 +4551,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "78cd4519-663d-4364-ad21-9af79e4f4d67",
-                                                  "type": "58d3ee66-2c1d-438d-9b9b-e3c3844d9734",
-                                                  "typedFeature": "fc5a5b5f-37ea-4bd9-ad94-5783610fdb2f"
+                                                  "type": "50d709da-de18-4eab-b8b7-228a136e6750",
+                                                  "typedFeature": "a23c5f64-4039-4d8c-ac2b-867c1dc2b820"
                                                 }
                                               }
                                             ],
@@ -4610,8 +4606,8 @@
                                     "eClass": "sysml:FeatureTyping",
                                     "data": {
                                       "elementId": "8ec119e3-28d3-472f-9ad9-62f24b070f12",
-                                      "type": "96b332d0-b8d0-491b-9364-5d5458d15d03",
-                                      "typedFeature": "cb86f5de-5425-465a-be57-9d6dd28a4dcc"
+                                      "type": "61b48d82-20b0-4418-b0c1-1c804ad355fd",
+                                      "typedFeature": "ea86e913-877c-428d-9917-4505e7ba3c0b"
                                     }
                                   }
                                 ],
@@ -4638,8 +4634,8 @@
                                     "eClass": "sysml:ReferenceSubsetting",
                                     "data": {
                                       "elementId": "835c0b2c-4e7c-4f4a-8fbb-d3db23eea244",
-                                      "subsettingFeature": "2a610461-6158-42b3-b6e8-0fbf8bedd590",
-                                      "referencedFeature": "d6794ef7-6edc-4d85-aacb-47f87b49b98b"
+                                      "subsettingFeature": "713b37a1-3e61-4179-aa43-d656b440135a",
+                                      "referencedFeature": "4a5ac1aa-925d-4eca-847c-50132fb0daa4"
                                     }
                                   },
                                   {
@@ -4671,7 +4667,7 @@
                                                             "eClass": "sysml:Membership",
                                                             "data": {
                                                               "elementId": "ad65bb64-5269-43ff-be9c-e0d29c703083",
-                                                              "memberElement": "cb86f5de-5425-465a-be57-9d6dd28a4dcc"
+                                                              "memberElement": "ea86e913-877c-428d-9917-4505e7ba3c0b"
                                                             }
                                                           }
                                                         ]
@@ -4759,8 +4755,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "ef300488-1c65-49bb-8e98-f0410481daea",
-                                                  "type": "sysml:DataType kermllibrary:///b2c6dd37-2084-3ce4-9ce2-580fdf30629c#76028d3d-69a4-5e12-9002-ce403e0244bd",
-                                                  "typedFeature": "e8d53827-b4cf-4830-a18d-3f8bdf19a5bd"
+                                                  "type": "sysml:DataType kermllibrary:///b2c6dd37-2084-3ce4-9ce2-580fdf30629c#b352ded6-38ba-4e7e-ae55-9299cb0cc6d0",
+                                                  "typedFeature": "77b244e3-fec5-4ef3-9d43-523bc20969bc"
                                                 }
                                               }
                                             ],
@@ -4805,8 +4801,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "742d51c2-fe4a-4a8a-a076-0553033459e6",
-                                                  "type": "sysml:DataType kermllibrary:///b2c6dd37-2084-3ce4-9ce2-580fdf30629c#76028d3d-69a4-5e12-9002-ce403e0244bd",
-                                                  "typedFeature": "f369bc1e-23ca-4ee6-b724-b4bd52736b5e"
+                                                  "type": "sysml:DataType kermllibrary:///b2c6dd37-2084-3ce4-9ce2-580fdf30629c#b352ded6-38ba-4e7e-ae55-9299cb0cc6d0",
+                                                  "typedFeature": "aa315a52-ae21-4550-803a-77c22cd62ffd"
                                                 }
                                               }
                                             ],
@@ -4874,8 +4870,8 @@
                                     "eClass": "sysml:FeatureTyping",
                                     "data": {
                                       "elementId": "5be80419-f72e-4865-aa12-b106749bafd4",
-                                      "type": "6ca7158d-51fe-4405-869f-1be4b01cb9bf",
-                                      "typedFeature": "65f1daa1-eca2-48e8-8551-805090245977"
+                                      "type": "bba78a67-524f-4d3f-96a9-de5f9d2d615f",
+                                      "typedFeature": "e3de8166-2c89-49c4-a369-12194b9158f8"
                                     }
                                   }
                                 ],
@@ -4950,8 +4946,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "24688f2d-ac66-4b98-b770-64000fdaf4df",
-                                                  "type": "07317c26-9637-47f4-9faf-bfa117787288",
-                                                  "typedFeature": "9220fbb5-f23b-4cc3-930b-c9896679f390"
+                                                  "type": "31e23dbb-fcdc-4d42-b04c-bf6b1316776c",
+                                                  "typedFeature": "834c4f3a-1532-45b6-9792-a7f2194d8ee4"
                                                 }
                                               }
                                             ],
@@ -4998,8 +4994,8 @@
                                                 "eClass": "sysml:ReferenceSubsetting",
                                                 "data": {
                                                   "elementId": "3adda5f6-dd58-416f-935f-55a7a0dd697c",
-                                                  "subsettingFeature": "315d6434-3829-4348-b69a-43785cc55d30",
-                                                  "referencedFeature": "54170b3e-683e-4af5-a968-7b77ddaf4e86"
+                                                  "subsettingFeature": "e591b9b5-a3a5-4f1f-abc6-bfb91fed9e0a",
+                                                  "referencedFeature": "e8780d44-8332-44e7-99f3-7a5865c9da68"
                                                 }
                                               }
                                             ],
@@ -5082,8 +5078,8 @@
                                                 "eClass": "sysml:ReferenceSubsetting",
                                                 "data": {
                                                   "elementId": "83d26061-150d-4225-88ed-9e58255d41fd",
-                                                  "subsettingFeature": "c48884fe-d060-4587-af61-baf39837ca15",
-                                                  "referencedFeature": "51806cfa-a768-4d36-a7e8-9b891ad9b19c"
+                                                  "subsettingFeature": "88cef9fb-0d31-4952-b9d9-de4d78a691ec",
+                                                  "referencedFeature": "8f148a89-31e3-4270-8578-575ce6c51cbc"
                                                 }
                                               }
                                             ],
@@ -5122,8 +5118,8 @@
                                                             "eClass": "sysml:FeatureTyping",
                                                             "data": {
                                                               "elementId": "cb74e782-68ac-4731-a074-626d0cc17faa",
-                                                              "type": "sysml:MetadataDefinition sysmllibrary:///389615e8-f636-3405-928f-411d874ba837#550f9923-23f8-5142-aa06-d7ff476876d7",
-                                                              "typedFeature": "b1e8df8d-a826-425c-8d8a-4720ef1216b7"
+                                                              "type": "sysml:MetadataDefinition sysmllibrary:///389615e8-f636-3405-928f-411d874ba837#a1ac0c14-cb36-41a7-8589-7e205fa641e2",
+                                                              "typedFeature": "988ca6b3-aab3-40e4-bf71-6b96d2fecd53"
                                                             }
                                                           }
                                                         ]
@@ -5217,7 +5213,7 @@
                                     "data": {
                                       "elementId": "bfa16df9-0d34-40e5-9a4c-33f9b1beb501",
                                       "isRecursive": true,
-                                      "importedMembership": "32dae57c-e499-4f61-8439-4772c847a635"
+                                      "importedMembership": "ecab563b-f72b-435b-95c8-5cc548d2b34f"
                                     }
                                   },
                                   {
@@ -5237,8 +5233,8 @@
                                                 "eClass": "sysml:ReferenceSubsetting",
                                                 "data": {
                                                   "elementId": "40da6256-69b9-42c5-9f28-0b322924413a",
-                                                  "subsettingFeature": "7ee01ef6-8db4-41f6-98ad-36f7b65adc71",
-                                                  "referencedFeature": "sysml:RenderingUsage sysmllibrary:///30f043fd-c214-3546-a83f-61523d7e903e#2e692d4e-3ae9-501a-be88-8d4837b18d6a"
+                                                  "subsettingFeature": "cb7b5d5c-de2b-490c-bdae-068cefc95b55",
+                                                  "referencedFeature": "sysml:RenderingUsage sysmllibrary:///30f043fd-c214-3546-a83f-61523d7e903e#d925c2be-0281-405c-b03d-b693a4c2b73f"
                                                 }
                                               }
                                             ],
@@ -5253,8 +5249,8 @@
                                     "eClass": "sysml:FeatureTyping",
                                     "data": {
                                       "elementId": "80748021-80b2-4f2d-92fb-36ef011b9db0",
-                                      "type": "dc9037c7-18b9-4b9d-813c-ebed61302003",
-                                      "typedFeature": "28389b41-06a1-41d3-bcd8-4da2234c505d"
+                                      "type": "2c564f48-fafb-4ee0-8fe5-2589c806b8f6",
+                                      "typedFeature": "3a66986f-a37f-4a9e-9464-45925a9676ef"
                                     }
                                   }
                                 ],
@@ -5282,8 +5278,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "e9f43f13-36c9-4e73-877e-2bb4daa7b28c",
-                                      "subclassifier": "b6383c32-a1e7-4f41-970b-8628ac684962",
-                                      "superclassifier": "9c52ca68-f775-4647-a701-bcf2b714496f"
+                                      "subclassifier": "8bfb3163-32db-40a6-9938-ded6fb3442cb",
+                                      "superclassifier": "89f37ec0-c93f-482f-9e8f-3aa25c241d83"
                                     }
                                   }
                                 ]
@@ -5310,8 +5306,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "03218880-00ef-4b30-92d7-d62d08a35937",
-                                      "subclassifier": "cdbe87f8-0d01-48c2-8ed1-ee97aaadc827",
-                                      "superclassifier": "9c52ca68-f775-4647-a701-bcf2b714496f"
+                                      "subclassifier": "242d1456-7925-4bbf-b794-afd312bd4053",
+                                      "superclassifier": "89f37ec0-c93f-482f-9e8f-3aa25c241d83"
                                     }
                                   }
                                 ]
@@ -5338,8 +5334,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "ce3a2631-2bcd-4191-87fc-6d2a4bf260fe",
-                                      "subclassifier": "648ac35e-3681-4a2f-93d3-48d24edfe1e1",
-                                      "superclassifier": "38616dec-4cca-48f9-afd2-6baa3e78623c"
+                                      "subclassifier": "28cc9219-f2f7-43b1-bdc0-fdfe783105d7",
+                                      "superclassifier": "eaed2104-a3c8-4164-bb5a-a3510e826f5e"
                                     }
                                   }
                                 ]
@@ -5366,8 +5362,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "359d9279-f42c-4236-a475-3448ca8174f4",
-                                      "subclassifier": "7970c133-27df-4750-99a3-9ea0c7bb6c4b",
-                                      "superclassifier": "38616dec-4cca-48f9-afd2-6baa3e78623c"
+                                      "subclassifier": "884b6940-1c52-455f-9637-8703701cc24a",
+                                      "superclassifier": "eaed2104-a3c8-4164-bb5a-a3510e826f5e"
                                     }
                                   }
                                 ]
@@ -5407,8 +5403,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "93136c3b-df83-4af1-9402-af667b1e99a9",
-                                                  "type": "b6383c32-a1e7-4f41-970b-8628ac684962",
-                                                  "typedFeature": "6e537dbc-2168-4cfa-9518-eb3f7fe696d2"
+                                                  "type": "8bfb3163-32db-40a6-9938-ded6fb3442cb",
+                                                  "typedFeature": "a7ed6547-1577-4cbe-bb59-348870ea1529"
                                                 }
                                               }
                                             ],
@@ -5436,8 +5432,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "5479026d-b481-440a-9ad2-02635ccb15a7",
-                                                  "type": "cdbe87f8-0d01-48c2-8ed1-ee97aaadc827",
-                                                  "typedFeature": "87b8cff6-2f56-4f12-be3c-5f9c067efab9"
+                                                  "type": "242d1456-7925-4bbf-b794-afd312bd4053",
+                                                  "typedFeature": "dbf854b6-ee21-4f2d-9f11-1c9f95108b4b"
                                                 }
                                               }
                                             ],
@@ -5452,8 +5448,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "a09f7b5b-10fc-4a33-be50-677a5da53e03",
-                                      "subclassifier": "4afb4850-dbb2-4474-a380-7df8d834bde2",
-                                      "superclassifier": "9c52ca68-f775-4647-a701-bcf2b714496f"
+                                      "subclassifier": "c156133c-9d09-4a4d-b586-036a6550b7f5",
+                                      "superclassifier": "89f37ec0-c93f-482f-9e8f-3aa25c241d83"
                                     }
                                   }
                                 ],
@@ -5494,8 +5490,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "e7efab2f-7d58-4613-9bed-6227b5e102e1",
-                                                  "type": "648ac35e-3681-4a2f-93d3-48d24edfe1e1",
-                                                  "typedFeature": "0f2904e6-77bc-4767-b8ac-ea86501e9f93"
+                                                  "type": "28cc9219-f2f7-43b1-bdc0-fdfe783105d7",
+                                                  "typedFeature": "95b0477b-204d-4e7b-be9a-52b5570c3a79"
                                                 }
                                               }
                                             ],
@@ -5523,8 +5519,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "aafc277a-fb7d-4790-99f9-ae399dd9ea64",
-                                                  "type": "7970c133-27df-4750-99a3-9ea0c7bb6c4b",
-                                                  "typedFeature": "bfa3df2b-719d-4272-96c0-bbf21821a906"
+                                                  "type": "884b6940-1c52-455f-9637-8703701cc24a",
+                                                  "typedFeature": "8e7de59d-9b46-466f-a0da-298e0de70248"
                                                 }
                                               }
                                             ],
@@ -5539,8 +5535,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "532f4e61-056a-43cb-aa7a-d1cdd33b87f5",
-                                      "subclassifier": "392d01a5-110b-49e5-9793-747ef2a21eaa",
-                                      "superclassifier": "38616dec-4cca-48f9-afd2-6baa3e78623c"
+                                      "subclassifier": "f88fdace-40c7-4258-927b-b142329f7350",
+                                      "superclassifier": "eaed2104-a3c8-4164-bb5a-a3510e826f5e"
                                     }
                                   }
                                 ],
@@ -5580,8 +5576,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "deba9fcf-0b40-4a48-a97c-a0aa60774927",
-                                                  "redefinedFeature": "26e3729c-9cac-44d0-acab-3ca92049ec4d",
-                                                  "redefiningFeature": "bd8d6718-b90d-4f7a-8d36-693d5123313b"
+                                                  "redefinedFeature": "3a9b7cd3-e1f7-4071-b7dc-0a00d913df17",
+                                                  "redefiningFeature": "383833c4-949e-4401-b4db-73f5832b541c"
                                                 }
                                               },
                                               {
@@ -5589,8 +5585,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "446ea56e-f475-4c69-9db9-7da78e9956db",
-                                                  "type": "4afb4850-dbb2-4474-a380-7df8d834bde2",
-                                                  "typedFeature": "bd8d6718-b90d-4f7a-8d36-693d5123313b"
+                                                  "type": "c156133c-9d09-4a4d-b586-036a6550b7f5",
+                                                  "typedFeature": "383833c4-949e-4401-b4db-73f5832b541c"
                                                 }
                                               }
                                             ],
@@ -5617,8 +5613,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "ccad7239-6536-43cf-bfa5-d8643dc12ad8",
-                                                  "redefinedFeature": "40de5a8b-763e-4378-94b8-8cdb963f9215",
-                                                  "redefiningFeature": "beede21b-7606-44c4-8f1d-901b3ba62f72"
+                                                  "redefinedFeature": "50db7e24-a392-461d-9d6f-5726c86396e6",
+                                                  "redefiningFeature": "68154ac0-b8ed-427a-999e-4bbd8de7475c"
                                                 }
                                               },
                                               {
@@ -5626,8 +5622,8 @@
                                                 "eClass": "sysml:FeatureTyping",
                                                 "data": {
                                                   "elementId": "2887997d-db29-491f-9ef0-2d23916fc705",
-                                                  "type": "392d01a5-110b-49e5-9793-747ef2a21eaa",
-                                                  "typedFeature": "beede21b-7606-44c4-8f1d-901b3ba62f72"
+                                                  "type": "f88fdace-40c7-4258-927b-b142329f7350",
+                                                  "typedFeature": "68154ac0-b8ed-427a-999e-4bbd8de7475c"
                                                 }
                                               },
                                               {
@@ -5749,7 +5745,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "c5d1b089-8ccc-4636-8591-9f274ee06108",
-                                                                                                              "memberElement": "bd8d6718-b90d-4f7a-8d36-693d5123313b"
+                                                                                                              "memberElement": "383833c4-949e-4401-b4db-73f5832b541c"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -5794,7 +5790,7 @@
                                                                                                             "eClass": "sysml:Membership",
                                                                                                             "data": {
                                                                                                               "elementId": "082d7c79-9646-4ce0-a632-12bbbe0a426a",
-                                                                                                              "memberElement": "87b8cff6-2f56-4f12-be3c-5f9c067efab9"
+                                                                                                              "memberElement": "dbf854b6-ee21-4f2d-9f11-1c9f95108b4b"
                                                                                                             }
                                                                                                           }
                                                                                                         ]
@@ -5889,7 +5885,7 @@
                                                                                                                         "eClass": "sysml:Membership",
                                                                                                                         "data": {
                                                                                                                           "elementId": "80b22681-f659-4db6-9fd7-52cf1aa87b2d",
-                                                                                                                          "memberElement": "beede21b-7606-44c4-8f1d-901b3ba62f72"
+                                                                                                                          "memberElement": "68154ac0-b8ed-427a-999e-4bbd8de7475c"
                                                                                                                         }
                                                                                                                       }
                                                                                                                     ]
@@ -5958,7 +5954,7 @@
                                                                                                                                                 "eClass": "sysml:Membership",
                                                                                                                                                 "data": {
                                                                                                                                                   "elementId": "781bde2d-d65e-4310-ad99-4922f0b765b2",
-                                                                                                                                                  "memberElement": "beede21b-7606-44c4-8f1d-901b3ba62f72"
+                                                                                                                                                  "memberElement": "68154ac0-b8ed-427a-999e-4bbd8de7475c"
                                                                                                                                                 }
                                                                                                                                               }
                                                                                                                                             ]
@@ -5979,7 +5975,7 @@
                                                                                                                         "eClass": "sysml:Membership",
                                                                                                                         "data": {
                                                                                                                           "elementId": "111f5c3a-1b7b-43cc-ad87-ee4615b13a46",
-                                                                                                                          "memberElement": "bfa3df2b-719d-4272-96c0-bbf21821a906"
+                                                                                                                          "memberElement": "8e7de59d-9b46-466f-a0da-298e0de70248"
                                                                                                                         }
                                                                                                                       }
                                                                                                                     ]
@@ -6034,8 +6030,8 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "1d437049-867b-432f-8f28-c0c2b58c9713",
-                                      "subclassifier": "5cd362da-3f15-4d25-953e-a0b8cbedbd67",
-                                      "superclassifier": "96b332d0-b8d0-491b-9364-5d5458d15d03"
+                                      "subclassifier": "e633e1d9-9080-41ac-95ec-6ef1be980b62",
+                                      "superclassifier": "61b48d82-20b0-4418-b0c1-1c804ad355fd"
                                     }
                                   }
                                 ]
@@ -6110,7 +6106,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "8ea8a19c-0866-49e5-a55b-5d909d0cfe53",
-                                                                                      "memberElement": "bf2877fe-a340-459b-b3d6-061e1724baca"
+                                                                                      "memberElement": "39f7baca-96d1-4bbc-a92b-f85626c8ff1f"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -6131,7 +6127,7 @@
                                                             "eClass": "sysml:Membership",
                                                             "data": {
                                                               "elementId": "98b1cc7c-851e-4ce2-bf44-680a17f8801a",
-                                                              "memberElement": "87b8cff6-2f56-4f12-be3c-5f9c067efab9"
+                                                              "memberElement": "dbf854b6-ee21-4f2d-9f11-1c9f95108b4b"
                                                             }
                                                           }
                                                         ]
@@ -6145,8 +6141,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "77b716fc-bcc0-446a-a935-bc522c1a6c10",
-                                                  "redefinedFeature": "bd8d6718-b90d-4f7a-8d36-693d5123313b",
-                                                  "redefiningFeature": "bf2877fe-a340-459b-b3d6-061e1724baca"
+                                                  "redefinedFeature": "383833c4-949e-4401-b4db-73f5832b541c",
+                                                  "redefiningFeature": "39f7baca-96d1-4bbc-a92b-f85626c8ff1f"
                                                 }
                                               }
                                             ],
@@ -6209,7 +6205,7 @@
                                                                                     "eClass": "sysml:Membership",
                                                                                     "data": {
                                                                                       "elementId": "0bb2ea49-7e4e-4857-a5b3-479bc36b87a3",
-                                                                                      "memberElement": "cc3ab3aa-983a-4cd5-a0aa-a4c51b81118c"
+                                                                                      "memberElement": "77bf9867-0841-4d71-82c2-4c76e08feff8"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -6230,7 +6226,7 @@
                                                             "eClass": "sysml:Membership",
                                                             "data": {
                                                               "elementId": "eb71015c-1557-4071-9425-88a172452697",
-                                                              "memberElement": "bfa3df2b-719d-4272-96c0-bbf21821a906"
+                                                              "memberElement": "8e7de59d-9b46-466f-a0da-298e0de70248"
                                                             }
                                                           }
                                                         ]
@@ -6244,8 +6240,8 @@
                                                 "eClass": "sysml:Redefinition",
                                                 "data": {
                                                   "elementId": "4f449531-023f-46c0-8a29-ebbfce22a5e9",
-                                                  "redefinedFeature": "beede21b-7606-44c4-8f1d-901b3ba62f72",
-                                                  "redefiningFeature": "cc3ab3aa-983a-4cd5-a0aa-a4c51b81118c"
+                                                  "redefinedFeature": "68154ac0-b8ed-427a-999e-4bbd8de7475c",
+                                                  "redefiningFeature": "77bf9867-0841-4d71-82c2-4c76e08feff8"
                                                 }
                                               }
                                             ],
@@ -6260,8 +6256,500 @@
                                     "eClass": "sysml:Subclassification",
                                     "data": {
                                       "elementId": "542ff0f1-9ac2-462e-b096-c80e0268affb",
-                                      "subclassifier": "c6dc4de3-bfd8-49d8-81ea-349b4ff2ac42",
-                                      "superclassifier": "5cd362da-3f15-4d25-953e-a0b8cbedbd67"
+                                      "subclassifier": "e5d32975-4043-4bf2-9aa4-acb428562df0",
+                                      "superclassifier": "e633e1d9-9080-41ac-95ec-6ef1be980b62"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "ba29a06d-dce5-47ec-bd7d-af83c78b50ed",
+                        "eClass": "sysml:OwningMembership",
+                        "data": {
+                          "elementId": "51fb3c8f-9424-45c0-82c0-33224f9073cd",
+                          "ownedRelatedElement": [
+                            {
+                              "id": "b38b489f-9052-47f7-a417-0c1e137d0dca",
+                              "eClass": "sysml:ViewUsage",
+                              "data": {
+                                "declaredName": "General View",
+                                "elementId": "b63738a8-448c-4de2-a71d-00c512807fdf",
+                                "ownedRelationship": [
+                                  {
+                                    "id": "cf4196b1-92d4-4383-abc4-a8a763bba2c2",
+                                    "eClass": "sysml:FeatureTyping",
+                                    "data": {
+                                      "elementId": "5dba8007-30b4-4988-9d3f-d5687ba94faa",
+                                      "type": "sysml:ViewDefinition sysmllibrary:///faf517ae-dbcd-30a4-b3b9-3d9cb3bbf5c1#7098b764-d891-48f5-b928-4ba41cbe837e",
+                                      "typedFeature": "b38b489f-9052-47f7-a417-0c1e137d0dca"
+                                    }
+                                  },
+                                  {
+                                    "id": "184ec27c-bdbd-4b6d-9722-19366e8a06bd",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "c67c0b5d-53bb-4977-b448-a92805233f37",
+                                      "importedMembership": "475f8599-a976-4ae9-b926-8192579ebbb0"
+                                    }
+                                  },
+                                  {
+                                    "id": "13bd6323-2290-4554-911a-f9aad3f50f53",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "ac43f99a-af3e-4b0b-b3dd-a29a6e03eb76",
+                                      "importedMembership": "a7fb757b-cbe2-4738-af16-e6484125a2c1"
+                                    }
+                                  },
+                                  {
+                                    "id": "67cb7f2a-85c3-4809-9426-2a659071d12d",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "c32a9fa7-2d90-43fa-9dd0-63a4c153a2e7",
+                                      "importedMembership": "d1026c64-d76f-46c9-ab32-8763701bc0dc"
+                                    }
+                                  },
+                                  {
+                                    "id": "2e460988-4527-4898-81c7-09946822077f",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "d302776e-a30b-4f6d-bdee-6c5f8062dd00",
+                                      "importedMembership": "02e6d0c0-365d-4739-91cf-fad48d5fc01e"
+                                    }
+                                  },
+                                  {
+                                    "id": "07cf8b2f-624d-49be-89dd-9b1c14a4b707",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a1896da9-9b78-4144-a53d-0a39d16571f5",
+                                      "importedMembership": "90cc153f-cd93-47c4-85d9-a9379732266e"
+                                    }
+                                  },
+                                  {
+                                    "id": "b70a0493-3e65-4e02-b8d9-b60d1fb3100c",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "22d24939-4ca2-4198-ae6f-e827ed2aa6fa",
+                                      "importedMembership": "ec5422ec-a487-42b9-a535-2fbd28098aa1"
+                                    }
+                                  },
+                                  {
+                                    "id": "0144676e-0fd0-4357-8495-d9c0095ab387",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "af109ea1-d882-4ca7-888a-e09ba7fc9842",
+                                      "importedMembership": "ec2a6b5d-403b-4e88-97e6-307d555b7b0b"
+                                    }
+                                  },
+                                  {
+                                    "id": "791c88cb-5241-46bb-acf1-5c0c3232c74c",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "3d193782-b47c-45cd-9b3a-bce9f8650830",
+                                      "importedMembership": "ca22110d-c9ed-4551-af80-7c932b0384c7"
+                                    }
+                                  },
+                                  {
+                                    "id": "de0ea683-306a-42d7-837c-6adb1835deec",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "f4a0c55e-f27c-403a-afdc-3a876e42f8fc",
+                                      "importedMembership": "42f5dec5-d043-428f-a26d-1321d5e0b42c"
+                                    }
+                                  },
+                                  {
+                                    "id": "caa0c339-a343-4c74-8c41-86c7f89cda0e",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "2b85d76c-2ea4-4a40-9cee-fa14024fd6dd",
+                                      "importedMembership": "d02cce1f-5187-4dfb-aebb-bf2af7ed7ee9"
+                                    }
+                                  },
+                                  {
+                                    "id": "0091172a-4e2a-4b7c-a9d5-0aa3fb3fe3d1",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "cd5251b4-9c8d-4aef-af7d-9b2a50e74c0e",
+                                      "importedMembership": "00892558-6774-4985-81d9-205b05810874"
+                                    }
+                                  },
+                                  {
+                                    "id": "051de552-e2f9-4233-89e3-2d4863da00d1",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "88ad321c-15b3-4e2e-9d12-89a6061826a1",
+                                      "importedMembership": "ea0bc5c9-267e-47a2-9a22-8aa3c49758c0"
+                                    }
+                                  },
+                                  {
+                                    "id": "b428d666-9867-4047-8827-66af1c9992b4",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "4f4a665f-72a8-437d-98e9-5486aa5923fd",
+                                      "importedMembership": "d7d38d7a-d4a0-4df1-983a-29858170cf41"
+                                    }
+                                  },
+                                  {
+                                    "id": "0db1a87b-8d92-4e59-9985-3ab62a3dfafc",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "9eb072ec-6dcd-4297-97d8-933b7008d0dc",
+                                      "importedMembership": "708e4719-9ef5-4bf2-be9a-e20cbc0c0f3b"
+                                    }
+                                  },
+                                  {
+                                    "id": "07ceec46-b81d-4dce-b2ef-9c8412f52348",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a27b67f5-e8e4-449e-8784-e7c7c77a2185",
+                                      "importedMembership": "1b580d81-535b-4f95-97f8-954e93783bf7"
+                                    }
+                                  },
+                                  {
+                                    "id": "19b3c1cf-eaa0-40e7-8b7d-d668e4414055",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "3399b5e8-dace-4538-a742-049c61033ee1",
+                                      "importedMembership": "9e2055a4-d97f-47ff-83a1-30b3b414d8d1"
+                                    }
+                                  },
+                                  {
+                                    "id": "407dd9fc-e569-4015-81b0-4ea55c74542f",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "6695c618-8811-46c1-97af-790ef37bdb32",
+                                      "importedMembership": "31b714c1-1ee3-48f8-95f3-44ba5e7cb0cd"
+                                    }
+                                  },
+                                  {
+                                    "id": "df9acf9c-f56e-482f-a182-4c4d9c19c40c",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "d90d2a75-03d2-49d1-b675-4da47e390fd5",
+                                      "importedMembership": "384ba5a4-c78a-4e7b-a6f7-5a138124798f"
+                                    }
+                                  },
+                                  {
+                                    "id": "1fb36724-8b6a-4fd6-9500-7e7752ffcfd3",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a65dd5b6-4a6e-43ca-b523-a77cde9fd3b2",
+                                      "importedMembership": "fbffe78a-8312-4b1f-ba51-eb7a3dded765"
+                                    }
+                                  },
+                                  {
+                                    "id": "a6acd3bd-36a6-4158-929b-3bb1b8732a60",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a7a46e00-cfd4-442b-912c-c39569ee294b",
+                                      "importedMembership": "b6ca70f7-10bd-4561-ad4d-d08409788779"
+                                    }
+                                  },
+                                  {
+                                    "id": "bbbac6f1-c15e-4182-a647-04c3bef874b1",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "2c03146a-3cd9-4c3a-b6de-24881581f73a",
+                                      "importedMembership": "517f882b-d6ce-494b-9936-baa727a60beb"
+                                    }
+                                  },
+                                  {
+                                    "id": "ddb29616-1fc3-4c2e-a35c-11eafc8ffc1c",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "b89af221-9c69-483b-b2b5-63dddf6aa1b4",
+                                      "importedMembership": "ecd0c5dc-2c5f-45da-b259-ae25a0835df0"
+                                    }
+                                  },
+                                  {
+                                    "id": "278dbe79-6578-45b4-972f-70b825aff130",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "e31b4d91-1ec2-4670-a13f-5ef47d78ac0d",
+                                      "importedMembership": "c115eed1-313f-4478-82a1-867c496ac9ae"
+                                    }
+                                  },
+                                  {
+                                    "id": "61409cf0-d3c7-473b-8352-d4f9ed3b073b",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "2368f9c0-e44b-49cf-bb0b-76b16905c220",
+                                      "importedMembership": "e949be0c-0126-4276-bde9-89faf616d398"
+                                    }
+                                  },
+                                  {
+                                    "id": "67f801da-c159-4f11-9cfc-63c8a49e4800",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "4493b681-6404-456c-a22a-b4e7df4ed960",
+                                      "importedMembership": "807b887c-81c4-405b-b02a-e500654bee4c"
+                                    }
+                                  },
+                                  {
+                                    "id": "43d03e3c-20e8-4eff-88bb-791e89ae7974",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "905ec620-4372-42cb-a17b-19620c99fce4",
+                                      "importedMembership": "f986e5b8-10ac-49ab-a6bc-dc32009a3904"
+                                    }
+                                  },
+                                  {
+                                    "id": "c6c20db9-34fe-4707-b37f-40c962abb7eb",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "997cb359-428a-4512-8c48-bfb7155500bf",
+                                      "importedMembership": "be3d7212-6f4d-4673-a0ed-38fe4a27fcbe"
+                                    }
+                                  },
+                                  {
+                                    "id": "f22c118a-3cdb-4a16-9f49-1b9da4405335",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "6ef6600c-725d-43c6-9c5a-64d9ec247040",
+                                      "importedMembership": "f7af22e6-e1a4-4ffe-9a3e-1f1ec431fb2a"
+                                    }
+                                  },
+                                  {
+                                    "id": "a4963aeb-8594-470f-95c3-a64229e001f6",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "0dcab032-9200-4fd2-baed-4cf2cade767e",
+                                      "importedMembership": "1167d492-0103-4913-a825-102574ab84ff"
+                                    }
+                                  },
+                                  {
+                                    "id": "bf4a5776-08af-4035-b65d-d7d6fc7c41f7",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "16981dd4-018d-496d-a034-d1f68f600e3c",
+                                      "importedMembership": "a6bae27c-b1cc-4302-acf9-4333c462038a"
+                                    }
+                                  },
+                                  {
+                                    "id": "4254c0ce-8401-4745-8cd9-7c9dffb5cf48",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "9070e438-7442-41bd-902d-4d3d20426969",
+                                      "importedMembership": "a7ec9e26-2f2e-435a-b52e-1119578a326f"
+                                    }
+                                  },
+                                  {
+                                    "id": "2c2acca6-9b53-4e96-9880-204e43cc02a4",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "574f4ed5-6fd7-4d87-a748-9a78617c4682",
+                                      "importedMembership": "8342f79a-5b20-4eb3-9911-b5efeaf7922a"
+                                    }
+                                  },
+                                  {
+                                    "id": "f8a3b0ba-b1e9-443c-88b9-268f205f2a0b",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "80039d07-8297-44a7-bb47-ac15a93568f3",
+                                      "importedMembership": "3859d11e-1aec-4de2-9a03-4b0b4a1ef56a"
+                                    }
+                                  },
+                                  {
+                                    "id": "c1533090-ccef-4d57-bd49-a7d02bc15074",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "6f676556-ca5c-4745-80a6-bb7095c6e2b0",
+                                      "importedMembership": "05120f73-f0c6-4ba6-ae6b-9e479c0a5351"
+                                    }
+                                  },
+                                  {
+                                    "id": "3ae98ef9-a9da-48a6-8537-62563c5e194d",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "13583e79-12d7-459e-808a-7863a3e5e767",
+                                      "importedMembership": "53daaeec-6124-4550-9f98-89b42a43f85c"
+                                    }
+                                  },
+                                  {
+                                    "id": "ab91b5cf-ba9e-48bf-956b-84bab3ac3374",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "19da111e-4663-4b73-a172-32109d05e33f",
+                                      "importedMembership": "883bc958-4225-475e-9069-e4dffe0bee62"
+                                    }
+                                  },
+                                  {
+                                    "id": "23b37749-f3ca-4f2e-9368-7748da15c65b",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "dcc167af-9a29-45bd-9468-b645651195b3",
+                                      "importedMembership": "9f71acff-dd78-4cbf-9b6a-37c59a477b84"
+                                    }
+                                  },
+                                  {
+                                    "id": "7822a48e-3955-4d95-ae19-f69a0c7e1b87",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "ac442a77-659f-40c1-830a-f91855878849",
+                                      "importedMembership": "704a2fee-ee23-4c32-afe8-ae1a02b15b25"
+                                    }
+                                  },
+                                  {
+                                    "id": "56d2708e-de05-49c7-b42d-b5b9613e8300",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "92efb576-3ef8-4f75-8457-1b9e433ad8b0",
+                                      "importedMembership": "52594e25-b1ba-496a-b585-1c22f54fb3e6"
+                                    }
+                                  },
+                                  {
+                                    "id": "8e9dccf5-212a-468e-9fc2-2157b0980c95",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "f2b9f349-4327-440c-b0c4-39523771d84b",
+                                      "importedMembership": "5388f27f-ab6b-4c77-8a5a-9a406ca5ee28"
+                                    }
+                                  },
+                                  {
+                                    "id": "d5b8bdf7-cad1-4e29-8d1c-d0a35e0f806c",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "3ea9ec07-e57f-48ad-871e-6156d15eae6a",
+                                      "importedMembership": "c221ad20-49ec-419e-9e90-419db470bf9b"
+                                    }
+                                  },
+                                  {
+                                    "id": "554103cc-1419-4a8b-9ff4-33376ea46ebd",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "eb20a882-bc60-419d-ae9f-002c27158b40",
+                                      "importedMembership": "f17ec6f7-184a-4d99-9e9c-0765f139ccbb"
+                                    }
+                                  },
+                                  {
+                                    "id": "7b1015c5-0c74-4b1c-9200-35918c8d03b2",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "96e95ef4-908b-4078-af64-aa727f579a1b",
+                                      "importedMembership": "26fa0ab5-ff35-4b88-ae68-161fd482e5c1"
+                                    }
+                                  },
+                                  {
+                                    "id": "96d5988a-a5e6-4bf9-b436-6354fa5e6624",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "fc6826d8-4906-4ecb-a0a7-2d00dff27228",
+                                      "importedMembership": "009b1cba-b336-4f18-a672-f57820fe1f52"
+                                    }
+                                  },
+                                  {
+                                    "id": "038b3abc-f41d-4b00-a9e6-43571a79893b",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "d87833ba-a14c-4363-999b-cd153b499b31",
+                                      "importedMembership": "052ba20b-09bf-414a-8bc4-51bd77268f17"
+                                    }
+                                  },
+                                  {
+                                    "id": "b2a3c60f-b8df-40d7-b03c-71d8ec5acae3",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "e4643bb6-d03e-43b0-be86-e71a7b5530e3",
+                                      "importedMembership": "ce3528c8-dc2e-42fe-a6c9-21895d560f73"
+                                    }
+                                  },
+                                  {
+                                    "id": "f77b0bc1-45bf-4bc9-874d-a106b5c5e068",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "b6d2bd4e-4c53-4e6a-b98e-65048f6f73f8",
+                                      "importedMembership": "afb7dd9c-ff88-4759-a34e-ec9a1fc8ce87"
+                                    }
+                                  },
+                                  {
+                                    "id": "ca790327-d5ec-4434-bf6a-83875108473f",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "f760c266-839a-4c80-ba04-7503e7903509",
+                                      "importedMembership": "858d33d3-37a3-4322-8119-2e0654c51c44"
+                                    }
+                                  },
+                                  {
+                                    "id": "c67ebd93-e288-4001-9db7-e0da7ad7e9df",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "e0052a12-b0f7-406a-98bb-76382b9d12ca",
+                                      "importedMembership": "ed900e5a-0422-4c40-98f9-3c1fd2f95f1c"
+                                    }
+                                  },
+                                  {
+                                    "id": "43b63253-5d40-411c-96fe-d0b089716c02",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a904abf5-fea8-45c3-bea9-9af8b00070f3",
+                                      "importedMembership": "4939b0a1-c482-4279-9458-db6c817b7789"
+                                    }
+                                  },
+                                  {
+                                    "id": "c1da379f-c4a4-465d-a809-4e8cd403644b",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "071596c3-b222-4c07-acbb-77a8e9ad2272",
+                                      "importedMembership": "cadfcfcb-29eb-448a-81ed-672e251e4521"
+                                    }
+                                  },
+                                  {
+                                    "id": "643b9b94-a19a-4d8b-8a0e-9daae86ea69a",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "a55ddfd0-ed95-4e34-8313-03858482bc2f",
+                                      "importedMembership": "fa7440e0-eb1a-4d6b-bb5f-4bbce01cc0a8"
+                                    }
+                                  },
+                                  {
+                                    "id": "3e707cac-91aa-469c-a570-1d0f8c366b83",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "2e994377-0dde-4d70-aff4-758adbb3fbea",
+                                      "importedMembership": "27b1aa71-57a2-455d-81e6-329b42dc53f3"
+                                    }
+                                  },
+                                  {
+                                    "id": "564082a2-6414-404b-b31a-f86557e70b6f",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "bf95fe65-3b45-4c37-89a1-5eca96f821c5",
+                                      "importedMembership": "547add5c-3020-46d1-b3ce-182ddeb7f039"
+                                    }
+                                  },
+                                  {
+                                    "id": "abebdae6-197f-4285-911d-7931bc0cd1db",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "3300e2c4-3062-4212-9f68-3911a5e9f988",
+                                      "importedMembership": "dd5f3806-8f94-4db5-a292-660f71c72485"
+                                    }
+                                  },
+                                  {
+                                    "id": "714e6af8-29b8-4f6a-b2e1-c6ce468d73b8",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "08d60304-0f9c-4bb6-b48c-505ae1175977",
+                                      "importedMembership": "8d0be44f-95e1-4e9b-88cc-16d56568214b"
+                                    }
+                                  },
+                                  {
+                                    "id": "ab5aedd1-ef83-44e6-aa85-58ae4d0a171d",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "558f9186-6dbd-40a9-9b83-0c08d3d7ce84",
+                                      "importedMembership": "407cbe4d-f1f9-4805-a575-b90cb9e63289"
+                                    }
+                                  },
+                                  {
+                                    "id": "da7e1147-2a33-4fe9-a45e-43889c03a00e",
+                                    "eClass": "sysml:MembershipExpose",
+                                    "data": {
+                                      "elementId": "6d5ae4e4-f25c-4453-8985-fbf1c0966d57",
+                                      "importedMembership": "3e19efbc-d0e2-4845-9d04-72176bd595b7"
                                     }
                                   }
                                 ]
