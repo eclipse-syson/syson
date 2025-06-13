@@ -107,7 +107,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getViewUsage(resource);
+                        var viewUsage = this.getOrCreateViewUsage(resource);
                         if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
                             variableManager.put(VariableManager.SELF, viewUsage);
@@ -142,7 +142,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getViewUsage(resource);
+                        var viewUsage = this.getOrCreateViewUsage(resource);
                         if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
                             variableManager.put(VariableManager.SELF, viewUsage);
@@ -180,7 +180,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getViewUsage(resource);
+                        var viewUsage = this.getOrCreateViewUsage(resource);
                         if (viewUsage.isPresent()) {
                             var variableManager = new VariableManager();
                             variableManager.put(VariableManager.SELF, viewUsage);
@@ -232,16 +232,28 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         return Optional.empty();
     }
 
-    private Optional<ViewUsage> getViewUsage(Resource resource) {
-        Optional<Package> rootPackage = this.getRootPackage(resource);
-        if (rootPackage.isPresent()) {
-            var viewUsage = this.createViewUsage(rootPackage.get());
-            return Optional.ofNullable(viewUsage);
+    private Optional<ViewUsage> getOrCreateViewUsage(Resource resource) {
+        Optional<Package> optRootPackage = this.getRootPackage(resource);
+        if (optRootPackage.isPresent()) {
+            var rootPackage = optRootPackage.get();
+            var viewUsage = this.getViewUsage(rootPackage);
+            if (viewUsage.isEmpty()) {
+                viewUsage = this.createViewUsage(rootPackage);
+            }
+            return viewUsage;
         }
         return Optional.empty();
     }
 
-    private ViewUsage createViewUsage(Element element) {
+    private Optional<ViewUsage> getViewUsage(Element element) {
+        return element.getOwnedElement().stream()
+                .filter(ViewUsage.class::isInstance)
+                .map(ViewUsage.class::cast)
+                .filter(vu -> Objects.equals(vu.getDeclaredName(), "General View"))
+                .findFirst();
+    }
+
+    private Optional<ViewUsage> createViewUsage(Element element) {
         var viewUsageMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
         element.getOwnedRelationship().add(viewUsageMembership);
@@ -255,6 +267,6 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         featureTyping.setType(generalViewViewDef);
         featureTyping.setTypedFeature(viewUsage);
 
-        return viewUsage;
+        return Optional.ofNullable(viewUsage);
     }
 }

@@ -291,4 +291,65 @@ package Batmobile {
         part :>> batmobileEngine = batmobileEngine.xEngine;
         part :>> wheels = wheels.xWheel;
     }
+
+    view 'General View' : StandardViewDefinitions::GeneralView {
+		expose Vehicle;
+		expose Vehicle::driver;
+		expose Vehicle::engine;
+		expose PowerInterface;
+		expose PowerIP;
+		expose PowerIP::power;
+		expose Power;
+		expose Wheel;
+		expose Wheel::boundingBox;
+		expose BatmobileEngine;
+		expose BatmobileEngine::rocketBoost;
+		expose EngineCommand;
+		expose Batmobile;
+		expose Batmobile::seat;
+		expose Batmobile::body;
+		expose Batmobile::wheels;
+		expose Batmobile::frontLeftWheel;
+		expose Batmobile::frontRightWheel;
+		expose Batmobile::rearLeftWheel;
+		expose Batmobile::rearRightWheel;
+		expose Batmobile::battery;
+		expose Batmobile::batmobileEngine;
+		expose Batmobile::bat2eng;
+		expose BatmobileNG;
+		expose BatmobileNG::bulletProofWheels;
+		expose BatmobileNG::bulletProofWheels::metalCoating;
+		expose Batman;
+		expose Hero;
+		expose bm1;
+		expose bm1::batmanDriving;
+		expose bm1::charging;
+		expose 'Drive Batmobile';
+		expose StatusKind;
+		expose 'Activate rocket booster';
+		expose 'Activate rocket booster'::driver;
+		expose ActivateRocketBooster;
+		expose VehicleMaxSpeed;
+		expose ProductManagement;
+		expose batmobileSpecification;
+		expose batmobileSpecification::batmobileMaxSpeed;
+		expose batmobileSpecification::batmobileAcceleration;
+		expose batmobileDesignV23;
+		expose System;
+		expose systems;
+		expose HeroAssociation;
+		expose 'Reduce the number of special parts';
+		expose StandardEngine;
+		expose XtremeEngine;
+		expose StandardWheel;
+		expose XtremeWheel;
+		expose EngineChoices;
+		expose WheelChoices;
+		expose BatmobileConfigurations;
+		expose BatmobileConfigurations::batmobileEngine;
+		expose BatmobileConfigurations::wheels;
+		expose XBatmobile;
+		expose XBatmobile::batmobileEngine;
+		expose XBatmobile::wheels;
+	}
 }

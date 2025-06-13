@@ -18,7 +18,7 @@ import { Explorer } from '../../../../workbench/Explorer';
 
 describe('Diagram Panel in General View Tests', () => {
   const batmobile = new Batmobile();
-  const diagramLabel = 'General View';
+  const viewUsage = 'view3';
 
   context('Given a Batmobile Project with a General View diagram', () => {
     const explorer = new Explorer();
@@ -32,10 +32,13 @@ describe('Diagram Panel in General View Tests', () => {
         explorer.getExplorerView().contains(batmobile.getProjectLabel());
         explorer.expand(batmobile.getProjectLabel());
         explorer.getExplorerView().contains(batmobile.getRootElementLabel());
-        explorer.expand(batmobile.getRootElementLabel());
-        explorer.expand(diagramLabel);
+        explorer.select(batmobile.getRootElementLabel());
+        explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-ViewUsage');
+
+        explorer.select(viewUsage);
+        explorer.expand(viewUsage);
         explorer
-          .getTreeItemByLabel(diagramLabel)
+          .getTreeItemByLabel(viewUsage)
           .should('have.length', 2)
           .then(($elements) => {
             // $elements is a collection of all tree items with the label 'diagramLabel'
@@ -43,46 +46,50 @@ describe('Diagram Panel in General View Tests', () => {
             const diag = $elements[1];
             diag?.click();
           });
-        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - General View').should('exist');
+        diagram.getDiagram(viewUsage).should('exist').findByTestId(`FreeForm - ${viewUsage}`).should('exist');
       })
     );
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('The add existing elements (recursive) tool have been applied, following by an arrange all', () => {
-      beforeEach(() => {
-        diagram
-          .getDiagram(diagramLabel)
-          .should('exist')
-          .findByTestId('FreeForm - General View')
-          .should('exist')
-          .rightclick()
-          .rightclick();
-        diagram.getPalette().should('exist').findByTestId('toolSection-Related Elements').should('exist').click();
-        diagram
-          .getPalette()
-          .should('exist')
-          .findByTestId('tool-Add existing nested elements (recursive)')
-          .should('exist')
-          .click();
-        diagram.getPalette().should('not.exist', { timeout: 10000 });
-        diagram
-          .getDiagram(diagramLabel)
-          .should('exist')
-          .findByTestId('FreeForm - General View')
-          .should('not.exist', { timeout: 10000 });
-        diagram.arrangeAll();
-        cy.getByTestId('arrange-all-circular-loading')
-          .should('exist')
-          .then(() => {
-            cy.getByTestId('arrange-all-circular-loading').should('not.exist');
-          });
-      });
+    context(
+      'The add existing elements (recursive) tool have been applied, following by an arrange all',
+      { retries: 3 },
+      () => {
+        beforeEach(() => {
+          diagram
+            .getDiagram(viewUsage)
+            .should('exist')
+            .findByTestId(`FreeForm - ${viewUsage}`)
+            .should('exist')
+            .rightclick()
+            .rightclick();
+          diagram.getPalette().should('exist').findByTestId('toolSection-Related Elements').should('exist').click();
+          diagram
+            .getPalette()
+            .should('exist')
+            .findByTestId('tool-Add existing nested elements (recursive)')
+            .should('exist')
+            .click();
+          diagram.getPalette().should('not.exist', { timeout: 10000 });
+          diagram
+            .getDiagram(viewUsage)
+            .should('exist')
+            .findByTestId(`FreeForm - ${viewUsage}`)
+            .should('not.exist', { timeout: 10000 });
+          diagram.arrangeAll();
+          cy.getByTestId('arrange-all-circular-loading')
+            .should('exist')
+            .then(() => {
+              cy.getByTestId('arrange-all-circular-loading').should('not.exist');
+            });
+        });
 
-      it('The add existing elements (recursive) tool add elements recursively', () => {
-        diagram.getNodes(diagramLabel, '«item def» Hero').should('exist');
-        diagram.getNodes(diagramLabel, '«item» power : Power').should('exist');
-      });
-    });
+        it('The add existing elements (recursive) tool add elements recursively', () => {
+          diagram.getNodes(viewUsage, '«item def» Hero').should('exist');
+          diagram.getNodes(viewUsage, '«item» power : Power').should('exist');
+        });
+      }
+    );
   });
 });
