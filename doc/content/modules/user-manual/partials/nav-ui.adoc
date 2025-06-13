@@ -11,3 +11,4 @@
 *** xref:user-manual:features/import-export-textual.adoc[]
 ** xref:user-manual:hands-on/tutorials/tutorials.adoc[]
 *** xref:user-manual:hands-on/tutorials/batmobile.adoc[]
+*** xref:user-manual:hands-on/tutorials/flashlight.adoc[]
