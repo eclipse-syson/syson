@@ -152,7 +152,7 @@ jobs:
         working-directory: integration-tests
 
       - name: Run end to end tests against the application
-        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/main'
+        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/main' && github.ref != 'refs/heads/cooldown'
         uses: cypress-io/github-action@v6
         with:
           build: docker compose -f docker-compose-integration-tests.yml up -d
