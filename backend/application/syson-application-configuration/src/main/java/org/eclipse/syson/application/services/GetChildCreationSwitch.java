@@ -257,6 +257,8 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     @Override
     public List<EClass> caseViewUsage(ViewUsage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getMembershipExpose());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getNamespaceExpose());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getViewUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
