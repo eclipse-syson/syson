@@ -69,7 +69,9 @@ public class GetChildCreationSwitchTest {
     @Test
     public void testViewUsageChildren() {
         List<EClass> children = new GetChildCreationSwitch().doSwitch(SysmlFactory.eINSTANCE.createViewUsage());
-        List<EClass> expectedChildren = List.of(SysmlPackage.eINSTANCE.getDocumentation(),
+        List<EClass> expectedChildren = List.of(SysmlPackage.eINSTANCE.getMembershipExpose(),
+                SysmlPackage.eINSTANCE.getNamespaceExpose(),
+                SysmlPackage.eINSTANCE.getDocumentation(),
                 SysmlPackage.eINSTANCE.getComment(),
                 SysmlPackage.eINSTANCE.getTextualRepresentation(),
                 SysmlPackage.eINSTANCE.getViewUsage());
