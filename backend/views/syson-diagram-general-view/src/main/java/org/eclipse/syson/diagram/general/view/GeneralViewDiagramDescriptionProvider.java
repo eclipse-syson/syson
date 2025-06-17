@@ -1005,7 +1005,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                         PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(compartmentNodeDescription -> {
                     USAGES.stream()
-                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getPartUsage()) || eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getPartUsage()))
+                            .filter(eClass -> Objects.equals(eClass, SysmlPackage.eINSTANCE.getPartUsage())
+                                    || (eClass.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getPartUsage()) && !Objects.equals(eClass, SysmlPackage.eINSTANCE.getViewUsage())))
                             .forEach(partUsage -> {
                                 this.addCompartmentNodeDescriptionInNodeDescription(cache, compartmentNodeDescription, partUsage);
                             });

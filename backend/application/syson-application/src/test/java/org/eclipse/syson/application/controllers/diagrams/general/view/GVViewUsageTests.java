@@ -134,7 +134,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 1)
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
         ).map(TestNameGenerator::namedArguments);
     }
 
