@@ -352,7 +352,7 @@ view rearAxleAssemblyDiagram {
 
 == Dependency update
 
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.4.9]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.0]
 - Switch `@xyflow/react` to `12.6.0`
 - Switch `@mui/material` to `7.0.2`
 - Switch `@mui/icons-material` to `7.0.2`
