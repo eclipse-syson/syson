@@ -74,18 +74,10 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
-
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Remove Start")
-                .body(changeContext.build());
-
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.addAll(this.getEdgeTools(cache));
 
         return this.diagramBuilderHelper.newNodePalette()
-                .deleteTool(deleteTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())

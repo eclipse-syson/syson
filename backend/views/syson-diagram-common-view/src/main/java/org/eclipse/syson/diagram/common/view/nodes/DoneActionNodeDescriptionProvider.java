@@ -67,15 +67,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
     }
 
     private NodePalette createNodePalette() {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
-
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Remove Done")
-                .body(changeContext.build());
-
         return this.diagramBuilderHelper.newNodePalette()
-                .deleteTool(deleteTool.build())
                 .quickAccessTools(this.getDeleteFromDiagramTool())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();

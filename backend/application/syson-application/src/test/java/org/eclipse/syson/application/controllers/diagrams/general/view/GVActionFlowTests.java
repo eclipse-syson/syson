@@ -149,13 +149,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         }
     }
 
+    @DisplayName("GIVEN two ActionUsages nested in each other, WHEN using the 'New succession' tool between them, THEN a SuccessionAsUsage should not be created and a message should be displayed to the user")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN two ActionUsages nested in each other,"
-            + "when using the 'New succession' tool between them, "
-            + "then a SuccessionAsUsage should not be created and a message should be displayed to the user")
     public void creatSuccesionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -179,13 +177,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN two ActionUsages nested in each other, WHEN using the 'New Transition' tool between them, THEN a TransitionUsage should not be created and a message should be displayed to the user")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN two ActionUsages nested in each other,"
-            + "when using the 'New Transition' tool between them, "
-            + "then a TransitionUsage should not be created and a message should be displayed to the user")
     public void creatTransitionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
         this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -209,13 +205,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN two ActionUsage, WHEN using the 'New Transition' tool between them, THEN a TransitionUsage is created between the two actions")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN two ActionUsage,"
-            + "when using the 'New Transition' tool between them, "
-            + "then a TransitionUsage is created between the two actions")
     public void createTransitionUsageBetweenSubActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -245,13 +239,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a TransitionUsage, WHEN reconnecting the target, THEN the new target of the TransitionUsage is correct")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a TransitionUsage,"
-            + "when reconnecting the target, "
-            + "then the new target of the TransitionUsage is correct")
     public void reconnectTransitionUsageTarget() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -278,13 +270,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a TransitionUsage, WHEN reconnecting the target, THEN the reconnection to a TransitionUsage should be forbidden")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a TransitionUsage,"
-            + "when reconnecting the target, "
-            + "then the reconnection to a TransitionUsage should be forbidden")
     public void reconnectTransitionUsageTargetOnTransitionForbidden() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -311,13 +301,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a TransitionUsage,WHEN reconnecting the source, THEN the new source of the TransitionUsage is correct")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a TransitionUsage,"
-            + "when reconnecting the source, "
-            + "then the new source of the TransitionUsage is correct")
     public void reconnectTransitionUsageSource() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -344,13 +332,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN two ActionUsage, WHEN using the 'New Succession' tool between them, THEN a SuccessionAsUsage is created between the two actions")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN two ActionUsage,"
-            + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the two actions")
     public void createSuccessionBetweenSubActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -381,13 +367,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN SuccessionAsUsage from 2 ActionUsages, WHEN reconnecting the target to the 'done' usage, THEN the SuccessionAsUsage should point to the 'done' action")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN SuccessionAsUsage from 2 ActionUsages,"
-            + "when reconnecting the target to the 'done' usage, "
-            + "then a SuccessionAsUsage should point to the 'done' action")
     public void reconnectSuccessionToDone() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -415,13 +399,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a start action and an ActionUsage, WHEN using the 'New Succession' tool between them, THEN a SuccessionAsUsage is created between the 'start' and the selected ActionUsage")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a start action and an ActionUsage,"
-            + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the 'start' and the selected ActionUsage")
     public void createSuccessionFromStart() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -451,13 +433,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a start action and ActionUsage, WHEN using the 'New Succession' tool between them, THEN a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a start action and  ActionUsage,"
-            + "when using the 'New Succession' tool between them, "
-            + "then a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     public void createSuccessionFromStartToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
@@ -490,13 +470,11 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
+    @DisplayName("GIVEN a sub action node and a done action, WHEN using the 'New Transition' tool between them, THEN a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is stored in the container action")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("GIVEN a sub action node and a done action,"
-            + "when using the 'New Transition' tool between them, "
-            + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is stored in the container action")
     public void createTransitionUsageToDone() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,

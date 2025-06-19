@@ -184,9 +184,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(actorMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(actorMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(actorMembership);
                 }
                 if (result == null) {
@@ -959,6 +956,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseInvocationExpression(collectExpression);
                 }
                 if (result == null) {
+                    result = this.caseInstantiationExpression(collectExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(collectExpression);
                 }
                 if (result == null) {
@@ -1401,6 +1401,38 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 return result;
             }
+            case SysmlPackage.CONSTRUCTOR_EXPRESSION: {
+                ConstructorExpression constructorExpression = (ConstructorExpression) theEObject;
+                T result = this.caseConstructorExpression(constructorExpression);
+                if (result == null) {
+                    result = this.caseInstantiationExpression(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseExpression(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseStep(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseFeature(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseType(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseElement(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(constructorExpression);
+                }
+                if (result == null) {
+                    result = this.defaultCase(theEObject);
+                }
+                return result;
+            }
             case SysmlPackage.CONTROL_NODE: {
                 ControlNode controlNode = (ControlNode) theEObject;
                 T result = this.caseControlNode(controlNode);
@@ -1658,9 +1690,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(endFeatureMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(endFeatureMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(endFeatureMembership);
                 }
                 if (result == null) {
@@ -1887,6 +1916,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseInvocationExpression(featureChainExpression);
                 }
                 if (result == null) {
+                    result = this.caseInstantiationExpression(featureChainExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(featureChainExpression);
                 }
                 if (result == null) {
@@ -1951,9 +1983,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 T result = this.caseFeatureMembership(featureMembership);
                 if (result == null) {
                     result = this.caseOwningMembership(featureMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(featureMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(featureMembership);
@@ -2044,111 +2073,149 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 return result;
             }
-            case SysmlPackage.FEATURING: {
-                Featuring featuring = (Featuring) theEObject;
-                T result = this.caseFeaturing(featuring);
+            case SysmlPackage.FLOW: {
+                Flow flow = (Flow) theEObject;
+                T result = this.caseFlow(flow);
                 if (result == null) {
-                    result = this.caseRelationship(featuring);
+                    result = this.caseConnector(flow);
                 }
                 if (result == null) {
-                    result = this.caseElement(featuring);
+                    result = this.caseStep(flow);
                 }
                 if (result == null) {
-                    result = this.caseEModelElement(featuring);
+                    result = this.caseFeature(flow);
                 }
                 if (result == null) {
-                    result = this.defaultCase(theEObject);
-                }
-                return result;
-            }
-            case SysmlPackage.FLOW_CONNECTION_DEFINITION: {
-                FlowConnectionDefinition flowConnectionDefinition = (FlowConnectionDefinition) theEObject;
-                T result = this.caseFlowConnectionDefinition(flowConnectionDefinition);
-                if (result == null) {
-                    result = this.caseActionDefinition(flowConnectionDefinition);
+                    result = this.caseRelationship(flow);
                 }
                 if (result == null) {
-                    result = this.caseInteraction(flowConnectionDefinition);
+                    result = this.caseType(flow);
                 }
                 if (result == null) {
-                    result = this.caseOccurrenceDefinition(flowConnectionDefinition);
+                    result = this.caseNamespace(flow);
                 }
                 if (result == null) {
-                    result = this.caseBehavior(flowConnectionDefinition);
+                    result = this.caseElement(flow);
                 }
                 if (result == null) {
-                    result = this.caseAssociation(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseDefinition(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseClass(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseRelationship(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseClassifier(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseType(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseElement(flowConnectionDefinition);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(flowConnectionDefinition);
+                    result = this.caseEModelElement(flow);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
                 }
                 return result;
             }
-            case SysmlPackage.FLOW_CONNECTION_USAGE: {
-                FlowConnectionUsage flowConnectionUsage = (FlowConnectionUsage) theEObject;
-                T result = this.caseFlowConnectionUsage(flowConnectionUsage);
+            case SysmlPackage.FLOW_DEFINITION: {
+                FlowDefinition flowDefinition = (FlowDefinition) theEObject;
+                T result = this.caseFlowDefinition(flowDefinition);
                 if (result == null) {
-                    result = this.caseConnectorAsUsage(flowConnectionUsage);
+                    result = this.caseActionDefinition(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseActionUsage(flowConnectionUsage);
+                    result = this.caseInteraction(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseItemFlow(flowConnectionUsage);
+                    result = this.caseOccurrenceDefinition(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseConnector(flowConnectionUsage);
+                    result = this.caseBehavior(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseOccurrenceUsage(flowConnectionUsage);
+                    result = this.caseAssociation(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseStep(flowConnectionUsage);
+                    result = this.caseDefinition(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseUsage(flowConnectionUsage);
+                    result = this.caseClass(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseFeature(flowConnectionUsage);
+                    result = this.caseRelationship(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseRelationship(flowConnectionUsage);
+                    result = this.caseClassifier(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseType(flowConnectionUsage);
+                    result = this.caseType(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseNamespace(flowConnectionUsage);
+                    result = this.caseNamespace(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseElement(flowConnectionUsage);
+                    result = this.caseElement(flowDefinition);
                 }
                 if (result == null) {
-                    result = this.caseEModelElement(flowConnectionUsage);
+                    result = this.caseEModelElement(flowDefinition);
+                }
+                if (result == null) {
+                    result = this.defaultCase(theEObject);
+                }
+                return result;
+            }
+            case SysmlPackage.FLOW_END: {
+                FlowEnd flowEnd = (FlowEnd) theEObject;
+                T result = this.caseFlowEnd(flowEnd);
+                if (result == null) {
+                    result = this.caseFeature(flowEnd);
+                }
+                if (result == null) {
+                    result = this.caseType(flowEnd);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(flowEnd);
+                }
+                if (result == null) {
+                    result = this.caseElement(flowEnd);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(flowEnd);
+                }
+                if (result == null) {
+                    result = this.defaultCase(theEObject);
+                }
+                return result;
+            }
+            case SysmlPackage.FLOW_USAGE: {
+                FlowUsage flowUsage = (FlowUsage) theEObject;
+                T result = this.caseFlowUsage(flowUsage);
+                if (result == null) {
+                    result = this.caseConnectorAsUsage(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseActionUsage(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseFlow(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseConnector(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseOccurrenceUsage(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseStep(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseUsage(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseFeature(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseRelationship(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseType(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseElement(flowUsage);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(flowUsage);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -2242,9 +2309,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(framedConcernMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(framedConcernMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(framedConcernMembership);
@@ -2407,6 +2471,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseInvocationExpression(indexExpression);
                 }
                 if (result == null) {
+                    result = this.caseInstantiationExpression(indexExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(indexExpression);
                 }
                 if (result == null) {
@@ -2426,6 +2493,35 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseEModelElement(indexExpression);
+                }
+                if (result == null) {
+                    result = this.defaultCase(theEObject);
+                }
+                return result;
+            }
+            case SysmlPackage.INSTANTIATION_EXPRESSION: {
+                InstantiationExpression instantiationExpression = (InstantiationExpression) theEObject;
+                T result = this.caseInstantiationExpression(instantiationExpression);
+                if (result == null) {
+                    result = this.caseExpression(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseStep(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseFeature(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseType(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseElement(instantiationExpression);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(instantiationExpression);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -2620,6 +2716,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                 InvocationExpression invocationExpression = (InvocationExpression) theEObject;
                 T result = this.caseInvocationExpression(invocationExpression);
                 if (result == null) {
+                    result = this.caseInstantiationExpression(invocationExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(invocationExpression);
                 }
                 if (result == null) {
@@ -2674,84 +2773,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseEModelElement(itemDefinition);
-                }
-                if (result == null) {
-                    result = this.defaultCase(theEObject);
-                }
-                return result;
-            }
-            case SysmlPackage.ITEM_FEATURE: {
-                ItemFeature itemFeature = (ItemFeature) theEObject;
-                T result = this.caseItemFeature(itemFeature);
-                if (result == null) {
-                    result = this.caseFeature(itemFeature);
-                }
-                if (result == null) {
-                    result = this.caseType(itemFeature);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(itemFeature);
-                }
-                if (result == null) {
-                    result = this.caseElement(itemFeature);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(itemFeature);
-                }
-                if (result == null) {
-                    result = this.defaultCase(theEObject);
-                }
-                return result;
-            }
-            case SysmlPackage.ITEM_FLOW: {
-                ItemFlow itemFlow = (ItemFlow) theEObject;
-                T result = this.caseItemFlow(itemFlow);
-                if (result == null) {
-                    result = this.caseConnector(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseStep(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseFeature(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseRelationship(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseType(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseElement(itemFlow);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(itemFlow);
-                }
-                if (result == null) {
-                    result = this.defaultCase(theEObject);
-                }
-                return result;
-            }
-            case SysmlPackage.ITEM_FLOW_END: {
-                ItemFlowEnd itemFlowEnd = (ItemFlowEnd) theEObject;
-                T result = this.caseItemFlowEnd(itemFlowEnd);
-                if (result == null) {
-                    result = this.caseFeature(itemFlowEnd);
-                }
-                if (result == null) {
-                    result = this.caseType(itemFlowEnd);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(itemFlowEnd);
-                }
-                if (result == null) {
-                    result = this.caseElement(itemFlowEnd);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(itemFlowEnd);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -2839,32 +2860,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseEModelElement(libraryPackage);
-                }
-                if (result == null) {
-                    result = this.defaultCase(theEObject);
-                }
-                return result;
-            }
-            case SysmlPackage.LIFE_CLASS: {
-                LifeClass lifeClass = (LifeClass) theEObject;
-                T result = this.caseLifeClass(lifeClass);
-                if (result == null) {
-                    result = this.caseClass(lifeClass);
-                }
-                if (result == null) {
-                    result = this.caseClassifier(lifeClass);
-                }
-                if (result == null) {
-                    result = this.caseType(lifeClass);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(lifeClass);
-                }
-                if (result == null) {
-                    result = this.caseElement(lifeClass);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(lifeClass);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -3507,9 +3502,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(objectiveMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(objectiveMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(objectiveMembership);
                 }
                 if (result == null) {
@@ -3588,6 +3580,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseInvocationExpression(operatorExpression);
                 }
                 if (result == null) {
+                    result = this.caseInstantiationExpression(operatorExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(operatorExpression);
                 }
                 if (result == null) {
@@ -3658,9 +3653,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(parameterMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(parameterMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(parameterMembership);
@@ -3743,6 +3735,29 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseEModelElement(partUsage);
+                }
+                if (result == null) {
+                    result = this.defaultCase(theEObject);
+                }
+                return result;
+            }
+            case SysmlPackage.PAYLOAD_FEATURE: {
+                PayloadFeature payloadFeature = (PayloadFeature) theEObject;
+                T result = this.casePayloadFeature(payloadFeature);
+                if (result == null) {
+                    result = this.caseFeature(payloadFeature);
+                }
+                if (result == null) {
+                    result = this.caseType(payloadFeature);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(payloadFeature);
+                }
+                if (result == null) {
+                    result = this.caseElement(payloadFeature);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(payloadFeature);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -4075,9 +4090,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(requirementConstraintMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(requirementConstraintMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(requirementConstraintMembership);
                 }
                 if (result == null) {
@@ -4192,9 +4204,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(requirementVerificationMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(requirementVerificationMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(requirementVerificationMembership);
                 }
                 if (result == null) {
@@ -4219,9 +4228,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(resultExpressionMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(resultExpressionMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(resultExpressionMembership);
@@ -4251,9 +4257,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(returnParameterMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(returnParameterMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(returnParameterMembership);
@@ -4330,6 +4333,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseInvocationExpression(selectExpression);
+                }
+                if (result == null) {
+                    result = this.caseInstantiationExpression(selectExpression);
                 }
                 if (result == null) {
                     result = this.caseExpression(selectExpression);
@@ -4422,9 +4428,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(stakeholderMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(stakeholderMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(stakeholderMembership);
                 }
                 if (result == null) {
@@ -4487,9 +4490,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(stateSubactionMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(stateSubactionMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(stateSubactionMembership);
@@ -4625,9 +4625,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(subjectMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(subjectMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(subjectMembership);
                 }
                 if (result == null) {
@@ -4731,94 +4728,94 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 return result;
             }
-            case SysmlPackage.SUCCESSION_FLOW_CONNECTION_USAGE: {
-                SuccessionFlowConnectionUsage successionFlowConnectionUsage = (SuccessionFlowConnectionUsage) theEObject;
-                T result = this.caseSuccessionFlowConnectionUsage(successionFlowConnectionUsage);
+            case SysmlPackage.SUCCESSION_FLOW: {
+                SuccessionFlow successionFlow = (SuccessionFlow) theEObject;
+                T result = this.caseSuccessionFlow(successionFlow);
                 if (result == null) {
-                    result = this.caseFlowConnectionUsage(successionFlowConnectionUsage);
+                    result = this.caseFlow(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseSuccessionItemFlow(successionFlowConnectionUsage);
+                    result = this.caseSuccession(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseConnectorAsUsage(successionFlowConnectionUsage);
+                    result = this.caseConnector(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseActionUsage(successionFlowConnectionUsage);
+                    result = this.caseStep(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseItemFlow(successionFlowConnectionUsage);
+                    result = this.caseFeature(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseSuccession(successionFlowConnectionUsage);
+                    result = this.caseRelationship(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseConnector(successionFlowConnectionUsage);
+                    result = this.caseType(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseOccurrenceUsage(successionFlowConnectionUsage);
+                    result = this.caseNamespace(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseStep(successionFlowConnectionUsage);
+                    result = this.caseElement(successionFlow);
                 }
                 if (result == null) {
-                    result = this.caseUsage(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseFeature(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseRelationship(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseType(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseNamespace(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseElement(successionFlowConnectionUsage);
-                }
-                if (result == null) {
-                    result = this.caseEModelElement(successionFlowConnectionUsage);
+                    result = this.caseEModelElement(successionFlow);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
                 }
                 return result;
             }
-            case SysmlPackage.SUCCESSION_ITEM_FLOW: {
-                SuccessionItemFlow successionItemFlow = (SuccessionItemFlow) theEObject;
-                T result = this.caseSuccessionItemFlow(successionItemFlow);
+            case SysmlPackage.SUCCESSION_FLOW_USAGE: {
+                SuccessionFlowUsage successionFlowUsage = (SuccessionFlowUsage) theEObject;
+                T result = this.caseSuccessionFlowUsage(successionFlowUsage);
                 if (result == null) {
-                    result = this.caseItemFlow(successionItemFlow);
+                    result = this.caseFlowUsage(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseSuccession(successionItemFlow);
+                    result = this.caseSuccessionFlow(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseConnector(successionItemFlow);
+                    result = this.caseConnectorAsUsage(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseStep(successionItemFlow);
+                    result = this.caseActionUsage(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseFeature(successionItemFlow);
+                    result = this.caseFlow(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseRelationship(successionItemFlow);
+                    result = this.caseSuccession(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseType(successionItemFlow);
+                    result = this.caseConnector(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseNamespace(successionItemFlow);
+                    result = this.caseOccurrenceUsage(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseElement(successionItemFlow);
+                    result = this.caseStep(successionFlowUsage);
                 }
                 if (result == null) {
-                    result = this.caseEModelElement(successionItemFlow);
+                    result = this.caseUsage(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseFeature(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseRelationship(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseType(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseNamespace(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseElement(successionFlowUsage);
+                }
+                if (result == null) {
+                    result = this.caseEModelElement(successionFlowUsage);
                 }
                 if (result == null) {
                     result = this.defaultCase(theEObject);
@@ -4887,9 +4884,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseOwningMembership(transitionFeatureMembership);
                 }
                 if (result == null) {
-                    result = this.caseFeaturing(transitionFeatureMembership);
-                }
-                if (result == null) {
                     result = this.caseMembership(transitionFeatureMembership);
                 }
                 if (result == null) {
@@ -4948,6 +4942,9 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseInvocationExpression(triggerInvocationExpression);
                 }
                 if (result == null) {
+                    result = this.caseInstantiationExpression(triggerInvocationExpression);
+                }
+                if (result == null) {
                     result = this.caseExpression(triggerInvocationExpression);
                 }
                 if (result == null) {
@@ -4993,9 +4990,6 @@ public class SysmlSwitch<T> extends Switch<T> {
             case SysmlPackage.TYPE_FEATURING: {
                 TypeFeaturing typeFeaturing = (TypeFeaturing) theEObject;
                 T result = this.caseTypeFeaturing(typeFeaturing);
-                if (result == null) {
-                    result = this.caseFeaturing(typeFeaturing);
-                }
                 if (result == null) {
                     result = this.caseRelationship(typeFeaturing);
                 }
@@ -5395,9 +5389,6 @@ public class SysmlSwitch<T> extends Switch<T> {
                 }
                 if (result == null) {
                     result = this.caseOwningMembership(viewRenderingMembership);
-                }
-                if (result == null) {
-                    result = this.caseFeaturing(viewRenderingMembership);
                 }
                 if (result == null) {
                     result = this.caseMembership(viewRenderingMembership);
@@ -6069,6 +6060,21 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Constructor Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Constructor Expression</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConstructorExpression(ConstructorExpression object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Control Node</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -6446,46 +6452,59 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Featuring</em>'. <!-- begin-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Flow</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Flow</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFlow(Flow object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Flow Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Flow Definition</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFlowDefinition(FlowDefinition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Flow End</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Flow End</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFlowEnd(FlowEnd object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Flow Usage</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Featuring</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Flow Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseFeaturing(Featuring object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Definition</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Flow Connection Definition</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseFlowConnectionDefinition(FlowConnectionDefinition object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Usage</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Flow Connection Usage</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseFlowConnectionUsage(FlowConnectionUsage object) {
+    public T caseFlowUsage(FlowUsage object) {
         return null;
     }
 
@@ -6607,6 +6626,21 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Instantiation Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Instantiation Expression</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseInstantiationExpression(InstantiationExpression object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Interaction</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -6709,48 +6743,6 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Feature</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Item Feature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseItemFeature(ItemFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Flow</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Item Flow</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseItemFlow(ItemFlow object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Flow End</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Item Flow End</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseItemFlowEnd(ItemFlowEnd object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>Item Usage</em>'. <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
@@ -6790,20 +6782,6 @@ public class SysmlSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLibraryPackage(LibraryPackage object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Life Class</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Life Class</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseLifeClass(LifeClass object) {
         return null;
     }
 
@@ -7262,6 +7240,21 @@ public class SysmlSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePartUsage(PartUsage object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Payload Feature</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Payload Feature</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePayloadFeature(PayloadFeature object) {
         return null;
     }
 
@@ -7737,32 +7730,32 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession Flow Connection Usage</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Succession Flow</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Succession Flow Connection Usage</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Succession Flow</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
+    public T caseSuccessionFlow(SuccessionFlow object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession Item Flow</em>'. <!--
+     * Returns the result of interpreting the object as an instance of '<em>Succession Flow Usage</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Succession Item Flow</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Succession Flow Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseSuccessionItemFlow(SuccessionItemFlow object) {
+    public T caseSuccessionFlowUsage(SuccessionFlowUsage object) {
         return null;
     }
 

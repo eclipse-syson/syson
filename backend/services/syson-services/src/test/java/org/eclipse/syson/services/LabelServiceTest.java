@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,6 @@ public class LabelServiceTest extends AbstractServiceTest {
     @Test
     void testUsagePrefixLabelWithDefaultProperties() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
         assertEquals(LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
 
@@ -73,7 +72,6 @@ public class LabelServiceTest extends AbstractServiceTest {
     @Test
     void testUsagePrefixLabelWithAbstractProperty() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
         usageWithNoDirection.setIsAbstract(true);
         assertEquals(LabelConstants.ABSTRACT + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
@@ -82,7 +80,6 @@ public class LabelServiceTest extends AbstractServiceTest {
     @Test
     void testUsagePrefixLabelWithDerivedProperty() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
         usageWithNoDirection.setIsDerived(true);
         assertEquals(LabelConstants.DERIVED + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
@@ -91,25 +88,22 @@ public class LabelServiceTest extends AbstractServiceTest {
     @Test
     void testUsagePrefixLabelWithEndProperty() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
         usageWithNoDirection.setIsEnd(true);
         assertEquals(LabelConstants.END + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
 
-    @DisplayName("Check Usage prefix label with readonly property")
+    @DisplayName("Check Usage prefix label with constant property")
     @Test
-    void testUsagePrefixLabelWithReadOnlyProperty() {
+    void testUsagePrefixLabelWithConstantProperty() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
-        usageWithNoDirection.setIsReadOnly(true);
-        assertEquals(LabelConstants.READ_ONLY + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
+        usageWithNoDirection.setIsConstant(true);
+        assertEquals(LabelConstants.CONSTANT + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
 
     @DisplayName("Check Usage prefix label with readonly property")
     @Test
     void testUsagePrefixLabelWithVariationProperty() {
         Usage usageWithNoDirection = SysmlFactory.eINSTANCE.createUsage();
-
         usageWithNoDirection.setIsVariation(true);
         assertEquals(LabelConstants.VARIATION + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
     }
@@ -121,10 +115,10 @@ public class LabelServiceTest extends AbstractServiceTest {
         usageWithNoDirection.setIsAbstract(true);
         usageWithNoDirection.setIsDerived(true);
         usageWithNoDirection.setIsEnd(true);
-        usageWithNoDirection.setIsReadOnly(true);
+        usageWithNoDirection.setIsConstant(true);
         usageWithNoDirection.setIsVariation(true);
 
-        assertEquals(LabelConstants.VARIATION + LabelConstants.SPACE + LabelConstants.READ_ONLY + LabelConstants.SPACE
+        assertEquals(LabelConstants.VARIATION + LabelConstants.SPACE + LabelConstants.CONSTANT + LabelConstants.SPACE
                 + LabelConstants.DERIVED + LabelConstants.SPACE
                 + LabelConstants.END
                 + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsageListItemPrefix(usageWithNoDirection));
@@ -149,8 +143,6 @@ public class LabelServiceTest extends AbstractServiceTest {
     @Test
     void testAttributeUsagePrefixLabelWithDefaultProperties() {
         AttributeUsage attributeUsageWithNoDirection = SysmlFactory.eINSTANCE.createAttributeUsage();
-
         assertEquals("", this.labelService.getUsageListItemPrefix(attributeUsageWithNoDirection));
     }
-
 }

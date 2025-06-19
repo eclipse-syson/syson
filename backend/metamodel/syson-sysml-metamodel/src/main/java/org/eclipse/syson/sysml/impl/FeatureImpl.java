@@ -51,13 +51,14 @@ import org.eclipse.syson.sysml.TypeFeaturing;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getDirection <em>Direction</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsComposite <em>Is Composite</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsConstant <em>Is Constant</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsDerived <em>Is Derived</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsEnd <em>Is End</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsNonunique <em>Is Nonunique</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsOrdered <em>Is Ordered</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsPortion <em>Is Portion</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsReadOnly <em>Is Read Only</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsUnique <em>Is Unique</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsVariable <em>Is Variable</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getChainingFeature <em>Chaining Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getCrossFeature <em>Cross Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getEndOwningType <em>End Owning Type</em>}</li>
@@ -76,7 +77,6 @@ import org.eclipse.syson.sysml.TypeFeaturing;
  * Membership</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwningType <em>Owning Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getValuation <em>Valuation</em>}</li>
  * </ul>
  *
  * @generated
@@ -129,6 +129,26 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @ordered
      */
     protected boolean isComposite = IS_COMPOSITE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isIsConstant() <em>Is Constant</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isIsConstant()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean IS_CONSTANT_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isIsConstant() <em>Is Constant</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isIsConstant()
+     * @generated
+     * @ordered
+     */
+    protected boolean isConstant = IS_CONSTANT_EDEFAULT;
 
     /**
      * The default value of the '{@link #isIsDerived() <em>Is Derived</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -221,26 +241,6 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isPortion = IS_PORTION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isIsReadOnly()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean IS_READ_ONLY_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isIsReadOnly()
-     * @generated
-     * @ordered
-     */
-    protected boolean isReadOnly = IS_READ_ONLY_EDEFAULT;
-
-    /**
      * The default value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -259,6 +259,26 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @ordered
      */
     protected boolean isUnique = IS_UNIQUE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isIsVariable() <em>Is Variable</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isIsVariable()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean IS_VARIABLE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isIsVariable() <em>Is Variable</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isIsVariable()
+     * @generated
+     * @ordered
+     */
+    protected boolean isVariable = IS_VARIABLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -492,6 +512,30 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @generated
      */
     @Override
+    public boolean isIsConstant() {
+        return this.isConstant;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsConstant(boolean newIsConstant) {
+        boolean oldIsConstant = this.isConstant;
+        this.isConstant = newIsConstant;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_CONSTANT, oldIsConstant, this.isConstant));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public boolean isIsDerived() {
         return this.isDerived;
     }
@@ -598,30 +642,6 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @generated
      */
     @Override
-    public boolean isIsReadOnly() {
-        return this.isReadOnly;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setIsReadOnly(boolean newIsReadOnly) {
-        boolean oldIsReadOnly = this.isReadOnly;
-        this.isReadOnly = newIsReadOnly;
-        if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_READ_ONLY, oldIsReadOnly, this.isReadOnly));
-        }
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public boolean isIsUnique() {
         return this.isUnique;
     }
@@ -637,6 +657,30 @@ public class FeatureImpl extends TypeImpl implements Feature {
         this.isUnique = newIsUnique;
         if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_UNIQUE, oldIsUnique, this.isUnique));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isIsVariable() {
+        return this.isVariable;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsVariable(boolean newIsVariable) {
+        boolean oldIsVariable = this.isVariable;
+        this.isVariable = newIsVariable;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_VARIABLE, oldIsVariable, this.isVariable));
         }
     }
 
@@ -832,17 +876,6 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
-    @Override
-    public FeatureValue getValuation() {
-        FeatureValue valuation = this.basicGetValuation();
-        return valuation != null && valuation.eIsProxy() ? (FeatureValue) this.eResolveProxy((InternalEObject) valuation) : valuation;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
      * @generated NOT
      */
     @Override
@@ -898,12 +931,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
      *
      * @generated NOT
      */
-    public FeatureValue basicGetValuation() {
-        return this.getOwnedMembership().stream()
-                .filter(FeatureValue.class::isInstance)
-                .map(FeatureValue.class::cast)
-                .findFirst()
-                .orElse(null);
+    @Override
+    public boolean canAccess(Feature feature) {
+        // To implement
+        return false;
     }
 
     /**
@@ -964,6 +995,27 @@ public class FeatureImpl extends TypeImpl implements Feature {
             isChainingFeatureVariable = false && type.specializes(this.getChainingFeature().get(0).getOwningType());
         }
         return isCompatibleWithAllTypes || isVariableAndCompatible || isChainingFeatureVariable;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public boolean isFeaturingType(Type type) {
+        boolean isFeaturingType = false;
+        Type owningType = this.getOwningType();
+        if (owningType != null) {
+            if (!this.isIsVariable()) {
+                isFeaturingType = Objects.equals(type, owningType);
+            } else if (Objects.equals(owningType, this.resolveGlobal("Occurrences::Occurrence").getMemberElement())) {
+                isFeaturingType = Objects.equals(type, this.resolveGlobal("Occurrences::Occurrence::snapshots").getMemberElement());
+            } else if (type instanceof Feature feature) {
+                isFeaturingType = feature.getFeaturingType().contains(owningType) && feature.redefinesFromLibrary("Occurrences::Occurrence::snapshots");
+            }
+        }
+        return isFeaturingType;
     }
 
     /**
@@ -1103,6 +1155,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.getDirection();
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 return this.isIsComposite();
+            case SysmlPackage.FEATURE__IS_CONSTANT:
+                return this.isIsConstant();
             case SysmlPackage.FEATURE__IS_DERIVED:
                 return this.isIsDerived();
             case SysmlPackage.FEATURE__IS_END:
@@ -1113,10 +1167,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.isIsOrdered();
             case SysmlPackage.FEATURE__IS_PORTION:
                 return this.isIsPortion();
-            case SysmlPackage.FEATURE__IS_READ_ONLY:
-                return this.isIsReadOnly();
             case SysmlPackage.FEATURE__IS_UNIQUE:
                 return this.isIsUnique();
+            case SysmlPackage.FEATURE__IS_VARIABLE:
+                return this.isIsVariable();
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
                 return this.getChainingFeature();
             case SysmlPackage.FEATURE__CROSS_FEATURE:
@@ -1170,11 +1224,6 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.basicGetOwningType();
             case SysmlPackage.FEATURE__TYPE:
                 return this.getType();
-            case SysmlPackage.FEATURE__VALUATION:
-                if (resolve) {
-                    return this.getValuation();
-                }
-                return this.basicGetValuation();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -1194,6 +1243,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 this.setIsComposite((Boolean) newValue);
                 return;
+            case SysmlPackage.FEATURE__IS_CONSTANT:
+                this.setIsConstant((Boolean) newValue);
+                return;
             case SysmlPackage.FEATURE__IS_DERIVED:
                 this.setIsDerived((Boolean) newValue);
                 return;
@@ -1206,11 +1258,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
             case SysmlPackage.FEATURE__IS_PORTION:
                 this.setIsPortion((Boolean) newValue);
                 return;
-            case SysmlPackage.FEATURE__IS_READ_ONLY:
-                this.setIsReadOnly((Boolean) newValue);
-                return;
             case SysmlPackage.FEATURE__IS_UNIQUE:
                 this.setIsUnique((Boolean) newValue);
+                return;
+            case SysmlPackage.FEATURE__IS_VARIABLE:
+                this.setIsVariable((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -1230,6 +1282,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 this.setIsComposite(IS_COMPOSITE_EDEFAULT);
                 return;
+            case SysmlPackage.FEATURE__IS_CONSTANT:
+                this.setIsConstant(IS_CONSTANT_EDEFAULT);
+                return;
             case SysmlPackage.FEATURE__IS_DERIVED:
                 this.setIsDerived(IS_DERIVED_EDEFAULT);
                 return;
@@ -1242,11 +1297,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
             case SysmlPackage.FEATURE__IS_PORTION:
                 this.setIsPortion(IS_PORTION_EDEFAULT);
                 return;
-            case SysmlPackage.FEATURE__IS_READ_ONLY:
-                this.setIsReadOnly(IS_READ_ONLY_EDEFAULT);
-                return;
             case SysmlPackage.FEATURE__IS_UNIQUE:
                 this.setIsUnique(IS_UNIQUE_EDEFAULT);
+                return;
+            case SysmlPackage.FEATURE__IS_VARIABLE:
+                this.setIsVariable(IS_VARIABLE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -1306,6 +1361,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.isSetDirection();
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 return this.isComposite != IS_COMPOSITE_EDEFAULT;
+            case SysmlPackage.FEATURE__IS_CONSTANT:
+                return this.isConstant != IS_CONSTANT_EDEFAULT;
             case SysmlPackage.FEATURE__IS_DERIVED:
                 return this.isDerived != IS_DERIVED_EDEFAULT;
             case SysmlPackage.FEATURE__IS_END:
@@ -1316,10 +1373,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.isOrdered != IS_ORDERED_EDEFAULT;
             case SysmlPackage.FEATURE__IS_PORTION:
                 return this.isPortion != IS_PORTION_EDEFAULT;
-            case SysmlPackage.FEATURE__IS_READ_ONLY:
-                return this.isReadOnly != IS_READ_ONLY_EDEFAULT;
             case SysmlPackage.FEATURE__IS_UNIQUE:
                 return this.isUnique != IS_UNIQUE_EDEFAULT;
+            case SysmlPackage.FEATURE__IS_VARIABLE:
+                return this.isVariable != IS_VARIABLE_EDEFAULT;
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
                 return !this.getChainingFeature().isEmpty();
             case SysmlPackage.FEATURE__CROSS_FEATURE:
@@ -1352,8 +1409,6 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.basicGetOwningType() != null;
             case SysmlPackage.FEATURE__TYPE:
                 return !this.getType().isEmpty();
-            case SysmlPackage.FEATURE__VALUATION:
-                return this.basicGetValuation() != null;
         }
         return super.eIsSet(featureID);
     }
@@ -1370,12 +1425,16 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return this.allRedefinedFeatures();
             case SysmlPackage.FEATURE___AS_CARTESIAN_PRODUCT:
                 return this.asCartesianProduct();
+            case SysmlPackage.FEATURE___CAN_ACCESS__FEATURE:
+                return this.canAccess((Feature) arguments.get(0));
             case SysmlPackage.FEATURE___DIRECTION_FOR__TYPE:
                 return this.directionFor((Type) arguments.get(0));
             case SysmlPackage.FEATURE___IS_CARTESIAN_PRODUCT:
                 return this.isCartesianProduct();
             case SysmlPackage.FEATURE___IS_FEATURED_WITHIN__TYPE:
                 return this.isFeaturedWithin((Type) arguments.get(0));
+            case SysmlPackage.FEATURE___IS_FEATURING_TYPE__TYPE:
+                return this.isFeaturingType((Type) arguments.get(0));
             case SysmlPackage.FEATURE___IS_OWNED_CROSS_FEATURE:
                 return this.isOwnedCrossFeature();
             case SysmlPackage.FEATURE___NAMING_FEATURE:
@@ -1414,6 +1473,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
         }
         result.append(", isComposite: ");
         result.append(this.isComposite);
+        result.append(", isConstant: ");
+        result.append(this.isConstant);
         result.append(", isDerived: ");
         result.append(this.isDerived);
         result.append(", isEnd: ");
@@ -1422,10 +1483,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
         result.append(this.isOrdered);
         result.append(", isPortion: ");
         result.append(this.isPortion);
-        result.append(", isReadOnly: ");
-        result.append(this.isReadOnly);
         result.append(", isUnique: ");
         result.append(this.isUnique);
+        result.append(", isVariable: ");
+        result.append(this.isVariable);
         result.append(')');
         return result.toString();
     }

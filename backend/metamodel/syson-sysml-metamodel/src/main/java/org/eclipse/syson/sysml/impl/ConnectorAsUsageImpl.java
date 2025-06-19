@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Connector As Usage</b></em>'. <!-- end-user-doc
@@ -299,6 +300,29 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
+     */
+    @Override
+    public Type getDefaultFeaturingType() {
+        Type defaultFeaturingType = this.basicGetDefaultFeaturingType();
+        return defaultFeaturingType != null && defaultFeaturingType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) defaultFeaturingType) : defaultFeaturingType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public Type basicGetDefaultFeaturingType() {
+        // TODO: implement this method to return the 'Default Featuring Type' reference
+        // -> do not perform proxy resolution
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -425,6 +449,11 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
                 return this.getAssociation();
             case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
                 return this.getConnectorEnd();
+            case SysmlPackage.CONNECTOR_AS_USAGE__DEFAULT_FEATURING_TYPE:
+                if (resolve) {
+                    return this.getDefaultFeaturingType();
+                }
+                return this.basicGetDefaultFeaturingType();
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
                 return this.getRelatedFeature();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
@@ -520,6 +549,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
                 return !this.getAssociation().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
                 return !this.getConnectorEnd().isEmpty();
+            case SysmlPackage.CONNECTOR_AS_USAGE__DEFAULT_FEATURING_TYPE:
+                return this.basicGetDefaultFeaturingType() != null;
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
                 return !this.getRelatedFeature().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
@@ -561,6 +592,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
                     return SysmlPackage.CONNECTOR__ASSOCIATION;
                 case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
                     return SysmlPackage.CONNECTOR__CONNECTOR_END;
+                case SysmlPackage.CONNECTOR_AS_USAGE__DEFAULT_FEATURING_TYPE:
+                    return SysmlPackage.CONNECTOR__DEFAULT_FEATURING_TYPE;
                 case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
                     return SysmlPackage.CONNECTOR__RELATED_FEATURE;
                 case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
@@ -605,6 +638,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
                     return SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION;
                 case SysmlPackage.CONNECTOR__CONNECTOR_END:
                     return SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END;
+                case SysmlPackage.CONNECTOR__DEFAULT_FEATURING_TYPE:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__DEFAULT_FEATURING_TYPE;
                 case SysmlPackage.CONNECTOR__RELATED_FEATURE:
                     return SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE;
                 case SysmlPackage.CONNECTOR__SOURCE_FEATURE:

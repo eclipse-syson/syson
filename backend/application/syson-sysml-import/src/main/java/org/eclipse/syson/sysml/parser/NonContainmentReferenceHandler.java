@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,6 @@ public class NonContainmentReferenceHandler {
     }
 
     public void createProxy(final Element owner, String referenceName, final JsonNode astValue) {
-
         JsonNode referenceTypeNode = astValue.get("$type");
         JsonNode textNode = astValue.get("text");
         String referenceType = referenceTypeNode.asText();
@@ -70,11 +69,9 @@ public class NonContainmentReferenceHandler {
 
         if (refrenceTypeInstance instanceof InternalEObject internalTarget) {
             String qualifiedNameTarget = textNode.asText();
-            internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", QUALIFIED_CONST,
-                    qualifiedNameTarget));
+            internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", QUALIFIED_CONST, qualifiedNameTarget));
             // It should be a reference
             Optional<EReference> optEReference = this.referenceComputer.getNonContainmentReference(owner.eClass(), refrenceTypeInstance.eClass(), referenceName);
-
             if (optEReference.isEmpty()) {
                 this.messageReporter.error(MessageFormat.format("Unable to find a reference from {0} to {1} with reference name {2} on object {3}", owner.eClass().getName(),
                         refrenceTypeInstance.eClass().getName(), referenceType, this.logNameProvider.getName(owner)));

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,6 @@ public class OccurrenceDefinitionItemProvider extends DefinitionItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addIsIndividualPropertyDescriptor(object);
-            this.addLifeClassPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -71,25 +70,6 @@ public class OccurrenceDefinitionItemProvider extends DefinitionItemProvider {
                 false,
                 false,
                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Life Class feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addLifeClassPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_OccurrenceDefinition_lifeClass_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_OccurrenceDefinition_lifeClass_feature", "_UI_OccurrenceDefinition_type"),
-                SysmlPackage.eINSTANCE.getOccurrenceDefinition_LifeClass(),
-                true,
-                false,
-                true,
-                null,
                 null,
                 null));
     }

@@ -47,8 +47,11 @@ public class StandardLibrariesElementsDiagramMigrationParticipant implements IRe
 
     private final IObjectSearchService objectSearchService;
 
-    public StandardLibrariesElementsDiagramMigrationParticipant(IObjectSearchService objectSearchService) {
+    private final StandardLibrariesIdsResourceToMapParser standardLibrariesIdsResourceToMapParser;
+
+    public StandardLibrariesElementsDiagramMigrationParticipant(IObjectSearchService objectSearchService, StandardLibrariesIdsResourceToMapParser standardLibrariesIdsResourceToMapParser) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.standardLibrariesIdsResourceToMapParser = Objects.requireNonNull(standardLibrariesIdsResourceToMapParser);
     }
 
     @Override
@@ -64,13 +67,19 @@ public class StandardLibrariesElementsDiagramMigrationParticipant implements IRe
     @Override
     public void replaceJsonNode(IEditingContext editingContext, ObjectNode root, String currentAttribute, JsonNode currentValue) {
         if (currentAttribute.equals("targetObjectId") && currentValue instanceof TextNode textNode) {
-            var optElement = this.objectSearchService.getObject(editingContext, textNode.asText())
+            String oldId = textNode.asText();
+            var optElement = this.objectSearchService.getObject(editingContext, oldId)
                     .filter(Element.class::isInstance)
                     .map(Element.class::cast);
             if (optElement.isPresent()) {
                 var element = optElement.get();
                 if (ElementUtil.isStandardLibraryResource(element.eResource())) {
                     root.put("targetObjectId", element.getElementId());
+                }
+            } else {
+                var elementId = this.standardLibrariesIdsResourceToMapParser.getOldIdToElementIdMap().get(oldId);
+                if (elementId != null) {
+                    root.put("targetObjectId", elementId);
                 }
             }
         }

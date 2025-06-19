@@ -43,7 +43,7 @@ prefixNodeExpression :
 ;
 
 prefixListItemExpression : 
-	(directionPrefixExpression | abstractPrefixExpression | variationPrefixExpression | readonlyPrefixExpression | derivedPrefixExpression | endPrefixExpression)*
+	(directionPrefixExpression | abstractPrefixExpression | variationPrefixExpression | constantPrefixExpression | derivedPrefixExpression | endPrefixExpression)*
 ;
 
 directionPrefixExpression : 
@@ -62,8 +62,8 @@ variantPrefixExpression :
 	VARIANT_PREFIX
 ;
 
-readonlyPrefixExpression : 
-	READONLY_PREFIX
+constantPrefixExpression : 
+	CONSTANT_PREFIX
 ;
 
 derivedPrefixExpression : 
@@ -296,6 +296,10 @@ CONJUGATE : 'conjugate';
 CONJUGATES : 'conjugates';
 CONJUGATION : 'conjugation';
 CONNECTOR : 'connector';
+CONST : 'const';
+CONST_PREFIX : CONST WS;
+CONSTANT : 'constant';
+CONSTANT_PREFIX : CONSTANT WS;
 DATATYPE : 'datatype';
 DEFAULT : 'default';
 DEFAULT_SUFFIX : WS DEFAULT;
@@ -342,6 +346,7 @@ MULTIPLICITY : 'multiplicity';
 NAMESPACE : 'namespace';
 NONUNIQUE : 'nonunique';
 NONUNIQUE_SUFFIX : WS NONUNIQUE;
+NEW : 'new';
 NOT : 'not';
 NULL : 'null';
 OF : 'of';
@@ -353,11 +358,9 @@ OUT_PREFIX : OUT WS;
 PACKAGE : 'package';
 PORTION : 'portion';
 PREDICATE : 'predicate';
-PRIAVTE : 'private';
+PRIVATE : 'private';
 PROTECTED : 'protected';
 PUBLIC : 'public';
-READONLY : 'readonly';
-READONLY_PREFIX : READONLY WS;
 REDEFINES : 'redefines';
 REDEFINITION : 'redefinition';
 REF : 'ref';
@@ -368,7 +371,7 @@ RETURN : 'return';
 SPECIALIZTION : 'specialization';
 SPECIALIZES : 'specializes';
 STEP : 'step';
-STRCUT : 'struct';
+STRUCT : 'struct';
 SUBCLASSIFIER : 'subclassifier';
 SUBSET : 'subset';
 SUBSETS : 'subsets';
@@ -381,6 +384,7 @@ TYPE : 'type';
 TYPED : 'typed';
 TYPING : 'typing';
 UNIONS : 'unions';
+VAR : 'var';
 VARIATION : 'variation';
 VARIATION_PREFIX : VARIATION WS;
 VARIANT : 'variant';

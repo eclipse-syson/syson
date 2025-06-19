@@ -318,6 +318,8 @@
         eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true">
       <eAnnotations source="redefines" references="#//Type/endFeature"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFeaturingType" ordered="false"
+        eType="#//Type" changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="relatedFeature" unique="false"
         upperBound="-1" eType="#//Feature" changeable="false" volatile="true" transient="true"
         derived="true">
@@ -342,6 +344,7 @@
       <eAnnotations source="redefines" references="#//BooleanExpression/predicate"/>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstructorExpression" eSuperTypes="#//InstantiationExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ControlNode" abstract="true" eSuperTypes="#//ActionUsage">
     <eOperations name="multiplicityHasBounds" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="mult" ordered="false" lowerBound="1" eType="#//Multiplicity"/>
@@ -419,8 +422,8 @@
       <eAnnotations source="subsets" references="#//Definition/ownedAttribute"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedFlow" ordered="false"
-        upperBound="-1" eType="#//FlowConnectionUsage" changeable="false" volatile="true"
-        transient="true" derived="true">
+        upperBound="-1" eType="#//FlowUsage" changeable="false" volatile="true" transient="true"
+        derived="true">
       <eAnnotations source="subsets" references="#//Definition/ownedConnection"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedInterface" upperBound="-1"
@@ -564,6 +567,7 @@
     <eOperations name="effectiveShortName" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eOperations name="escapedName" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eOperations name="libraryNamespace" ordered="false" eType="#//Namespace"/>
+    <eOperations name="path" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="aliasIds" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="declaredName" ordered="false"
@@ -682,12 +686,18 @@
   <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//Type">
     <eOperations name="allRedefinedFeatures" ordered="false" upperBound="-1" eType="#//Feature"/>
     <eOperations name="asCartesianProduct" unique="false" upperBound="-1" eType="#//Type"/>
+    <eOperations name="canAccess" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="feature" ordered="false" lowerBound="1" eType="#//Feature"/>
+    </eOperations>
     <eOperations name="directionFor" ordered="false" eType="#//FeatureDirectionKind">
       <eParameters name="type" ordered="false" lowerBound="1" eType="#//Type"/>
     </eOperations>
     <eOperations name="isCartesianProduct" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="isFeaturedWithin" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="type" ordered="false" eType="#//Type"/>
+    </eOperations>
+    <eOperations name="isFeaturingType" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="type" ordered="false" lowerBound="1" eType="#//Type"/>
     </eOperations>
     <eOperations name="isOwnedCrossFeature" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="namingFeature" ordered="false" eType="#//Feature"/>
@@ -708,6 +718,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isComposite" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isConstant" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDerived" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
@@ -724,12 +737,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isPortion" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isReadOnly" ordered="false"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVariable" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="chainingFeature" unique="false"
         upperBound="-1" eType="#//Feature" changeable="false" volatile="true" transient="true"
         derived="true"/>
@@ -793,13 +806,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="owningType" ordered="false"
         eType="#//Type" changeable="false" volatile="true" transient="true" derived="true"
         eOpposite="#//Type/ownedFeature">
-      <eAnnotations source="subsets" references="#//Feature/featuringType #//Element/owningNamespace"/>
+      <eAnnotations source="subsets" references="#//Element/owningNamespace #//Feature/featuringType"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" upperBound="-1" eType="#//Type"
         changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="valuation" ordered="false"
-        eType="#//FeatureValue" changeable="false" volatile="true" transient="true"
-        derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureChainExpression" eSuperTypes="#//OperatorExpression">
     <eOperations name="sourceTargetFeature" ordered="false" eType="#//Feature"/>
@@ -841,16 +851,16 @@
       <eAnnotations source="subsets" references="#//FeatureInverting/featureInverted #//Relationship/owningRelatedElement"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureMembership" eSuperTypes="#//OwningMembership #//Featuring">
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureMembership" eSuperTypes="#//OwningMembership">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMemberFeature" ordered="false"
         lowerBound="1" eType="#//Feature" changeable="false" volatile="true" transient="true"
         derived="true" eOpposite="#//Feature/owningFeatureMembership">
-      <eAnnotations source="redefines" references="#//Featuring/feature #//OwningMembership/ownedMemberElement"/>
+      <eAnnotations source="redefines" references="#//OwningMembership/ownedMemberElement"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="owningType" ordered="false"
         lowerBound="1" eType="#//Type" changeable="false" volatile="true" transient="true"
         derived="true" eOpposite="#//Type/ownedFeatureMembership">
-      <eAnnotations source="redefines" references="#//Featuring/type #//Membership/membershipOwningNamespace"/>
+      <eAnnotations source="redefines" references="#//Membership/membershipOwningNamespace"/>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureReferenceExpression" eSuperTypes="#//Expression">
@@ -894,28 +904,42 @@
       <eAnnotations source="redefines" references="#//OwningMembership/ownedMemberElement"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Featuring" abstract="true" eSuperTypes="#//Relationship">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" ordered="false"
-        lowerBound="1" eType="#//Feature">
-      <eAnnotations source="subsets" references="#//Relationship/relatedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Flow" eSuperTypes="#//Connector #//Step">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowEnd" upperBound="2"
+        eType="#//FlowEnd" changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="subsets" references="#//Connector/connectorEnd"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false" lowerBound="1"
-        eType="#//Type">
-      <eAnnotations source="subsets" references="#//Relationship/relatedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="interaction" upperBound="-1"
+        eType="#//Interaction" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="redefines" references="#//Connector/association #//Step/behavior"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="payloadFeature" ordered="false"
+        eType="#//PayloadFeature" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="subsets" references="#//Type/ownedFeature"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="payloadType" unique="false"
+        upperBound="-1" eType="#//Classifier" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceOutputFeature" unique="false"
+        eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetInputFeature" unique="false"
+        eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FlowConnectionDefinition" eSuperTypes="#//ActionDefinition #//Interaction">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="flowConnectionEnd" ordered="false"
+  <eClassifiers xsi:type="ecore:EClass" name="FlowDefinition" eSuperTypes="#//ActionDefinition #//Interaction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowEnd" ordered="false"
         upperBound="-1" eType="#//Usage" changeable="false" volatile="true" transient="true"
         derived="true">
       <eAnnotations source="redefines" references="#//Association/associationEnd"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FlowConnectionUsage" eSuperTypes="#//ConnectorAsUsage #//ActionUsage #//ItemFlow">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="flowConnectionDefinition"
-        upperBound="-1" eType="#//Interaction" changeable="false" volatile="true"
-        transient="true" derived="true">
-      <eAnnotations source="redefines" references="#//ActionUsage/actionDefinition #//ItemFlow/interaction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FlowEnd" eSuperTypes="#//Feature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FlowUsage" eSuperTypes="#//ConnectorAsUsage #//ActionUsage #//Flow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flowDefinition" upperBound="-1"
+        eType="#//Interaction" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="redefines" references="#//ActionUsage/actionDefinition #//Flow/interaction"/>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForkNode" eSuperTypes="#//ControlNode"/>
@@ -995,6 +1019,18 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IndexExpression" eSuperTypes="#//OperatorExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InstantiationExpression" abstract="true"
+      eSuperTypes="#//Expression">
+    <eOperations name="instantiatedType" ordered="false" eType="#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="argument" upperBound="-1"
+        eType="#//Expression" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instantiatedType" ordered="false"
+        lowerBound="1" eType="#//Type" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="subsets" references="#//Namespace/member"/>
+    </eStructuralFeatures>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Interaction" eSuperTypes="#//Association #//Behavior"/>
   <eClassifiers xsi:type="ecore:EClass" name="InterfaceDefinition" eSuperTypes="#//ConnectionDefinition">
     <eStructuralFeatures xsi:type="ecore:EReference" name="interfaceEnd" upperBound="-1"
@@ -1026,40 +1062,8 @@
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="InvocationExpression" eSuperTypes="#//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="argument" upperBound="-1"
-        eType="#//Expression" changeable="false" volatile="true" transient="true"
-        derived="true">
-      <eAnnotations source="subsets" references="#//Type/ownedFeature"/>
-    </eStructuralFeatures>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InvocationExpression" eSuperTypes="#//InstantiationExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ItemDefinition" eSuperTypes="#//OccurrenceDefinition #//Structure"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ItemFeature" eSuperTypes="#//Feature"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ItemFlow" eSuperTypes="#//Connector #//Step">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="interaction" upperBound="-1"
-        eType="#//Interaction" changeable="false" volatile="true" transient="true"
-        derived="true">
-      <eAnnotations source="redefines" references="#//Connector/association #//Step/behavior"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="itemFeature" ordered="false"
-        eType="#//ItemFeature" changeable="false" volatile="true" transient="true"
-        derived="true">
-      <eAnnotations source="subsets" references="#//Type/ownedFeature"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="itemFlowEnd" upperBound="2"
-        eType="#//ItemFlowEnd" changeable="false" volatile="true" transient="true"
-        derived="true">
-      <eAnnotations source="subsets" references="#//Connector/connectorEnd"/>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="itemType" unique="false"
-        upperBound="-1" eType="#//Classifier" changeable="false" volatile="true" transient="true"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceOutputFeature" unique="false"
-        eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetInputFeature" unique="false"
-        eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ItemFlowEnd" eSuperTypes="#//Feature"/>
   <eClassifiers xsi:type="ecore:EClass" name="ItemUsage" eSuperTypes="#//OccurrenceUsage">
     <eStructuralFeatures xsi:type="ecore:EReference" name="itemDefinition" upperBound="-1"
         eType="#//Structure" changeable="false" volatile="true" transient="true" derived="true">
@@ -1072,7 +1076,6 @@
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="LifeClass" eSuperTypes="#//Class"/>
   <eClassifiers xsi:type="ecore:EClass" name="LiteralBoolean" eSuperTypes="#//LiteralExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -1097,7 +1100,6 @@
         derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Membership" eSuperTypes="#//Relationship">
-    <eOperations name="allRedefinedFeatures" ordered="false" upperBound="-1" eType="#//Feature"/>
     <eOperations name="isDistinguishableFrom" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="other" ordered="false" lowerBound="1" eType="#//Membership"/>
     </eOperations>
@@ -1133,7 +1135,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="MetadataAccessExpression" eSuperTypes="#//Expression">
     <eOperations name="metaclassFeature" ordered="false" lowerBound="1" eType="#//MetadataFeature"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="referencedElement" ordered="false"
-        lowerBound="1" eType="#//Element"/>
+        lowerBound="1" eType="#//Element" changeable="false" volatile="true" transient="true"
+        derived="true">
+      <eAnnotations source="subsets" references="#//Namespace/member"/>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MetadataDefinition" eSuperTypes="#//ItemDefinition #//Metaclass"/>
   <eClassifiers xsi:type="ecore:EClass" name="MetadataFeature" eSuperTypes="#//Feature #//AnnotatingElement">
@@ -1261,10 +1266,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isIndividual" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lifeClass" ordered="false"
-        eType="#//LifeClass" changeable="false" volatile="true" transient="true" derived="true">
-      <eAnnotations source="subsets" references="#//Namespace/ownedMember"/>
-    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OccurrenceUsage" eSuperTypes="#//Usage">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isIndividual" ordered="false"
@@ -1335,6 +1336,7 @@
       <eAnnotations source="subsets" references="#//ItemUsage/itemDefinition"/>
     </eStructuralFeatures>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PayloadFeature" eSuperTypes="#//Feature"/>
   <eClassifiers xsi:type="ecore:EClass" name="PerformActionUsage" eSuperTypes="#//ActionUsage #//EventOccurrenceUsage">
     <eStructuralFeatures xsi:type="ecore:EReference" name="performedAction" ordered="false"
         lowerBound="1" eType="#//ActionUsage" changeable="false" volatile="true" transient="true"
@@ -1694,22 +1696,10 @@
       <eAnnotations source="redefines" references="#//Specialization/specific"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Succession" eSuperTypes="#//Connector">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effectStep" ordered="false"
-        upperBound="-1" eType="#//Step" changeable="false" volatile="true" transient="true"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="guardExpression" ordered="false"
-        upperBound="-1" eType="#//Expression" changeable="false" volatile="true" transient="true"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="transitionStep" ordered="false"
-        eType="#//Step" changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="triggerStep" ordered="false"
-        upperBound="-1" eType="#//Step" changeable="false" volatile="true" transient="true"
-        derived="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Succession" eSuperTypes="#//Connector"/>
   <eClassifiers xsi:type="ecore:EClass" name="SuccessionAsUsage" eSuperTypes="#//ConnectorAsUsage #//Succession"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SuccessionFlowConnectionUsage" eSuperTypes="#//FlowConnectionUsage #//SuccessionItemFlow"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SuccessionItemFlow" eSuperTypes="#//ItemFlow #//Succession"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SuccessionFlow" eSuperTypes="#//Flow #//Succession"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SuccessionFlowUsage" eSuperTypes="#//FlowUsage #//SuccessionFlow"/>
   <eClassifiers xsi:type="ecore:EClass" name="TerminateActionUsage" eSuperTypes="#//ActionUsage">
     <eStructuralFeatures xsi:type="ecore:EReference" name="terminatedOccurrenceArgument"
         ordered="false" eType="#//Expression" changeable="false" volatile="true" transient="true"
@@ -1781,6 +1771,9 @@
     <eLiterals name="when" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//Namespace">
+    <eOperations name="allRedefinedFeaturesOf" ordered="false" upperBound="-1" eType="#//Feature">
+      <eParameters name="membership" ordered="false" lowerBound="1" eType="#//Membership"/>
+    </eOperations>
     <eOperations name="allSupertypes" ordered="false" upperBound="-1" eType="#//Type"/>
     <eOperations name="directionOf" ordered="false" eType="#//FeatureDirectionKind">
       <eParameters name="feature" ordered="false" lowerBound="1" eType="#//Feature"/>
@@ -1798,6 +1791,9 @@
       <eParameters name="excludedNamespaces" ordered="false" upperBound="-1" eType="#//Namespace"/>
       <eParameters name="excludedTypes" ordered="false" upperBound="-1" eType="#//Type"/>
       <eParameters name="excludeImplied" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="isCompatibleWith" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="otherType" ordered="false" lowerBound="1" eType="#//Type"/>
     </eOperations>
     <eOperations name="multiplicities" upperBound="-1" eType="#//Multiplicity"/>
     <eOperations name="nonPrivateMemberships" upperBound="-1" eType="#//Membership">
@@ -1915,14 +1911,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="unioningType" upperBound="-1"
         eType="#//Type" changeable="false" volatile="true" transient="true" derived="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeFeaturing" eSuperTypes="#//Featuring">
+  <eClassifiers xsi:type="ecore:EClass" name="TypeFeaturing" eSuperTypes="#//Relationship">
     <eStructuralFeatures xsi:type="ecore:EReference" name="featureOfType" ordered="false"
         lowerBound="1" eType="#//Feature">
-      <eAnnotations source="redefines" references="#//Relationship/source #//Featuring/feature"/>
+      <eAnnotations source="redefines" references="#//Relationship/source"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="featuringType" ordered="false"
         lowerBound="1" eType="#//Type">
-      <eAnnotations source="redefines" references="#//Relationship/target #//Featuring/type"/>
+      <eAnnotations source="redefines" references="#//Relationship/target"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="owningFeatureOfType" ordered="false"
         eType="#//Feature" changeable="false" volatile="true" transient="true" derived="true"
@@ -1949,6 +1945,11 @@
         changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVariation" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mayTimeVary" ordered="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="redefines" references="#//Feature/isVariable"/>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" upperBound="-1"
         eType="#//Classifier" changeable="false" volatile="true" transient="true"
         derived="true">
@@ -2008,8 +2009,8 @@
       <eAnnotations source="subsets" references="#//Usage/nestedAttribute"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nestedFlow" ordered="false"
-        upperBound="-1" eType="#//FlowConnectionUsage" changeable="false" volatile="true"
-        transient="true" derived="true">
+        upperBound="-1" eType="#//FlowUsage" changeable="false" volatile="true" transient="true"
+        derived="true">
       <eAnnotations source="subsets" references="#//Usage/nestedConnection"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nestedInterface" upperBound="-1"

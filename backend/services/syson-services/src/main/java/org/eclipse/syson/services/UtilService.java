@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Classifier;
@@ -47,9 +46,10 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowEnd;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.ItemFlowEnd;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -545,7 +545,7 @@ public class UtilService {
     }
 
     /**
-     * Create a new EndFeatureMembership to be used as {@link FlowConnectionUsage} end.
+     * Create a new EndFeatureMembership to be used as {@link FlowUsage} end.
      *
      * @param targetedFeature
      *            the targeted feature (either the source or target of the flow)
@@ -554,18 +554,18 @@ public class UtilService {
     public EndFeatureMembership createFlowConnectionEnd(Feature targetedFeature) {
         EndFeatureMembership featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
 
-        ItemFlowEnd itemFlowEnd = SysmlFactory.eINSTANCE.createItemFlowEnd();
-        featureMembership.getOwnedRelatedElement().add(itemFlowEnd);
+        FlowEnd flowEnd = SysmlFactory.eINSTANCE.createFlowEnd();
+        featureMembership.getOwnedRelatedElement().add(flowEnd);
 
         Type owningType = targetedFeature.getOwningType();
         if (owningType instanceof Feature owningFeature) {
             var referenceSubSetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-            itemFlowEnd.getOwnedRelationship().add(referenceSubSetting);
+            flowEnd.getOwnedRelationship().add(referenceSubSetting);
             referenceSubSetting.setReferencedFeature(owningFeature);
         }
 
         EndFeatureMembership target = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        itemFlowEnd.getOwnedRelationship().add(target);
+        flowEnd.getOwnedRelationship().add(target);
 
         ReferenceUsage referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
         target.getOwnedRelatedElement().add(referenceUsage);
@@ -811,14 +811,6 @@ public class UtilService {
         return redefiningUsage;
     }
 
-    private boolean isPart(Element element) {
-        return element instanceof PartUsage || element instanceof PartDefinition;
-    }
-
-    private boolean isAction(Element element) {
-        return element instanceof ActionUsage || element instanceof ActionDefinition;
-    }
-
     /**
      * Return an instance of the actual {@link PartDefinition} associated to the given {@link PartUsage}. The type of
      * the given parameter may be a subclass of {@link PartUsage}, in that case the method returns the definition
@@ -843,8 +835,8 @@ public class UtilService {
      */
     public EClass getPartDefinitionEClassFrom(PartUsage partUsage) {
         EClass result = SysmlPackage.eINSTANCE.getPartDefinition();
-        if (partUsage instanceof FlowConnectionUsage) {
-            result = SysmlPackage.eINSTANCE.getFlowConnectionDefinition();
+        if (partUsage instanceof FlowUsage) {
+            result = SysmlPackage.eINSTANCE.getFlowDefinition();
         } else if (partUsage instanceof AllocationUsage) {
             result = SysmlPackage.eINSTANCE.getAllocationDefinition();
         } else if (partUsage instanceof InterfaceUsage) {
@@ -915,6 +907,21 @@ public class UtilService {
         }
 
         return container;
+    }
+
+    /**
+     * Get the {@link FeatureValue} contained inside a given {@link Feature}.
+     *
+     * @param feature
+     *            a given {@link Feature}.
+     * @return a {@link FeatureValue}, or <code>null</code> if not found.
+     */
+    public FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

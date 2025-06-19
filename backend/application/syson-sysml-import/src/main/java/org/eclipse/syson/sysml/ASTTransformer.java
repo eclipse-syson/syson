@@ -52,17 +52,18 @@ public class ASTTransformer {
 
     private final Logger logger = LoggerFactory.getLogger(ASTTransformer.class);
 
+    private final MessageReporter messageReporter;
+
     private final AstTreeParser astTreeParser;
 
     private final NonContainmentReferenceHandler nonContainmentReferenceHandler;
 
-    private final MessageReporter messageReporter = new MessageReporter();
-
     public ASTTransformer() {
+        this.messageReporter = new MessageReporter();
+        this.nonContainmentReferenceHandler = new NonContainmentReferenceHandler(this.messageReporter);
+        var astContainmentReferenceParser = new ContainmentReferenceHandler(this.messageReporter);
         var proxyResolver = new ProxyResolver(this.messageReporter);
         var astObjectParser = new EAttributeHandler(this.messageReporter);
-        var astContainmentReferenceParser = new ContainmentReferenceHandler(this.messageReporter);
-        this.nonContainmentReferenceHandler = new NonContainmentReferenceHandler(this.messageReporter);
         this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, this.nonContainmentReferenceHandler, proxyResolver, astObjectParser, this.messageReporter);
     }
 
@@ -79,7 +80,6 @@ public class ASTTransformer {
                 result.getContents().addAll(rootSysmlObjects);
 
                 this.fixAndResolve(rootSysmlObjects);
-
             }
         }
         return result;
@@ -195,7 +195,7 @@ public class ASTTransformer {
         for (OperatorExpression operatorExpression : operatorExpressions) {
             Element owner = operatorExpression.getOwner();
             for (Feature parameter : operatorExpression.getParameter()) {
-                Expression parameterValue = parameter.getValuation().getValue();
+                Expression parameterValue = this.getValuation(parameter).getValue();
                 // Only LiteralExpressions and FeatureReferenceExpressions can be used in a MultiplicityRange
                 if (parameterValue instanceof LiteralExpression || parameterValue instanceof FeatureReferenceExpression) {
                     OwningMembership newOwningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -210,6 +210,14 @@ public class ASTTransformer {
             }
         }
         this.logger.info("Post resolving fixing phase done");
+    }
+
+    private FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     private void fixTransitionUsageImplicitSource(EObject root) {
@@ -433,11 +441,11 @@ public class ASTTransformer {
         return prefix + msg.body();
     }
 
-    private void fixFeatureChainReferenceUsage(ReferenceSubsetting referencesubsetting1) {
-        referencesubsetting1.getOwnedRelatedElement().stream()
+    private void fixFeatureChainReferenceUsage(ReferenceSubsetting referenceSubsetting) {
+        referenceSubsetting.getOwnedRelatedElement().stream()
                 .filter(e -> e.eClass() == SysmlPackage.eINSTANCE.getFeature() && !((Feature) e).getChainingFeature().isEmpty())
                 .map(Feature.class::cast)
                 .findFirst()
-                .ifPresent(referencesubsetting1::setReferencedFeature);
+                .ifPresent(referenceSubsetting::setReferencedFeature);
     }
 }

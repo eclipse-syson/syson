@@ -116,13 +116,13 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
         }
     }
 
-    @DisplayName("GIVEN a SysML Project, WHEN New Flow Connection tool of first level element is requested on a PartUsage, THEN a new PartUsage and a Flow Connection edge are created")
+    @DisplayName("GIVEN a SysML Project, WHEN New Flow tool of first level element is requested on a PartUsage, THEN a new PartUsage and a Flow edge are created")
     @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewFlowConnectionToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -143,7 +143,7 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
     }
 
-    @DisplayName("GIVEN a SysML Project, WHEN New Flow Connection tool of nested element is requested on a PartUsage, THEN a new PartUsage and a Flow Connection edge are created")
+    @DisplayName("GIVEN a SysML Project, WHEN New Flow tool of nested element is requested on a PartUsage, THEN a new PartUsage and a Flow edge are created")
     @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -160,7 +160,7 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagramAfterNestedPartUsageCreation,

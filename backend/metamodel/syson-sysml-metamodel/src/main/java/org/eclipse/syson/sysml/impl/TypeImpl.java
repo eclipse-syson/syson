@@ -178,6 +178,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public EList<Feature> getDirectedFeature() {
         List<Feature> directedFeatures = new ArrayList<>();
         this.getFeature().stream()
+                .filter(Objects::nonNull)
                 .filter(f -> this.directionOf(f) != null)
                 .forEach(directedFeatures::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DirectedFeature(), directedFeatures.size(), directedFeatures.toArray());
@@ -203,11 +204,10 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getFeature() {
-        Feature[] features = this.getFeatureMembership().stream()
-                .filter(fm -> fm.getFeature() != null)
-                .map(FeatureMembership::getFeature)
-                .toArray(Feature[]::new);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Feature(), features.length, features);
+        List<Feature> features = this.getFeatureMembership().stream()
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Feature(), features.size(), features.toArray());
     }
 
     /**
@@ -265,6 +265,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public EList<Feature> getInput() {
         List<Feature> inputs = new ArrayList<>();
         this.getFeature().stream()
+                .filter(Objects::nonNull)
                 .filter(f -> {
                     var direction = this.directionOf(f);
                     return direction == FeatureDirectionKind.IN || direction == FeatureDirectionKind.INOUT;
@@ -378,6 +379,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public EList<Feature> getOutput() {
         List<Feature> outputs = new ArrayList<>();
         this.getFeature().stream()
+                .filter(Objects::nonNull)
                 .filter(f -> {
                     var direction = this.directionOf(f);
                     return direction == FeatureDirectionKind.OUT || direction == FeatureDirectionKind.INOUT;
@@ -553,6 +555,22 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Feature> allRedefinedFeaturesOf(Membership membership) {
+        EList<Feature> allRedefinedFeaturesOf = new BasicEList<>();
+        this.getMembership().stream()
+                .map(Membership::getMemberElement)
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .forEach(f -> allRedefinedFeaturesOf.addAll(f.allRedefinedFeatures()));;
+        return allRedefinedFeaturesOf;
+    }
+
+    /**
      * <!-- begin-user-doc --> Return all Types related to this Type as supertypes directly or transitively by
      * Specialization Relationships. <br/>
      * body: ownedSpecialization -> closure(general.ownedSpecialization).general -> including(self) <br/>
@@ -628,7 +646,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
         excludedSelf.addAll(excluded);
         excludedSelf.add(this);
 
-        if (this.equals(feature.getOwningType())) {
+        if (feature != null && Objects.equals(this, feature.getOwningType())) {
             directionOfExcluding = feature.getDirection();
         } else {
             EList<Type> supertypes = this.supertypes(false);
@@ -696,6 +714,16 @@ public class TypeImpl extends NamespaceImpl implements Type {
      * @generated NOT
      */
     @Override
+    public boolean isCompatibleWith(Type otherType) {
+        return this.specializes(otherType);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
     public EList<Multiplicity> multiplicities() {
         EList<Multiplicity> multiplicities = new BasicEList<>();
         if (this.getMultiplicity() != null) {
@@ -745,13 +773,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Membership> removeRedefinedFeatures(EList<Membership> memberships) {
         // TODO: implement this method
         // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return new BasicEList<>();
     }
 
     /**
@@ -1007,6 +1035,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     @SuppressWarnings("unchecked")
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
+            case SysmlPackage.TYPE___ALL_REDEFINED_FEATURES_OF__MEMBERSHIP:
+                return this.allRedefinedFeaturesOf((Membership) arguments.get(0));
             case SysmlPackage.TYPE___ALL_SUPERTYPES:
                 return this.allSupertypes();
             case SysmlPackage.TYPE___DIRECTION_OF__FEATURE:
@@ -1017,6 +1047,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 return this.inheritableMemberships((EList<Namespace>) arguments.get(0), (EList<Type>) arguments.get(1), (Boolean) arguments.get(2));
             case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST_ELIST_BOOLEAN:
                 return this.inheritedMemberships((EList<Namespace>) arguments.get(0), (EList<Type>) arguments.get(1), (Boolean) arguments.get(2));
+            case SysmlPackage.TYPE___IS_COMPATIBLE_WITH__TYPE:
+                return this.isCompatibleWith((Type) arguments.get(0));
             case SysmlPackage.TYPE___MULTIPLICITIES:
                 return this.multiplicities();
             case SysmlPackage.TYPE___NON_PRIVATE_MEMBERSHIPS__ELIST_ELIST_BOOLEAN:

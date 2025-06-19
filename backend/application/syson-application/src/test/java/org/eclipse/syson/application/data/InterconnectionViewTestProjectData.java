@@ -30,14 +30,13 @@ public class InterconnectionViewTestProjectData {
 
         public static final String DIAGRAM_ID = "f3d8af1e-d0da-4c6c-ad36-7292caa02335";
 
-        public static final String FLOW_CONNECTION_P1_P2_ID = "7fc103ae-e0ee-3949-9b65-af9bab3c2941";
+        public static final String FLOW_CONNECTION_P1_P2_ID = "58b2cfdb-0eab-3cb7-b114-392b9fd532aa";
 
         public static final String PORT_PART_1_ID = "48fa7b52-c2ac-328c-bb52-4d0b7e93c014";
 
         public static final String PORT_PART_2_ID = "8edd0427-f8b5-3662-afb0-48d4b0526cc5";
 
         public static final String PORT_PART_3_ID = "84e8779b-8c88-345e-9471-4e996827be3a";
-
     }
 
     /**

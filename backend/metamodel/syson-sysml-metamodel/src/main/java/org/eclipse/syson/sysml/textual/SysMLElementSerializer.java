@@ -918,9 +918,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseTextualRepresentation(TextualRepresentation textualRepresentation) {
-        Appender builder = this.newAppender();
+        var builder = this.newAppender();
 
-        Appender identificationAppender = this.newAppender();
+        var identificationAppender = this.newAppender();
 
         this.appendNameWithShortName(identificationAppender, textualRepresentation);
 
@@ -937,8 +937,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseTransitionFeatureMembership(TransitionFeatureMembership transitionFeatureMembership) {
-        Appender builder = this.newAppender();
-
+        var builder = this.newAppender();
         if (transitionFeatureMembership.getKind() == TransitionFeatureKind.GUARD) {
             List<String> expressions = transitionFeatureMembership.getOwnedRelatedElement().stream()
                     .filter(Expression.class::isInstance)
@@ -948,30 +947,27 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             this.reportConsumer.accept(Status.warning("TransitionFeatureMembership of kind {0} are not yet handled", transitionFeatureMembership.getKind()));
         }
-
         return super.caseTransitionFeatureMembership(transitionFeatureMembership);
     }
 
     @Override
     public String caseTransitionUsage(TransitionUsage transitionUsage) {
-        Appender builder = this.newAppender();
-
+        var builder = this.newAppender();
         if (this.isDecisionTransition(transitionUsage)) {
             this.appenDecisionTransition(transitionUsage, builder);
         } else {
             // Not handle yet (missing the case of StateTransition)
             this.reportUnhandledType(transitionUsage);
         }
-
         return builder.toString();
     }
 
     @Override
     public String caseTriggerInvocationExpression(TriggerInvocationExpression triggerInvocationExpression) {
         var builder = this.newAppender();
-
-        builder.append(triggerInvocationExpression.getKind().toString().toLowerCase());
-        if (triggerInvocationExpression.getKind() == TriggerKind.WHEN) {
+        var kind = triggerInvocationExpression.getKind();
+        builder.append(kind.toString().toLowerCase());
+        if (kind == TriggerKind.WHEN) {
             for (Expression argument : triggerInvocationExpression.getArgument()) {
                 this.appendArgumentExpression(builder, argument);
             }
@@ -985,35 +981,24 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseUseCaseDefinition(UseCaseDefinition useCase) {
-        Appender builder = this.newAppender();
-
+        var builder = this.newAppender();
         this.appendDefinitionPrefix(builder, useCase);
-
         builder.appendSpaceIfNeeded().append("use");
         builder.appendSpaceIfNeeded().append("case");
         builder.appendSpaceIfNeeded().append("def");
-
         this.appendDefinitionDeclaration(builder, useCase);
-
         this.appendChildrenContent(builder, useCase, useCase.getOwnedMembership());
-
         return builder.toString();
     }
 
     @Override
     public String caseUseCaseUsage(UseCaseUsage useCaseUsage) {
-        Appender builder = this.newAppender();
-
+        var builder = this.newAppender();
         this.appendOccurrenceUsagePrefix(builder, useCaseUsage);
-
         builder.appendWithSpaceIfNeeded("use case");
-
         this.appendUsageDeclaration(builder, useCaseUsage);
-
         this.appendValuePart(builder, useCaseUsage);
-
         this.appendChildrenContent(builder, useCaseUsage, useCaseUsage.getOwnedMembership());
-
         return builder.toString();
     }
 
@@ -1025,7 +1010,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseViewUsage(ViewUsage viewUsage) {
-        Appender builder = this.newAppender();
+        var builder = this.newAppender();
         this.appendOccurrenceUsagePrefix(builder, viewUsage);
         builder.appendSpaceIfNeeded().append("view");
         this.appendUsageDeclaration(builder, viewUsage);
@@ -1035,16 +1020,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseViewpointDefinition(ViewpointDefinition vp) {
-        Appender builder = this.newAppender();
-
+        var builder = this.newAppender();
         this.appendDefinitionPrefix(builder, vp);
-
         builder.appendSpaceIfNeeded().append("viewpoint def");
-
         this.appendDefinitionDeclaration(builder, vp);
-
         this.appendChildrenContent(builder, vp, vp.getOwnedMembership());
-
         return builder.toString();
     }
 
@@ -1057,7 +1037,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @return a String representation of the "AcceptParameterPart"
      */
     public String getAcceptParameterPart(AcceptActionUsage acceptActionUsage) {
-        Appender builder = this.newAppender();
+        var builder = this.newAppender();
         this.appendAcceptParameterPart(builder, acceptActionUsage);
         return builder.toString();
     }
@@ -1822,10 +1802,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @return <code>true</code> if the previous feature is the expected one
      */
     private boolean isPreviousFeatureEqualsTo(Feature expectedFeature, Feature sourceElement, Predicate<Membership> candidatePredicate) {
-
         Type type = sourceElement.getOwningType();
         if (type != null) {
-
             EList<Membership> memberships = type.getMembership();
             FeatureMembership owningFeatureMembership = sourceElement.getOwningFeatureMembership();
             int index = memberships.indexOf(owningFeatureMembership);
@@ -1833,7 +1811,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             while (iterator.hasPrevious()) {
                 Membership previousMembership = iterator.previous();
                 if (candidatePredicate == null || candidatePredicate.test(previousMembership)) {
-                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == expectedFeature;
+                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getOwnedMemberFeature() == expectedFeature;
                 }
             }
         }
@@ -2195,7 +2173,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (direction != null && direction != this.getDefaultDirection(usage)) {
             builder.appendWithSpaceIfNeeded(direction.toString());
         }
-
         if (usage.isIsAbstract()) {
             builder.appendSpaceIfNeeded();
             builder.append("abstract");
@@ -2204,9 +2181,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded();
             builder.append("variation");
         }
-        if (usage.isIsReadOnly()) {
+        if (usage.isIsConstant()) {
             builder.appendSpaceIfNeeded();
-            builder.append("readonly");
+            builder.append("constant");
         }
         if (usage.isIsDerived()) {
             builder.appendSpaceIfNeeded();
@@ -2264,10 +2241,18 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendArgument(Appender builder, Feature parameter) {
-        FeatureValue valuation = parameter.getValuation();
+        FeatureValue valuation = this.getValuation(parameter);
         if (valuation != null) {
             builder.appendWithSpaceIfNeeded(this.doSwitch(valuation.getValue()));
         }
+    }
+
+    public FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     private void appendArgumentExpression(Appender builder, Expression argument) {

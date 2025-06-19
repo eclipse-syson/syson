@@ -155,11 +155,11 @@ public class AstTreeParser {
         }
     }
 
-    public void resolveAllReference(List<ProxiedReference> unresolvedReferences0) {
+    public void resolveAllReference(List<ProxiedReference> unresolvedReferences) {
         // Sorts proxies to resolve by breadth-first search strategy. This way we resolve first the import
         // generally located at top level part of the model. Those proxies are often used by lowest part of the
         // model to resolve their link
-        List<ProxiedReference> unresolvedReferencesTmp = unresolvedReferences0.stream()
+        List<ProxiedReference> unresolvedReferencesTmp = unresolvedReferences.stream()
                 .sorted(new PoxiedReferenceComparator())
                 .toList();
 
@@ -171,7 +171,7 @@ public class AstTreeParser {
             List<ProxiedReference> proxiedReferences = unresolvedReferencesTmp.stream()
                     .filter(proxiedReference -> !this.proxyResolver.resolveProxy(proxiedReference))
                     .toList();
-            LOGGER.info(MessageFormat.format("{0} remaining proxy to resolve after {1} try", Integer.toString(proxiedReferences.size()), Integer.toString(tryNb)));
+            LOGGER.info(MessageFormat.format("{0} remaining proxies to resolve after {1} try", Integer.toString(proxiedReferences.size()), Integer.toString(tryNb)));
             if (proxiedReferences.equals(unresolvedReferencesTmp)) {
                 this.printResolutionError(proxiedReferences);
                 break;
@@ -182,7 +182,6 @@ public class AstTreeParser {
     }
 
     private void printResolutionError(List<ProxiedReference> proxiedReferences) {
-
         for (ProxiedReference pr : proxiedReferences) {
             String msg = MessageFormat.format("Unable to resolve name ''{1}'' for reference ''{2}'' on element ''{0}''", this.logNameProvider.getName(pr.owner()),
                     pr.targetProxy().eProxyURI().fragment(),

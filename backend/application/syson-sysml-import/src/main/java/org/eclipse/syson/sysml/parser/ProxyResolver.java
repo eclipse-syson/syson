@@ -94,14 +94,13 @@ public class ProxyResolver {
             this.messageReporter.error(errorMessage);
         } else {
             for (Namespace deresolvingNamespace : deresolvingNamespaces) {
-
                 final Membership membership = deresolvingNamespace.resolve(qualifiedName);
                 if (membership != null) {
                     if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
                         target = membership;
                     } else if (eReference.getEType().isInstance(membership.getMemberElement())) {
                         target = membership.getMemberElement();
-                    } else if (this.isConjufatedPortReference(owner, membership.getMemberElement())) {
+                    } else if (this.isConjugatedPortReference(owner, membership.getMemberElement())) {
                         // Manage specific case of conjugated port
                         target = ((PortDefinition) membership.getMemberElement()).getConjugatedPortDefinition();
                     }
@@ -116,7 +115,7 @@ public class ProxyResolver {
         return target;
     }
 
-    private boolean isConjufatedPortReference(final EObject owner, final Element target) {
-        return owner instanceof ConjugatedPortTyping && target instanceof PortDefinition elementPortDefinition;
+    private boolean isConjugatedPortReference(final EObject owner, final Element target) {
+        return owner instanceof ConjugatedPortTyping && target instanceof PortDefinition;
     }
 }

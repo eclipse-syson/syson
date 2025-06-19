@@ -67,7 +67,7 @@ import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedUsageEdgeDesc
 import org.eclipse.syson.diagram.general.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.FeatureTypingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.FeatureValueEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.edges.FlowConnectionUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.FlowUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.IncludeUseCaseDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.NestedActorEdgeDescriptionProvider;
@@ -690,7 +690,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         edgeDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        edgeDescriptionProviders.add(new FlowConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new FlowUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new FeatureValueEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));

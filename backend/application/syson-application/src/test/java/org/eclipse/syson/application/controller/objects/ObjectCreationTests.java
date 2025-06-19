@@ -22,7 +22,6 @@ import java.util.UUID;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRootObjectInput;
@@ -83,9 +82,6 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IRepresentationMetadataSearchService representationMetadataSearchService;
-
-    @Autowired
-    private IRepresentationSearchService representationSearchService;
 
     @BeforeEach
     public void setUp() {

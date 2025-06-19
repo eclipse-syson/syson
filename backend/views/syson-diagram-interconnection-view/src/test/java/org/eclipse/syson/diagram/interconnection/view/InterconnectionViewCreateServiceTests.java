@@ -29,7 +29,7 @@ import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembe
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -115,14 +115,14 @@ public class InterconnectionViewCreateServiceTests {
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 
-    @DisplayName("GIVEN an existing model, WHEN the createFlowConnectionUsage service is called, THEN an FlowConnectionUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createFlowUsage service is called, THEN an FlowUsage is created under the root Package and an OwningMembership.")
     @Test
-    public void testCreateFlowConnectionUsage() {
-        FlowConnectionUsage flowConnectionUsage = this.interconnectionViewCreateService.createFlowConnectionUsage(this.port2, this.port3);
-        assertNotNull(flowConnectionUsage);
-        var owningNamespace = flowConnectionUsage.getOwningNamespace();
+    public void testCreateFlowUsage() {
+        FlowUsage flowUsage = this.interconnectionViewCreateService.createFlowUsage(this.port2, this.port3);
+        assertNotNull(flowUsage);
+        var owningNamespace = flowUsage.getOwningNamespace();
         assertSame(this.partDef1, owningNamespace);
-        var owningMembership = flowConnectionUsage.getOwningMembership();
+        var owningMembership = flowUsage.getOwningMembership();
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -125,7 +125,8 @@ public class InterconnectionViewDiagramDescriptionTests {
                 .filter(this.diagramPredicates.isFakeNode().negate()
                         .and(this.diagramPredicates.isEmptyDiagramNode().negate())
                         .and(this.diagramPredicates.isCompartmentNode().negate())
-                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate()))
+                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate())
+                        .and(this.diagramPredicates.isStartOrDoneNode().negate()))
                 // It isn't allowed to delete the root usage of the diagram.
                 .filter(this.diagramPredicates.hasName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getElement())).negate())
                 .toList();

@@ -137,6 +137,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createConstraintDefinition();
             case SysmlPackage.CONSTRAINT_USAGE:
                 return this.createConstraintUsage();
+            case SysmlPackage.CONSTRUCTOR_EXPRESSION:
+                return this.createConstructorExpression();
             case SysmlPackage.CROSS_SUBSETTING:
                 return this.createCrossSubsetting();
             case SysmlPackage.DATA_TYPE:
@@ -183,10 +185,14 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createFeatureTyping();
             case SysmlPackage.FEATURE_VALUE:
                 return this.createFeatureValue();
-            case SysmlPackage.FLOW_CONNECTION_DEFINITION:
-                return this.createFlowConnectionDefinition();
-            case SysmlPackage.FLOW_CONNECTION_USAGE:
-                return this.createFlowConnectionUsage();
+            case SysmlPackage.FLOW:
+                return this.createFlow();
+            case SysmlPackage.FLOW_DEFINITION:
+                return this.createFlowDefinition();
+            case SysmlPackage.FLOW_END:
+                return this.createFlowEnd();
+            case SysmlPackage.FLOW_USAGE:
+                return this.createFlowUsage();
             case SysmlPackage.FORK_NODE:
                 return this.createForkNode();
             case SysmlPackage.FOR_LOOP_ACTION_USAGE:
@@ -215,20 +221,12 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createInvocationExpression();
             case SysmlPackage.ITEM_DEFINITION:
                 return this.createItemDefinition();
-            case SysmlPackage.ITEM_FEATURE:
-                return this.createItemFeature();
-            case SysmlPackage.ITEM_FLOW:
-                return this.createItemFlow();
-            case SysmlPackage.ITEM_FLOW_END:
-                return this.createItemFlowEnd();
             case SysmlPackage.ITEM_USAGE:
                 return this.createItemUsage();
             case SysmlPackage.JOIN_NODE:
                 return this.createJoinNode();
             case SysmlPackage.LIBRARY_PACKAGE:
                 return this.createLibraryPackage();
-            case SysmlPackage.LIFE_CLASS:
-                return this.createLifeClass();
             case SysmlPackage.LITERAL_BOOLEAN:
                 return this.createLiteralBoolean();
             case SysmlPackage.LITERAL_EXPRESSION:
@@ -289,6 +287,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createPartDefinition();
             case SysmlPackage.PART_USAGE:
                 return this.createPartUsage();
+            case SysmlPackage.PAYLOAD_FEATURE:
+                return this.createPayloadFeature();
             case SysmlPackage.PERFORM_ACTION_USAGE:
                 return this.createPerformActionUsage();
             case SysmlPackage.PORT_CONJUGATION:
@@ -351,10 +351,10 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createSuccession();
             case SysmlPackage.SUCCESSION_AS_USAGE:
                 return this.createSuccessionAsUsage();
-            case SysmlPackage.SUCCESSION_FLOW_CONNECTION_USAGE:
-                return this.createSuccessionFlowConnectionUsage();
-            case SysmlPackage.SUCCESSION_ITEM_FLOW:
-                return this.createSuccessionItemFlow();
+            case SysmlPackage.SUCCESSION_FLOW:
+                return this.createSuccessionFlow();
+            case SysmlPackage.SUCCESSION_FLOW_USAGE:
+                return this.createSuccessionFlowUsage();
             case SysmlPackage.TERMINATE_ACTION_USAGE:
                 return this.createTerminateActionUsage();
             case SysmlPackage.TEXTUAL_REPRESENTATION:
@@ -916,6 +916,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
+    public ConstructorExpression createConstructorExpression() {
+        ConstructorExpressionImpl constructorExpression = new ConstructorExpressionImpl();
+        constructorExpression.setElementId(ElementUtil.generateUUID(constructorExpression).toString());
+        return constructorExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
     public CrossSubsetting createCrossSubsetting() {
         CrossSubsettingImpl crossSubsetting = new CrossSubsettingImpl();
         crossSubsetting.setElementId(ElementUtil.generateUUID(crossSubsetting).toString());
@@ -1192,10 +1204,21 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
-    public FlowConnectionDefinition createFlowConnectionDefinition() {
-        FlowConnectionDefinitionImpl flowConnectionDefinition = new FlowConnectionDefinitionImpl();
-        flowConnectionDefinition.setElementId(ElementUtil.generateUUID(flowConnectionDefinition).toString());
-        return flowConnectionDefinition;
+    public Flow createFlow() {
+        FlowImpl flow = new FlowImpl();
+        flow.setElementId(ElementUtil.generateUUID(flow).toString());
+        return flow;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FlowDefinition createFlowDefinition() {
+        FlowDefinitionImpl flowDefinition = new FlowDefinitionImpl();
+        return flowDefinition;
     }
 
     /**
@@ -1204,10 +1227,22 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
-    public FlowConnectionUsage createFlowConnectionUsage() {
-        FlowConnectionUsageImpl flowConnectionUsage = new FlowConnectionUsageImpl();
-        flowConnectionUsage.setElementId(ElementUtil.generateUUID(flowConnectionUsage).toString());
-        return flowConnectionUsage;
+    public FlowEnd createFlowEnd() {
+        FlowEndImpl flowEnd = new FlowEndImpl();
+        flowEnd.setElementId(ElementUtil.generateUUID(flowEnd).toString());
+        return flowEnd;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public FlowUsage createFlowUsage() {
+        FlowUsageImpl flowUsage = new FlowUsageImpl();
+        flowUsage.setElementId(ElementUtil.generateUUID(flowUsage).toString());
+        return flowUsage;
     }
 
     /**
@@ -1384,42 +1419,6 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
-    public ItemFeature createItemFeature() {
-        ItemFeatureImpl itemFeature = new ItemFeatureImpl();
-        itemFeature.setElementId(ElementUtil.generateUUID(itemFeature).toString());
-        return itemFeature;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public ItemFlow createItemFlow() {
-        ItemFlowImpl itemFlow = new ItemFlowImpl();
-        itemFlow.setElementId(ElementUtil.generateUUID(itemFlow).toString());
-        return itemFlow;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public ItemFlowEnd createItemFlowEnd() {
-        ItemFlowEndImpl itemFlowEnd = new ItemFlowEndImpl();
-        itemFlowEnd.setElementId(ElementUtil.generateUUID(itemFlowEnd).toString());
-        return itemFlowEnd;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
     public ItemUsage createItemUsage() {
         ItemUsageImpl itemUsage = new ItemUsageImpl();
         itemUsage.setElementId(ElementUtil.generateUUID(itemUsage).toString());
@@ -1448,18 +1447,6 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
         LibraryPackageImpl libraryPackage = new LibraryPackageImpl();
         libraryPackage.setElementId(ElementUtil.generateUUID(libraryPackage).toString());
         return libraryPackage;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public LifeClass createLifeClass() {
-        LifeClassImpl lifeClass = new LifeClassImpl();
-        lifeClass.setElementId(ElementUtil.generateUUID(lifeClass).toString());
-        return lifeClass;
     }
 
     /**
@@ -1820,6 +1807,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
         PartUsageImpl partUsage = new PartUsageImpl();
         partUsage.setElementId(ElementUtil.generateUUID(partUsage).toString());
         return partUsage;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public PayloadFeature createPayloadFeature() {
+        PayloadFeatureImpl payloadFeature = new PayloadFeatureImpl();
+        payloadFeature.setElementId(ElementUtil.generateUUID(payloadFeature).toString());
+        return payloadFeature;
     }
 
     /**
@@ -2200,10 +2199,10 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
-    public SuccessionFlowConnectionUsage createSuccessionFlowConnectionUsage() {
-        SuccessionFlowConnectionUsageImpl successionFlowConnectionUsage = new SuccessionFlowConnectionUsageImpl();
-        successionFlowConnectionUsage.setElementId(ElementUtil.generateUUID(successionFlowConnectionUsage).toString());
-        return successionFlowConnectionUsage;
+    public SuccessionFlow createSuccessionFlow() {
+        SuccessionFlowImpl successionFlow = new SuccessionFlowImpl();
+        successionFlow.setElementId(ElementUtil.generateUUID(successionFlow).toString());
+        return successionFlow;
     }
 
     /**
@@ -2212,10 +2211,10 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      * @generated NOT
      */
     @Override
-    public SuccessionItemFlow createSuccessionItemFlow() {
-        SuccessionItemFlowImpl successionItemFlow = new SuccessionItemFlowImpl();
-        successionItemFlow.setElementId(ElementUtil.generateUUID(successionItemFlow).toString());
-        return successionItemFlow;
+    public SuccessionFlowUsage createSuccessionFlowUsage() {
+        SuccessionFlowUsageImpl successionFlowUsage = new SuccessionFlowUsageImpl();
+        successionFlowUsage.setElementId(ElementUtil.generateUUID(successionFlowUsage).toString());
+        return successionFlowUsage;
     }
 
     /**

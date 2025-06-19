@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.AnalysisCaseDefinition;
 import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
+import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.CalculationDefinition;
@@ -52,8 +53,8 @@ import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FlowConnectionDefinition;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowDefinition;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.ForLoopActionUsage;
 import org.eclipse.syson.sysml.ForkNode;
 import org.eclipse.syson.sysml.FramedConcernMembership;
@@ -64,7 +65,6 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.JoinNode;
-import org.eclipse.syson.sysml.LifeClass;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.MetadataDefinition;
@@ -100,7 +100,7 @@ import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.SuccessionFlowConnectionUsage;
+import org.eclipse.syson.sysml.SuccessionFlowUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.TriggerInvocationExpression;
@@ -684,7 +684,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     @Override
-    public List<Specialization> caseFlowConnectionDefinition(FlowConnectionDefinition object) {
+    public List<Specialization> caseFlowDefinition(FlowDefinition object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
         if (this.hasSubclassification(object)) {
             return implicitSpecializations;
@@ -697,7 +697,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     @Override
-    public List<Specialization> caseFlowConnectionUsage(FlowConnectionUsage object) {
+    public List<Specialization> caseFlowUsage(FlowUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
         if (!this.hasRedefinition(object)) {
             implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
@@ -706,8 +706,8 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
             return implicitSpecializations;
         }
         var implicitSubsettingElement = "Connections::flowConnections";
-        // If a FlowConnectionUsage has no ownedEndFeatures, then it must directly or indirectly specialize the base
-        // FlowConnectionUsage Connections::messageConnections from the Systems Library model.
+        // If a FlowUsage has no ownedEndFeatures, then it must directly or indirectly specialize the base
+        // FlowUsage Connections::messageConnections from the Systems Library model.
         if (object.getOwnedEndFeature().isEmpty()) {
             implicitSubsettingElement = "Connections::messageConnections";
         }
@@ -887,19 +887,6 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         var implicitSubsetting = this.implicitSubsetting(object, "Actions::Action::join");
         if (implicitSubsetting != null) {
             implicitSpecializations.add(implicitSubsetting);
-        }
-        return implicitSpecializations;
-    }
-
-    @Override
-    public List<Specialization> caseLifeClass(LifeClass object) {
-        List<Specialization> implicitSpecializations = new ArrayList<>();
-        if (this.hasSubclassification(object)) {
-            return implicitSpecializations;
-        }
-        var implicitSubclassification = this.implicitSubclassification(object, "Occurrences::Life");
-        if (implicitSubclassification != null) {
-            implicitSpecializations.add(implicitSubclassification);
         }
         return implicitSpecializations;
     }
@@ -1253,7 +1240,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     @Override
-    public List<Specialization> caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
+    public List<Specialization> caseSuccessionFlowUsage(SuccessionFlowUsage object) {
         List<Specialization> implicitSpecializations = new ArrayList<>();
         if (!this.hasRedefinition(object)) {
             implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
@@ -1261,7 +1248,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (this.hasSubsetting(object)) {
             return implicitSpecializations;
         }
-        var implicitSubsetting = this.implicitSubsetting(object, "Connections::successionFlowConnections");
+        var implicitSubsetting = this.implicitSubsetting(object, "Flows::successionFlows");
         if (implicitSubsetting != null) {
             implicitSpecializations.add(implicitSubsetting);
         }

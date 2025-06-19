@@ -8,6 +8,78 @@
 - Add diagram tool to duplicate graphical nodes in diagrams
 
 === Breaking changes
+- https://github.com/eclipse-syson/syson/issues/1384[#1384] [metamodel] Align metamodel to SysMLv2 2025-04 specification released on April 2025 (see https://www.omg.org/spec/SysML/ for more details) and KerML 2025-04 specification released on April 2025 (see https://www.omg.org/spec/KerML/ for more details).
+
+**Please download all your models/projects before upgrading to 2025.8.0.**
+
+The new concepts are:
+
+* `InstantiationExpression` (inherits from `Expression`)
+* `ConstructorExpression` (inherits from `InstantiationExpression`)
+
+The new attributes are:
+
+* on `Feature`
+** `isConstant : EBoolean`
+* on `Usage`
+** `mayTimeVary : EBoolean`
+
+The new operations are:
+
+*	on `Element`
+** `path() : EString`
+* on `Feature`
+** `isFeaturingType(Type) : EBoolean`
+** `canAccess(Feature) : EBoolean`
+* on `Type`
+** `isCompatibleWith(Type) : EBoolean`
+** `allRedefinedFeaturesOf(Membership) : Feature`
+
+The new references are:
+
+* on `Connector`
+** `defaultFeaturingType : Type` 
+* on `InstantiationExpression`
+** `argument : Expression`
+
+The updates are:
+
+* concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`
+* concept `FlowConnectionUsage` has been renamed to `FlowUsage`
+* concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`
+* concept `ItemFlow` has been renamed to `Flow`
+** reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`
+* concept `ItemFlowEnd` has been renamed to `FlowEnd`
+* concept `SuccessionItemFlow` has been renamed to `SuccessionFlow`TypeFeaturing
+** reference `featuringType : Type` doesn't redefine `type` anymore
+** reference `featureOfType : Feature` doesn't redefine `feature` anymore
+* concept `ItemFeature` has been renamed to `PayloadFeature`
+* on `MetadataAccessExpression`
+** reference `referencedElement : Element` is now derived and subsets `member`
+** on `FeatureMembership`
+** reference `owningType : Type` doesn't redefine `type` anymore
+** reference `ownedMemberFeature : Feature` doesn't redefine `feature` anymore
+* on `Feature`
+** attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`
+
+The deletions are:
+
+* concept `Featuring`
+* concept `LifeClass`
+* on `Membership`
+** operation `allRedefinedFeature() : Feature`
+* on `Feature`
+** reference `valuation : FeatureValue`
+* on `OccurrenceDefinition`
+** reference `lifeClass : LifeClass`
+* on `Succession`
+** reference `effectStep : Step`
+** reference `guardExpression : Expression`
+** reference `transitionStep : Step`
+** reference `triggerStep : Step`
+
+All standard libraries have been updated to comply with the SysMLv2 2025-04 specification.
+All validation rules have been updated to comply with the SysMLv2 2025-04 specification.
 
 - https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON _Explorer_ view
 * `ISysONExplorerFragment` implementations now need to implement `getKind()` and `getParent()`.
@@ -32,6 +104,8 @@
 - https://github.com/eclipse-syson/syson/issues/1407[#1407] [metamodel] Fix an issue where a `Feature` containing a `ChainingFeature` was not typed with the type of the last `ChainingFeature`.
 
 === Improvements
+
+- https://github.com/eclipse-syson/syson/issues/1384[#1384] [metamodel] Align metamodel to SysMLv2 2025-04 specification released on April 2025(see https://www.omg.org/spec/SysML/ for more details) and KerML 2025-04 specification released on April 2024(see https://www.omg.org/spec/KerML/ for more details).
 
 === New features
 

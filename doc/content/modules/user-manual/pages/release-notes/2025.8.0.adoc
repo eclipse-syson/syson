@@ -2,6 +2,11 @@
 
 == Key highlights
 
+- *Model conformance to {sysmlv2} 2025-04 version*: the metamodel has been modified to conform to {sysmlv2} and {kerml} 2025-04 specifications released on April 2025 (see https://www.omg.org/spec/SysML/ for more details).
+All existing models/projects in {product} will be automatically migrated to this new version.
+**In any case, download all your existing models/projects before upgrading to 2025.8.0 (as always).**
+
+
 == Breaking changes
 
 - Fix an issue that made the _Expand All_ tool not work consistently in SysON _Explorer_ view
@@ -59,6 +64,77 @@ Type T3 {
 The `FeatureChain` _t1Feature.t2Feature_ is now typed with _T3_.
 
 == Improvements
+
+- Align metamodel to {sysmlv2} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/SysML/ for more details) and {kerml} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/KerML/ for more details).
+
+The new concepts are:
+
+* `InstantiationExpression` (inherits from `Expression`)
+* `ConstructorExpression` (inherits from `InstantiationExpression`)
+
+The new attributes are:
+
+* on `Feature`
+** `isConstant : EBoolean`
+* on `Usage`
+** `mayTimeVary : EBoolean`
+
+The new operations are:
+
+*	on `Element`
+** `path() : EString`
+* on `Feature`
+** `isFeaturingType(Type) : EBoolean`
+** `canAccess(Feature) : EBoolean`
+* on `Type`
+** `isCompatibleWith(Type) : EBoolean`
+** `allRedefinedFeaturesOf(Membership) : Feature`
+
+The new references are:
+
+* on `Connector`
+** `defaultFeaturingType : Type` 
+* on `InstantiationExpression`
+** `argument : Expression`
+
+The updates are:
+
+* concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`
+* concept `FlowConnectionUsage` has been renamed to `FlowUsage`
+* concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`
+* concept `ItemFlow` has been renamed to `Flow`
+** reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`
+* concept `ItemFlowEnd` has been renamed to `FlowEnd`
+* concept `SuccessionItemFlow` has been renamed to `SuccessionFlow`TypeFeaturing
+** reference `featuringType : Type` doesn't redefine `type` anymore
+** reference `featureOfType : Feature` doesn't redefine `feature` anymore
+* concept `ItemFeature` has been renamed to `PayloadFeature`
+* on `MetadataAccessExpression`
+** reference `referencedElement : Element` is now derived and subsets `member`
+** on `FeatureMembership`
+** reference `owningType : Type` doesn't redefine `type` anymore
+** reference `ownedMemberFeature : Feature` doesn't redefine `feature` anymore
+* on `Feature`
+** attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`
+
+The deletions are:
+
+* concept `Featuring`
+* concept `LifeClass`
+* on `Membership`
+** operation `allRedefinedFeature() : Feature`
+* on `Feature`
+** reference `valuation : FeatureValue`
+* on `OccurrenceDefinition`
+** reference `lifeClass : LifeClass`
+* on `Succession`
+** reference `effectStep : Step`
+** reference `guardExpression : Expression`
+** reference `transitionStep : Step`
+** reference `triggerStep : Step`
+
+All standard libraries have been updated to comply with the {sysmlv2} 2025-04 specification.
+All validation rules have been updated to comply with the {sysmlv2} 2025-04 specification.
 
 == Dependency update
 

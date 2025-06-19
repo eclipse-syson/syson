@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.Connector#getAssociation <em>Association</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getConnectorEnd <em>Connector End</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Connector#getDefaultFeaturingType <em>Default Featuring Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getRelatedFeature <em>Related Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getSourceFeature <em>Source Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getTargetFeature <em>Target Feature</em>}</li>
@@ -54,6 +55,17 @@ public interface Connector extends Feature, Relationship {
      * @generated
      */
     EList<Feature> getConnectorEnd();
+
+    /**
+     * Returns the value of the '<em><b>Default Featuring Type</b></em>' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Default Featuring Type</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_DefaultFeaturingType()
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @generated
+     */
+    Type getDefaultFeaturingType();
 
     /**
      * Returns the value of the '<em><b>Related Feature</b></em>' reference list. The list contents are of type

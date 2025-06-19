@@ -133,12 +133,12 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("GIVEN a SysML Project with ports, WHEN flow connection edge tool creation is request between two ports, THEN a new flow edge is created")
+    @DisplayName("GIVEN a SysML Project with Ports, WHEN Flow edge tool creation is request between two ports, THEN a new Flow edge is created")
     @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenSysMLProjectWithPortsWhenFlowConnectionEdgeToolCreationIsRequestedThenNewFlowConnectionEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()), "New Flow Connection (flow)");
+    public void givenSysMLProjectWithPortsWhenFlowUsageEdgeToolCreationIsRequestedThenNewFlowUsageEdgeIsCreated() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()), "New Flow (flow)");
         this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "port1",
@@ -162,7 +162,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("Package 1", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
-                SysmlPackage.eINSTANCE.getFlowConnectionUsage());
+                SysmlPackage.eINSTANCE.getFlowUsage());
 
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }

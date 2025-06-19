@@ -45,7 +45,7 @@ public class GeneralViewFlowConnectionItemUsagesProjectData {
 
         public static final String ACTION_USAGE_3_OUT_ITEM_ID = "66aa0a1d-2d8a-320a-80c4-38a2621d64ca";
 
-        public static final String FLOW_CONNECTION_ID = "7c76055a-494a-3641-89b7-6257db809bca";
+        public static final String FLOW_CONNECTION_ID = "08697a19-1d8a-33ba-be01-dc1acafa8ac8";
     }
 
     /**

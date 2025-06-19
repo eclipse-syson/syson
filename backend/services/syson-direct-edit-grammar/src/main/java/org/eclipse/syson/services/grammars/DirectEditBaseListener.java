@@ -126,13 +126,13 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx) { }
+	@Override public void enterConstantPrefixExpression(DirectEditParser.ConstantPrefixExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx) { }
+	@Override public void exitConstantPrefixExpression(DirectEditParser.ConstantPrefixExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

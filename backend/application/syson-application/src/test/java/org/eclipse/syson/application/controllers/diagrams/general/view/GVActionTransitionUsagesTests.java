@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
@@ -65,6 +66,9 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenDiagramReference givenDiagram;
@@ -119,6 +123,8 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
     @DisplayName("GIVEN a model with TransitionUsage ending on 'start' or 'done' ActionUsage, WHEN adding existing nested element on the parent of the TransitionUsage, THEN the 'start' and 'done' node should be added to the ActionFlow compartment.")
     @Test
     public void addExistingElementsOnDiagram() {
+        this.givenCommittedTransaction.commit();
+
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
                 "Add existing nested elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on Action Usage").isNotNull();

@@ -127,7 +127,8 @@ public class StateTransitionViewDiagramDescriptionTests {
                 .filter(this.diagramPredicates.isFakeNode().negate()
                         .and(this.diagramPredicates.isEmptyDiagramNode().negate())
                         .and(this.diagramPredicates.isCompartmentNode().negate())
-                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate()))
+                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate())
+                        .and(this.diagramPredicates.isStartOrDoneNode().negate()))
                 .toList();
         new NodeDescriptionHasDeleteToolChecker().checkAll(nodeDescriptionCandidates);
     }

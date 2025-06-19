@@ -42,7 +42,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
@@ -182,9 +182,9 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
 
     @Sql(scripts = { NewObjectAsTextProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @DisplayName("GIVEN model with two ItemUsages, WHEN creating a FlowConnectionUsage between those items, THEN the flow should be created")
+    @DisplayName("GIVEN model with two ItemUsages, WHEN creating a FlowUsage between those items, THEN the flow should be created")
     @Test
-    public void testCreateItemFlow() {
+    public void testCreateFlow() {
         this.givenCommittedTransaction.commit();
 
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "flow action1.item1Out to action2.item1In;");
@@ -194,7 +194,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                 p -> {
                     if (p.getOwnedFeature().size() == 4) {
                         Feature f1 = p.getOwnedFeature().get(3);
-                        if (f1 instanceof FlowConnectionUsage flow) {
+                        if (f1 instanceof FlowUsage flow) {
                             return "Root::Definitions::ActionDefinition1::action1".equals(flow.getSourceFeature().getQualifiedName())
                                     && "Root::Definitions::ActionDefinition1::action2".equals(flow.getTargetFeature().get(0).getQualifiedName())
                                     && "item1Out".equals(flow.getSourceOutputFeature().getName())
