@@ -21,22 +21,17 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Invocation Expression</b></em>'. <!--
  * end-user-doc -->
- * <p>
- * The following features are implemented:
- * </p>
- * <ul>
- * <li>{@link org.eclipse.syson.sysml.impl.InvocationExpressionImpl#getArgument <em>Argument</em>}</li>
- * </ul>
  *
  * @generated
  */
-public class InvocationExpressionImpl extends ExpressionImpl implements InvocationExpression {
+public class InvocationExpressionImpl extends InstantiationExpressionImpl implements InvocationExpression {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -65,40 +60,23 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
     public EList<Expression> getArgument() {
         List<Expression> arguments = this.getOwnedFeature().stream()
                 .filter(f -> f.getDirection() == FeatureDirectionKind.IN)
-                .map(Feature::getValuation)
+                .map(current -> this.getValuation(current))
                 .filter(Objects::nonNull)
                 .map(v -> v.getValue())
                 .filter(Objects::nonNull)
                 .toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInvocationExpression_Argument(), arguments.size(), arguments.toArray());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInstantiationExpression_Argument(), arguments.size(), arguments.toArray());
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
+     * @generated NOT
      */
-    @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case SysmlPackage.INVOCATION_EXPRESSION__ARGUMENT:
-                return this.getArgument();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case SysmlPackage.INVOCATION_EXPRESSION__ARGUMENT:
-                return !this.getArgument().isEmpty();
-        }
-        return super.eIsSet(featureID);
+    private FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
 } // InvocationExpressionImpl

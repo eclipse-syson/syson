@@ -1634,14 +1634,14 @@
             "target": {
               "$type": "AttributeUsage",
               "$cstNode": {
-                "text": "readonly attribute ro;",
+                "text": "constant attribute ro;",
                 "stack": [
                   "UsageElement",
                   "UsageMember"
                 ]
               },
               "declaredName": "ro",
-              "isReadOnly": "readonly",
+              "isConstant": "true",
               "isIndividual": false,
               "isReference": false,
               "isVariation": false,
@@ -1658,7 +1658,7 @@
               }
             },
             "$cstNode": {
-              "text": "readonly attribute ro;",
+              "text": "constant attribute ro;",
               "stack": [
                 "UsageMember",
                 "PackageBodyElement"
@@ -1746,7 +1746,7 @@
           }
         ],
         "$cstNode": {
-          "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+          "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isConstant\n\tconstant attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
           "stack": [
             "DefinitionElement",
             "DefinitionMember"
@@ -1760,7 +1760,7 @@
         }
       },
       "$cstNode": {
-        "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+        "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isConstant\n\tconstant attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
         "stack": [
           "DefinitionMember",
           "PackageBodyElement"
@@ -1775,7 +1775,7 @@
     }
   ],
   "$cstNode": {
-    "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+    "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isConstant\n\tconstant attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
     "stack": []
   },
   "prefixes": [],

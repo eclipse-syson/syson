@@ -52,6 +52,7 @@ import org.eclipse.syson.sysml.Type;
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getTarget <em>Target</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getAssociation <em>Association</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getConnectorEnd <em>Connector End</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getDefaultFeaturingType <em>Default Featuring Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getRelatedFeature <em>Related Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getSourceFeature <em>Source Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getTargetFeature <em>Target Feature</em>}</li>
@@ -249,6 +250,29 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     }
 
     /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Type getDefaultFeaturingType() {
+        Type defaultFeaturingType = this.basicGetDefaultFeaturingType();
+        return defaultFeaturingType != null && defaultFeaturingType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) defaultFeaturingType) : defaultFeaturingType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public Type basicGetDefaultFeaturingType() {
+        // TODO: implement this method to return the 'Default Featuring Type' reference
+        // -> do not perform proxy resolution
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
      * <!-- begin-user-doc --> The Features that are related by this Connector considered as a Relationship and that
      * restrict the links it identifies, given by the referenced Features of the connectorEnds of the Connector.
      *
@@ -391,6 +415,11 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 return this.getAssociation();
             case SysmlPackage.CONNECTOR__CONNECTOR_END:
                 return this.getConnectorEnd();
+            case SysmlPackage.CONNECTOR__DEFAULT_FEATURING_TYPE:
+                if (resolve) {
+                    return this.getDefaultFeaturingType();
+                }
+                return this.basicGetDefaultFeaturingType();
             case SysmlPackage.CONNECTOR__RELATED_FEATURE:
                 return this.getRelatedFeature();
             case SysmlPackage.CONNECTOR__SOURCE_FEATURE:
@@ -486,6 +515,8 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 return !this.getAssociation().isEmpty();
             case SysmlPackage.CONNECTOR__CONNECTOR_END:
                 return !this.getConnectorEnd().isEmpty();
+            case SysmlPackage.CONNECTOR__DEFAULT_FEATURING_TYPE:
+                return this.basicGetDefaultFeaturingType() != null;
             case SysmlPackage.CONNECTOR__RELATED_FEATURE:
                 return !this.getRelatedFeature().isEmpty();
             case SysmlPackage.CONNECTOR__SOURCE_FEATURE:

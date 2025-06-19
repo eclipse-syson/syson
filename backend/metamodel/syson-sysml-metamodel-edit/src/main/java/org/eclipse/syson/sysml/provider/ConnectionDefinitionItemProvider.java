@@ -500,6 +500,9 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
                 SysmlFactory.eINSTANCE.createConjugation()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createConstructorExpression()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createSubsetting()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
@@ -560,10 +563,16 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
                 SysmlFactory.eINSTANCE.createFeatureValue()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createFlowConnectionDefinition()));
+                SysmlFactory.eINSTANCE.createFlow()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createFlowConnectionUsage()));
+                SysmlFactory.eINSTANCE.createFlowDefinition()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createFlowEnd()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createFlowUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createForkNode()));
@@ -608,15 +617,6 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
                 SysmlFactory.eINSTANCE.createInvariant()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createItemFeature()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createItemFlow()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createItemFlowEnd()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createItemUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
@@ -627,9 +627,6 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createLibraryPackage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createLifeClass()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createLiteralExpression()));
@@ -698,6 +695,9 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
                 SysmlFactory.eINSTANCE.createPartUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createPayloadFeature()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createPerformActionUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
@@ -764,10 +764,10 @@ public class ConnectionDefinitionItemProvider extends PartDefinitionItemProvider
                 SysmlFactory.eINSTANCE.createSuccessionAsUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createSuccessionFlowConnectionUsage()));
+                SysmlFactory.eINSTANCE.createSuccessionFlow()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
-                SysmlFactory.eINSTANCE.createSuccessionItemFlow()));
+                SysmlFactory.eINSTANCE.createSuccessionFlowUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createTerminateActionUsage()));

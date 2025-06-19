@@ -164,7 +164,7 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
      * /representedElement : Element {subsets owner, redefines annotatedElement}
      * The Element that is represented by this TextualRepresentation.
      * </pre>
-     * 
+     *
      * <!-- end-user-doc -->
      *
      * @generated NOT

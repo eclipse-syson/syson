@@ -37,7 +37,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
@@ -70,6 +70,7 @@ import org.eclipse.syson.sysml.helper.MembershipComputer;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#isIsReference <em>Is Reference</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#isIsVariation <em>Is Variation</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#isMayTimeVary <em>May Time Vary</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#getDefinition <em>Definition</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#getDirectedUsage <em>Directed Usage</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.UsageImpl#getNestedAction <em>Nested Action</em>}</li>
@@ -138,6 +139,16 @@ public class UsageImpl extends FeatureImpl implements Usage {
      * @ordered
      */
     protected boolean isVariation = IS_VARIATION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isMayTimeVary() <em>May Time Vary</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isMayTimeVary()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean MAY_TIME_VARY_EDEFAULT = false;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -240,6 +251,37 @@ public class UsageImpl extends FeatureImpl implements Usage {
         if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.USAGE__IS_VARIATION, oldIsVariation, this.isVariation));
         }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <br/>
+     * A Usage mayTimeVary if and only if all of the following are true <br/>
+     * - It has an owningType that specializes Occurrences::Occurrence (from the Kernel Semantic Library). <br/>
+     * - It is not a portion. <br/>
+     * - It does not specialize Links::SelfLink or Occurrences::HappensLink (from the Kernel Semantic Library). <br/>
+     * - If isComposite = true, it does not specialize Actions::Action (from the Systems Model Library). <br/>
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public boolean isMayTimeVary() {
+        boolean isMayTimeVary = false;
+        isMayTimeVary = this.getOwningType() != null;
+        isMayTimeVary = isMayTimeVary && this.getOwningType().specializesFromLibrary("Occurrences::Occurrence");
+        isMayTimeVary = isMayTimeVary && !this.isIsPortion();
+        isMayTimeVary = isMayTimeVary && !this.specializesFromLibrary("Links::SelfLink");
+        isMayTimeVary = isMayTimeVary && !this.specializesFromLibrary("Occurrences::HappensLink");
+        isMayTimeVary = isMayTimeVary && (this.isIsComposite() && !this.specializesFromLibrary("Actions::Action"));
+        return isMayTimeVary;
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public boolean isIsConstant() {
+        return this.isConstant || (this.isIsEnd() && this.isMayTimeVary());
     }
 
     /**
@@ -398,11 +440,11 @@ public class UsageImpl extends FeatureImpl implements Usage {
      * @generated NOT
      */
     @Override
-    public EList<FlowConnectionUsage> getNestedFlow() {
-        List<FlowConnectionUsage> nestedFlows = new ArrayList<>();
+    public EList<FlowUsage> getNestedFlow() {
+        List<FlowUsage> nestedFlows = new ArrayList<>();
         this.getNestedUsage().stream()
-                .filter(FlowConnectionUsage.class::isInstance)
-                .map(FlowConnectionUsage.class::cast)
+                .filter(FlowUsage.class::isInstance)
+                .map(FlowUsage.class::cast)
                 .forEach(nestedFlows::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_NestedFlow(), nestedFlows.size(), nestedFlows.toArray());
     }
@@ -791,6 +833,8 @@ public class UsageImpl extends FeatureImpl implements Usage {
                 return this.isIsReference();
             case SysmlPackage.USAGE__IS_VARIATION:
                 return this.isIsVariation();
+            case SysmlPackage.USAGE__MAY_TIME_VARY:
+                return this.isMayTimeVary();
             case SysmlPackage.USAGE__DEFINITION:
                 return this.getDefinition();
             case SysmlPackage.USAGE__DIRECTED_USAGE:
@@ -912,6 +956,8 @@ public class UsageImpl extends FeatureImpl implements Usage {
                 return this.isIsReference() != IS_REFERENCE_EDEFAULT;
             case SysmlPackage.USAGE__IS_VARIATION:
                 return this.isVariation != IS_VARIATION_EDEFAULT;
+            case SysmlPackage.USAGE__MAY_TIME_VARY:
+                return this.isMayTimeVary() != MAY_TIME_VARY_EDEFAULT;
             case SysmlPackage.USAGE__DEFINITION:
                 return !this.getDefinition().isEmpty();
             case SysmlPackage.USAGE__DIRECTED_USAGE:

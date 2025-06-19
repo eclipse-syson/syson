@@ -73,8 +73,8 @@ public class PartUsageFlowConnectionNodeToolProvider implements INodeToolProvide
                 .children(creationBindingConnectorAsUsageServiceCall)
                 .build();
 
-        return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
-                .iconURLsExpression("/icons/full/obj16/FlowConnectionUsage.svg")
+        return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()))
+                .iconURLsExpression("/icons/full/obj16/FlowUsage.svg")
                 .body(rootChangContext)
                 .build();
     }

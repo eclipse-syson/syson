@@ -336,6 +336,14 @@ public interface SysmlFactory extends EFactory {
     ConstraintUsage createConstraintUsage();
 
     /**
+     * Returns a new object of class '<em>Constructor Expression</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Constructor Expression</em>'.
+     * @generated
+     */
+    ConstructorExpression createConstructorExpression();
+
+    /**
      * Returns a new object of class '<em>Cross Subsetting</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Cross Subsetting</em>'.
@@ -521,21 +529,36 @@ public interface SysmlFactory extends EFactory {
     FeatureValue createFeatureValue();
 
     /**
-     * Returns a new object of class '<em>Flow Connection Definition</em>'. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * Returns a new object of class '<em>Flow</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return a new object of class '<em>Flow Connection Definition</em>'.
+     * @return a new object of class '<em>Flow</em>'.
      * @generated
      */
-    FlowConnectionDefinition createFlowConnectionDefinition();
+    Flow createFlow();
 
     /**
-     * Returns a new object of class '<em>Flow Connection Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns a new object of class '<em>Flow Definition</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return a new object of class '<em>Flow Connection Usage</em>'.
+     * @return a new object of class '<em>Flow Definition</em>'.
      * @generated
      */
-    FlowConnectionUsage createFlowConnectionUsage();
+    FlowDefinition createFlowDefinition();
+
+    /**
+     * Returns a new object of class '<em>Flow End</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Flow End</em>'.
+     * @generated
+     */
+    FlowEnd createFlowEnd();
+
+    /**
+     * Returns a new object of class '<em>Flow Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Flow Usage</em>'.
+     * @generated
+     */
+    FlowUsage createFlowUsage();
 
     /**
      * Returns a new object of class '<em>Fork Node</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -650,30 +673,6 @@ public interface SysmlFactory extends EFactory {
     ItemDefinition createItemDefinition();
 
     /**
-     * Returns a new object of class '<em>Item Feature</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Item Feature</em>'.
-     * @generated
-     */
-    ItemFeature createItemFeature();
-
-    /**
-     * Returns a new object of class '<em>Item Flow</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Item Flow</em>'.
-     * @generated
-     */
-    ItemFlow createItemFlow();
-
-    /**
-     * Returns a new object of class '<em>Item Flow End</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Item Flow End</em>'.
-     * @generated
-     */
-    ItemFlowEnd createItemFlowEnd();
-
-    /**
      * Returns a new object of class '<em>Item Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Item Usage</em>'.
@@ -696,14 +695,6 @@ public interface SysmlFactory extends EFactory {
      * @generated
      */
     LibraryPackage createLibraryPackage();
-
-    /**
-     * Returns a new object of class '<em>Life Class</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Life Class</em>'.
-     * @generated
-     */
-    LifeClass createLifeClass();
 
     /**
      * Returns a new object of class '<em>Literal Boolean</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -945,6 +936,14 @@ public interface SysmlFactory extends EFactory {
      * @generated
      */
     PartUsage createPartUsage();
+
+    /**
+     * Returns a new object of class '<em>Payload Feature</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Payload Feature</em>'.
+     * @generated
+     */
+    PayloadFeature createPayloadFeature();
 
     /**
      * Returns a new object of class '<em>Perform Action Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1200,21 +1199,20 @@ public interface SysmlFactory extends EFactory {
     SuccessionAsUsage createSuccessionAsUsage();
 
     /**
-     * Returns a new object of class '<em>Succession Flow Connection Usage</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * Returns a new object of class '<em>Succession Flow</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return a new object of class '<em>Succession Flow Connection Usage</em>'.
+     * @return a new object of class '<em>Succession Flow</em>'.
      * @generated
      */
-    SuccessionFlowConnectionUsage createSuccessionFlowConnectionUsage();
+    SuccessionFlow createSuccessionFlow();
 
     /**
-     * Returns a new object of class '<em>Succession Item Flow</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns a new object of class '<em>Succession Flow Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return a new object of class '<em>Succession Item Flow</em>'.
+     * @return a new object of class '<em>Succession Flow Usage</em>'.
      * @generated
      */
-    SuccessionItemFlow createSuccessionItemFlow();
+    SuccessionFlowUsage createSuccessionFlowUsage();
 
     /**
      * Returns a new object of class '<em>Terminate Action Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

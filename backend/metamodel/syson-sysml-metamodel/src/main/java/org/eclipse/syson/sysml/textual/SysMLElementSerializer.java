@@ -1822,10 +1822,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @return <code>true</code> if the previous feature is the expected one
      */
     private boolean isPreviousFeatureEqualsTo(Feature expectedFeature, Feature sourceElement, Predicate<Membership> candidatePredicate) {
-
         Type type = sourceElement.getOwningType();
         if (type != null) {
-
             EList<Membership> memberships = type.getMembership();
             FeatureMembership owningFeatureMembership = sourceElement.getOwningFeatureMembership();
             int index = memberships.indexOf(owningFeatureMembership);
@@ -1833,7 +1831,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             while (iterator.hasPrevious()) {
                 Membership previousMembership = iterator.previous();
                 if (candidatePredicate == null || candidatePredicate.test(previousMembership)) {
-                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == expectedFeature;
+                    return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getOwnedMemberFeature() == expectedFeature;
                 }
             }
         }
@@ -2195,7 +2193,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (direction != null && direction != this.getDefaultDirection(usage)) {
             builder.appendWithSpaceIfNeeded(direction.toString());
         }
-
         if (usage.isIsAbstract()) {
             builder.appendSpaceIfNeeded();
             builder.append("abstract");
@@ -2204,9 +2201,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded();
             builder.append("variation");
         }
-        if (usage.isIsReadOnly()) {
+        if (usage.isIsConstant()) {
             builder.appendSpaceIfNeeded();
-            builder.append("readonly");
+            builder.append("constant");
         }
         if (usage.isIsDerived()) {
             builder.appendSpaceIfNeeded();
@@ -2264,10 +2261,18 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendArgument(Appender builder, Feature parameter) {
-        FeatureValue valuation = parameter.getValuation();
+        FeatureValue valuation = this.getValuation(parameter);
         if (valuation != null) {
             builder.appendWithSpaceIfNeeded(this.doSwitch(valuation.getValue()));
         }
+    }
+
+    public FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     private void appendArgumentExpression(Appender builder, Expression argument) {

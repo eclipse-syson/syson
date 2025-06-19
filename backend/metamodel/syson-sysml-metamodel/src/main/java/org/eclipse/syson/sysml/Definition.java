@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -205,14 +205,14 @@ public interface Definition extends Classifier {
 
     /**
      * Returns the value of the '<em><b>Owned Flow</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.syson.sysml.FlowConnectionUsage}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.eclipse.syson.sysml.FlowUsage}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Owned Flow</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedFlow()
      * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
-    EList<FlowConnectionUsage> getOwnedFlow();
+    EList<FlowUsage> getOwnedFlow();
 
     /**
      * Returns the value of the '<em><b>Owned Interface</b></em>' reference list. The list contents are of type

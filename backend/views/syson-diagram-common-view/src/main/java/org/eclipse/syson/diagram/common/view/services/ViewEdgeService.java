@@ -39,7 +39,7 @@ import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
@@ -488,7 +488,7 @@ public class ViewEdgeService {
     }
 
     /**
-     * Reconnects the source of a {@link FlowConnectionUsage}.
+     * Reconnects the source of a {@link FlowUsage}.
      *
      * @param flow
      *            a flow
@@ -496,7 +496,7 @@ public class ViewEdgeService {
      *            the new source
      * @return the flow itself
      */
-    public FlowConnectionUsage reconnectSource(FlowConnectionUsage flow, Feature newSource) {
+    public FlowUsage reconnectSource(FlowUsage flow, Feature newSource) {
         EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
         if (!mFeatures.isEmpty()) {
             FeatureMembership toDelete = mFeatures.get(0);
@@ -508,7 +508,7 @@ public class ViewEdgeService {
     }
 
     /**
-     * Reconnects the target of a {@link FlowConnectionUsage}.
+     * Reconnects the target of a {@link FlowUsage}.
      *
      * @param flow
      *            a flow
@@ -516,7 +516,7 @@ public class ViewEdgeService {
      *            the new target
      * @return the flow itself
      */
-    public FlowConnectionUsage reconnectTarget(FlowConnectionUsage flow, Feature newTarget) {
+    public FlowUsage reconnectTarget(FlowUsage flow, Feature newTarget) {
         EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
         if (mFeatures.size() >= 2) {
             FeatureMembership toDelete = mFeatures.get(1);

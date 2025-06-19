@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -93,7 +93,7 @@ public class InterconnectionViewCreateServiceTests {
         this.build();
     }
 
-    @DisplayName("Given an existing model, when the createBindingConnectorAsUsage service is called, then a BindingConnectorAsUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createBindingConnectorAsUsage service is called, THEN a BindingConnectorAsUsage is created under the root Package and an OwningMembership.")
     @Test
     public void testCreateBindingConnectorAsUsage() {
         BindingConnectorAsUsage bindingConnectorAsUsage = this.interconnectionViewCreateService.createBindingConnectorAsUsage(this.port2, this.port3);
@@ -104,7 +104,7 @@ public class InterconnectionViewCreateServiceTests {
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 
-    @DisplayName("Given an existing model, when the createInterfaceUsage service is called, then an InterfaceUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createInterfaceUsage service is called, THEN an InterfaceUsage is created under the root Package and an OwningMembership.")
     @Test
     public void testCreateInterfaceUsage() {
         InterfaceUsage interfaceUsage = this.interconnectionViewCreateService.createInterfaceUsage(this.port2, this.port3);
@@ -115,14 +115,14 @@ public class InterconnectionViewCreateServiceTests {
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 
-    @DisplayName("Given an existing model, when the createFlowConnectionUsage service is called, then an FlowConnectionUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createFlowUsage service is called, THEN an FlowUsage is created under the root Package and an OwningMembership.")
     @Test
-    public void testCreateFlowConnectionUsage() {
-        FlowConnectionUsage flowConnectionUsage = this.interconnectionViewCreateService.createFlowConnectionUsage(this.port2, this.port3);
-        assertNotNull(flowConnectionUsage);
-        var owningNamespace = flowConnectionUsage.getOwningNamespace();
+    public void testCreateFlowUsage() {
+        FlowUsage flowUsage = this.interconnectionViewCreateService.createFlowUsage(this.port2, this.port3);
+        assertNotNull(flowUsage);
+        var owningNamespace = flowUsage.getOwningNamespace();
         assertSame(this.partDef1, owningNamespace);
-        var owningMembership = flowConnectionUsage.getOwningMembership();
+        var owningMembership = flowUsage.getOwningMembership();
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 

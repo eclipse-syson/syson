@@ -178,7 +178,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void itemFeatureChain() {
+    public void payloadFeatureChain() {
         // Simple test on the bordered node representing a2_1
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnBorderedNode(this.verifier, this.diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID,
@@ -243,7 +243,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void itemFeatureChainBindingEdge() {
+    public void payloadFeatureChainBindingEdge() {
 
         // Create an edge using direct edit
         this.directEditTester.checkDirectEditInsideLabel(this.verifier, this.diagram,

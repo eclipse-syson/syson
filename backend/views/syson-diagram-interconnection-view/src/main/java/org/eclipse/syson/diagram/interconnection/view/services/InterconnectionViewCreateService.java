@@ -86,7 +86,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
             this.addChildInParent(newPartUsage, newPartUsagePort);
             this.elementInitializer(newPartUsagePort);
             // create flow connection edge between both new ports
-            this.createFlowConnectionUsage(newSelfPort, newPartUsagePort);
+            this.createFlowUsage(newSelfPort, newPartUsagePort);
             return newPartUsage;
         }
         return self;

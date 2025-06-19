@@ -52,13 +52,14 @@ public class FeatureItemProvider extends TypeItemProvider {
 
             this.addDirectionPropertyDescriptor(object);
             this.addIsCompositePropertyDescriptor(object);
+            this.addIsConstantPropertyDescriptor(object);
             this.addIsDerivedPropertyDescriptor(object);
             this.addIsEndPropertyDescriptor(object);
             this.addIsNonuniquePropertyDescriptor(object);
             this.addIsOrderedPropertyDescriptor(object);
             this.addIsPortionPropertyDescriptor(object);
-            this.addIsReadOnlyPropertyDescriptor(object);
             this.addIsUniquePropertyDescriptor(object);
+            this.addIsVariablePropertyDescriptor(object);
             this.addChainingFeaturePropertyDescriptor(object);
             this.addCrossFeaturePropertyDescriptor(object);
             this.addEndOwningTypePropertyDescriptor(object);
@@ -75,7 +76,6 @@ public class FeatureItemProvider extends TypeItemProvider {
             this.addOwningFeatureMembershipPropertyDescriptor(object);
             this.addOwningTypePropertyDescriptor(object);
             this.addTypePropertyDescriptor(object);
-            this.addValuationPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -234,6 +234,25 @@ public class FeatureItemProvider extends TypeItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Is Constant feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsConstantPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_isConstant_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_isConstant_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_IsConstant(),
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
+    }
+
+    /**
      * This adds a property descriptor for the Is Derived feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -329,25 +348,6 @@ public class FeatureItemProvider extends TypeItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Is Read Only feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addIsReadOnlyPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Feature_isReadOnly_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_isReadOnly_feature", "_UI_Feature_type"),
-                SysmlPackage.eINSTANCE.getFeature_IsReadOnly(),
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
      * This adds a property descriptor for the Is Unique feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -358,6 +358,25 @@ public class FeatureItemProvider extends TypeItemProvider {
                 this.getString("_UI_Feature_isUnique_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_isUnique_feature", "_UI_Feature_type"),
                 SysmlPackage.eINSTANCE.getFeature_IsUnique(),
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Variable feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsVariablePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_isVariable_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_isVariable_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_IsVariable(),
                 true,
                 false,
                 false,
@@ -562,25 +581,6 @@ public class FeatureItemProvider extends TypeItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Valuation feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addValuationPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Feature_valuation_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_valuation_feature", "_UI_Feature_type"),
-                SysmlPackage.eINSTANCE.getFeature_Valuation(),
-                false,
-                false,
-                false,
-                null,
-                null,
-                null));
-    }
-
-    /**
      * This returns Feature.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -615,13 +615,14 @@ public class FeatureItemProvider extends TypeItemProvider {
         switch (notification.getFeatureID(Feature.class)) {
             case SysmlPackage.FEATURE__DIRECTION:
             case SysmlPackage.FEATURE__IS_COMPOSITE:
+            case SysmlPackage.FEATURE__IS_CONSTANT:
             case SysmlPackage.FEATURE__IS_DERIVED:
             case SysmlPackage.FEATURE__IS_END:
             case SysmlPackage.FEATURE__IS_NONUNIQUE:
             case SysmlPackage.FEATURE__IS_ORDERED:
             case SysmlPackage.FEATURE__IS_PORTION:
-            case SysmlPackage.FEATURE__IS_READ_ONLY:
             case SysmlPackage.FEATURE__IS_UNIQUE:
+            case SysmlPackage.FEATURE__IS_VARIABLE:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

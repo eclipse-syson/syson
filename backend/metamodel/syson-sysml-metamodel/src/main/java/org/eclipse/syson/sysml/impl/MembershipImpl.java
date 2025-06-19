@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -259,18 +258,6 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      * @generated
      */
     @Override
-    public EList<Feature> allRedefinedFeatures() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public String getMemberShortName() {
         return this.memberShortName;
     }
@@ -451,8 +438,6 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-            case SysmlPackage.MEMBERSHIP___ALL_REDEFINED_FEATURES:
-                return this.allRedefinedFeatures();
             case SysmlPackage.MEMBERSHIP___IS_DISTINGUISHABLE_FROM__MEMBERSHIP:
                 return this.isDistinguishableFrom((Membership) arguments.get(0));
         }

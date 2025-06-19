@@ -39,28 +39,28 @@ public class DirectEditParser extends Parser {
 		Integer=35, Real=36, DoubleQuotedString=37, ABOUT=38, ABSTRACT=39, ABSTRACT_PREFIX=40, 
 		ALIAS=41, ALL=42, AND=43, AS=44, ASSIGN=45, ASSOC=46, BEAHVIOR=47, BINDING=48, 
 		BOOL=49, BY=50, CHAINS=51, CLASS=52, CLASSIFIER=53, COMMENT=54, COMPOSITE=55, 
-		CONJUGATE=56, CONJUGATES=57, CONJUGATION=58, CONNECTOR=59, DATATYPE=60, 
-		DEFAULT=61, DEFAULT_SUFFIX=62, DEPENDENCY=63, DERIVED=64, DERIVED_PREFIX=65, 
-		DIFFERENCES=66, DISJOINING=67, DISJOINT=68, DOC=69, ELSE=70, END=71, END_PREFIX=72, 
-		EXPR=73, FALSE=74, FEATURE=75, FEATURED=76, FEATURING=77, FILTER=78, FIRST=79, 
-		FLOW=80, FOR=81, FROM=82, FUNCTION=83, HASTYPE=84, IF=85, INTERSECTS=86, 
-		IMPLIES=87, IMPORT=88, IN=89, IN_PREFIX=90, INOUT=91, INOUT_PREFIX=92, 
-		INTERACTION=93, INV=94, INVERSE=95, INVERTING=96, ISTYPE=97, LANGUAGE=98, 
-		MEMBER=99, METACLASS=100, METADATA=101, MULTIPLICITY=102, NAMESPACE=103, 
-		NONUNIQUE=104, NONUNIQUE_SUFFIX=105, NOT=106, NULL=107, OF=108, OR=109, 
-		ORDERED=110, ORDERED_SUFFIX=111, OUT=112, OUT_PREFIX=113, PACKAGE=114, 
-		PORTION=115, PREDICATE=116, PRIAVTE=117, PROTECTED=118, PUBLIC=119, READONLY=120, 
-		READONLY_PREFIX=121, REDEFINES=122, REDEFINITION=123, REF=124, REF_PREFIX=125, 
-		REFERENCES=126, REP=127, RETURN=128, SPECIALIZTION=129, SPECIALIZES=130, 
-		STEP=131, STRCUT=132, SUBCLASSIFIER=133, SUBSET=134, SUBSETS=135, SUBTYPE=136, 
-		SUCCESSION=137, THEN=138, TO=139, TRUE=140, TYPE=141, TYPED=142, TYPING=143, 
-		UNIONS=144, VARIATION=145, VARIATION_PREFIX=146, VARIANT=147, VARIANT_PREFIX=148, 
-		XOR_KEYWORD=149, REFNAME=150, ANY=151, XOR=152;
+		CONJUGATE=56, CONJUGATES=57, CONJUGATION=58, CONNECTOR=59, CONST=60, CONST_PREFIX=61, 
+		CONSTANT=62, CONSTANT_PREFIX=63, DATATYPE=64, DEFAULT=65, DEFAULT_SUFFIX=66, 
+		DEPENDENCY=67, DERIVED=68, DERIVED_PREFIX=69, DIFFERENCES=70, DISJOINING=71, 
+		DISJOINT=72, DOC=73, ELSE=74, END=75, END_PREFIX=76, EXPR=77, FALSE=78, 
+		FEATURE=79, FEATURED=80, FEATURING=81, FILTER=82, FIRST=83, FLOW=84, FOR=85, 
+		FROM=86, FUNCTION=87, HASTYPE=88, IF=89, INTERSECTS=90, IMPLIES=91, IMPORT=92, 
+		IN=93, IN_PREFIX=94, INOUT=95, INOUT_PREFIX=96, INTERACTION=97, INV=98, 
+		INVERSE=99, INVERTING=100, ISTYPE=101, LANGUAGE=102, MEMBER=103, METACLASS=104, 
+		METADATA=105, MULTIPLICITY=106, NAMESPACE=107, NONUNIQUE=108, NONUNIQUE_SUFFIX=109, 
+		NEW=110, NOT=111, NULL=112, OF=113, OR=114, ORDERED=115, ORDERED_SUFFIX=116, 
+		OUT=117, OUT_PREFIX=118, PACKAGE=119, PORTION=120, PREDICATE=121, PRIVATE=122, 
+		PROTECTED=123, PUBLIC=124, REDEFINES=125, REDEFINITION=126, REF=127, REF_PREFIX=128, 
+		REFERENCES=129, REP=130, RETURN=131, SPECIALIZTION=132, SPECIALIZES=133, 
+		STEP=134, STRUCT=135, SUBCLASSIFIER=136, SUBSET=137, SUBSETS=138, SUBTYPE=139, 
+		SUCCESSION=140, THEN=141, TO=142, TRUE=143, TYPE=144, TYPED=145, TYPING=146, 
+		UNIONS=147, VAR=148, VARIATION=149, VARIATION_PREFIX=150, VARIANT=151, 
+		VARIANT_PREFIX=152, XOR_KEYWORD=153, REFNAME=154, ANY=155, XOR=156;
 	public static final int
 		RULE_nodeExpression = 0, RULE_listItemExpression = 1, RULE_prefixNodeExpression = 2, 
 		RULE_prefixListItemExpression = 3, RULE_directionPrefixExpression = 4, 
 		RULE_abstractPrefixExpression = 5, RULE_variationPrefixExpression = 6, 
-		RULE_variantPrefixExpression = 7, RULE_readonlyPrefixExpression = 8, RULE_derivedPrefixExpression = 9, 
+		RULE_variantPrefixExpression = 7, RULE_constantPrefixExpression = 8, RULE_derivedPrefixExpression = 9, 
 		RULE_endPrefixExpression = 10, RULE_referenceExpression = 11, RULE_multiplicityExpression = 12, 
 		RULE_multiplicityPropExpression = 13, RULE_orderedMultiplicityExpression = 14, 
 		RULE_nonuniqueMultiplicityExpression = 15, RULE_multiplicityExpressionMember = 16, 
@@ -76,7 +76,7 @@ public class DirectEditParser extends Parser {
 		return new String[] {
 			"nodeExpression", "listItemExpression", "prefixNodeExpression", "prefixListItemExpression", 
 			"directionPrefixExpression", "abstractPrefixExpression", "variationPrefixExpression", 
-			"variantPrefixExpression", "readonlyPrefixExpression", "derivedPrefixExpression", 
+			"variantPrefixExpression", "constantPrefixExpression", "derivedPrefixExpression", 
 			"endPrefixExpression", "referenceExpression", "multiplicityExpression", 
 			"multiplicityPropExpression", "orderedMultiplicityExpression", "nonuniqueMultiplicityExpression", 
 			"multiplicityExpressionMember", "featureExpressions", "subsettingExpression", 
@@ -99,21 +99,21 @@ public class DirectEditParser extends Parser {
 			null, "'alias'", "'all'", "'and'", "'as'", "'assign'", "'assoc'", "'behavior'", 
 			"'binding'", "'bool'", "'by'", "'chains'", "'class'", "'classifier'", 
 			"'comment'", "'composite'", "'conjugate'", "'conjugates'", "'conjugation'", 
-			"'connector'", "'datatype'", "'default'", null, "'dependency'", "'derived'", 
-			null, "'differences'", "'disjoining'", "'disjoint'", "'doc'", "'else'", 
-			"'end'", null, "'expr'", "'false'", "'feature'", "'featured'", "'featuring'", 
-			"'filter'", "'first'", "'flow'", "'for'", "'from'", "'function'", "'hastype'", 
-			"'if'", "'intersects'", "'implies'", "'import'", "'in'", null, "'inout'", 
-			null, "'interaction'", "'inv'", "'inverse'", "'inverting'", "'istype'", 
-			"'language'", "'member'", "'metaclass'", "'metadata'", "'multiplicity'", 
-			"'namespace'", "'nonunique'", null, "'not'", "'null'", "'of'", "'or'", 
-			"'ordered'", null, "'out'", null, "'package'", "'portion'", "'predicate'", 
-			"'private'", "'protected'", "'public'", "'readonly'", null, "'redefines'", 
-			"'redefinition'", "'ref'", null, "'references'", "'rep'", "'return'", 
-			"'specialization'", "'specializes'", "'step'", "'struct'", "'subclassifier'", 
-			"'subset'", "'subsets'", "'subtype'", "'succession'", "'then'", "'to'", 
-			"'true'", "'type'", "'typed'", "'typing'", "'unions'", "'variation'", 
-			null, "'variant'", null, "'xor'"
+			"'connector'", "'const'", null, "'constant'", null, "'datatype'", "'default'", 
+			null, "'dependency'", "'derived'", null, "'differences'", "'disjoining'", 
+			"'disjoint'", "'doc'", "'else'", "'end'", null, "'expr'", "'false'", 
+			"'feature'", "'featured'", "'featuring'", "'filter'", "'first'", "'flow'", 
+			"'for'", "'from'", "'function'", "'hastype'", "'if'", "'intersects'", 
+			"'implies'", "'import'", "'in'", null, "'inout'", null, "'interaction'", 
+			"'inv'", "'inverse'", "'inverting'", "'istype'", "'language'", "'member'", 
+			"'metaclass'", "'metadata'", "'multiplicity'", "'namespace'", "'nonunique'", 
+			null, "'new'", "'not'", "'null'", "'of'", "'or'", "'ordered'", null, 
+			"'out'", null, "'package'", "'portion'", "'predicate'", "'private'", 
+			"'protected'", "'public'", "'redefines'", "'redefinition'", "'ref'", 
+			null, "'references'", "'rep'", "'return'", "'specialization'", "'specializes'", 
+			"'step'", "'struct'", "'subclassifier'", "'subset'", "'subsets'", "'subtype'", 
+			"'succession'", "'then'", "'to'", "'true'", "'type'", "'typed'", "'typing'", 
+			"'unions'", "'var'", "'variation'", null, "'variant'", null, "'xor'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -127,21 +127,21 @@ public class DirectEditParser extends Parser {
 			"ABOUT", "ABSTRACT", "ABSTRACT_PREFIX", "ALIAS", "ALL", "AND", "AS", 
 			"ASSIGN", "ASSOC", "BEAHVIOR", "BINDING", "BOOL", "BY", "CHAINS", "CLASS", 
 			"CLASSIFIER", "COMMENT", "COMPOSITE", "CONJUGATE", "CONJUGATES", "CONJUGATION", 
-			"CONNECTOR", "DATATYPE", "DEFAULT", "DEFAULT_SUFFIX", "DEPENDENCY", "DERIVED", 
-			"DERIVED_PREFIX", "DIFFERENCES", "DISJOINING", "DISJOINT", "DOC", "ELSE", 
-			"END", "END_PREFIX", "EXPR", "FALSE", "FEATURE", "FEATURED", "FEATURING", 
-			"FILTER", "FIRST", "FLOW", "FOR", "FROM", "FUNCTION", "HASTYPE", "IF", 
-			"INTERSECTS", "IMPLIES", "IMPORT", "IN", "IN_PREFIX", "INOUT", "INOUT_PREFIX", 
-			"INTERACTION", "INV", "INVERSE", "INVERTING", "ISTYPE", "LANGUAGE", "MEMBER", 
-			"METACLASS", "METADATA", "MULTIPLICITY", "NAMESPACE", "NONUNIQUE", "NONUNIQUE_SUFFIX", 
-			"NOT", "NULL", "OF", "OR", "ORDERED", "ORDERED_SUFFIX", "OUT", "OUT_PREFIX", 
-			"PACKAGE", "PORTION", "PREDICATE", "PRIAVTE", "PROTECTED", "PUBLIC", 
-			"READONLY", "READONLY_PREFIX", "REDEFINES", "REDEFINITION", "REF", "REF_PREFIX", 
-			"REFERENCES", "REP", "RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", 
-			"STRCUT", "SUBCLASSIFIER", "SUBSET", "SUBSETS", "SUBTYPE", "SUCCESSION", 
-			"THEN", "TO", "TRUE", "TYPE", "TYPED", "TYPING", "UNIONS", "VARIATION", 
-			"VARIATION_PREFIX", "VARIANT", "VARIANT_PREFIX", "XOR_KEYWORD", "REFNAME", 
-			"ANY", "XOR"
+			"CONNECTOR", "CONST", "CONST_PREFIX", "CONSTANT", "CONSTANT_PREFIX", 
+			"DATATYPE", "DEFAULT", "DEFAULT_SUFFIX", "DEPENDENCY", "DERIVED", "DERIVED_PREFIX", 
+			"DIFFERENCES", "DISJOINING", "DISJOINT", "DOC", "ELSE", "END", "END_PREFIX", 
+			"EXPR", "FALSE", "FEATURE", "FEATURED", "FEATURING", "FILTER", "FIRST", 
+			"FLOW", "FOR", "FROM", "FUNCTION", "HASTYPE", "IF", "INTERSECTS", "IMPLIES", 
+			"IMPORT", "IN", "IN_PREFIX", "INOUT", "INOUT_PREFIX", "INTERACTION", 
+			"INV", "INVERSE", "INVERTING", "ISTYPE", "LANGUAGE", "MEMBER", "METACLASS", 
+			"METADATA", "MULTIPLICITY", "NAMESPACE", "NONUNIQUE", "NONUNIQUE_SUFFIX", 
+			"NEW", "NOT", "NULL", "OF", "OR", "ORDERED", "ORDERED_SUFFIX", "OUT", 
+			"OUT_PREFIX", "PACKAGE", "PORTION", "PREDICATE", "PRIVATE", "PROTECTED", 
+			"PUBLIC", "REDEFINES", "REDEFINITION", "REF", "REF_PREFIX", "REFERENCES", 
+			"REP", "RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", "STRUCT", "SUBCLASSIFIER", 
+			"SUBSET", "SUBSETS", "SUBTYPE", "SUCCESSION", "THEN", "TO", "TRUE", "TYPE", 
+			"TYPED", "TYPING", "UNIONS", "VAR", "VARIATION", "VARIATION_PREFIX", 
+			"VARIANT", "VARIANT_PREFIX", "XOR_KEYWORD", "REFNAME", "ANY", "XOR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -261,7 +261,7 @@ public class DirectEditParser extends Parser {
 			setState(92);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << DATATYPE) | (1L << DEFAULT) | (1L << DEPENDENCY))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIAVTE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (READONLY - 64)) | (1L << (READONLY_PREFIX - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)) | (1L << (REF_PREFIX - 64)) | (1L << (REFERENCES - 64)) | (1L << (REP - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRCUT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
 				{
 				setState(91);
 				name();
@@ -364,7 +364,7 @@ public class DirectEditParser extends Parser {
 			setState(108);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << DATATYPE) | (1L << DEFAULT) | (1L << DEPENDENCY))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIAVTE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (READONLY - 64)) | (1L << (READONLY_PREFIX - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)) | (1L << (REF_PREFIX - 64)) | (1L << (REFERENCES - 64)) | (1L << (REP - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRCUT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
 				{
 				setState(107);
 				name();
@@ -516,11 +516,11 @@ public class DirectEditParser extends Parser {
 		public VariationPrefixExpressionContext variationPrefixExpression(int i) {
 			return getRuleContext(VariationPrefixExpressionContext.class,i);
 		}
-		public List<ReadonlyPrefixExpressionContext> readonlyPrefixExpression() {
-			return getRuleContexts(ReadonlyPrefixExpressionContext.class);
+		public List<ConstantPrefixExpressionContext> constantPrefixExpression() {
+			return getRuleContexts(ConstantPrefixExpressionContext.class);
 		}
-		public ReadonlyPrefixExpressionContext readonlyPrefixExpression(int i) {
-			return getRuleContext(ReadonlyPrefixExpressionContext.class,i);
+		public ConstantPrefixExpressionContext constantPrefixExpression(int i) {
+			return getRuleContext(ConstantPrefixExpressionContext.class,i);
 		}
 		public List<DerivedPrefixExpressionContext> derivedPrefixExpression() {
 			return getRuleContexts(DerivedPrefixExpressionContext.class);
@@ -584,10 +584,10 @@ public class DirectEditParser extends Parser {
 						variationPrefixExpression();
 						}
 						break;
-					case READONLY_PREFIX:
+					case CONSTANT_PREFIX:
 						{
 						setState(130);
-						readonlyPrefixExpression();
+						constantPrefixExpression();
 						}
 						break;
 					case DERIVED_PREFIX:
@@ -651,7 +651,7 @@ public class DirectEditParser extends Parser {
 			{
 			setState(138);
 			_la = _input.LA(1);
-			if ( !(((((_la - 90)) & ~0x3f) == 0 && ((1L << (_la - 90)) & ((1L << (IN_PREFIX - 90)) | (1L << (INOUT_PREFIX - 90)) | (1L << (OUT_PREFIX - 90)))) != 0)) ) {
+			if ( !(((((_la - 94)) & ~0x3f) == 0 && ((1L << (_la - 94)) & ((1L << (IN_PREFIX - 94)) | (1L << (INOUT_PREFIX - 94)) | (1L << (OUT_PREFIX - 94)))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -783,30 +783,30 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ReadonlyPrefixExpressionContext extends ParserRuleContext {
-		public TerminalNode READONLY_PREFIX() { return getToken(DirectEditParser.READONLY_PREFIX, 0); }
-		public ReadonlyPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+	public static class ConstantPrefixExpressionContext extends ParserRuleContext {
+		public TerminalNode CONSTANT_PREFIX() { return getToken(DirectEditParser.CONSTANT_PREFIX, 0); }
+		public ConstantPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_readonlyPrefixExpression; }
+		@Override public int getRuleIndex() { return RULE_constantPrefixExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterReadonlyPrefixExpression(this);
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterConstantPrefixExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitReadonlyPrefixExpression(this);
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitConstantPrefixExpression(this);
 		}
 	}
 
-	public final ReadonlyPrefixExpressionContext readonlyPrefixExpression() throws RecognitionException {
-		ReadonlyPrefixExpressionContext _localctx = new ReadonlyPrefixExpressionContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_readonlyPrefixExpression);
+	public final ConstantPrefixExpressionContext constantPrefixExpression() throws RecognitionException {
+		ConstantPrefixExpressionContext _localctx = new ConstantPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_constantPrefixExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(146);
-			match(READONLY_PREFIX);
+			match(CONSTANT_PREFIX);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1251,7 +1251,7 @@ public class DirectEditParser extends Parser {
 				setState(183);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQUALS) | (1L << ASSIGN_OP) | (1L << DEFAULT_SUFFIX))) != 0)) {
+				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & ((1L << (EQUALS - 12)) | (1L << (ASSIGN_OP - 12)) | (1L << (DEFAULT_SUFFIX - 12)))) != 0)) {
 					{
 					setState(182);
 					featureValueExpression();
@@ -1299,7 +1299,7 @@ public class DirectEditParser extends Parser {
 				setState(193);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << EQUALS) | (1L << ASSIGN_OP) | (1L << DEFAULT_SUFFIX))) != 0)) {
+				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & ((1L << (EQUALS - 12)) | (1L << (ASSIGN_OP - 12)) | (1L << (DEFAULT_SUFFIX - 12)))) != 0)) {
 					{
 					setState(192);
 					featureValueExpression();
@@ -1668,7 +1668,7 @@ public class DirectEditParser extends Parser {
 				setState(225); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << LBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << COLON) | (1L << EQUALS) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << DATATYPE) | (1L << DEFAULT) | (1L << DEFAULT_SUFFIX) | (1L << DEPENDENCY))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NONUNIQUE_SUFFIX - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (ORDERED_SUFFIX - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIAVTE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (READONLY - 64)) | (1L << (READONLY_PREFIX - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)) | (1L << (REF_PREFIX - 64)) | (1L << (REFERENCES - 64)) | (1L << (REP - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRCUT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << LBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << COLON) | (1L << EQUALS) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEFAULT_SUFFIX - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NONUNIQUE_SUFFIX - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (ORDERED_SUFFIX - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -2820,7 +2820,7 @@ public class DirectEditParser extends Parser {
 					{
 					setState(335);
 					_la = _input.LA(1);
-					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LBRACKET) | (1L << COLON) | (1L << EQUALS) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP) | (1L << DEFAULT_SUFFIX))) != 0) || _la==NONUNIQUE_SUFFIX || _la==ORDERED_SUFFIX) ) {
+					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LBRACKET) | (1L << COLON) | (1L << EQUALS) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP))) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & ((1L << (DEFAULT_SUFFIX - 66)) | (1L << (NONUNIQUE_SUFFIX - 66)) | (1L << (ORDERED_SUFFIX - 66)))) != 0)) ) {
 					_errHandler.recoverInline(this);
 					}
 					else {
@@ -2867,7 +2867,7 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0098\u0155\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0004\u0001\u009c\u0155\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
 		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
 		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
 		"\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b"+
@@ -2918,11 +2918,11 @@ public class DirectEditParser extends Parser {
 		"\'\u0003\'\u0147\b\'\u0001(\u0001(\u0001(\u0004(\u014c\b(\u000b(\f(\u014d"+
 		"\u0001)\u0004)\u0151\b)\u000b)\f)\u0152\u0001)\u0000\u00014*\u0000\u0002"+
 		"\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e"+
-		" \"$&(*,.02468:<>@BDFHJLNPR\u0000\b\u0003\u0000ZZ\\\\qq\u0002\u0000\u000f"+
+		" \"$&(*,.02468:<>@BDFHJLNPR\u0000\b\u0003\u0000^^``vv\u0002\u0000\u000f"+
 		"\u000f##\u0002\u0000\f\f\u001a\u001a\u0001\u0000\"%\u0001\u0000\u0004"+
-		"\u0004\u0006\u0000\u0007\b\r\u0013\u0016\u0016\u001b!\u0095\u0095\u0098"+
-		"\u0098\u0002\u0000\u0001\u0001\u0096\u0096\u0006\u0000\u0003\u0003\u000b"+
-		"\f\u0017\u001a>>iioo\u015f\u0000T\u0001\u0000\u0000\u0000\u0002d\u0001"+
+		"\u0004\u0006\u0000\u0007\b\r\u0013\u0016\u0016\u001b!\u0099\u0099\u009c"+
+		"\u009c\u0002\u0000\u0001\u0001\u009a\u009a\u0006\u0000\u0003\u0003\u000b"+
+		"\f\u0017\u001aBBmmtt\u015f\u0000T\u0001\u0000\u0000\u0000\u0002d\u0001"+
 		"\u0000\u0000\u0000\u0004|\u0001\u0000\u0000\u0000\u0006\u0087\u0001\u0000"+
 		"\u0000\u0000\b\u008a\u0001\u0000\u0000\u0000\n\u008c\u0001\u0000\u0000"+
 		"\u0000\f\u008e\u0001\u0000\u0000\u0000\u000e\u0090\u0001\u0000\u0000\u0000"+
@@ -2970,106 +2970,106 @@ public class DirectEditParser extends Parser {
 		"\u0000\u0000\u0000\u0087\u0088\u0001\u0000\u0000\u0000\u0088\u0007\u0001"+
 		"\u0000\u0000\u0000\u0089\u0087\u0001\u0000\u0000\u0000\u008a\u008b\u0007"+
 		"\u0000\u0000\u0000\u008b\t\u0001\u0000\u0000\u0000\u008c\u008d\u0005("+
-		"\u0000\u0000\u008d\u000b\u0001\u0000\u0000\u0000\u008e\u008f\u0005\u0092"+
-		"\u0000\u0000\u008f\r\u0001\u0000\u0000\u0000\u0090\u0091\u0005\u0094\u0000"+
-		"\u0000\u0091\u000f\u0001\u0000\u0000\u0000\u0092\u0093\u0005y\u0000\u0000"+
-		"\u0093\u0011\u0001\u0000\u0000\u0000\u0094\u0095\u0005A\u0000\u0000\u0095"+
-		"\u0013\u0001\u0000\u0000\u0000\u0096\u0097\u0005H\u0000\u0000\u0097\u0015"+
-		"\u0001\u0000\u0000\u0000\u0098\u0099\u0005}\u0000\u0000\u0099\u0017\u0001"+
-		"\u0000\u0000\u0000\u009a\u009e\u0005\u0003\u0000\u0000\u009b\u009c\u0003"+
-		" \u0010\u0000\u009c\u009d\u0005\u0016\u0000\u0000\u009d\u009f\u0001\u0000"+
-		"\u0000\u0000\u009e\u009b\u0001\u0000\u0000\u0000\u009e\u009f\u0001\u0000"+
-		"\u0000\u0000\u009f\u00a0\u0001\u0000\u0000\u0000\u00a0\u00a1\u0003 \u0010"+
-		"\u0000\u00a1\u00a2\u0005\u0004\u0000\u0000\u00a2\u0019\u0001\u0000\u0000"+
-		"\u0000\u00a3\u00a5\u0003\u001c\u000e\u0000\u00a4\u00a3\u0001\u0000\u0000"+
-		"\u0000\u00a4\u00a5\u0001\u0000\u0000\u0000\u00a5\u00a7\u0001\u0000\u0000"+
-		"\u0000\u00a6\u00a8\u0003\u001e\u000f\u0000\u00a7\u00a6\u0001\u0000\u0000"+
-		"\u0000\u00a7\u00a8\u0001\u0000\u0000\u0000\u00a8\u001b\u0001\u0000\u0000"+
-		"\u0000\u00a9\u00aa\u0005o\u0000\u0000\u00aa\u001d\u0001\u0000\u0000\u0000"+
-		"\u00ab\u00ac\u0005i\u0000\u0000\u00ac\u001f\u0001\u0000\u0000\u0000\u00ad"+
-		"\u00ae\u0007\u0001\u0000\u0000\u00ae!\u0001\u0000\u0000\u0000\u00af\u00b2"+
-		"\u0003$\u0012\u0000\u00b0\u00b2\u0003&\u0013\u0000\u00b1\u00af\u0001\u0000"+
-		"\u0000\u0000\u00b1\u00b0\u0001\u0000\u0000\u0000\u00b1\u00b2\u0001\u0000"+
-		"\u0000\u0000\u00b2\u00b4\u0001\u0000\u0000\u0000\u00b3\u00b5\u0003(\u0014"+
-		"\u0000\u00b4\u00b3\u0001\u0000\u0000\u0000\u00b4\u00b5\u0001\u0000\u0000"+
-		"\u0000\u00b5\u00b7\u0001\u0000\u0000\u0000\u00b6\u00b8\u0003,\u0016\u0000"+
-		"\u00b7\u00b6\u0001\u0000\u0000\u0000\u00b7\u00b8\u0001\u0000\u0000\u0000"+
-		"\u00b8\u00c4\u0001\u0000\u0000\u0000\u00b9\u00bb\u0003(\u0014\u0000\u00ba"+
-		"\u00b9\u0001\u0000\u0000\u0000\u00ba\u00bb\u0001\u0000\u0000\u0000\u00bb"+
-		"\u00be\u0001\u0000\u0000\u0000\u00bc\u00bf\u0003$\u0012\u0000\u00bd\u00bf"+
-		"\u0003&\u0013\u0000\u00be\u00bc\u0001\u0000\u0000\u0000\u00be\u00bd\u0001"+
-		"\u0000\u0000\u0000\u00be\u00bf\u0001\u0000\u0000\u0000\u00bf\u00c1\u0001"+
-		"\u0000\u0000\u0000\u00c0\u00c2\u0003,\u0016\u0000\u00c1\u00c0\u0001\u0000"+
-		"\u0000\u0000\u00c1\u00c2\u0001\u0000\u0000\u0000\u00c2\u00c4\u0001\u0000"+
-		"\u0000\u0000\u00c3\u00b1\u0001\u0000\u0000\u0000\u00c3\u00ba\u0001\u0000"+
-		"\u0000\u0000\u00c4#\u0001\u0000\u0000\u0000\u00c5\u00c6\u0005\u0018\u0000"+
-		"\u0000\u00c6\u00c7\u0003J%\u0000\u00c7%\u0001\u0000\u0000\u0000\u00c8"+
-		"\u00c9\u0005\u0019\u0000\u0000\u00c9\u00ca\u0003J%\u0000\u00ca\'\u0001"+
-		"\u0000\u0000\u0000\u00cb\u00cc\u0005\u000b\u0000\u0000\u00cc\u00cd\u0003"+
-		"J%\u0000\u00cd)\u0001\u0000\u0000\u0000\u00ce\u00cf\u0005\f\u0000\u0000"+
-		"\u00cf\u00d4\u0003.\u0017\u0000\u00d0\u00d1\u0005\u0003\u0000\u0000\u00d1"+
-		"\u00d2\u00030\u0018\u0000\u00d2\u00d3\u0005\u0004\u0000\u0000\u00d3\u00d5"+
-		"\u0001\u0000\u0000\u0000\u00d4\u00d0\u0001\u0000\u0000\u0000\u00d4\u00d5"+
-		"\u0001\u0000\u0000\u0000\u00d5+\u0001\u0000\u0000\u0000\u00d6\u00d8\u0005"+
-		">\u0000\u0000\u00d7\u00d6\u0001\u0000\u0000\u0000\u00d7\u00d8\u0001\u0000"+
-		"\u0000\u0000\u00d8\u00d9\u0001\u0000\u0000\u0000\u00d9\u00da\u0007\u0002"+
-		"\u0000\u0000\u00da\u00db\u00034\u001a\u0000\u00db-\u0001\u0000\u0000\u0000"+
-		"\u00dc\u00dd\u0007\u0003\u0000\u0000\u00dd/\u0001\u0000\u0000\u0000\u00de"+
-		"\u00e0\b\u0004\u0000\u0000\u00df\u00de\u0001\u0000\u0000\u0000\u00e0\u00e1"+
-		"\u0001\u0000\u0000\u0000\u00e1\u00df\u0001\u0000\u0000\u0000\u00e1\u00e2"+
-		"\u0001\u0000\u0000\u0000\u00e21\u0001\u0000\u0000\u0000\u00e3\u00e4\u0003"+
-		"4\u001a\u0000\u00e43\u0001\u0000\u0000\u0000\u00e5\u00e6\u0006\u001a\uffff"+
-		"\uffff\u0000\u00e6\u00e7\u00036\u001b\u0000\u00e7\u00ed\u0001\u0000\u0000"+
-		"\u0000\u00e8\u00e9\n\u0002\u0000\u0000\u00e9\u00ea\u0007\u0005\u0000\u0000"+
-		"\u00ea\u00ec\u00034\u001a\u0003\u00eb\u00e8\u0001\u0000\u0000\u0000\u00ec"+
-		"\u00ef\u0001\u0000\u0000\u0000\u00ed\u00eb\u0001\u0000\u0000\u0000\u00ed"+
-		"\u00ee\u0001\u0000\u0000\u0000\u00ee5\u0001\u0000\u0000\u0000\u00ef\u00ed"+
-		"\u0001\u0000\u0000\u0000\u00f0\u00f8\u0003>\u001f\u0000\u00f1\u00f8\u0003"+
-		"8\u001c\u0000\u00f2\u00f8\u0003.\u0017\u0000\u00f3\u00f4\u0005\u0005\u0000"+
-		"\u0000\u00f4\u00f5\u00034\u001a\u0000\u00f5\u00f6\u0005\u0006\u0000\u0000"+
-		"\u00f6\u00f8\u0001\u0000\u0000\u0000\u00f7\u00f0\u0001\u0000\u0000\u0000"+
-		"\u00f7\u00f1\u0001\u0000\u0000\u0000\u00f7\u00f2\u0001\u0000\u0000\u0000"+
-		"\u00f7\u00f3\u0001\u0000\u0000\u0000\u00f87\u0001\u0000\u0000\u0000\u00f9"+
-		"\u00fa\u0003:\u001d\u0000\u00fa\u00fb\u0005\u0003\u0000\u0000\u00fb\u00fc"+
-		"\u0003<\u001e\u0000\u00fc\u00fd\u0005\u0004\u0000\u0000\u00fd9\u0001\u0000"+
-		"\u0000\u0000\u00fe\u0105\u0003>\u001f\u0000\u00ff\u0105\u0003.\u0017\u0000"+
-		"\u0100\u0101\u0005\u0005\u0000\u0000\u0101\u0102\u00034\u001a\u0000\u0102"+
-		"\u0103\u0005\u0006\u0000\u0000\u0103\u0105\u0001\u0000\u0000\u0000\u0104"+
-		"\u00fe\u0001\u0000\u0000\u0000\u0104\u00ff\u0001\u0000\u0000\u0000\u0104"+
-		"\u0100\u0001\u0000\u0000\u0000\u0105;\u0001\u0000\u0000\u0000\u0106\u010b"+
-		"\u00034\u001a\u0000\u0107\u0108\u0005\t\u0000\u0000\u0108\u010a\u0003"+
-		"4\u001a\u0000\u0109\u0107\u0001\u0000\u0000\u0000\u010a\u010d\u0001\u0000"+
-		"\u0000\u0000\u010b\u0109\u0001\u0000\u0000\u0000\u010b\u010c\u0001\u0000"+
-		"\u0000\u0000\u010c=\u0001\u0000\u0000\u0000\u010d\u010b\u0001\u0000\u0000"+
-		"\u0000\u010e\u0111\u0003N\'\u0000\u010f\u0110\u0005\n\u0000\u0000\u0110"+
-		"\u0112\u0003>\u001f\u0000\u0111\u010f\u0001\u0000\u0000\u0000\u0111\u0112"+
-		"\u0001\u0000\u0000\u0000\u0112?\u0001\u0000\u0000\u0000\u0113\u0115\u0003"+
-		"B!\u0000\u0114\u0113\u0001\u0000\u0000\u0000\u0114\u0115\u0001\u0000\u0000"+
-		"\u0000\u0115\u0117\u0001\u0000\u0000\u0000\u0116\u0118\u0003F#\u0000\u0117"+
-		"\u0116\u0001\u0000\u0000\u0000\u0117\u0118\u0001\u0000\u0000\u0000\u0118"+
-		"\u011a\u0001\u0000\u0000\u0000\u0119\u011b\u0003H$\u0000\u011a\u0119\u0001"+
-		"\u0000\u0000\u0000\u011a\u011b\u0001\u0000\u0000\u0000\u011bA\u0001\u0000"+
-		"\u0000\u0000\u011c\u0121\u0003D\"\u0000\u011d\u011e\u0005\u0012\u0000"+
-		"\u0000\u011e\u0120\u0003D\"\u0000\u011f\u011d\u0001\u0000\u0000\u0000"+
-		"\u0120\u0123\u0001\u0000\u0000\u0000\u0121\u011f\u0001\u0000\u0000\u0000"+
-		"\u0121\u0122\u0001\u0000\u0000\u0000\u0122C\u0001\u0000\u0000\u0000\u0123"+
-		"\u0121\u0001\u0000\u0000\u0000\u0124\u0126\u0003R)\u0000\u0125\u0127\u0003"+
-		"(\u0014\u0000\u0126\u0125\u0001\u0000\u0000\u0000\u0126\u0127\u0001\u0000"+
-		"\u0000\u0000\u0127E\u0001\u0000\u0000\u0000\u0128\u0129\u0005\u0003\u0000"+
-		"\u0000\u0129\u012a\u0003*\u0015\u0000\u012a\u012b\u0005\u0004\u0000\u0000"+
-		"\u012bG\u0001\u0000\u0000\u0000\u012c\u012d\u0005\u0014\u0000\u0000\u012d"+
-		"\u0132\u0003J%\u0000\u012e\u012f\u0005\t\u0000\u0000\u012f\u0131\u0003"+
-		"J%\u0000\u0130\u012e\u0001\u0000\u0000\u0000\u0131\u0134\u0001\u0000\u0000"+
-		"\u0000\u0132\u0130\u0001\u0000\u0000\u0000\u0132\u0133\u0001\u0000\u0000"+
-		"\u0000\u0133I\u0001\u0000\u0000\u0000\u0134\u0132\u0001\u0000\u0000\u0000"+
-		"\u0135\u013a\u0003R)\u0000\u0136\u0137\u0005\u0017\u0000\u0000\u0137\u0139"+
-		"\u0003R)\u0000\u0138\u0136\u0001\u0000\u0000\u0000\u0139\u013c\u0001\u0000"+
-		"\u0000\u0000\u013a\u0138\u0001\u0000\u0000\u0000\u013a\u013b\u0001\u0000"+
-		"\u0000\u0000\u013bK\u0001\u0000\u0000\u0000\u013c\u013a\u0001\u0000\u0000"+
-		"\u0000\u013d\u013f\u0005\u0007\u0000\u0000\u013e\u0140\u0003R)\u0000\u013f"+
-		"\u013e\u0001\u0000\u0000\u0000\u013f\u0140\u0001\u0000\u0000\u0000\u0140"+
-		"\u0141\u0001\u0000\u0000\u0000\u0141\u0142\u0005\b\u0000\u0000\u0142M"+
-		"\u0001\u0000\u0000\u0000\u0143\u0147\u0005\u0096\u0000\u0000\u0144\u0147"+
+		"\u0000\u0000\u008d\u000b\u0001\u0000\u0000\u0000\u008e\u008f\u0005\u0096"+
+		"\u0000\u0000\u008f\r\u0001\u0000\u0000\u0000\u0090\u0091\u0005\u0098\u0000"+
+		"\u0000\u0091\u000f\u0001\u0000\u0000\u0000\u0092\u0093\u0005?\u0000\u0000"+
+		"\u0093\u0011\u0001\u0000\u0000\u0000\u0094\u0095\u0005E\u0000\u0000\u0095"+
+		"\u0013\u0001\u0000\u0000\u0000\u0096\u0097\u0005L\u0000\u0000\u0097\u0015"+
+		"\u0001\u0000\u0000\u0000\u0098\u0099\u0005\u0080\u0000\u0000\u0099\u0017"+
+		"\u0001\u0000\u0000\u0000\u009a\u009e\u0005\u0003\u0000\u0000\u009b\u009c"+
+		"\u0003 \u0010\u0000\u009c\u009d\u0005\u0016\u0000\u0000\u009d\u009f\u0001"+
+		"\u0000\u0000\u0000\u009e\u009b\u0001\u0000\u0000\u0000\u009e\u009f\u0001"+
+		"\u0000\u0000\u0000\u009f\u00a0\u0001\u0000\u0000\u0000\u00a0\u00a1\u0003"+
+		" \u0010\u0000\u00a1\u00a2\u0005\u0004\u0000\u0000\u00a2\u0019\u0001\u0000"+
+		"\u0000\u0000\u00a3\u00a5\u0003\u001c\u000e\u0000\u00a4\u00a3\u0001\u0000"+
+		"\u0000\u0000\u00a4\u00a5\u0001\u0000\u0000\u0000\u00a5\u00a7\u0001\u0000"+
+		"\u0000\u0000\u00a6\u00a8\u0003\u001e\u000f\u0000\u00a7\u00a6\u0001\u0000"+
+		"\u0000\u0000\u00a7\u00a8\u0001\u0000\u0000\u0000\u00a8\u001b\u0001\u0000"+
+		"\u0000\u0000\u00a9\u00aa\u0005t\u0000\u0000\u00aa\u001d\u0001\u0000\u0000"+
+		"\u0000\u00ab\u00ac\u0005m\u0000\u0000\u00ac\u001f\u0001\u0000\u0000\u0000"+
+		"\u00ad\u00ae\u0007\u0001\u0000\u0000\u00ae!\u0001\u0000\u0000\u0000\u00af"+
+		"\u00b2\u0003$\u0012\u0000\u00b0\u00b2\u0003&\u0013\u0000\u00b1\u00af\u0001"+
+		"\u0000\u0000\u0000\u00b1\u00b0\u0001\u0000\u0000\u0000\u00b1\u00b2\u0001"+
+		"\u0000\u0000\u0000\u00b2\u00b4\u0001\u0000\u0000\u0000\u00b3\u00b5\u0003"+
+		"(\u0014\u0000\u00b4\u00b3\u0001\u0000\u0000\u0000\u00b4\u00b5\u0001\u0000"+
+		"\u0000\u0000\u00b5\u00b7\u0001\u0000\u0000\u0000\u00b6\u00b8\u0003,\u0016"+
+		"\u0000\u00b7\u00b6\u0001\u0000\u0000\u0000\u00b7\u00b8\u0001\u0000\u0000"+
+		"\u0000\u00b8\u00c4\u0001\u0000\u0000\u0000\u00b9\u00bb\u0003(\u0014\u0000"+
+		"\u00ba\u00b9\u0001\u0000\u0000\u0000\u00ba\u00bb\u0001\u0000\u0000\u0000"+
+		"\u00bb\u00be\u0001\u0000\u0000\u0000\u00bc\u00bf\u0003$\u0012\u0000\u00bd"+
+		"\u00bf\u0003&\u0013\u0000\u00be\u00bc\u0001\u0000\u0000\u0000\u00be\u00bd"+
+		"\u0001\u0000\u0000\u0000\u00be\u00bf\u0001\u0000\u0000\u0000\u00bf\u00c1"+
+		"\u0001\u0000\u0000\u0000\u00c0\u00c2\u0003,\u0016\u0000\u00c1\u00c0\u0001"+
+		"\u0000\u0000\u0000\u00c1\u00c2\u0001\u0000\u0000\u0000\u00c2\u00c4\u0001"+
+		"\u0000\u0000\u0000\u00c3\u00b1\u0001\u0000\u0000\u0000\u00c3\u00ba\u0001"+
+		"\u0000\u0000\u0000\u00c4#\u0001\u0000\u0000\u0000\u00c5\u00c6\u0005\u0018"+
+		"\u0000\u0000\u00c6\u00c7\u0003J%\u0000\u00c7%\u0001\u0000\u0000\u0000"+
+		"\u00c8\u00c9\u0005\u0019\u0000\u0000\u00c9\u00ca\u0003J%\u0000\u00ca\'"+
+		"\u0001\u0000\u0000\u0000\u00cb\u00cc\u0005\u000b\u0000\u0000\u00cc\u00cd"+
+		"\u0003J%\u0000\u00cd)\u0001\u0000\u0000\u0000\u00ce\u00cf\u0005\f\u0000"+
+		"\u0000\u00cf\u00d4\u0003.\u0017\u0000\u00d0\u00d1\u0005\u0003\u0000\u0000"+
+		"\u00d1\u00d2\u00030\u0018\u0000\u00d2\u00d3\u0005\u0004\u0000\u0000\u00d3"+
+		"\u00d5\u0001\u0000\u0000\u0000\u00d4\u00d0\u0001\u0000\u0000\u0000\u00d4"+
+		"\u00d5\u0001\u0000\u0000\u0000\u00d5+\u0001\u0000\u0000\u0000\u00d6\u00d8"+
+		"\u0005B\u0000\u0000\u00d7\u00d6\u0001\u0000\u0000\u0000\u00d7\u00d8\u0001"+
+		"\u0000\u0000\u0000\u00d8\u00d9\u0001\u0000\u0000\u0000\u00d9\u00da\u0007"+
+		"\u0002\u0000\u0000\u00da\u00db\u00034\u001a\u0000\u00db-\u0001\u0000\u0000"+
+		"\u0000\u00dc\u00dd\u0007\u0003\u0000\u0000\u00dd/\u0001\u0000\u0000\u0000"+
+		"\u00de\u00e0\b\u0004\u0000\u0000\u00df\u00de\u0001\u0000\u0000\u0000\u00e0"+
+		"\u00e1\u0001\u0000\u0000\u0000\u00e1\u00df\u0001\u0000\u0000\u0000\u00e1"+
+		"\u00e2\u0001\u0000\u0000\u0000\u00e21\u0001\u0000\u0000\u0000\u00e3\u00e4"+
+		"\u00034\u001a\u0000\u00e43\u0001\u0000\u0000\u0000\u00e5\u00e6\u0006\u001a"+
+		"\uffff\uffff\u0000\u00e6\u00e7\u00036\u001b\u0000\u00e7\u00ed\u0001\u0000"+
+		"\u0000\u0000\u00e8\u00e9\n\u0002\u0000\u0000\u00e9\u00ea\u0007\u0005\u0000"+
+		"\u0000\u00ea\u00ec\u00034\u001a\u0003\u00eb\u00e8\u0001\u0000\u0000\u0000"+
+		"\u00ec\u00ef\u0001\u0000\u0000\u0000\u00ed\u00eb\u0001\u0000\u0000\u0000"+
+		"\u00ed\u00ee\u0001\u0000\u0000\u0000\u00ee5\u0001\u0000\u0000\u0000\u00ef"+
+		"\u00ed\u0001\u0000\u0000\u0000\u00f0\u00f8\u0003>\u001f\u0000\u00f1\u00f8"+
+		"\u00038\u001c\u0000\u00f2\u00f8\u0003.\u0017\u0000\u00f3\u00f4\u0005\u0005"+
+		"\u0000\u0000\u00f4\u00f5\u00034\u001a\u0000\u00f5\u00f6\u0005\u0006\u0000"+
+		"\u0000\u00f6\u00f8\u0001\u0000\u0000\u0000\u00f7\u00f0\u0001\u0000\u0000"+
+		"\u0000\u00f7\u00f1\u0001\u0000\u0000\u0000\u00f7\u00f2\u0001\u0000\u0000"+
+		"\u0000\u00f7\u00f3\u0001\u0000\u0000\u0000\u00f87\u0001\u0000\u0000\u0000"+
+		"\u00f9\u00fa\u0003:\u001d\u0000\u00fa\u00fb\u0005\u0003\u0000\u0000\u00fb"+
+		"\u00fc\u0003<\u001e\u0000\u00fc\u00fd\u0005\u0004\u0000\u0000\u00fd9\u0001"+
+		"\u0000\u0000\u0000\u00fe\u0105\u0003>\u001f\u0000\u00ff\u0105\u0003.\u0017"+
+		"\u0000\u0100\u0101\u0005\u0005\u0000\u0000\u0101\u0102\u00034\u001a\u0000"+
+		"\u0102\u0103\u0005\u0006\u0000\u0000\u0103\u0105\u0001\u0000\u0000\u0000"+
+		"\u0104\u00fe\u0001\u0000\u0000\u0000\u0104\u00ff\u0001\u0000\u0000\u0000"+
+		"\u0104\u0100\u0001\u0000\u0000\u0000\u0105;\u0001\u0000\u0000\u0000\u0106"+
+		"\u010b\u00034\u001a\u0000\u0107\u0108\u0005\t\u0000\u0000\u0108\u010a"+
+		"\u00034\u001a\u0000\u0109\u0107\u0001\u0000\u0000\u0000\u010a\u010d\u0001"+
+		"\u0000\u0000\u0000\u010b\u0109\u0001\u0000\u0000\u0000\u010b\u010c\u0001"+
+		"\u0000\u0000\u0000\u010c=\u0001\u0000\u0000\u0000\u010d\u010b\u0001\u0000"+
+		"\u0000\u0000\u010e\u0111\u0003N\'\u0000\u010f\u0110\u0005\n\u0000\u0000"+
+		"\u0110\u0112\u0003>\u001f\u0000\u0111\u010f\u0001\u0000\u0000\u0000\u0111"+
+		"\u0112\u0001\u0000\u0000\u0000\u0112?\u0001\u0000\u0000\u0000\u0113\u0115"+
+		"\u0003B!\u0000\u0114\u0113\u0001\u0000\u0000\u0000\u0114\u0115\u0001\u0000"+
+		"\u0000\u0000\u0115\u0117\u0001\u0000\u0000\u0000\u0116\u0118\u0003F#\u0000"+
+		"\u0117\u0116\u0001\u0000\u0000\u0000\u0117\u0118\u0001\u0000\u0000\u0000"+
+		"\u0118\u011a\u0001\u0000\u0000\u0000\u0119\u011b\u0003H$\u0000\u011a\u0119"+
+		"\u0001\u0000\u0000\u0000\u011a\u011b\u0001\u0000\u0000\u0000\u011bA\u0001"+
+		"\u0000\u0000\u0000\u011c\u0121\u0003D\"\u0000\u011d\u011e\u0005\u0012"+
+		"\u0000\u0000\u011e\u0120\u0003D\"\u0000\u011f\u011d\u0001\u0000\u0000"+
+		"\u0000\u0120\u0123\u0001\u0000\u0000\u0000\u0121\u011f\u0001\u0000\u0000"+
+		"\u0000\u0121\u0122\u0001\u0000\u0000\u0000\u0122C\u0001\u0000\u0000\u0000"+
+		"\u0123\u0121\u0001\u0000\u0000\u0000\u0124\u0126\u0003R)\u0000\u0125\u0127"+
+		"\u0003(\u0014\u0000\u0126\u0125\u0001\u0000\u0000\u0000\u0126\u0127\u0001"+
+		"\u0000\u0000\u0000\u0127E\u0001\u0000\u0000\u0000\u0128\u0129\u0005\u0003"+
+		"\u0000\u0000\u0129\u012a\u0003*\u0015\u0000\u012a\u012b\u0005\u0004\u0000"+
+		"\u0000\u012bG\u0001\u0000\u0000\u0000\u012c\u012d\u0005\u0014\u0000\u0000"+
+		"\u012d\u0132\u0003J%\u0000\u012e\u012f\u0005\t\u0000\u0000\u012f\u0131"+
+		"\u0003J%\u0000\u0130\u012e\u0001\u0000\u0000\u0000\u0131\u0134\u0001\u0000"+
+		"\u0000\u0000\u0132\u0130\u0001\u0000\u0000\u0000\u0132\u0133\u0001\u0000"+
+		"\u0000\u0000\u0133I\u0001\u0000\u0000\u0000\u0134\u0132\u0001\u0000\u0000"+
+		"\u0000\u0135\u013a\u0003R)\u0000\u0136\u0137\u0005\u0017\u0000\u0000\u0137"+
+		"\u0139\u0003R)\u0000\u0138\u0136\u0001\u0000\u0000\u0000\u0139\u013c\u0001"+
+		"\u0000\u0000\u0000\u013a\u0138\u0001\u0000\u0000\u0000\u013a\u013b\u0001"+
+		"\u0000\u0000\u0000\u013bK\u0001\u0000\u0000\u0000\u013c\u013a\u0001\u0000"+
+		"\u0000\u0000\u013d\u013f\u0005\u0007\u0000\u0000\u013e\u0140\u0003R)\u0000"+
+		"\u013f\u013e\u0001\u0000\u0000\u0000\u013f\u0140\u0001\u0000\u0000\u0000"+
+		"\u0140\u0141\u0001\u0000\u0000\u0000\u0141\u0142\u0005\b\u0000\u0000\u0142"+
+		"M\u0001\u0000\u0000\u0000\u0143\u0147\u0005\u009a\u0000\u0000\u0144\u0147"+
 		"\u0005\u0001\u0000\u0000\u0145\u0147\u0003P(\u0000\u0146\u0143\u0001\u0000"+
 		"\u0000\u0000\u0146\u0144\u0001\u0000\u0000\u0000\u0146\u0145\u0001\u0000"+
 		"\u0000\u0000\u0147O\u0001\u0000\u0000\u0000\u0148\u014b\u0007\u0006\u0000"+

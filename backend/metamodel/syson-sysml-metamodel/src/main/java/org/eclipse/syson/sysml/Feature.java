@@ -23,13 +23,14 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.Feature#getDirection <em>Direction</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsComposite <em>Is Composite</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#isIsConstant <em>Is Constant</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsDerived <em>Is Derived</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsEnd <em>Is End</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsNonunique <em>Is Nonunique</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsOrdered <em>Is Ordered</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsPortion <em>Is Portion</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.Feature#isIsReadOnly <em>Is Read Only</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsUnique <em>Is Unique</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#isIsVariable <em>Is Variable</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getChainingFeature <em>Chaining Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getCrossFeature <em>Cross Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getEndOwningType <em>End Owning Type</em>}</li>
@@ -46,7 +47,6 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwningFeatureMembership <em>Owning Feature Membership</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwningType <em>Owning Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.Feature#getValuation <em>Valuation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getFeature()
@@ -199,6 +199,29 @@ public interface Feature extends Type {
     void setIsComposite(boolean value);
 
     /**
+     * Returns the value of the '<em><b>Is Constant</b></em>' attribute. The default value is <code>"false"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Constant</em>' attribute.
+     * @see #setIsConstant(boolean)
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_IsConstant()
+     * @model default="false" required="true" ordered="false"
+     * @generated
+     */
+    boolean isIsConstant();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.syson.sysml.Feature#isIsConstant <em>Is Constant</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Is Constant</em>' attribute.
+     * @see #isIsConstant()
+     * @generated
+     */
+    void setIsConstant(boolean value);
+
+    /**
      * Returns the value of the '<em><b>Is Derived</b></em>' attribute. The default value is <code>"false"</code>. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -303,29 +326,6 @@ public interface Feature extends Type {
     void setIsPortion(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Is Read Only</b></em>' attribute. The default value is <code>"false"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Is Read Only</em>' attribute.
-     * @see #setIsReadOnly(boolean)
-     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_IsReadOnly()
-     * @model default="false" required="true" ordered="false"
-     * @generated
-     */
-    boolean isIsReadOnly();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.syson.sysml.Feature#isIsReadOnly <em>Is Read Only</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Read Only</em>' attribute.
-     * @see #isIsReadOnly()
-     * @generated
-     */
-    void setIsReadOnly(boolean value);
-
-    /**
      * Returns the value of the '<em><b>Is Unique</b></em>' attribute. The default value is <code>"true"</code>. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -347,6 +347,29 @@ public interface Feature extends Type {
      * @generated
      */
     void setIsUnique(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Is Variable</b></em>' attribute. The default value is <code>"false"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Variable</em>' attribute.
+     * @see #setIsVariable(boolean)
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_IsVariable()
+     * @model default="false" required="true" ordered="false"
+     * @generated
+     */
+    boolean isIsVariable();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.syson.sysml.Feature#isIsVariable <em>Is Variable</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Is Variable</em>' attribute.
+     * @see #isIsVariable()
+     * @generated
+     */
+    void setIsVariable(boolean value);
 
     /**
      * Returns the value of the '<em><b>Owned Feature Chaining</b></em>' reference list. The list contents are of type
@@ -487,16 +510,6 @@ public interface Feature extends Type {
     EList<Type> getType();
 
     /**
-     * Returns the value of the '<em><b>Valuation</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Valuation</em>' reference.
-     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_Valuation()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
-     * @generated
-     */
-    FeatureValue getValuation();
-
-    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model ordered="false"
@@ -511,6 +524,14 @@ public interface Feature extends Type {
      * @generated
      */
     EList<Type> asCartesianProduct();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" ordered="false" featureRequired="true" featureOrdered="false"
+     * @generated
+     */
+    boolean canAccess(Feature feature);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -535,6 +556,14 @@ public interface Feature extends Type {
      * @generated
      */
     boolean isFeaturedWithin(Type type);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" ordered="false" typeRequired="true" typeOrdered="false"
+     * @generated
+     */
+    boolean isFeaturingType(Type type);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

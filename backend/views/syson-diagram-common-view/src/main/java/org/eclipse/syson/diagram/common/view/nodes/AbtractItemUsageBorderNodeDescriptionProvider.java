@@ -150,7 +150,7 @@ public abstract class AbtractItemUsageBorderNodeDescriptionProvider extends Abst
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
                         this.createBindingConnectorAsUsageEdgeTool(this.getBindingConectorAsUsageToolTarget(cache)),
-                        this.createFlowConnectionUsageEdgeTool(this.getFlowConnectionToolTargets(cache)))
+                        this.createFlowUsageEdgeTool(this.getFlowConnectionToolTargets(cache)))
                 .build();
     }
 
@@ -172,15 +172,15 @@ public abstract class AbtractItemUsageBorderNodeDescriptionProvider extends Abst
                 .build();
     }
 
-    private EdgeTool createFlowConnectionUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private EdgeTool createFlowUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowConnectionUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.getDescriptionNameGenerator().getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()) + " (flow)")
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowConnectionUsage().getName() + ".svg")
+                .name(this.getDescriptionNameGenerator().getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

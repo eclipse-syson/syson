@@ -52,7 +52,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractPortUsag
         NodeDescription portBorderNode = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
 
         return List.of(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription, portBorderNode)),
-                this.createFlowConnectionUsageEdgeTool(List.of(nodeDescription, itemBorderNode, portBorderNode)),
+                this.createFlowUsageEdgeTool(List.of(nodeDescription, itemBorderNode, portBorderNode)),
                 this.createInterfaceUsageEdgeTool(List.of(nodeDescription, portBorderNode)));
     }
 
@@ -89,15 +89,15 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractPortUsag
                 .build();
     }
 
-    private EdgeTool createFlowConnectionUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private EdgeTool createFlowUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowConnectionUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()) + " (flow)")
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowConnectionUsage().getName() + ".svg")
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

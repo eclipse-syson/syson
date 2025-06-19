@@ -17,10 +17,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.syson.sysml.InvocationExpression;
-import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.syson.sysml.InvocationExpression} object. <!--
@@ -28,7 +26,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
  *
  * @generated
  */
-public class InvocationExpressionItemProvider extends ExpressionItemProvider {
+public class InvocationExpressionItemProvider extends InstantiationExpressionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -48,28 +46,8 @@ public class InvocationExpressionItemProvider extends ExpressionItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addArgumentPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Argument feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addArgumentPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_InvocationExpression_argument_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_InvocationExpression_argument_feature", "_UI_InvocationExpression_type"),
-                SysmlPackage.eINSTANCE.getInvocationExpression_Argument(),
-                true,
-                false,
-                true,
-                null,
-                null,
-                null));
     }
 
     /**
