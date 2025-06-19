@@ -29,19 +29,23 @@ public class LabelConstants {
 
     public static final String COLON = ":";
 
+    public static final String COLON_EQUAL = ":=";
+
     public static final String COMMA = ",";
 
     public static final String CONJUGATED = "\u007E";
 
+    public static final String CONSTANT = "constant";
+
     public static final String CR = "\n";
+
+    public static final String DEFAULT = "default";
 
     public static final String DERIVED = "derived";
 
     public static final String END = "end";
 
     public static final String EQUAL = "=";
-
-    public static final String COLON_EQUAL = ":=";
 
     public static final String GREATER_THAN = ">";
 
@@ -63,8 +67,6 @@ public class LabelConstants {
 
     public static final String OUT = "out";
 
-    public static final String READ_ONLY = "readonly";
-
     public static final String REDEFINITION = ":>>";
 
     public static final String REF = "ref";
@@ -80,6 +82,4 @@ public class LabelConstants {
     public static final String VARIANT = "variant";
 
     public static final String VARIATION = "variation";
-
-    public static final String DEFAULT = "default";
 }

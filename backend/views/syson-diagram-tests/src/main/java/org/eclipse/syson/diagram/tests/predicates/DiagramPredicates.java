@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.DescriptionNameGenerator;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -40,14 +42,18 @@ public class DiagramPredicates {
 
     private final Predicate<NodeDescription> isNamespaceImportNode;
 
-    public DiagramPredicates(String diagramPrefix, DescriptionNameGenerator nameGenerator) {
+    private final Predicate<NodeDescription> isStartOrDoneNode;
+
+    public DiagramPredicates(String diagramPrefix, IDescriptionNameGenerator descriptionNameGenerator) {
         this.isFakeNode = n -> n.getName().equals(diagramPrefix + " Node Fake");
         this.isEmptyDiagramNode = n -> n.getName().equals(diagramPrefix + " Node EmptyDiagram");
-        String compartmentNameFragment = this.getCompartmentNameFragment(nameGenerator);
+        String compartmentNameFragment = this.getCompartmentNameFragment(descriptionNameGenerator);
         this.isCompartmentNode = n -> n.getName().contains(compartmentNameFragment);
-        String inheritedCompartmentItemNameFragment = this.getInheritedCompartmentItemNameFragment(nameGenerator);
+        String inheritedCompartmentItemNameFragment = this.getInheritedCompartmentItemNameFragment(descriptionNameGenerator);
         this.isInheritedCompartmentItemNode = n -> n.getName().contains(inheritedCompartmentItemNameFragment);
         this.isNamespaceImportNode = n -> n.getName().equals(diagramPrefix + " Node NamespaceImport");
+        this.isStartOrDoneNode = n -> n.getName().equals(descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
+                || n.getName().equals(descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME));
     }
 
     public Predicate<NodeDescription> isFakeNode() {
@@ -70,6 +76,10 @@ public class DiagramPredicates {
         return this.isNamespaceImportNode;
     }
 
+    public Predicate<NodeDescription> isStartOrDoneNode() {
+        return this.isStartOrDoneNode;
+    }
+
     public Predicate<DiagramElementDescription> hasDomainType(EClass eClass) {
         return diagramElementDescription -> diagramElementDescription.getDomainType().equals(SysMLMetamodelHelper.buildQualifiedName(eClass));
     }
@@ -78,7 +88,7 @@ public class DiagramPredicates {
         return diagramElementDescription -> diagramElementDescription.getName().equals(name);
     }
 
-    private String getCompartmentNameFragment(DescriptionNameGenerator nameGenerator) {
+    private String getCompartmentNameFragment(IDescriptionNameGenerator nameGenerator) {
         EClass element = SysmlPackage.eINSTANCE.getElement();
         EReference reference = SysmlPackage.eINSTANCE.getElement_Documentation();
         String fullName = nameGenerator.getCompartmentName(element, reference);
@@ -90,7 +100,7 @@ public class DiagramPredicates {
                 .concat(" ");
     }
 
-    private String getInheritedCompartmentItemNameFragment(DescriptionNameGenerator nameGenerator) {
+    private String getInheritedCompartmentItemNameFragment(IDescriptionNameGenerator nameGenerator) {
         EClass element = SysmlPackage.eINSTANCE.getElement();
         EReference reference = SysmlPackage.eINSTANCE.getElement_Documentation();
         String fullName = nameGenerator.getInheritedCompartmentItemName(element, reference);

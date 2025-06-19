@@ -40,6 +40,7 @@ import org.eclipse.syson.services.grammars.DirectEditBaseListener;
 import org.eclipse.syson.services.grammars.DirectEditParser.AbstractPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.BinaryOperationExprContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.BracketAccessExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ConstantPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ConstraintExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.DerivedPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.DirectionPrefixExpressionContext;
@@ -56,7 +57,6 @@ import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressi
 import org.eclipse.syson.services.grammars.DirectEditParser.NodeExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.NonuniqueMultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.OrderedMultiplicityExpressionContext;
-import org.eclipse.syson.services.grammars.DirectEditParser.ReadonlyPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ReferenceExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ShortNameContext;
@@ -220,7 +220,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingDerivedPrefixExpression(ctx);
         this.handleMissingEndPrefixExpression(ctx);
         this.handleMissingVariationPrefixExpression(ctx);
-        this.handleMissingReadonlyPrefixExpression(ctx);
+        this.handleMissingConstantPrefixExpression(ctx);
         this.handleMissingReferenceExpression(ctx);
         this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingOrderedMultiplicityExpression(ctx);
@@ -299,15 +299,15 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
-    public void exitReadonlyPrefixExpression(ReadonlyPrefixExpressionContext ctx) {
+    public void exitConstantPrefixExpression(ConstantPrefixExpressionContext ctx) {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
-                usage.setIsReadOnly(true);
+                usage.setIsConstant(true);
             } else {
-                usage.setIsReadOnly(false);
+                usage.setIsConstant(false);
             }
         }
-        super.exitReadonlyPrefixExpression(ctx);
+        super.exitConstantPrefixExpression(ctx);
     }
 
     @Override
@@ -946,7 +946,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
             AcceptActionUsage acceptActionUsage = SysmlFactory.eINSTANCE.createAcceptActionUsage();
             tfMembership.getOwnedRelatedElement().add(acceptActionUsage);
-            tfMembership.setFeature(acceptActionUsage);
 
             // Set AcceptActionUsage payload as first Parameter. See paragraph 7.16.8
             var payloadParam = SysmlFactory.eINSTANCE.createParameterMembership();
@@ -999,8 +998,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             receiverFeature.setDirection(FeatureDirectionKind.OUT);
             receiverReturn.getOwnedRelatedElement().add(receiverFeature);
         } else {
-            if (typeValue instanceof ActionUsage au) {
-                tfMembership.setFeature(au);
+            if (typeValue instanceof ActionUsage) {
                 transition.getOwnedRelationship().add(tfMembership);
             }
         }
@@ -1041,10 +1039,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingReadonlyPrefixExpression(ListItemExpressionContext ctx) {
-        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixListItemExpression().readonlyPrefixExpression(0);
-        if (this.element instanceof Usage usage && readonlyPrefixExpression == null) {
-            usage.setIsReadOnly(false);
+    private void handleMissingConstantPrefixExpression(ListItemExpressionContext ctx) {
+        ConstantPrefixExpressionContext constantPrefixExpression = ctx.prefixListItemExpression().constantPrefixExpression(0);
+        if (this.element instanceof Usage usage && constantPrefixExpression == null) {
+            usage.setIsConstant(false);
         }
     }
 

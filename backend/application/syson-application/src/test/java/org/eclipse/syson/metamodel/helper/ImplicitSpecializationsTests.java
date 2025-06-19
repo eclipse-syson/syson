@@ -99,8 +99,9 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Test that a PartUsage with or without Specialization (FeatureTyping, Susbetting or Redefinition) implictly specializes 'Parts::parts' from the standard libraries.")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a PartUsage with or without Specialization (FeatureTyping, Susbetting or Redefinition), WHEN validation is executed, THEN the Part implictly specializes 'Parts::parts' from the standard libraries.")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitSpecializationOnPartUsage() {
@@ -151,8 +152,9 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Test that an AcceptAction implictly specializes 'Actions::acceptActions'")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN an AcceptAction, WHEN the validation is executed, THEN the AcceptAction implictly specializes 'Actions::acceptActions'")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitSpecializationOnAcceptActionUsage() {
@@ -172,8 +174,9 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Test that a parameter of an ActionUsage that subsets another ActionUsage with parameters implicitly redefines the corresponding parameter")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a parameter of an ActionUsage that subsets another ActionUsage with parameters, WHEN the validation is executed, THEN the ActionUsgae implicitly redefines the corresponding parameter")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testImplicitParameterRedefinitionOnItemUsage() {

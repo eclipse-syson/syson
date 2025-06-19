@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class ColorProvider implements IColorProvider {
                 resource.load(inputStream, null);
                 resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
             } catch (IOException exception) {
-                this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
+                this.logger.warn("An error occurred while loading document studioColorPalettes.json: {}.", exception.getMessage());
                 resourceSet.getResources().remove(resource);
             }
         } else {

@@ -258,11 +258,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("GIVEN a model with a FeatureChainExpression containing an implicitly redefined parameter, WHEN importing the mode, THEN the FeatureChaining are resolved")
+    @DisplayName("GIVEN a model with a FeatureChainExpression containing an implicitly redefined parameter, WHEN importing the model, THEN the FeatureChaining are resolved")
     public void checkFeatureChainExpressionWithImplicitParameterRedefinitionNameResolution() throws IOException {
         var input = """
                 action def A1 {
-
                     part def P1 {
                         isValid : ScalarValues::Boolean;
                     }
@@ -306,14 +305,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     .findFirst().get();
 
             assertThat(pa11.getOwnedSpecialization()).hasSize(1);
-
             Specialization specialization = pa11.getOwnedSpecialization().get(0);
-
             Type general = specialization.getGeneral();
-
             assertNotNull(general);
             assertThat(general.getQualifiedName()).isEqualTo("p1::pa1::pa1"); // And not "p1::pa1"
-
         }).check(input);
     }
 
@@ -336,14 +331,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     .findFirst().get();
 
             assertThat(pa11.getOwnedRedefinition()).hasSize(1);
-
             Redefinition redefinition = pa11.getOwnedRedefinition().get(0);
-
             Feature redefinedFeature = redefinition.getRedefinedFeature();
-
             assertNotNull(redefinedFeature);
             assertThat(redefinedFeature.getQualifiedName()).isEqualTo("p1::pa0::pa1");
-
         }).check(input);
     }
 
@@ -364,13 +355,9 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     .findFirst().get();
 
             assertThat(pa11.getOwnedSpecialization()).hasSize(1);
-
             Specialization specialization = pa11.getOwnedSpecialization().get(0);
-
             Type general = specialization.getGeneral();
-
             assertNull(general);
-
         }).check(input);
     }
 

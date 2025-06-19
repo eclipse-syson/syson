@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -33,23 +33,12 @@ public interface MetadataAccessExpression extends Expression {
      * end-user-doc -->
      *
      * @return the value of the '<em>Referenced Element</em>' reference.
-     * @see #setReferencedElement(Element)
      * @see org.eclipse.syson.sysml.SysmlPackage#getMetadataAccessExpression_ReferencedElement()
-     * @model required="true" ordered="false"
+     * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Element getReferencedElement();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.syson.sysml.MetadataAccessExpression#getReferencedElement
-     * <em>Referenced Element</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Referenced Element</em>' reference.
-     * @see #getReferencedElement()
-     * @generated
-     */
-    void setReferencedElement(Element value);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

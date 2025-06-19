@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.Usage#isIsReference <em>Is Reference</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Usage#isIsVariation <em>Is Variation</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Usage#isMayTimeVary <em>May Time Vary</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Usage#getDefinition <em>Definition</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Usage#getDirectedUsage <em>Directed Usage</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Usage#getNestedAction <em>Nested Action</em>}</li>
@@ -117,6 +118,17 @@ public interface Usage extends Feature {
      * @generated
      */
     void setIsVariation(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>May Time Vary</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>May Time Vary</em>' attribute.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_MayTimeVary()
+     * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
+     * @generated
+     */
+    boolean isMayTimeVary();
 
     /**
      * Returns the value of the '<em><b>Nested Action</b></em>' reference list. The list contents are of type
@@ -230,14 +242,14 @@ public interface Usage extends Feature {
 
     /**
      * Returns the value of the '<em><b>Nested Flow</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.syson.sysml.FlowConnectionUsage}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.eclipse.syson.sysml.FlowUsage}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Nested Flow</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedFlow()
      * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
-    EList<FlowConnectionUsage> getNestedFlow();
+    EList<FlowUsage> getNestedFlow();
 
     /**
      * Returns the value of the '<em><b>Nested Interface</b></em>' reference list. The list contents are of type

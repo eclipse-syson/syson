@@ -78,7 +78,7 @@ public class SysMLv2Validator implements EValidator {
 
         List<ValidationRule> rules = SysMLv2ValidationRules.getValidationRules(eClass);
         for (ValidationRule validationRule : rules) {
-            boolean validConstraint = this.executeContraint(element, validationRule.getExpression());
+            boolean validConstraint = this.executeConstraint(element, validationRule.getExpression());
             if (!validConstraint) {
                 this.addDiagnostic(diagnostics, element, validationRule);
                 isValid = false;
@@ -97,7 +97,7 @@ public class SysMLv2Validator implements EValidator {
      *            the expression to execute.
      * @return <code>true</code> if the AQL expression returns true, <code>false</code> otherwise.
      */
-    private boolean executeContraint(Element element, String aqlExpression) {
+    private boolean executeConstraint(Element element, String aqlExpression) {
         Map<String, Object> variables = Map.ofEntries(Map.entry("self", element));
         return this.aqlInterpreter.evaluateExpression(variables, aqlExpression).asBoolean().orElse(Boolean.FALSE).booleanValue();
     }

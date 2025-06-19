@@ -31,12 +31,12 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Featuring;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.TypeFeaturing;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
@@ -121,7 +121,7 @@ public class ElementUtil {
                 }
             }
         } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null
-                && !(element instanceof Import || element instanceof Membership || element instanceof Specialization || element instanceof Featuring)) {
+                && !(element instanceof Import || element instanceof Membership || element instanceof Specialization || element instanceof TypeFeaturing)) {
             String qualifiedName = element.getQualifiedName();
             Namespace libraryNamespace = element.libraryNamespace();
             if (qualifiedName != null && libraryNamespace != null) {

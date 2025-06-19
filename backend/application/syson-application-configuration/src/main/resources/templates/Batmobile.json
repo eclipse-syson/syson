@@ -204,7 +204,7 @@
                                       "ownedRelatedElement": [
                                         {
                                           "id": "30b4e482-6284-407b-86ce-1233ff455c4e",
-                                          "eClass": "sysml:FlowConnectionUsage",
+                                          "eClass": "sysml:FlowUsage",
                                           "data": {
                                             "elementId": "6d9d0aa2-f311-410e-9e5f-5c1416177df7",
                                             "ownedRelationship": [
@@ -216,7 +216,7 @@
                                                   "ownedRelatedElement": [
                                                     {
                                                       "id": "44af6db9-ccea-4810-b4ee-153b272043b6",
-                                                      "eClass": "sysml:ItemFeature",
+                                                      "eClass": "sysml:PayloadFeature",
                                                       "data": {
                                                         "elementId": "65930cfb-5790-4d46-9967-c389bffb22b3",
                                                         "ownedRelationship": [
@@ -243,7 +243,7 @@
                                                   "ownedRelatedElement": [
                                                     {
                                                       "id": "679b1e06-c1c5-41c5-a9ee-016e5fde9246",
-                                                      "eClass": "sysml:ItemFlowEnd",
+                                                      "eClass": "sysml:FlowEnd",
                                                       "data": {
                                                         "elementId": "0e44eb4f-9154-4328-a917-f891b4d1b899",
                                                         "ownedRelationship": [
@@ -298,7 +298,7 @@
                                                   "ownedRelatedElement": [
                                                     {
                                                       "id": "46b217d9-ac1e-42fd-bdf4-43ed77d3fec7",
-                                                      "eClass": "sysml:ItemFlowEnd",
+                                                      "eClass": "sysml:FlowEnd",
                                                       "data": {
                                                         "elementId": "64ddea7d-86a4-41e1-b03c-f1bc28959f95",
                                                         "ownedRelationship": [

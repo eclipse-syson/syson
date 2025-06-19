@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,9 +32,16 @@ public class EClassifierTranslator {
 
     private static final String TYPE_CONST = "$type";
 
+    public EObject createObject(JsonNode astJson) {
+        EClassifier classifier = this.toEClassifier(astJson);
+        if (classifier instanceof EClass eClass) {
+            return eClass.getEPackage().getEFactoryInstance().create(eClass);
+        } else {
+            return null;
+        }
+    }
 
-    private EClassifier toEClassier(JsonNode astJson) {
-
+    private EClassifier toEClassifier(JsonNode astJson) {
         String type = astJson.findValue(TYPE_CONST).textValue();
 
         if ("MembershipReference".equals(type)) {
@@ -64,17 +71,21 @@ public class EClassifierTranslator {
                     type = "LiteralRational";
                 }
             }
+            // to remove when SysIDE will release a SysMLv2 2025-04 compliant version
+        } else if ("FlowConnectionUsage".equals(type)) {
+            type = "FlowUsage";
+        } else if ("FlowConnectionDefinition".equals(type)) {
+            type = "FlowDefinition";
+        } else if ("SuccessionFlowConnectionUsage".equals(type)) {
+            type = "SuccessionFlowUsage";
+        } else if ("ItemFlow".equals(type)) {
+            type = "Flow";
+        } else if ("ItemFlowEnd".equals(type)) {
+            type = "FlowEnd";
+        } else if ("ItemFeature".equals(type)) {
+            type = "PayloadFeature";
         }
 
         return SysmlPackage.eINSTANCE.getEClassifier(type);
-    }
-
-    public EObject createObject(JsonNode astJson) {
-        EClassifier classifier = this.toEClassier(astJson);
-        if (classifier instanceof EClass eClass) {
-            return eClass.getEPackage().getEFactoryInstance().create(eClass);
-        } else {
-            return null;
-        }
     }
 }

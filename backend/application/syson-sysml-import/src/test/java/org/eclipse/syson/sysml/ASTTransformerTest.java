@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysONLoadDefaultLibrariesOnApplicationStartConfiguration;
+import org.eclipse.syson.services.UtilService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,8 @@ public class ASTTransformerTest {
     private static List<Resource> standardLibraries;
 
     private ASTTransformer transformer;
+
+    private final UtilService utilService = new UtilService();
 
     @AfterAll
     public static void afterAll() {
@@ -141,7 +144,7 @@ public class ASTTransformerTest {
         // test isInitial
         assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(7));
         AttributeUsage isInitialTestAttribute = (AttributeUsage) packageObject.getMember().get(7);
-        assertTrue(isInitialTestAttribute.getValuation().isIsInitial());
+        assertTrue(this.utilService.getValuation(isInitialTestAttribute).isIsInitial());
 
         // test isVariation
         assertInstanceOf(PartDefinition.class, packageObject.getMember().get(8));
@@ -156,8 +159,8 @@ public class ASTTransformerTest {
         // test isDefault
         assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(10));
         AttributeUsage isDefaultTestAttribute = (AttributeUsage) packageObject.getMember().get(10);
-        assertInstanceOf(FeatureValue.class, isDefaultTestAttribute.getValuation());
-        assertTrue(isDefaultTestAttribute.getValuation().isIsDefault());
+        assertInstanceOf(FeatureValue.class, this.utilService.getValuation(isDefaultTestAttribute));
+        assertTrue(this.utilService.getValuation(isDefaultTestAttribute).isIsDefault());
 
         // test isParallel
         assertInstanceOf(StateUsage.class, packageObject.getMember().get(11));
@@ -174,10 +177,10 @@ public class ASTTransformerTest {
         ReferenceUsage isEndTestReference = (ReferenceUsage) packageObject.getMember().get(13);
         assertTrue(isEndTestReference.isIsEnd());
 
-        // test isReadOnly
+        // test isConstant
         assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(14));
-        AttributeUsage isReadOnlyTestAttribute = (AttributeUsage) packageObject.getMember().get(14);
-        assertTrue(isReadOnlyTestAttribute.isIsReadOnly());
+        AttributeUsage isConstantTestAttribute = (AttributeUsage) packageObject.getMember().get(14);
+        assertTrue(isConstantTestAttribute.isIsConstant());
 
         // test isDerived
         assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(15));
@@ -609,15 +612,15 @@ public class ASTTransformerTest {
 
         PartDefinition partDefinitionCounter = (PartDefinition) packageAssignment1.getMember().get(0);
 
-        AttributeUsage attributeUsagecount = (AttributeUsage) partDefinitionCounter.getMember().get(0);
+        AttributeUsage attributeUsageCount = (AttributeUsage) partDefinitionCounter.getMember().get(0);
 
-        assertEquals(0, ((LiteralInteger) attributeUsagecount.getValuation().getValue()).getValue());
+        assertEquals(0, ((LiteralInteger) this.utilService.getValuation(attributeUsageCount).getValue()).getValue());
 
         ActionUsage actionUsageincr = (ActionUsage) partDefinitionCounter.getMember().get(1);
 
         AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage) actionUsageincr.getMember().get(0);
 
-        assertEquals(attributeUsagecount, assignmentActionUsage.getReferent());
+        assertEquals(attributeUsageCount, assignmentActionUsage.getReferent());
 
         // to check and fix if needed
         // assertEquals(1, ((LiteralInteger) assignmentActionUsage.getTargetArgument()).getValue());

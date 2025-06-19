@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,6 @@ public class MembershipComputer<T extends Element> {
     private final T sourceElement;
 
     public MembershipComputer(T sourceElement, EList<? extends Namespace> excluded) {
-        super();
         this.visited = excluded.stream().collect(toSet());
         this.sourceElement = sourceElement;
     }
@@ -97,7 +96,6 @@ public class MembershipComputer<T extends Element> {
         BasicEList<Membership> visibleMemberships = new BasicEList<>(directMemberships);
 
         if (isRecursive) {
-
             List<Membership> recursiveMembers = new BasicEList<>();
             for (Membership m : visibleMemberships) {
                 if (m.getMemberElement() instanceof Namespace subNamespace) {
@@ -169,14 +167,10 @@ public class MembershipComputer<T extends Element> {
     }
 
     private EList<Membership> importedMemberships(MembershipImport msImport) {
-
         BasicEList<Membership> importedMemberships = new BasicEList<>();
         Membership membership = msImport.getImportedMembership();
-
         if (membership != null) {
-
             Element member = membership.getMemberElement();
-
             if (member != null) {
                 if (!msImport.isIsRecursive() || !(member instanceof Namespace)) {
                     importedMemberships.add(membership);
@@ -188,7 +182,6 @@ public class MembershipComputer<T extends Element> {
                 }
             }
         }
-
         return importedMemberships;
     }
 

@@ -18,6 +18,7 @@ package org.eclipse.syson.application.data;
  * @author Arthur Daussy
  */
 public class NewObjectAsTextProjectData {
+
     public static final String SCRIPT_PATH = "/scripts/database-content/NewObjectAsTextProject.sql";
 
     public static final String EDITING_CONTEXT_ID = "d4e1982e-1679-4fe9-b1df-08d4c21a4b77";

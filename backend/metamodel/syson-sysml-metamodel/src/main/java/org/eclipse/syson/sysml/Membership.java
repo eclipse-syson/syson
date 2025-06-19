@@ -12,8 +12,6 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Membership</b></em>'. <!-- end-user-doc -->
  *
@@ -103,14 +101,6 @@ public interface Membership extends Relationship {
      * @generated
      */
     Namespace getMembershipOwningNamespace();
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @model ordered="false"
-     * @generated
-     */
-    EList<Feature> allRedefinedFeatures();
 
     /**
      * Returns the value of the '<em><b>Member Short Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc

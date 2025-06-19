@@ -50,7 +50,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -1106,7 +1106,7 @@ public class ViewCreateService {
         return interfaceUsage;
     }
 
-    public FlowConnectionUsage createFlowConnectionUsage(Feature source, Feature target) {
+    public FlowUsage createFlowUsage(Feature source, Feature target) {
         Namespace flowContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
         if (flowContainer == null) {
             return null;
@@ -1114,14 +1114,14 @@ public class ViewCreateService {
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         flowContainer.getOwnedRelationship().add(featureMembership);
 
-        FlowConnectionUsage flowConnectionUsage = SysmlFactory.eINSTANCE.createFlowConnectionUsage();
-        this.addChildInParent(flowContainer, flowConnectionUsage);
-        this.elementInitializer(flowConnectionUsage);
+        FlowUsage flowUsage = SysmlFactory.eINSTANCE.createFlowUsage();
+        this.addChildInParent(flowContainer, flowUsage);
+        this.elementInitializer(flowUsage);
 
-        flowConnectionUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(source));
-        flowConnectionUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(target));
+        flowUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(source));
+        flowUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(target));
 
-        return flowConnectionUsage;
+        return flowUsage;
     }
 
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {

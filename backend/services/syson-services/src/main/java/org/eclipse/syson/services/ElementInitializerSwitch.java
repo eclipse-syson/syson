@@ -26,7 +26,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -149,7 +149,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
-    public Element caseFlowConnectionUsage(FlowConnectionUsage object) {
+    public Element caseFlowUsage(FlowUsage object) {
         return object;
     }
 

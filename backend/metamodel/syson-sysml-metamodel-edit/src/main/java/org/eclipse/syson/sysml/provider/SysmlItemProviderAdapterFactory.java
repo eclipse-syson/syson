@@ -965,6 +965,29 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.ConstructorExpression} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConstructorExpressionItemProvider constructorExpressionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.ConstructorExpression}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConstructorExpressionAdapter() {
+        if (this.constructorExpressionItemProvider == null) {
+            this.constructorExpressionItemProvider = new ConstructorExpressionItemProvider(this);
+        }
+
+        return this.constructorExpressionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.CrossSubsetting} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1494,49 +1517,94 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.FlowConnectionDefinition}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.Flow} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected FlowConnectionDefinitionItemProvider flowConnectionDefinitionItemProvider;
+    protected FlowItemProvider flowItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.FlowConnectionDefinition}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.Flow}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createFlowConnectionDefinitionAdapter() {
-        if (this.flowConnectionDefinitionItemProvider == null) {
-            this.flowConnectionDefinitionItemProvider = new FlowConnectionDefinitionItemProvider(this);
+    public Adapter createFlowAdapter() {
+        if (this.flowItemProvider == null) {
+            this.flowItemProvider = new FlowItemProvider(this);
         }
 
-        return this.flowConnectionDefinitionItemProvider;
+        return this.flowItemProvider;
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.FlowConnectionUsage} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.FlowDefinition} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected FlowConnectionUsageItemProvider flowConnectionUsageItemProvider;
+    protected FlowDefinitionItemProvider flowDefinitionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.FlowConnectionUsage}. <!-- begin-user-doc --> <!--
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.FlowDefinition}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createFlowConnectionUsageAdapter() {
-        if (this.flowConnectionUsageItemProvider == null) {
-            this.flowConnectionUsageItemProvider = new FlowConnectionUsageItemProvider(this);
+    public Adapter createFlowDefinitionAdapter() {
+        if (this.flowDefinitionItemProvider == null) {
+            this.flowDefinitionItemProvider = new FlowDefinitionItemProvider(this);
         }
 
-        return this.flowConnectionUsageItemProvider;
+        return this.flowDefinitionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.FlowEnd} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FlowEndItemProvider flowEndItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.FlowEnd}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFlowEndAdapter() {
+        if (this.flowEndItemProvider == null) {
+            this.flowEndItemProvider = new FlowEndItemProvider(this);
+        }
+
+        return this.flowEndItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.FlowUsage} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FlowUsageItemProvider flowUsageItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.FlowUsage}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFlowUsageAdapter() {
+        if (this.flowUsageItemProvider == null) {
+            this.flowUsageItemProvider = new FlowUsageItemProvider(this);
+        }
+
+        return this.flowUsageItemProvider;
     }
 
     /**
@@ -1862,75 +1930,6 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.ItemFeature} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected ItemFeatureItemProvider itemFeatureItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.ItemFeature}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createItemFeatureAdapter() {
-        if (this.itemFeatureItemProvider == null) {
-            this.itemFeatureItemProvider = new ItemFeatureItemProvider(this);
-        }
-
-        return this.itemFeatureItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.ItemFlow} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected ItemFlowItemProvider itemFlowItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.ItemFlow}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createItemFlowAdapter() {
-        if (this.itemFlowItemProvider == null) {
-            this.itemFlowItemProvider = new ItemFlowItemProvider(this);
-        }
-
-        return this.itemFlowItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.ItemFlowEnd} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected ItemFlowEndItemProvider itemFlowEndItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.ItemFlowEnd}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createItemFlowEndAdapter() {
-        if (this.itemFlowEndItemProvider == null) {
-            this.itemFlowEndItemProvider = new ItemFlowEndItemProvider(this);
-        }
-
-        return this.itemFlowEndItemProvider;
-    }
-
-    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.ItemUsage} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1997,29 +1996,6 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         }
 
         return this.libraryPackageItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.LifeClass} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected LifeClassItemProvider lifeClassItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.LifeClass}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createLifeClassAdapter() {
-        if (this.lifeClassItemProvider == null) {
-            this.lifeClassItemProvider = new LifeClassItemProvider(this);
-        }
-
-        return this.lifeClassItemProvider;
     }
 
     /**
@@ -2710,6 +2686,29 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         }
 
         return this.partUsageItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.PayloadFeature} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PayloadFeatureItemProvider payloadFeatureItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.PayloadFeature}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPayloadFeatureAdapter() {
+        if (this.payloadFeatureItemProvider == null) {
+            this.payloadFeatureItemProvider = new PayloadFeatureItemProvider(this);
+        }
+
+        return this.payloadFeatureItemProvider;
     }
 
     /**
@@ -3426,49 +3425,49 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.SuccessionFlowConnectionUsage}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.SuccessionFlow} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected SuccessionFlowConnectionUsageItemProvider successionFlowConnectionUsageItemProvider;
+    protected SuccessionFlowItemProvider successionFlowItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.SuccessionFlowConnectionUsage}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createSuccessionFlowConnectionUsageAdapter() {
-        if (this.successionFlowConnectionUsageItemProvider == null) {
-            this.successionFlowConnectionUsageItemProvider = new SuccessionFlowConnectionUsageItemProvider(this);
-        }
-
-        return this.successionFlowConnectionUsageItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.SuccessionItemFlow} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected SuccessionItemFlowItemProvider successionItemFlowItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.syson.sysml.SuccessionItemFlow}. <!-- begin-user-doc --> <!--
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.SuccessionFlow}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createSuccessionItemFlowAdapter() {
-        if (this.successionItemFlowItemProvider == null) {
-            this.successionItemFlowItemProvider = new SuccessionItemFlowItemProvider(this);
+    public Adapter createSuccessionFlowAdapter() {
+        if (this.successionFlowItemProvider == null) {
+            this.successionFlowItemProvider = new SuccessionFlowItemProvider(this);
         }
 
-        return this.successionItemFlowItemProvider;
+        return this.successionFlowItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.SuccessionFlowUsage} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SuccessionFlowUsageItemProvider successionFlowUsageItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.SuccessionFlowUsage}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSuccessionFlowUsageAdapter() {
+        if (this.successionFlowUsageItemProvider == null) {
+            this.successionFlowUsageItemProvider = new SuccessionFlowUsageItemProvider(this);
+        }
+
+        return this.successionFlowUsageItemProvider;
     }
 
     /**
@@ -4173,6 +4172,9 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         if (this.constraintUsageItemProvider != null) {
             this.constraintUsageItemProvider.dispose();
         }
+        if (this.constructorExpressionItemProvider != null) {
+            this.constructorExpressionItemProvider.dispose();
+        }
         if (this.crossSubsettingItemProvider != null) {
             this.crossSubsettingItemProvider.dispose();
         }
@@ -4242,11 +4244,17 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         if (this.featureValueItemProvider != null) {
             this.featureValueItemProvider.dispose();
         }
-        if (this.flowConnectionDefinitionItemProvider != null) {
-            this.flowConnectionDefinitionItemProvider.dispose();
+        if (this.flowItemProvider != null) {
+            this.flowItemProvider.dispose();
         }
-        if (this.flowConnectionUsageItemProvider != null) {
-            this.flowConnectionUsageItemProvider.dispose();
+        if (this.flowDefinitionItemProvider != null) {
+            this.flowDefinitionItemProvider.dispose();
+        }
+        if (this.flowEndItemProvider != null) {
+            this.flowEndItemProvider.dispose();
+        }
+        if (this.flowUsageItemProvider != null) {
+            this.flowUsageItemProvider.dispose();
         }
         if (this.forkNodeItemProvider != null) {
             this.forkNodeItemProvider.dispose();
@@ -4290,15 +4298,6 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         if (this.itemDefinitionItemProvider != null) {
             this.itemDefinitionItemProvider.dispose();
         }
-        if (this.itemFeatureItemProvider != null) {
-            this.itemFeatureItemProvider.dispose();
-        }
-        if (this.itemFlowItemProvider != null) {
-            this.itemFlowItemProvider.dispose();
-        }
-        if (this.itemFlowEndItemProvider != null) {
-            this.itemFlowEndItemProvider.dispose();
-        }
         if (this.itemUsageItemProvider != null) {
             this.itemUsageItemProvider.dispose();
         }
@@ -4307,9 +4306,6 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         }
         if (this.libraryPackageItemProvider != null) {
             this.libraryPackageItemProvider.dispose();
-        }
-        if (this.lifeClassItemProvider != null) {
-            this.lifeClassItemProvider.dispose();
         }
         if (this.literalBooleanItemProvider != null) {
             this.literalBooleanItemProvider.dispose();
@@ -4400,6 +4396,9 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         }
         if (this.partUsageItemProvider != null) {
             this.partUsageItemProvider.dispose();
+        }
+        if (this.payloadFeatureItemProvider != null) {
+            this.payloadFeatureItemProvider.dispose();
         }
         if (this.performActionUsageItemProvider != null) {
             this.performActionUsageItemProvider.dispose();
@@ -4494,11 +4493,11 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
         if (this.successionAsUsageItemProvider != null) {
             this.successionAsUsageItemProvider.dispose();
         }
-        if (this.successionFlowConnectionUsageItemProvider != null) {
-            this.successionFlowConnectionUsageItemProvider.dispose();
+        if (this.successionFlowItemProvider != null) {
+            this.successionFlowItemProvider.dispose();
         }
-        if (this.successionItemFlowItemProvider != null) {
-            this.successionItemFlowItemProvider.dispose();
+        if (this.successionFlowUsageItemProvider != null) {
+            this.successionFlowUsageItemProvider.dispose();
         }
         if (this.terminateActionUsageItemProvider != null) {
             this.terminateActionUsageItemProvider.dispose();

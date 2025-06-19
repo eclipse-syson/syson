@@ -662,6 +662,18 @@ public abstract class ElementImpl extends EModelElementImpl implements Element {
      *
      * @generated
      */
+    @Override
+    public String path() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -897,6 +909,8 @@ public abstract class ElementImpl extends EModelElementImpl implements Element {
                 return this.escapedName();
             case SysmlPackage.ELEMENT___LIBRARY_NAMESPACE:
                 return this.libraryNamespace();
+            case SysmlPackage.ELEMENT___PATH:
+                return this.path();
         }
         return super.eInvoke(operationID, arguments);
     }

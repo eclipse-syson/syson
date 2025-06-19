@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ package org.eclipse.syson.sysml;
  * @model
  * @generated
  */
-public interface FeatureMembership extends OwningMembership, Featuring {
+public interface FeatureMembership extends OwningMembership {
     /**
      * Returns the value of the '<em><b>Owned Member Feature</b></em>' reference. It is bidirectional and its opposite
      * is '{@link org.eclipse.syson.sysml.Feature#getOwningFeatureMembership <em>Owning Feature Membership</em>}'. <!--

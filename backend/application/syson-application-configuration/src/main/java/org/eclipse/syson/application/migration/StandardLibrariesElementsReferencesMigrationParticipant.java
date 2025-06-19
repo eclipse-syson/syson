@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.application.migration;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -42,6 +44,12 @@ public class StandardLibrariesElementsReferencesMigrationParticipant implements 
 
     private static final String PARTICIPANT_VERSION = "2025.8.0-202506301600";
 
+    private final StandardLibrariesIdsResourceToMapParser standardLibrariesIdsResourceToMapParser;
+
+    public StandardLibrariesElementsReferencesMigrationParticipant(StandardLibrariesIdsResourceToMapParser standardLibrariesIdsResourceToMapParser) {
+        this.standardLibrariesIdsResourceToMapParser = Objects.requireNonNull(standardLibrariesIdsResourceToMapParser);
+    }
+
     @Override
     public String getVersion() {
         return PARTICIPANT_VERSION;
@@ -49,6 +57,7 @@ public class StandardLibrariesElementsReferencesMigrationParticipant implements 
 
     @Override
     public String getEObjectUri(JsonResource resource, EObject eObject, EReference eReference, String uri) {
+        String migratedURI = uri;
         if (!eReference.isContainment() && (uri.contains(ElementUtil.SYSML_LIBRARY_SCHEME) || uri.contains(ElementUtil.KERML_LIBRARY_SCHEME))) {
             ResourceSet resourceSet = resource.getResourceSet();
             String uriWithoutPrefixedType = uri;
@@ -63,12 +72,18 @@ public class StandardLibrariesElementsReferencesMigrationParticipant implements 
             }
             URI uriAsURI = URI.createURI(uriWithoutPrefixedType);
             EObject referencedEObject = resourceSet.getEObject(uriAsURI, false);
+            int uriFragmentIndex = uri.indexOf('#');
+            var prefix = uri.substring(0, uriFragmentIndex + 1);
             if (referencedEObject instanceof Element element) {
-                int uriFragmentIndex = uri.indexOf('#');
-                var prefix = uri.substring(0, uriFragmentIndex + 1);
-                return prefix + element.getElementId();
+                migratedURI = prefix + element.getElementId();
+            } else {
+                var oldId = uri.substring(uriFragmentIndex + 1);
+                var elementId = this.standardLibrariesIdsResourceToMapParser.getOldIdToElementIdMap().get(oldId);
+                if (elementId != null) {
+                    migratedURI = prefix + elementId;
+                }
             }
         }
-        return uri;
+        return migratedURI;
     }
 }

@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Annotation;
@@ -50,7 +51,6 @@ import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
-import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -91,6 +91,8 @@ public class DetailsViewService {
 
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
+    private final UtilService utilService;
+
     public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService,
             final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
@@ -101,6 +103,7 @@ public class DetailsViewService {
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
         this.unsetEnumLiteral.setName("unset");
         this.unsetEnumLiteral.setLiteral("unset");
+        this.utilService = new UtilService();
     }
 
     public String getDetailsViewLabel(Element element, EStructuralFeature eStructuralFeature) {
@@ -194,8 +197,6 @@ public class DetailsViewService {
             if ((element instanceof StateUsage && SysmlPackage.eINSTANCE.getStateUsage_IsParallel().equals(eStructuralFeature))
                     || (element instanceof StateDefinition && SysmlPackage.eINSTANCE.getStateDefinition_IsParallel().equals(eStructuralFeature))) {
                 isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().anyMatch(TransitionUsage.class::isInstance);
-            } else if (element instanceof FeatureMembership && SysmlPackage.eINSTANCE.getFeaturing_Feature().equals(eStructuralFeature)) {
-                isReadOnly = true;
             } else if (element instanceof ViewUsage && SysmlPackage.eINSTANCE.getViewUsage_ExposedElement().equals(eStructuralFeature)) {
                 isReadOnly = true;
             }
@@ -569,7 +570,7 @@ public class DetailsViewService {
     }
 
     /**
-     * Gets the {@link FeatureValue} from a {@link Feature} with a {@link FeatureValue} or a {@link FeatureValue}.
+     * Gets the {@link FeatureValue} from a {@link Feature} or a {@link FeatureValue}.
      *
      * @param self
      *            a {@link FeatureValue} or {@link Feature}
@@ -579,8 +580,8 @@ public class DetailsViewService {
         Element result = null;
         if (self instanceof FeatureValue featureValue && featureValue.getValue() != null) {
             result = featureValue;
-        } else if (self instanceof Feature feature && feature.getValuation() != null && feature.getValuation().getValue() != null) {
-            result = feature.getValuation();
+        } else if (self instanceof Feature feature && this.utilService.getValuation(feature) != null && this.utilService.getValuation(feature).getValue() != null) {
+            result = this.utilService.getValuation(feature);
         }
         return result;
     }

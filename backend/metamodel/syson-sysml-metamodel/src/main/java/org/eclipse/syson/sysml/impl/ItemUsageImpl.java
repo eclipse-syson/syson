@@ -63,9 +63,9 @@ public class ItemUsageImpl extends OccurrenceUsageImpl implements ItemUsage {
     public EList<Structure> getItemDefinition() {
         List<Structure> itemDefinitions = new ArrayList<>();
         this.getOccurrenceDefinition().stream()
-            .filter(Structure.class::isInstance)
-            .map(Structure.class::cast)
-            .forEach(itemDefinitions::add);
+                .filter(Structure.class::isInstance)
+                .map(Structure.class::cast)
+                .forEach(itemDefinitions::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), itemDefinitions.size(), itemDefinitions.toArray());
     }
 

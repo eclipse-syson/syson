@@ -82,11 +82,12 @@ public class EMFUtils {
                 .map(ECrossReferenceAdapter.class::cast)
                 .map(crossRef -> crossRef.getInverseReferences(source, targetingFeature, false))
                 .findFirst().orElseGet(() -> {
-                    LOGGER.warn("Unable to find a ECrossReference on " + source);
+                    LOGGER.warn("Unable to find an ECrossReference on " + source);
                     return List.of();
                 });
 
     }
+    
     /**
      * Gets all Settings targeting the given source element.
      *
@@ -99,8 +100,9 @@ public class EMFUtils {
                 .filter(ECrossReferenceAdapter.class::isInstance)
                 .map(ECrossReferenceAdapter.class::cast)
                 .map(crossRef -> crossRef.getInverseReferences(source))
-                .findFirst().orElseGet(() -> {
-                    LOGGER.warn("Unable to find a ECrossReference on " + source);
+                .findFirst()
+                .orElseGet(() -> {
+                    LOGGER.warn("Unable to find an ECrossReference on " + source);
                     return List.of();
                 });
 
