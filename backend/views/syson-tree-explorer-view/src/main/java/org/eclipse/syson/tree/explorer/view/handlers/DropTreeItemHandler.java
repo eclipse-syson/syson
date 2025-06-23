@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
@@ -112,11 +113,11 @@ public class DropTreeItemHandler implements IDropTreeItemHandler {
     }
 
     private String getLabel(Object droppedElement) {
-        String label = this.labelService.getLabel(droppedElement);
-        if ((label == null || label.isEmpty()) && droppedElement instanceof EObject droppedEObject) {
-            label = droppedEObject.eClass().getName();
+        StyledString styledLabel = this.labelService.getStyledLabel(droppedElement);
+        if ((styledLabel == null || styledLabel.toString().isEmpty()) && droppedElement instanceof EObject droppedEObject) {
+            styledLabel = StyledString.of(droppedEObject.eClass().getName());
         }
-        return label;
+        return styledLabel.toString();
     }
 
 }

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -51,7 +52,6 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.application.services.DetailsViewService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -189,7 +189,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     /**
      * Creates a group to display the value of a Feature or FeatureValue.
-     * 
+     *
      * @return a {@link GroupDescription}
      */
     private GroupDescription createFeatureValuePropertiesGroup() {
@@ -214,7 +214,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(CORE_PROPERTIES);
-        group.setLabelExpression("aql:self.eClass().getLabel() + ' Properties'");
+        group.setLabelExpression("aql:self.eClass().getStyledLabel() + ' Properties'");
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createCoreWidgets());
@@ -228,7 +228,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(ADVANCED_PROPERTIES);
-        group.setLabelExpression("aql:self.eClass().getLabel() + ' Properties'");
+        group.setLabelExpression("aql:self.eClass().getStyledLabel() + ' Properties'");
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createAdvancedWidgets());

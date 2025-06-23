@@ -33,9 +33,9 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
@@ -570,7 +570,7 @@ public class DetailsViewService {
 
     /**
      * Gets the {@link FeatureValue} from a {@link Feature} with a {@link FeatureValue} or a {@link FeatureValue}.
-     * 
+     *
      * @param self
      *            a {@link FeatureValue} or {@link Feature}
      * @return a {@link FeatureValue} or <code>null</code>
@@ -587,7 +587,7 @@ public class DetailsViewService {
 
     /**
      * Gets the textual representation of the value of a {@link FeatureValue}.
-     * 
+     *
      * @param featureValue
      *            a {@link FeatureValue}
      * @return a textual representation of the value (or empty string if none)
