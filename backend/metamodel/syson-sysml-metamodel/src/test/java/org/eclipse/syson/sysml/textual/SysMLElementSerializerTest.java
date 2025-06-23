@@ -1041,11 +1041,11 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
-    public void readonlyAttributeUsage() {
+    public void constantAttributeUsage() {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
-        attributeUsage.setIsReadOnly(true);
+        attributeUsage.setIsConstant(true);
 
-        this.assertTextualFormEquals("readonly attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("constant attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -1069,11 +1069,11 @@ public class SysMLElementSerializerTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsEnd(true);
         attributeUsage.setIsDerived(true);
-        attributeUsage.setIsReadOnly(true);
+        attributeUsage.setIsConstant(true);
         attributeUsage.setIsVariation(true);
         attributeUsage.setIsAbstract(true);
 
-        this.assertTextualFormEquals("abstract variation readonly derived end attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("abstract variation constant derived end attribute attribute1;", attributeUsage);
     }
 
     @Test

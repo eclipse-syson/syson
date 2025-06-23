@@ -135,7 +135,6 @@ public class ModelBuilder {
         redefinition.setRedefiningFeature(redefiningFeature);
 
         redefiningFeature.getOwnedRelationship().add(redefinition);
-
     }
 
     public <T extends Element> T create(Class<T> type) {
@@ -169,7 +168,6 @@ public class ModelBuilder {
             chain.setChainingFeature(f);
             feature.getOwnedRelationship().add(chain);
         }
-
         return feature;
     }
 
@@ -226,7 +224,6 @@ public class ModelBuilder {
         if (name != null) {
             newInstance.setDeclaredName(name);
         }
-
         if (shortName != null) {
             newInstance.setDeclaredShortName(shortName);
         }
@@ -252,6 +249,10 @@ public class ModelBuilder {
         this.addOwnedMembership(parent, ownedElement, OwningMembership.class, null);
     }
 
+    private void addFeatureMembership(Element parent, Feature feature) {
+        this.addOwnedMembership(parent, feature, FeatureMembership.class, null);
+    }
+
     private <T extends OwningMembership> T addOwnedMembership(Element parent, Element ownedElement, Class<T> relationshipType, VisibilityKind visibility) {
         T ownedRelation = (T) this.fact.create(CLASS_TO_ECLASS.get(relationshipType));
         parent.getOwnedRelationship().add(ownedRelation);
@@ -259,18 +260,9 @@ public class ModelBuilder {
         // I guess this should be done automatically when adding to ownedRelatedElement but waiting for subset and super
         // set to be implemented
         ownedRelation.setMemberElement(ownedElement);
-
         if (visibility != null) {
-
             ownedRelation.setVisibility(visibility);
         }
-
         return ownedRelation;
-    }
-
-    private void addFeatureMembership(Element parent, Feature feature) {
-        FeatureMembership relationship = this.addOwnedMembership(parent, feature, FeatureMembership.class, null);
-        // Workaround waiting for subset/refine implementation
-        relationship.setFeature(feature);
     }
 }

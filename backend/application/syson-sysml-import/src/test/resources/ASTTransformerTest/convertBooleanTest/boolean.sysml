@@ -49,8 +49,8 @@ package BooleanTest {
 	// isEnd
 	end e1;
 
-	// isReadOnly
-	readonly attribute ro;
+	// isConstant
+	constant attribute ro;
 
 	// isDerived
 	derived ref attribute y :> init1;

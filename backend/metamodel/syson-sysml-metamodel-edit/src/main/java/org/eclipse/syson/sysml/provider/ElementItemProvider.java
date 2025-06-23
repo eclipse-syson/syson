@@ -582,10 +582,13 @@ public class ElementItemProvider
                 SysmlFactory.eINSTANCE.createFeatureValue()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createFlowConnectionDefinition()));
+                SysmlFactory.eINSTANCE.createFlow()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createFlowConnectionUsage()));
+                SysmlFactory.eINSTANCE.createFlowDefinition()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
+                SysmlFactory.eINSTANCE.createFlowUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createRequirementConstraintMembership()));
@@ -604,9 +607,6 @@ public class ElementItemProvider
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createIntersecting()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createItemFlow()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createMembershipImport()));
@@ -660,10 +660,10 @@ public class ElementItemProvider
                 SysmlFactory.eINSTANCE.createSuccessionAsUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createSuccessionFlowConnectionUsage()));
+                SysmlFactory.eINSTANCE.createSuccessionFlow()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
-                SysmlFactory.eINSTANCE.createSuccessionItemFlow()));
+                SysmlFactory.eINSTANCE.createSuccessionFlowUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getElement_OwnedRelationship(),
                 SysmlFactory.eINSTANCE.createTransitionFeatureMembership()));

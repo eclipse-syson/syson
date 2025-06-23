@@ -380,8 +380,8 @@ public class LabelService {
         if (usage.isIsVariation()) {
             label.append(LabelConstants.VARIATION + LabelConstants.SPACE);
         }
-        if (usage.isIsReadOnly()) {
-            label.append(LabelConstants.READ_ONLY + LabelConstants.SPACE);
+        if (usage.isIsConstant()) {
+            label.append(LabelConstants.CONSTANT + LabelConstants.SPACE);
         }
         if (usage.isIsDerived()) {
             label.append(LabelConstants.DERIVED + LabelConstants.SPACE);

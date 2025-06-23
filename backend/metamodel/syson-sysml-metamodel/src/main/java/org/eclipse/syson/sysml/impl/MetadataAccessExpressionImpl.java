@@ -14,11 +14,9 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataFeature;
@@ -38,16 +36,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
  * @generated
  */
 public class MetadataAccessExpressionImpl extends ExpressionImpl implements MetadataAccessExpression {
-    /**
-     * The cached value of the '{@link #getReferencedElement() <em>Referenced Element</em>}' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReferencedElement()
-     * @generated
-     * @ordered
-     */
-    protected Element referencedElement;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -74,16 +62,8 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
      */
     @Override
     public Element getReferencedElement() {
-        if (this.referencedElement != null && this.referencedElement.eIsProxy()) {
-            InternalEObject oldReferencedElement = (InternalEObject) this.referencedElement;
-            this.referencedElement = (Element) this.eResolveProxy(oldReferencedElement);
-            if (this.referencedElement != oldReferencedElement) {
-                if (this.eNotificationRequired()) {
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT, oldReferencedElement, this.referencedElement));
-                }
-            }
-        }
-        return this.referencedElement;
+        Element referencedElement = this.basicGetReferencedElement();
+        return referencedElement != null && referencedElement.eIsProxy() ? (Element) this.eResolveProxy((InternalEObject) referencedElement) : referencedElement;
     }
 
     /**
@@ -92,21 +72,10 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
      * @generated
      */
     public Element basicGetReferencedElement() {
-        return this.referencedElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setReferencedElement(Element newReferencedElement) {
-        Element oldReferencedElement = this.referencedElement;
-        this.referencedElement = newReferencedElement;
-        if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT, oldReferencedElement, this.referencedElement));
-        }
+        // TODO: implement this method to return the 'Referenced Element' reference
+        // -> do not perform proxy resolution
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
     }
 
     /**
@@ -144,40 +113,10 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT:
-                this.setReferencedElement((Element) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void eUnset(int featureID) {
-        switch (featureID) {
-            case SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT:
-                this.setReferencedElement((Element) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT:
-                return this.referencedElement != null;
+                return this.basicGetReferencedElement() != null;
         }
         return super.eIsSet(featureID);
     }

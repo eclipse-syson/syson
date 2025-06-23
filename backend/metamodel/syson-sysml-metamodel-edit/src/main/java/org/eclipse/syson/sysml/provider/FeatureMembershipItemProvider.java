@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,50 +48,10 @@ public class FeatureMembershipItemProvider extends OwningMembershipItemProvider 
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addFeaturePropertyDescriptor(object);
-            this.addTypePropertyDescriptor(object);
             this.addOwnedMemberFeaturePropertyDescriptor(object);
             this.addOwningTypePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Feature feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addFeaturePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Featuring_feature_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Featuring_feature_feature", "_UI_Featuring_type"),
-                SysmlPackage.eINSTANCE.getFeaturing_Feature(),
-                true,
-                false,
-                true,
-                null,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Type feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addTypePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Featuring_type_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Featuring_type_feature", "_UI_Featuring_type"),
-                SysmlPackage.eINSTANCE.getFeaturing_Type(),
-                true,
-                false,
-                true,
-                null,
-                null,
-                null));
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ public class UsageItemProvider extends FeatureItemProvider {
 
             this.addIsReferencePropertyDescriptor(object);
             this.addIsVariationPropertyDescriptor(object);
+            this.addMayTimeVaryPropertyDescriptor(object);
             this.addDefinitionPropertyDescriptor(object);
             this.addDirectedUsagePropertyDescriptor(object);
             this.addNestedActionPropertyDescriptor(object);
@@ -159,6 +160,25 @@ public class UsageItemProvider extends FeatureItemProvider {
                 this.getString("_UI_PropertyDescriptor_description", "_UI_Usage_isVariation_feature", "_UI_Usage_type"),
                 SysmlPackage.eINSTANCE.getUsage_IsVariation(),
                 true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the May Time Vary feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addMayTimeVaryPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Usage_mayTimeVary_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Usage_mayTimeVary_feature", "_UI_Usage_type"),
+                SysmlPackage.eINSTANCE.getUsage_MayTimeVary(),
+                false,
                 false,
                 false,
                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
@@ -811,6 +831,7 @@ public class UsageItemProvider extends FeatureItemProvider {
         switch (notification.getFeatureID(Usage.class)) {
             case SysmlPackage.USAGE__IS_REFERENCE:
             case SysmlPackage.USAGE__IS_VARIATION:
+            case SysmlPackage.USAGE__MAY_TIME_VARY:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

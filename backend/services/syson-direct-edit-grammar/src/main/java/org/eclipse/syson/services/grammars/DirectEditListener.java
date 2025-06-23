@@ -102,15 +102,15 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitVariantPrefixExpression(DirectEditParser.VariantPrefixExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#readonlyPrefixExpression}.
+	 * Enter a parse tree produced by {@link DirectEditParser#constantPrefixExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx);
+	void enterConstantPrefixExpression(DirectEditParser.ConstantPrefixExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#readonlyPrefixExpression}.
+	 * Exit a parse tree produced by {@link DirectEditParser#constantPrefixExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx);
+	void exitConstantPrefixExpression(DirectEditParser.ConstantPrefixExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#derivedPrefixExpression}.
 	 * @param ctx the parse tree

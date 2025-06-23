@@ -266,6 +266,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseConstructorExpression(ConstructorExpression object) {
+            return SysmlAdapterFactory.this.createConstructorExpressionAdapter();
+        }
+
+        @Override
         public Adapter caseControlNode(ControlNode object) {
             return SysmlAdapterFactory.this.createControlNodeAdapter();
         }
@@ -396,18 +401,23 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseFeaturing(Featuring object) {
-            return SysmlAdapterFactory.this.createFeaturingAdapter();
+        public Adapter caseFlow(Flow object) {
+            return SysmlAdapterFactory.this.createFlowAdapter();
         }
 
         @Override
-        public Adapter caseFlowConnectionDefinition(FlowConnectionDefinition object) {
-            return SysmlAdapterFactory.this.createFlowConnectionDefinitionAdapter();
+        public Adapter caseFlowDefinition(FlowDefinition object) {
+            return SysmlAdapterFactory.this.createFlowDefinitionAdapter();
         }
 
         @Override
-        public Adapter caseFlowConnectionUsage(FlowConnectionUsage object) {
-            return SysmlAdapterFactory.this.createFlowConnectionUsageAdapter();
+        public Adapter caseFlowEnd(FlowEnd object) {
+            return SysmlAdapterFactory.this.createFlowEndAdapter();
+        }
+
+        @Override
+        public Adapter caseFlowUsage(FlowUsage object) {
+            return SysmlAdapterFactory.this.createFlowUsageAdapter();
         }
 
         @Override
@@ -451,6 +461,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseInstantiationExpression(InstantiationExpression object) {
+            return SysmlAdapterFactory.this.createInstantiationExpressionAdapter();
+        }
+
+        @Override
         public Adapter caseInteraction(Interaction object) {
             return SysmlAdapterFactory.this.createInteractionAdapter();
         }
@@ -486,21 +501,6 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseItemFeature(ItemFeature object) {
-            return SysmlAdapterFactory.this.createItemFeatureAdapter();
-        }
-
-        @Override
-        public Adapter caseItemFlow(ItemFlow object) {
-            return SysmlAdapterFactory.this.createItemFlowAdapter();
-        }
-
-        @Override
-        public Adapter caseItemFlowEnd(ItemFlowEnd object) {
-            return SysmlAdapterFactory.this.createItemFlowEndAdapter();
-        }
-
-        @Override
         public Adapter caseItemUsage(ItemUsage object) {
             return SysmlAdapterFactory.this.createItemUsageAdapter();
         }
@@ -513,11 +513,6 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseLibraryPackage(LibraryPackage object) {
             return SysmlAdapterFactory.this.createLibraryPackageAdapter();
-        }
-
-        @Override
-        public Adapter caseLifeClass(LifeClass object) {
-            return SysmlAdapterFactory.this.createLifeClassAdapter();
         }
 
         @Override
@@ -673,6 +668,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter casePartUsage(PartUsage object) {
             return SysmlAdapterFactory.this.createPartUsageAdapter();
+        }
+
+        @Override
+        public Adapter casePayloadFeature(PayloadFeature object) {
+            return SysmlAdapterFactory.this.createPayloadFeatureAdapter();
         }
 
         @Override
@@ -836,13 +836,13 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
-            return SysmlAdapterFactory.this.createSuccessionFlowConnectionUsageAdapter();
+        public Adapter caseSuccessionFlow(SuccessionFlow object) {
+            return SysmlAdapterFactory.this.createSuccessionFlowAdapter();
         }
 
         @Override
-        public Adapter caseSuccessionItemFlow(SuccessionItemFlow object) {
-            return SysmlAdapterFactory.this.createSuccessionItemFlowAdapter();
+        public Adapter caseSuccessionFlowUsage(SuccessionFlowUsage object) {
+            return SysmlAdapterFactory.this.createSuccessionFlowUsageAdapter();
         }
 
         @Override
@@ -1483,6 +1483,20 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConstructorExpression
+     * <em>Constructor Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.ConstructorExpression
+     * @generated
+     */
+    public Adapter createConstructorExpressionAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ControlNode <em>Control Node</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -1828,43 +1842,54 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Featuring <em>Featuring</em>}'. <!--
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Flow <em>Flow</em>}'. <!--
      * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.syson.sysml.Featuring
+     * @see org.eclipse.syson.sysml.Flow
      * @generated
      */
-    public Adapter createFeaturingAdapter() {
+    public Adapter createFlowAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionDefinition <em>Flow
-     * Connection Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowDefinition <em>Flow
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.syson.sysml.FlowConnectionDefinition
+     * @see org.eclipse.syson.sysml.FlowDefinition
      * @generated
      */
-    public Adapter createFlowConnectionDefinitionAdapter() {
+    public Adapter createFlowDefinitionAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionUsage <em>Flow
-     * Connection Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
-     * -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowEnd <em>Flow End</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.syson.sysml.FlowConnectionUsage
+     * @see org.eclipse.syson.sysml.FlowEnd
      * @generated
      */
-    public Adapter createFlowConnectionUsageAdapter() {
+    public Adapter createFlowEndAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowUsage <em>Flow Usage</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.FlowUsage
+     * @generated
+     */
+    public Adapter createFlowUsageAdapter() {
         return null;
     }
 
@@ -1975,6 +2000,20 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InstantiationExpression
+     * <em>Instantiation Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.InstantiationExpression
+     * @generated
+     */
+    public Adapter createInstantiationExpressionAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Interaction <em>Interaction</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -2067,45 +2106,6 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFeature <em>Item Feature</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.syson.sysml.ItemFeature
-     * @generated
-     */
-    public Adapter createItemFeatureAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlow <em>Item Flow</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
-     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.syson.sysml.ItemFlow
-     * @generated
-     */
-    public Adapter createItemFlowAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlowEnd <em>Item Flow
-     * End</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.syson.sysml.ItemFlowEnd
-     * @generated
-     */
-    public Adapter createItemFlowEndAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemUsage <em>Item Usage</em>}'.
      * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
@@ -2141,19 +2141,6 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLibraryPackageAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LifeClass <em>Life Class</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.syson.sysml.LifeClass
-     * @generated
-     */
-    public Adapter createLifeClassAdapter() {
         return null;
     }
 
@@ -2559,6 +2546,19 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPartUsageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PayloadFeature <em>Payload
+     * Feature</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.PayloadFeature
+     * @generated
+     */
+    public Adapter createPayloadFeatureAdapter() {
         return null;
     }
 
@@ -2992,29 +2992,28 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionFlowConnectionUsage
-     * <em>Succession Flow Connection Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so
-     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionFlow <em>Succession
+     * Flow</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.syson.sysml.SuccessionFlowConnectionUsage
+     * @see org.eclipse.syson.sysml.SuccessionFlow
      * @generated
      */
-    public Adapter createSuccessionFlowConnectionUsageAdapter() {
+    public Adapter createSuccessionFlowAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionItemFlow <em>Succession
-     * Item Flow</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionFlowUsage <em>Succession
+     * Flow Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.syson.sysml.SuccessionItemFlow
+     * @see org.eclipse.syson.sysml.SuccessionFlowUsage
      * @generated
      */
-    public Adapter createSuccessionItemFlowAdapter() {
+    public Adapter createSuccessionFlowUsageAdapter() {
         return null;
     }
 

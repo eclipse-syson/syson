@@ -14,9 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.syson.sysml.LifeClass;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -28,7 +26,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceDefinitionImpl#isIsIndividual <em>Is Individual</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceDefinitionImpl#getLifeClass <em>Life Class</em>}</li>
  * </ul>
  *
  * @generated
@@ -103,38 +100,10 @@ public class OccurrenceDefinitionImpl extends DefinitionImpl implements Occurren
      * @generated
      */
     @Override
-    public LifeClass getLifeClass() {
-        LifeClass lifeClass = this.basicGetLifeClass();
-        return lifeClass != null && lifeClass.eIsProxy() ? (LifeClass) this.eResolveProxy((InternalEObject) lifeClass) : lifeClass;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public LifeClass basicGetLifeClass() {
-        // TODO: implement this method to return the 'Life Class' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_DEFINITION__IS_INDIVIDUAL:
                 return this.isIsIndividual();
-            case SysmlPackage.OCCURRENCE_DEFINITION__LIFE_CLASS:
-                if (resolve) {
-                    return this.getLifeClass();
-                }
-                return this.basicGetLifeClass();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -179,8 +148,6 @@ public class OccurrenceDefinitionImpl extends DefinitionImpl implements Occurren
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_DEFINITION__IS_INDIVIDUAL:
                 return this.isIndividual != IS_INDIVIDUAL_EDEFAULT;
-            case SysmlPackage.OCCURRENCE_DEFINITION__LIFE_CLASS:
-                return this.basicGetLifeClass() != null;
         }
         return super.eIsSet(featureID);
     }

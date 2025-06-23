@@ -376,6 +376,14 @@ public interface Type extends Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @model ordered="false" membershipRequired="true" membershipOrdered="false"
+     * @generated
+     */
+    EList<Feature> allRedefinedFeaturesOf(Membership membership);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @model ordered="false"
      * @generated
      */
@@ -414,6 +422,14 @@ public interface Type extends Namespace {
      * @generated
      */
     EList<Membership> inheritedMemberships(EList<Namespace> excludedNamespaces, EList<Type> excludedTypes, boolean excludeImplied);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" ordered="false" otherTypeRequired="true" otherTypeOrdered="false"
+     * @generated
+     */
+    boolean isCompatibleWith(Type otherType);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

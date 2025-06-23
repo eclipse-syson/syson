@@ -41,7 +41,7 @@ import org.eclipse.syson.sysml.TypeFeaturing;
  *
  * @generated
  */
-public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
+public class TypeFeaturingImpl extends RelationshipImpl implements TypeFeaturing {
     /**
      * The cached value of the '{@link #getFeatureOfType() <em>Feature Of Type</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -309,26 +309,6 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
      * @generated NOT
      */
     @Override
-    public Feature getFeature() {
-        return this.getFeatureOfType();
-    }
-
-    /**
-     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public void setFeature(Feature newFeature) {
-        this.setFeatureOfType(newFeature);
-    }
-
-    /**
-     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
     public EList<Element> getTarget() {
         EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.TYPE_FEATURING__TARGET) {
             @Override
@@ -356,25 +336,4 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
         }
         return targets;
     }
-
-    /**
-     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public Type getType() {
-        return this.getFeaturingType();
-    }
-
-    /**
-     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public void setType(Type newType) {
-        this.setFeaturingType(newType);
-    }
-
 } // TypeFeaturingImpl

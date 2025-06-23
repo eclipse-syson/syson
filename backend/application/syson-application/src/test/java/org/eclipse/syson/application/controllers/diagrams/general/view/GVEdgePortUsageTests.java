@@ -137,7 +137,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenSysMLProjectWithPortsWhenFlowConnectionEdgeToolCreationIsRequestedThenNewFlowConnectionEdgeIsCreated() {
+    public void givenSysMLProjectWithPortsWhenFlowUsageEdgeToolCreationIsRequestedThenNewFlowUsageEdgeIsCreated() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()), "New Flow Connection (flow)");
         this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -162,7 +162,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("Package 1", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
-                SysmlPackage.eINSTANCE.getFlowConnectionUsage());
+                SysmlPackage.eINSTANCE.getFlowUsage());
 
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }

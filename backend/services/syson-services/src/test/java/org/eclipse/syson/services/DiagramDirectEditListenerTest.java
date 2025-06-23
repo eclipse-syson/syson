@@ -71,6 +71,8 @@ public class DiagramDirectEditListenerTest {
 
     private static final String CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE = "The constraint should have 1 owned OperatorExpression";
 
+    private final UtilService utilService = new UtilService();
+
     @DisplayName("GIVEN a ConstraintUsage, WHEN it is edited with '1 >= 2', THEN its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithBooleanExpression() {
@@ -207,12 +209,12 @@ public class DiagramDirectEditListenerTest {
         OperatorExpression bracketExpression = (OperatorExpression) secondParam;
         assertThat(bracketExpression.getOperator()).isEqualTo("[");
 
-        assertThat(bracketExpression.getParameter().get(0).getValuation().getValue())
+        assertThat(this.utilService.getValuation(bracketExpression.getParameter().get(0)).getValue())
                 .isInstanceOf(LiteralRational.class)
                 .extracting(l -> ((LiteralRational) l).getValue())
                 .isEqualTo(0.25);
 
-        assertThat(bracketExpression.getParameter().get(1).getValuation().getValue())
+        assertThat(this.utilService.getValuation(bracketExpression.getParameter().get(1)).getValue())
                 .isInstanceOf(FeatureReferenceExpression.class)
                 .extracting(l -> ((FeatureReferenceExpression) l).getReferent())
                 .isEqualTo(smallFlashlightExample.getNumAttributeUsage());
@@ -391,7 +393,7 @@ public class DiagramDirectEditListenerTest {
         ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
         assertThat(model.getX1().getName()).isEqualTo("x1");
         this.doDirectEditOnNode(model.getX1(), "x1 = RootPackage::p1::p1_1::x1");
-        assertThat(model.getX1().getValuation())
+        assertThat(this.utilService.getValuation(model.getX1()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(FeatureReferenceExpression.class)
@@ -407,7 +409,7 @@ public class DiagramDirectEditListenerTest {
         this.doDirectEditOnNode(model.getA21(), "= a1.a1_2");
         assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
         assertThat(model.getA21().getName()).isEqualTo("a2_1");
-        assertThat(model.getA21().getValuation())
+        assertThat(this.utilService.getValuation(model.getA21()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(FeatureChainExpression.class)
@@ -423,7 +425,7 @@ public class DiagramDirectEditListenerTest {
         this.doDirectEditOnNode(model.getA21(), "= a1.a1_3.i2_1.i3_1");
         assertThat(model.getA21().getDirection()).isEqualTo(FeatureDirectionKind.IN);
         assertThat(model.getA21().getName()).isEqualTo("a2_1");
-        assertThat(model.getA21().getValuation())
+        assertThat(this.utilService.getValuation(model.getA21()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(FeatureChainExpression.class)
@@ -438,7 +440,7 @@ public class DiagramDirectEditListenerTest {
         ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
         this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1");
         assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(model.getX1().getValuation())
+        assertThat(this.utilService.getValuation(model.getX1()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(FeatureReferenceExpression.class)
@@ -453,16 +455,16 @@ public class DiagramDirectEditListenerTest {
         ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
         this.doDirectEditOnNode(model.getX1(), "= RootPackage::p1::p1_1::x1 + 1");
         assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(model.getX1().getValuation())
+        assertThat(this.utilService.getValuation(model.getX1()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(OperatorExpression.class)
                 .extracting(exp -> (OperatorExpression) exp)
                 .matches(epExp -> "+".equals(epExp.getOperator()));
 
-        assertThat(model.getX1().getValuation().getValue().getParameter())
+        assertThat(this.utilService.getValuation(model.getX1()).getValue().getParameter())
                 .hasSize(2)
-                .extracting(p -> p.getValuation().getValue())
+                .extracting(p -> this.utilService.getValuation(p).getValue())
                 .satisfies(params -> {
                     assertThat(params.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getA2x1());
                     assertThat(params.get(1)).matches(second -> second instanceof LiteralInteger intLit && intLit.getValue() == 1);
@@ -476,16 +478,16 @@ public class DiagramDirectEditListenerTest {
         ItemAndAttributesModelTest model = new ItemAndAttributesModelTest();
         this.doDirectEditOnNode(model.getX1(), "= x2 + x3 - 10.5");
         assertThat(model.getX1().getName()).isEqualTo("x1");
-        assertThat(model.getX1().getValuation())
+        assertThat(this.utilService.getValuation(model.getX1()))
                 .isNotNull()
                 .extracting(FeatureValue::getValue)
                 .isInstanceOf(OperatorExpression.class)
                 .extracting(exp -> (OperatorExpression) exp)
                 .matches(epExp -> "-".equals(epExp.getOperator()));
 
-        assertThat(model.getX1().getValuation().getValue().getParameter())
+        assertThat(this.utilService.getValuation(model.getX1()).getValue().getParameter())
                 .hasSize(2)
-                .extracting(p -> p.getValuation().getValue())
+                .extracting(p -> this.utilService.getValuation(p).getValue())
                 .satisfies(params -> {
                     // Check x2 + x3
                     assertThat(params.get(0))
@@ -494,7 +496,7 @@ public class DiagramDirectEditListenerTest {
                             .matches(epExp -> "+".equals(epExp.getOperator()));
                     assertThat(params.get(0).getParameter())
                             .hasSize(2)
-                            .extracting(p -> p.getValuation().getValue())
+                            .extracting(p -> this.utilService.getValuation(p).getValue())
                             .satisfies(param2 -> {
                                 assertThat(param2.get(0)).matches(first -> first instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX2());
                                 assertThat(param2.get(1)).matches(second -> second instanceof FeatureReferenceExpression featureRef && featureRef.getReferent() == model.getX3());

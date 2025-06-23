@@ -33,7 +33,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
@@ -358,14 +358,14 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      * @generated NOT
      */
     @Override
-    public EList<FlowConnectionUsage> getOwnedFlow() {
-        List<FlowConnectionUsage> flows = new ArrayList<>();
+    public EList<FlowUsage> getOwnedFlow() {
+        List<FlowUsage> flows = new ArrayList<>();
         this.getOwnedRelationship().stream()
                 .filter(FeatureMembership.class::isInstance)
                 .map(FeatureMembership.class::cast)
                 .flatMap(fm -> fm.getOwnedRelatedElement().stream())
-                .filter(FlowConnectionUsage.class::isInstance)
-                .map(FlowConnectionUsage.class::cast)
+                .filter(FlowUsage.class::isInstance)
+                .map(FlowUsage.class::cast)
                 .forEach(flows::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedFlow(), flows.size(), flows.toArray());
     }
