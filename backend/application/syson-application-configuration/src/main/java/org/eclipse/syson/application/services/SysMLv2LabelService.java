@@ -14,7 +14,6 @@ package org.eclipse.syson.application.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EClass;
@@ -53,50 +52,27 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
     }
 
     @Override
-    public String getLabel(Object object) {
-        String label = null;
+    public StyledString getStyledLabel(Object object) {
+        StyledString styledLabel = null;
         if (object instanceof Import imprt) {
             Adapter adapter = this.composedAdapterFactory.adapt(imprt, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
-                label = labelProvider.getText(object);
+                styledLabel = StyledString.of(labelProvider.getText(object));
             }
         } else if (object instanceof EClass eClass && SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(eClass)) {
             EObject dummyElement = EcoreUtil.create(eClass);
             Adapter adapter = this.composedAdapterFactory.adapt(dummyElement, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
-                label = labelProvider.getText(dummyElement);
+                styledLabel = StyledString.of(labelProvider.getText(dummyElement));
             }
         } else {
-            label = this.defaultLabelService.getLabel(object);
+            styledLabel = this.defaultLabelService.getStyledLabel(object);
         }
-        return label;
+        return styledLabel;
     }
 
     @Override
-    public StyledString getStyledLabel(Object object) {
-        return StyledString.of(this.getLabel(object));
-    }
-
-    @Override
-    public String getFullLabel(Object object) {
-        return this.defaultLabelService.getFullLabel(object);
-    }
-
-    @Override
-    public List<String> getImagePath(Object object) {
-        return this.defaultLabelService.getImagePath(object);
-    }
-
-    @Override
-    public Optional<String> getLabelField(Object object) {
-        if (object instanceof Element) {
-            return Optional.of(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName());
-        }
-        return this.defaultLabelService.getLabelField(object);
-    }
-
-    @Override
-    public boolean isLabelEditable(Object object) {
-        return this.defaultLabelService.isLabelEditable(object);
+    public List<String> getImagePaths(Object object) {
+        return this.defaultLabelService.getImagePaths(object);
     }
 }

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -111,14 +112,22 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         final List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
         if (SysmlPackage.eNS_URI.equals(domainId)) {
             if (suggested) {
-                List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
-                String label = this.labelService.getLabel(SysmlPackage.eINSTANCE.getPackage());
+                List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
+                StyledString styledLabel = this.labelService.getStyledLabel(SysmlPackage.eINSTANCE.getPackage());
+                String label = "";
+                if (styledLabel != null) {
+                    label = styledLabel.toString();
+                }
                 rootObjectCreationDescription.add(new ChildCreationDescription(ID_PREFIX + SysmlPackage.eINSTANCE.getPackage().getName(), label, iconURL));
             } else {
                 List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(SysmlPackage.eINSTANCE.getNamespace());
                 childrenCandidates.forEach(candidate -> {
-                    List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(candidate));
-                    String label = this.labelService.getLabel(candidate);
+                    List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(candidate));
+                    StyledString styledLabel = this.labelService.getStyledLabel(candidate);
+                    String label = "";
+                    if (styledLabel != null) {
+                        label = styledLabel.toString();
+                    }
                     ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     rootObjectCreationDescription.add(childCreationDescription);
                 });
@@ -126,7 +135,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         } else {
             rootObjectCreationDescription.addAll(this.defaultEditService.getRootCreationDescriptions(editingContext, domainId, suggested, referenceKind));
         }
-        Collections.sort(rootObjectCreationDescription, Comparator.comparing(ChildCreationDescription::getLabel, String.CASE_INSENSITIVE_ORDER));
+        Collections.sort(rootObjectCreationDescription, Comparator.comparing(ChildCreationDescription::label, String.CASE_INSENSITIVE_ORDER));
         return rootObjectCreationDescription;
     }
 
@@ -141,8 +150,12 @@ public class SysMLv2EditService implements IEditServiceDelegate {
             if (eClass.isPresent()) {
                 List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(eClass.get());
                 childrenCandidates.forEach(candidate -> {
-                    List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(candidate));
-                    String label = this.labelService.getLabel(candidate);
+                    List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(candidate));
+                    StyledString styledLabel = this.labelService.getStyledLabel(candidate);
+                    String label = "";
+                    if (styledLabel != null) {
+                        label = styledLabel.toString();
+                    }
                     ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     childCreationDescriptions.add(childCreationDescription);
                 });
@@ -151,7 +164,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         } else {
             result = this.defaultEditService.getChildCreationDescriptions(editingContext, kind, referenceKind);
         }
-        Collections.sort(result, Comparator.comparing(ChildCreationDescription::getLabel, String.CASE_INSENSITIVE_ORDER));
+        Collections.sort(result, Comparator.comparing(ChildCreationDescription::label, String.CASE_INSENSITIVE_ORDER));
         return result;
     }
 
@@ -225,11 +238,6 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                 .map(Element.class::cast);
 
         optionalElement.ifPresent(element -> this.deleteService.deleteFromModel(element));
-    }
-
-    @Override
-    public void editLabel(Object object, String labelField, String newValue) {
-        this.defaultEditService.editLabel(object, labelField, newValue);
     }
 
     private Optional<EClass> getEClass(String eClassName) {

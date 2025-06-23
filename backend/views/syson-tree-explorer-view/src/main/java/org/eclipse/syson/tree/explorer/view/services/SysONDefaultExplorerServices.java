@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
@@ -55,18 +57,22 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final IExplorerServices explorerServices;
 
+    private final ILabelService labelService;
+
     private final ISysONExplorerFilterService filterService;
 
     private final UtilService utilService = new UtilService();
-    
+
     private final ISysONResourceService sysONResourceService;
 
-    public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
+    public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService,
+            IExplorerServices explorerServices, ILabelService labelService,
             ISysONExplorerFilterService filterService, final ISysONResourceService sysONResourceService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
+        this.labelService = Objects.requireNonNull(labelService);
         this.filterService = Objects.requireNonNull(filterService);
         this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
     }
@@ -111,7 +117,10 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             label = fragment.getLabel();
         } else {
-            label = this.explorerServices.getLabel(self);
+            StyledString styledLabel = this.labelService.getStyledLabel(self);
+            if (styledLabel != null) {
+                label = styledLabel.toString();
+            }
         }
         return label;
     }
@@ -122,7 +131,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             result = fragment.getIconURL();
         } else {
-            result = this.explorerServices.getImageURL(self);
+            result = this.labelService.getImagePaths(self);
         }
         return result;
     }
@@ -137,7 +146,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         } else if (self instanceof Element element) {
             List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
-                || this.hasRepresentation(element, editingContext);
+                    || this.hasRepresentation(element, editingContext);
         } else {
             hasChildren = this.explorerServices.hasChildren(self, editingContext, existingRepresentations);
         }

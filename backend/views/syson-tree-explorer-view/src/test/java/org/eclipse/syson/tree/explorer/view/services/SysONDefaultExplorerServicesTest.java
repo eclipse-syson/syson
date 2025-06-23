@@ -15,7 +15,6 @@ package org.eclipse.syson.tree.explorer.view.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,14 +33,13 @@ import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.web.application.object.services.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -150,8 +148,7 @@ public class SysONDefaultExplorerServicesTest {
         };
 
         IObjectService objectService = new IObjectService.NoOp();
-        IURLParser urlParser = new IURLParser.NoOp();
-        List<IRepresentationImageProvider> representationImageProviders = new ArrayList<>();
+        ILabelService labelService = new ILabelService.NoOp();
         IReadOnlyObjectPredicate readOnlyObjectPredicate = new IReadOnlyObjectPredicate() {
 
             @Override
@@ -161,11 +158,11 @@ public class SysONDefaultExplorerServicesTest {
         };
         IDefaultObjectSearchService defaultObjectSearchService = new IDefaultObjectSearchService.NoOp();
 
-        IExplorerServices explorerServices = new ExplorerServices(objectService, urlParser, representationImageProviders, representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
+        IExplorerServices explorerServices = new ExplorerServices(objectService, labelService, List.of(), representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
-        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, filterService, this.sysONResourceService);
+        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, this.sysONResourceService);
     }
 
 }

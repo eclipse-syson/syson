@@ -8,7 +8,10 @@
 
 === Dependency update
 
-- https://github.com/eclipse-syson/syson/issues/1385[#1385] [releng] Update to SysIDE 0.9.0
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
+- [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.1]
+- https://github.com/eclipse-syson/syson/issues/1385[#1385] [releng] Switch to SysIDE 0.9.0
+- [releng] Switch to Sirius EMF-JSON 2.5.2
 
 === Bug fixes
 

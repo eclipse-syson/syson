@@ -49,7 +49,6 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
-import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -189,11 +188,11 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEditNode(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEditNode", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<>(this.getEdgeTools(nodeDescription, cache));
