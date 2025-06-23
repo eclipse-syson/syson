@@ -43996,12 +43996,12 @@ var require_ast2 = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Featuring = exports2.isFeatureInverting = exports2.FeatureInverting = exports2.isFeatureChaining = exports2.FeatureChaining = exports2.isDisjoining = exports2.Disjoining = exports2.isDifferencing = exports2.Differencing = exports2.isDependency = exports2.Dependency = exports2.isConnector = exports2.Connector = exports2.isAssociation = exports2.Association = exports2.isAnnotation = exports2.Annotation = exports2.isType = exports2.Type = exports2.isPackage = exports2.Package = exports2.isTextualAnnotatingElement = exports2.TextualAnnotatingElement = exports2.isMetadataFeature = exports2.MetadataFeature = exports2.isNamespaceReference = exports2.NamespaceReference = exports2.isMembershipReference = exports2.MembershipReference = exports2.isRelationship = exports2.Relationship = exports2.isNamespace = exports2.Namespace = exports2.isAnnotatingElement = exports2.AnnotatingElement = exports2.isElementReference = exports2.ElementReference = exports2.isElement = exports2.Element = exports2.isTypeRelationship = exports2.TypeRelationship = exports2.isTransparentElement = exports2.TransparentElement = exports2.isNonOwnerType = exports2.NonOwnerType = exports2.isName = exports2.isInlineExpression = exports2.InlineExpression = exports2.isFeatureRelationship = exports2.FeatureRelationship = void 0;
     exports2.Specialization = exports2.isConjugation = exports2.Conjugation = exports2.isNamespaceImport = exports2.NamespaceImport = exports2.isMembershipImport = exports2.MembershipImport = exports2.isExpose = exports2.Expose = exports2.isTypeFeaturing = exports2.TypeFeaturing = exports2.isFeatureMembership = exports2.FeatureMembership = exports2.isSuccession = exports2.Succession = exports2.isItemFlow = exports2.ItemFlow = exports2.isConnectorAsUsage = exports2.ConnectorAsUsage = exports2.isBindingConnector = exports2.BindingConnector = exports2.isInteraction = exports2.Interaction = exports2.isAssociationStructure = exports2.AssociationStructure = exports2.isFeature = exports2.Feature = exports2.isClassifier = exports2.Classifier = exports2.isLibraryPackage = exports2.LibraryPackage = exports2.isTextualRepresentation = exports2.TextualRepresentation = exports2.isComment = exports2.Comment = exports2.isMetadataUsage = exports2.MetadataUsage = exports2.isTypeReference = exports2.TypeReference = exports2.isUnioning = exports2.Unioning = exports2.isMembership = exports2.Membership = exports2.isIntersecting = exports2.Intersecting = exports2.isInheritance = exports2.Inheritance = exports2.isImport = exports2.Import = exports2.isFeaturing = void 0;
-    exports2.StateSubactionMembership = exports2.isResultExpressionMembership = exports2.ResultExpressionMembership = exports2.isRequirementConstraintMembership = exports2.RequirementConstraintMembership = exports2.isParameterMembership = exports2.ParameterMembership = exports2.isObjectiveMembership = exports2.ObjectiveMembership = exports2.isEndFeatureMembership = exports2.EndFeatureMembership = exports2.isSuccessionItemFlow = exports2.SuccessionItemFlow = exports2.isFlowConnectionUsage = exports2.FlowConnectionUsage = exports2.isSuccessionAsUsage = exports2.SuccessionAsUsage = exports2.isConnectionUsage = exports2.ConnectionUsage = exports2.isBindingConnectorAsUsage = exports2.BindingConnectorAsUsage = exports2.isFlowConnectionDefinition = exports2.FlowConnectionDefinition = exports2.isConnectionDefinition = exports2.ConnectionDefinition = exports2.isUsage = exports2.Usage = exports2.isStep = exports2.Step = exports2.isMultiplicity = exports2.Multiplicity = exports2.isItemFlowEnd = exports2.ItemFlowEnd = exports2.isItemFeature = exports2.ItemFeature = exports2.isDefinition = exports2.Definition = exports2.isDataType = exports2.DataType = exports2.isClass = exports2.Class = exports2.isDocumentation = exports2.Documentation = exports2.isFeatureReference = exports2.FeatureReference = exports2.isClassifierReference = exports2.ClassifierReference = exports2.isOwningMembership = exports2.OwningMembership = exports2.isSpecialization = void 0;
+    exports2.StateSubactionMembership = exports2.isResultExpressionMembership = exports2.ResultExpressionMembership = exports2.isRequirementConstraintMembership = exports2.RequirementConstraintMembership = exports2.isParameterMembership = exports2.ParameterMembership = exports2.isObjectiveMembership = exports2.ObjectiveMembership = exports2.isEndFeatureMembership = exports2.EndFeatureMembership = exports2.isSuccessionItemFlow = exports2.SuccessionItemFlow = exports2.isSuccessionAsUsage = exports2.SuccessionAsUsage = exports2.isFlowConnectionUsage = exports2.FlowConnectionUsage = exports2.isConnectionUsage = exports2.ConnectionUsage = exports2.isBindingConnectorAsUsage = exports2.BindingConnectorAsUsage = exports2.isFlowConnectionDefinition = exports2.FlowConnectionDefinition = exports2.isConnectionDefinition = exports2.ConnectionDefinition = exports2.isUsage = exports2.Usage = exports2.isStep = exports2.Step = exports2.isMultiplicity = exports2.Multiplicity = exports2.isItemFlowEnd = exports2.ItemFlowEnd = exports2.isItemFeature = exports2.ItemFeature = exports2.isDefinition = exports2.Definition = exports2.isDataType = exports2.DataType = exports2.isClass = exports2.Class = exports2.isDocumentation = exports2.Documentation = exports2.isFeatureReference = exports2.FeatureReference = exports2.isClassifierReference = exports2.ClassifierReference = exports2.isOwningMembership = exports2.OwningMembership = exports2.isSpecialization = void 0;
     exports2.AllocationDefinition = exports2.isReferenceUsage = exports2.ReferenceUsage = exports2.isOccurrenceUsage = exports2.OccurrenceUsage = exports2.isAttributeUsage = exports2.AttributeUsage = exports2.isExpression = exports2.Expression = exports2.isActionUsage = exports2.ActionUsage = exports2.isMultiplicityRange = exports2.MultiplicityRange = exports2.isAttributeDefinition = exports2.AttributeDefinition = exports2.isStructure = exports2.Structure = exports2.isOccurrenceDefinition = exports2.OccurrenceDefinition = exports2.isLifeClass = exports2.LifeClass = exports2.isBehavior = exports2.Behavior = exports2.isMetaclassReference = exports2.MetaclassReference = exports2.isConjugatedPortReference = exports2.ConjugatedPortReference = exports2.isVariantMembership = exports2.VariantMembership = exports2.isFeatureValue = exports2.FeatureValue = exports2.isElementFilterMembership = exports2.ElementFilterMembership = exports2.isSubsetting = exports2.Subsetting = exports2.isSubclassification = exports2.Subclassification = exports2.isFeatureTyping = exports2.FeatureTyping = exports2.isPortConjugation = exports2.PortConjugation = exports2.isNamespaceExpose = exports2.NamespaceExpose = exports2.isMembershipExpose = exports2.MembershipExpose = exports2.isViewRenderingMembership = exports2.ViewRenderingMembership = exports2.isTransitionFeatureMembership = exports2.TransitionFeatureMembership = exports2.isStateSubactionMembership = void 0;
-    exports2.IfActionUsage = exports2.isControlNode = exports2.ControlNode = exports2.isCalculationUsage = exports2.CalculationUsage = exports2.isAssignmentActionUsage = exports2.AssignmentActionUsage = exports2.isAcceptActionUsage = exports2.AcceptActionUsage = exports2.isEnumerationDefinition = exports2.EnumerationDefinition = exports2.isMetaclass = exports2.Metaclass = exports2.isPortDefinition = exports2.PortDefinition = exports2.isItemDefinition = exports2.ItemDefinition = exports2.isConstraintDefinition = exports2.ConstraintDefinition = exports2.isSysMLFunction = exports2.SysMLFunction = exports2.isActionDefinition = exports2.ActionDefinition = exports2.isReferenceSubsetting = exports2.ReferenceSubsetting = exports2.isRedefinition = exports2.Redefinition = exports2.isConjugatedPortTyping = exports2.ConjugatedPortTyping = exports2.isRequirementVerificationMembership = exports2.RequirementVerificationMembership = exports2.isFramedConcernMembership = exports2.FramedConcernMembership = exports2.isSubjectMembership = exports2.SubjectMembership = exports2.isStakeholderMembership = exports2.StakeholderMembership = exports2.isReturnParameterMembership = exports2.ReturnParameterMembership = exports2.isActorMembership = exports2.ActorMembership = exports2.isSuccessionFlowConnectionUsage = exports2.SuccessionFlowConnectionUsage = exports2.isInterfaceUsage = exports2.InterfaceUsage = exports2.isAllocationUsage = exports2.AllocationUsage = exports2.isInterfaceDefinition = exports2.InterfaceDefinition = exports2.isAllocationDefinition = void 0;
-    exports2.CaseUsage = exports2.isConjugatedPortDefinition = exports2.ConjugatedPortDefinition = exports2.isPartDefinition = exports2.PartDefinition = exports2.isMetadataDefinition = exports2.MetadataDefinition = exports2.isRequirementDefinition = exports2.RequirementDefinition = exports2.isPredicate = exports2.Predicate = exports2.isStateDefinition = exports2.StateDefinition = exports2.isCalculationDefinition = exports2.CalculationDefinition = exports2.isPortUsage = exports2.PortUsage = exports2.isItemUsage = exports2.ItemUsage = exports2.isEventOccurrenceUsage = exports2.EventOccurrenceUsage = exports2.isConstraintUsage = exports2.ConstraintUsage = exports2.isEnumerationUsage = exports2.EnumerationUsage = exports2.isNullExpression = exports2.NullExpression = exports2.isMetadataAccessExpression = exports2.MetadataAccessExpression = exports2.isLiteralExpression = exports2.LiteralExpression = exports2.isInvocationExpression = exports2.InvocationExpression = exports2.isFeatureReferenceExpression = exports2.FeatureReferenceExpression = exports2.isBooleanExpression = exports2.BooleanExpression = exports2.isTransitionUsage = exports2.TransitionUsage = exports2.isTerminateActionUsage = exports2.TerminateActionUsage = exports2.isStateUsage = exports2.StateUsage = exports2.isSendActionUsage = exports2.SendActionUsage = exports2.isPerformActionUsage = exports2.PerformActionUsage = exports2.isLoopActionUsage = exports2.LoopActionUsage = exports2.isIfActionUsage = void 0;
-    exports2.UseCaseUsage = exports2.isAnalysisCaseUsage = exports2.AnalysisCaseUsage = exports2.isViewDefinition = exports2.ViewDefinition = exports2.isRenderingDefinition = exports2.RenderingDefinition = exports2.isViewpointDefinition = exports2.ViewpointDefinition = exports2.isConcernDefinition = exports2.ConcernDefinition = exports2.isCaseDefinition = exports2.CaseDefinition = exports2.isPartUsage = exports2.PartUsage = exports2.isRequirementUsage = exports2.RequirementUsage = exports2.isAssertConstraintUsage = exports2.AssertConstraintUsage = exports2.isLiteralString = exports2.LiteralString = exports2.isLiteralNumber = exports2.LiteralNumber = exports2.isLiteralInfinity = exports2.LiteralInfinity = exports2.isLiteralBoolean = exports2.LiteralBoolean = exports2.isTriggerInvocationExpression = exports2.TriggerInvocationExpression = exports2.isOperatorExpression = exports2.OperatorExpression = exports2.isInvariant = exports2.Invariant = exports2.isIncludeUseCaseUsage = exports2.IncludeUseCaseUsage = exports2.isExhibitStateUsage = exports2.ExhibitStateUsage = exports2.isWhileLoopActionUsage = exports2.WhileLoopActionUsage = exports2.isForLoopActionUsage = exports2.ForLoopActionUsage = exports2.isMergeNode = exports2.MergeNode = exports2.isJoinNode = exports2.JoinNode = exports2.isForkNode = exports2.ForkNode = exports2.isDecisionNode = exports2.DecisionNode = exports2.isCaseUsage = void 0;
-    exports2.reflection = exports2.SysMlAstReflection = exports2.isVerificationCaseDefinition = exports2.VerificationCaseDefinition = exports2.isUseCaseDefinition = exports2.UseCaseDefinition = exports2.isAnalysisCaseDefinition = exports2.AnalysisCaseDefinition = exports2.isViewUsage = exports2.ViewUsage = exports2.isRenderingUsage = exports2.RenderingUsage = exports2.isViewpointUsage = exports2.ViewpointUsage = exports2.isConcernUsage = exports2.ConcernUsage = exports2.isSatisfyRequirementUsage = exports2.SatisfyRequirementUsage = exports2.isSelectExpression = exports2.SelectExpression = exports2.isFeatureChainExpression = exports2.FeatureChainExpression = exports2.isCollectExpression = exports2.CollectExpression = exports2.isVerificationCaseUsage = exports2.VerificationCaseUsage = exports2.isUseCaseUsage = void 0;
+    exports2.ControlNode = exports2.isCalculationUsage = exports2.CalculationUsage = exports2.isAssignmentActionUsage = exports2.AssignmentActionUsage = exports2.isAcceptActionUsage = exports2.AcceptActionUsage = exports2.isEnumerationDefinition = exports2.EnumerationDefinition = exports2.isMetaclass = exports2.Metaclass = exports2.isPortDefinition = exports2.PortDefinition = exports2.isItemDefinition = exports2.ItemDefinition = exports2.isConstraintDefinition = exports2.ConstraintDefinition = exports2.isSysMLFunction = exports2.SysMLFunction = exports2.isActionDefinition = exports2.ActionDefinition = exports2.isReferenceSubsetting = exports2.ReferenceSubsetting = exports2.isRedefinition = exports2.Redefinition = exports2.isCrossSubsetting = exports2.CrossSubsetting = exports2.isConjugatedPortTyping = exports2.ConjugatedPortTyping = exports2.isRequirementVerificationMembership = exports2.RequirementVerificationMembership = exports2.isFramedConcernMembership = exports2.FramedConcernMembership = exports2.isSubjectMembership = exports2.SubjectMembership = exports2.isStakeholderMembership = exports2.StakeholderMembership = exports2.isReturnParameterMembership = exports2.ReturnParameterMembership = exports2.isActorMembership = exports2.ActorMembership = exports2.isSuccessionFlowConnectionUsage = exports2.SuccessionFlowConnectionUsage = exports2.isInterfaceUsage = exports2.InterfaceUsage = exports2.isAllocationUsage = exports2.AllocationUsage = exports2.isInterfaceDefinition = exports2.InterfaceDefinition = exports2.isAllocationDefinition = void 0;
+    exports2.ConjugatedPortDefinition = exports2.isPartDefinition = exports2.PartDefinition = exports2.isMetadataDefinition = exports2.MetadataDefinition = exports2.isRequirementDefinition = exports2.RequirementDefinition = exports2.isPredicate = exports2.Predicate = exports2.isStateDefinition = exports2.StateDefinition = exports2.isCalculationDefinition = exports2.CalculationDefinition = exports2.isPortUsage = exports2.PortUsage = exports2.isItemUsage = exports2.ItemUsage = exports2.isEventOccurrenceUsage = exports2.EventOccurrenceUsage = exports2.isConstraintUsage = exports2.ConstraintUsage = exports2.isEnumerationUsage = exports2.EnumerationUsage = exports2.isNullExpression = exports2.NullExpression = exports2.isMetadataAccessExpression = exports2.MetadataAccessExpression = exports2.isLiteralExpression = exports2.LiteralExpression = exports2.isInvocationExpression = exports2.InvocationExpression = exports2.isFeatureReferenceExpression = exports2.FeatureReferenceExpression = exports2.isBooleanExpression = exports2.BooleanExpression = exports2.isTransitionUsage = exports2.TransitionUsage = exports2.isTerminateActionUsage = exports2.TerminateActionUsage = exports2.isStateUsage = exports2.StateUsage = exports2.isSendActionUsage = exports2.SendActionUsage = exports2.isPerformActionUsage = exports2.PerformActionUsage = exports2.isLoopActionUsage = exports2.LoopActionUsage = exports2.isIfActionUsage = exports2.IfActionUsage = exports2.isControlNode = void 0;
+    exports2.AnalysisCaseUsage = exports2.isViewDefinition = exports2.ViewDefinition = exports2.isRenderingDefinition = exports2.RenderingDefinition = exports2.isViewpointDefinition = exports2.ViewpointDefinition = exports2.isConcernDefinition = exports2.ConcernDefinition = exports2.isCaseDefinition = exports2.CaseDefinition = exports2.isPartUsage = exports2.PartUsage = exports2.isRequirementUsage = exports2.RequirementUsage = exports2.isAssertConstraintUsage = exports2.AssertConstraintUsage = exports2.isLiteralString = exports2.LiteralString = exports2.isLiteralNumber = exports2.LiteralNumber = exports2.isLiteralInfinity = exports2.LiteralInfinity = exports2.isLiteralBoolean = exports2.LiteralBoolean = exports2.isTriggerInvocationExpression = exports2.TriggerInvocationExpression = exports2.isOperatorExpression = exports2.OperatorExpression = exports2.isInvariant = exports2.Invariant = exports2.isIncludeUseCaseUsage = exports2.IncludeUseCaseUsage = exports2.isExhibitStateUsage = exports2.ExhibitStateUsage = exports2.isWhileLoopActionUsage = exports2.WhileLoopActionUsage = exports2.isForLoopActionUsage = exports2.ForLoopActionUsage = exports2.isMergeNode = exports2.MergeNode = exports2.isJoinNode = exports2.JoinNode = exports2.isForkNode = exports2.ForkNode = exports2.isDecisionNode = exports2.DecisionNode = exports2.isCaseUsage = exports2.CaseUsage = exports2.isConjugatedPortDefinition = void 0;
+    exports2.reflection = exports2.SysMlAstReflection = exports2.isVerificationCaseDefinition = exports2.VerificationCaseDefinition = exports2.isUseCaseDefinition = exports2.UseCaseDefinition = exports2.isAnalysisCaseDefinition = exports2.AnalysisCaseDefinition = exports2.isViewUsage = exports2.ViewUsage = exports2.isRenderingUsage = exports2.RenderingUsage = exports2.isViewpointUsage = exports2.ViewpointUsage = exports2.isConcernUsage = exports2.ConcernUsage = exports2.isSatisfyRequirementUsage = exports2.SatisfyRequirementUsage = exports2.isSelectExpression = exports2.SelectExpression = exports2.isIndexExpression = exports2.IndexExpression = exports2.isFeatureChainExpression = exports2.FeatureChainExpression = exports2.isCollectExpression = exports2.CollectExpression = exports2.isVerificationCaseUsage = exports2.VerificationCaseUsage = exports2.isUseCaseUsage = exports2.UseCaseUsage = exports2.isAnalysisCaseUsage = void 0;
     var langium_1 = require_lib2();
     exports2.FeatureRelationship = "FeatureRelationship";
     function isFeatureRelationship(item) {
@@ -44337,16 +44337,16 @@ var require_ast2 = __commonJS({
       return exports2.reflection.isInstance(item, exports2.ConnectionUsage);
     }
     exports2.isConnectionUsage = isConnectionUsage;
-    exports2.SuccessionAsUsage = "SuccessionAsUsage";
-    function isSuccessionAsUsage(item) {
-      return exports2.reflection.isInstance(item, exports2.SuccessionAsUsage);
-    }
-    exports2.isSuccessionAsUsage = isSuccessionAsUsage;
     exports2.FlowConnectionUsage = "FlowConnectionUsage";
     function isFlowConnectionUsage(item) {
       return exports2.reflection.isInstance(item, exports2.FlowConnectionUsage);
     }
     exports2.isFlowConnectionUsage = isFlowConnectionUsage;
+    exports2.SuccessionAsUsage = "SuccessionAsUsage";
+    function isSuccessionAsUsage(item) {
+      return exports2.reflection.isInstance(item, exports2.SuccessionAsUsage);
+    }
+    exports2.isSuccessionAsUsage = isSuccessionAsUsage;
     exports2.SuccessionItemFlow = "SuccessionItemFlow";
     function isSuccessionItemFlow(item) {
       return exports2.reflection.isInstance(item, exports2.SuccessionItemFlow);
@@ -44562,6 +44562,11 @@ var require_ast2 = __commonJS({
       return exports2.reflection.isInstance(item, exports2.ConjugatedPortTyping);
     }
     exports2.isConjugatedPortTyping = isConjugatedPortTyping;
+    exports2.CrossSubsetting = "CrossSubsetting";
+    function isCrossSubsetting(item) {
+      return exports2.reflection.isInstance(item, exports2.CrossSubsetting);
+    }
+    exports2.isCrossSubsetting = isCrossSubsetting;
     exports2.Redefinition = "Redefinition";
     function isRedefinition(item) {
       return exports2.reflection.isInstance(item, exports2.Redefinition);
@@ -44897,6 +44902,11 @@ var require_ast2 = __commonJS({
       return exports2.reflection.isInstance(item, exports2.FeatureChainExpression);
     }
     exports2.isFeatureChainExpression = isFeatureChainExpression;
+    exports2.IndexExpression = "IndexExpression";
+    function isIndexExpression(item) {
+      return exports2.reflection.isInstance(item, exports2.IndexExpression);
+    }
+    exports2.isIndexExpression = isIndexExpression;
     exports2.SelectExpression = "SelectExpression";
     function isSelectExpression(item) {
       return exports2.reflection.isInstance(item, exports2.SelectExpression);
@@ -44944,7 +44954,7 @@ var require_ast2 = __commonJS({
     exports2.isVerificationCaseDefinition = isVerificationCaseDefinition;
     var SysMlAstReflection = class extends langium_1.AbstractAstReflection {
       getAllTypes() {
-        return ["AcceptActionUsage", "ActionDefinition", "ActionUsage", "ActorMembership", "AllocationDefinition", "AllocationUsage", "AnalysisCaseDefinition", "AnalysisCaseUsage", "AnnotatingElement", "Annotation", "AssertConstraintUsage", "AssignmentActionUsage", "Association", "AssociationStructure", "AttributeDefinition", "AttributeUsage", "Behavior", "BindingConnector", "BindingConnectorAsUsage", "BooleanExpression", "CalculationDefinition", "CalculationUsage", "CaseDefinition", "CaseUsage", "Class", "Classifier", "ClassifierReference", "CollectExpression", "Comment", "ConcernDefinition", "ConcernUsage", "ConjugatedPortDefinition", "ConjugatedPortReference", "ConjugatedPortTyping", "Conjugation", "ConnectionDefinition", "ConnectionUsage", "Connector", "ConnectorAsUsage", "ConstraintDefinition", "ConstraintUsage", "ControlNode", "DataType", "DecisionNode", "Definition", "Dependency", "Differencing", "Disjoining", "Documentation", "Element", "ElementFilterMembership", "ElementReference", "EndFeatureMembership", "EnumerationDefinition", "EnumerationUsage", "EventOccurrenceUsage", "ExhibitStateUsage", "Expose", "Expression", "Feature", "FeatureChainExpression", "FeatureChaining", "FeatureInverting", "FeatureMembership", "FeatureReference", "FeatureReferenceExpression", "FeatureRelationship", "FeatureTyping", "FeatureValue", "Featuring", "FlowConnectionDefinition", "FlowConnectionUsage", "ForLoopActionUsage", "ForkNode", "FramedConcernMembership", "IfActionUsage", "Import", "IncludeUseCaseUsage", "Inheritance", "InlineExpression", "Interaction", "InterfaceDefinition", "InterfaceUsage", "Intersecting", "Invariant", "InvocationExpression", "ItemDefinition", "ItemFeature", "ItemFlow", "ItemFlowEnd", "ItemUsage", "JoinNode", "LibraryPackage", "LifeClass", "LiteralBoolean", "LiteralExpression", "LiteralInfinity", "LiteralNumber", "LiteralString", "LoopActionUsage", "Membership", "MembershipExpose", "MembershipImport", "MembershipReference", "MergeNode", "Metaclass", "MetaclassReference", "MetadataAccessExpression", "MetadataDefinition", "MetadataFeature", "MetadataUsage", "Multiplicity", "MultiplicityRange", "Namespace", "NamespaceExpose", "NamespaceImport", "NamespaceReference", "NonOwnerType", "NullExpression", "ObjectiveMembership", "OccurrenceDefinition", "OccurrenceUsage", "OperatorExpression", "OwningMembership", "Package", "ParameterMembership", "PartDefinition", "PartUsage", "PerformActionUsage", "PortConjugation", "PortDefinition", "PortUsage", "Predicate", "Redefinition", "ReferenceSubsetting", "ReferenceUsage", "Relationship", "RenderingDefinition", "RenderingUsage", "RequirementConstraintMembership", "RequirementDefinition", "RequirementUsage", "RequirementVerificationMembership", "ResultExpressionMembership", "ReturnParameterMembership", "SatisfyRequirementUsage", "SelectExpression", "SendActionUsage", "Specialization", "StakeholderMembership", "StateDefinition", "StateSubactionMembership", "StateUsage", "Step", "Structure", "Subclassification", "SubjectMembership", "Subsetting", "Succession", "SuccessionAsUsage", "SuccessionFlowConnectionUsage", "SuccessionItemFlow", "SysMLFunction", "TerminateActionUsage", "TextualAnnotatingElement", "TextualRepresentation", "TransitionFeatureMembership", "TransitionUsage", "TransparentElement", "TriggerInvocationExpression", "Type", "TypeFeaturing", "TypeReference", "TypeRelationship", "Unioning", "Usage", "UseCaseDefinition", "UseCaseUsage", "VariantMembership", "VerificationCaseDefinition", "VerificationCaseUsage", "ViewDefinition", "ViewRenderingMembership", "ViewUsage", "ViewpointDefinition", "ViewpointUsage", "WhileLoopActionUsage"];
+        return ["AcceptActionUsage", "ActionDefinition", "ActionUsage", "ActorMembership", "AllocationDefinition", "AllocationUsage", "AnalysisCaseDefinition", "AnalysisCaseUsage", "AnnotatingElement", "Annotation", "AssertConstraintUsage", "AssignmentActionUsage", "Association", "AssociationStructure", "AttributeDefinition", "AttributeUsage", "Behavior", "BindingConnector", "BindingConnectorAsUsage", "BooleanExpression", "CalculationDefinition", "CalculationUsage", "CaseDefinition", "CaseUsage", "Class", "Classifier", "ClassifierReference", "CollectExpression", "Comment", "ConcernDefinition", "ConcernUsage", "ConjugatedPortDefinition", "ConjugatedPortReference", "ConjugatedPortTyping", "Conjugation", "ConnectionDefinition", "ConnectionUsage", "Connector", "ConnectorAsUsage", "ConstraintDefinition", "ConstraintUsage", "ControlNode", "CrossSubsetting", "DataType", "DecisionNode", "Definition", "Dependency", "Differencing", "Disjoining", "Documentation", "Element", "ElementFilterMembership", "ElementReference", "EndFeatureMembership", "EnumerationDefinition", "EnumerationUsage", "EventOccurrenceUsage", "ExhibitStateUsage", "Expose", "Expression", "Feature", "FeatureChainExpression", "FeatureChaining", "FeatureInverting", "FeatureMembership", "FeatureReference", "FeatureReferenceExpression", "FeatureRelationship", "FeatureTyping", "FeatureValue", "Featuring", "FlowConnectionDefinition", "FlowConnectionUsage", "ForLoopActionUsage", "ForkNode", "FramedConcernMembership", "IfActionUsage", "Import", "IncludeUseCaseUsage", "IndexExpression", "Inheritance", "InlineExpression", "Interaction", "InterfaceDefinition", "InterfaceUsage", "Intersecting", "Invariant", "InvocationExpression", "ItemDefinition", "ItemFeature", "ItemFlow", "ItemFlowEnd", "ItemUsage", "JoinNode", "LibraryPackage", "LifeClass", "LiteralBoolean", "LiteralExpression", "LiteralInfinity", "LiteralNumber", "LiteralString", "LoopActionUsage", "Membership", "MembershipExpose", "MembershipImport", "MembershipReference", "MergeNode", "Metaclass", "MetaclassReference", "MetadataAccessExpression", "MetadataDefinition", "MetadataFeature", "MetadataUsage", "Multiplicity", "MultiplicityRange", "Namespace", "NamespaceExpose", "NamespaceImport", "NamespaceReference", "NonOwnerType", "NullExpression", "ObjectiveMembership", "OccurrenceDefinition", "OccurrenceUsage", "OperatorExpression", "OwningMembership", "Package", "ParameterMembership", "PartDefinition", "PartUsage", "PerformActionUsage", "PortConjugation", "PortDefinition", "PortUsage", "Predicate", "Redefinition", "ReferenceSubsetting", "ReferenceUsage", "Relationship", "RenderingDefinition", "RenderingUsage", "RequirementConstraintMembership", "RequirementDefinition", "RequirementUsage", "RequirementVerificationMembership", "ResultExpressionMembership", "ReturnParameterMembership", "SatisfyRequirementUsage", "SelectExpression", "SendActionUsage", "Specialization", "StakeholderMembership", "StateDefinition", "StateSubactionMembership", "StateUsage", "Step", "Structure", "Subclassification", "SubjectMembership", "Subsetting", "Succession", "SuccessionAsUsage", "SuccessionFlowConnectionUsage", "SuccessionItemFlow", "SysMLFunction", "TerminateActionUsage", "TextualAnnotatingElement", "TextualRepresentation", "TransitionFeatureMembership", "TransitionUsage", "TransparentElement", "TriggerInvocationExpression", "Type", "TypeFeaturing", "TypeReference", "TypeRelationship", "Unioning", "Usage", "UseCaseDefinition", "UseCaseUsage", "VariantMembership", "VerificationCaseDefinition", "VerificationCaseUsage", "ViewDefinition", "ViewRenderingMembership", "ViewUsage", "ViewpointDefinition", "ViewpointUsage", "WhileLoopActionUsage"];
       }
       computeIsSubtype(subtype, supertype) {
         switch (subtype) {
@@ -45056,6 +45066,7 @@ var require_ast2 = __commonJS({
           }
           case exports2.CollectExpression:
           case exports2.FeatureChainExpression:
+          case exports2.IndexExpression:
           case exports2.SelectExpression: {
             return this.isSubtype(exports2.InlineExpression, supertype) || this.isSubtype(exports2.OperatorExpression, supertype);
           }
@@ -45102,6 +45113,11 @@ var require_ast2 = __commonJS({
           }
           case exports2.ConstraintUsage: {
             return this.isSubtype(exports2.BooleanExpression, supertype) || this.isSubtype(exports2.OccurrenceUsage, supertype);
+          }
+          case exports2.CrossSubsetting:
+          case exports2.Redefinition:
+          case exports2.ReferenceSubsetting: {
+            return this.isSubtype(exports2.Subsetting, supertype);
           }
           case exports2.DecisionNode:
           case exports2.ForkNode:
@@ -45181,10 +45197,10 @@ var require_ast2 = __commonJS({
             return this.isSubtype(exports2.Specialization, supertype);
           }
           case exports2.FlowConnectionDefinition: {
-            return this.isSubtype(exports2.ActionDefinition, supertype) || this.isSubtype(exports2.ConnectionDefinition, supertype) || this.isSubtype(exports2.Interaction, supertype);
+            return this.isSubtype(exports2.ActionDefinition, supertype) || this.isSubtype(exports2.Interaction, supertype);
           }
           case exports2.FlowConnectionUsage: {
-            return this.isSubtype(exports2.ActionUsage, supertype) || this.isSubtype(exports2.ConnectionUsage, supertype) || this.isSubtype(exports2.ItemFlow, supertype);
+            return this.isSubtype(exports2.ActionUsage, supertype) || this.isSubtype(exports2.ConnectorAsUsage, supertype) || this.isSubtype(exports2.ItemFlow, supertype);
           }
           case exports2.ForLoopActionUsage:
           case exports2.WhileLoopActionUsage: {
@@ -45284,10 +45300,6 @@ var require_ast2 = __commonJS({
           }
           case exports2.Predicate: {
             return this.isSubtype(exports2.SysMLFunction, supertype);
-          }
-          case exports2.Redefinition:
-          case exports2.ReferenceSubsetting: {
-            return this.isSubtype(exports2.Subsetting, supertype);
           }
           case exports2.RenderingDefinition:
           case exports2.ViewDefinition: {
@@ -45761,7 +45773,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Dependency",
       "returnType": {
-        "$ref": "#/interfaces@53"
+        "$ref": "#/interfaces@54"
       },
       "definition": {
         "$type": "Group",
@@ -45773,7 +45785,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@144"
+                "$ref": "#/rules@153"
               },
               "arguments": []
             },
@@ -45789,7 +45801,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -45808,7 +45820,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@252"
               },
               "arguments": []
             }
@@ -45827,7 +45839,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@242"
+                    "$ref": "#/rules@252"
                   },
                   "arguments": []
                 }
@@ -45846,7 +45858,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@252"
               },
               "arguments": []
             }
@@ -45865,7 +45877,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@242"
+                    "$ref": "#/rules@252"
                   },
                   "arguments": []
                 }
@@ -45926,28 +45938,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@238"
+              "$ref": "#/rules@248"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@239"
+              "$ref": "#/rules@249"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@240"
+              "$ref": "#/rules@250"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@148"
+              "$ref": "#/rules@157"
             },
             "arguments": []
           }
@@ -45972,7 +45984,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -45984,7 +45996,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46153,7 +46165,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NonFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -46161,7 +46173,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46191,7 +46203,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NamespaceFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -46199,7 +46211,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46229,7 +46241,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RelationshipMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -46237,7 +46249,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46267,7 +46279,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AnnotatingMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -46275,7 +46287,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46305,7 +46317,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AliasMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Group",
@@ -46313,7 +46325,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46330,7 +46342,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46346,7 +46358,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@252"
               },
               "arguments": []
             }
@@ -46377,7 +46389,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46389,7 +46401,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@234"
+              "$ref": "#/rules@244"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46416,7 +46428,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@252"
               },
               "arguments": []
             }
@@ -46453,7 +46465,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Import",
       "returnType": {
-        "$ref": "#/interfaces@54"
+        "$ref": "#/interfaces@55"
       },
       "definition": {
         "$type": "Group",
@@ -46531,7 +46543,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FilterPackageMember",
       "returnType": {
-        "$ref": "#/interfaces@60"
+        "$ref": "#/interfaces@61"
       },
       "definition": {
         "$type": "Group",
@@ -46547,7 +46559,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@157"
+                "$ref": "#/rules@166"
               },
               "arguments": []
             }
@@ -46598,7 +46610,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": []
           },
@@ -46619,14 +46631,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@86"
+              "$ref": "#/rules@92"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@96"
             },
             "arguments": []
           },
@@ -46634,13 +46653,6 @@ var require_grammar3 = __commonJS({
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@89"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@83"
             },
             "arguments": []
           }
@@ -46686,7 +46698,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@95"
+              "$ref": "#/rules@102"
             },
             "arguments": []
           },
@@ -46707,70 +46719,70 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@103"
+              "$ref": "#/rules@110"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@104"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@143"
+              "$ref": "#/rules@152"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@102"
+              "$ref": "#/rules@109"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@112"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@106"
+              "$ref": "#/rules@113"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@130"
+              "$ref": "#/rules@139"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@117"
+              "$ref": "#/rules@126"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@120"
+              "$ref": "#/rules@129"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@127"
+              "$ref": "#/rules@136"
             },
             "arguments": []
           }
@@ -46795,70 +46807,70 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@118"
+              "$ref": "#/rules@127"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@134"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@128"
+              "$ref": "#/rules@137"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@129"
+              "$ref": "#/rules@138"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@107"
+              "$ref": "#/rules@114"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@113"
+              "$ref": "#/rules@122"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@115"
+              "$ref": "#/rules@124"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@131"
+              "$ref": "#/rules@140"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@132"
+              "$ref": "#/rules@141"
             },
             "arguments": []
           }
@@ -46883,7 +46895,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46895,7 +46907,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46928,7 +46940,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@233"
+              "$ref": "#/rules@243"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46940,7 +46952,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -46952,7 +46964,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47133,7 +47145,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ElementFilterMember",
       "returnType": {
-        "$ref": "#/interfaces@60"
+        "$ref": "#/interfaces@61"
       },
       "definition": {
         "$type": "Group",
@@ -47141,7 +47153,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47157,7 +47169,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@157"
+                "$ref": "#/rules@166"
               },
               "arguments": []
             }
@@ -47185,7 +47197,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@227"
+              "$ref": "#/rules@237"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47193,7 +47205,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47259,7 +47271,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@232"
+              "$ref": "#/rules@242"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47267,7 +47279,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47279,7 +47291,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@98"
+                "$ref": "#/rules@105"
               },
               "arguments": []
             },
@@ -47330,7 +47342,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           },
@@ -47817,7 +47829,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Alternatives",
@@ -47849,7 +47861,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -47857,7 +47869,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47891,7 +47903,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -47899,7 +47911,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -47944,7 +47956,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -47966,7 +47978,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -47978,7 +47990,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -47988,7 +48000,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           },
@@ -48002,7 +48014,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -48014,7 +48026,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -48053,7 +48065,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48065,7 +48077,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48098,7 +48110,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -48120,7 +48132,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -48132,7 +48144,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -48156,7 +48168,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -48168,7 +48180,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -48207,7 +48219,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48219,7 +48231,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48252,7 +48264,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -48274,7 +48286,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -48286,7 +48298,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -48307,7 +48319,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@244"
+                    "$ref": "#/rules@254"
                   },
                   "arguments": []
                 }
@@ -48319,7 +48331,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -48358,7 +48370,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48370,7 +48382,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48400,7 +48412,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48412,7 +48424,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48442,7 +48454,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48454,7 +48466,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48484,7 +48496,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -48496,7 +48508,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -48563,7 +48575,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@232"
+              "$ref": "#/rules@242"
             },
             "arguments": [],
             "cardinality": "?"
@@ -48571,7 +48583,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -48583,7 +48595,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@98"
+                "$ref": "#/rules@105"
               },
               "arguments": []
             },
@@ -48635,7 +48647,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           },
@@ -48734,7 +48746,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -48753,7 +48765,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@245"
+                "$ref": "#/rules@255"
               },
               "arguments": []
             }
@@ -48761,7 +48773,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           },
@@ -48772,7 +48784,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@245"
+                "$ref": "#/rules@255"
               },
               "arguments": []
             }
@@ -48806,7 +48818,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@245"
+            "$ref": "#/rules@255"
           },
           "arguments": []
         }
@@ -48831,7 +48843,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@245"
+            "$ref": "#/rules@255"
           },
           "arguments": []
         }
@@ -48845,7 +48857,7 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
-      "name": "FeaturePrefix",
+      "name": "BasicFeaturePrefix",
       "fragment": true,
       "definition": {
         "$type": "Group",
@@ -48857,7 +48869,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@224"
+                "$ref": "#/rules@234"
               },
               "arguments": []
             },
@@ -48866,7 +48878,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@227"
+              "$ref": "#/rules@237"
             },
             "arguments": [],
             "cardinality": "?"
@@ -48898,7 +48910,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@229"
+              "$ref": "#/rules@239"
             },
             "arguments": [],
             "cardinality": "?"
@@ -48906,23 +48918,67 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@230"
+              "$ref": "#/rules@240"
             },
             "arguments": [],
             "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "FeaturePrefix",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@241"
+                    },
+                    "arguments": []
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "crossingFeature",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@69"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  }
+                ]
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@64"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@231"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -48945,54 +49001,52 @@ var require_grammar3 = __commonJS({
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@64"
-            },
-            "arguments": []
-          },
-          {
             "$type": "Alternatives",
             "elements": [
               {
                 "$type": "Group",
                 "elements": [
                   {
-                    "$type": "Keyword",
-                    "value": "feature",
-                    "cardinality": "?"
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@241"
+                    },
+                    "arguments": []
                   },
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@66"
+                      "$ref": "#/rules@67"
                     },
                     "arguments": []
                   }
                 ]
               },
               {
-                "$type": "Assignment",
-                "feature": "prefixes",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@145"
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@64"
+                    },
+                    "arguments": []
                   },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Keyword",
-                "value": "feature"
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@68"
+                    },
+                    "arguments": []
+                  }
+                ]
               }
             ]
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@100"
             },
             "arguments": [],
             "cardinality": "?"
@@ -49015,6 +49069,173 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "EndFeatureDeclarationPart",
+      "fragment": true,
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@68"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "crossingFeature",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@69"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@68"
+                },
+                "arguments": []
+              }
+            ]
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "FeatureDeclarationPart",
+      "fragment": true,
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@155"
+                },
+                "arguments": [],
+                "cardinality": "?"
+              },
+              {
+                "$type": "Keyword",
+                "value": "feature",
+                "cardinality": "?"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@71"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@155"
+                },
+                "arguments": [],
+                "cardinality": "?"
+              },
+              {
+                "$type": "Keyword",
+                "value": "feature"
+              }
+            ]
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@155"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossingFeatureMember",
+      "returnType": {
+        "$ref": "#/interfaces@59"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@70"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossingFeature",
+      "returnType": {
+        "$ref": "#/interfaces@20"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@64"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@71"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "FeatureDeclaration",
       "fragment": true,
       "definition": {
@@ -49023,7 +49244,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@232"
+              "$ref": "#/rules@242"
             },
             "arguments": [],
             "cardinality": "?"
@@ -49037,7 +49258,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@219"
+                      "$ref": "#/rules@228"
                     },
                     "arguments": []
                   },
@@ -49047,14 +49268,14 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@71"
+                          "$ref": "#/rules@76"
                         },
                         "arguments": []
                       },
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@91"
+                          "$ref": "#/rules@98"
                         },
                         "arguments": []
                       }
@@ -49066,14 +49287,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@71"
+                  "$ref": "#/rules@76"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@91"
+                  "$ref": "#/rules@98"
                 },
                 "arguments": []
               }
@@ -49082,7 +49303,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@67"
+              "$ref": "#/rules@72"
             },
             "arguments": [],
             "cardinality": "*"
@@ -49112,21 +49333,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@68"
+              "$ref": "#/rules@73"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@69"
+              "$ref": "#/rules@74"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@70"
+              "$ref": "#/rules@75"
             },
             "arguments": []
           }
@@ -49159,7 +49380,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@268"
+                    "$ref": "#/rules@278"
                   },
                   "arguments": []
                 }
@@ -49167,7 +49388,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@266"
+                  "$ref": "#/rules@276"
                 },
                 "arguments": []
               }
@@ -49203,7 +49424,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@82"
+                "$ref": "#/rules@88"
               },
               "arguments": []
             }
@@ -49238,7 +49459,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@84"
+                "$ref": "#/rules@90"
               },
               "arguments": []
             }
@@ -49257,7 +49478,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@84"
+                    "$ref": "#/rules@90"
                   },
                   "arguments": []
                 }
@@ -49283,7 +49504,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@73"
+              "$ref": "#/rules@78"
             },
             "arguments": [],
             "cardinality": "+"
@@ -49294,7 +49515,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@73"
+                  "$ref": "#/rules@78"
                 },
                 "arguments": [],
                 "cardinality": "+"
@@ -49302,14 +49523,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@72"
+                  "$ref": "#/rules@77"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@73"
+                  "$ref": "#/rules@78"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -49322,14 +49543,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@72"
+                  "$ref": "#/rules@77"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@73"
+                  "$ref": "#/rules@78"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -49361,7 +49582,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@98"
+                    "$ref": "#/rules@105"
                   },
                   "arguments": []
                 }
@@ -49369,7 +49590,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@235"
+                  "$ref": "#/rules@245"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -49379,7 +49600,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@235"
+              "$ref": "#/rules@245"
             },
             "arguments": []
           }
@@ -49401,28 +49622,35 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@74"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@76"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@78"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@79"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@81"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@83"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@84"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@85"
             },
             "arguments": []
           }
@@ -49444,7 +49672,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@75"
+              "$ref": "#/rules@80"
             },
             "arguments": []
           },
@@ -49462,7 +49690,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@254"
+                    "$ref": "#/rules@264"
                   },
                   "arguments": []
                 }
@@ -49499,7 +49727,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@254"
+                "$ref": "#/rules@264"
               },
               "arguments": []
             }
@@ -49522,7 +49750,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@77"
+              "$ref": "#/rules@82"
             },
             "arguments": []
           },
@@ -49540,7 +49768,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@87"
+                    "$ref": "#/rules@93"
                   },
                   "arguments": []
                 }
@@ -49566,7 +49794,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@221"
+              "$ref": "#/rules@230"
             },
             "arguments": []
           },
@@ -49577,7 +49805,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@87"
+                "$ref": "#/rules@93"
               },
               "arguments": []
             }
@@ -49600,7 +49828,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@222"
+              "$ref": "#/rules@231"
             },
             "arguments": []
           },
@@ -49611,7 +49839,41 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@88"
+                "$ref": "#/rules@94"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Crosses",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@232"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "heritage",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@95"
               },
               "arguments": []
             }
@@ -49634,7 +49896,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@80"
+              "$ref": "#/rules@86"
             },
             "arguments": []
           },
@@ -49652,7 +49914,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@90"
+                    "$ref": "#/rules@97"
                   },
                   "arguments": []
                 }
@@ -49678,7 +49940,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@223"
+              "$ref": "#/rules@233"
             },
             "arguments": []
           },
@@ -49689,7 +49951,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@90"
+                "$ref": "#/rules@97"
               },
               "arguments": []
             }
@@ -49721,7 +49983,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -49743,7 +50005,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -49755,7 +50017,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -49776,7 +50038,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -49788,7 +50050,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -49827,7 +50089,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -49839,7 +50101,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -49872,7 +50134,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -49891,7 +50153,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -49907,7 +50169,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -49941,7 +50203,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@244"
+            "$ref": "#/rules@254"
           },
           "arguments": []
         }
@@ -49972,7 +50234,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -49991,7 +50253,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -50006,7 +50268,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@255"
+              "$ref": "#/rules@265"
             },
             "arguments": []
           },
@@ -50045,7 +50307,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -50067,7 +50329,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -50079,7 +50341,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -50089,7 +50351,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@221"
+              "$ref": "#/rules@230"
             },
             "arguments": []
           },
@@ -50103,7 +50365,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -50115,7 +50377,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -50154,7 +50416,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -50166,7 +50428,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -50196,7 +50458,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -50208,7 +50470,49 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossSubsetting",
+      "returnType": {
+        "$ref": "#/interfaces@53"
+      },
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "targetRef",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@256"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "targetChain",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -50241,7 +50545,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -50263,7 +50567,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -50275,7 +50579,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -50285,7 +50589,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@223"
+              "$ref": "#/rules@233"
             },
             "arguments": []
           },
@@ -50299,7 +50603,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -50311,7 +50615,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -50350,7 +50654,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -50362,7 +50666,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -50397,7 +50701,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@92"
+                "$ref": "#/rules@99"
               },
               "arguments": []
             }
@@ -50423,7 +50727,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@246"
+            "$ref": "#/rules@256"
           },
           "arguments": []
         }
@@ -50446,7 +50750,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@94"
+            "$ref": "#/rules@101"
           },
           "arguments": []
         }
@@ -50461,7 +50765,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Group",
@@ -50524,7 +50828,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@157"
+                "$ref": "#/rules@166"
               },
               "arguments": []
             }
@@ -50550,14 +50854,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@96"
+              "$ref": "#/rules@103"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@97"
+              "$ref": "#/rules@104"
             },
             "arguments": []
           }
@@ -50586,7 +50890,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -50594,7 +50898,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@77"
+              "$ref": "#/rules@82"
             },
             "arguments": []
           },
@@ -50630,7 +50934,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -50638,7 +50942,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@100"
+              "$ref": "#/rules@107"
             },
             "arguments": []
           },
@@ -50662,7 +50966,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedMultiplicity",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -50671,7 +50975,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@99"
+            "$ref": "#/rules@106"
           },
           "arguments": []
         }
@@ -50692,7 +50996,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@100"
+          "$ref": "#/rules@107"
         },
         "arguments": []
       },
@@ -50721,7 +51025,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@101"
+                "$ref": "#/rules@108"
               },
               "arguments": []
             }
@@ -50742,7 +51046,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MultiplicityExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -50751,7 +51055,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@157"
+            "$ref": "#/rules@166"
           },
           "arguments": []
         }
@@ -50994,7 +51298,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -51011,7 +51315,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@66"
+                      "$ref": "#/rules@71"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -51019,7 +51323,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@93"
+                      "$ref": "#/rules@100"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -51029,7 +51333,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@108"
+                  "$ref": "#/rules@115"
                 },
                 "arguments": []
               }
@@ -51061,14 +51365,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@109"
+              "$ref": "#/rules@116"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@110"
+              "$ref": "#/rules@117"
             },
             "arguments": []
           }
@@ -51096,7 +51400,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@66"
+                      "$ref": "#/rules@71"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -51113,7 +51417,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@232"
+                      "$ref": "#/rules@242"
                     },
                     "arguments": []
                   },
@@ -51134,7 +51438,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@111"
+                "$ref": "#/rules@118"
               },
               "arguments": []
             }
@@ -51150,7 +51454,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@111"
+                "$ref": "#/rules@118"
               },
               "arguments": []
             }
@@ -51173,7 +51477,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@71"
             },
             "arguments": [],
             "cardinality": "?"
@@ -51189,7 +51493,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@111"
+                "$ref": "#/rules@118"
               },
               "arguments": []
             }
@@ -51208,7 +51512,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@111"
+                    "$ref": "#/rules@118"
                   },
                   "arguments": []
                 }
@@ -51232,7 +51536,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConnectorEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -51241,7 +51545,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@112"
+            "$ref": "#/rules@119"
           },
           "arguments": []
         }
@@ -51263,19 +51567,32 @@ var require_grammar3 = __commonJS({
         "$type": "Group",
         "elements": [
           {
+            "$type": "Assignment",
+            "feature": "crossingFeature",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@120"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
             "$type": "Group",
             "elements": [
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@218"
+                  "$ref": "#/rules@227"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@222"
+                  "$ref": "#/rules@231"
                 },
                 "arguments": []
               }
@@ -51289,25 +51606,62 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@88"
+                "$ref": "#/rules@94"
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "multiplicity",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@98"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
           }
         ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossMultiplicityMember",
+      "returnType": {
+        "$ref": "#/interfaces@59"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@121"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossMultiplicity",
+      "returnType": {
+        "$ref": "#/interfaces@20"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "multiplicity",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@105"
+          },
+          "arguments": []
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -51328,7 +51682,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -51339,7 +51693,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@114"
+              "$ref": "#/rules@123"
             },
             "arguments": []
           },
@@ -51372,7 +51726,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@66"
+                  "$ref": "#/rules@71"
                 },
                 "arguments": []
               },
@@ -51390,7 +51744,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51406,7 +51760,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51422,7 +51776,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@232"
+                  "$ref": "#/rules@242"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -51442,7 +51796,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51458,7 +51812,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51488,7 +51842,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -51499,7 +51853,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@116"
+              "$ref": "#/rules@125"
             },
             "arguments": []
           },
@@ -51532,7 +51886,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@66"
+                  "$ref": "#/rules@71"
                 },
                 "arguments": []
               },
@@ -51550,7 +51904,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51566,7 +51920,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51582,7 +51936,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@232"
+                  "$ref": "#/rules@242"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -51602,7 +51956,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51618,7 +51972,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@111"
+                        "$ref": "#/rules@118"
                       },
                       "arguments": []
                     }
@@ -51691,7 +52045,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -51702,7 +52056,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@119"
+              "$ref": "#/rules@128"
             },
             "arguments": []
           },
@@ -51732,7 +52086,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@71"
             },
             "arguments": [],
             "cardinality": "?"
@@ -51740,7 +52094,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@100"
             },
             "arguments": [],
             "cardinality": "?"
@@ -51783,7 +52137,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@130"
             },
             "arguments": []
           }
@@ -51817,7 +52171,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@122"
+                  "$ref": "#/rules@131"
                 },
                 "arguments": []
               },
@@ -51924,7 +52278,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@123"
+                    "$ref": "#/rules@132"
                   },
                   "arguments": []
                 }
@@ -51939,7 +52293,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@133"
               },
               "arguments": []
             },
@@ -51957,7 +52311,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ReturnFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@66"
+        "$ref": "#/interfaces@67"
       },
       "definition": {
         "$type": "Group",
@@ -51965,7 +52319,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -51999,7 +52353,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ResultExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@65"
+        "$ref": "#/interfaces@66"
       },
       "definition": {
         "$type": "Group",
@@ -52007,7 +52361,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@238"
             },
             "arguments": [],
             "cardinality": "?"
@@ -52019,7 +52373,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@157"
+                "$ref": "#/rules@166"
               },
               "arguments": []
             }
@@ -52045,7 +52399,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -52056,14 +52410,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@126"
+              "$ref": "#/rules@135"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@130"
             },
             "arguments": []
           }
@@ -52086,7 +52440,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@71"
             },
             "arguments": [],
             "cardinality": "?"
@@ -52094,7 +52448,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@100"
             },
             "arguments": [],
             "cardinality": "?"
@@ -52137,7 +52491,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@130"
             },
             "arguments": []
           }
@@ -52162,7 +52516,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -52173,14 +52527,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@126"
+              "$ref": "#/rules@135"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@130"
             },
             "arguments": []
           }
@@ -52205,7 +52559,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -52235,14 +52589,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@126"
+              "$ref": "#/rules@135"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@130"
             },
             "arguments": []
           }
@@ -52310,7 +52664,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -52321,7 +52675,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@133"
+              "$ref": "#/rules@142"
             },
             "arguments": []
           },
@@ -52353,7 +52707,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -52368,7 +52722,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@133"
+              "$ref": "#/rules@142"
             },
             "arguments": []
           },
@@ -52401,7 +52755,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@66"
+                  "$ref": "#/rules@71"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -52409,7 +52763,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@93"
+                  "$ref": "#/rules@100"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -52428,7 +52782,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@134"
+                        "$ref": "#/rules@143"
                       },
                       "arguments": []
                     }
@@ -52450,7 +52804,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@137"
+                        "$ref": "#/rules@146"
                       },
                       "arguments": []
                     }
@@ -52466,7 +52820,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@137"
+                        "$ref": "#/rules@146"
                       },
                       "arguments": []
                     }
@@ -52482,7 +52836,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@232"
+                  "$ref": "#/rules@242"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -52494,7 +52848,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@137"
+                    "$ref": "#/rules@146"
                   },
                   "arguments": []
                 }
@@ -52510,7 +52864,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@137"
+                    "$ref": "#/rules@146"
                   },
                   "arguments": []
                 }
@@ -52529,7 +52883,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -52538,7 +52892,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@135"
+            "$ref": "#/rules@144"
           },
           "arguments": []
         }
@@ -52565,7 +52919,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -52579,14 +52933,14 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@136"
+                          "$ref": "#/rules@145"
                         },
                         "arguments": []
                       },
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@93"
+                          "$ref": "#/rules@100"
                         },
                         "arguments": [],
                         "cardinality": "?"
@@ -52596,7 +52950,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@93"
+                      "$ref": "#/rules@100"
                     },
                     "arguments": []
                   }
@@ -52614,7 +52968,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@254"
+                    "$ref": "#/rules@264"
                   },
                   "arguments": []
                 }
@@ -52626,7 +52980,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@98"
+                    "$ref": "#/rules@105"
                   },
                   "arguments": []
                 },
@@ -52644,7 +52998,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@98"
+                    "$ref": "#/rules@105"
                   },
                   "arguments": []
                 }
@@ -52656,7 +53010,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@254"
+                    "$ref": "#/rules@264"
                   },
                   "arguments": []
                 }
@@ -52685,7 +53039,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@73"
+                  "$ref": "#/rules@78"
                 },
                 "arguments": [],
                 "cardinality": "+"
@@ -52696,14 +53050,14 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@72"
+                      "$ref": "#/rules@77"
                     },
                     "arguments": []
                   },
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@73"
+                      "$ref": "#/rules@78"
                     },
                     "arguments": [],
                     "cardinality": "*"
@@ -52719,14 +53073,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@72"
+                  "$ref": "#/rules@77"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@73"
+                  "$ref": "#/rules@78"
                 },
                 "arguments": [],
                 "cardinality": "+"
@@ -52745,7 +53099,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemFlowEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -52754,7 +53108,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@138"
+            "$ref": "#/rules@147"
           },
           "arguments": []
         }
@@ -52782,7 +53136,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@139"
+                "$ref": "#/rules@148"
               },
               "arguments": []
             },
@@ -52795,7 +53149,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@140"
+                "$ref": "#/rules@149"
               },
               "arguments": []
             }
@@ -52828,7 +53182,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@246"
+                    "$ref": "#/rules@256"
                   },
                   "arguments": []
                 }
@@ -52846,7 +53200,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@267"
+                "$ref": "#/rules@277"
               },
               "arguments": []
             }
@@ -52864,7 +53218,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemFlowFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -52873,7 +53227,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@141"
+            "$ref": "#/rules@150"
           },
           "arguments": []
         }
@@ -52898,7 +53252,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@142"
+            "$ref": "#/rules@151"
           },
           "arguments": []
         }
@@ -52923,7 +53277,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@246"
+            "$ref": "#/rules@256"
           },
           "arguments": []
         }
@@ -52991,7 +53345,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@147"
+            "$ref": "#/rules@156"
           },
           "arguments": []
         }
@@ -53007,7 +53361,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PrefixMetadataMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -53016,7 +53370,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@147"
+            "$ref": "#/rules@156"
           },
           "arguments": []
         }
@@ -53039,7 +53393,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@145"
+            "$ref": "#/rules@154"
           },
           "arguments": []
         },
@@ -53071,7 +53425,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@253"
+                "$ref": "#/rules@263"
               },
               "arguments": []
             }
@@ -53097,7 +53451,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@146"
+              "$ref": "#/rules@155"
             },
             "arguments": [],
             "cardinality": "?"
@@ -53118,7 +53472,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@149"
+              "$ref": "#/rules@158"
             },
             "arguments": []
           },
@@ -53136,7 +53490,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@236"
+                    "$ref": "#/rules@246"
                   },
                   "arguments": []
                 }
@@ -53155,7 +53509,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@236"
+                        "$ref": "#/rules@246"
                       },
                       "arguments": []
                     }
@@ -53169,7 +53523,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@150"
+              "$ref": "#/rules@159"
             },
             "arguments": []
           }
@@ -53195,7 +53549,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": []
               },
@@ -53216,7 +53570,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@253"
+                "$ref": "#/rules@263"
               },
               "arguments": []
             }
@@ -53250,7 +53604,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@151"
+                  "$ref": "#/rules@160"
                 },
                 "arguments": []
               },
@@ -53275,7 +53629,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@152"
+          "$ref": "#/rules@161"
         },
         "arguments": [],
         "cardinality": "*"
@@ -53336,7 +53690,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@153"
+                "$ref": "#/rules@162"
               },
               "arguments": []
             }
@@ -53377,7 +53731,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataBodyFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -53386,7 +53740,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@154"
+            "$ref": "#/rules@163"
           },
           "arguments": []
         }
@@ -53415,7 +53769,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@223"
+              "$ref": "#/rules@233"
             },
             "arguments": [],
             "cardinality": "?"
@@ -53427,7 +53781,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@90"
+                "$ref": "#/rules@97"
               },
               "arguments": []
             }
@@ -53435,7 +53789,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@71"
+              "$ref": "#/rules@76"
             },
             "arguments": [],
             "cardinality": "?"
@@ -53443,7 +53797,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@100"
             },
             "arguments": [],
             "cardinality": "?"
@@ -53451,7 +53805,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@150"
+              "$ref": "#/rules@159"
             },
             "arguments": []
           }
@@ -53480,7 +53834,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@122"
+              "$ref": "#/rules@131"
             },
             "arguments": []
           },
@@ -53501,7 +53855,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -53510,7 +53864,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@157"
+            "$ref": "#/rules@166"
           },
           "arguments": []
         }
@@ -53531,7 +53885,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@160"
+          "$ref": "#/rules@169"
         },
         "arguments": []
       },
@@ -53546,7 +53900,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedExpressionReference",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -53555,7 +53909,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@156"
+            "$ref": "#/rules@165"
           },
           "arguments": []
         }
@@ -53571,7 +53925,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConcreteConditionalExpression",
       "returnType": {
-        "$ref": "#/interfaces@81"
+        "$ref": "#/interfaces@83"
       },
       "definition": {
         "$type": "Group",
@@ -53592,7 +53946,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@161"
+                "$ref": "#/rules@170"
               },
               "arguments": []
             }
@@ -53608,7 +53962,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@158"
+                "$ref": "#/rules@167"
               },
               "arguments": []
             }
@@ -53624,7 +53978,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@158"
+                "$ref": "#/rules@167"
               },
               "arguments": []
             }
@@ -53650,14 +54004,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@161"
+              "$ref": "#/rules@170"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@159"
+              "$ref": "#/rules@168"
             },
             "arguments": []
           }
@@ -53682,7 +54036,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@164"
+              "$ref": "#/rules@173"
             },
             "arguments": []
           },
@@ -53692,7 +54046,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -53704,372 +54058,6 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "Keyword",
                   "value": "??"
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operands",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@162"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@163"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@164"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@167"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operator",
-                "operator": "=",
-                "terminal": {
-                  "$type": "Keyword",
-                  "value": "implies"
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operands",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@165"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@166"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@167"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@170"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Alternatives",
-                "elements": [
-                  {
-                    "$type": "Group",
-                    "elements": [
-                      {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "|"
-                        }
-                      },
-                      {
-                        "$type": "Assignment",
-                        "feature": "operands",
-                        "operator": "+=",
-                        "terminal": {
-                          "$type": "RuleCall",
-                          "rule": {
-                            "$ref": "#/rules@170"
-                          },
-                          "arguments": []
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "Group",
-                    "elements": [
-                      {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "or"
-                        }
-                      },
-                      {
-                        "$type": "Assignment",
-                        "feature": "operands",
-                        "operator": "+=",
-                        "terminal": {
-                          "$type": "RuleCall",
-                          "rule": {
-                            "$ref": "#/rules@168"
-                          },
-                          "arguments": []
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@169"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@170"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@171"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operator",
-                "operator": "=",
-                "terminal": {
-                  "$type": "Keyword",
-                  "value": "xor"
                 }
               },
               {
@@ -54098,6 +54086,372 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "ImpliesExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@172"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ImpliesExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@173"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ImpliesExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@176"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operator",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": "implies"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operands",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@174"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@175"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@176"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@179"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Alternatives",
+                "elements": [
+                  {
+                    "$type": "Group",
+                    "elements": [
+                      {
+                        "$type": "Assignment",
+                        "feature": "operator",
+                        "operator": "=",
+                        "terminal": {
+                          "$type": "Keyword",
+                          "value": "|"
+                        }
+                      },
+                      {
+                        "$type": "Assignment",
+                        "feature": "operands",
+                        "operator": "+=",
+                        "terminal": {
+                          "$type": "RuleCall",
+                          "rule": {
+                            "$ref": "#/rules@179"
+                          },
+                          "arguments": []
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Group",
+                    "elements": [
+                      {
+                        "$type": "Assignment",
+                        "feature": "operator",
+                        "operator": "=",
+                        "terminal": {
+                          "$type": "Keyword",
+                          "value": "or"
+                        }
+                      },
+                      {
+                        "$type": "Assignment",
+                        "feature": "operands",
+                        "operator": "+=",
+                        "terminal": {
+                          "$type": "RuleCall",
+                          "rule": {
+                            "$ref": "#/rules@177"
+                          },
+                          "arguments": []
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@178"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@179"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@180"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operator",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": "xor"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operands",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@180"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "AndExpression",
       "returnType": {
         "$ref": "#/interfaces@30"
@@ -54108,7 +54462,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@174"
+              "$ref": "#/rules@183"
             },
             "arguments": []
           },
@@ -54118,7 +54472,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54145,7 +54499,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@174"
+                            "$ref": "#/rules@183"
                           },
                           "arguments": []
                         }
@@ -54171,7 +54525,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@172"
+                            "$ref": "#/rules@181"
                           },
                           "arguments": []
                         }
@@ -54196,7 +54550,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EqualityExpressionReference",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -54205,7 +54559,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@173"
+            "$ref": "#/rules@182"
           },
           "arguments": []
         }
@@ -54221,7 +54575,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EqualityExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -54230,7 +54584,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@174"
+            "$ref": "#/rules@183"
           },
           "arguments": []
         }
@@ -54254,7 +54608,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@175"
+              "$ref": "#/rules@184"
             },
             "arguments": []
           },
@@ -54264,7 +54618,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54276,7 +54630,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@252"
+                    "$ref": "#/rules@262"
                   },
                   "arguments": []
                 }
@@ -54288,7 +54642,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@175"
+                    "$ref": "#/rules@184"
                   },
                   "arguments": []
                 }
@@ -54320,7 +54674,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@176"
+                  "$ref": "#/rules@185"
                 },
                 "arguments": []
               },
@@ -54330,7 +54684,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@81"
+                      "$ref": "#/interfaces@83"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -54348,7 +54702,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@250"
+                                "$ref": "#/rules@260"
                               },
                               "arguments": []
                             }
@@ -54360,7 +54714,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@257"
+                                "$ref": "#/rules@267"
                               },
                               "arguments": []
                             }
@@ -54386,7 +54740,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@258"
+                                "$ref": "#/rules@268"
                               },
                               "arguments": []
                             }
@@ -54406,7 +54760,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54416,7 +54770,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@250"
+                    "$ref": "#/rules@260"
                   },
                   "arguments": []
                 }
@@ -54428,7 +54782,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@257"
+                    "$ref": "#/rules@267"
                   },
                   "arguments": []
                 }
@@ -54441,7 +54795,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54451,7 +54805,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@256"
+                    "$ref": "#/rules@266"
                   },
                   "arguments": []
                 }
@@ -54472,7 +54826,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@257"
+                    "$ref": "#/rules@267"
                   },
                   "arguments": []
                 }
@@ -54485,7 +54839,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54504,7 +54858,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@258"
+                    "$ref": "#/rules@268"
                   },
                   "arguments": []
                 }
@@ -54517,7 +54871,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54527,7 +54881,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@256"
+                    "$ref": "#/rules@266"
                   },
                   "arguments": []
                 }
@@ -54548,7 +54902,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@258"
+                    "$ref": "#/rules@268"
                   },
                   "arguments": []
                 }
@@ -54576,7 +54930,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@177"
+              "$ref": "#/rules@186"
             },
             "arguments": []
           },
@@ -54586,7 +54940,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54598,7 +54952,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@251"
+                    "$ref": "#/rules@261"
                   },
                   "arguments": []
                 }
@@ -54610,7 +54964,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@177"
+                    "$ref": "#/rules@186"
                   },
                   "arguments": []
                 }
@@ -54639,7 +54993,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@178"
+              "$ref": "#/rules@187"
             },
             "arguments": []
           },
@@ -54649,7 +55003,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54670,7 +55024,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@178"
+                    "$ref": "#/rules@187"
                   },
                   "arguments": []
                 }
@@ -54699,7 +55053,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@179"
+              "$ref": "#/rules@188"
             },
             "arguments": []
           },
@@ -54709,7 +55063,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54739,7 +55093,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@179"
+                    "$ref": "#/rules@188"
                   },
                   "arguments": []
                 }
@@ -54768,7 +55122,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@180"
+              "$ref": "#/rules@189"
             },
             "arguments": []
           },
@@ -54778,7 +55132,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54812,7 +55166,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@180"
+                    "$ref": "#/rules@189"
                   },
                   "arguments": []
                 }
@@ -54841,7 +55195,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@181"
+              "$ref": "#/rules@190"
             },
             "arguments": []
           },
@@ -54851,7 +55205,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -54881,7 +55235,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@180"
+                    "$ref": "#/rules@189"
                   },
                   "arguments": []
                 }
@@ -54913,7 +55267,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54923,7 +55277,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@249"
+                    "$ref": "#/rules@259"
                   },
                   "arguments": []
                 }
@@ -54935,7 +55289,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@182"
+                    "$ref": "#/rules@191"
                   },
                   "arguments": []
                 }
@@ -54945,7 +55299,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           }
@@ -54973,7 +55327,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -54992,7 +55346,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@258"
+                    "$ref": "#/rules@268"
                   },
                   "arguments": []
                 }
@@ -55002,7 +55356,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@183"
+              "$ref": "#/rules@192"
             },
             "arguments": []
           }
@@ -55027,7 +55381,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@184"
+              "$ref": "#/rules@193"
             },
             "arguments": []
           },
@@ -55037,7 +55391,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@82"
+                  "$ref": "#/interfaces@84"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -55053,7 +55407,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@264"
+                    "$ref": "#/rules@274"
                   },
                   "arguments": []
                 }
@@ -55079,13 +55433,8 @@ var require_grammar3 = __commonJS({
                         "operator": "+="
                       },
                       {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "#"
-                        }
+                        "$type": "Keyword",
+                        "value": "#"
                       },
                       {
                         "$type": "Keyword",
@@ -55098,7 +55447,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@187"
+                            "$ref": "#/rules@196"
                           },
                           "arguments": []
                         }
@@ -55115,7 +55464,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@81"
+                          "$ref": "#/interfaces@83"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -55136,7 +55485,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@187"
+                            "$ref": "#/rules@196"
                           },
                           "arguments": []
                         }
@@ -55153,7 +55502,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@80"
+                          "$ref": "#/interfaces@82"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -55169,7 +55518,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@260"
+                            "$ref": "#/rules@270"
                           },
                           "arguments": []
                         }
@@ -55184,7 +55533,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@186"
+                                "$ref": "#/rules@195"
                               },
                               "arguments": []
                             }
@@ -55196,7 +55545,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@262"
+                                "$ref": "#/rules@272"
                               },
                               "arguments": []
                             }
@@ -55204,7 +55553,7 @@ var require_grammar3 = __commonJS({
                           {
                             "$type": "RuleCall",
                             "rule": {
-                              "$ref": "#/rules@189"
+                              "$ref": "#/rules@198"
                             },
                             "arguments": []
                           }
@@ -55218,7 +55567,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@83"
+                          "$ref": "#/interfaces@85"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -55234,7 +55583,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@186"
+                            "$ref": "#/rules@195"
                           },
                           "arguments": []
                         }
@@ -55247,7 +55596,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@84"
+                          "$ref": "#/interfaces@86"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -55263,7 +55612,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@186"
+                            "$ref": "#/rules@195"
                           },
                           "arguments": []
                         }
@@ -55278,7 +55627,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@82"
+                      "$ref": "#/interfaces@84"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -55294,7 +55643,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@264"
+                        "$ref": "#/rules@274"
                       },
                       "arguments": []
                     }
@@ -55326,42 +55675,42 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@216"
+              "$ref": "#/rules@225"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@215"
+              "$ref": "#/rules@224"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@269"
+              "$ref": "#/rules@279"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@188"
+              "$ref": "#/rules@197"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@185"
+              "$ref": "#/rules@194"
             },
             "arguments": []
           },
@@ -55375,7 +55724,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@187"
+                  "$ref": "#/rules@196"
                 },
                 "arguments": []
               },
@@ -55398,7 +55747,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "BodyExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -55407,7 +55756,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@186"
+            "$ref": "#/rules@195"
           },
           "arguments": []
         }
@@ -55423,7 +55772,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ExpressionBodyMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -55432,7 +55781,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@155"
+            "$ref": "#/rules@164"
           },
           "arguments": []
         }
@@ -55456,7 +55805,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@157"
+              "$ref": "#/rules@166"
             },
             "arguments": []
           },
@@ -55473,7 +55822,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@81"
+                      "$ref": "#/interfaces@83"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -55494,7 +55843,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@187"
+                        "$ref": "#/rules@196"
                       },
                       "arguments": []
                     }
@@ -55517,7 +55866,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InvocationExpression",
       "returnType": {
-        "$ref": "#/interfaces@80"
+        "$ref": "#/interfaces@82"
       },
       "definition": {
         "$type": "Group",
@@ -55529,7 +55878,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@254"
+                "$ref": "#/rules@264"
               },
               "arguments": []
             }
@@ -55537,7 +55886,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@189"
+              "$ref": "#/rules@198"
             },
             "arguments": []
           }
@@ -55567,14 +55916,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@190"
+                  "$ref": "#/rules@199"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@193"
+                  "$ref": "#/rules@202"
                 },
                 "arguments": []
               }
@@ -55607,7 +55956,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@191"
+                "$ref": "#/rules@200"
               },
               "arguments": []
             }
@@ -55626,7 +55975,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@191"
+                    "$ref": "#/rules@200"
                   },
                   "arguments": []
                 }
@@ -55646,7 +55995,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -55655,7 +56004,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@192"
+            "$ref": "#/rules@201"
           },
           "arguments": []
         }
@@ -55680,7 +56029,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@197"
+            "$ref": "#/rules@206"
           },
           "arguments": []
         }
@@ -55706,7 +56055,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@194"
+                "$ref": "#/rules@203"
               },
               "arguments": []
             }
@@ -55725,7 +56074,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@194"
+                    "$ref": "#/rules@203"
                   },
                   "arguments": []
                 }
@@ -55745,7 +56094,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NamedArgumentMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -55754,7 +56103,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@195"
+            "$ref": "#/rules@204"
           },
           "arguments": []
         }
@@ -55782,7 +56131,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@196"
+                "$ref": "#/rules@205"
               },
               "arguments": []
             }
@@ -55798,7 +56147,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@197"
+                "$ref": "#/rules@206"
               },
               "arguments": []
             }
@@ -55825,7 +56174,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@246"
+            "$ref": "#/rules@256"
           },
           "arguments": []
         }
@@ -55841,7 +56190,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -55850,7 +56199,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@157"
+            "$ref": "#/rules@166"
           },
           "arguments": []
         }
@@ -55889,7 +56238,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@198"
+              "$ref": "#/rules@207"
             }
           }
         ]
@@ -55909,13 +56258,13 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@198"
+                  "$ref": "#/rules@207"
                 }
               },
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@199"
+                  "$ref": "#/rules@208"
                 },
                 "cardinality": "?"
               }
@@ -55924,7 +56273,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@199"
+              "$ref": "#/rules@208"
             }
           }
         ]
@@ -55945,7 +56294,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@198"
+              "$ref": "#/rules@207"
             }
           }
         ]
@@ -55965,13 +56314,13 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@200"
+              "$ref": "#/rules@209"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@201"
+              "$ref": "#/rules@210"
             },
             "cardinality": "?"
           }
@@ -56072,14 +56421,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@203"
+              "$ref": "#/rules@212"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@204"
+              "$ref": "#/rules@213"
             },
             "arguments": []
           }
@@ -56096,7 +56445,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralBoolean",
       "returnType": {
-        "$ref": "#/interfaces@75"
+        "$ref": "#/interfaces@76"
       },
       "definition": {
         "$type": "Alternatives",
@@ -56127,7 +56476,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralString",
       "returnType": {
-        "$ref": "#/interfaces@76"
+        "$ref": "#/interfaces@77"
       },
       "definition": {
         "$type": "Assignment",
@@ -56136,7 +56485,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@205"
+            "$ref": "#/rules@214"
           },
           "arguments": []
         }
@@ -56152,7 +56501,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralNumber",
       "returnType": {
-        "$ref": "#/interfaces@77"
+        "$ref": "#/interfaces@78"
       },
       "definition": {
         "$type": "Assignment",
@@ -56161,7 +56510,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@202"
+            "$ref": "#/rules@211"
           },
           "arguments": []
         }
@@ -56177,7 +56526,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralInfinity",
       "returnType": {
-        "$ref": "#/interfaces@78"
+        "$ref": "#/interfaces@79"
       },
       "definition": {
         "$type": "Group",
@@ -56185,7 +56534,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@78"
+              "$ref": "#/interfaces@79"
             }
           },
           {
@@ -56205,7 +56554,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralExpression",
       "returnType": {
-        "$ref": "#/interfaces@74"
+        "$ref": "#/interfaces@75"
       },
       "definition": {
         "$type": "Alternatives",
@@ -56213,28 +56562,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@211"
+              "$ref": "#/rules@220"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@212"
+              "$ref": "#/rules@221"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@213"
+              "$ref": "#/rules@222"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@214"
+              "$ref": "#/rules@223"
             },
             "arguments": []
           }
@@ -56251,7 +56600,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NullExpression",
       "returnType": {
-        "$ref": "#/interfaces@79"
+        "$ref": "#/interfaces@80"
       },
       "definition": {
         "$type": "Group",
@@ -56259,7 +56608,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@79"
+              "$ref": "#/interfaces@80"
             }
           },
           {
@@ -56311,7 +56660,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@210"
+                "$ref": "#/rules@219"
               },
               "arguments": []
             }
@@ -56339,7 +56688,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@210"
+            "$ref": "#/rules@219"
           },
           "arguments": []
         }
@@ -56363,14 +56712,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@217"
+                  "$ref": "#/rules@226"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@218"
+                  "$ref": "#/rules@227"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -56380,7 +56729,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@218"
+              "$ref": "#/rules@227"
             },
             "arguments": []
           }
@@ -56455,6 +56804,30 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Keyword",
             "value": "references"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CrossesToken",
+      "fragment": true,
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "=>"
+          },
+          {
+            "$type": "Keyword",
+            "value": "crosses"
           }
         ]
       },
@@ -56602,7 +56975,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@225"
+            "$ref": "#/rules@235"
           },
           "arguments": []
         }
@@ -56803,7 +57176,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@242"
+            "$ref": "#/rules@252"
           },
           "arguments": []
         }
@@ -56826,7 +57199,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@206"
+            "$ref": "#/rules@215"
           },
           "arguments": []
         }
@@ -56856,7 +57229,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -56875,7 +57248,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@236"
+                        "$ref": "#/rules@246"
                       },
                       "arguments": []
                     }
@@ -56894,7 +57267,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@236"
+                            "$ref": "#/rules@246"
                           },
                           "arguments": []
                         }
@@ -56922,7 +57295,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@205"
+                    "$ref": "#/rules@214"
                   },
                   "arguments": []
                 }
@@ -56933,7 +57306,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@237"
+              "$ref": "#/rules@247"
             },
             "arguments": []
           }
@@ -56962,7 +57335,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": [],
             "cardinality": "?"
@@ -56981,7 +57354,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@205"
+                    "$ref": "#/rules@214"
                   },
                   "arguments": []
                 }
@@ -56992,7 +57365,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@237"
+              "$ref": "#/rules@247"
             },
             "arguments": []
           }
@@ -57024,7 +57397,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@219"
+                  "$ref": "#/rules@228"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -57043,7 +57416,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@205"
+                "$ref": "#/rules@214"
               },
               "arguments": []
             }
@@ -57051,7 +57424,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@237"
+              "$ref": "#/rules@247"
             },
             "arguments": []
           }
@@ -57083,7 +57456,7 @@ var require_grammar3 = __commonJS({
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@210"
+                  "$ref": "#/rules@219"
                 },
                 "arguments": []
               },
@@ -57109,7 +57482,7 @@ var require_grammar3 = __commonJS({
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@210"
+                      "$ref": "#/rules@219"
                     },
                     "arguments": []
                   },
@@ -57131,12 +57504,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ElementReference",
       "returnType": {
-        "$ref": "#/interfaces@67"
+        "$ref": "#/interfaces@68"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57151,12 +57524,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NamespaceReference",
       "returnType": {
-        "$ref": "#/interfaces@68"
+        "$ref": "#/interfaces@69"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57171,12 +57544,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeReference",
       "returnType": {
-        "$ref": "#/interfaces@69"
+        "$ref": "#/interfaces@70"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57191,12 +57564,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ClassifierReference",
       "returnType": {
-        "$ref": "#/interfaces@70"
+        "$ref": "#/interfaces@71"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57211,12 +57584,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReference",
       "returnType": {
-        "$ref": "#/interfaces@71"
+        "$ref": "#/interfaces@72"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57231,12 +57604,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetaclassReference",
       "returnType": {
-        "$ref": "#/interfaces@72"
+        "$ref": "#/interfaces@73"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57251,12 +57624,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MembershipReference",
       "returnType": {
-        "$ref": "#/interfaces@73"
+        "$ref": "#/interfaces@74"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@241"
+          "$ref": "#/rules@251"
         },
         "arguments": []
       },
@@ -57404,7 +57777,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@247"
+            "$ref": "#/rules@257"
           },
           "arguments": []
         }
@@ -57425,7 +57798,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@255"
+          "$ref": "#/rules@265"
         },
         "arguments": []
       },
@@ -57450,7 +57823,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@244"
+                "$ref": "#/rules@254"
               },
               "arguments": []
             }
@@ -57462,7 +57835,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             }
@@ -57479,7 +57852,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataReference",
       "returnType": {
-        "$ref": "#/interfaces@86"
+        "$ref": "#/interfaces@88"
       },
       "definition": {
         "$type": "Assignment",
@@ -57488,7 +57861,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@242"
+            "$ref": "#/rules@252"
           },
           "arguments": []
         }
@@ -57504,7 +57877,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -57513,7 +57886,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@259"
+            "$ref": "#/rules@269"
           },
           "arguments": []
         }
@@ -57529,7 +57902,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeResultMember",
       "returnType": {
-        "$ref": "#/interfaces@66"
+        "$ref": "#/interfaces@67"
       },
       "definition": {
         "$type": "Assignment",
@@ -57538,7 +57911,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@259"
+            "$ref": "#/rules@269"
           },
           "arguments": []
         }
@@ -57563,7 +57936,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@260"
+            "$ref": "#/rules@270"
           },
           "arguments": []
         }
@@ -57588,7 +57961,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@244"
+            "$ref": "#/rules@254"
           },
           "arguments": []
         }
@@ -57604,7 +57977,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FunctionReferenceExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -57613,7 +57986,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@262"
+            "$ref": "#/rules@272"
           },
           "arguments": []
         }
@@ -57629,7 +58002,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FunctionReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -57638,7 +58011,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@263"
+            "$ref": "#/rules@273"
           },
           "arguments": []
         }
@@ -57663,7 +58036,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@260"
+            "$ref": "#/rules@270"
           },
           "arguments": []
         }
@@ -57679,7 +58052,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureChainMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Alternatives",
@@ -57691,7 +58064,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@246"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -57702,7 +58075,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@58"
+                  "$ref": "#/interfaces@59"
                 }
               },
               {
@@ -57712,7 +58085,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@265"
+                    "$ref": "#/rules@275"
                   },
                   "arguments": []
                 }
@@ -57737,7 +58110,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@266"
+          "$ref": "#/rules@276"
         },
         "arguments": []
       },
@@ -57762,7 +58135,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@268"
+                "$ref": "#/rules@278"
               },
               "arguments": []
             }
@@ -57781,7 +58154,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@268"
+                    "$ref": "#/rules@278"
                   },
                   "arguments": []
                 }
@@ -57816,7 +58189,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@268"
+                    "$ref": "#/rules@278"
                   },
                   "arguments": []
                 }
@@ -57835,7 +58208,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@268"
+                "$ref": "#/rules@278"
               },
               "arguments": []
             }
@@ -57866,7 +58239,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@246"
+            "$ref": "#/rules@256"
           },
           "arguments": []
         }
@@ -57882,7 +58255,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReferenceExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -57891,7 +58264,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@270"
+            "$ref": "#/rules@280"
           },
           "arguments": []
         }
@@ -57907,7 +58280,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Assignment",
@@ -57916,7 +58289,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@246"
+            "$ref": "#/rules@256"
           },
           "arguments": []
         }
@@ -57932,7 +58305,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataAccessExpression",
       "returnType": {
-        "$ref": "#/interfaces@86"
+        "$ref": "#/interfaces@88"
       },
       "definition": {
         "$type": "Group",
@@ -57944,7 +58317,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@252"
               },
               "arguments": []
             }
@@ -58111,7 +58484,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@58"
+                "$ref": "#/interfaces@59"
               }
             }
           },
@@ -58128,13 +58501,13 @@ var require_grammar3 = __commonJS({
                 {
                   "$type": "SimpleType",
                   "typeRef": {
-                    "$ref": "#/interfaces@54"
+                    "$ref": "#/interfaces@55"
                   }
                 },
                 {
                   "$type": "SimpleType",
                   "typeRef": {
-                    "$ref": "#/interfaces@57"
+                    "$ref": "#/interfaces@58"
                   }
                 }
               ]
@@ -58217,7 +58590,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -58325,7 +58698,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@65"
+              "$ref": "#/interfaces@66"
             }
           }
         }
@@ -58444,7 +58817,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@59"
+              "$ref": "#/interfaces@60"
             }
           }
         },
@@ -58455,7 +58828,18 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "crossingFeature",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -58500,7 +58884,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -58543,7 +58927,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@63"
+                "$ref": "#/interfaces@64"
               }
             }
           },
@@ -58600,7 +58984,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@65"
+              "$ref": "#/interfaces@66"
             }
           }
         }
@@ -58622,7 +59006,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@62"
+              "$ref": "#/interfaces@63"
             }
           }
         }
@@ -58779,7 +59163,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           }
         },
@@ -58812,7 +59196,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           }
         },
@@ -58920,7 +59304,7 @@ var require_grammar3 = __commonJS({
       "name": "TypeFeaturing",
       "superTypes": [
         {
-          "$ref": "#/interfaces@61"
+          "$ref": "#/interfaces@62"
         }
       ],
       "attributes": []
@@ -58987,6 +59371,16 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "Interface",
+      "name": "CrossSubsetting",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@49"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
       "attributes": [
         {
           "$type": "TypeAttribute",
@@ -59010,7 +59404,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@67"
+                "$ref": "#/interfaces@68"
               }
             }
           },
@@ -59024,7 +59418,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@67"
+                "$ref": "#/interfaces@68"
               }
             }
           },
@@ -59081,7 +59475,7 @@ var require_grammar3 = __commonJS({
       "name": "MembershipImport",
       "superTypes": [
         {
-          "$ref": "#/interfaces@54"
+          "$ref": "#/interfaces@55"
         }
       ],
       "attributes": []
@@ -59091,7 +59485,7 @@ var require_grammar3 = __commonJS({
       "name": "NamespaceImport",
       "superTypes": [
         {
-          "$ref": "#/interfaces@54"
+          "$ref": "#/interfaces@55"
         }
       ],
       "attributes": []
@@ -59121,7 +59515,7 @@ var require_grammar3 = __commonJS({
       "name": "OwningMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@57"
+          "$ref": "#/interfaces@58"
         }
       ],
       "attributes": []
@@ -59151,7 +59545,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureValue",
       "superTypes": [
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ]
     },
@@ -59160,7 +59554,7 @@ var require_grammar3 = __commonJS({
       "name": "ElementFilterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ],
       "attributes": []
@@ -59180,10 +59574,10 @@ var require_grammar3 = __commonJS({
       "name": "FeatureMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@61"
+          "$ref": "#/interfaces@62"
         },
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ],
       "attributes": []
@@ -59193,7 +59587,7 @@ var require_grammar3 = __commonJS({
       "name": "EndFeatureMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -59203,7 +59597,7 @@ var require_grammar3 = __commonJS({
       "name": "ParameterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -59213,7 +59607,7 @@ var require_grammar3 = __commonJS({
       "name": "ResultExpressionMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -59223,7 +59617,7 @@ var require_grammar3 = __commonJS({
       "name": "ReturnParameterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@64"
+          "$ref": "#/interfaces@65"
         }
       ],
       "attributes": []
@@ -59257,7 +59651,7 @@ var require_grammar3 = __commonJS({
       "name": "NamespaceReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@67"
+          "$ref": "#/interfaces@68"
         }
       ],
       "attributes": []
@@ -59267,7 +59661,7 @@ var require_grammar3 = __commonJS({
       "name": "TypeReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@68"
+          "$ref": "#/interfaces@69"
         }
       ],
       "attributes": []
@@ -59277,7 +59671,7 @@ var require_grammar3 = __commonJS({
       "name": "ClassifierReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@69"
+          "$ref": "#/interfaces@70"
         }
       ],
       "attributes": []
@@ -59287,7 +59681,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@69"
+          "$ref": "#/interfaces@70"
         }
       ],
       "attributes": []
@@ -59297,7 +59691,7 @@ var require_grammar3 = __commonJS({
       "name": "MetaclassReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@70"
+          "$ref": "#/interfaces@71"
         }
       ],
       "attributes": []
@@ -59307,7 +59701,7 @@ var require_grammar3 = __commonJS({
       "name": "MembershipReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@67"
+          "$ref": "#/interfaces@68"
         }
       ],
       "attributes": []
@@ -59338,7 +59732,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralBoolean",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -59358,7 +59752,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralString",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -59378,7 +59772,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralNumber",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -59387,7 +59781,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralInfinity",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ],
       "attributes": []
@@ -59398,6 +59792,16 @@ var require_grammar3 = __commonJS({
       "superTypes": [
         {
           "$ref": "#/interfaces@30"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
+      "name": "IndexExpression",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -59443,7 +59847,7 @@ var require_grammar3 = __commonJS({
       "name": "OperatorExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@80"
+          "$ref": "#/interfaces@82"
         }
       ]
     },
@@ -59452,7 +59856,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureChainExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -59462,7 +59866,7 @@ var require_grammar3 = __commonJS({
       "name": "CollectExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -59472,7 +59876,7 @@ var require_grammar3 = __commonJS({
       "name": "SelectExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -59486,7 +59890,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           },
           "isOptional": false
@@ -59508,7 +59912,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           },
           "isOptional": false
@@ -59691,31 +60095,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@82"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@80"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@74"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@86"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@79"
+              "$ref": "#/interfaces@84"
             }
           },
           {
@@ -59727,19 +60107,49 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
+              "$ref": "#/interfaces@82"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@75"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@88"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@80"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
               "$ref": "#/interfaces@83"
             }
           },
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@84"
+              "$ref": "#/interfaces@85"
             }
           },
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@85"
+              "$ref": "#/interfaces@86"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@87"
             }
           }
         ]
@@ -59754,7 +60164,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           },
           {
@@ -60008,7 +60418,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Dependency",
       "returnType": {
-        "$ref": "#/interfaces@53"
+        "$ref": "#/interfaces@54"
       },
       "definition": {
         "$type": "Group",
@@ -60036,7 +60446,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -60055,7 +60465,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@413"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -60074,7 +60484,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@413"
+                    "$ref": "#/rules@423"
                   },
                   "arguments": []
                 }
@@ -60093,7 +60503,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@413"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -60112,7 +60522,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@413"
+                    "$ref": "#/rules@423"
                   },
                   "arguments": []
                 }
@@ -60165,7 +60575,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AnnotatingMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -60198,21 +60608,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@409"
+              "$ref": "#/rules@419"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@410"
+              "$ref": "#/rules@420"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@411"
+              "$ref": "#/rules@421"
             },
             "arguments": []
           },
@@ -60298,7 +60708,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataDefinition",
       "returnType": {
-        "$ref": "#/interfaces@89"
+        "$ref": "#/interfaces@91"
       },
       "definition": {
         "$type": "Group",
@@ -60306,7 +60716,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@398"
+              "$ref": "#/rules@408"
             },
             "arguments": [],
             "cardinality": "?"
@@ -60330,7 +60740,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -60372,7 +60782,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PrefixMetadataMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -60420,7 +60830,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PrefixMetadataUsage",
       "returnType": {
-        "$ref": "#/interfaces@90"
+        "$ref": "#/interfaces@92"
       },
       "definition": {
         "$type": "Group",
@@ -60436,7 +60846,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@424"
+                "$ref": "#/rules@434"
               },
               "arguments": []
             }
@@ -60454,7 +60864,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataUsage",
       "returnType": {
-        "$ref": "#/interfaces@90"
+        "$ref": "#/interfaces@92"
       },
       "definition": {
         "$type": "Group",
@@ -60501,7 +60911,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@407"
+                    "$ref": "#/rules@417"
                   },
                   "arguments": []
                 }
@@ -60520,7 +60930,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@407"
+                        "$ref": "#/rules@417"
                       },
                       "arguments": []
                     }
@@ -60560,7 +60970,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -60582,7 +60992,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@424"
+                "$ref": "#/rules@434"
               },
               "arguments": []
             }
@@ -60648,7 +61058,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -60672,7 +61082,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
+                "$ref": "#/rules@72"
               },
               "arguments": []
             }
@@ -60726,7 +61136,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataBodyUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -60751,7 +61161,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataBodyUsage",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
@@ -60764,7 +61174,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@394"
+              "$ref": "#/rules@404"
             },
             "arguments": [],
             "cardinality": "?"
@@ -60776,7 +61186,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@57"
+                "$ref": "#/rules@59"
               },
               "arguments": []
             }
@@ -60792,7 +61202,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -60865,7 +61275,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@404"
+              "$ref": "#/rules@414"
             },
             "arguments": [],
             "cardinality": "?"
@@ -60919,7 +61329,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@390"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61039,7 +61449,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
+                "$ref": "#/rules@72"
               },
               "arguments": []
             }
@@ -61063,7 +61473,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -61092,7 +61502,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "UsageMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -61100,7 +61510,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61130,7 +61540,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RelationshipMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -61138,7 +61548,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61168,7 +61578,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ElementFilterMember",
       "returnType": {
-        "$ref": "#/interfaces@60"
+        "$ref": "#/interfaces@61"
       },
       "definition": {
         "$type": "Group",
@@ -61176,7 +61586,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61192,7 +61602,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@328"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -61214,7 +61624,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AliasMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Group",
@@ -61222,7 +61632,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61239,7 +61649,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@390"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61255,7 +61665,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@413"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -61286,7 +61696,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61298,7 +61708,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@405"
+              "$ref": "#/rules@415"
             },
             "arguments": [],
             "cardinality": "?"
@@ -61325,7 +61735,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@413"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -61362,7 +61772,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Import",
       "returnType": {
-        "$ref": "#/interfaces@54"
+        "$ref": "#/interfaces@55"
       },
       "definition": {
         "$type": "Group",
@@ -61440,7 +61850,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FilterPackageMember",
       "returnType": {
-        "$ref": "#/interfaces@60"
+        "$ref": "#/interfaces@61"
       },
       "definition": {
         "$type": "Group",
@@ -61456,7 +61866,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@328"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -61500,35 +61910,35 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@97"
+              "$ref": "#/rules@103"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@99"
+              "$ref": "#/rules@105"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@106"
+              "$ref": "#/rules@112"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@107"
+              "$ref": "#/rules@113"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@117"
+              "$ref": "#/rules@124"
             },
             "arguments": []
           },
@@ -61542,91 +61952,77 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@119"
+              "$ref": "#/rules@126"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@129"
+              "$ref": "#/rules@136"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@134"
+              "$ref": "#/rules@141"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@152"
+              "$ref": "#/rules@159"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@168"
+              "$ref": "#/rules@177"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@121"
+              "$ref": "#/rules@128"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@171"
+              "$ref": "#/rules@180"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@261"
+              "$ref": "#/rules@270"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@227"
+              "$ref": "#/rules@236"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@268"
+              "$ref": "#/rules@277"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@272"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@292"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@294"
+              "$ref": "#/rules@281"
             },
             "arguments": []
           },
@@ -61647,13 +62043,6 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@307"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@310"
             },
             "arguments": []
@@ -61661,21 +62050,42 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@322"
+              "$ref": "#/rules@312"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@324"
+              "$ref": "#/rules@316"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@95"
+              "$ref": "#/rules@319"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@331"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@333"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@101"
             },
             "arguments": []
           }
@@ -61692,7 +62102,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "UsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -61700,14 +62110,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@90"
+              "$ref": "#/rules@96"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@91"
+              "$ref": "#/rules@97"
             },
             "arguments": []
           }
@@ -61730,7 +62140,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@391"
+              "$ref": "#/rules@400"
             },
             "arguments": []
           },
@@ -61789,7 +62199,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@416"
+            "$ref": "#/rules@426"
           },
           "arguments": []
         }
@@ -61814,7 +62224,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": []
               },
@@ -61931,7 +62341,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@58"
+                    "$ref": "#/rules@60"
                   },
                   "arguments": []
                 }
@@ -61939,7 +62349,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@406"
+                  "$ref": "#/rules@416"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -61949,7 +62359,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@406"
+              "$ref": "#/rules@416"
             },
             "arguments": []
           }
@@ -61995,6 +62405,13 @@ var require_grammar3 = __commonJS({
               "$ref": "#/rules@52"
             },
             "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@53"
+            },
+            "arguments": []
           }
         ]
       },
@@ -62032,7 +62449,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@54"
+                    "$ref": "#/rules@55"
                   },
                   "arguments": []
                 }
@@ -62069,7 +62486,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@54"
+                "$ref": "#/rules@55"
               },
               "arguments": []
             }
@@ -62110,7 +62527,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@55"
+                    "$ref": "#/rules@56"
                   },
                   "arguments": []
                 }
@@ -62136,41 +62553,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@392"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Assignment",
-            "feature": "heritage",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@55"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "References",
-      "fragment": true,
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@393"
+              "$ref": "#/rules@401"
             },
             "arguments": []
           },
@@ -62196,7 +62579,7 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
-      "name": "Redefinitions",
+      "name": "References",
       "fragment": true,
       "definition": {
         "$type": "Group",
@@ -62204,51 +62587,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@53"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Keyword",
-                "value": ","
-              },
-              {
-                "$type": "Assignment",
-                "feature": "heritage",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@57"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "Redefines",
-      "fragment": true,
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@394"
+              "$ref": "#/rules@402"
             },
             "arguments": []
           },
@@ -62274,6 +62613,118 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "Crosses",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@403"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "heritage",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@58"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Redefinitions",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Keyword",
+                "value": ","
+              },
+              {
+                "$type": "Assignment",
+                "feature": "heritage",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@59"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Redefines",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@404"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "heritage",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@59"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "FeatureTyping",
       "returnType": {
         "$ref": "#/interfaces@47"
@@ -62284,14 +62735,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@425"
+              "$ref": "#/rules@435"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@122"
+              "$ref": "#/rules@129"
             },
             "arguments": []
           }
@@ -62320,7 +62771,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@417"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -62332,7 +62783,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -62362,7 +62813,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@417"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -62374,7 +62825,49 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@446"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossSubsetting",
+      "returnType": {
+        "$ref": "#/interfaces@53"
+      },
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "targetRef",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@427"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "targetChain",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -62404,7 +62897,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@417"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -62416,7 +62909,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -62434,7 +62927,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedMultiplicity",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -62443,7 +62936,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@59"
+            "$ref": "#/rules@61"
           },
           "arguments": []
         }
@@ -62475,7 +62968,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@60"
+                "$ref": "#/rules@62"
               },
               "arguments": []
             }
@@ -62497,7 +62990,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MultiplicityExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -62506,7 +62999,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@328"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -62528,7 +63021,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@398"
+              "$ref": "#/rules@408"
             },
             "arguments": []
           },
@@ -62579,7 +63072,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
+              "$ref": "#/rules@63"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62587,7 +63080,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@62"
+              "$ref": "#/rules@64"
             },
             "arguments": [],
             "cardinality": "*"
@@ -62610,14 +63103,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@68"
             },
             "arguments": []
           }
@@ -62639,7 +63132,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@390"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62681,7 +63174,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@67"
+                  "$ref": "#/rules@69"
                 },
                 "arguments": []
               },
@@ -62706,7 +63199,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@68"
+          "$ref": "#/rules@70"
         },
         "arguments": [],
         "cardinality": "*"
@@ -62755,7 +63248,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
+                "$ref": "#/rules@72"
               },
               "arguments": []
             }
@@ -62779,43 +63272,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
                 "$ref": "#/rules@71"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@72"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@113"
               },
               "arguments": []
             }
@@ -62831,6 +63288,48 @@ var require_grammar3 = __commonJS({
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@74"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "children",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@120"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              },
+              {
+                "$type": "Assignment",
+                "feature": "children",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@75"
+                  },
+                  "arguments": []
+                }
+              }
+            ]
           }
         ]
       },
@@ -62844,7 +63343,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "DefinitionMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -62852,7 +63351,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62882,7 +63381,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VisibleAnnotatingMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Group",
@@ -62890,7 +63389,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62920,7 +63419,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VariantUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@164"
+        "$ref": "#/interfaces@166"
       },
       "definition": {
         "$type": "Group",
@@ -62928,7 +63427,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62944,7 +63443,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@94"
+                "$ref": "#/rules@100"
               },
               "arguments": []
             }
@@ -62962,7 +63461,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NonOccurrenceUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -62970,7 +63469,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -62982,7 +63481,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@90"
+                "$ref": "#/rules@96"
               },
               "arguments": []
             }
@@ -63000,7 +63499,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OccurrenceUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -63008,7 +63507,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63020,7 +63519,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@91"
+                "$ref": "#/rules@97"
               },
               "arguments": []
             }
@@ -63038,7 +63537,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "StructureUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -63046,7 +63545,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63058,7 +63557,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@92"
+                "$ref": "#/rules@98"
               },
               "arguments": []
             }
@@ -63076,7 +63575,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "BehaviorUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -63084,7 +63583,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63096,7 +63595,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@93"
+                "$ref": "#/rules@99"
               },
               "arguments": []
             }
@@ -63124,7 +63623,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@395"
+                "$ref": "#/rules@405"
               },
               "arguments": []
             },
@@ -63133,7 +63632,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
+              "$ref": "#/rules@63"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63141,7 +63640,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@400"
+              "$ref": "#/rules@410"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63149,15 +63648,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@401"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@402"
+              "$ref": "#/rules@411"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63199,16 +63690,51 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@76"
+              "$ref": "#/rules@78"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@77"
+              "$ref": "#/rules@79"
             },
             "arguments": [],
+            "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "EndUsagePrefix",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@412"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "crossingFeature",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@84"
+              },
+              "arguments": []
+            },
             "cardinality": "?"
           }
         ]
@@ -63243,6 +63769,93 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "UnextendedUsagePrefix",
+      "fragment": true,
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@81"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@80"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossingFeatureMember",
+      "returnType": {
+        "$ref": "#/interfaces@59"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@85"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossingFeature",
+      "returnType": {
+        "$ref": "#/interfaces@93"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@80"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@88"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "UsagePrefix",
       "fragment": true,
       "definition": {
@@ -63251,14 +63864,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@78"
+              "$ref": "#/rules@83"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -63281,7 +63894,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63289,7 +63902,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@83"
+              "$ref": "#/rules@89"
             },
             "arguments": []
           }
@@ -63328,7 +63941,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63336,7 +63949,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -63355,7 +63968,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@66"
+          "$ref": "#/rules@68"
         },
         "arguments": []
       },
@@ -63376,7 +63989,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@86"
+            "$ref": "#/rules@92"
           },
           "arguments": []
         }
@@ -63391,7 +64004,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Group",
@@ -63454,7 +64067,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@328"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -63472,7 +64085,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "DefaultReferenceUsage",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
@@ -63480,21 +64093,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@76"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@82"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@412"
             },
             "arguments": [],
             "cardinality": "?"
@@ -63502,7 +64101,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@78"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -63519,17 +64125,29 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ReferenceUsage",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@76"
-            },
-            "arguments": []
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@81"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@78"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
             "$type": "Keyword",
@@ -63538,7 +64156,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -63555,7 +64173,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VariantReference",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
@@ -63567,7 +64185,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@56"
+                "$ref": "#/rules@57"
               },
               "arguments": []
             }
@@ -63583,7 +64201,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -63600,7 +64218,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NonOccurrenceUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -63608,21 +64226,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@87"
+              "$ref": "#/rules@93"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@98"
+              "$ref": "#/rules@94"
             },
             "arguments": []
           },
@@ -63636,21 +64247,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@127"
+              "$ref": "#/rules@110"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@128"
+              "$ref": "#/rules@134"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@96"
+              "$ref": "#/rules@135"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@102"
             },
             "arguments": []
           }
@@ -63667,7 +64285,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OccurrenceUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -63675,14 +64293,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@92"
+              "$ref": "#/rules@98"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@99"
             },
             "arguments": []
           }
@@ -63699,7 +64317,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "StructureUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -63707,28 +64325,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@109"
+              "$ref": "#/rules@116"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@110"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@111"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@112"
+              "$ref": "#/rules@117"
             },
             "arguments": []
           },
@@ -63742,14 +64346,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@120"
+              "$ref": "#/rules@119"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@316"
+              "$ref": "#/rules@125"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@127"
             },
             "arguments": []
           },
@@ -63763,49 +64374,56 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@124"
+              "$ref": "#/rules@334"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@130"
+              "$ref": "#/rules@131"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@161"
+              "$ref": "#/rules@137"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@169"
+              "$ref": "#/rules@168"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@135"
+              "$ref": "#/rules@178"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@139"
+              "$ref": "#/rules@142"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@140"
+              "$ref": "#/rules@146"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@147"
             },
             "arguments": []
           }
@@ -63822,7 +64440,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "BehaviorUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -63830,49 +64448,35 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@179"
+              "$ref": "#/rules@188"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@267"
+              "$ref": "#/rules@276"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@243"
+              "$ref": "#/rules@252"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@269"
+              "$ref": "#/rules@278"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@286"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@293"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@300"
+              "$ref": "#/rules@295"
             },
             "arguments": []
           },
@@ -63886,41 +64490,6 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@304"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@308"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@323"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@180"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@244"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@309"
             },
             "arguments": []
@@ -63928,14 +64497,63 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@270"
+              "$ref": "#/rules@311"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@287"
+              "$ref": "#/rules@313"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@317"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@332"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@189"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@253"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@318"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@279"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@296"
             },
             "arguments": []
           }
@@ -63952,7 +64570,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VariantUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -63960,119 +64578,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@89"
+              "$ref": "#/rules@95"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@88"
+              "$ref": "#/rules@94"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@98"
+              "$ref": "#/rules@104"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@127"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@128"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@109"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@110"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@111"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@112"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@118"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@120"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@316"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@325"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@124"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@130"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@161"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@169"
+              "$ref": "#/rules@134"
             },
             "arguments": []
           },
@@ -64086,21 +64613,112 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@139"
+              "$ref": "#/rules@116"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@140"
+              "$ref": "#/rules@117"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@118"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@119"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@125"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@127"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@325"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@334"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@131"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@137"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@168"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@178"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@142"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@146"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@147"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@99"
             },
             "arguments": []
           }
@@ -64117,7 +64735,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ExtendedDefinition",
       "returnType": {
-        "$ref": "#/interfaces@87"
+        "$ref": "#/interfaces@89"
       },
       "definition": {
         "$type": "Group",
@@ -64125,7 +64743,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
+              "$ref": "#/rules@63"
             },
             "arguments": [],
             "cardinality": "?"
@@ -64133,7 +64751,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@62"
+              "$ref": "#/rules@64"
             },
             "arguments": [],
             "cardinality": "+"
@@ -64145,7 +64763,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -64162,7 +64780,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ExtendedUsage",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Group",
@@ -64170,14 +64788,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@78"
+              "$ref": "#/rules@83"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "+"
@@ -64185,7 +64803,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64202,7 +64820,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AttributeDefinition",
       "returnType": {
-        "$ref": "#/interfaces@94"
+        "$ref": "#/interfaces@96"
       },
       "definition": {
         "$type": "Group",
@@ -64210,7 +64828,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@63"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -64225,7 +64843,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -64242,7 +64860,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AttributeUsage",
       "returnType": {
-        "$ref": "#/interfaces@95"
+        "$ref": "#/interfaces@97"
       },
       "definition": {
         "$type": "Group",
@@ -64250,7 +64868,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@80"
+              "$ref": "#/rules@86"
             },
             "arguments": []
           },
@@ -64261,7 +64879,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64278,7 +64896,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EnumerationDefinition",
       "returnType": {
-        "$ref": "#/interfaces@138"
+        "$ref": "#/interfaces@140"
       },
       "definition": {
         "$type": "Group",
@@ -64302,14 +64920,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@100"
+              "$ref": "#/rules@106"
             },
             "arguments": []
           }
@@ -64343,7 +64961,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@101"
+                  "$ref": "#/rules@107"
                 },
                 "arguments": []
               },
@@ -64387,7 +65005,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@102"
+                "$ref": "#/rules@108"
               },
               "arguments": []
             }
@@ -64405,7 +65023,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EnumerationUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@164"
+        "$ref": "#/interfaces@166"
       },
       "definition": {
         "$type": "Group",
@@ -64413,7 +65031,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -64425,7 +65043,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@103"
+                "$ref": "#/rules@109"
               },
               "arguments": []
             }
@@ -64443,7 +65061,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EnumeratedValue",
       "returnType": {
-        "$ref": "#/interfaces@139"
+        "$ref": "#/interfaces@141"
       },
       "definition": {
         "$type": "Group",
@@ -64464,7 +65082,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64481,7 +65099,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EnumerationUsage",
       "returnType": {
-        "$ref": "#/interfaces@139"
+        "$ref": "#/interfaces@141"
       },
       "definition": {
         "$type": "Group",
@@ -64489,7 +65107,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@80"
+              "$ref": "#/rules@86"
             },
             "arguments": []
           },
@@ -64500,7 +65118,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64523,7 +65141,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
+              "$ref": "#/rules@63"
             },
             "arguments": [],
             "cardinality": "?"
@@ -64539,7 +65157,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@62"
+              "$ref": "#/rules@64"
             },
             "arguments": [],
             "cardinality": "*"
@@ -64556,7 +65174,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OccurrenceDefinition",
       "returnType": {
-        "$ref": "#/interfaces@92"
+        "$ref": "#/interfaces@94"
       },
       "definition": {
         "$type": "Group",
@@ -64564,7 +65182,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -64579,7 +65197,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -64596,7 +65214,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "IndividualDefinition",
       "returnType": {
-        "$ref": "#/interfaces@92"
+        "$ref": "#/interfaces@94"
       },
       "definition": {
         "$type": "Group",
@@ -64604,7 +65222,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
+              "$ref": "#/rules@63"
             },
             "arguments": [],
             "cardinality": "?"
@@ -64619,7 +65237,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@62"
+              "$ref": "#/rules@64"
             },
             "arguments": [],
             "cardinality": "*"
@@ -64631,7 +65249,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -64646,7 +65264,7 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
-      "name": "OccurrenceUsagePrefix",
+      "name": "BasicOccurrenceUsagePrefix",
       "fragment": true,
       "definition": {
         "$type": "Group",
@@ -64654,7 +65272,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@78"
+              "$ref": "#/rules@80"
             },
             "arguments": []
           },
@@ -64673,11 +65291,45 @@ var require_grammar3 = __commonJS({
             },
             "arguments": [],
             "cardinality": "?"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OccurrenceUsagePrefix",
+      "fragment": true,
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@81"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@114"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -64694,7 +65346,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OccurrenceUsage",
       "returnType": {
-        "$ref": "#/interfaces@93"
+        "$ref": "#/interfaces@95"
       },
       "definition": {
         "$type": "Group",
@@ -64702,7 +65354,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -64713,7 +65365,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64730,7 +65382,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "IndividualUsage",
       "returnType": {
-        "$ref": "#/interfaces@93"
+        "$ref": "#/interfaces@95"
       },
       "definition": {
         "$type": "Group",
@@ -64738,7 +65390,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@78"
+              "$ref": "#/rules@80"
             },
             "arguments": []
           },
@@ -64752,7 +65404,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -64760,7 +65412,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64777,7 +65429,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PortionUsage",
       "returnType": {
-        "$ref": "#/interfaces@93"
+        "$ref": "#/interfaces@95"
       },
       "definition": {
         "$type": "Group",
@@ -64785,7 +65437,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@78"
+              "$ref": "#/rules@80"
             },
             "arguments": []
           },
@@ -64807,7 +65459,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -64815,7 +65467,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -64832,7 +65484,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EventOccurrenceUsage",
       "returnType": {
-        "$ref": "#/interfaces@151"
+        "$ref": "#/interfaces@153"
       },
       "definition": {
         "$type": "Group",
@@ -64840,7 +65492,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -64861,7 +65513,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -64886,7 +65538,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@82"
+                      "$ref": "#/rules@88"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -64898,7 +65550,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@83"
+              "$ref": "#/rules@89"
             },
             "arguments": []
           }
@@ -64915,7 +65567,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EmptySuccessionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -64924,7 +65576,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@114"
+            "$ref": "#/rules@121"
           },
           "arguments": []
         }
@@ -64940,7 +65592,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EmptySuccession",
       "returnType": {
-        "$ref": "#/interfaces@161"
+        "$ref": "#/interfaces@163"
       },
       "definition": {
         "$type": "Group",
@@ -64956,7 +65608,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@115"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             },
@@ -64975,7 +65627,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MultiplicitySourceEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -64984,7 +65636,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@116"
+            "$ref": "#/rules@123"
           },
           "arguments": []
         }
@@ -65000,7 +65652,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MultiplicitySourceEnd",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Assignment",
@@ -65009,7 +65661,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@58"
+            "$ref": "#/rules@60"
           },
           "arguments": []
         }
@@ -65025,7 +65677,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemDefinition",
       "returnType": {
-        "$ref": "#/interfaces@96"
+        "$ref": "#/interfaces@98"
       },
       "definition": {
         "$type": "Group",
@@ -65033,7 +65685,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -65048,7 +65700,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -65065,7 +65717,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemUsage",
       "returnType": {
-        "$ref": "#/interfaces@97"
+        "$ref": "#/interfaces@99"
       },
       "definition": {
         "$type": "Group",
@@ -65073,7 +65725,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -65084,7 +65736,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -65101,7 +65753,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PartDefinition",
       "returnType": {
-        "$ref": "#/interfaces@98"
+        "$ref": "#/interfaces@100"
       },
       "definition": {
         "$type": "Group",
@@ -65109,7 +65761,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -65124,7 +65776,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -65141,7 +65793,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PartUsage",
       "returnType": {
-        "$ref": "#/interfaces@99"
+        "$ref": "#/interfaces@101"
       },
       "definition": {
         "$type": "Group",
@@ -65149,7 +65801,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -65160,7 +65812,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -65177,7 +65829,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PortDefinition",
       "returnType": {
-        "$ref": "#/interfaces@100"
+        "$ref": "#/interfaces@102"
       },
       "definition": {
         "$type": "Group",
@@ -65185,7 +65837,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@63"
+              "$ref": "#/rules@65"
             },
             "arguments": []
           },
@@ -65200,7 +65852,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -65217,7 +65869,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConjugatedPortTyping",
       "returnType": {
-        "$ref": "#/interfaces@167"
+        "$ref": "#/interfaces@169"
       },
       "definition": {
         "$type": "Group",
@@ -65233,7 +65885,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@123"
+                "$ref": "#/rules@130"
               },
               "arguments": []
             }
@@ -65251,12 +65903,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConjugatedPortReference",
       "returnType": {
-        "$ref": "#/interfaces@163"
+        "$ref": "#/interfaces@165"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -65271,7 +65923,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PortUsage",
       "returnType": {
-        "$ref": "#/interfaces@101"
+        "$ref": "#/interfaces@103"
       },
       "definition": {
         "$type": "Group",
@@ -65279,7 +65931,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -65290,7 +65942,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -65307,7 +65959,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConnectorEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -65316,7 +65968,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@126"
+            "$ref": "#/rules@133"
           },
           "arguments": []
         }
@@ -65332,25 +65984,38 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConnectorEnd",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "crossingFeature",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@175"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
           {
             "$type": "Group",
             "elements": [
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@389"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@393"
+                  "$ref": "#/rules@402"
                 },
                 "arguments": []
               }
@@ -65364,23 +66029,10 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@56"
+                "$ref": "#/rules@57"
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "multiplicity",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@58"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
           }
         ]
       },
@@ -65395,7 +66047,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "BindingConnectorAsUsage",
       "returnType": {
-        "$ref": "#/interfaces@125"
+        "$ref": "#/interfaces@127"
       },
       "definition": {
         "$type": "Group",
@@ -65403,7 +66055,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@80"
+              "$ref": "#/rules@86"
             },
             "arguments": []
           },
@@ -65417,7 +66069,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -65436,7 +66088,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65452,7 +66104,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65460,7 +66112,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@68"
             },
             "arguments": []
           }
@@ -65477,7 +66129,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SuccessionAsUsage",
       "returnType": {
-        "$ref": "#/interfaces@161"
+        "$ref": "#/interfaces@163"
       },
       "definition": {
         "$type": "Group",
@@ -65485,7 +66137,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@80"
+              "$ref": "#/rules@86"
             },
             "arguments": []
           },
@@ -65499,7 +66151,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -65518,7 +66170,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65534,10 +66186,50 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@68"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ConnectionDefinition",
+      "returnType": {
+        "$ref": "#/interfaces@128"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@111"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "connection"
+          },
+          {
+            "$type": "Keyword",
+            "value": "def"
           },
           {
             "$type": "RuleCall",
@@ -65557,49 +66249,9 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
-      "name": "ConnectionDefinition",
-      "returnType": {
-        "$ref": "#/interfaces@126"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@105"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Keyword",
-            "value": "connection"
-          },
-          {
-            "$type": "Keyword",
-            "value": "def"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@64"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
       "name": "ConnectionUsage",
       "returnType": {
-        "$ref": "#/interfaces@127"
+        "$ref": "#/interfaces@129"
       },
       "definition": {
         "$type": "Group",
@@ -65607,7 +66259,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -65624,7 +66276,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@82"
+                      "$ref": "#/rules@88"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -65632,7 +66284,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@85"
+                      "$ref": "#/rules@91"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -65647,7 +66299,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@131"
+                          "$ref": "#/rules@138"
                         },
                         "arguments": []
                       }
@@ -65666,7 +66318,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@131"
+                      "$ref": "#/rules@138"
                     },
                     "arguments": []
                   }
@@ -65677,7 +66329,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -65700,14 +66352,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@132"
+              "$ref": "#/rules@139"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@133"
+              "$ref": "#/rules@140"
             },
             "arguments": []
           }
@@ -65733,7 +66385,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65749,7 +66401,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65780,7 +66432,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -65799,7 +66451,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@125"
+                    "$ref": "#/rules@132"
                   },
                   "arguments": []
                 }
@@ -65823,7 +66475,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FlowConnectionDefinition",
       "returnType": {
-        "$ref": "#/interfaces@145"
+        "$ref": "#/interfaces@147"
       },
       "definition": {
         "$type": "Group",
@@ -65831,7 +66483,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -65846,7 +66498,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -65863,7 +66515,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Message",
       "returnType": {
-        "$ref": "#/interfaces@146"
+        "$ref": "#/interfaces@148"
       },
       "definition": {
         "$type": "Group",
@@ -65871,7 +66523,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -65882,14 +66534,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@136"
+              "$ref": "#/rules@143"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@68"
             },
             "arguments": []
           }
@@ -65915,7 +66567,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -65923,7 +66575,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@85"
+                  "$ref": "#/rules@91"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -65942,7 +66594,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@142"
+                        "$ref": "#/rules@149"
                       },
                       "arguments": []
                     }
@@ -65964,7 +66616,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@137"
+                        "$ref": "#/rules@144"
                       },
                       "arguments": []
                     }
@@ -65980,7 +66632,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@137"
+                        "$ref": "#/rules@144"
                       },
                       "arguments": []
                     }
@@ -66000,7 +66652,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@137"
+                    "$ref": "#/rules@144"
                   },
                   "arguments": []
                 }
@@ -66016,7 +66668,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@137"
+                    "$ref": "#/rules@144"
                   },
                   "arguments": []
                 }
@@ -66035,7 +66687,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MessageEventMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -66044,7 +66696,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@138"
+            "$ref": "#/rules@145"
           },
           "arguments": []
         }
@@ -66060,7 +66712,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MessageEvent",
       "returnType": {
-        "$ref": "#/interfaces@151"
+        "$ref": "#/interfaces@153"
       },
       "definition": {
         "$type": "Assignment",
@@ -66069,7 +66721,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@56"
+            "$ref": "#/rules@57"
           },
           "arguments": []
         }
@@ -66085,7 +66737,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FlowConnectionUsage",
       "returnType": {
-        "$ref": "#/interfaces@146"
+        "$ref": "#/interfaces@148"
       },
       "definition": {
         "$type": "Group",
@@ -66093,7 +66745,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -66104,14 +66756,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@141"
+              "$ref": "#/rules@148"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@68"
             },
             "arguments": []
           }
@@ -66128,7 +66780,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SuccessionFlowConnectionUsage",
       "returnType": {
-        "$ref": "#/interfaces@147"
+        "$ref": "#/interfaces@149"
       },
       "definition": {
         "$type": "Group",
@@ -66136,7 +66788,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -66151,14 +66803,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@141"
+              "$ref": "#/rules@148"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@66"
+              "$ref": "#/rules@68"
             },
             "arguments": []
           }
@@ -66184,7 +66836,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -66192,7 +66844,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@85"
+                  "$ref": "#/rules@91"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -66211,7 +66863,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@142"
+                        "$ref": "#/rules@149"
                       },
                       "arguments": []
                     }
@@ -66233,7 +66885,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@146"
+                        "$ref": "#/rules@153"
                       },
                       "arguments": []
                     }
@@ -66249,7 +66901,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@146"
+                        "$ref": "#/rules@153"
                       },
                       "arguments": []
                     }
@@ -66269,7 +66921,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@146"
+                    "$ref": "#/rules@153"
                   },
                   "arguments": []
                 }
@@ -66285,7 +66937,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@146"
+                    "$ref": "#/rules@153"
                   },
                   "arguments": []
                 }
@@ -66304,7 +66956,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ItemFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -66313,7 +66965,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@143"
+            "$ref": "#/rules@150"
           },
           "arguments": []
         }
@@ -66334,7 +66986,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@144"
+          "$ref": "#/rules@151"
         },
         "arguments": []
       },
@@ -66358,7 +67010,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -66366,14 +67018,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@145"
+                  "$ref": "#/rules@152"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@85"
+                  "$ref": "#/rules@91"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -66386,7 +67038,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -66394,7 +67046,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@85"
+                  "$ref": "#/rules@91"
                 },
                 "arguments": []
               }
@@ -66410,7 +67062,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@425"
+                    "$ref": "#/rules@435"
                   },
                   "arguments": []
                 }
@@ -66422,7 +67074,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@58"
+                    "$ref": "#/rules@60"
                   },
                   "arguments": []
                 },
@@ -66440,7 +67092,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@58"
+                    "$ref": "#/rules@60"
                   },
                   "arguments": []
                 }
@@ -66452,7 +67104,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@425"
+                    "$ref": "#/rules@435"
                   },
                   "arguments": []
                 }
@@ -66540,7 +67192,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FlowEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -66549,7 +67201,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@147"
+            "$ref": "#/rules@154"
           },
           "arguments": []
         }
@@ -66577,7 +67229,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@148"
+                "$ref": "#/rules@155"
               },
               "arguments": []
             },
@@ -66590,7 +67242,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@149"
+                "$ref": "#/rules@156"
               },
               "arguments": []
             }
@@ -66623,7 +67275,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@417"
+                    "$ref": "#/rules@427"
                   },
                   "arguments": []
                 }
@@ -66641,7 +67293,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@438"
+                "$ref": "#/rules@448"
               },
               "arguments": []
             }
@@ -66659,7 +67311,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FlowFeatureMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -66668,7 +67320,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@150"
+            "$ref": "#/rules@157"
           },
           "arguments": []
         }
@@ -66684,7 +67336,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FlowFeature",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Assignment",
@@ -66693,7 +67345,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@151"
+            "$ref": "#/rules@158"
           },
           "arguments": []
         }
@@ -66718,7 +67370,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@417"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -66734,7 +67386,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceDefinition",
       "returnType": {
-        "$ref": "#/interfaces@128"
+        "$ref": "#/interfaces@130"
       },
       "definition": {
         "$type": "Group",
@@ -66742,7 +67394,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -66757,14 +67409,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@153"
+              "$ref": "#/rules@160"
             },
             "arguments": []
           }
@@ -66798,7 +67450,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@154"
+                  "$ref": "#/rules@161"
                 },
                 "arguments": []
               },
@@ -66823,7 +67475,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@155"
+          "$ref": "#/rules@162"
         },
         "arguments": [],
         "cardinality": "*"
@@ -66848,7 +67500,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -66872,7 +67524,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
+                "$ref": "#/rules@72"
               },
               "arguments": []
             }
@@ -66884,7 +67536,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@71"
+                "$ref": "#/rules@73"
               },
               "arguments": []
             }
@@ -66896,7 +67548,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@156"
+                "$ref": "#/rules@163"
               },
               "arguments": []
             }
@@ -66908,7 +67560,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@113"
+                "$ref": "#/rules@120"
               },
               "arguments": []
             }
@@ -66920,7 +67572,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@158"
+                "$ref": "#/rules@165"
               },
               "arguments": []
             }
@@ -66961,7 +67613,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceNonOccurrenceUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -66969,7 +67621,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -66981,7 +67633,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@157"
+                "$ref": "#/rules@164"
               },
               "arguments": []
             }
@@ -66999,7 +67651,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceNonOccurrenceUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -67007,14 +67659,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@88"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@98"
+              "$ref": "#/rules@94"
             },
             "arguments": []
           },
@@ -67028,14 +67673,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@127"
+              "$ref": "#/rules@110"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@128"
+              "$ref": "#/rules@134"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@135"
             },
             "arguments": []
           }
@@ -67052,7 +67704,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceOccurrenceUsageMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -67060,7 +67712,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -67072,7 +67724,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@159"
+                "$ref": "#/rules@166"
               },
               "arguments": []
             }
@@ -67090,7 +67742,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceOccurrenceUsageElement",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Alternatives",
@@ -67098,21 +67750,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@160"
+              "$ref": "#/rules@167"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@92"
+              "$ref": "#/rules@98"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@93"
+              "$ref": "#/rules@99"
             },
             "arguments": []
           }
@@ -67129,43 +67781,22 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "DefaultInterfaceEnd",
       "returnType": {
-        "$ref": "#/interfaces@101"
+        "$ref": "#/interfaces@103"
       },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Assignment",
-            "feature": "direction",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@395"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@61"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@402"
+              "$ref": "#/rules@412"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -67182,7 +67813,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceUsage",
       "returnType": {
-        "$ref": "#/interfaces@129"
+        "$ref": "#/interfaces@131"
       },
       "definition": {
         "$type": "Group",
@@ -67190,7 +67821,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -67201,14 +67832,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@162"
+              "$ref": "#/rules@169"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@153"
+              "$ref": "#/rules@160"
             },
             "arguments": []
           }
@@ -67234,7 +67865,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -67249,7 +67880,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@163"
+                      "$ref": "#/rules@170"
                     },
                     "arguments": []
                   }
@@ -67261,7 +67892,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@163"
+              "$ref": "#/rules@170"
             },
             "arguments": []
           }
@@ -67283,14 +67914,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@164"
+              "$ref": "#/rules@171"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@165"
+              "$ref": "#/rules@172"
             },
             "arguments": []
           }
@@ -67316,7 +67947,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@166"
+                "$ref": "#/rules@173"
               },
               "arguments": []
             }
@@ -67332,7 +67963,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@166"
+                "$ref": "#/rules@173"
               },
               "arguments": []
             }
@@ -67363,7 +67994,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@166"
+                "$ref": "#/rules@173"
               },
               "arguments": []
             }
@@ -67382,7 +68013,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@166"
+                    "$ref": "#/rules@173"
                   },
                   "arguments": []
                 }
@@ -67406,7 +68037,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceEndMember",
       "returnType": {
-        "$ref": "#/interfaces@63"
+        "$ref": "#/interfaces@64"
       },
       "definition": {
         "$type": "Assignment",
@@ -67415,7 +68046,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@167"
+            "$ref": "#/rules@174"
           },
           "arguments": []
         }
@@ -67431,25 +68062,38 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InterfaceEnd",
       "returnType": {
-        "$ref": "#/interfaces@101"
+        "$ref": "#/interfaces@103"
       },
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "crossingFeature",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@175"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
           {
             "$type": "Group",
             "elements": [
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@389"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@393"
+                  "$ref": "#/rules@402"
                 },
                 "arguments": []
               }
@@ -67463,23 +68107,10 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@56"
+                "$ref": "#/rules@57"
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "multiplicity",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@58"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
           }
         ]
       },
@@ -67492,9 +68123,59 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "OwnedCrossMultiplicityMember",
+      "returnType": {
+        "$ref": "#/interfaces@59"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@176"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OwnedCrossMultiplicity",
+      "returnType": {
+        "$ref": "#/interfaces@20"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "multiplicity",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@60"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "AllocationDefinition",
       "returnType": {
-        "$ref": "#/interfaces@140"
+        "$ref": "#/interfaces@142"
       },
       "definition": {
         "$type": "Group",
@@ -67502,7 +68183,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -67517,7 +68198,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -67534,7 +68215,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AllocationUsage",
       "returnType": {
-        "$ref": "#/interfaces@141"
+        "$ref": "#/interfaces@143"
       },
       "definition": {
         "$type": "Group",
@@ -67542,21 +68223,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@170"
+              "$ref": "#/rules@179"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -67586,7 +68267,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -67601,7 +68282,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@131"
+                      "$ref": "#/rules@138"
                     },
                     "arguments": []
                   }
@@ -67620,7 +68301,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@131"
+                  "$ref": "#/rules@138"
                 },
                 "arguments": []
               }
@@ -67638,7 +68319,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionDefinition",
       "returnType": {
-        "$ref": "#/interfaces@102"
+        "$ref": "#/interfaces@104"
       },
       "definition": {
         "$type": "Group",
@@ -67646,7 +68327,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -67661,14 +68342,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -67702,7 +68383,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@173"
+                  "$ref": "#/rules@182"
                 },
                 "arguments": []
               },
@@ -67727,7 +68408,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@174"
+          "$ref": "#/rules@183"
         },
         "arguments": [],
         "cardinality": "*"
@@ -67776,7 +68457,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -67800,30 +68481,6 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@71"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
                 "$ref": "#/rules@72"
               },
               "arguments": []
@@ -67836,31 +68493,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@175"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@178"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@113"
+                "$ref": "#/rules@73"
               },
               "arguments": []
             }
@@ -67884,7 +68517,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@75"
+                "$ref": "#/rules@184"
               },
               "arguments": []
             }
@@ -67896,7 +68529,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@176"
+                "$ref": "#/rules@187"
               },
               "arguments": []
             }
@@ -67908,7 +68541,55 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@177"
+                "$ref": "#/rules@120"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@76"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@77"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@185"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@186"
               },
               "arguments": []
             }
@@ -67925,7 +68606,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InitialNodeMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Group",
@@ -67933,7 +68614,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -67949,7 +68630,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@417"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -67974,7 +68655,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionNodeMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -67982,7 +68663,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -67994,7 +68675,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@183"
+                "$ref": "#/rules@192"
               },
               "arguments": []
             }
@@ -68012,7 +68693,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TargetSuccessionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Group",
@@ -68020,7 +68701,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68032,7 +68713,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@222"
+                "$ref": "#/rules@231"
               },
               "arguments": []
             }
@@ -68050,7 +68731,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "GuardedSuccessionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -68059,7 +68740,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@226"
+            "$ref": "#/rules@235"
           },
           "arguments": []
         }
@@ -68075,7 +68756,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionUsage",
       "returnType": {
-        "$ref": "#/interfaces@103"
+        "$ref": "#/interfaces@105"
       },
       "definition": {
         "$type": "Group",
@@ -68083,7 +68764,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -68094,14 +68775,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -68118,7 +68799,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PerformActionUsage",
       "returnType": {
-        "$ref": "#/interfaces@150"
+        "$ref": "#/interfaces@152"
       },
       "definition": {
         "$type": "Group",
@@ -68126,7 +68807,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -68137,14 +68818,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@181"
+              "$ref": "#/rules@190"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -68177,7 +68858,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -68202,7 +68883,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@82"
+                      "$ref": "#/rules@88"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -68214,7 +68895,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68237,7 +68918,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68245,7 +68926,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68262,39 +68943,11 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionNode",
       "returnType": {
-        "$ref": "#/interfaces@103"
+        "$ref": "#/interfaces@105"
       },
       "definition": {
         "$type": "Alternatives",
         "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@197"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@186"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@202"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@204"
-            },
-            "arguments": []
-          },
           {
             "$type": "RuleCall",
             "rule": {
@@ -68305,7 +68958,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@210"
+              "$ref": "#/rules@195"
             },
             "arguments": []
           },
@@ -68319,7 +68972,35 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@214"
+              "$ref": "#/rules@213"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@215"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@219"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@220"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@223"
             },
             "arguments": []
           }
@@ -68346,7 +69027,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68369,14 +69050,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@184"
+              "$ref": "#/rules@193"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68393,7 +69074,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AcceptNode",
       "returnType": {
-        "$ref": "#/interfaces@112"
+        "$ref": "#/interfaces@114"
       },
       "definition": {
         "$type": "Group",
@@ -68401,21 +69082,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@187"
+              "$ref": "#/rules@196"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -68438,7 +69119,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@184"
+              "$ref": "#/rules@193"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68450,7 +69131,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@188"
+              "$ref": "#/rules@197"
             },
             "arguments": []
           }
@@ -68476,7 +69157,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@189"
+                "$ref": "#/rules@198"
               },
               "arguments": []
             }
@@ -68495,7 +69176,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@199"
+                    "$ref": "#/rules@208"
                   },
                   "arguments": []
                 }
@@ -68515,7 +69196,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PayloadParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -68524,7 +69205,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@190"
+            "$ref": "#/rules@199"
           },
           "arguments": []
         }
@@ -68540,7 +69221,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "PayloadParameter",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Alternatives",
@@ -68548,7 +69229,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@144"
+              "$ref": "#/rules@151"
             },
             "arguments": []
           },
@@ -68558,7 +69239,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -68566,7 +69247,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@145"
+                  "$ref": "#/rules@152"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -68574,7 +69255,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@191"
+                  "$ref": "#/rules@200"
                 },
                 "arguments": []
               }
@@ -68600,7 +69281,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@192"
+            "$ref": "#/rules@201"
           },
           "arguments": []
         }
@@ -68615,7 +69296,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TriggerFeatureValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -68624,7 +69305,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@193"
+            "$ref": "#/rules@202"
           },
           "arguments": []
         }
@@ -68640,7 +69321,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TriggerExpression",
       "returnType": {
-        "$ref": "#/interfaces@149"
+        "$ref": "#/interfaces@151"
       },
       "definition": {
         "$type": "Alternatives",
@@ -68673,7 +69354,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@362"
+                    "$ref": "#/rules@371"
                   },
                   "arguments": []
                 }
@@ -68699,7 +69380,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@194"
+                    "$ref": "#/rules@203"
                   },
                   "arguments": []
                 }
@@ -68719,7 +69400,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -68728,7 +69409,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@195"
+            "$ref": "#/rules@204"
           },
           "arguments": []
         }
@@ -68753,7 +69434,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@196"
+            "$ref": "#/rules@205"
           },
           "arguments": []
         }
@@ -68769,7 +69450,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentExpressionValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -68778,7 +69459,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@329"
+            "$ref": "#/rules@338"
           },
           "arguments": []
         }
@@ -68794,7 +69475,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SendNode",
       "returnType": {
-        "$ref": "#/interfaces@155"
+        "$ref": "#/interfaces@157"
       },
       "definition": {
         "$type": "Group",
@@ -68802,21 +69483,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@198"
+              "$ref": "#/rules@207"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -68839,7 +69520,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@184"
+              "$ref": "#/rules@193"
             },
             "arguments": [],
             "cardinality": "?"
@@ -68855,7 +69536,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@199"
+                "$ref": "#/rules@208"
               },
               "arguments": []
             }
@@ -68874,7 +69555,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@199"
+                    "$ref": "#/rules@208"
                   },
                   "arguments": []
                 }
@@ -68896,7 +69577,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@199"
+                    "$ref": "#/rules@208"
                   },
                   "arguments": []
                 }
@@ -68916,7 +69597,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NodeParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -68925,7 +69606,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@200"
+            "$ref": "#/rules@209"
           },
           "arguments": []
         }
@@ -68941,7 +69622,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NodeParameter",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Assignment",
@@ -68950,7 +69631,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@201"
+            "$ref": "#/rules@210"
           },
           "arguments": []
         }
@@ -68966,7 +69647,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureBinding",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -68975,7 +69656,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@328"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -68991,7 +69672,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AssignmentNode",
       "returnType": {
-        "$ref": "#/interfaces@148"
+        "$ref": "#/interfaces@150"
       },
       "definition": {
         "$type": "Group",
@@ -68999,21 +69680,21 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@203"
+              "$ref": "#/rules@212"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -69036,7 +69717,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@184"
+              "$ref": "#/rules@193"
             },
             "arguments": [],
             "cardinality": "?"
@@ -69052,7 +69733,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@435"
+                "$ref": "#/rules@445"
               },
               "arguments": []
             }
@@ -69068,7 +69749,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@199"
+                "$ref": "#/rules@208"
               },
               "arguments": []
             }
@@ -69085,7 +69766,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TerminateNode",
       "returnType": {
-        "$ref": "#/interfaces@181"
+        "$ref": "#/interfaces@183"
       },
       "definition": {
         "$type": "Group",
@@ -69093,7 +69774,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@185"
+              "$ref": "#/rules@194"
             },
             "arguments": []
           },
@@ -69108,7 +69789,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@199"
+                "$ref": "#/rules@208"
               },
               "arguments": []
             },
@@ -69117,7 +69798,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@172"
+              "$ref": "#/rules@181"
             },
             "arguments": []
           }
@@ -69134,7 +69815,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ExpressionParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -69143,7 +69824,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@328"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -69159,7 +69840,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "IfNode",
       "returnType": {
-        "$ref": "#/interfaces@104"
+        "$ref": "#/interfaces@106"
       },
       "definition": {
         "$type": "Group",
@@ -69167,7 +69848,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@185"
+              "$ref": "#/rules@194"
             },
             "arguments": []
           },
@@ -69182,7 +69863,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@205"
+                "$ref": "#/rules@214"
               },
               "arguments": []
             }
@@ -69194,7 +69875,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@207"
+                "$ref": "#/rules@216"
               },
               "arguments": []
             }
@@ -69216,14 +69897,14 @@ var require_grammar3 = __commonJS({
                     {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@207"
+                        "$ref": "#/rules@216"
                       },
                       "arguments": []
                     },
                     {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@209"
+                        "$ref": "#/rules@218"
                       },
                       "arguments": []
                     }
@@ -69246,7 +69927,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionBodyParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -69255,7 +69936,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@208"
+            "$ref": "#/rules@217"
           },
           "arguments": []
         }
@@ -69271,7 +69952,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionBodyParameter",
       "returnType": {
-        "$ref": "#/interfaces@103"
+        "$ref": "#/interfaces@105"
       },
       "definition": {
         "$type": "Group",
@@ -69286,7 +69967,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -69301,7 +69982,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@173"
+              "$ref": "#/rules@182"
             },
             "arguments": []
           },
@@ -69322,7 +70003,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "IfNodeParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -69331,7 +70012,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@206"
+            "$ref": "#/rules@215"
           },
           "arguments": []
         }
@@ -69347,7 +70028,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "WhileLoopNode",
       "returnType": {
-        "$ref": "#/interfaces@153"
+        "$ref": "#/interfaces@155"
       },
       "definition": {
         "$type": "Group",
@@ -69355,7 +70036,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@185"
+              "$ref": "#/rules@194"
             },
             "arguments": []
           },
@@ -69376,7 +70057,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@205"
+                        "$ref": "#/rules@214"
                       },
                       "arguments": []
                     }
@@ -69396,7 +70077,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@207"
+                "$ref": "#/rules@216"
               },
               "arguments": []
             }
@@ -69415,7 +70096,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@205"
+                    "$ref": "#/rules@214"
                   },
                   "arguments": []
                 }
@@ -69440,7 +70121,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ForLoopNode",
       "returnType": {
-        "$ref": "#/interfaces@154"
+        "$ref": "#/interfaces@156"
       },
       "definition": {
         "$type": "Group",
@@ -69448,7 +70129,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@185"
+              "$ref": "#/rules@194"
             },
             "arguments": []
           },
@@ -69463,7 +70144,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@212"
+                "$ref": "#/rules@221"
               },
               "arguments": []
             }
@@ -69479,7 +70160,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@199"
+                "$ref": "#/rules@208"
               },
               "arguments": []
             }
@@ -69491,7 +70172,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@207"
+                "$ref": "#/rules@216"
               },
               "arguments": []
             }
@@ -69509,7 +70190,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ForVariableDeclarationMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -69518,7 +70199,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@213"
+            "$ref": "#/rules@222"
           },
           "arguments": []
         }
@@ -69534,12 +70215,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ForVariableDeclaration",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@82"
+          "$ref": "#/rules@88"
         },
         "arguments": []
       },
@@ -69554,7 +70235,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ControlNode",
       "returnType": {
-        "$ref": "#/interfaces@156"
+        "$ref": "#/interfaces@158"
       },
       "definition": {
         "$type": "Alternatives",
@@ -69562,28 +70243,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@216"
+              "$ref": "#/rules@225"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@217"
+              "$ref": "#/rules@226"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@218"
+              "$ref": "#/rules@227"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@219"
+              "$ref": "#/rules@228"
             },
             "arguments": []
           }
@@ -69606,7 +70287,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@76"
+              "$ref": "#/rules@78"
             },
             "arguments": []
           },
@@ -69646,7 +70327,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MergeNode",
       "returnType": {
-        "$ref": "#/interfaces@158"
+        "$ref": "#/interfaces@160"
       },
       "definition": {
         "$type": "Group",
@@ -69654,7 +70335,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@215"
+              "$ref": "#/rules@224"
             },
             "arguments": []
           },
@@ -69665,7 +70346,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -69673,7 +70354,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           }
@@ -69690,7 +70371,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "DecisionNode",
       "returnType": {
-        "$ref": "#/interfaces@160"
+        "$ref": "#/interfaces@162"
       },
       "definition": {
         "$type": "Group",
@@ -69698,7 +70379,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@215"
+              "$ref": "#/rules@224"
             },
             "arguments": []
           },
@@ -69709,7 +70390,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -69717,7 +70398,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           }
@@ -69734,7 +70415,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "JoinNode",
       "returnType": {
-        "$ref": "#/interfaces@159"
+        "$ref": "#/interfaces@161"
       },
       "definition": {
         "$type": "Group",
@@ -69742,7 +70423,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@215"
+              "$ref": "#/rules@224"
             },
             "arguments": []
           },
@@ -69753,7 +70434,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -69761,7 +70442,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           }
@@ -69778,7 +70459,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ForkNode",
       "returnType": {
-        "$ref": "#/interfaces@157"
+        "$ref": "#/interfaces@159"
       },
       "definition": {
         "$type": "Group",
@@ -69786,7 +70467,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@215"
+              "$ref": "#/rules@224"
             },
             "arguments": []
           },
@@ -69797,7 +70478,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -69805,7 +70486,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@220"
+              "$ref": "#/rules@229"
             },
             "arguments": []
           }
@@ -69839,7 +70520,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@221"
+                  "$ref": "#/rules@230"
                 },
                 "arguments": []
               },
@@ -69884,7 +70565,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActionTargetSuccession",
       "returnType": {
-        "$ref": "#/interfaces@88"
+        "$ref": "#/interfaces@90"
       },
       "definition": {
         "$type": "Group",
@@ -69895,21 +70576,21 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@223"
+                  "$ref": "#/rules@232"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@224"
+                  "$ref": "#/rules@233"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@225"
+                  "$ref": "#/rules@234"
                 },
                 "arguments": []
               }
@@ -69918,7 +70599,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -69935,11 +70616,24 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TargetSuccession",
       "returnType": {
-        "$ref": "#/interfaces@161"
+        "$ref": "#/interfaces@163"
       },
       "definition": {
         "$type": "Group",
         "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "ends",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@122"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
           {
             "$type": "Keyword",
             "value": "then"
@@ -69951,20 +70645,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@115"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "ends",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@132"
               },
               "arguments": []
             }
@@ -69982,7 +70663,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "GuardedTargetSuccession",
       "returnType": {
-        "$ref": "#/interfaces@111"
+        "$ref": "#/interfaces@113"
       },
       "definition": {
         "$type": "Group",
@@ -69994,7 +70675,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@250"
+                "$ref": "#/rules@259"
               },
               "arguments": []
             }
@@ -70010,7 +70691,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@259"
+                "$ref": "#/rules@268"
               },
               "arguments": []
             }
@@ -70028,7 +70709,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "DefaultTargetSuccession",
       "returnType": {
-        "$ref": "#/interfaces@111"
+        "$ref": "#/interfaces@113"
       },
       "definition": {
         "$type": "Group",
@@ -70044,7 +70725,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@259"
+                "$ref": "#/rules@268"
               },
               "arguments": []
             }
@@ -70062,7 +70743,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "GuardedSuccession",
       "returnType": {
-        "$ref": "#/interfaces@111"
+        "$ref": "#/interfaces@113"
       },
       "definition": {
         "$type": "Group",
@@ -70077,7 +70758,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@82"
+                  "$ref": "#/rules@88"
                 },
                 "arguments": []
               }
@@ -70095,7 +70776,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@247"
+                "$ref": "#/rules@256"
               },
               "arguments": []
             }
@@ -70107,7 +70788,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@250"
+                "$ref": "#/rules@259"
               },
               "arguments": []
             }
@@ -70123,7 +70804,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@259"
+                "$ref": "#/rules@268"
               },
               "arguments": []
             }
@@ -70131,7 +70812,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@84"
+              "$ref": "#/rules@90"
             },
             "arguments": []
           }
@@ -70148,7 +70829,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "StateDefinition",
       "returnType": {
-        "$ref": "#/interfaces@105"
+        "$ref": "#/interfaces@107"
       },
       "definition": {
         "$type": "Group",
@@ -70156,7 +70837,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -70171,14 +70852,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@228"
+              "$ref": "#/rules@237"
             },
             "arguments": []
           }
@@ -70222,7 +70903,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@229"
+                  "$ref": "#/rules@238"
                 },
                 "arguments": []
               },
@@ -70247,7 +70928,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@230"
+          "$ref": "#/rules@239"
         },
         "arguments": [],
         "cardinality": "*"
@@ -70296,7 +70977,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@69"
+                "$ref": "#/rules@71"
               },
               "arguments": []
             }
@@ -70320,30 +71001,6 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@70"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@71"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
                 "$ref": "#/rules@72"
               },
               "arguments": []
@@ -70356,7 +71013,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@113"
+                "$ref": "#/rules@73"
               },
               "arguments": []
             }
@@ -70380,7 +71037,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@75"
+                "$ref": "#/rules@120"
               },
               "arguments": []
             }
@@ -70392,7 +71049,67 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@242"
+                "$ref": "#/rules@76"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@77"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@251"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@250"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@240"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "children",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@243"
               },
               "arguments": []
             }
@@ -70416,43 +71133,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@231"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@234"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@232"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "children",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@233"
+                "$ref": "#/rules@242"
               },
               "arguments": []
             }
@@ -70469,7 +71150,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EntryActionMember",
       "returnType": {
-        "$ref": "#/interfaces@169"
+        "$ref": "#/interfaces@171"
       },
       "definition": {
         "$type": "Group",
@@ -70477,7 +71158,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -70489,961 +71170,6 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "Keyword",
               "value": "entry"
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "target",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@240"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "DoActionMember",
-      "returnType": {
-        "$ref": "#/interfaces@169"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@399"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "kind",
-            "operator": "=",
-            "terminal": {
-              "$type": "Keyword",
-              "value": "do"
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "target",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@240"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ExitActionMember",
-      "returnType": {
-        "$ref": "#/interfaces@169"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@399"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "kind",
-            "operator": "=",
-            "terminal": {
-              "$type": "Keyword",
-              "value": "exit"
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "target",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@240"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "EntryTransitionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@399"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Assignment",
-                "feature": "target",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@224"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "then"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "target",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@260"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "$type": "Keyword",
-            "value": ";"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage_1",
-      "returnType": {
-        "$ref": "#/interfaces@103"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Action",
-            "type": {
-              "$ref": "#/interfaces@103"
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": ";"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage_2",
-      "returnType": {
-        "$ref": "#/interfaces@150"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@181"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage_3",
-      "returnType": {
-        "$ref": "#/interfaces@112"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@187"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage_4",
-      "returnType": {
-        "$ref": "#/interfaces@155"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@198"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage_5",
-      "returnType": {
-        "$ref": "#/interfaces@148"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@203"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateActionUsage",
-      "returnType": {
-        "$ref": "#/interfaces@103"
-      },
-      "definition": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@235"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@236"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@237"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@238"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@239"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TransitionUsageMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@399"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "target",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@245"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TargetTransitionUsageMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@399"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "target",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@246"
-              },
-              "arguments": []
-            }
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "StateUsage",
-      "returnType": {
-        "$ref": "#/interfaces@106"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@108"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Keyword",
-            "value": "state"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@182"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@228"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ExhibitStateUsage",
-      "returnType": {
-        "$ref": "#/interfaces@107"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@108"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Keyword",
-            "value": "exhibit"
-          },
-          {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "heritage",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@56"
-                      },
-                      "arguments": []
-                    }
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@44"
-                    },
-                    "arguments": [],
-                    "cardinality": "?"
-                  }
-                ]
-              },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "state"
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@82"
-                    },
-                    "arguments": [],
-                    "cardinality": "?"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@85"
-            },
-            "arguments": [],
-            "cardinality": "?"
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@228"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TransitionUsage",
-      "returnType": {
-        "$ref": "#/interfaces@111"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "transition"
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@82"
-                },
-                "arguments": [],
-                "cardinality": "?"
-              },
-              {
-                "$type": "Keyword",
-                "value": "first"
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "source",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@247"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "accepter",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@248"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "guard",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@250"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "effect",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@251"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "then"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "then",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@259"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TargetTransitionUsage",
-      "returnType": {
-        "$ref": "#/interfaces@111"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Keyword",
-                    "value": "transition"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "accepter",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@248"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "guard",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@250"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "effect",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@251"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  }
-                ]
-              },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "accepter",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@248"
-                      },
-                      "arguments": []
-                    }
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "guard",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@250"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "effect",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@251"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  }
-                ]
-              },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "guard",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@250"
-                      },
-                      "arguments": []
-                    }
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "effect",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@251"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "?"
-                  }
-                ]
-              }
-            ],
-            "cardinality": "?"
-          },
-          {
-            "$type": "Keyword",
-            "value": "then"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "then",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@259"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@172"
-            },
-            "arguments": []
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TransitionSourceMember",
-      "returnType": {
-        "$ref": "#/interfaces@57"
-      },
-      "definition": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "targetRef",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@417"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@58"
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "target",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@436"
-                  },
-                  "arguments": []
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "TriggerActionMember",
-      "returnType": {
-        "$ref": "#/interfaces@170"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "kind",
-            "operator": "=",
-            "terminal": {
-              "$type": "Keyword",
-              "value": "accept"
             }
           },
           {
@@ -71469,14 +71195,969 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "DoActionMember",
+      "returnType": {
+        "$ref": "#/interfaces@171"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@409"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "kind",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "do"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@249"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ExitActionMember",
+      "returnType": {
+        "$ref": "#/interfaces@171"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@409"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "kind",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "exit"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@249"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "EntryTransitionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@409"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "target",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@233"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": "then"
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "target",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@269"
+                      },
+                      "arguments": []
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "Keyword",
+            "value": ";"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage_1",
+      "returnType": {
+        "$ref": "#/interfaces@105"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": {
+              "$ref": "#/interfaces@105"
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ";"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage_2",
+      "returnType": {
+        "$ref": "#/interfaces@152"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@190"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage_3",
+      "returnType": {
+        "$ref": "#/interfaces@114"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@196"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage_4",
+      "returnType": {
+        "$ref": "#/interfaces@157"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@207"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage_5",
+      "returnType": {
+        "$ref": "#/interfaces@150"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@212"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateActionUsage",
+      "returnType": {
+        "$ref": "#/interfaces@105"
+      },
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@244"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@245"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@246"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@247"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@248"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TransitionUsageMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@409"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@254"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TargetTransitionUsageMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@409"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@255"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "StateUsage",
+      "returnType": {
+        "$ref": "#/interfaces@108"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@115"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "state"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@191"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@237"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ExhibitStateUsage",
+      "returnType": {
+        "$ref": "#/interfaces@109"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@115"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "exhibit"
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Assignment",
+                    "feature": "heritage",
+                    "operator": "+=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@57"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@44"
+                    },
+                    "arguments": [],
+                    "cardinality": "?"
+                  }
+                ]
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": "state"
+                  },
+                  {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@88"
+                    },
+                    "arguments": [],
+                    "cardinality": "?"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@91"
+            },
+            "arguments": [],
+            "cardinality": "?"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@237"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TransitionUsage",
+      "returnType": {
+        "$ref": "#/interfaces@113"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "transition"
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@88"
+                },
+                "arguments": [],
+                "cardinality": "?"
+              },
+              {
+                "$type": "Keyword",
+                "value": "first"
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "source",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@256"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "accepter",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@257"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "guard",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@259"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "effect",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@260"
+              },
+              "arguments": []
+            },
+            "cardinality": "?"
+          },
+          {
+            "$type": "Keyword",
+            "value": "then"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "then",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@268"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TargetTransitionUsage",
+      "returnType": {
+        "$ref": "#/interfaces@113"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": "transition"
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "accepter",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@257"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "guard",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@259"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "effect",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@260"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  }
+                ]
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Assignment",
+                    "feature": "accepter",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@257"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "guard",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@259"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "effect",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@260"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  }
+                ]
+              },
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Assignment",
+                    "feature": "guard",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@259"
+                      },
+                      "arguments": []
+                    }
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "effect",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@260"
+                      },
+                      "arguments": []
+                    },
+                    "cardinality": "?"
+                  }
+                ]
+              }
+            ],
+            "cardinality": "?"
+          },
+          {
+            "$type": "Keyword",
+            "value": "then"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "then",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@268"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@181"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TransitionSourceMember",
+      "returnType": {
+        "$ref": "#/interfaces@58"
+      },
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "targetRef",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@427"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@59"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "target",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@446"
+                  },
+                  "arguments": []
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "TriggerActionMember",
+      "returnType": {
+        "$ref": "#/interfaces@172"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "kind",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "accept"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "target",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@258"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "TriggerAction",
       "returnType": {
-        "$ref": "#/interfaces@112"
+        "$ref": "#/interfaces@114"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@188"
+          "$ref": "#/rules@197"
         },
         "arguments": []
       },
@@ -71491,7 +72172,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "GuardExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@170"
+        "$ref": "#/interfaces@172"
       },
       "definition": {
         "$type": "Group",
@@ -71512,7 +72193,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@328"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -71530,7 +72211,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorMember",
       "returnType": {
-        "$ref": "#/interfaces@170"
+        "$ref": "#/interfaces@172"
       },
       "definition": {
         "$type": "Group",
@@ -71551,7 +72232,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@258"
+                "$ref": "#/rules@267"
               },
               "arguments": []
             }
@@ -71579,7 +72260,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@173"
+              "$ref": "#/rules@182"
             },
             "arguments": []
           },
@@ -71600,12 +72281,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage_1",
       "returnType": {
-        "$ref": "#/interfaces@103"
+        "$ref": "#/interfaces@105"
       },
       "definition": {
         "$type": "Action",
         "type": {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       },
       "definesHiddenTokens": false,
@@ -71619,7 +72300,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage_2",
       "returnType": {
-        "$ref": "#/interfaces@150"
+        "$ref": "#/interfaces@152"
       },
       "definition": {
         "$type": "Group",
@@ -71627,14 +72308,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@181"
+              "$ref": "#/rules@190"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@252"
+              "$ref": "#/rules@261"
             },
             "arguments": []
           }
@@ -71651,7 +72332,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage_3",
       "returnType": {
-        "$ref": "#/interfaces@112"
+        "$ref": "#/interfaces@114"
       },
       "definition": {
         "$type": "Group",
@@ -71659,14 +72340,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@187"
+              "$ref": "#/rules@196"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@252"
+              "$ref": "#/rules@261"
             },
             "arguments": []
           }
@@ -71683,7 +72364,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage_4",
       "returnType": {
-        "$ref": "#/interfaces@155"
+        "$ref": "#/interfaces@157"
       },
       "definition": {
         "$type": "Group",
@@ -71691,14 +72372,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@198"
+              "$ref": "#/rules@207"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@252"
+              "$ref": "#/rules@261"
             },
             "arguments": []
           }
@@ -71715,7 +72396,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage_5",
       "returnType": {
-        "$ref": "#/interfaces@148"
+        "$ref": "#/interfaces@150"
       },
       "definition": {
         "$type": "Group",
@@ -71723,14 +72404,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@203"
+              "$ref": "#/rules@212"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@252"
+              "$ref": "#/rules@261"
             },
             "arguments": []
           }
@@ -71747,7 +72428,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EffectBehaviorUsage",
       "returnType": {
-        "$ref": "#/interfaces@103"
+        "$ref": "#/interfaces@105"
       },
       "definition": {
         "$type": "Alternatives",
@@ -71755,35 +72436,35 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@253"
+              "$ref": "#/rules@262"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@254"
+              "$ref": "#/rules@263"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@255"
+              "$ref": "#/rules@264"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@256"
+              "$ref": "#/rules@265"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@257"
+              "$ref": "#/rules@266"
             },
             "arguments": []
           }
@@ -71800,7 +72481,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TransitionSuccessionMember",
       "returnType": {
-        "$ref": "#/interfaces@58"
+        "$ref": "#/interfaces@59"
       },
       "definition": {
         "$type": "Assignment",
@@ -71809,7 +72490,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@260"
+            "$ref": "#/rules@269"
           },
           "arguments": []
         }
@@ -71825,7 +72506,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TransitionSuccession",
       "returnType": {
-        "$ref": "#/interfaces@161"
+        "$ref": "#/interfaces@163"
       },
       "definition": {
         "$type": "Assignment",
@@ -71834,7 +72515,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@125"
+            "$ref": "#/rules@132"
           },
           "arguments": []
         }
@@ -71850,7 +72531,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "CalculationDefinition",
       "returnType": {
-        "$ref": "#/interfaces@118"
+        "$ref": "#/interfaces@120"
       },
       "definition": {
         "$type": "Group",
@@ -71858,7 +72539,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -71873,14 +72554,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@271"
             },
             "arguments": []
           }
@@ -71914,7 +72595,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@263"
+                  "$ref": "#/rules@272"
                 },
                 "arguments": []
               },
@@ -71942,7 +72623,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@264"
+              "$ref": "#/rules@273"
             },
             "arguments": [],
             "cardinality": "*"
@@ -71954,7 +72635,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@266"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             },
@@ -71978,7 +72659,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@174"
+              "$ref": "#/rules@183"
             },
             "arguments": []
           },
@@ -71989,7 +72670,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@265"
+                "$ref": "#/rules@274"
               },
               "arguments": []
             }
@@ -72006,7 +72687,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ReturnParameterMember",
       "returnType": {
-        "$ref": "#/interfaces@66"
+        "$ref": "#/interfaces@67"
       },
       "definition": {
         "$type": "Group",
@@ -72014,7 +72695,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72048,7 +72729,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ResultExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@65"
+        "$ref": "#/interfaces@66"
       },
       "definition": {
         "$type": "Group",
@@ -72056,7 +72737,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72068,7 +72749,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@328"
+                "$ref": "#/rules@337"
               },
               "arguments": []
             }
@@ -72086,7 +72767,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "CalculationUsage",
       "returnType": {
-        "$ref": "#/interfaces@119"
+        "$ref": "#/interfaces@121"
       },
       "definition": {
         "$type": "Group",
@@ -72094,7 +72775,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -72105,14 +72786,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@271"
             },
             "arguments": []
           }
@@ -72129,7 +72810,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConstraintDefinition",
       "returnType": {
-        "$ref": "#/interfaces@108"
+        "$ref": "#/interfaces@110"
       },
       "definition": {
         "$type": "Group",
@@ -72137,7 +72818,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -72152,14 +72833,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@271"
             },
             "arguments": []
           }
@@ -72176,7 +72857,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConstraintUsage",
       "returnType": {
-        "$ref": "#/interfaces@109"
+        "$ref": "#/interfaces@111"
       },
       "definition": {
         "$type": "Group",
@@ -72184,7 +72865,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -72195,14 +72876,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@280"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@271"
             },
             "arguments": []
           }
@@ -72219,7 +72900,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AssertConstraintUsage",
       "returnType": {
-        "$ref": "#/interfaces@110"
+        "$ref": "#/interfaces@112"
       },
       "definition": {
         "$type": "Group",
@@ -72227,7 +72908,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -72258,7 +72939,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -72283,7 +72964,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@271"
+                      "$ref": "#/rules@280"
                     },
                     "arguments": []
                   }
@@ -72294,7 +72975,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@262"
+              "$ref": "#/rules@271"
             },
             "arguments": []
           }
@@ -72317,7 +72998,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72325,7 +73006,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72342,7 +73023,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementDefinition",
       "returnType": {
-        "$ref": "#/interfaces@113"
+        "$ref": "#/interfaces@115"
       },
       "definition": {
         "$type": "Group",
@@ -72350,7 +73031,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -72365,14 +73046,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -72406,7 +73087,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@274"
+                  "$ref": "#/rules@283"
                 },
                 "arguments": []
               },
@@ -72431,7 +73112,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@275"
+          "$ref": "#/rules@284"
         },
         "arguments": [],
         "cardinality": "*"
@@ -72452,7 +73133,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@68"
+              "$ref": "#/rules@70"
             },
             "arguments": []
           },
@@ -72463,7 +73144,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@276"
+                "$ref": "#/rules@285"
               },
               "arguments": []
             }
@@ -72475,7 +73156,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@278"
+                "$ref": "#/rules@287"
               },
               "arguments": []
             }
@@ -72487,7 +73168,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@280"
+                "$ref": "#/rules@289"
               },
               "arguments": []
             }
@@ -72499,7 +73180,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@305"
+                "$ref": "#/rules@314"
               },
               "arguments": []
             }
@@ -72511,7 +73192,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@282"
+                "$ref": "#/rules@291"
               },
               "arguments": []
             }
@@ -72523,7 +73204,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@284"
+                "$ref": "#/rules@293"
               },
               "arguments": []
             }
@@ -72540,7 +73221,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SubjectMember",
       "returnType": {
-        "$ref": "#/interfaces@171"
+        "$ref": "#/interfaces@173"
       },
       "definition": {
         "$type": "Group",
@@ -72548,7 +73229,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72564,7 +73245,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@277"
+                "$ref": "#/rules@286"
               },
               "arguments": []
             }
@@ -72582,7 +73263,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SubjectUsage",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Group",
@@ -72590,7 +73271,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -72598,7 +73279,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -72615,7 +73296,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementConstraintMember",
       "returnType": {
-        "$ref": "#/interfaces@174"
+        "$ref": "#/interfaces@176"
       },
       "definition": {
         "$type": "Group",
@@ -72623,7 +73304,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72647,7 +73328,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@279"
+                "$ref": "#/rules@288"
               },
               "arguments": []
             }
@@ -72665,7 +73346,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementConstraintUsage",
       "returnType": {
-        "$ref": "#/interfaces@109"
+        "$ref": "#/interfaces@111"
       },
       "definition": {
         "$type": "Alternatives",
@@ -72680,7 +73361,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@56"
+                    "$ref": "#/rules@57"
                   },
                   "arguments": []
                 }
@@ -72696,7 +73377,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@262"
+                  "$ref": "#/rules@271"
                 },
                 "arguments": []
               }
@@ -72714,7 +73395,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@79"
+                          "$ref": "#/rules@82"
                         },
                         "arguments": [],
                         "cardinality": "*"
@@ -72728,7 +73409,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@79"
+                      "$ref": "#/rules@82"
                     },
                     "arguments": [],
                     "cardinality": "+"
@@ -72738,14 +73419,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@271"
+                  "$ref": "#/rules@280"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@262"
+                  "$ref": "#/rules@271"
                 },
                 "arguments": []
               }
@@ -72764,7 +73445,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FramedConcernMember",
       "returnType": {
-        "$ref": "#/interfaces@175"
+        "$ref": "#/interfaces@177"
       },
       "definition": {
         "$type": "Group",
@@ -72772,7 +73453,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72788,7 +73469,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@281"
+                "$ref": "#/rules@290"
               },
               "arguments": []
             }
@@ -72806,7 +73487,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FramedConcernUsage",
       "returnType": {
-        "$ref": "#/interfaces@117"
+        "$ref": "#/interfaces@119"
       },
       "definition": {
         "$type": "Alternatives",
@@ -72821,7 +73502,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@56"
+                    "$ref": "#/rules@57"
                   },
                   "arguments": []
                 }
@@ -72837,7 +73518,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@273"
+                  "$ref": "#/rules@282"
                 },
                 "arguments": []
               }
@@ -72855,7 +73536,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@79"
+                          "$ref": "#/rules@82"
                         },
                         "arguments": [],
                         "cardinality": "*"
@@ -72869,7 +73550,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@79"
+                      "$ref": "#/rules@82"
                     },
                     "arguments": [],
                     "cardinality": "+"
@@ -72879,14 +73560,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@271"
+                  "$ref": "#/rules@280"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@262"
+                  "$ref": "#/rules@271"
                 },
                 "arguments": []
               }
@@ -72905,7 +73586,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActorMember",
       "returnType": {
-        "$ref": "#/interfaces@172"
+        "$ref": "#/interfaces@174"
       },
       "definition": {
         "$type": "Group",
@@ -72913,7 +73594,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -72929,7 +73610,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@283"
+                "$ref": "#/rules@292"
               },
               "arguments": []
             }
@@ -72947,7 +73628,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ActorUsage",
       "returnType": {
-        "$ref": "#/interfaces@99"
+        "$ref": "#/interfaces@101"
       },
       "definition": {
         "$type": "Group",
@@ -72955,7 +73636,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -72963,7 +73644,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -72980,7 +73661,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "StakeholderMember",
       "returnType": {
-        "$ref": "#/interfaces@173"
+        "$ref": "#/interfaces@175"
       },
       "definition": {
         "$type": "Group",
@@ -72988,7 +73669,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -73004,7 +73685,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@285"
+                "$ref": "#/rules@294"
               },
               "arguments": []
             }
@@ -73022,7 +73703,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "StakeholderUsage",
       "returnType": {
-        "$ref": "#/interfaces@99"
+        "$ref": "#/interfaces@101"
       },
       "definition": {
         "$type": "Group",
@@ -73030,7 +73711,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -73038,7 +73719,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -73055,7 +73736,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementUsage",
       "returnType": {
-        "$ref": "#/interfaces@114"
+        "$ref": "#/interfaces@116"
       },
       "definition": {
         "$type": "Group",
@@ -73063,7 +73744,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73074,14 +73755,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@280"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -73098,7 +73779,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SatisfyRequirementUsage",
       "returnType": {
-        "$ref": "#/interfaces@115"
+        "$ref": "#/interfaces@117"
       },
       "definition": {
         "$type": "Group",
@@ -73106,7 +73787,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73142,7 +73823,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -73167,7 +73848,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@82"
+                      "$ref": "#/rules@88"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -73179,7 +73860,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -73198,7 +73879,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@288"
+                    "$ref": "#/rules@297"
                   },
                   "arguments": []
                 }
@@ -73209,7 +73890,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -73226,7 +73907,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SatisfactionSubjectMember",
       "returnType": {
-        "$ref": "#/interfaces@171"
+        "$ref": "#/interfaces@173"
       },
       "definition": {
         "$type": "Assignment",
@@ -73235,7 +73916,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@289"
+            "$ref": "#/rules@298"
           },
           "arguments": []
         }
@@ -73251,7 +73932,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SatisfactionParameter",
       "returnType": {
-        "$ref": "#/interfaces@91"
+        "$ref": "#/interfaces@93"
       },
       "definition": {
         "$type": "Assignment",
@@ -73260,7 +73941,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@290"
+            "$ref": "#/rules@299"
           },
           "arguments": []
         }
@@ -73276,7 +73957,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SatisfactionFeatureValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -73285,7 +73966,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@291"
+            "$ref": "#/rules@300"
           },
           "arguments": []
         }
@@ -73301,7 +73982,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "SatisfactionReferenceExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -73310,7 +73991,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@435"
+            "$ref": "#/rules@445"
           },
           "arguments": []
         }
@@ -73326,7 +74007,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConcernDefinition",
       "returnType": {
-        "$ref": "#/interfaces@116"
+        "$ref": "#/interfaces@118"
       },
       "definition": {
         "$type": "Group",
@@ -73334,7 +74015,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -73349,14 +74030,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -73373,7 +74054,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConcernUsage",
       "returnType": {
-        "$ref": "#/interfaces@117"
+        "$ref": "#/interfaces@119"
       },
       "definition": {
         "$type": "Group",
@@ -73381,7 +74062,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73392,14 +74073,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@280"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -73416,7 +74097,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "CaseDefinition",
       "returnType": {
-        "$ref": "#/interfaces@120"
+        "$ref": "#/interfaces@122"
       },
       "definition": {
         "$type": "Group",
@@ -73424,7 +74105,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -73439,14 +74120,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73480,7 +74161,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@296"
+                  "$ref": "#/rules@305"
                 },
                 "arguments": []
               },
@@ -73508,7 +74189,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@297"
+              "$ref": "#/rules@306"
             },
             "arguments": [],
             "cardinality": "*"
@@ -73520,7 +74201,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@266"
+                "$ref": "#/rules@275"
               },
               "arguments": []
             },
@@ -73544,7 +74225,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@264"
+              "$ref": "#/rules@273"
             },
             "arguments": []
           },
@@ -73555,7 +74236,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@276"
+                "$ref": "#/rules@285"
               },
               "arguments": []
             }
@@ -73567,7 +74248,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@282"
+                "$ref": "#/rules@291"
               },
               "arguments": []
             }
@@ -73579,7 +74260,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@298"
+                "$ref": "#/rules@307"
               },
               "arguments": []
             }
@@ -73596,7 +74277,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ObjectiveMember",
       "returnType": {
-        "$ref": "#/interfaces@177"
+        "$ref": "#/interfaces@179"
       },
       "definition": {
         "$type": "Group",
@@ -73604,7 +74285,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -73620,7 +74301,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@299"
+                "$ref": "#/rules@308"
               },
               "arguments": []
             }
@@ -73638,7 +74319,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ObjectiveRequirementUsage",
       "returnType": {
-        "$ref": "#/interfaces@114"
+        "$ref": "#/interfaces@116"
       },
       "definition": {
         "$type": "Group",
@@ -73646,7 +74327,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@79"
+              "$ref": "#/rules@82"
             },
             "arguments": [],
             "cardinality": "*"
@@ -73654,14 +74335,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@280"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -73678,7 +74359,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "CaseUsage",
       "returnType": {
-        "$ref": "#/interfaces@121"
+        "$ref": "#/interfaces@123"
       },
       "definition": {
         "$type": "Group",
@@ -73686,7 +74367,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73697,14 +74378,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73721,7 +74402,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AnalysisCaseDefinition",
       "returnType": {
-        "$ref": "#/interfaces@122"
+        "$ref": "#/interfaces@124"
       },
       "definition": {
         "$type": "Group",
@@ -73729,7 +74410,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -73744,14 +74425,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73768,7 +74449,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "AnalysisCaseUsage",
       "returnType": {
-        "$ref": "#/interfaces@123"
+        "$ref": "#/interfaces@125"
       },
       "definition": {
         "$type": "Group",
@@ -73776,7 +74457,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73787,14 +74468,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73811,7 +74492,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VerificationCaseDefinition",
       "returnType": {
-        "$ref": "#/interfaces@136"
+        "$ref": "#/interfaces@138"
       },
       "definition": {
         "$type": "Group",
@@ -73819,7 +74500,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -73834,14 +74515,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73858,7 +74539,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "VerificationCaseUsage",
       "returnType": {
-        "$ref": "#/interfaces@137"
+        "$ref": "#/interfaces@139"
       },
       "definition": {
         "$type": "Group",
@@ -73866,7 +74547,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -73877,14 +74558,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -73901,7 +74582,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementVerificationMember",
       "returnType": {
-        "$ref": "#/interfaces@176"
+        "$ref": "#/interfaces@178"
       },
       "definition": {
         "$type": "Group",
@@ -73909,7 +74590,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -73925,7 +74606,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@306"
+                "$ref": "#/rules@315"
               },
               "arguments": []
             }
@@ -73943,7 +74624,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RequirementVerificationUsage",
       "returnType": {
-        "$ref": "#/interfaces@114"
+        "$ref": "#/interfaces@116"
       },
       "definition": {
         "$type": "Alternatives",
@@ -73958,7 +74639,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@56"
+                    "$ref": "#/rules@57"
                   },
                   "arguments": []
                 }
@@ -73974,7 +74655,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@273"
+                  "$ref": "#/rules@282"
                 },
                 "arguments": []
               }
@@ -73992,7 +74673,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "RuleCall",
                         "rule": {
-                          "$ref": "#/rules@79"
+                          "$ref": "#/rules@82"
                         },
                         "arguments": [],
                         "cardinality": "*"
@@ -74006,7 +74687,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@79"
+                      "$ref": "#/rules@82"
                     },
                     "arguments": [],
                     "cardinality": "+"
@@ -74016,14 +74697,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@271"
+                  "$ref": "#/rules@280"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@273"
+                  "$ref": "#/rules@282"
                 },
                 "arguments": []
               }
@@ -74042,7 +74723,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "UseCaseDefinition",
       "returnType": {
-        "$ref": "#/interfaces@142"
+        "$ref": "#/interfaces@144"
       },
       "definition": {
         "$type": "Group",
@@ -74050,7 +74731,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -74069,14 +74750,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -74093,7 +74774,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "UseCaseUsage",
       "returnType": {
-        "$ref": "#/interfaces@143"
+        "$ref": "#/interfaces@145"
       },
       "definition": {
         "$type": "Group",
@@ -74101,7 +74782,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -74116,14 +74797,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@182"
+              "$ref": "#/rules@191"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -74140,7 +74821,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "IncludeUseCaseUsage",
       "returnType": {
-        "$ref": "#/interfaces@144"
+        "$ref": "#/interfaces@146"
       },
       "definition": {
         "$type": "Group",
@@ -74148,7 +74829,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -74169,7 +74850,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -74198,7 +74879,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@82"
+                      "$ref": "#/rules@88"
                     },
                     "arguments": [],
                     "cardinality": "?"
@@ -74210,7 +74891,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -74218,7 +74899,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@295"
+              "$ref": "#/rules@304"
             },
             "arguments": []
           }
@@ -74235,7 +74916,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewDefinition",
       "returnType": {
-        "$ref": "#/interfaces@130"
+        "$ref": "#/interfaces@132"
       },
       "definition": {
         "$type": "Group",
@@ -74243,7 +74924,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -74258,14 +74939,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@311"
+              "$ref": "#/rules@320"
             },
             "arguments": []
           }
@@ -74299,7 +74980,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@312"
+                  "$ref": "#/rules@321"
                 },
                 "arguments": []
               },
@@ -74324,7 +75005,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@313"
+          "$ref": "#/rules@322"
         },
         "arguments": [],
         "cardinality": "*"
@@ -74345,7 +75026,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@68"
+              "$ref": "#/rules@70"
             },
             "arguments": []
           },
@@ -74368,7 +75049,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@314"
+                "$ref": "#/rules@323"
               },
               "arguments": []
             }
@@ -74385,7 +75066,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewRenderingMember",
       "returnType": {
-        "$ref": "#/interfaces@178"
+        "$ref": "#/interfaces@180"
       },
       "definition": {
         "$type": "Group",
@@ -74393,7 +75074,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -74409,7 +75090,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@315"
+                "$ref": "#/rules@324"
               },
               "arguments": []
             }
@@ -74427,7 +75108,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewRenderingUsage",
       "returnType": {
-        "$ref": "#/interfaces@135"
+        "$ref": "#/interfaces@137"
       },
       "definition": {
         "$type": "Alternatives",
@@ -74442,7 +75123,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@56"
+                    "$ref": "#/rules@57"
                   },
                   "arguments": []
                 }
@@ -74458,7 +75139,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@84"
+                  "$ref": "#/rules@90"
                 },
                 "arguments": []
               }
@@ -74499,7 +75180,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@81"
+                  "$ref": "#/rules@87"
                 },
                 "arguments": []
               }
@@ -74518,7 +75199,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewUsage",
       "returnType": {
-        "$ref": "#/interfaces@131"
+        "$ref": "#/interfaces@133"
       },
       "definition": {
         "$type": "Group",
@@ -74526,7 +75207,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -74537,7 +75218,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@82"
+              "$ref": "#/rules@88"
             },
             "arguments": [],
             "cardinality": "?"
@@ -74545,7 +75226,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@85"
+              "$ref": "#/rules@91"
             },
             "arguments": [],
             "cardinality": "?"
@@ -74553,7 +75234,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@317"
+              "$ref": "#/rules@326"
             },
             "arguments": []
           }
@@ -74587,7 +75268,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@318"
+                  "$ref": "#/rules@327"
                 },
                 "arguments": []
               },
@@ -74612,7 +75293,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@319"
+          "$ref": "#/rules@328"
         },
         "arguments": [],
         "cardinality": "*"
@@ -74633,7 +75314,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@68"
+              "$ref": "#/rules@70"
             },
             "arguments": []
           },
@@ -74656,7 +75337,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@321"
+                "$ref": "#/rules@330"
               },
               "arguments": []
             }
@@ -74668,7 +75349,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@314"
+                "$ref": "#/rules@323"
               },
               "arguments": []
             }
@@ -74691,7 +75372,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@399"
+              "$ref": "#/rules@409"
             },
             "arguments": [],
             "cardinality": "?"
@@ -74712,7 +75393,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "Expose",
       "returnType": {
-        "$ref": "#/interfaces@162"
+        "$ref": "#/interfaces@164"
       },
       "definition": {
         "$type": "Group",
@@ -74720,7 +75401,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@320"
+              "$ref": "#/rules@329"
             },
             "arguments": []
           },
@@ -74764,7 +75445,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewpointDefinition",
       "returnType": {
-        "$ref": "#/interfaces@132"
+        "$ref": "#/interfaces@134"
       },
       "definition": {
         "$type": "Group",
@@ -74772,7 +75453,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -74787,14 +75468,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@65"
+              "$ref": "#/rules@67"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -74811,7 +75492,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ViewpointUsage",
       "returnType": {
-        "$ref": "#/interfaces@133"
+        "$ref": "#/interfaces@135"
       },
       "definition": {
         "$type": "Group",
@@ -74819,7 +75500,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -74830,14 +75511,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@271"
+              "$ref": "#/rules@280"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@273"
+              "$ref": "#/rules@282"
             },
             "arguments": []
           }
@@ -74854,7 +75535,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RenderingDefinition",
       "returnType": {
-        "$ref": "#/interfaces@134"
+        "$ref": "#/interfaces@136"
       },
       "definition": {
         "$type": "Group",
@@ -74862,7 +75543,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@105"
+              "$ref": "#/rules@111"
             },
             "arguments": []
           },
@@ -74877,7 +75558,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@64"
+              "$ref": "#/rules@66"
             },
             "arguments": []
           }
@@ -74894,7 +75575,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "RenderingUsage",
       "returnType": {
-        "$ref": "#/interfaces@135"
+        "$ref": "#/interfaces@137"
       },
       "definition": {
         "$type": "Group",
@@ -74902,7 +75583,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -74913,7 +75594,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@81"
+              "$ref": "#/rules@87"
             },
             "arguments": []
           }
@@ -74935,7 +75616,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@262"
+          "$ref": "#/rules@271"
         },
         "arguments": []
       },
@@ -74950,7 +75631,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -74959,7 +75640,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@328"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -74980,7 +75661,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@331"
+          "$ref": "#/rules@340"
         },
         "arguments": []
       },
@@ -74995,7 +75676,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "OwnedExpressionReference",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -75004,7 +75685,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@327"
+            "$ref": "#/rules@336"
           },
           "arguments": []
         }
@@ -75020,7 +75701,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ConcreteConditionalExpression",
       "returnType": {
-        "$ref": "#/interfaces@81"
+        "$ref": "#/interfaces@83"
       },
       "definition": {
         "$type": "Group",
@@ -75041,7 +75722,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@332"
+                "$ref": "#/rules@341"
               },
               "arguments": []
             }
@@ -75057,7 +75738,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@329"
+                "$ref": "#/rules@338"
               },
               "arguments": []
             }
@@ -75073,7 +75754,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@329"
+                "$ref": "#/rules@338"
               },
               "arguments": []
             }
@@ -75099,14 +75780,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@332"
+              "$ref": "#/rules@341"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@330"
+              "$ref": "#/rules@339"
             },
             "arguments": []
           }
@@ -75131,7 +75812,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@335"
+              "$ref": "#/rules@344"
             },
             "arguments": []
           },
@@ -75141,7 +75822,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -75153,372 +75834,6 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "Keyword",
                   "value": "??"
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operands",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@333"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@334"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@335"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ImpliesExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@338"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operator",
-                "operator": "=",
-                "terminal": {
-                  "$type": "Keyword",
-                  "value": "implies"
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operands",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@336"
-                  },
-                  "arguments": []
-                }
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@337"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@338"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "OrExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@341"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Alternatives",
-                "elements": [
-                  {
-                    "$type": "Group",
-                    "elements": [
-                      {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "|"
-                        }
-                      },
-                      {
-                        "$type": "Assignment",
-                        "feature": "operands",
-                        "operator": "+=",
-                        "terminal": {
-                          "$type": "RuleCall",
-                          "rule": {
-                            "$ref": "#/rules@341"
-                          },
-                          "arguments": []
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "Group",
-                    "elements": [
-                      {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "or"
-                        }
-                      },
-                      {
-                        "$type": "Assignment",
-                        "feature": "operands",
-                        "operator": "+=",
-                        "terminal": {
-                          "$type": "RuleCall",
-                          "rule": {
-                            "$ref": "#/rules@339"
-                          },
-                          "arguments": []
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            "cardinality": "*"
-          }
-        ]
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpressionReference",
-      "returnType": {
-        "$ref": "#/interfaces@85"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "expression",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@340"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpressionMember",
-      "returnType": {
-        "$ref": "#/interfaces@62"
-      },
-      "definition": {
-        "$type": "Assignment",
-        "feature": "target",
-        "operator": "=",
-        "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@341"
-          },
-          "arguments": []
-        }
-      },
-      "definesHiddenTokens": false,
-      "entry": false,
-      "fragment": false,
-      "hiddenTokens": [],
-      "parameters": [],
-      "wildcard": false
-    },
-    {
-      "$type": "ParserRule",
-      "name": "XorExpression",
-      "returnType": {
-        "$ref": "#/interfaces@30"
-      },
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@342"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "Action",
-                "type": {
-                  "$ref": "#/interfaces@81"
-                },
-                "feature": "operands",
-                "operator": "+="
-              },
-              {
-                "$type": "Assignment",
-                "feature": "operator",
-                "operator": "=",
-                "terminal": {
-                  "$type": "Keyword",
-                  "value": "xor"
                 }
               },
               {
@@ -75547,6 +75862,372 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "ParserRule",
+      "name": "ImpliesExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@343"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ImpliesExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@344"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ImpliesExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@347"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operator",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": "implies"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operands",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@345"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@346"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@347"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "OrExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@350"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Alternatives",
+                "elements": [
+                  {
+                    "$type": "Group",
+                    "elements": [
+                      {
+                        "$type": "Assignment",
+                        "feature": "operator",
+                        "operator": "=",
+                        "terminal": {
+                          "$type": "Keyword",
+                          "value": "|"
+                        }
+                      },
+                      {
+                        "$type": "Assignment",
+                        "feature": "operands",
+                        "operator": "+=",
+                        "terminal": {
+                          "$type": "RuleCall",
+                          "rule": {
+                            "$ref": "#/rules@350"
+                          },
+                          "arguments": []
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Group",
+                    "elements": [
+                      {
+                        "$type": "Assignment",
+                        "feature": "operator",
+                        "operator": "=",
+                        "terminal": {
+                          "$type": "Keyword",
+                          "value": "or"
+                        }
+                      },
+                      {
+                        "$type": "Assignment",
+                        "feature": "operands",
+                        "operator": "+=",
+                        "terminal": {
+                          "$type": "RuleCall",
+                          "rule": {
+                            "$ref": "#/rules@348"
+                          },
+                          "arguments": []
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpressionReference",
+      "returnType": {
+        "$ref": "#/interfaces@87"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "expression",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@349"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpressionMember",
+      "returnType": {
+        "$ref": "#/interfaces@63"
+      },
+      "definition": {
+        "$type": "Assignment",
+        "feature": "target",
+        "operator": "=",
+        "terminal": {
+          "$type": "RuleCall",
+          "rule": {
+            "$ref": "#/rules@350"
+          },
+          "arguments": []
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "XorExpression",
+      "returnType": {
+        "$ref": "#/interfaces@30"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@351"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Action",
+                "type": {
+                  "$ref": "#/interfaces@83"
+                },
+                "feature": "operands",
+                "operator": "+="
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operator",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": "xor"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "operands",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@351"
+                  },
+                  "arguments": []
+                }
+              }
+            ],
+            "cardinality": "*"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "AndExpression",
       "returnType": {
         "$ref": "#/interfaces@30"
@@ -75557,7 +76238,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@345"
+              "$ref": "#/rules@354"
             },
             "arguments": []
           },
@@ -75567,7 +76248,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -75594,7 +76275,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@345"
+                            "$ref": "#/rules@354"
                           },
                           "arguments": []
                         }
@@ -75620,7 +76301,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@343"
+                            "$ref": "#/rules@352"
                           },
                           "arguments": []
                         }
@@ -75645,7 +76326,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EqualityExpressionReference",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -75654,7 +76335,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@344"
+            "$ref": "#/rules@353"
           },
           "arguments": []
         }
@@ -75670,7 +76351,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "EqualityExpressionMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -75679,7 +76360,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@345"
+            "$ref": "#/rules@354"
           },
           "arguments": []
         }
@@ -75703,7 +76384,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@346"
+              "$ref": "#/rules@355"
             },
             "arguments": []
           },
@@ -75713,7 +76394,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -75725,7 +76406,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@423"
+                    "$ref": "#/rules@433"
                   },
                   "arguments": []
                 }
@@ -75737,7 +76418,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@346"
+                    "$ref": "#/rules@355"
                   },
                   "arguments": []
                 }
@@ -75769,7 +76450,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@347"
+                  "$ref": "#/rules@356"
                 },
                 "arguments": []
               },
@@ -75779,7 +76460,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@81"
+                      "$ref": "#/interfaces@83"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -75797,7 +76478,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@421"
+                                "$ref": "#/rules@431"
                               },
                               "arguments": []
                             }
@@ -75809,7 +76490,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@428"
+                                "$ref": "#/rules@438"
                               },
                               "arguments": []
                             }
@@ -75835,7 +76516,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@429"
+                                "$ref": "#/rules@439"
                               },
                               "arguments": []
                             }
@@ -75855,7 +76536,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -75865,7 +76546,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@421"
+                    "$ref": "#/rules@431"
                   },
                   "arguments": []
                 }
@@ -75877,7 +76558,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@428"
+                    "$ref": "#/rules@438"
                   },
                   "arguments": []
                 }
@@ -75890,7 +76571,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -75900,7 +76581,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@427"
+                    "$ref": "#/rules@437"
                   },
                   "arguments": []
                 }
@@ -75921,7 +76602,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@428"
+                    "$ref": "#/rules@438"
                   },
                   "arguments": []
                 }
@@ -75934,7 +76615,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -75953,7 +76634,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@429"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -75966,7 +76647,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -75976,7 +76657,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@427"
+                    "$ref": "#/rules@437"
                   },
                   "arguments": []
                 }
@@ -75997,7 +76678,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@429"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -76025,7 +76706,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@348"
+              "$ref": "#/rules@357"
             },
             "arguments": []
           },
@@ -76035,7 +76716,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76047,7 +76728,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@422"
+                    "$ref": "#/rules@432"
                   },
                   "arguments": []
                 }
@@ -76059,7 +76740,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@348"
+                    "$ref": "#/rules@357"
                   },
                   "arguments": []
                 }
@@ -76088,7 +76769,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@349"
+              "$ref": "#/rules@358"
             },
             "arguments": []
           },
@@ -76098,7 +76779,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76119,7 +76800,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@349"
+                    "$ref": "#/rules@358"
                   },
                   "arguments": []
                 }
@@ -76148,7 +76829,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@350"
+              "$ref": "#/rules@359"
             },
             "arguments": []
           },
@@ -76158,7 +76839,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76188,7 +76869,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@350"
+                    "$ref": "#/rules@359"
                   },
                   "arguments": []
                 }
@@ -76217,7 +76898,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@351"
+              "$ref": "#/rules@360"
             },
             "arguments": []
           },
@@ -76227,7 +76908,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76261,7 +76942,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@351"
+                    "$ref": "#/rules@360"
                   },
                   "arguments": []
                 }
@@ -76290,7 +76971,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@352"
+              "$ref": "#/rules@361"
             },
             "arguments": []
           },
@@ -76300,7 +76981,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76330,7 +77011,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@351"
+                    "$ref": "#/rules@360"
                   },
                   "arguments": []
                 }
@@ -76362,7 +77043,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -76372,7 +77053,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@420"
+                    "$ref": "#/rules@430"
                   },
                   "arguments": []
                 }
@@ -76384,7 +77065,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@353"
+                    "$ref": "#/rules@362"
                   },
                   "arguments": []
                 }
@@ -76394,7 +77075,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@353"
+              "$ref": "#/rules@362"
             },
             "arguments": []
           }
@@ -76422,7 +77103,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@81"
+                  "$ref": "#/interfaces@83"
                 }
               },
               {
@@ -76441,7 +77122,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@429"
+                    "$ref": "#/rules@439"
                   },
                   "arguments": []
                 }
@@ -76451,7 +77132,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@354"
+              "$ref": "#/rules@363"
             },
             "arguments": []
           }
@@ -76476,7 +77157,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@355"
+              "$ref": "#/rules@364"
             },
             "arguments": []
           },
@@ -76486,7 +77167,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@82"
+                  "$ref": "#/interfaces@84"
                 },
                 "feature": "operands",
                 "operator": "+="
@@ -76502,7 +77183,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@435"
+                    "$ref": "#/rules@445"
                   },
                   "arguments": []
                 }
@@ -76528,13 +77209,8 @@ var require_grammar3 = __commonJS({
                         "operator": "+="
                       },
                       {
-                        "$type": "Assignment",
-                        "feature": "operator",
-                        "operator": "=",
-                        "terminal": {
-                          "$type": "Keyword",
-                          "value": "#"
-                        }
+                        "$type": "Keyword",
+                        "value": "#"
                       },
                       {
                         "$type": "Keyword",
@@ -76547,7 +77223,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@358"
+                            "$ref": "#/rules@367"
                           },
                           "arguments": []
                         }
@@ -76564,7 +77240,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@81"
+                          "$ref": "#/interfaces@83"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -76585,7 +77261,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@358"
+                            "$ref": "#/rules@367"
                           },
                           "arguments": []
                         }
@@ -76602,7 +77278,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@80"
+                          "$ref": "#/interfaces@82"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -76618,7 +77294,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@431"
+                            "$ref": "#/rules@441"
                           },
                           "arguments": []
                         }
@@ -76633,7 +77309,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@357"
+                                "$ref": "#/rules@366"
                               },
                               "arguments": []
                             }
@@ -76645,7 +77321,7 @@ var require_grammar3 = __commonJS({
                             "terminal": {
                               "$type": "RuleCall",
                               "rule": {
-                                "$ref": "#/rules@433"
+                                "$ref": "#/rules@443"
                               },
                               "arguments": []
                             }
@@ -76653,7 +77329,7 @@ var require_grammar3 = __commonJS({
                           {
                             "$type": "RuleCall",
                             "rule": {
-                              "$ref": "#/rules@360"
+                              "$ref": "#/rules@369"
                             },
                             "arguments": []
                           }
@@ -76667,7 +77343,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@83"
+                          "$ref": "#/interfaces@85"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -76683,7 +77359,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@357"
+                            "$ref": "#/rules@366"
                           },
                           "arguments": []
                         }
@@ -76696,7 +77372,7 @@ var require_grammar3 = __commonJS({
                       {
                         "$type": "Action",
                         "type": {
-                          "$ref": "#/interfaces@84"
+                          "$ref": "#/interfaces@86"
                         },
                         "feature": "operands",
                         "operator": "+="
@@ -76712,7 +77388,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@357"
+                            "$ref": "#/rules@366"
                           },
                           "arguments": []
                         }
@@ -76727,7 +77403,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@82"
+                      "$ref": "#/interfaces@84"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -76743,7 +77419,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@435"
+                        "$ref": "#/rules@445"
                       },
                       "arguments": []
                     }
@@ -76775,42 +77451,42 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@387"
+              "$ref": "#/rules@396"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@386"
+              "$ref": "#/rules@395"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@440"
+              "$ref": "#/rules@450"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@442"
+              "$ref": "#/rules@452"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@359"
+              "$ref": "#/rules@368"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@356"
+              "$ref": "#/rules@365"
             },
             "arguments": []
           },
@@ -76824,7 +77500,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@358"
+                  "$ref": "#/rules@367"
                 },
                 "arguments": []
               },
@@ -76847,7 +77523,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "BodyExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -76856,7 +77532,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@357"
+            "$ref": "#/rules@366"
           },
           "arguments": []
         }
@@ -76872,7 +77548,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ExpressionBodyMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -76881,7 +77557,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@326"
+            "$ref": "#/rules@335"
           },
           "arguments": []
         }
@@ -76905,7 +77581,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@328"
+              "$ref": "#/rules@337"
             },
             "arguments": []
           },
@@ -76922,7 +77598,7 @@ var require_grammar3 = __commonJS({
                   {
                     "$type": "Action",
                     "type": {
-                      "$ref": "#/interfaces@81"
+                      "$ref": "#/interfaces@83"
                     },
                     "feature": "operands",
                     "operator": "+="
@@ -76943,7 +77619,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@358"
+                        "$ref": "#/rules@367"
                       },
                       "arguments": []
                     }
@@ -76966,7 +77642,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "InvocationExpression",
       "returnType": {
-        "$ref": "#/interfaces@80"
+        "$ref": "#/interfaces@82"
       },
       "definition": {
         "$type": "Group",
@@ -76978,7 +77654,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@425"
+                "$ref": "#/rules@435"
               },
               "arguments": []
             }
@@ -76986,7 +77662,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@360"
+              "$ref": "#/rules@369"
             },
             "arguments": []
           }
@@ -77016,14 +77692,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@361"
+                  "$ref": "#/rules@370"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@364"
+                  "$ref": "#/rules@373"
                 },
                 "arguments": []
               }
@@ -77056,7 +77732,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@362"
+                "$ref": "#/rules@371"
               },
               "arguments": []
             }
@@ -77075,7 +77751,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@362"
+                    "$ref": "#/rules@371"
                   },
                   "arguments": []
                 }
@@ -77095,7 +77771,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -77104,7 +77780,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@363"
+            "$ref": "#/rules@372"
           },
           "arguments": []
         }
@@ -77129,7 +77805,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@368"
+            "$ref": "#/rules@377"
           },
           "arguments": []
         }
@@ -77155,7 +77831,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@365"
+                "$ref": "#/rules@374"
               },
               "arguments": []
             }
@@ -77174,7 +77850,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@365"
+                    "$ref": "#/rules@374"
                   },
                   "arguments": []
                 }
@@ -77194,7 +77870,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NamedArgumentMember",
       "returnType": {
-        "$ref": "#/interfaces@64"
+        "$ref": "#/interfaces@65"
       },
       "definition": {
         "$type": "Assignment",
@@ -77203,7 +77879,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@366"
+            "$ref": "#/rules@375"
           },
           "arguments": []
         }
@@ -77231,7 +77907,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@367"
+                "$ref": "#/rules@376"
               },
               "arguments": []
             }
@@ -77247,7 +77923,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@368"
+                "$ref": "#/rules@377"
               },
               "arguments": []
             }
@@ -77274,7 +77950,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@417"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -77290,7 +77966,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ArgumentValue",
       "returnType": {
-        "$ref": "#/interfaces@59"
+        "$ref": "#/interfaces@60"
       },
       "definition": {
         "$type": "Assignment",
@@ -77299,7 +77975,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@328"
+            "$ref": "#/rules@337"
           },
           "arguments": []
         }
@@ -77338,7 +78014,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@369"
+              "$ref": "#/rules@378"
             }
           }
         ]
@@ -77358,13 +78034,13 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@369"
+                  "$ref": "#/rules@378"
                 }
               },
               {
                 "$type": "TerminalRuleCall",
                 "rule": {
-                  "$ref": "#/rules@370"
+                  "$ref": "#/rules@379"
                 },
                 "cardinality": "?"
               }
@@ -77373,7 +78049,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@370"
+              "$ref": "#/rules@379"
             }
           }
         ]
@@ -77394,7 +78070,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@369"
+              "$ref": "#/rules@378"
             }
           }
         ]
@@ -77414,13 +78090,13 @@ var require_grammar3 = __commonJS({
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@371"
+              "$ref": "#/rules@380"
             }
           },
           {
             "$type": "TerminalRuleCall",
             "rule": {
-              "$ref": "#/rules@372"
+              "$ref": "#/rules@381"
             },
             "cardinality": "?"
           }
@@ -77521,14 +78197,14 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@374"
+              "$ref": "#/rules@383"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@375"
+              "$ref": "#/rules@384"
             },
             "arguments": []
           }
@@ -77545,7 +78221,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralBoolean",
       "returnType": {
-        "$ref": "#/interfaces@75"
+        "$ref": "#/interfaces@76"
       },
       "definition": {
         "$type": "Alternatives",
@@ -77576,7 +78252,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralString",
       "returnType": {
-        "$ref": "#/interfaces@76"
+        "$ref": "#/interfaces@77"
       },
       "definition": {
         "$type": "Assignment",
@@ -77585,7 +78261,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@376"
+            "$ref": "#/rules@385"
           },
           "arguments": []
         }
@@ -77601,7 +78277,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralNumber",
       "returnType": {
-        "$ref": "#/interfaces@77"
+        "$ref": "#/interfaces@78"
       },
       "definition": {
         "$type": "Assignment",
@@ -77610,7 +78286,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@373"
+            "$ref": "#/rules@382"
           },
           "arguments": []
         }
@@ -77626,7 +78302,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralInfinity",
       "returnType": {
-        "$ref": "#/interfaces@78"
+        "$ref": "#/interfaces@79"
       },
       "definition": {
         "$type": "Group",
@@ -77634,7 +78310,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@78"
+              "$ref": "#/interfaces@79"
             }
           },
           {
@@ -77654,7 +78330,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "LiteralExpression",
       "returnType": {
-        "$ref": "#/interfaces@74"
+        "$ref": "#/interfaces@75"
       },
       "definition": {
         "$type": "Alternatives",
@@ -77662,28 +78338,28 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@382"
+              "$ref": "#/rules@391"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@383"
+              "$ref": "#/rules@392"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@384"
+              "$ref": "#/rules@393"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@385"
+              "$ref": "#/rules@394"
             },
             "arguments": []
           }
@@ -77700,7 +78376,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NullExpression",
       "returnType": {
-        "$ref": "#/interfaces@79"
+        "$ref": "#/interfaces@80"
       },
       "definition": {
         "$type": "Group",
@@ -77708,7 +78384,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@79"
+              "$ref": "#/interfaces@80"
             }
           },
           {
@@ -77760,7 +78436,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@381"
+                "$ref": "#/rules@390"
               },
               "arguments": []
             }
@@ -77788,7 +78464,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@381"
+            "$ref": "#/rules@390"
           },
           "arguments": []
         }
@@ -77812,14 +78488,14 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@388"
+                  "$ref": "#/rules@397"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@389"
+                  "$ref": "#/rules@398"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -77829,7 +78505,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@389"
+              "$ref": "#/rules@398"
             },
             "arguments": []
           }
@@ -77904,6 +78580,30 @@ var require_grammar3 = __commonJS({
           {
             "$type": "Keyword",
             "value": "references"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CrossesToken",
+      "fragment": true,
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "=>"
+          },
+          {
+            "$type": "Keyword",
+            "value": "crosses"
           }
         ]
       },
@@ -78051,7 +78751,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@396"
+            "$ref": "#/rules@406"
           },
           "arguments": []
         }
@@ -78252,7 +78952,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@413"
+            "$ref": "#/rules@423"
           },
           "arguments": []
         }
@@ -78275,7 +78975,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@377"
+            "$ref": "#/rules@386"
           },
           "arguments": []
         }
@@ -78305,7 +79005,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -78324,7 +79024,7 @@ var require_grammar3 = __commonJS({
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@407"
+                        "$ref": "#/rules@417"
                       },
                       "arguments": []
                     }
@@ -78343,7 +79043,7 @@ var require_grammar3 = __commonJS({
                         "terminal": {
                           "$type": "RuleCall",
                           "rule": {
-                            "$ref": "#/rules@407"
+                            "$ref": "#/rules@417"
                           },
                           "arguments": []
                         }
@@ -78371,7 +79071,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@376"
+                    "$ref": "#/rules@385"
                   },
                   "arguments": []
                 }
@@ -78382,7 +79082,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@408"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -78411,7 +79111,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@390"
+              "$ref": "#/rules@399"
             },
             "arguments": [],
             "cardinality": "?"
@@ -78430,7 +79130,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@376"
+                    "$ref": "#/rules@385"
                   },
                   "arguments": []
                 }
@@ -78441,7 +79141,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@408"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -78473,7 +79173,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@390"
+                  "$ref": "#/rules@399"
                 },
                 "arguments": [],
                 "cardinality": "?"
@@ -78492,7 +79192,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@376"
+                "$ref": "#/rules@385"
               },
               "arguments": []
             }
@@ -78500,7 +79200,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@408"
+              "$ref": "#/rules@418"
             },
             "arguments": []
           }
@@ -78532,7 +79232,7 @@ var require_grammar3 = __commonJS({
               "terminal": {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@381"
+                  "$ref": "#/rules@390"
                 },
                 "arguments": []
               },
@@ -78558,7 +79258,7 @@ var require_grammar3 = __commonJS({
                   "terminal": {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@381"
+                      "$ref": "#/rules@390"
                     },
                     "arguments": []
                   },
@@ -78580,12 +79280,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ElementReference",
       "returnType": {
-        "$ref": "#/interfaces@67"
+        "$ref": "#/interfaces@68"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78600,12 +79300,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "NamespaceReference",
       "returnType": {
-        "$ref": "#/interfaces@68"
+        "$ref": "#/interfaces@69"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78620,12 +79320,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeReference",
       "returnType": {
-        "$ref": "#/interfaces@69"
+        "$ref": "#/interfaces@70"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78640,12 +79340,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "ClassifierReference",
       "returnType": {
-        "$ref": "#/interfaces@70"
+        "$ref": "#/interfaces@71"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78660,12 +79360,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReference",
       "returnType": {
-        "$ref": "#/interfaces@71"
+        "$ref": "#/interfaces@72"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78680,12 +79380,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetaclassReference",
       "returnType": {
-        "$ref": "#/interfaces@72"
+        "$ref": "#/interfaces@73"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78700,12 +79400,12 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MembershipReference",
       "returnType": {
-        "$ref": "#/interfaces@73"
+        "$ref": "#/interfaces@74"
       },
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@412"
+          "$ref": "#/rules@422"
         },
         "arguments": []
       },
@@ -78853,7 +79553,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@418"
+            "$ref": "#/rules@428"
           },
           "arguments": []
         }
@@ -78874,7 +79574,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@426"
+          "$ref": "#/rules@436"
         },
         "arguments": []
       },
@@ -78899,7 +79599,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@415"
+                "$ref": "#/rules@425"
               },
               "arguments": []
             }
@@ -78911,7 +79611,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@436"
+                "$ref": "#/rules@446"
               },
               "arguments": []
             }
@@ -78928,7 +79628,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataReference",
       "returnType": {
-        "$ref": "#/interfaces@86"
+        "$ref": "#/interfaces@88"
       },
       "definition": {
         "$type": "Assignment",
@@ -78937,7 +79637,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@413"
+            "$ref": "#/rules@423"
           },
           "arguments": []
         }
@@ -78953,7 +79653,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -78962,7 +79662,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@430"
+            "$ref": "#/rules@440"
           },
           "arguments": []
         }
@@ -78978,7 +79678,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "TypeResultMember",
       "returnType": {
-        "$ref": "#/interfaces@66"
+        "$ref": "#/interfaces@67"
       },
       "definition": {
         "$type": "Assignment",
@@ -78987,7 +79687,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@430"
+            "$ref": "#/rules@440"
           },
           "arguments": []
         }
@@ -79012,7 +79712,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@431"
+            "$ref": "#/rules@441"
           },
           "arguments": []
         }
@@ -79037,7 +79737,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@415"
+            "$ref": "#/rules@425"
           },
           "arguments": []
         }
@@ -79053,7 +79753,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FunctionReferenceExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -79062,7 +79762,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@433"
+            "$ref": "#/rules@443"
           },
           "arguments": []
         }
@@ -79078,7 +79778,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FunctionReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@62"
+        "$ref": "#/interfaces@63"
       },
       "definition": {
         "$type": "Assignment",
@@ -79087,7 +79787,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@434"
+            "$ref": "#/rules@444"
           },
           "arguments": []
         }
@@ -79112,7 +79812,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@431"
+            "$ref": "#/rules@441"
           },
           "arguments": []
         }
@@ -79128,7 +79828,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureChainMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Alternatives",
@@ -79140,7 +79840,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@417"
+                "$ref": "#/rules@427"
               },
               "arguments": []
             }
@@ -79151,7 +79851,7 @@ var require_grammar3 = __commonJS({
               {
                 "$type": "Action",
                 "type": {
-                  "$ref": "#/interfaces@58"
+                  "$ref": "#/interfaces@59"
                 }
               },
               {
@@ -79161,7 +79861,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@436"
+                    "$ref": "#/rules@446"
                   },
                   "arguments": []
                 }
@@ -79186,7 +79886,7 @@ var require_grammar3 = __commonJS({
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@437"
+          "$ref": "#/rules@447"
         },
         "arguments": []
       },
@@ -79211,7 +79911,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@439"
+                "$ref": "#/rules@449"
               },
               "arguments": []
             }
@@ -79230,7 +79930,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@439"
+                    "$ref": "#/rules@449"
                   },
                   "arguments": []
                 }
@@ -79265,7 +79965,7 @@ var require_grammar3 = __commonJS({
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@439"
+                    "$ref": "#/rules@449"
                   },
                   "arguments": []
                 }
@@ -79284,7 +79984,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@439"
+                "$ref": "#/rules@449"
               },
               "arguments": []
             }
@@ -79315,7 +80015,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@417"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -79331,7 +80031,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReferenceExpression",
       "returnType": {
-        "$ref": "#/interfaces@85"
+        "$ref": "#/interfaces@87"
       },
       "definition": {
         "$type": "Assignment",
@@ -79340,7 +80040,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@441"
+            "$ref": "#/rules@451"
           },
           "arguments": []
         }
@@ -79356,7 +80056,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "FeatureReferenceMember",
       "returnType": {
-        "$ref": "#/interfaces@57"
+        "$ref": "#/interfaces@58"
       },
       "definition": {
         "$type": "Assignment",
@@ -79365,7 +80065,7 @@ var require_grammar3 = __commonJS({
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@417"
+            "$ref": "#/rules@427"
           },
           "arguments": []
         }
@@ -79381,7 +80081,7 @@ var require_grammar3 = __commonJS({
       "$type": "ParserRule",
       "name": "MetadataAccessExpression",
       "returnType": {
-        "$ref": "#/interfaces@86"
+        "$ref": "#/interfaces@88"
       },
       "definition": {
         "$type": "Group",
@@ -79393,7 +80093,7 @@ var require_grammar3 = __commonJS({
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@413"
+                "$ref": "#/rules@423"
               },
               "arguments": []
             }
@@ -79560,7 +80260,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@58"
+                "$ref": "#/interfaces@59"
               }
             }
           },
@@ -79577,13 +80277,13 @@ var require_grammar3 = __commonJS({
                 {
                   "$type": "SimpleType",
                   "typeRef": {
-                    "$ref": "#/interfaces@54"
+                    "$ref": "#/interfaces@55"
                   }
                 },
                 {
                   "$type": "SimpleType",
                   "typeRef": {
-                    "$ref": "#/interfaces@57"
+                    "$ref": "#/interfaces@58"
                   }
                 }
               ]
@@ -79666,7 +80366,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -79774,7 +80474,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@65"
+              "$ref": "#/interfaces@66"
             }
           }
         }
@@ -79893,7 +80593,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@59"
+              "$ref": "#/interfaces@60"
             }
           }
         },
@@ -79904,7 +80604,18 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "crossingFeature",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -79949,7 +80660,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -79992,7 +80703,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@63"
+                "$ref": "#/interfaces@64"
               }
             }
           },
@@ -80049,7 +80760,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@65"
+              "$ref": "#/interfaces@66"
             }
           }
         }
@@ -80071,7 +80782,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@62"
+              "$ref": "#/interfaces@63"
             }
           }
         }
@@ -80228,7 +80939,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           }
         },
@@ -80261,7 +80972,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           }
         },
@@ -80369,7 +81080,7 @@ var require_grammar3 = __commonJS({
       "name": "TypeFeaturing",
       "superTypes": [
         {
-          "$ref": "#/interfaces@61"
+          "$ref": "#/interfaces@62"
         }
       ],
       "attributes": []
@@ -80436,6 +81147,16 @@ var require_grammar3 = __commonJS({
     },
     {
       "$type": "Interface",
+      "name": "CrossSubsetting",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@49"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
       "attributes": [
         {
           "$type": "TypeAttribute",
@@ -80459,7 +81180,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@67"
+                "$ref": "#/interfaces@68"
               }
             }
           },
@@ -80473,7 +81194,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@67"
+                "$ref": "#/interfaces@68"
               }
             }
           },
@@ -80530,7 +81251,7 @@ var require_grammar3 = __commonJS({
       "name": "MembershipImport",
       "superTypes": [
         {
-          "$ref": "#/interfaces@54"
+          "$ref": "#/interfaces@55"
         }
       ],
       "attributes": []
@@ -80540,7 +81261,7 @@ var require_grammar3 = __commonJS({
       "name": "NamespaceImport",
       "superTypes": [
         {
-          "$ref": "#/interfaces@54"
+          "$ref": "#/interfaces@55"
         }
       ],
       "attributes": []
@@ -80570,7 +81291,7 @@ var require_grammar3 = __commonJS({
       "name": "OwningMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@57"
+          "$ref": "#/interfaces@58"
         }
       ],
       "attributes": []
@@ -80600,7 +81321,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureValue",
       "superTypes": [
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ]
     },
@@ -80609,7 +81330,7 @@ var require_grammar3 = __commonJS({
       "name": "ElementFilterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ],
       "attributes": []
@@ -80629,10 +81350,10 @@ var require_grammar3 = __commonJS({
       "name": "FeatureMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@61"
+          "$ref": "#/interfaces@62"
         },
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ],
       "attributes": []
@@ -80642,7 +81363,7 @@ var require_grammar3 = __commonJS({
       "name": "EndFeatureMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -80652,7 +81373,7 @@ var require_grammar3 = __commonJS({
       "name": "ParameterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -80662,7 +81383,7 @@ var require_grammar3 = __commonJS({
       "name": "ResultExpressionMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -80672,7 +81393,7 @@ var require_grammar3 = __commonJS({
       "name": "ReturnParameterMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@64"
+          "$ref": "#/interfaces@65"
         }
       ],
       "attributes": []
@@ -80706,7 +81427,7 @@ var require_grammar3 = __commonJS({
       "name": "NamespaceReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@67"
+          "$ref": "#/interfaces@68"
         }
       ],
       "attributes": []
@@ -80716,7 +81437,7 @@ var require_grammar3 = __commonJS({
       "name": "TypeReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@68"
+          "$ref": "#/interfaces@69"
         }
       ],
       "attributes": []
@@ -80726,7 +81447,7 @@ var require_grammar3 = __commonJS({
       "name": "ClassifierReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@69"
+          "$ref": "#/interfaces@70"
         }
       ],
       "attributes": []
@@ -80736,7 +81457,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@69"
+          "$ref": "#/interfaces@70"
         }
       ],
       "attributes": []
@@ -80746,7 +81467,7 @@ var require_grammar3 = __commonJS({
       "name": "MetaclassReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@70"
+          "$ref": "#/interfaces@71"
         }
       ],
       "attributes": []
@@ -80756,7 +81477,7 @@ var require_grammar3 = __commonJS({
       "name": "MembershipReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@67"
+          "$ref": "#/interfaces@68"
         }
       ],
       "attributes": []
@@ -80787,7 +81508,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralBoolean",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -80807,7 +81528,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralString",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -80827,7 +81548,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralNumber",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ]
     },
@@ -80836,7 +81557,7 @@ var require_grammar3 = __commonJS({
       "name": "LiteralInfinity",
       "superTypes": [
         {
-          "$ref": "#/interfaces@74"
+          "$ref": "#/interfaces@75"
         }
       ],
       "attributes": []
@@ -80847,6 +81568,16 @@ var require_grammar3 = __commonJS({
       "superTypes": [
         {
           "$ref": "#/interfaces@30"
+        }
+      ],
+      "attributes": []
+    },
+    {
+      "$type": "Interface",
+      "name": "IndexExpression",
+      "superTypes": [
+        {
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -80892,7 +81623,7 @@ var require_grammar3 = __commonJS({
       "name": "OperatorExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@80"
+          "$ref": "#/interfaces@82"
         }
       ]
     },
@@ -80901,7 +81632,7 @@ var require_grammar3 = __commonJS({
       "name": "FeatureChainExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -80911,7 +81642,7 @@ var require_grammar3 = __commonJS({
       "name": "CollectExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -80921,7 +81652,7 @@ var require_grammar3 = __commonJS({
       "name": "SelectExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@81"
+          "$ref": "#/interfaces@83"
         }
       ],
       "attributes": []
@@ -80935,7 +81666,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           },
           "isOptional": false
@@ -80957,7 +81688,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@67"
+              "$ref": "#/interfaces@68"
             }
           },
           "isOptional": false
@@ -81056,7 +81787,7 @@ var require_grammar3 = __commonJS({
           "$ref": "#/interfaces@16"
         },
         {
-          "$ref": "#/interfaces@96"
+          "$ref": "#/interfaces@98"
         }
       ],
       "attributes": []
@@ -81069,7 +81800,7 @@ var require_grammar3 = __commonJS({
           "$ref": "#/interfaces@21"
         },
         {
-          "$ref": "#/interfaces@97"
+          "$ref": "#/interfaces@99"
         }
       ],
       "attributes": []
@@ -81079,7 +81810,7 @@ var require_grammar3 = __commonJS({
       "name": "ReferenceUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@88"
+          "$ref": "#/interfaces@90"
         }
       ],
       "attributes": []
@@ -81089,7 +81820,7 @@ var require_grammar3 = __commonJS({
       "name": "OccurrenceDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@87"
+          "$ref": "#/interfaces@89"
         },
         {
           "$ref": "#/interfaces@11"
@@ -81102,7 +81833,7 @@ var require_grammar3 = __commonJS({
       "name": "OccurrenceUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@88"
+          "$ref": "#/interfaces@90"
         }
       ],
       "attributes": []
@@ -81112,7 +81843,7 @@ var require_grammar3 = __commonJS({
       "name": "AttributeDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@87"
+          "$ref": "#/interfaces@89"
         },
         {
           "$ref": "#/interfaces@10"
@@ -81125,7 +81856,7 @@ var require_grammar3 = __commonJS({
       "name": "AttributeUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@88"
+          "$ref": "#/interfaces@90"
         }
       ],
       "attributes": []
@@ -81135,7 +81866,7 @@ var require_grammar3 = __commonJS({
       "name": "ItemDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@92"
+          "$ref": "#/interfaces@94"
         },
         {
           "$ref": "#/interfaces@12"
@@ -81148,7 +81879,7 @@ var require_grammar3 = __commonJS({
       "name": "ItemUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@93"
+          "$ref": "#/interfaces@95"
         }
       ],
       "attributes": []
@@ -81158,7 +81889,7 @@ var require_grammar3 = __commonJS({
       "name": "PartDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@96"
+          "$ref": "#/interfaces@98"
         }
       ],
       "attributes": []
@@ -81168,7 +81899,7 @@ var require_grammar3 = __commonJS({
       "name": "PartUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@97"
+          "$ref": "#/interfaces@99"
         }
       ],
       "attributes": []
@@ -81178,7 +81909,7 @@ var require_grammar3 = __commonJS({
       "name": "PortDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@92"
+          "$ref": "#/interfaces@94"
         },
         {
           "$ref": "#/interfaces@12"
@@ -81191,7 +81922,7 @@ var require_grammar3 = __commonJS({
       "name": "PortUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@93"
+          "$ref": "#/interfaces@95"
         }
       ],
       "attributes": []
@@ -81201,7 +81932,7 @@ var require_grammar3 = __commonJS({
       "name": "ActionDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@92"
+          "$ref": "#/interfaces@94"
         },
         {
           "$ref": "#/interfaces@13"
@@ -81214,7 +81945,7 @@ var require_grammar3 = __commonJS({
       "name": "ActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@93"
+          "$ref": "#/interfaces@95"
         },
         {
           "$ref": "#/interfaces@25"
@@ -81231,7 +81962,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -81242,7 +81973,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -81254,7 +81985,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         }
@@ -81262,7 +81993,7 @@ var require_grammar3 = __commonJS({
       "name": "IfActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -81282,7 +82013,7 @@ var require_grammar3 = __commonJS({
       "name": "StateDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@102"
+          "$ref": "#/interfaces@104"
         }
       ]
     },
@@ -81302,7 +82033,7 @@ var require_grammar3 = __commonJS({
       "name": "StateUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -81311,10 +82042,10 @@ var require_grammar3 = __commonJS({
       "name": "ExhibitStateUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@106"
+          "$ref": "#/interfaces@108"
         },
         {
-          "$ref": "#/interfaces@150"
+          "$ref": "#/interfaces@152"
         }
       ],
       "attributes": []
@@ -81324,7 +82055,7 @@ var require_grammar3 = __commonJS({
       "name": "ConstraintDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@92"
+          "$ref": "#/interfaces@94"
         },
         {
           "$ref": "#/interfaces@18"
@@ -81337,7 +82068,7 @@ var require_grammar3 = __commonJS({
       "name": "ConstraintUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@93"
+          "$ref": "#/interfaces@95"
         },
         {
           "$ref": "#/interfaces@33"
@@ -81350,7 +82081,7 @@ var require_grammar3 = __commonJS({
       "name": "AssertConstraintUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@109"
+          "$ref": "#/interfaces@111"
         },
         {
           "$ref": "#/interfaces@34"
@@ -81368,7 +82099,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           }
         },
@@ -81379,7 +82110,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         },
@@ -81390,7 +82121,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         },
@@ -81401,7 +82132,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@170"
+              "$ref": "#/interfaces@172"
             }
           }
         },
@@ -81412,7 +82143,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@170"
+              "$ref": "#/interfaces@172"
             }
           }
         },
@@ -81423,7 +82154,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@170"
+              "$ref": "#/interfaces@172"
             }
           }
         },
@@ -81434,7 +82165,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         },
@@ -81445,7 +82176,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@58"
+              "$ref": "#/interfaces@59"
             }
           }
         }
@@ -81453,7 +82184,7 @@ var require_grammar3 = __commonJS({
       "name": "TransitionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -81466,7 +82197,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -81478,7 +82209,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         }
@@ -81486,7 +82217,7 @@ var require_grammar3 = __commonJS({
       "name": "AcceptActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -81495,7 +82226,7 @@ var require_grammar3 = __commonJS({
       "name": "RequirementDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@108"
+          "$ref": "#/interfaces@110"
         }
       ],
       "attributes": []
@@ -81505,7 +82236,7 @@ var require_grammar3 = __commonJS({
       "name": "RequirementUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@109"
+          "$ref": "#/interfaces@111"
         }
       ],
       "attributes": []
@@ -81520,7 +82251,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@171"
+              "$ref": "#/interfaces@173"
             }
           }
         }
@@ -81528,10 +82259,10 @@ var require_grammar3 = __commonJS({
       "name": "SatisfyRequirementUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@114"
+          "$ref": "#/interfaces@116"
         },
         {
-          "$ref": "#/interfaces@110"
+          "$ref": "#/interfaces@112"
         }
       ]
     },
@@ -81540,7 +82271,7 @@ var require_grammar3 = __commonJS({
       "name": "ConcernDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@113"
+          "$ref": "#/interfaces@115"
         }
       ],
       "attributes": []
@@ -81550,7 +82281,7 @@ var require_grammar3 = __commonJS({
       "name": "ConcernUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@114"
+          "$ref": "#/interfaces@116"
         }
       ],
       "attributes": []
@@ -81560,7 +82291,7 @@ var require_grammar3 = __commonJS({
       "name": "CalculationDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@102"
+          "$ref": "#/interfaces@104"
         },
         {
           "$ref": "#/interfaces@17"
@@ -81573,7 +82304,7 @@ var require_grammar3 = __commonJS({
       "name": "CalculationUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         },
         {
           "$ref": "#/interfaces@30"
@@ -81586,7 +82317,7 @@ var require_grammar3 = __commonJS({
       "name": "CaseDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@118"
+          "$ref": "#/interfaces@120"
         }
       ],
       "attributes": []
@@ -81596,7 +82327,7 @@ var require_grammar3 = __commonJS({
       "name": "CaseUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@119"
+          "$ref": "#/interfaces@121"
         }
       ],
       "attributes": []
@@ -81606,7 +82337,7 @@ var require_grammar3 = __commonJS({
       "name": "AnalysisCaseDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@120"
+          "$ref": "#/interfaces@122"
         }
       ],
       "attributes": []
@@ -81616,7 +82347,7 @@ var require_grammar3 = __commonJS({
       "name": "AnalysisCaseUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@121"
+          "$ref": "#/interfaces@123"
         }
       ],
       "attributes": []
@@ -81626,7 +82357,7 @@ var require_grammar3 = __commonJS({
       "name": "ConnectorAsUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@88"
+          "$ref": "#/interfaces@90"
         },
         {
           "$ref": "#/interfaces@26"
@@ -81639,7 +82370,7 @@ var require_grammar3 = __commonJS({
       "name": "BindingConnectorAsUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@124"
+          "$ref": "#/interfaces@126"
         },
         {
           "$ref": "#/interfaces@29"
@@ -81652,7 +82383,7 @@ var require_grammar3 = __commonJS({
       "name": "ConnectionDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@98"
+          "$ref": "#/interfaces@100"
         },
         {
           "$ref": "#/interfaces@15"
@@ -81665,10 +82396,10 @@ var require_grammar3 = __commonJS({
       "name": "ConnectionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@99"
+          "$ref": "#/interfaces@101"
         },
         {
-          "$ref": "#/interfaces@124"
+          "$ref": "#/interfaces@126"
         }
       ],
       "attributes": []
@@ -81678,7 +82409,7 @@ var require_grammar3 = __commonJS({
       "name": "InterfaceDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@126"
+          "$ref": "#/interfaces@128"
         }
       ],
       "attributes": []
@@ -81688,7 +82419,7 @@ var require_grammar3 = __commonJS({
       "name": "InterfaceUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@127"
+          "$ref": "#/interfaces@129"
         }
       ],
       "attributes": []
@@ -81698,7 +82429,7 @@ var require_grammar3 = __commonJS({
       "name": "ViewDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@98"
+          "$ref": "#/interfaces@100"
         }
       ],
       "attributes": []
@@ -81708,7 +82439,7 @@ var require_grammar3 = __commonJS({
       "name": "ViewUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@99"
+          "$ref": "#/interfaces@101"
         }
       ],
       "attributes": []
@@ -81718,7 +82449,7 @@ var require_grammar3 = __commonJS({
       "name": "ViewpointDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@113"
+          "$ref": "#/interfaces@115"
         }
       ],
       "attributes": []
@@ -81728,7 +82459,7 @@ var require_grammar3 = __commonJS({
       "name": "ViewpointUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@114"
+          "$ref": "#/interfaces@116"
         }
       ],
       "attributes": []
@@ -81738,7 +82469,7 @@ var require_grammar3 = __commonJS({
       "name": "RenderingDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@98"
+          "$ref": "#/interfaces@100"
         }
       ],
       "attributes": []
@@ -81748,7 +82479,7 @@ var require_grammar3 = __commonJS({
       "name": "RenderingUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@99"
+          "$ref": "#/interfaces@101"
         }
       ],
       "attributes": []
@@ -81758,7 +82489,7 @@ var require_grammar3 = __commonJS({
       "name": "VerificationCaseDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@120"
+          "$ref": "#/interfaces@122"
         }
       ],
       "attributes": []
@@ -81768,7 +82499,7 @@ var require_grammar3 = __commonJS({
       "name": "VerificationCaseUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@121"
+          "$ref": "#/interfaces@123"
         }
       ],
       "attributes": []
@@ -81778,7 +82509,7 @@ var require_grammar3 = __commonJS({
       "name": "EnumerationDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@94"
+          "$ref": "#/interfaces@96"
         }
       ],
       "attributes": []
@@ -81788,7 +82519,7 @@ var require_grammar3 = __commonJS({
       "name": "EnumerationUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@95"
+          "$ref": "#/interfaces@97"
         }
       ],
       "attributes": []
@@ -81798,7 +82529,7 @@ var require_grammar3 = __commonJS({
       "name": "AllocationDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@126"
+          "$ref": "#/interfaces@128"
         }
       ],
       "attributes": []
@@ -81808,7 +82539,7 @@ var require_grammar3 = __commonJS({
       "name": "AllocationUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@127"
+          "$ref": "#/interfaces@129"
         }
       ],
       "attributes": []
@@ -81818,7 +82549,7 @@ var require_grammar3 = __commonJS({
       "name": "UseCaseDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@120"
+          "$ref": "#/interfaces@122"
         }
       ],
       "attributes": []
@@ -81828,7 +82559,7 @@ var require_grammar3 = __commonJS({
       "name": "UseCaseUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@121"
+          "$ref": "#/interfaces@123"
         }
       ],
       "attributes": []
@@ -81838,10 +82569,10 @@ var require_grammar3 = __commonJS({
       "name": "IncludeUseCaseUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@143"
+          "$ref": "#/interfaces@145"
         },
         {
-          "$ref": "#/interfaces@150"
+          "$ref": "#/interfaces@152"
         }
       ],
       "attributes": []
@@ -81851,10 +82582,7 @@ var require_grammar3 = __commonJS({
       "name": "FlowConnectionDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@126"
-        },
-        {
-          "$ref": "#/interfaces@102"
+          "$ref": "#/interfaces@104"
         },
         {
           "$ref": "#/interfaces@19"
@@ -81873,7 +82601,7 @@ var require_grammar3 = __commonJS({
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@64"
+                "$ref": "#/interfaces@65"
               }
             }
           },
@@ -81883,10 +82611,10 @@ var require_grammar3 = __commonJS({
       "name": "FlowConnectionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@127"
+          "$ref": "#/interfaces@126"
         },
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         },
         {
           "$ref": "#/interfaces@31"
@@ -81898,7 +82626,7 @@ var require_grammar3 = __commonJS({
       "name": "SuccessionFlowConnectionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@146"
+          "$ref": "#/interfaces@148"
         },
         {
           "$ref": "#/interfaces@32"
@@ -81915,7 +82643,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           },
           "isOptional": false
@@ -81926,7 +82654,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -81935,7 +82663,7 @@ var require_grammar3 = __commonJS({
       "name": "AssignmentActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -81968,7 +82696,7 @@ var require_grammar3 = __commonJS({
       "name": "TriggerInvocationExpression",
       "superTypes": [
         {
-          "$ref": "#/interfaces@80"
+          "$ref": "#/interfaces@82"
         }
       ]
     },
@@ -81977,10 +82705,10 @@ var require_grammar3 = __commonJS({
       "name": "PerformActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         },
         {
-          "$ref": "#/interfaces@151"
+          "$ref": "#/interfaces@153"
         }
       ],
       "attributes": []
@@ -81990,7 +82718,7 @@ var require_grammar3 = __commonJS({
       "name": "EventOccurrenceUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@93"
+          "$ref": "#/interfaces@95"
         }
       ],
       "attributes": []
@@ -82000,7 +82728,7 @@ var require_grammar3 = __commonJS({
       "name": "LoopActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ],
       "attributes": []
@@ -82015,7 +82743,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         },
@@ -82025,7 +82753,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -82037,7 +82765,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         }
@@ -82045,7 +82773,7 @@ var require_grammar3 = __commonJS({
       "name": "WhileLoopActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@152"
+          "$ref": "#/interfaces@154"
         }
       ]
     },
@@ -82058,7 +82786,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@62"
+              "$ref": "#/interfaces@63"
             }
           },
           "isOptional": false
@@ -82069,7 +82797,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -82080,7 +82808,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -82089,7 +82817,7 @@ var require_grammar3 = __commonJS({
       "name": "ForLoopActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@152"
+          "$ref": "#/interfaces@154"
         }
       ]
     },
@@ -82102,7 +82830,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           },
           "isOptional": false
@@ -82114,7 +82842,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         },
@@ -82125,7 +82853,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         }
@@ -82133,7 +82861,7 @@ var require_grammar3 = __commonJS({
       "name": "SendActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     },
@@ -82142,7 +82870,7 @@ var require_grammar3 = __commonJS({
       "name": "ControlNode",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ],
       "attributes": []
@@ -82152,7 +82880,7 @@ var require_grammar3 = __commonJS({
       "name": "ForkNode",
       "superTypes": [
         {
-          "$ref": "#/interfaces@156"
+          "$ref": "#/interfaces@158"
         }
       ],
       "attributes": []
@@ -82162,7 +82890,7 @@ var require_grammar3 = __commonJS({
       "name": "MergeNode",
       "superTypes": [
         {
-          "$ref": "#/interfaces@156"
+          "$ref": "#/interfaces@158"
         }
       ],
       "attributes": []
@@ -82172,7 +82900,7 @@ var require_grammar3 = __commonJS({
       "name": "JoinNode",
       "superTypes": [
         {
-          "$ref": "#/interfaces@156"
+          "$ref": "#/interfaces@158"
         }
       ],
       "attributes": []
@@ -82182,7 +82910,7 @@ var require_grammar3 = __commonJS({
       "name": "DecisionNode",
       "superTypes": [
         {
-          "$ref": "#/interfaces@156"
+          "$ref": "#/interfaces@158"
         }
       ],
       "attributes": []
@@ -82192,7 +82920,7 @@ var require_grammar3 = __commonJS({
       "name": "SuccessionAsUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@124"
+          "$ref": "#/interfaces@126"
         },
         {
           "$ref": "#/interfaces@28"
@@ -82205,7 +82933,7 @@ var require_grammar3 = __commonJS({
       "name": "Expose",
       "superTypes": [
         {
-          "$ref": "#/interfaces@54"
+          "$ref": "#/interfaces@55"
         }
       ],
       "attributes": []
@@ -82215,7 +82943,7 @@ var require_grammar3 = __commonJS({
       "name": "ConjugatedPortReference",
       "superTypes": [
         {
-          "$ref": "#/interfaces@70"
+          "$ref": "#/interfaces@71"
         }
       ],
       "attributes": []
@@ -82225,7 +82953,7 @@ var require_grammar3 = __commonJS({
       "name": "VariantMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@58"
+          "$ref": "#/interfaces@59"
         }
       ],
       "attributes": []
@@ -82245,7 +82973,7 @@ var require_grammar3 = __commonJS({
       "name": "ConjugatedPortDefinition",
       "superTypes": [
         {
-          "$ref": "#/interfaces@100"
+          "$ref": "#/interfaces@102"
         }
       ],
       "attributes": []
@@ -82299,7 +83027,7 @@ var require_grammar3 = __commonJS({
       "name": "StateSubactionMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ]
     },
@@ -82332,7 +83060,7 @@ var require_grammar3 = __commonJS({
       "name": "TransitionFeatureMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ]
     },
@@ -82341,7 +83069,7 @@ var require_grammar3 = __commonJS({
       "name": "SubjectMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@64"
+          "$ref": "#/interfaces@65"
         }
       ],
       "attributes": []
@@ -82351,7 +83079,7 @@ var require_grammar3 = __commonJS({
       "name": "ActorMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@64"
+          "$ref": "#/interfaces@65"
         }
       ],
       "attributes": []
@@ -82361,7 +83089,7 @@ var require_grammar3 = __commonJS({
       "name": "StakeholderMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@64"
+          "$ref": "#/interfaces@65"
         }
       ],
       "attributes": []
@@ -82384,7 +83112,7 @@ var require_grammar3 = __commonJS({
       "name": "RequirementConstraintMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ]
     },
@@ -82393,7 +83121,7 @@ var require_grammar3 = __commonJS({
       "name": "FramedConcernMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@174"
+          "$ref": "#/interfaces@176"
         }
       ],
       "attributes": []
@@ -82403,7 +83131,7 @@ var require_grammar3 = __commonJS({
       "name": "RequirementVerificationMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@174"
+          "$ref": "#/interfaces@176"
         }
       ],
       "attributes": []
@@ -82413,7 +83141,7 @@ var require_grammar3 = __commonJS({
       "name": "ObjectiveMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -82423,7 +83151,7 @@ var require_grammar3 = __commonJS({
       "name": "ViewRenderingMembership",
       "superTypes": [
         {
-          "$ref": "#/interfaces@62"
+          "$ref": "#/interfaces@63"
         }
       ],
       "attributes": []
@@ -82433,10 +83161,10 @@ var require_grammar3 = __commonJS({
       "name": "MembershipExpose",
       "superTypes": [
         {
-          "$ref": "#/interfaces@162"
+          "$ref": "#/interfaces@164"
         },
         {
-          "$ref": "#/interfaces@55"
+          "$ref": "#/interfaces@56"
         }
       ],
       "attributes": []
@@ -82446,10 +83174,10 @@ var require_grammar3 = __commonJS({
       "name": "NamespaceExpose",
       "superTypes": [
         {
-          "$ref": "#/interfaces@162"
+          "$ref": "#/interfaces@164"
         },
         {
-          "$ref": "#/interfaces@56"
+          "$ref": "#/interfaces@57"
         }
       ],
       "attributes": []
@@ -82464,7 +83192,7 @@ var require_grammar3 = __commonJS({
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@64"
+              "$ref": "#/interfaces@65"
             }
           }
         }
@@ -82472,7 +83200,7 @@ var require_grammar3 = __commonJS({
       "name": "TerminateActionUsage",
       "superTypes": [
         {
-          "$ref": "#/interfaces@103"
+          "$ref": "#/interfaces@105"
         }
       ]
     }
@@ -82646,31 +83374,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@82"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@80"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@74"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@86"
-            }
-          },
-          {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@79"
+              "$ref": "#/interfaces@84"
             }
           },
           {
@@ -82682,19 +83386,49 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
+              "$ref": "#/interfaces@82"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@75"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@88"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@80"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
               "$ref": "#/interfaces@83"
             }
           },
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@84"
+              "$ref": "#/interfaces@85"
             }
           },
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@85"
+              "$ref": "#/interfaces@86"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@87"
             }
           }
         ]
@@ -82709,7 +83443,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@57"
+              "$ref": "#/interfaces@58"
             }
           },
           {
@@ -82796,7 +83530,7 @@ var require_grammar3 = __commonJS({
           {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@152"
+              "$ref": "#/interfaces@154"
             }
           },
           {
@@ -83158,7 +83892,7 @@ var require_ast_to_model = __commonJS({
         model["_result"] = (_a = node.result) === null || _a === void 0 ? void 0 : _a.$meta;
       },
       [ast2.Feature](model, node) {
-        var _a;
+        var _a, _b;
         model["_value"] = (_a = node.value) === null || _a === void 0 ? void 0 : _a.$meta;
         model.isOrdered = node.isOrdered;
         model.direction = (0, model_1.getFeatureDirectionKind)(node.direction);
@@ -83169,6 +83903,7 @@ var require_ast_to_model = __commonJS({
         model.isEnd = !!node.isEnd;
         model.isOrdered = node.isOrdered;
         model.isNonUnique = node.isNonunique;
+        model["_crossingFeature"] = (_b = node.crossingFeature) === null || _b === void 0 ? void 0 : _b.$meta;
       },
       [ast2.Invariant](model, node) {
         model.isNegated = node.isNegated;
@@ -89598,6 +90333,33 @@ var require_feature = __commonJS({
         }
         return this.isPortion && (owningType.is(ast_1.Class) || owningType.is(ast_1.Feature) && owningType.hasClassType());
       }
+      get ownedCrossSubsetting() {
+        return this.specializations(ast_1.CrossSubsetting).at(0);
+      }
+      get crossFeature() {
+        var _a, _b;
+        const target = (_a = this.ownedCrossSubsetting) === null || _a === void 0 ? void 0 : _a.element();
+        return (_b = target === null || target === void 0 ? void 0 : target.chainings.at(1)) === null || _b === void 0 ? void 0 : _b.element();
+      }
+      get ownedCrossFeatureMember() {
+        return this._crossingFeature;
+      }
+      get ownedCrossFeature() {
+        var _a;
+        return (_a = this._crossingFeature) === null || _a === void 0 ? void 0 : _a.element();
+      }
+      findOwnedCrossFeature() {
+        if (this.ownedCrossFeature)
+          return this.ownedCrossFeature;
+        for (const child of this.children) {
+          if (child.nodeType() !== ast_1.OwningMembership)
+            continue;
+          const f = child.element();
+          if (f && f.is(ast_1.Feature) && !f.is(ast_1.MetadataFeature) && !f.is(ast_1.Multiplicity))
+            return f;
+        }
+        return void 0;
+      }
       ast() {
         return this._ast;
       }
@@ -89824,7 +90586,7 @@ var require_feature = __commonJS({
         return this.typings;
       }
       collectDirectTypes(visited) {
-        const types = this.types(ast_1.FeatureTyping);
+        const types = (0, langium_1.stream)(this.specializations(ast_1.FeatureTyping)).map((s) => s.finalElement()).nonNullable();
         const lastChaining = this.chainingFeatures.at(-1);
         if (lastChaining) {
           return types.concat(lastChaining.collectInheritedTypes(visited));
@@ -89860,6 +90622,9 @@ var require_feature = __commonJS({
       }
       collectDeclaration(parts) {
         var _a;
+        if (this.ownedCrossFeatureMember) {
+          parts.push(["ownedCrossFeatureMember", [this.ownedCrossFeatureMember]]);
+        }
         if ((_a = this.parent()) === null || _a === void 0 ? void 0 : _a.is(ast_1.EndFeatureMembership)) {
           parts.push(["heritage", this.heritage]);
           if (this._multiplicity) {
@@ -91426,6 +92191,12 @@ var require_invocation_expression = __commonJS({
           }).filter(common_1.NonNullable)
         ];
       }
+      isModelLevelEvaluable() {
+        var _a;
+        if ((_a = this.invokes()) === null || _a === void 0 ? void 0 : _a.isAny(ast_1.Expression, ast_1.SysMLFunction))
+          return super.isModelLevelEvaluable() && this.args.every((p) => p.isModelLevelEvaluable);
+        return this.args.every((p) => p.isModelLevelEvaluable);
+      }
       ast() {
         return this._ast;
       }
@@ -91513,12 +92284,12 @@ var require_operator_expression = __commonJS({
       BITWISE_NOT: "'~'",
       NOT: "'not'",
       ALL: "'all'",
-      INDEX: "'#'",
       QUANTITY: "'['",
       COMMA: "','",
       NONE: ""
     };
     exports2.IMPLICIT_OPERATORS = {
+      INDEX: "'#'",
       DOT: "'.'",
       COLLECT: "collect",
       SELECT: "'.?'",
@@ -91546,7 +92317,7 @@ var require_operator_expression = __commonJS({
         if (this.operator === exports2.OPERATORS.AS || this.operator === exports2.OPERATORS.META) {
           return (0, util_1.typeArgument)(this);
         }
-        if (this.operator === exports2.OPERATORS.INDEX) {
+        if (this.operator === exports2.IMPLICIT_OPERATORS.INDEX) {
           return (0, util_1.typeOf)(this.args[0]);
         }
         if (this.operator === exports2.OPERATORS.QUANTITY) {
@@ -93195,6 +93966,39 @@ var require_association_structure = __commonJS({
   }
 });
 
+// ../syside-languageserver/lib/model/KerML/expressions/index-expression.js
+var require_index_expression = __commonJS({
+  "../syside-languageserver/lib/model/KerML/expressions/index-expression.js"(exports2) {
+    "use strict";
+    var __decorate = exports2 && exports2.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+        r = Reflect.decorate(decorators, target, key, desc);
+      else
+        for (var i = decorators.length - 1; i >= 0; i--)
+          if (d = decorators[i])
+            r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.IndexExpressionMeta = void 0;
+    var ast_1 = require_ast2();
+    var metamodel_1 = require_metamodel();
+    var _internal_1 = require_internal();
+    var IndexExpressionMeta = exports2.IndexExpressionMeta = class IndexExpressionMeta extends _internal_1.OperatorExpressionMeta {
+      get operator() {
+        return _internal_1.IMPLICIT_OPERATORS.INDEX;
+      }
+      ast() {
+        return this._ast;
+      }
+    };
+    exports2.IndexExpressionMeta = IndexExpressionMeta = __decorate([
+      (0, metamodel_1.metamodelOf)(ast_1.IndexExpression)
+    ], IndexExpressionMeta);
+  }
+});
+
 // ../syside-languageserver/lib/model/KerML/expressions/index.js
 var require_expressions = __commonJS({
   "../syside-languageserver/lib/model/KerML/expressions/index.js"(exports2) {
@@ -93223,6 +94027,7 @@ var require_expressions = __commonJS({
     __exportStar(require_collect_expression(), exports2);
     __exportStar(require_feature_chain_expression(), exports2);
     __exportStar(require_feature_reference_expression(), exports2);
+    __exportStar(require_index_expression(), exports2);
     __exportStar(require_invocation_expression(), exports2);
     __exportStar(require_literal_boolean(), exports2);
     __exportStar(require_literal_expression(), exports2);
@@ -93271,6 +94076,36 @@ var require_references3 = __commonJS({
   }
 });
 
+// ../syside-languageserver/lib/model/KerML/relationships/cross-subsetting.js
+var require_cross_subsetting = __commonJS({
+  "../syside-languageserver/lib/model/KerML/relationships/cross-subsetting.js"(exports2) {
+    "use strict";
+    var __decorate = exports2 && exports2.__decorate || function(decorators, target, key, desc) {
+      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+      if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+        r = Reflect.decorate(decorators, target, key, desc);
+      else
+        for (var i = decorators.length - 1; i >= 0; i--)
+          if (d = decorators[i])
+            r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+      return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.CrossSubsettingMeta = void 0;
+    var ast_1 = require_ast2();
+    var metamodel_1 = require_metamodel();
+    var _internal_1 = require_internal();
+    var CrossSubsettingMeta = exports2.CrossSubsettingMeta = class CrossSubsettingMeta extends _internal_1.SubsettingMeta {
+      ast() {
+        return this._ast;
+      }
+    };
+    exports2.CrossSubsettingMeta = CrossSubsettingMeta = __decorate([
+      (0, metamodel_1.metamodelOf)(ast_1.CrossSubsetting)
+    ], CrossSubsettingMeta);
+  }
+});
+
 // ../syside-languageserver/lib/model/KerML/relationships/index.js
 var require_relationships = __commonJS({
   "../syside-languageserver/lib/model/KerML/relationships/index.js"(exports2) {
@@ -93298,6 +94133,7 @@ var require_relationships = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     __exportStar(require_annotation(), exports2);
     __exportStar(require_conjugation(), exports2);
+    __exportStar(require_cross_subsetting(), exports2);
     __exportStar(require_dependency(), exports2);
     __exportStar(require_differencing(), exports2);
     __exportStar(require_disjoining(), exports2);
@@ -93612,6 +94448,7 @@ var require_action_usage = __commonJS({
         base: "Actions::actions",
         subaction: "Actions::Action::subactions",
         ownedAction: "Parts::Part::ownedActions",
+        subPerformance: "Performances::Performance::subPerformances",
         enclosedPerformance: "Performances::Performance::enclosedPerformances",
         entry: "States::StateAction::entryAction",
         do: "States::StateAction::doAction",
@@ -94147,6 +94984,9 @@ var require_connector_as_usage = __commonJS({
       featureMembers() {
         return connector_1.ConnectorMeta.prototype.featureMembers.call(this);
       }
+      collectDeclaration(parts) {
+        connector_1.ConnectorMeta.prototype["collectDeclaration"].call(this, parts);
+      }
       static create(provider, document, options) {
         const model = connector_1.ConnectorMeta.create.call(this, provider, document, options);
         if (options)
@@ -94314,6 +95154,9 @@ var require_connection_usage = __commonJS({
       }
       featureMembers() {
         return connector_as_usage_1.ConnectorAsUsageMeta.prototype.featureMembers.call(this);
+      }
+      collectDeclaration(parts) {
+        connector_as_usage_1.ConnectorAsUsageMeta.prototype["collectDeclaration"].call(this, parts);
       }
     };
     __decorate([
@@ -94552,7 +95395,7 @@ var require_case_usage = __commonJS({
     exports2.CaseUsageMeta = CaseUsageMeta = __decorate([
       (0, metamodel_1.metamodelOf)(ast_1.CaseUsage, {
         base: "Cases::cases",
-        subcase: "Cases:subcases"
+        subcase: "Cases::Case::subcases"
       })
     ], CaseUsageMeta);
   }
@@ -95566,20 +96409,19 @@ var require_flow_connection_definition = __commonJS({
     var interaction_1 = require_interaction();
     var metamodel_1 = require_metamodel();
     var action_definition_1 = require_action_definition();
-    var connection_definition_1 = require_connection_definition();
-    var FlowConnectionDefinitionMeta = exports2.FlowConnectionDefinitionMeta = class FlowConnectionDefinitionMeta extends (0, ts_mixer_1.Mixin)(interaction_1.InteractionMeta, action_definition_1.ActionDefinitionMeta, connection_definition_1.ConnectionDefinitionMeta) {
+    var FlowConnectionDefinitionMeta = exports2.FlowConnectionDefinitionMeta = class FlowConnectionDefinitionMeta extends (0, ts_mixer_1.Mixin)(interaction_1.InteractionMeta, action_definition_1.ActionDefinitionMeta) {
       ast() {
         return this._ast;
       }
       static create(provider, document, options) {
-        const model = connection_definition_1.ConnectionDefinitionMeta.create.call(this, provider, document, options);
+        const model = action_definition_1.ActionDefinitionMeta.create.call(this, provider, document, options);
         return model;
       }
     };
     exports2.FlowConnectionDefinitionMeta = FlowConnectionDefinitionMeta = __decorate([
       (0, metamodel_1.metamodelOf)(ast_1.FlowConnectionDefinition, {
-        base: "Connections::Connection",
-        binary: "Connections::MessageConnection"
+        base: "FlowConnections::MessageConnection",
+        binary: "FlowConnections::MessageTransferConnection"
       })
       // @ts-expect-error ignoring static inheritance error
     ], FlowConnectionDefinitionMeta);
@@ -95607,10 +96449,10 @@ var require_flow_connection_usage = __commonJS({
     var item_flow_1 = require_item_flow();
     var metamodel_1 = require_metamodel();
     var action_usage_1 = require_action_usage();
-    var connection_usage_1 = require_connection_usage();
+    var connector_as_usage_1 = require_connector_as_usage();
     var KerML_1 = require_KerML();
     var utils_1 = require_utils2();
-    var FlowConnectionUsageMeta = exports2.FlowConnectionUsageMeta = class FlowConnectionUsageMeta extends (0, ts_mixer_1.Mixin)(action_usage_1.ActionUsageMeta, item_flow_1.ItemFlowMeta, connection_usage_1.ConnectionUsageMeta) {
+    var FlowConnectionUsageMeta = exports2.FlowConnectionUsageMeta = class FlowConnectionUsageMeta extends (0, ts_mixer_1.Mixin)(action_usage_1.ActionUsageMeta, item_flow_1.ItemFlowMeta, connector_as_usage_1.ConnectorAsUsageMeta) {
       constructor() {
         super(...arguments);
         this._messages = [];
@@ -95668,9 +96510,9 @@ var require_flow_connection_usage = __commonJS({
           parts.push(["ends", this.ends]);
       }
       static create(provider, document, options) {
-        const model = connection_usage_1.ConnectionUsageMeta.create.call(this, provider, document, options);
+        const model = action_usage_1.ActionUsageMeta.create.call(this, provider, document, options);
         if (options) {
-          connection_usage_1.ConnectionUsageMeta.applyConnectorOptions(model, options);
+          connector_as_usage_1.ConnectorAsUsageMeta.applyConnectorOptions(model, options);
           item_flow_1.ItemFlowMeta.applyItemFlowOptions(model, options);
           if (options.messages)
             model.addMessage(...options.messages);
@@ -95683,13 +96525,21 @@ var require_flow_connection_usage = __commonJS({
     ], FlowConnectionUsageMeta.prototype, "messages", null);
     exports2.FlowConnectionUsageMeta = FlowConnectionUsageMeta = __decorate([
       (0, metamodel_1.metamodelOf)(ast_1.FlowConnectionUsage, {
-        base: "Connections::flowConnections",
-        message: "Connections::messageConnections",
+        base: "FlowConnections::flowConnections",
+        message: "FlowConnections::messageConnections",
         enclosedPerformance: "Performances::Performance::enclosedPerformances",
         subperformance: "Performances::Performance::subperformances",
         ownedPerformance: "Objects::Object::ownedPerformances",
         subaction: "Actions::Action::subactions",
-        ownedAction: "Parts::Part::ownedActions"
+        ownedAction: "Parts::Part::ownedActions",
+        entry: "States::StateAction::entryAction",
+        do: "States::StateAction::doAction",
+        exit: "States::StateAction::exitAction",
+        trigger: "Actions::TransitionAction::accepter",
+        guard: "Actions::TransitionAction::guard",
+        effect: "Actions::TransitionAction::effect",
+        timeslice: "Occurrences::Occurrence::timeSlices",
+        snapshot: "Occurrences::Occurrence::snapshots"
       })
     ], FlowConnectionUsageMeta);
   }
@@ -97198,7 +98048,7 @@ var require_rendering_usage = __commonJS({
       (0, metamodel_1.metamodelOf)(ast_1.RenderingUsage, {
         base: "Views::renderings",
         subrendering: "Views::Rendering::subrenderings",
-        viewRendering: "Views::Rendering::viewRendering"
+        viewRendering: "Views::View::viewRendering"
       })
     ], RenderingUsageMeta);
   }
@@ -97510,8 +98360,8 @@ var require_succession_flow_connection_usage = __commonJS({
     };
     exports2.SuccessionFlowConnectionUsageMeta = SuccessionFlowConnectionUsageMeta = __decorate([
       (0, metamodel_1.metamodelOf)(ast_1.SuccessionFlowConnectionUsage, {
-        base: "Connections::successionFlowConnections",
-        message: "Connections::successionFlowConnections"
+        base: "FlowConnections::successionFlowConnections",
+        message: "FlowConnections::successionFlowConnections"
       })
     ], SuccessionFlowConnectionUsageMeta);
   }
@@ -98536,7 +99386,7 @@ var require_base = __commonJS({
       }
     };
     exports2.IndexFunction = IndexFunction = __decorate([
-      (0, util_1.functionFor)(PACKAGE, KerML_1.OPERATORS.INDEX)
+      (0, util_1.functionFor)(PACKAGE, KerML_1.IMPLICIT_OPERATORS.INDEX)
     ], IndexFunction);
     var IsTypeFunction = exports2.IsTypeFunction = class IsTypeFunction extends util_1.BuiltinFunction {
       call(expression, target, evaluator) {
@@ -99458,6 +100308,7 @@ var require_format_options = __commonJS({
       declaration_reference_subsetting: { default: "preserve", fallback: "token" },
       declaration_feature_typing: { default: "preserve", fallback: "token" },
       declaration_conjugated_port_typing: { default: "preserve", fallback: "token" },
+      declaration_cross_subsetting: { default: "preserve", fallback: "token" },
       feature_value_equals: { default: "preserve", fallback: "as_needed" },
       feature_keyword: { default: "preserve", fallback: "as_needed" },
       public_keyword: { default: "preserve", fallback: "never" },
@@ -99504,6 +100355,7 @@ var require_format_options = __commonJS({
       binary_connection_usages: { default: "preserve", fallback: "always" },
       binary_interface_usages: { default: "preserve", fallback: "always" },
       interface_usage_connect_keyword: { default: "preserve", fallback: "always" },
+      interface_port_keyword: { default: "preserve", fallback: "always" },
       action_node_keyword: { default: "preserve", fallback: "as_needed" },
       while_loop_parenthesize_condition: "on_break",
       while_loop_parenthesize_until: "on_break",
@@ -100196,6 +101048,8 @@ var require_expressions4 = __commonJS({
           return KerML_1.IMPLICIT_OPERATORS.DOT;
         case ast2.CollectExpression:
           return KerML_1.IMPLICIT_OPERATORS.COLLECT;
+        case ast2.IndexExpression:
+          return KerML_1.IMPLICIT_OPERATORS.INDEX;
         case ast2.OperatorExpression: {
           return expr.operator;
         }
@@ -100998,6 +101852,11 @@ var require_connectors = __commonJS({
       const { target, doc } = printEndReferenceSubsetting(node, context);
       const parts = [];
       const heritage = [];
+      const cross = (0, namespaces_1.printOwnedCrossMultiplicityPart)(target, context);
+      if (cross) {
+        parts.push(cross);
+        parts.push(utils_1.literals.space);
+      }
       if (target.declaredName) {
         parts.push((0, utils_2.printIdentifier)(target.declaredName, {
           semantic: context.highlighting ? (0, utils_2.computeHighlighting)(target) : {},
@@ -101013,8 +101872,7 @@ var require_connectors = __commonJS({
         }));
       }
       heritage.push(doc);
-      const multi = (0, namespaces_1.printMultiplicityPart)(target, context);
-      return [...parts, (0, utils_1.indent)((0, utils_1.group)(heritage)), multi ? (0, utils_1.indent)([utils_1.literals.space, multi]) : []];
+      return [...parts, (0, utils_1.indent)((0, utils_1.group)(heritage))];
     }
     exports2.printConnectorEndMember = printConnectorEndMember;
     function printItemFlowEnd(node, context) {
@@ -101080,7 +101938,7 @@ var require_connectors = __commonJS({
       ]);
     }
     exports2.printNaryEnds = printNaryEnds;
-    function printGenericConnector(modifiers, kw, node, context, options) {
+    function printGenericConnector(modifiers, kw, crossFeature, node, context, options) {
       var _a;
       const ends = (_a = options.ends) !== null && _a !== void 0 ? _a : node.ends;
       const suffix = options.suffix;
@@ -101091,14 +101949,14 @@ var require_connectors = __commonJS({
         typeof suffix == "function" ? suffix(decl) : decl.push(suffix);
       };
       if (ends.length === 0) {
-        return (0, namespaces_1.printGenericFeature)(modifiers, kw, node, context, {
+        return (0, namespaces_1.printGenericFeature)(modifiers, kw, crossFeature, node, context, {
           appendToDeclaration: push_suffix
         });
       }
       if (ends.length === 1)
         (0, utils_2.throwError)(node, `Invalid ${node.nodeType()} - must have at least 2 ends`);
       const printNary = () => {
-        return (0, namespaces_1.printGenericFeature)(modifiers, kw, node, context, {
+        return (0, namespaces_1.printGenericFeature)(modifiers, kw, crossFeature, node, context, {
           appendToDeclaration(decl) {
             push_suffix(decl);
             const linebreak = (0, utils_1.indent)((0, utils_1.group)(utils_1.line, { id: "nary-ends" }));
@@ -101114,7 +101972,7 @@ var require_connectors = __commonJS({
         });
       };
       const printBinary = () => {
-        return (0, namespaces_1.printGenericFeature)(modifiers, kw, node, context, {
+        return (0, namespaces_1.printGenericFeature)(modifiers, kw, crossFeature, node, context, {
           appendToDeclaration(decl) {
             push_suffix(decl);
             if (decl.length > 0)
@@ -101141,7 +101999,7 @@ var require_connectors = __commonJS({
     }
     exports2.printGenericConnector = printGenericConnector;
     function printKerMLConnector(kw, node, context, options) {
-      return printGenericConnector((0, namespaces_1.kermlFeatureModifiers)(node), node.isSufficient ? `${kw} all` : kw, node, context, options);
+      return printGenericConnector((0, namespaces_1.kermlFeatureModifiers)(node), node.isSufficient ? `${kw} all` : kw, (0, namespaces_1.printKerMLOwnedCrossFeature)(node, context), node, context, options);
     }
     exports2.printKerMLConnector = printKerMLConnector;
     function printItemFeature(node, context) {
@@ -101167,7 +102025,7 @@ var require_connectors = __commonJS({
       return (0, utils_1.group)(parts);
     }
     exports2.printItemFeature = printItemFeature;
-    function printGenericItemFlow(modifiers, kw, node, context, options) {
+    function printGenericItemFlow(modifiers, kw, crossFeature, node, context, options) {
       const { printer = printItemFlowEndMember } = options;
       const suffix = [];
       if (node.value)
@@ -101175,7 +102033,7 @@ var require_connectors = __commonJS({
       if (node.item) {
         suffix.push((0, utils_1.indent)([utils_1.line, (0, utils_1.keyword)("of "), (0, print_1.printModelElement)(node.item, context)]));
       }
-      return printGenericConnector(modifiers, kw, node, context, {
+      return printGenericConnector(modifiers, kw, crossFeature, node, context, {
         format: "binary",
         binding: (0, utils_1.keyword)("to"),
         printer,
@@ -101190,11 +102048,11 @@ var require_connectors = __commonJS({
     }
     exports2.printGenericItemFlow = printGenericItemFlow;
     function printItemFlow(kw, node, context, options) {
-      return printGenericItemFlow((0, namespaces_1.kermlFeatureModifiers)(node), kw, node, context, options);
+      return printGenericItemFlow((0, namespaces_1.kermlFeatureModifiers)(node), kw, (0, namespaces_1.printKerMLOwnedCrossFeature)(node, context), node, context, options);
     }
     exports2.printItemFlow = printItemFlow;
     function printGenericFlowConnectionUsage(kw, node, context, options) {
-      return printGenericItemFlow((0, definition_usages_1.occurrenceUsageModifiers)(node, (0, utils_2.shouldIgnoreRef)(node, context.format.connection_usage_reference_keyword)), kw, node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
+      return printGenericItemFlow((0, definition_usages_1.occurrenceUsageModifiers)(node, (0, utils_2.shouldIgnoreRef)(node, context.format.connection_usage_reference_keyword)), kw, (0, definition_usages_1.printSysmlOwnedCrossFeature)(node, context), node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
     }
     exports2.printGenericFlowConnectionUsage = printGenericFlowConnectionUsage;
     function printFlowConnectionUsage(node, context) {
@@ -101214,7 +102072,7 @@ var require_connectors = __commonJS({
     }
     exports2.printFlowConnectionUsage = printFlowConnectionUsage;
     function printConnectorAsUsage(kw, node, context, options) {
-      return printGenericConnector((0, definition_usages_1.sysmlUsageModifiers)(node, (0, utils_2.shouldIgnoreRef)(node, context.format.connector_as_usage_reference_keyword)), kw, node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
+      return printGenericConnector((0, definition_usages_1.sysmlUsageModifiers)(node, (0, utils_2.shouldIgnoreRef)(node, context.format.connector_as_usage_reference_keyword)), kw, (0, definition_usages_1.printSysmlOwnedCrossFeature)(node, context), node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
     }
     exports2.printConnectorAsUsage = printConnectorAsUsage;
     function printAllocationUsage(node, context) {
@@ -101356,30 +102214,37 @@ var require_successions = __commonJS({
       }
     }
     exports2.successionAsUsageKind = successionAsUsageKind;
-    function printEmptySuccessionAsUsage(node, context) {
+    function printMultiplicitySourceEnd(node, context) {
       var _a, _b, _c, _d;
       const range = (_d = (_c = (_b = (_a = node.ends[0].element()) === null || _a === void 0 ? void 0 : _a.multiplicity) === null || _b === void 0 ? void 0 : _b.element()) === null || _c === void 0 ? void 0 : _c.range) === null || _d === void 0 ? void 0 : _d.element();
       if (!range)
+        return void 0;
+      return (0, utils_1.group)((0, utils_2.printDescendant)(node, context, "empty succession").descend((node2) => node2.ends[0]).descend((node2) => node2.element()).descend((node2) => node2.multiplicity).descend((node2) => node2.element()).descend((node2) => node2.range).descend((node2) => node2.element()).print({
+        printer(range2, context2) {
+          return (0, namespaces_1.printDeclaredMultiplicityRange)(range2, context2);
+        }
+      }));
+    }
+    function printEmptySuccessionAsUsage(node, context) {
+      const src = printMultiplicitySourceEnd(node, context);
+      if (!src)
         return (0, utils_1.keyword)("then");
-      return [
-        (0, utils_1.keyword)("then "),
-        (0, utils_1.group)((0, utils_2.printDescendant)(node, context, "empty succession").descend((node2) => node2.ends[0]).descend((node2) => node2.element()).descend((node2) => node2.multiplicity).descend((node2) => node2.element()).descend((node2) => node2.range).descend((node2) => node2.element()).print({
-          printer(range2, context2) {
-            return (0, namespaces_1.printDeclaredMultiplicityRange)(range2, context2);
-          }
-        }))
-      ];
+      return [(0, utils_1.keyword)("then "), src];
     }
     function printTargetSuccession(node, context) {
-      return [
-        printEmptySuccessionAsUsage(node, context),
-        utils_1.literals.space,
-        (0, connectors_1.printConnectorEndMember)(node.ends[node.ends.length - 1], context),
-        (0, namespaces_1.printChildrenBlock)(node, node.children, context, {
-          insertSpaceBeforeBrackets: true,
-          join: (0, actions_1.actionBodyJoiner)()
-        })
-      ];
+      const parts = [];
+      const src = printMultiplicitySourceEnd(node, context);
+      if (src) {
+        parts.push(src);
+        parts.push(utils_1.literals.space);
+      }
+      parts.push((0, utils_1.keyword)("then "));
+      parts.push((0, connectors_1.printConnectorEndMember)(node.ends[node.ends.length - 1], context));
+      parts.push((0, namespaces_1.printChildrenBlock)(node, node.children, context, {
+        insertSpaceBeforeBrackets: true,
+        join: (0, actions_1.actionBodyJoiner)()
+      }));
+      return parts;
     }
     function printRegularSuccession(node, context) {
       return (0, connectors_1.printConnectorAsUsage)((0, utils_2.selectDeclarationKeyword)(node, "succession", context.format.succession_as_usage_keyword), node, context, {
@@ -101516,7 +102381,7 @@ var require_successions = __commonJS({
           (0, utils_1.indent)([utils_1.line, printThenElse("then", node.then, context)])
         ])
       ];
-      return (0, namespaces_1.printGenericFeature)([], (0, utils_2.hasFeatureDeclaration)(node) ? "succession" : void 0, node, context, {
+      return (0, namespaces_1.printGenericFeature)([], (0, utils_2.hasFeatureDeclaration)(node) ? "succession" : void 0, void 0, node, context, {
         appendToDeclaration(decl) {
           if (decl.length > 0)
             decl.push((0, utils_1.indent)(utils_1.line));
@@ -101556,7 +102421,7 @@ var require_successions = __commonJS({
           source = (0, utils_1.group)((0, utils_1.indent)([(0, utils_1.keyword)(first), utils_1.literals.space, (0, utils_1.indent)(source)]));
         else
           source = (0, utils_1.indent)(source);
-        return (0, namespaces_1.printGenericFeature)([], "transition", node, context, {
+        return (0, namespaces_1.printGenericFeature)([], "transition", void 0, node, context, {
           appendToDeclaration(decl2) {
             decl2.push((0, utils_1.indent)(utils_1.line), (0, utils_1.group)([source, (0, utils_1.indent)(utils_1.line), suffix]));
           },
@@ -101696,6 +102561,9 @@ var require_print3 = __commonJS({
       },
       [ast2.FeatureReferenceExpression](node, context) {
         return expr.printFeatureReferenceExpression(node, context);
+      },
+      [ast2.IndexExpression](node, context) {
+        return expr.printOperatorExpression(node, context);
       },
       [ast2.InvocationExpression](node, context) {
         return expr.printInvocationExpr(node, context);
@@ -102189,6 +103057,7 @@ var require_print3 = __commonJS({
       // these elements can't appear on their own in textual syntax
       [ast2.ConjugatedPortDefinition]: directPrint,
       [ast2.ConjugatedPortTyping]: directPrint,
+      [ast2.CrossSubsetting]: directPrint,
       [ast2.Differencing]: directPrint,
       [ast2.EndFeatureMembership]: directPrint,
       [ast2.FeatureChaining]: directPrint,
@@ -102744,7 +103613,7 @@ var require_edges = __commonJS({
       return printGenericMembership(options.keyword, node, context, {
         previousSibling: options.previousSibling,
         printer(node2, context2) {
-          return (0, namespaces_1.printGenericFeature)([], void 0, node2, context2);
+          return (0, namespaces_1.printGenericFeature)([], void 0, void 0, node2, context2);
         }
       });
     }
@@ -102810,7 +103679,7 @@ var require_edges = __commonJS({
       return printGenericMembership("objective", node, context, {
         previousSibling,
         printer(node2, context2) {
-          return (0, namespaces_1.printGenericFeature)([], void 0, node2, context2, {
+          return (0, namespaces_1.printGenericFeature)([], void 0, void 0, node2, context2, {
             appendToDeclaration: (0, namespaces_1.featureValueAppender)(node2, context2)
           });
         }
@@ -102866,7 +103735,7 @@ var require_namespaces = __commonJS({
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.printNamespace = exports2.printMultiplicityRange = exports2.printMultiplicity = exports2.printInvariant = exports2.printFeature = exports2.printKerMLFeature = exports2.printGenericFeature = exports2.featureValueAppender = exports2.kermlFeatureModifiers = exports2.printType = exports2.printNonTypeNamespace = exports2.printGenericNamespace = exports2.printSpecializationPart = exports2.defaultSpecializationGrouper = exports2.printMultiplicityPart = exports2.printDeclaredMultiplicityRange = exports2.printChildrenBlock = exports2.printDeclaredRelationships = exports2.printPrefixes = void 0;
+    exports2.printKerMLOwnedCrossFeature = exports2.printNamespace = exports2.printMultiplicityRange = exports2.printMultiplicity = exports2.printInvariant = exports2.printFeature = exports2.printKerMLFeature = exports2.printGenericFeature = exports2.featureValueAppender = exports2.kermlFeatureModifiers = exports2.kermlBasicFeatureModifiers = exports2.printType = exports2.printNonTypeNamespace = exports2.printGenericNamespace = exports2.printNamespaceDecl = exports2.printSpecializationPart = exports2.defaultSpecializationGrouper = exports2.printOwnedCrossFeaturePart = exports2.printOwnedCrossMultiplicityPart = exports2.printMultiplicityPart = exports2.printDeclaredMultiplicityRange = exports2.printChildrenBlock = exports2.printDeclaredRelationships = exports2.printPrefixes = void 0;
     var langium_1 = require_lib2();
     var ast2 = __importStar(require_ast2());
     var utils_1 = require_utils2();
@@ -102922,6 +103791,14 @@ var require_namespaces = __commonJS({
             merge: false
           };
         }
+        case "CrossSubsetting":
+          return {
+            keyword: (0, utils_1.keyword)("crosses"),
+            token: (0, utils_1.text)("=>"),
+            format: context.format.declaration_cross_subsetting,
+            groupable: false,
+            merge: false
+          };
         case "FeatureTyping": {
           return {
             keyword: (0, utils_1.keyword)(context.mode === "sysml" ? "defined by" : "typed by"),
@@ -103166,11 +104043,18 @@ var require_namespaces = __commonJS({
       const groups = [];
       const prefix = [];
       if (parts.modifiers.length > 0) {
-        prefix.push(...parts.modifiers);
+        let lead = (0, utils_1.fill)((0, utils_1.join)(utils_1.line, parts.modifiers));
+        if (parts.crossFeature)
+          lead = (0, utils_1.appendFill)(lead, utils_1.literals.space, parts.crossFeature);
+        prefix.push(lead);
+      } else if (parts.crossFeature) {
+        prefix.push(parts.crossFeature);
       }
-      const prefixes = printPrefixes(node.prefixes, context);
-      if (prefixes.length > 0) {
-        prefix.push(...prefixes);
+      if (parts.printPrefixes) {
+        const prefixes = printPrefixes(node.prefixes, context);
+        if (prefixes.length > 0) {
+          prefix.push(...prefixes);
+        }
       }
       if (prefix.length > 0) {
         groups.push((0, utils_1.indent)((0, utils_1.fill)((0, utils_1.join)(utils_1.line, prefix))));
@@ -103249,6 +104133,33 @@ var require_namespaces = __commonJS({
       return (0, utils_1.group)(parts);
     }
     exports2.printMultiplicityPart = printMultiplicityPart;
+    function printOwnedCrossMultiplicityPart(node, context) {
+      var _a;
+      if (!((_a = node.ownedCrossFeature) === null || _a === void 0 ? void 0 : _a.multiplicity)) {
+        return void 0;
+      }
+      return (0, utils_1.group)((0, utils_2.printDescendant)(node, context, "owned cross multiplicity").descend((node2) => node2.ownedCrossFeatureMember).descend((node2) => node2.element()).descend((node2) => node2.multiplicity).descend((node2) => node2.element()).descend((node2) => node2.range).descend((node2) => node2.element()).print({
+        printer(range, context2) {
+          return printDeclaredMultiplicityRange(range, context2);
+        }
+      }));
+    }
+    exports2.printOwnedCrossMultiplicityPart = printOwnedCrossMultiplicityPart;
+    function printOwnedCrossFeaturePart(node, modifiers, context) {
+      if (!node.ownedCrossFeatureMember || !node.isEnd) {
+        return void 0;
+      }
+      const result = (0, utils_1.group)((0, utils_2.printDescendant)(node, context, "owned cross feature").descend((node2) => node2.ownedCrossFeatureMember).descend((node2) => node2.element()).print({
+        printer(cross, context2) {
+          return printNamespaceDecl(cross, context2, {
+            modifiers: modifiers(cross),
+            keyword: void 0
+          });
+        }
+      }));
+      return result;
+    }
+    exports2.printOwnedCrossFeaturePart = printOwnedCrossFeaturePart;
     function defaultSpecializationGrouper(context) {
       return (node) => {
         let placement = context.format.multiplicity_placement;
@@ -103294,9 +104205,14 @@ var require_namespaces = __commonJS({
       });
     }
     exports2.printSpecializationPart = printSpecializationPart;
-    function printGenericNamespace(node, context, parts) {
+    function printNamespaceDecl(node, context, parts) {
       var _a;
-      let declaration = printNamespaceLeadingParts(node, context, parts);
+      let declaration = printNamespaceLeadingParts(node, context, {
+        modifiers: parts.modifiers,
+        crossFeature: parts === null || parts === void 0 ? void 0 : parts.crossFeature,
+        keyword: parts.keyword,
+        printPrefixes: true
+      });
       const pushGroup = (doc, linebreak = (0, utils_1.indent)(utils_1.line)) => {
         if (declaration.length > 0)
           declaration.push(linebreak);
@@ -103324,6 +104240,11 @@ var require_namespaces = __commonJS({
           declaration = [(0, utils_1.group)(declaration)];
         parts.appendToDeclaration(declaration);
       }
+      return declaration;
+    }
+    exports2.printNamespaceDecl = printNamespaceDecl;
+    function printGenericNamespace(node, context, parts) {
+      const declaration = printNamespaceDecl(node, context, parts);
       if (parts.skipChildren === true)
         return (0, utils_1.group)(declaration);
       const children = printChildrenBlock(node, node.children, context, {
@@ -103347,7 +104268,7 @@ var require_namespaces = __commonJS({
       return printGenericNamespace(node, context, Object.assign({ modifiers: modifiers === "auto" ? node.isAbstract ? [(0, utils_1.keyword)("abstract")] : [] : modifiers, keyword: node.isSufficient ? `${kw} all` : kw, result: node.result }, options));
     }
     exports2.printType = printType;
-    function kermlFeatureModifiers(node) {
+    function kermlBasicFeatureModifiers(node) {
       const modifiers = [];
       if (node.explicitDirection !== "none")
         modifiers.push((0, utils_1.keyword)(node.explicitDirection));
@@ -103361,9 +104282,14 @@ var require_namespaces = __commonJS({
         modifiers.push((0, utils_1.keyword)("readonly"));
       if (node.isDerived)
         modifiers.push((0, utils_1.keyword)("derived"));
-      if (node.isEnd)
-        modifiers.push((0, utils_1.keyword)("end"));
       return modifiers;
+    }
+    exports2.kermlBasicFeatureModifiers = kermlBasicFeatureModifiers;
+    function kermlFeatureModifiers(node) {
+      if (node.isEnd) {
+        return [(0, utils_1.keyword)("end")];
+      }
+      return kermlBasicFeatureModifiers(node);
     }
     exports2.kermlFeatureModifiers = kermlFeatureModifiers;
     function featureValueAppender(node, context, printer = print_1.DefaultElementPrinter) {
@@ -103376,13 +104302,13 @@ var require_namespaces = __commonJS({
       };
     }
     exports2.featureValueAppender = featureValueAppender;
-    function printGenericFeature(modifiers, kw, node, context, options = { appendToDeclaration: featureValueAppender(node, context) }) {
-      return printGenericNamespace(node, context, Object.assign({ modifiers, keyword: kw, result: node.result }, options));
+    function printGenericFeature(modifiers, kw, crossFeature, node, context, options = { appendToDeclaration: featureValueAppender(node, context) }) {
+      return printGenericNamespace(node, context, Object.assign({ modifiers, keyword: kw, crossFeature, result: node.result }, options));
     }
     exports2.printGenericFeature = printGenericFeature;
     function printKerMLFeature(kw, node, context, options = { appendToDeclaration: featureValueAppender(node, context) }) {
       (0, print_1.assertKerML)(context, node.nodeType());
-      return printGenericFeature(kermlFeatureModifiers(node), node.isSufficient ? kw ? `${kw} all` : "all" : kw, node, context, options);
+      return printGenericFeature(kermlFeatureModifiers(node), node.isSufficient ? kw ? `${kw} all` : "all" : kw, node.isEnd ? printOwnedCrossFeaturePart(node, kermlFeatureModifiers, context) : void 0, node, context, options);
     }
     exports2.printKerMLFeature = printKerMLFeature;
     function printFeature(node, context) {
@@ -103474,6 +104400,10 @@ var require_namespaces = __commonJS({
       return printNonTypeNamespace(void 0, "namespace", node, context);
     }
     exports2.printNamespace = printNamespace;
+    function printKerMLOwnedCrossFeature(node, context) {
+      return printOwnedCrossFeaturePart(node, kermlBasicFeatureModifiers, context);
+    }
+    exports2.printKerMLOwnedCrossFeature = printKerMLOwnedCrossFeature;
   }
 });
 
@@ -103514,7 +104444,7 @@ var require_definition_usages = __commonJS({
       return result;
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.printAttributeUsage = exports2.printShorthandUsage = exports2.canPrintShorthandUsage = exports2.printReferenceUsage = exports2.printPortUsage = exports2.printOccurrenceUsage = exports2.printOccurrenceDefinition = exports2.printEnumerationUsage = exports2.printSatisfyRequirement = exports2.printPerformAction = exports2.printIncludeUseCase = exports2.printExhibitState = exports2.printEventOccurrence = exports2.printAssertConstraint = exports2.printOccurrenceUsageSubtype = exports2.printGenericOccurrenceDefinition = exports2.printGenericDefinition = exports2.printGenericOccurrenceUsage = exports2.printGenericUsage = exports2.occurrenceDefinitionModifiers = exports2.occurrenceUsageModifiers = exports2.definitionModifiers = exports2.sysmlUsageModifiers = void 0;
+    exports2.printSysmlOwnedCrossFeature = exports2.printAttributeUsage = exports2.printShorthandUsage = exports2.canPrintShorthandUsage = exports2.printReferenceUsage = exports2.printPortUsage = exports2.printOccurrenceUsage = exports2.printOccurrenceDefinition = exports2.printEnumerationUsage = exports2.printSatisfyRequirement = exports2.printPerformAction = exports2.printIncludeUseCase = exports2.printExhibitState = exports2.printEventOccurrence = exports2.printAssertConstraint = exports2.printOccurrenceUsageSubtype = exports2.printGenericOccurrenceDefinition = exports2.printGenericDefinition = exports2.printGenericOccurrenceUsage = exports2.printGenericUsage = exports2.occurrenceDefinitionModifiers = exports2.occurrenceUsageModifiers = exports2.basicOccurrenceUsageModifiers = exports2.definitionModifiers = exports2.sysmlUsageModifiers = void 0;
     var langium_1 = require_lib2();
     var ast2 = __importStar(require_ast2());
     var utils_1 = require_utils2();
@@ -103523,7 +104453,7 @@ var require_definition_usages = __commonJS({
     var utils_2 = require_utils3();
     var edges_1 = require_edges();
     var actions_1 = require_actions();
-    function sysmlUsageModifiers(node, ignoreRef = false) {
+    function usageBasicModifiers(node, ignoreRef = false) {
       const modifiers = [];
       if (node.explicitDirection !== "none")
         modifiers.push((0, utils_1.keyword)(node.explicitDirection));
@@ -103541,18 +104471,30 @@ var require_definition_usages = __commonJS({
         modifiers.push((0, utils_1.keyword)("ref"));
       return modifiers;
     }
+    function sysmlUsageModifiers(node, ignoreRef = false) {
+      if (node.isEndExplicitly) {
+        return [(0, utils_1.keyword)("end")];
+      }
+      return usageBasicModifiers(node, ignoreRef);
+    }
     exports2.sysmlUsageModifiers = sysmlUsageModifiers;
     function definitionModifiers(node) {
       return node.isVariation ? [(0, utils_1.keyword)("variation")] : node.isAbstract ? [(0, utils_1.keyword)("abstract")] : [];
     }
     exports2.definitionModifiers = definitionModifiers;
-    function occurrenceUsageModifiers(node, ignoreRef = false) {
+    function basicOccurrenceUsageModifiers(node, ignoreRef = false) {
       const modifiers = sysmlUsageModifiers(node, ignoreRef);
       if (node.isIndividual)
         modifiers.push((0, utils_1.keyword)("individual"));
       if (node.portionKind)
         modifiers.push((0, utils_1.keyword)(node.portionKind));
       return modifiers;
+    }
+    exports2.basicOccurrenceUsageModifiers = basicOccurrenceUsageModifiers;
+    function occurrenceUsageModifiers(node, ignoreRef = false) {
+      if (node.isEndExplicitly)
+        return sysmlUsageModifiers(node, ignoreRef);
+      return basicOccurrenceUsageModifiers(node, ignoreRef);
     }
     exports2.occurrenceUsageModifiers = occurrenceUsageModifiers;
     function occurrenceDefinitionModifiers(node) {
@@ -103564,12 +104506,12 @@ var require_definition_usages = __commonJS({
     exports2.occurrenceDefinitionModifiers = occurrenceDefinitionModifiers;
     function printGenericUsage(modifiers, kw, node, context, options = { appendToDeclaration: (0, namespaces_1.featureValueAppender)(node, context) }) {
       (0, print_1.assertSysML)(context, node.nodeType());
-      return (0, namespaces_1.printGenericFeature)(modifiers === "auto" ? sysmlUsageModifiers(node, options === null || options === void 0 ? void 0 : options.ignoreRef) : modifiers, kw, node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
+      return (0, namespaces_1.printGenericFeature)(modifiers === "auto" ? sysmlUsageModifiers(node, options === null || options === void 0 ? void 0 : options.ignoreRef) : modifiers, kw, printSysmlOwnedCrossFeature(node, context), node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
     }
     exports2.printGenericUsage = printGenericUsage;
     function printGenericOccurrenceUsage(modifiers, kw, node, context, options = { appendToDeclaration: (0, namespaces_1.featureValueAppender)(node, context) }) {
       (0, print_1.assertSysML)(context, node.nodeType());
-      return (0, namespaces_1.printGenericFeature)(modifiers === "auto" ? occurrenceUsageModifiers(node, options === null || options === void 0 ? void 0 : options.ignoreRef) : modifiers, kw, node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
+      return (0, namespaces_1.printGenericFeature)(modifiers === "auto" ? occurrenceUsageModifiers(node, options === null || options === void 0 ? void 0 : options.ignoreRef) : modifiers, kw, printSysmlOwnedCrossFeature(node, context), node, context, Object.assign(Object.assign({}, options), { join: (0, actions_1.actionBodyJoiner)() }));
     }
     exports2.printGenericOccurrenceUsage = printGenericOccurrenceUsage;
     function printGenericDefinition(modifiers, kw, node, context, options = {}) {
@@ -103751,12 +104693,15 @@ var require_definition_usages = __commonJS({
     exports2.printOccurrenceUsage = printOccurrenceUsage;
     function printPortUsage(node, context) {
       var _a, _b, _c;
-      if (node.isEndExplicitly && ((_a = node.parent()) === null || _a === void 0 ? void 0 : _a.is(ast2.FeatureMembership)) && ((_b = node.owner()) === null || _b === void 0 ? void 0 : _b.isAny(ast2.InterfaceDefinition, ast2.InterfaceUsage))) {
-        const modifiers = [];
-        if (node.explicitDirection !== "none")
-          modifiers.push((0, utils_1.keyword)(node.direction));
-        modifiers.push(...definitionModifiers(node), (0, utils_1.keyword)("end"));
-        return (0, namespaces_1.printGenericFeature)(modifiers, void 0, node, context);
+      if (node.isEndExplicitly && ((_a = node.parent()) === null || _a === void 0 ? void 0 : _a.is(ast2.FeatureMembership)) && ((_b = node.owner()) === null || _b === void 0 ? void 0 : _b.isAny(ast2.InterfaceDefinition, ast2.InterfaceUsage)) && (0, utils_2.formatPreserved)(node, context.format.interface_port_keyword, "always", {
+        find: (node2) => (0, langium_1.findNodeForKeyword)(node2, "port"),
+        choose: {
+          always: () => (0, utils_1.keyword)("port"),
+          never: () => utils_1.literals.emptytext,
+          preserve: (found) => found ? "always" : "never"
+        }
+      }) === utils_1.literals.emptytext) {
+        return (0, namespaces_1.printGenericFeature)([(0, utils_1.keyword)("end")], void 0, void 0, node, context);
       }
       return printGenericOccurrenceUsage("auto", "port", node, context, {
         appendToDeclaration: (0, namespaces_1.featureValueAppender)(node, context),
@@ -103823,6 +104768,10 @@ var require_definition_usages = __commonJS({
       });
     }
     exports2.printAttributeUsage = printAttributeUsage;
+    function printSysmlOwnedCrossFeature(node, context) {
+      return (0, namespaces_1.printOwnedCrossFeaturePart)(node, (node2) => usageBasicModifiers(node2, true), context);
+    }
+    exports2.printSysmlOwnedCrossFeature = printSysmlOwnedCrossFeature;
   }
 });
 
@@ -103923,8 +104872,8 @@ var require_actions = __commonJS({
     exports2.printAcceptActionUsage = printAcceptActionUsage;
     function printControlNode(kw, node, context) {
       (0, print_1.assertSysML)(context, node.nodeType());
-      const modifiers = (0, definition_usages_1.occurrenceUsageModifiers)(node);
-      return (0, namespaces_1.printGenericFeature)(modifiers, kw, node, context, {
+      const modifiers = (0, definition_usages_1.basicOccurrenceUsageModifiers)(node);
+      return (0, namespaces_1.printGenericFeature)(modifiers, kw, void 0, node, context, {
         join: actionBodyJoiner(),
         appendToDeclaration: (0, namespaces_1.featureValueAppender)(node, context)
       });
@@ -103944,7 +104893,7 @@ var require_actions = __commonJS({
       return (0, utils_2.printDescendant)(node, context, options.kind).descend((node2) => node2[prop]).descend((member) => member.element()).print({
         printer(param, context2) {
           const kw = (0, utils_2.selectDeclarationKeyword)(param, "action", context2.format.action_node_keyword);
-          let body = (0, namespaces_1.printGenericFeature)([], kw, param, context2, {
+          let body = (0, namespaces_1.printGenericFeature)([], kw, void 0, param, context2, {
             forceBrackets: true,
             appendToDeclaration() {
             },
@@ -104022,7 +104971,7 @@ var require_actions = __commonJS({
       return (0, utils_2.printDescendant)(node, context, "for loop").descend((node2) => node2.variable).descend((member) => member.element()).print({
         printer(variable, context2) {
           const suffix = [];
-          suffix.push((0, namespaces_1.printGenericFeature)([], void 0, variable, context2, {
+          suffix.push((0, namespaces_1.printGenericFeature)([], void 0, void 0, variable, context2, {
             appendToDeclaration() {
             },
             skipChildren: true
@@ -105618,7 +106567,7 @@ var require_scope_provider2 = __commonJS({
           owner = (_a = owner.owner()) === null || _a === void 0 ? void 0 : _a.owner();
         }
         if (owner === null || owner === void 0 ? void 0 : owner.isAny(ast_1.Specialization, ast_1.Conjugation)) {
-          if (owner.nodeType() !== ast_1.Subsetting && owner.nodeType() !== ast_1.FeatureInverting) {
+          if (owner.nodeType() !== ast_1.Subsetting && owner.nodeType() !== ast_1.CrossSubsetting && owner.nodeType() !== ast_1.FeatureInverting) {
             options.skip = owner.source();
           }
           const parent2 = owner.parent();
@@ -106165,7 +107114,7 @@ var require_document_validator2 = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const diagnostics = yield this.validateModel(rootNode.$meta, document, cancelToken);
           diagnostics.forEach((d) => document.modelDiagnostics.add(d.element, d));
-          return diagnostics.map((d) => this.fromModelDiagnostic(d));
+          return document.modelDiagnostics.values().map((d) => this.fromModelDiagnostic(d)).toArray();
         });
       }
       fromModelDiagnostic(diagnostic) {
@@ -106924,7 +107873,7 @@ var require_metamodel_builder = __commonJS({
        * Setup explicit type relationships
        */
       linkTypeRelationships(node, document) {
-        node.heritage.forEach((r) => this.preLinkModel(r, document));
+        node.heritage.filter((s) => !s.is(ast_1.CrossSubsetting)).forEach((r) => this.preLinkModel(r, document));
         node.typeRelationships.forEach((r) => this.preLinkModel(r, document));
       }
       /**
@@ -106943,15 +107892,16 @@ var require_metamodel_builder = __commonJS({
         this.addImplicits(node, document, ast_1.Feature);
       }
       /**
-       * Setup implicit Association and Connector end feature redefinitions
+       * Setup implicit end feature redefinitions
        * @param node
        */
       redefineEnds(node, document) {
-        const baseEndIterator = node.basePositionalFeatures((f) => {
+        const endFeatureMembers = (f) => {
           var _a;
-          return f.is(ast_1.EndFeatureMembership) || !!((_a = f.element()) === null || _a === void 0 ? void 0 : _a.isEnd);
-        }, (t) => t.is(ast_1.Association)).iterator();
-        (0, langium_1.stream)(node.ownedEnds()).forEach((end) => {
+          return Boolean(f.is(ast_1.EndFeatureMembership) || ((_a = f.element()) === null || _a === void 0 ? void 0 : _a.isEnd));
+        };
+        const baseEndIterator = node.basePositionalFeatures(endFeatureMembers).iterator();
+        (0, langium_1.stream)(node.featureMembers()).filter(endFeatureMembers).map((m) => m.element()).nonNullable().forEach((end) => {
           const base = baseEndIterator.next();
           if (base.done)
             return;
@@ -106966,6 +107916,190 @@ var require_metamodel_builder = __commonJS({
           end.addHeritage([specialization, target]);
           return;
         });
+      }
+      resolveCrossCartesianFeature(self2, cross, document) {
+        const makeCrossSubsetting = self2.specializations(ast_1.CrossSubsetting).length === 0;
+        const needsTypeFeaturings = cross.typeFeaturings.length === 0;
+        if (!makeCrossSubsetting && !needsTypeFeaturings)
+          return;
+        const owner = self2.owningType;
+        if (!owner)
+          return;
+        let cartesianFeature;
+        let cache;
+        let first;
+        let i = 0;
+        const nameOrShortName = (t) => {
+          var _a;
+          return (_a = t.name) !== null && _a !== void 0 ? _a : t.shortName ? `<${t.shortName}>` : "";
+        };
+        (0, langium_1.stream)(owner.featureMembers()).filter((m) => {
+          var _a;
+          return m.is(ast_1.EndFeatureMembership) || ((_a = m.element()) === null || _a === void 0 ? void 0 : _a.isEnd);
+        }).forEach((end) => {
+          const endFeature = end.element();
+          if (!endFeature || endFeature === self2)
+            return;
+          ++i;
+          if (!first) {
+            first = endFeature;
+            return;
+          }
+          if (i == 2) {
+            if (needsTypeFeaturings) {
+              cache = model_1.MembershipMeta.create(this.util.idProvider, document, {
+                isImplied: true
+              });
+              self2.addChild([cache, self2]);
+              cartesianFeature = model_1.FeatureMeta.create(this.util.idProvider, document, {
+                declaredName: `${nameOrShortName(first)}_${nameOrShortName(endFeature)}`
+              });
+              cache.addChild(cartesianFeature);
+              cartesianFeature.addFeatureRelationship([
+                model_1.TypeFeaturingMeta.create(this.util.idProvider, document, {
+                  isImplied: true
+                }),
+                first
+              ]);
+            }
+            if (makeCrossSubsetting) {
+              first = model_1.FeatureMeta.create(this.util.idProvider, document);
+              first.addFeatureRelationship([
+                model_1.TypeFeaturingMeta.create(this.util.idProvider, document, {
+                  isImplied: true
+                }),
+                owner
+              ]);
+              self2.addChild([
+                model_1.FeatureMembershipMeta.create(this.util.idProvider, document, {
+                  isImplied: true
+                }),
+                first
+              ]);
+            }
+          }
+          if (!needsTypeFeaturings)
+            return;
+          if (i >= 3 && cartesianFeature && cache) {
+            const nexCart = model_1.FeatureMeta.create(this.util.idProvider, document, {
+              declaredName: `${nameOrShortName(cartesianFeature)}_${nameOrShortName(endFeature)}`
+            });
+            cache.addChild(nexCart);
+            nexCart.addFeatureRelationship([
+              model_1.TypeFeaturingMeta.create(this.util.idProvider, document, {
+                isImplied: true
+              }),
+              cartesianFeature
+            ]);
+            cartesianFeature = nexCart;
+          }
+          cartesianFeature === null || cartesianFeature === void 0 ? void 0 : cartesianFeature.addHeritage([
+            model_1.FeatureTypingMeta.create(this.util.idProvider, document, { isImplied: true }),
+            endFeature
+          ]);
+        });
+        if (!first) {
+          document.modelDiagnostics.add(self2, {
+            element: self2,
+            message: "End feature with owned cross feature must be one of two or more end features.",
+            severity: "error",
+            info: {
+              code: "checkFeatureCrossingSpecialization"
+            }
+          });
+          return;
+        }
+        if (makeCrossSubsetting) {
+          if (cartesianFeature) {
+            first.declaredName = `${nameOrShortName(owner)}_${nameOrShortName(cartesianFeature)}`;
+            first.addHeritage([
+              model_1.FeatureTypingMeta.create(this.util.idProvider, document, { isImplied: true }),
+              cartesianFeature
+            ]);
+          }
+          const crosses = model_1.CrossSubsettingMeta.create(this.util.idProvider, document, {
+            isImplied: true
+          });
+          const chain = model_1.FeatureMeta.create(this.util.idProvider, document, {
+            declaredName: `${first.name}.${cross.name}`,
+            parent: crosses
+          });
+          chain.addFeatureRelationship([
+            model_1.FeatureChainingMeta.create(this.util.idProvider, document, { isImplied: true }),
+            first
+          ]);
+          chain.addFeatureRelationship([
+            model_1.FeatureChainingMeta.create(this.util.idProvider, document, { isImplied: true }),
+            cross
+          ]);
+          self2.addHeritage([crosses, chain]);
+        }
+        if (cartesianFeature) {
+          cross.allFeaturingTypes().forEach((type) => {
+            first === null || first === void 0 ? void 0 : first.addHeritage([
+              model_1.FeatureTypingMeta.create(this.util.idProvider, document, { isImplied: true }),
+              type
+            ]);
+          });
+          cross.addFeatureRelationship([
+            model_1.TypeFeaturingMeta.create(this.util.idProvider, document, { isImplied: true }),
+            cartesianFeature
+          ]);
+        } else {
+          (0, langium_1.stream)(first.allTypes()).forEach((type) => {
+            cross.addFeatureRelationship([
+              model_1.TypeFeaturingMeta.create(this.util.idProvider, document, {
+                isImplied: true
+              }),
+              type
+            ]);
+          });
+        }
+        return cartesianFeature;
+      }
+      /**
+       * Setup implicit cross feature specializations
+       * @param node
+       */
+      addCrossFeatureImplicits(node, document) {
+        if (node.isEnd && node.owningType) {
+          const cross = node.findOwnedCrossFeature();
+          if (!cross)
+            return;
+          node.allTypings().forEach((type) => {
+            cross.addHeritage([
+              model_1.FeatureTypingMeta.create(this.util.idProvider, document, {
+                isImplied: true
+              }),
+              type
+            ]);
+          });
+          const cartesianFeature = this.resolveCrossCartesianFeature(node, cross, document);
+          node.specializations(ast_1.Redefinition).forEach((redef) => {
+            const target = redef.element();
+            if (!(target === null || target === void 0 ? void 0 : target.isEnd))
+              return;
+            const feat = target.findOwnedCrossFeature();
+            if (feat) {
+              cross.addHeritage([
+                model_1.SubsettingMeta.create(this.util.idProvider, document, { isImplied: true }),
+                feat
+              ]);
+              if (!cartesianFeature)
+                return;
+              feat.allFeaturingTypes().forEach((maybeFeature) => {
+                if (maybeFeature.is(ast_1.Feature)) {
+                  cartesianFeature.addHeritage([
+                    model_1.SubsettingMeta.create(this.util.idProvider, document, {
+                      isImplied: true
+                    }),
+                    maybeFeature
+                  ]);
+                }
+              });
+            }
+          });
+        }
       }
       /**
        * Setup implicit definition relationships
@@ -107581,8 +108715,11 @@ var require_metamodel_builder = __commonJS({
       builder(ast_1.Feature, 10)
     ], SysMLMetamodelBuilder.prototype, "addFeatureImplicits", null);
     __decorate([
-      builder([ast_1.Association, ast_1.Connector], 1e3)
+      builder(ast_1.Type, 1e3)
     ], SysMLMetamodelBuilder.prototype, "redefineEnds", null);
+    __decorate([
+      builder(ast_1.Feature, 2e3)
+    ], SysMLMetamodelBuilder.prototype, "addCrossFeatureImplicits", null);
     __decorate([
       builder(ast_1.Definition, 15)
     ], SysMLMetamodelBuilder.prototype, "addDefinitionImplicits", null);
@@ -107988,6 +109125,58 @@ var require_lib3 = __commonJS({
   }
 });
 
+// ../syside-languageserver/lib/model/sexp.js
+var require_sexp = __commonJS({
+  "../syside-languageserver/lib/model/sexp.js"(exports2) {
+    "use strict";
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.toSExp = void 0;
+    var ast_1 = require_ast2();
+    function isImplied(node) {
+      const parent = node.parent();
+      return node.is(ast_1.Relationship) && node.isImplied || !!parent && (parent === null || parent === void 0 ? void 0 : parent.is(ast_1.Relationship)) && (parent === null || parent === void 0 ? void 0 : parent.isImplied);
+    }
+    function toSExp(node, depth = 0, options = {
+      includeElementId: false,
+      includeImplicit: true,
+      includeTargets: true,
+      indent: 2,
+      recursive: true
+    }) {
+      const finish = (out2) => {
+        out2.push(")");
+        return out2.join("");
+      };
+      const out = ["\n", " ".repeat(depth * options.indent), `(${node.nodeType()}`];
+      if (node.shortName) {
+        out.push(` <${node.shortName}>`);
+      }
+      if (node.name) {
+        out.push(` ${node.name}`);
+      }
+      if (options.includeElementId) {
+        out.push(` [id:${node.elementId}]`);
+      }
+      if (isImplied(node)) {
+        out.push(` (implicit)`);
+      }
+      if (!options.recursive) {
+        return finish(out);
+      }
+      const exps = node.ownedElements().filter((elem) => !isImplied(elem) || options.includeImplicit).map((elem) => toSExp(elem, depth + 1, options)).toArray();
+      out.push(...exps);
+      if (exps.length === 0 && options.includeTargets && node.is(ast_1.Relationship)) {
+        const element = node.element();
+        if (element) {
+          out.push(toSExp(element, depth + 1, Object.assign(Object.assign({}, options), { recursive: false })));
+        }
+      }
+      return finish(out);
+    }
+    exports2.toSExp = toSExp;
+  }
+});
+
 // ../syside-languageserver/lib/services/lsp/execute-command-handler.js
 var require_execute_command_handler2 = __commonJS({
   "../syside-languageserver/lib/services/lsp/execute-command-handler.js"(exports2) {
@@ -108038,6 +109227,7 @@ var require_execute_command_handler2 = __commonJS({
     var common_1 = require_common();
     var syside_protocol_1 = require_lib3();
     var scopes_1 = require_scopes();
+    var sexp_1 = require_sexp();
     var CommandMap = Map;
     var TEXT_EDITOR_FUNCTIONS = new CommandMap();
     var SIMPLE_COMMANDS = new CommandMap();
@@ -108211,6 +109401,16 @@ var require_execute_command_handler2 = __commonJS({
         })).map(([name, type, kind]) => `${name} (${type}, ${kind})`).toArray();
       }
       /**
+       * @return string with S-expression describing the abstract syntax of node
+       */
+      sexp(editor, _ = vscode_languageserver_1.CancellationToken.None) {
+        var _a;
+        const node = (_a = this.findCursorNode(editor)) === null || _a === void 0 ? void 0 : _a.$meta;
+        if (!(node === null || node === void 0 ? void 0 : node.is(ast_1.Element)))
+          return "not an element";
+        return (0, sexp_1.toSExp)(node);
+      }
+      /**
        * @returns array of qualified children names visible to the linker in the
        * scope of the AST node under active cursor
        */
@@ -108312,11 +109512,34 @@ var require_execute_command_handler2 = __commonJS({
         });
       }
       /**
+       * Get active position
+       * @param editor
+       * @returns `Position` if found, undefined otherwise
+       */
+      getActivePosition(editor) {
+        var _a, _b, _c, _d, _e;
+        const getPosition = (selection) => {
+          if (Array.isArray(selection))
+            return selection === null || selection === void 0 ? void 0 : selection[0];
+          return void 0;
+        };
+        if (!((_a = editor === null || editor === void 0 ? void 0 : editor.document) === null || _a === void 0 ? void 0 : _a.uri)) {
+          console.error("findCursorNode called with missing editor or document parameters.", editor);
+          return;
+        }
+        return ((_b = editor.selection) === null || _b === void 0 ? void 0 : _b.active) || ((_d = (_c = editor.selections) === null || _c === void 0 ? void 0 : _c[0]) === null || _d === void 0 ? void 0 : _d.active) || getPosition(editor.selection) || getPosition((_e = editor.selections) === null || _e === void 0 ? void 0 : _e[0]);
+      }
+      /**
        * Find node under current selection
        * @param editor
        * @returns `AstNode` if found, undefined otherwise
        */
       findCursorNode(editor) {
+        const activePosition = this.getActivePosition(editor);
+        if (!activePosition) {
+          console.error("Could not determine cursor position from editor parameters.", editor);
+          return;
+        }
         const uri = vscode_uri_1.URI.parse(editor.document.uri);
         if (!this.documents.hasDocument(uri))
           return;
@@ -108324,7 +109547,7 @@ var require_execute_command_handler2 = __commonJS({
         const rootNode = document.parseResult.value.$cstNode;
         if (!rootNode)
           return;
-        const leaf = (0, langium_1.findDeclarationNodeAtOffset)(rootNode, document.textDocument.offsetAt(editor.selection.active));
+        const leaf = (0, langium_1.findDeclarationNodeAtOffset)(rootNode, document.textDocument.offsetAt(activePosition));
         return leaf === null || leaf === void 0 ? void 0 : leaf.element;
       }
     };
@@ -108338,6 +109561,9 @@ var require_execute_command_handler2 = __commonJS({
     __decorate([
       editorCommand("syside.editor.mro")
     ], SysMLExecuteCommandHandler.prototype, "mro", null);
+    __decorate([
+      editorCommand("syside.editor.sexp")
+    ], SysMLExecuteCommandHandler.prototype, "sexp", null);
     __decorate([
       editorCommand("syside.editor.children")
     ], SysMLExecuteCommandHandler.prototype, "children", null);
@@ -108369,9 +109595,9 @@ var require_stdlib = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.STDLIB = void 0;
     exports2.STDLIB = {
-      version: "2024-11",
-      tree: "https://github.com/Systems-Modeling/SysML-v2-Release/blob/2024-11/sysml.library/",
-      raw: "https://raw.githubusercontent.com/Systems-Modeling/SysML-v2-Release/2024-11/sysml.library/",
+      version: "2024-12",
+      tree: "https://github.com/daumantas-kavolis-sensmetry/SysML-v2-Release/blob/fixes/sysml.library/",
+      raw: "https://raw.githubusercontent.com/daumantas-kavolis-sensmetry/SysML-v2-Release/fixes/sysml.library/",
       files: [
         "Systems Library/Actions.sysml",
         "Systems Library/Allocations.sysml",
@@ -108381,6 +109607,7 @@ var require_stdlib = __commonJS({
         "Systems Library/Cases.sysml",
         "Systems Library/Connections.sysml",
         "Systems Library/Constraints.sysml",
+        "Systems Library/FlowConnections.sysml",
         "Systems Library/Interfaces.sysml",
         "Systems Library/Items.sysml",
         "Systems Library/Metadata.sysml",
@@ -109835,6 +111062,117 @@ var require_kerml_validator = __commonJS({
           });
         }
       }
+      validateCrossSubsettingCrossedFeature(node, accept) {
+        var _b;
+        const crossingFeature = node.source();
+        if (!(crossingFeature === null || crossingFeature === void 0 ? void 0 : crossingFeature.is(ast2.Feature)) || !crossingFeature.isEnd || !crossingFeature.owningType)
+          return;
+        const target = node.element();
+        if (!(target === null || target === void 0 ? void 0 : target.is(ast2.Feature)) || target.chainings.length !== 2) {
+          accept("error", "Cross subsetting must chain exactly 2 features.", {
+            element: node,
+            code: "validateCrossSubsettingCrossedFeature"
+          });
+        } else {
+          let count = 0;
+          let opposite = void 0;
+          for (const member of crossingFeature.owningType.featureMembers()) {
+            const f = member.element();
+            if (!member.is(ast2.EndFeatureMembership) && !(f === null || f === void 0 ? void 0 : f.isEnd))
+              continue;
+            if (++count > 2)
+              break;
+            if (!opposite && crossingFeature !== f)
+              opposite = f;
+          }
+          if (count == 2 && ((_b = target.chainings.at(0)) === null || _b === void 0 ? void 0 : _b.element()) !== opposite) {
+            accept("error", "Cross subsetting must chain through an opposite end feature.", {
+              element: target,
+              code: "validateCrossSubsettingCrossedFeature"
+            });
+          }
+        }
+      }
+      // Only doing validateCrossSubsettingCrossingFeature for explicit CrossSubsettings as otherwise
+      // Occurrences::Occurrence::surroundedByOccurrences::surroundingSpace in the standard library
+      // fails validation
+      validateCrossSubsettingCrossingFeature(node, accept) {
+        var _b;
+        const crossingFeature = node.source();
+        if (node.isImplied || !(crossingFeature === null || crossingFeature === void 0 ? void 0 : crossingFeature.is(ast2.Feature)))
+          return;
+        const numEndFeatures = (_b = crossingFeature.owningType) === null || _b === void 0 ? void 0 : _b.basePositionalFeatures((f) => {
+          var _b2;
+          return f.is(ast2.EndFeatureMembership) || !!((_b2 = f.element()) === null || _b2 === void 0 ? void 0 : _b2.isEnd);
+        }, void 0, true).toArray().length;
+        if (!crossingFeature.isEnd || !numEndFeatures || numEndFeatures < 2) {
+          accept("error", "Cross subsetting must be owned by one of two or more end features.", {
+            element: node,
+            code: "validateCrossSubsettingCrossingFeature"
+          });
+        }
+      }
+      validateFeatureCrossFeatureSpecialization(node, accept) {
+        var _b, _c;
+        const cross = node.crossFeature;
+        if (!cross || cross === node.findOwnedCrossFeature())
+          return;
+        const redefinitions = (0, langium_1.stream)(node.specializations(ast2.Redefinition)).map((redefinition) => {
+          var _b2;
+          return (_b2 = redefinition.element()) === null || _b2 === void 0 ? void 0 : _b2.crossFeature;
+        }).nonNullable().filter((redefinitionCross) => !cross.conforms(redefinitionCross)).toArray();
+        if (redefinitions.length > 0) {
+          accept("error", "Cross feature must specialize redefined end cross features.", {
+            element: (_c = (_b = node.findOwnedCrossFeature()) !== null && _b !== void 0 ? _b : node.ownedCrossSubsetting) !== null && _c !== void 0 ? _c : node,
+            code: "validateFeatureCrossFeatureSpecialization"
+          });
+        }
+      }
+      validateFeatureCrossFeatureType(node, accept) {
+        var _b, _c;
+        const cross = node.crossFeature;
+        if (!cross)
+          return;
+        if (cross === node.findOwnedCrossFeature() && node.specializations().every((s) => s.isImplied))
+          return;
+        const nodeTypings = node.allTypings();
+        const crossTypings = cross.allTypings();
+        if (nodeTypings.length === crossTypings.length && nodeTypings.every((t) => crossTypings.includes(t)))
+          return;
+        accept("error", "Cross feature must have same types as its feature.", {
+          element: (_c = (_b = node.findOwnedCrossFeature()) !== null && _b !== void 0 ? _b : node.ownedCrossSubsetting) !== null && _c !== void 0 ? _c : node,
+          code: "validateFeatureCrossFeatureType"
+        });
+      }
+      checkFeatureCrossingSpecialization(node, accept) {
+        if (!node.isEnd)
+          return;
+        const cross = node.findOwnedCrossFeature();
+        if (cross && node.crossFeature && cross !== node.crossFeature) {
+          accept("error", "Must cross the owned cross feature.", {
+            element: node.ownedCrossSubsetting,
+            code: "checkFeatureCrossingSpecialization"
+          });
+        }
+      }
+      validateFeatureEndMultiplicity(node, accept) {
+        var _b;
+        if (node.isEnd && node.multiplicity) {
+          const bounds = (_b = node.multiplicity.element()) === null || _b === void 0 ? void 0 : _b.bounds;
+          if (bounds && (bounds.lower !== 1 || bounds.upper !== 1)) {
+            accept("warning", "End feature must have a multiplicity 1..1.", {
+              element: node.multiplicity,
+              code: "validateFeatureEndMultiplicity"
+            });
+          }
+        }
+      }
+      validateFeatureOwnedCrossSubsetting(node, accept) {
+        const cross = node.specializations(ast2.CrossSubsetting);
+        if (cross.length > 1) {
+          this.apply("error", cross, "A Feature must have at most one ownedSubsetting that is a CrossSubsetting.", accept, { code: "validateFeatureOwnedCrossSubsetting" });
+        }
+      }
       validateFeatureOwnedReferenceSubsetting(node, accept) {
         const refs = node.specializations(ast2.ReferenceSubsetting);
         if (refs.length > 1) {
@@ -109971,6 +111309,12 @@ var require_kerml_validator = __commonJS({
           return (_b = s.element()) === null || _b === void 0 ? void 0 : _b.isAny(ast2.DataType, ast2.Association);
         }), "A Class must not specialize a DataType or an Association.", accept, { code: "validateClassSpecialization", property: "targetRef" });
       }
+      validateStructSpecialization(node, accept) {
+        this.apply("error", node.specializations(ast2.Specialization).filter((s) => {
+          var _b;
+          return (_b = s.element()) === null || _b === void 0 ? void 0 : _b.is(ast2.Behavior);
+        }), "A Structure must not specialize a Behavior.", accept, { code: "validateStructSpecialization", property: "targetRef" });
+      }
       validateAssocStructSpecialization(node, accept) {
         this.apply("error", node.specializations(ast2.Specialization).filter((s) => {
           var _b;
@@ -110043,6 +111387,12 @@ var require_kerml_validator = __commonJS({
           });
         });
       }
+      validateBehaviorSpecialization(node, accept) {
+        this.apply("error", node.specializations(ast2.Specialization).filter((s) => {
+          var _b;
+          return (_b = s.element()) === null || _b === void 0 ? void 0 : _b.is(ast2.Structure);
+        }), "A Behavior must not specialize a Structure.", accept, { code: "validateBehaviorSpecialization", property: "targetRef" });
+      }
       // this is implicitly ensured by the grammar but not the type system
       validateParameterMembershipOwningType(node, accept) {
         const owner = node.owner();
@@ -110075,6 +111425,7 @@ var require_kerml_validator = __commonJS({
       // validateReturnParameterMembershipParameterHasDirectionOut - implicitly
       // ensured by the model
       // validateCollectExpressionOperator - implicitly ensured by the model
+      // validateIndexExpressionOperator - implicitly ensured by the model
       validateFeatureChainExpressionFeatureConformance(node, accept) {
         const target = node.targetFeature();
         const left = node.args.at(0);
@@ -110423,6 +111774,27 @@ var require_kerml_validator = __commonJS({
       (0, validation_registry_1.validateKerML)(ast2.Feature)
     ], KerMLValidator.prototype, "validateFeatureTyping", null);
     __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.CrossSubsetting)
+    ], KerMLValidator.prototype, "validateCrossSubsettingCrossedFeature", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.CrossSubsetting)
+    ], KerMLValidator.prototype, "validateCrossSubsettingCrossingFeature", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Feature)
+    ], KerMLValidator.prototype, "validateFeatureCrossFeatureSpecialization", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Feature)
+    ], KerMLValidator.prototype, "validateFeatureCrossFeatureType", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Feature)
+    ], KerMLValidator.prototype, "checkFeatureCrossingSpecialization", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Feature)
+    ], KerMLValidator.prototype, "validateFeatureEndMultiplicity", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Feature)
+    ], KerMLValidator.prototype, "validateFeatureOwnedCrossSubsetting", null);
+    __decorate([
       (0, validation_registry_1.validateKerML)(ast2.Feature)
     ], KerMLValidator.prototype, "validateFeatureOwnedReferenceSubsetting", null);
     __decorate([
@@ -110440,6 +111812,9 @@ var require_kerml_validator = __commonJS({
     __decorate([
       (0, validation_registry_1.validateKerML)(ast2.Class, { sysml: false, bounds: [ast2.AssociationStructure, ast2.Interaction] })
     ], KerMLValidator.prototype, "validateClassSpecialization", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Structure, { sysml: false })
+    ], KerMLValidator.prototype, "validateStructSpecialization", null);
     __decorate([
       (0, validation_registry_1.validateKerML)(ast2.AssociationStructure, { sysml: false }),
       (0, validation_registry_1.validateKerML)(ast2.Interaction, { sysml: false })
@@ -110461,6 +111836,9 @@ var require_kerml_validator = __commonJS({
     __decorate([
       (0, validation_registry_1.validateKerML)(ast2.Connector)
     ], KerMLValidator.prototype, "validateConnectorEnds", null);
+    __decorate([
+      (0, validation_registry_1.validateKerML)(ast2.Behavior)
+    ], KerMLValidator.prototype, "validateBehaviorSpecialization", null);
     __decorate([
       (0, validation_registry_1.validateKerML)(ast2.ParameterMembership)
     ], KerMLValidator.prototype, "validateParameterMembershipOwningType", null);
@@ -112190,7 +113568,7 @@ var require_version2 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Version = void 0;
-    exports2.Version = "0.8.0";
+    exports2.Version = "0.9.0";
   }
 });
 
@@ -112624,7 +114002,7 @@ var require_package2 = __commonJS({
         url: "https://sensmetry.com/",
         email: "opensource@sensmetry.com"
       },
-      version: "0.8.0",
+      version: "0.9.0",
       preview: true,
       repository: {
         url: "https://gitlab.com/sensmetry/public/sysml-2ls",

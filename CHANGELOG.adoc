@@ -8,6 +8,8 @@
 
 === Dependency update
 
+- https://github.com/eclipse-syson/syson/issues/1385[#1385] [releng] Update to SysIDE 0.9.0
+
 === Bug fixes
 
 === Improvements
