@@ -40,6 +40,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Expression;
@@ -137,6 +138,40 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         TestTransaction.start();
     }
 
+    @Test
+    @DisplayName("Given a model using a BindingConnectorAsUsage with feature chain, when importing the model, then model is correctly imported")
+    public void checkBindingConnectorWithFeatureChaine() throws IOException {
+        var input = """
+                package pk1 {
+                    action a1 {
+                        in item i1;
+
+                        action a11 {
+                            in item i11;
+                        }
+                        action a21 {
+                            in item i21;
+                        }
+                        bind i1 = a21.i21;
+                        binding b2 bind a11.i11 = a21.i21;
+                    }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<BindingConnectorAsUsage> bindings = EMFUtils.allContainedObjectOfType(resource, BindingConnectorAsUsage.class)
+                    .toList();
+            assertThat(bindings).hasSize(2);
+
+            BindingConnectorAsUsage b1 = bindings.get(0);
+            assertThat(b1.getSourceFeature().getFeatureTarget().getName()).isEqualTo("i1");
+            assertThat(b1.getTargetFeature().get(0).getFeatureTarget().getName()).isEqualTo("i21");
+
+            BindingConnectorAsUsage b2 = bindings.get(1);
+            assertThat(b2.getName()).isEqualTo("b2");
+            assertThat(b2.getSourceFeature().getFeatureTarget().getName()).isEqualTo("i11");
+            assertThat(b2.getTargetFeature().get(0).getFeatureTarget().getName()).isEqualTo("i21");
+
+        }).check(input);
+    }
     @Test
     @DisplayName("Given a model with a TextualRepresentation with a multiline body, when importing the model, then the boly is imported without /* and */")
     public void checkTextualRepresentationFeatures() throws IOException {
