@@ -40,6 +40,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.inputs.version }}
+          persist-credentials: false
 
       - name: Setup Java SDK
         uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
