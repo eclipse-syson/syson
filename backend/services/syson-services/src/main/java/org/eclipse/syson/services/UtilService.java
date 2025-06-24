@@ -38,11 +38,13 @@ import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
@@ -57,6 +59,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingUsage;
@@ -74,6 +77,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.AQLUtils;
@@ -886,5 +890,78 @@ public class UtilService {
                 .map(PerformActionUsage.class::cast)
                 .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
                 .toList();
+    }
+
+    /**
+     * Gets the closest common container for both given {@link Feature}. If none is found prefer the source owning type
+     * as a container. In last resort use the target owning type.
+     *
+     * @param f1
+     *            the first feature
+     * @param f2
+     *            the second feature
+     * @return the common type or <code>null</code>
+     */
+    public Type getConnectorContainer(Feature f1, Feature f2) {
+        Type sourceType = f1.getOwningType();
+        Type targetType = f2.getOwningType();
+        Type container = EMFUtils.getLeastCommonContainer(Type.class, sourceType, targetType);
+
+        if (container == null) {
+            container = sourceType;
+            if (container == null) {
+                container = targetType;
+            }
+        }
+
+        return container;
+    }
+
+    /**
+     * Sets the connector ends of a {@link ConnectorAsUsage}.
+     *
+     * @param connectorAsUsage
+     *            The connector to configure
+     * @param source
+     *            the source of the connector
+     * @param target
+     *            the target of the connector
+     * @param connectorContainer
+     *            the container of the connector. Use to compute the path from the feature path from the connector and
+     *            its ends
+     */
+    public void setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Type connectorContainer) {
+        this.addConnectorEnd(connectorAsUsage, source, connectorContainer);
+        this.addConnectorEnd(connectorAsUsage, target, connectorContainer);
+    }
+
+    private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {
+        FeatureChainComputer cmp = new FeatureChainComputer();
+        List<Feature> sourceFeaturePath = cmp.computeShortestPath(connectorContainer, end).orElse(List.of());
+        EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        connectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
+        ReferenceUsage sourceFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
+        sourceFeature.setIsEnd(true);
+        sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
+        this.elementInitializerSwitch.doSwitch(sourceFeature);
+        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
+        this.elementInitializerSwitch.doSwitch(sourceReferenceSubsetting);
+        if (sourceFeaturePath.isEmpty() || sourceFeaturePath.size() == 1) {
+            // If no path found create a direct reference. The model will not be valid but keep track of the desire
+            // target
+            sourceReferenceSubsetting.setReferencedFeature(end);
+        } else {
+            // We need to create a feature chain here
+            Feature sourceFeatureChain = SysmlFactory.eINSTANCE.createFeature();
+            for (Feature chainedFeature : sourceFeaturePath) {
+                FeatureChaining featureChaining = SysmlFactory.eINSTANCE.createFeatureChaining();
+                sourceFeatureChain.getOwnedRelationship().add(featureChaining);
+                featureChaining.setChainingFeature(chainedFeature);
+            }
+            sourceReferenceSubsetting.setReferencedFeature(sourceFeatureChain);
+            sourceReferenceSubsetting.getOwnedRelatedElement().add(sourceFeatureChain);
+        }
+        return sourceFeature;
     }
 }

@@ -181,7 +181,8 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given a SysML Project with ItemUsages on ActionUsage, when creating a BindingConnectorAsUsage between them, then an edge should be displayed to represent that new binding")
-    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkItemUsageBindingConnectorAsUsage() {
@@ -213,7 +214,7 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkElement(this.verifier, BindingConnectorAsUsage.class, () -> newBinding[0], binding -> {
             assertThat(this.identityService.getId(binding.getSourceFeature()))
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_OUT_ITEM_ID);
-            assertThat(this.identityService.getId(binding.getTargetFeature().get(0)))
+            assertThat(this.identityService.getId(binding.getTargetFeature().get(0).getFeatureTarget()))
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
         });
     }

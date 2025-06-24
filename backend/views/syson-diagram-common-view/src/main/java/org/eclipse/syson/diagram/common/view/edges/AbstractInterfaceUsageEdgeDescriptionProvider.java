@@ -84,10 +84,10 @@ public abstract class AbstractInterfaceUsageEdgeDescriptionProvider extends Abst
                 .centerLabelExpression("aql:self.getEdgeLabel()")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression("aql:self.getSourcePort()")
+                .sourceExpression("aql:self.getSource()")
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTargetPort()")
+                .targetExpression("aql:self.getTarget()")
                 .build();
     }
 
@@ -131,12 +131,12 @@ public abstract class AbstractInterfaceUsageEdgeDescriptionProvider extends Abst
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setSourcePort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectSource(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setTargetPort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
     }
 }

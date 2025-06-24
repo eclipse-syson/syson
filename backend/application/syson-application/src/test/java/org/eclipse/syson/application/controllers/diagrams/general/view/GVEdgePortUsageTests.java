@@ -168,7 +168,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("Given a SysML Project with ports, when binding connector as usage edge tool creation is request between two ports, then a new binding connector edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenBindingConnectorAsUsageEdgeToolCreationIsRequestedThenNewBindingConnectorEdgeIsCreated() {
@@ -196,7 +196,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("Package 1", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
+        ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("part1", SysmlPackage.eINSTANCE.getType_Feature(),
                 SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
 
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);

@@ -164,7 +164,22 @@ public class ASTTransformer {
         for (EObject root : rootSysmlObjects) {
             this.fixTransitionUsageImplicitSource(root);
             this.fixOperatorExpressionUsedAsRanges(root);
+            this.fixReferenceSubsettingWithNestedFeature(root);
         }
+    }
+
+    /**
+     * SysIDE AST does not provide a special feature to set the referenced feature of the Feature holding the feature
+     * chaining element. This code sets this reference.
+     *
+     * @param root
+     *            the root of the imported object
+     */
+    private void fixReferenceSubsettingWithNestedFeature(EObject root) {
+        EMFUtils.allContainedObjectOfType(root, ReferenceSubsetting.class)
+                .filter(ref -> ref.getReferencedFeature() == null
+                        && ref.getOwnedRelatedElement().stream().anyMatch(e -> e.eClass() == SysmlPackage.eINSTANCE.getFeature() && !((Feature) e).getChainingFeature().isEmpty()))
+                .forEach(this::fixFeatureChainReferenceUsage);
     }
 
     private void fixOperatorExpressionUsedAsRanges(EObject root) {
@@ -416,5 +431,13 @@ public class ASTTransformer {
             default -> "[??] ";
         };
         return prefix + msg.body();
+    }
+
+    private void fixFeatureChainReferenceUsage(ReferenceSubsetting referencesubsetting1) {
+        referencesubsetting1.getOwnedRelatedElement().stream()
+                .filter(e -> e.eClass() == SysmlPackage.eINSTANCE.getFeature() && !((Feature) e).getChainingFeature().isEmpty())
+                .map(Feature.class::cast)
+                .findFirst()
+                .ifPresent(referencesubsetting1::setReferencedFeature);
     }
 }

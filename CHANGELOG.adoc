@@ -93,6 +93,7 @@ The import now correctly creates a `MultiplicityRange` containing `LiteralIntege
 - https://github.com/eclipse-syson/syson/issues/1318[#1318] [details] Fix an issue that prevents adding a new value to a multi-valued reference in the reference widget.
 - https://github.com/eclipse-syson/syson/issues/1331[#1331] [general-view] Fix an issue that prevents dropping a `Definition` element from the _Explorer view_ on a _General View_.
 - https://github.com/eclipse-syson/syson/issues/1321[#1321] [general-view] Prevent `TransitionUsage` graphical edges source/target reconnection to another `TransitionUsage`.
+- https://github.com/eclipse-syson/syson/issues/1263[#1236] [general-view] Improve `BindingConnectorAsUsage` to be able to create `FeatureChain` if necessary.
 
 === Improvements
 

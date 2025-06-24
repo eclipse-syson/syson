@@ -1101,36 +1101,18 @@ public class ViewCreateService {
     }
 
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {
-        Namespace bindingContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
-        if (bindingContainer == null) {
+
+        Type container = this.utilService.getConnectorContainer(source, target);
+        if (container == null) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable Type to hold the new binding connector.", MessageLevel.WARNING));
             return null;
         }
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
-        this.addChildInParent(bindingContainer, bindingConnectorAsUsage);
+        this.addChildInParent(container, bindingConnectorAsUsage);
         this.elementInitializer(bindingConnectorAsUsage);
 
-        EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        bindingConnectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
-        ReferenceUsage sourceFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
-        sourceFeature.setIsEnd(true);
-        sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
-        this.elementInitializer(sourceFeature);
-        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
-        this.elementInitializer(sourceReferenceSubsetting);
-        sourceReferenceSubsetting.setReferencedFeature(source);
-
-        EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        bindingConnectorAsUsage.getOwnedRelationship().add(targetEndFeatureMembership);
-        ReferenceUsage targetFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
-        targetFeature.setIsEnd(true);
-        targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
-        this.elementInitializer(sourceFeature);
-        ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
-        this.elementInitializer(targetReferenceSubsetting);
-        targetReferenceSubsetting.setReferencedFeature(target);
+        this.utilService.setConnectorEnds(bindingConnectorAsUsage, source, target, container);
 
         return bindingConnectorAsUsage;
     }

@@ -87,6 +87,24 @@ public class EMFUtils {
                 });
 
     }
+    /**
+     * Gets all Settings targeting the given source element.
+     *
+     * @param source
+     *            the source element
+     * @return a {@link Collection} of {@link Setting}
+     */
+    public static Collection<Setting> getInverse(EObject source) {
+        return source.eAdapters().stream()
+                .filter(ECrossReferenceAdapter.class::isInstance)
+                .map(ECrossReferenceAdapter.class::cast)
+                .map(crossRef -> crossRef.getInverseReferences(source))
+                .findFirst().orElseGet(() -> {
+                    LOGGER.warn("Unable to find a ECrossReference on " + source);
+                    return List.of();
+                });
+
+    }
 
     /**
      * Gets a stream composed from the object itself and all its content.
