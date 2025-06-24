@@ -15,6 +15,12 @@ env:
   NODE_VERSION: "18.7"
   REGISTRY_URL: "https://npm.pkg.github.com/"
   PRODUCT_PATH: "./"
+  WORKFLOW_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+  WORKFLOW_EVENT: ${{ github.event.workflow_run.event }}
+  WORKFLOW_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+  GITHUB_REF: ${{ github.ref }}
+  INPUTS_VERSION: ${{ github.event.inputs.version }}
+  EVENT_NAME: ${{ github.event_name }}
 
 permissions:
   contents: read
@@ -23,7 +29,7 @@ jobs:
   generate-sbom:
     name: Generate SBOM for frontend
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' && (github.event.workflow_run.head_branch == 'main' || startsWith(github.event.workflow_run.head_branch, 'v')) }}
+    if: env.WORKFLOW_CONCLUSION == 'success' && env.WORKFLOW_EVENT != 'pull_request' && (env.WORKFLOW_HEAD_BRANCH == 'main' || startsWith(env.WORKFLOW_HEAD_BRANCH, 'v')) }}
     outputs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     permissions:
@@ -32,15 +38,15 @@ jobs:
     steps:
       - name: Display metadata of workflow that has been completed before this one
         run: |
-          echo "Run from workflow_run branch ${{ github.event.workflow_run.head_branch }}"
-          echo "Run from workflow_run event ${{ github.event.workflow_run.event }}"
-          echo "Run on github.ref ${{ github.ref }}"
+          echo "Run from workflow_run branch ${WORKFLOW_HEAD_BRANCH}"
+          echo "Run from workflow_run event ${WORKFLOW_EVENT}"
+          echo "Run on github.ref ${GITHUB_REF}"
 
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-          ref: ${{ github.event.inputs.version }}
+          ref: ${{ env.INPUTS_VERSION }}
           persist-credentials: false
 
       - name: Setup Node SDK
@@ -67,10 +73,10 @@ jobs:
         id: version
         shell: bash
         run: |
-          event="${{ github.event_name }}"
-          event_workflow_run_head_branch="${{ github.event.workflow_run.head_branch }}"
-          ref="${{ github.ref }}"
-          input="${{ github.event.inputs.version }}"
+          event="${EVENT_NAME}"
+          event_workflow_run_head_branch="${WORKFLOW_HEAD_BRANCH}"
+          ref="${GITHUB_REF}"
+          input="${INPUTS_VERSION}"
 
           VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/bom.json)"
 
@@ -92,7 +98,9 @@ jobs:
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
       projectName: "frontend"
-      projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
+      projectVersion: ${{ env.OUTPUT_PROJECT_VERSION }}
       bomArtifact: "frontend-sbom"
       bomFilename: "bom.json"
       parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
+    env:
+      OUTPUT_PROJECT_VERSION: ${{ needs.generate-sbom.outputs.project-version }}
