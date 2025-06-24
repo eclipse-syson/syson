@@ -29,7 +29,7 @@ jobs:
   generate-sbom:
     name: Generate SBOM for frontend
     runs-on: ubuntu-latest
-    if: env.WORKFLOW_CONCLUSION == 'success' && env.WORKFLOW_EVENT != 'pull_request' && (env.WORKFLOW_HEAD_BRANCH == 'main' || startsWith(env.WORKFLOW_HEAD_BRANCH, 'v')) }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' && (github.event.workflow_run.head_branch == 'main' || startsWith(github.event.workflow_run.head_branch, 'v')) }}
     outputs:
       project-version: ${{ steps.version.outputs.PROJECT_VERSION }}
     permissions:
@@ -98,9 +98,7 @@ jobs:
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
       projectName: "frontend"
-      projectVersion: ${{ env.OUTPUT_PROJECT_VERSION }}
+      projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
       bomArtifact: "frontend-sbom"
       bomFilename: "bom.json"
       parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
-    env:
-      OUTPUT_PROJECT_VERSION: ${{ needs.generate-sbom.outputs.project-version }}
