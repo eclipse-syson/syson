@@ -1,0 +1,54 @@
+= Add diagram tool to duplicate nodes
+
+== Problem
+
+Currently, there is no way in SysON to duplicate a diagram node.
+
+Assuming https://github.com/eclipse-syson/syson/issues/1139[#1139] gets implemented, duplicating a diagram node would still require two steps:
+. Duplicating the underlying semantic object.
+. Applying the same node mapping as the original node (since SysML diagrams are unsynchronized).
+
+Note that this works in general for SysML because:
+. Containments are multi-valued, so we are always able to add the duplicate object as a sibling of the original object.
+. The mapping between semantic objects and diagram nodes is straightforward, so applying the same node mapping to the duplicated object is always possible.
+. The diagram structure fits the model structure so where a diagram node is, a sibling node may exist as well.
+
+There may be some edge cases for which these general rules do not apply.
+
+The goal of this shape is to specify a common diagram node tool for the NodeDescriptions of the SysML DiagramDescriptions that can be used to duplicate an existing node.
+
+
+== Key Result
+
+The diagram user can duplicate a node with a single operation from the node tool palette.
+
+=== Acceptance Criteria
+
+* User Interface:
+** The node duplicate tool is available in the node tool palette for all nodes which are the main representation of a SysML object (i.e. not for compartments), in all SysML diagrams, in both the "quick access" and the "Edit" sections.
+* Behavior:
+** The semantic element represented by the node is duplicated, as implemented by the "duplicate object" action.
+** The same `NodeDescription` as the original node element is applied to the newly-created semantic element, with the same parent node.
+
+== Solution
+
+* We will extend `org.eclipse.syson.diagram.common.view.services.ViewCreateService` with a service to duplicate diagram nodes:
+** First we delegate the duplication of the target semantic object to the same behavior as the "duplicate object" action.
+** Then we use services from `org.eclipse.syson.services.ToolService` to create a `Node` similar to the original one.
+* We will add a "quick access" and "Edit" `NodeTool`, whose behavior calls that service, to all relevant `NodeDescription` of all SysML diagrams (e.g. not for compartments).
+
+=== Breadboarding
+
+N/A.
+
+=== Cutting backs
+
+N/A.
+
+== Rabbit holes
+
+N/A.
+
+== No-gos
+
+N/A.
