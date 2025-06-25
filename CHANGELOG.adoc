@@ -5,6 +5,7 @@
 === Shapes
 
 - Add duplicate object action for SysML
+- Add diagram tool to duplicate nodes
 
 === Breaking changes
 
