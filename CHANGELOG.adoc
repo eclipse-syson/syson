@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add duplicate object action for SysML
+
 === Breaking changes
 
 - https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON _Explorer_ view

@@ -1,0 +1,59 @@
+= Add duplicate object action for SysML
+
+== Problem
+
+Since 2025.2.3, Sirius Web has added entries in the contextual menus in the Explorer view to duplicate an object, with a generic implementation for EObjects that relies on the containment EReferences.
+
+However, in SysML, models are structured through `Membership` relationships (`OwningMembership` and its sub-types) which reify the containment relations (by default hidden in the `Explorer` view to make models more manageable), so the default EMF behavior provided by Sirius Web was not very intuitive for SysML users.
+As a result, this action was disabled in SysON.
+
+
+== Key Result
+
+Users can easily duplicate an object from the `Explorer` view.
+
+=== Acceptance Criteria
+
+* Duplicating an object creates a copy just like in Sirius Web.
+* Duplicating a `ViewUsage` also duplicates the underlying Sirius representation.
+* After the duplication, the duplicate object must be contained (in the sense of Ecore containments) in a syntactically valid sense (i.e. that respects the SysML metamodel and its static semantics).
+* After the duplication, the duplicate object must be owned (in the sense of SysML `OwningMembership` relations) in a syntactically valid sense (i.e. the duplicate object may end up being owned by the target container through a different type of `OwningMembership`).
+
+
+== Solution
+
+* User Interface:
+** Action "duplicate object" is made available in the `Explorer` view on all SysML elements.
+* Behavior:
+** The valid target containers are computed:
+*** If the original object is contained (in the sense of Ecore containments) by an `OwningMembership` (or one of its sub-types), then the valid target containers are the elements which may contain (in the sense of Ecore containments) an `OwningMembership` (or one of its sub-types) that may contain the original object. There may be syntactical ambiguities as to what exact type of `OwningMembership` to create, or which containment EReference to use. In that case, the same strategies as for the SysON creation services will be used.
+*** Otherwise, the valid target containers are the elements which may contain (in the sense of Ecore containments) the original object.
+** The Sirius Web "duplicate object" dialog is displayed and the user may choose: 
+*** The target container: only one of the valid containers may be selected.
+*** Whether to also duplicate the contents of the object.
+*** Whether to copy the outgoing references.
+*** Whether to update the incoming references.
+** After OK-ing the dialog, the duplication is performed:
+*** If the original object is contained (in the sense of Ecore containments) by an `OwningMembership` (or one of its sub-types), then a target `OwningMembership` is created:
+**** If the target container will own the duplicate object through an `OwningMembership` of the exact same type as the one containing the original element, then the `OwningMembership` containing the original element is copied.
+**** Otherwise, the appropriate `OwningMembership` instance is created and populated, as much as possible, with the same values as the `OwningMembership` containing the original element (i.e. any common EStructuralFeatures are copied, including for instance the EAnnotations).
+*** A copy of the original element is created in memory.
+**** If we have created a target `OwningMembership` (or sub-type) earlier, then the copy is placed in that membership, which in turns is placed in the target container.
+**** Otherwise, the copied element is placed in the target container.
+
+
+=== Breadboarding
+
+N/A.
+
+=== Cutting backs
+
+N/A.
+
+== Rabbit holes
+
+N/A.
+
+== No-gos
+
+N/A.
