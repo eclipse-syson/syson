@@ -80,8 +80,9 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    @DisplayName("Given the simple project, when drag an dropping a part definition on a package, then the part definition should be moved under the Package.")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SySML project, WHEN drag an dropping a PartDefinition on a Package, THEN the PartDefinition should be moved under the Package.")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkDnDPartDefinitionOnPackage() {
@@ -153,8 +154,9 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
 
     }
 
-    @DisplayName("Given a SySML project, when drag an dropping an element into one of its descendant, then the selected element should not be moved")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SySML project, WHEN drag an dropping an Element into one of its descendant, THEN the selected Element should not be moved")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkForbiddenDropOnDescendant() {
@@ -211,5 +213,4 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
 
     }
-
 }

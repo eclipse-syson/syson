@@ -14,7 +14,8 @@
 
 == Bug fixes
 
-- Fix an issue that made the _Expand All_ tool not work consistently in SysON _Explorer_ view
+- Fix an issue that made the _Expand All_ tool not work consistently in SysON _Explorer_ view.
+- Fix an issue where a d'n'd of an `Element` from the _Explorer_ view to a diagram exposed the `Element` twice in the `ViewUsage` associated to the diagram.
 
 == Improvements
 
