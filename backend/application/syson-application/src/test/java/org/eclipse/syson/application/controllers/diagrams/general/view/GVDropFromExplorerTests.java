@@ -51,6 +51,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
@@ -136,7 +137,8 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void dropFromExplorerOnEmptyDiagram() {
@@ -156,9 +158,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             String emptyDiagramNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
             // Ensure the existing node is the "empty diagram" one.
             assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
-            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
-                    this.diagram,
-                    semanticElementId.get());
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, semanticElementId.get());
         });
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
@@ -177,9 +177,24 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
+
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    ViewUsage generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID)
+                            .filter(ViewUsage.class::isInstance)
+                            .map(ViewUsage.class::cast)
+                            .orElse(null);
+                    assertThat(generalViewViewUsage).isNotNull();
+                    assertThat(generalViewViewUsage.getExposedElement()).hasSize(1);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        this.verifier.then(exposedElementsChecker);
+
     }
 
-    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void dropFromExplorerOnEmptyDiagramNode() {
@@ -199,10 +214,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             String emptyDiagramNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
             // Ensure the existing node is the "empty diagram" one.
             assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
-            this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
-                    this.diagram,
-                    emptyDiagramNode.getId(),
-                    semanticElementId.get());
+            this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, emptyDiagramNode.getId(), semanticElementId.get());
         });
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
@@ -224,8 +236,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     }
 
     private String getSemanticElementWithTargetObjectLabel(IEditingContext editingContext, String targetObjectLabel) {
-        Object semanticRootObject = this.objectSearchService.getObject(editingContext,
-                GeneralViewAddExistingElementsTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
+        Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
         assertThat(semanticRootObject).isInstanceOf(Package.class);
         Package rootPackage = (Package) semanticRootObject;
         Optional<Element> optPartUsage = rootPackage.getOwnedMember().stream().filter(m -> Objects.equals(m.getName(), targetObjectLabel)).findFirst();

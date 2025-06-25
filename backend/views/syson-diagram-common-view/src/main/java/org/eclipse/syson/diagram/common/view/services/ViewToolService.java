@@ -392,7 +392,6 @@ public class ViewToolService extends ToolService {
                 }
                 if (optElementToDrop.isPresent()) {
                     this.dropElementFromExplorerInTarget(optElementToDrop.get(), targetElement, editingContext, diagramContext, selectedNode, convertedNodes);
-                    this.updateExposedElements(targetElement, optElementToDrop.get(), editingContext, diagramContext);
                 }
             }
         }

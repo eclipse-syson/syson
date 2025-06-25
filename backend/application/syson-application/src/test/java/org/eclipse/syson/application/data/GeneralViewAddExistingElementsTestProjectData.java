@@ -39,6 +39,8 @@ public class GeneralViewAddExistingElementsTestProjectData {
 
         public static final String PACKAGE_1_ID = "8d4123ac-3ac5-412d-90f2-49282b923003";
 
+        public static final String GENERAL_VIEW_VIEW_USAGE_ID = "b67872fa-5900-48d3-88f0-e6ced193c8ec";
+
         public static final String SUCCESSION_START_ACTION_2_IDS = "18d6f2fc-2182-4217-8da2-bf68c36ffa41";
     }
 
