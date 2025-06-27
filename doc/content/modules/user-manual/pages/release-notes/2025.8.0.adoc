@@ -12,6 +12,9 @@
 
 == New features
 
+- Add a new edge tool from `UseCaseUsage` to create `IncludeUseCaseUsage` in the _General view_ diagram.
+image::gv-IncludeUseCaseUsage.png[Manage Visibility modal, width=65%,height=65%]
+
 == Bug fixes
 
 - Fix an issue that made the _Expand All_ tool not work consistently in SysON _Explorer_ view.

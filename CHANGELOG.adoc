@@ -29,6 +29,7 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1396[#1396] [general-view] Add a graphical edge representation for `IncludeUseCaseUsage` in the  _General View_ diagram.
 
 == v2025.6.0
 

@@ -38,7 +38,9 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -50,6 +52,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -287,6 +290,38 @@ public class ViewEdgeService {
                                     .ifPresent(refSub -> refSub.setReferencedFeature(newSource)));
                 });
         return transition;
+    }
+
+    /**
+     * Reconnects the source of an {@link IncludeUseCaseUsage}.
+     *
+     * @param includeUseCaseUsage
+     *            the include to reconnect
+     * @param newSource
+     *            the new source
+     * @return the {@link IncludeUseCaseUsage}.
+     */
+    public IncludeUseCaseUsage reconnectSourceIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage, UseCaseUsage newSource) {
+        OwningMembership owningMembership = includeUseCaseUsage.getOwningMembership();
+        newSource.getOwnedRelationship().add(owningMembership);
+        return includeUseCaseUsage;
+    }
+    /**
+     * Reconnects the target of an {@link IncludeUseCaseUsage}.
+     *
+     * @param includeUseCaseUsage
+     *            the include to reconnect
+     * @param newTarget
+     *            the target source
+     * @return the {@link IncludeUseCaseUsage}.
+     */
+    public IncludeUseCaseUsage reconnectTargetIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage, UseCaseUsage newTarget) {
+
+        ReferenceSubsetting refSubSetting = includeUseCaseUsage.getOwnedReferenceSubsetting();
+        if (refSubSetting != null) {
+            refSubSetting.setReferencedFeature(newTarget);
+        }
+        return includeUseCaseUsage;
     }
 
     /**

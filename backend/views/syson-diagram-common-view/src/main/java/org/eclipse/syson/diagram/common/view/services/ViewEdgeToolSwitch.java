@@ -47,6 +47,7 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -273,6 +274,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         if (definitionNodeDescription.isPresent()) {
             edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
         }
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseUseCaseUsage(UseCaseUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.addAll(this.caseUsage(object));
+        edgeTools.add(this.edgeToolService.createIncludeUseCaseUsageTool(List.of(this.nodeDescription)));
         return edgeTools;
     }
 
