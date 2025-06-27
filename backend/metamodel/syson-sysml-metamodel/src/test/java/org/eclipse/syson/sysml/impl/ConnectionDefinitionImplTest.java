@@ -47,6 +47,7 @@ public class ConnectionDefinitionImplTest {
         end1.getOwnedRelationship().add(featureTypingEnd1);
         this.partDef1 = SysmlFactory.eINSTANCE.createPartDefinition();
         featureTypingEnd1.setType(this.partDef1);
+        featureTypingEnd1.setTypedFeature(end1);
         var end2 = SysmlFactory.eINSTANCE.createReferenceUsage();
         end2.setIsEnd(true);
         membershipEnd2.getOwnedRelatedElement().add(end2);
@@ -54,6 +55,7 @@ public class ConnectionDefinitionImplTest {
         end2.getOwnedRelationship().add(featureTypingEnd2);
         this.partDef2 = SysmlFactory.eINSTANCE.createPartDefinition();
         featureTypingEnd2.setType(this.partDef2);
+        featureTypingEnd2.setTypedFeature(end2);
     }
 
     @Test

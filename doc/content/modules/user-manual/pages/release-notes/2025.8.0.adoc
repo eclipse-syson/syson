@@ -39,6 +39,25 @@ Moreover, the tooling has been improved to:
 - Fix an issue where model and diagrams referencing standard libraries elements might not correctly loaded.
 - Fix an issue where model and diagrams referencing standard libraries elements might not correctly saved.
 
+-  Fix an issue where the type property of `Feature` that owns `FeatureChaining` was not correctly set.
+The type of the last `FeatureChaining` is now added to the list of type of the owning feature.
+
+For example in:
+
+```
+Type T1 {
+    feature t1Feature : T2;
+}
+Type T2 {
+    feature t2Feature : T3;
+}
+Type T3 {
+    feature t3Feature ;
+}
+```
+
+The `FeatureChain` _t1Feature.t2Feature_ is now typed with _T3_.
+
 == Improvements
 
 == Dependency update

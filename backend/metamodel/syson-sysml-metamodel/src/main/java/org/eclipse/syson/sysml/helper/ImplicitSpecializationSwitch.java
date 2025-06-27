@@ -661,6 +661,25 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (!this.hasRedefinition(object)) {
             implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
         }
+        // The specification states that "If the Feature has chainingFeatures, then the union also includes the types of
+        // the last chainingFeature".We need to implement this here in order to make inherited Feature resolvable.
+        // If we only implement this in "getType" of the Feature implementation the general mechanism of name resolution
+        // that relies on "getMembership" would fail.
+        // Normally the implicit typing would be present in the model (either with an implicit inheritance
+        // or implicit typing). But since in SysON we choose to add those "implicit" element virtually when the derived
+        // feature are called, we needed to find a place where this 'implicit' typing would impact both Feature.getType
+        // and Namespace.getMembership. implementations.
+
+        EList<Feature> chainingFeature = object.getChainingFeature();
+        if (!chainingFeature.isEmpty()) {
+            Feature lastFeature = chainingFeature.get(chainingFeature.size() - 1);
+            for (Type type : lastFeature.getType()) {
+                FeatureTyping featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                implicitSpecializations.add(featureTyping);
+                featureTyping.setType(type);
+                featureTyping.setTypedFeature(object);
+            }
+        }
         return implicitSpecializations;
     }
 
@@ -1665,8 +1684,6 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         }
         return implicitRedefinitions;
     }
-
-
 
     private List<Redefinition> handleImplicitParameterRedefinition(Feature feature, Step owner) {
         List<Redefinition> implicitRedefinitions = new ArrayList<>();

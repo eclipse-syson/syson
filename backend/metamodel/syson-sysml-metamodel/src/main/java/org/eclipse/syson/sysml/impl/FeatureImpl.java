@@ -810,18 +810,22 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Types that restrict the values of this Feature, such that the values must be instances of
+     * all the types. The types of a Feature are derived from its typings and the types of its subsettings. If the
+     * Feature is chained, then the types of the last Feature in the chain are also types of the chained Feature.<!--
+     * end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public EList<Type> getType() {
         List<Type> types = new ArrayList<>();
-        this.getOwnedRelationship().stream()
+        this.getOwnedSpecialization().stream()
                 .filter(FeatureTyping.class::isInstance)
                 .map(FeatureTyping.class::cast)
                 .map(typing -> typing.getType())
                 .forEach(types::add);
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), types.size(), types.toArray());
     }
 
