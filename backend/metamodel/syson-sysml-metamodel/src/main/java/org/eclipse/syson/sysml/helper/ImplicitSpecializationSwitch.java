@@ -661,6 +661,18 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         if (!this.hasRedefinition(object)) {
             implicitSpecializations.addAll(this.handleImplicitParameterRedefinition(object));
         }
+        // The specification states that "If the Feature has chainingFeatures, then the union also includes the types of
+        // the last chainingFeature."
+        EList<Feature> chainingFeature = object.getChainingFeature();
+        if (!chainingFeature.isEmpty()) {
+            Feature lastFeature = chainingFeature.get(chainingFeature.size() - 1);
+            for (Type type : lastFeature.getType()) {
+                FeatureTyping featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                implicitSpecializations.add(featureTyping);
+                featureTyping.setType(type);
+                featureTyping.setTypedFeature(object);
+            }
+        }
         return implicitSpecializations;
     }
 

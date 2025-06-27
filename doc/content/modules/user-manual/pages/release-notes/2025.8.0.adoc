@@ -37,6 +37,25 @@ Moreover, the tooling has been improved to:
 * Find the best containment location at creation time. In this case, "a0"
 * Handle properly source/target reconnection to recompute feature chain and the best container.
 
+- Fixes the type of a `Feature` that owns `FeatureChaining`.
+The type of the last `FeatureChaining` is now added to the list of type of the owning feature.
+
+For example in:
+
+```
+Type T1 {
+    feature t1Feature : T2;
+}
+Type T2 {
+    feature t2Feature : T3;
+}
+Type T3 {
+    feature t3Feature ;
+}
+```
+
+The `FeatureChain` _t1Feature.t2Feature_ should be typed with _T3.
+
 == Improvements
 
 == Dependency update
