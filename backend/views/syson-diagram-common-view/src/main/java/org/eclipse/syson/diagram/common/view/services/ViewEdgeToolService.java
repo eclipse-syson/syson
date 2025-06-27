@@ -365,6 +365,24 @@ public class ViewEdgeToolService {
                 .build();
     }
 
+    public EdgeTool createIncludeUseCaseUsageTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        String useCaseUsageNodeName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage());
+        var useCaseUsageNode = targetElementDescriptions.stream()
+                .filter(nd -> useCaseUsageNodeName.equals(nd.getName()))
+                .findFirst().get();
+
+        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET);
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createIncludeUseCaseUsage", params));
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getIncludeUseCaseUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getIncludeUseCaseUsage().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(useCaseUsageNode)
+                .build();
+    }
+
     public EdgeTool createAllocateEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var onlyUsages = targetElementDescriptions.stream()

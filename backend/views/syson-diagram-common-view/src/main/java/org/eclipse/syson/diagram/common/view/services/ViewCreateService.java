@@ -51,6 +51,7 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
@@ -492,6 +493,29 @@ public class ViewCreateService {
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
         self.getOwnedRelationship().add(featureMembership);
         return self;
+    }
+
+    /**
+     * Create a new IncludeUseCaseUsage.
+     * 
+     * @param source
+     *            the source usage.
+     * @param target
+     *            the target usage.
+     * @return a new {@link IncludeUseCaseUsage}.
+     */
+    public IncludeUseCaseUsage createIncludeUseCaseUsage(UseCaseUsage source, UseCaseUsage target) {
+        var ownerMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        source.getOwnedRelationship().add(ownerMembership);
+
+        IncludeUseCaseUsage includeUsage = SysmlFactory.eINSTANCE.createIncludeUseCaseUsage();
+        ownerMembership.getOwnedRelatedElement().add(includeUsage);
+
+        ReferenceSubsetting refSub = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        includeUsage.getOwnedRelationship().add(refSub);
+
+        refSub.setReferencedFeature(target);
+        return includeUsage;
     }
 
     public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
