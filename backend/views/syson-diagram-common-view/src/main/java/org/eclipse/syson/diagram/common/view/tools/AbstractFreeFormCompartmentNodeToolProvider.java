@@ -116,8 +116,6 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                 IEditingContext.EDITING_CONTEXT,
                 IDiagramContext.DIAGRAM_CONTEXT,
                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
-        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getCreationServiceCallExpression());
 
         var createViewOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
@@ -129,7 +127,9 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                                 List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)))
                 .build();
 
-        creationServiceCall.children(createViewOperation, revealOperation);
+        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(this.getCreationServiceCallExpression())
+                .children(createViewOperation, revealOperation);
 
         String preconditionExpression = this.getPreconditionServiceCallExpression();
 

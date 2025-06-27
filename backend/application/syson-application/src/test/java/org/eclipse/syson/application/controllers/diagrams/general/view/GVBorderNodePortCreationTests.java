@@ -114,8 +114,9 @@ public class GVBorderNodePortCreationTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Port tool is requested on a PartUsage, then a new PortUsage border node is created")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Port tool is requested on a PartUsage, THEN a new PortUsage border node is created")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyTool() {

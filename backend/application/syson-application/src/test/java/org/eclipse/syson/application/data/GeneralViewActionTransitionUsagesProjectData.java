@@ -63,8 +63,8 @@ public class GeneralViewActionTransitionUsagesProjectData {
 
         public static final String STOA4_ID = "2889857b-02e6-4f55-9ef3-1d2bfe404098";
 
-        public static final String START_ACTION_USAGE_ID = "03262155-734a-473f-9535-262925cd5b8b";
+        public static final String START_ACTION_USAGE_ID = "9a0d2905-0f9c-5bb4-af74-9780d6db1817";
 
-        public static final String DONE_ACTION_USAGE_ID = "6f9d8315-c293-4910-9688-668196eb8ec5";
+        public static final String DONE_ACTION_USAGE_ID = "0cdc3cd3-b06c-5c32-beda-0cf4ba164a64";
     }
 }
