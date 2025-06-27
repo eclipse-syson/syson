@@ -58,10 +58,12 @@ public class ConnectionUsageImplTest {
         end2.getOwnedRelationship().add(featureTypingEnd2);
         this.partDef2 = SysmlFactory.eINSTANCE.createPartDefinition();
         featureTypingEnd2.setType(this.partDef2);
+        featureTypingEnd2.setTypedFeature(end2);
 
         this.connectionUsage = SysmlFactory.eINSTANCE.createConnectionUsage();
         var featureTypingConnectionUsage = SysmlFactory.eINSTANCE.createFeatureTyping();
         featureTypingConnectionUsage.setType(this.connectionDefinition);
+        featureTypingConnectionUsage.setTypedFeature(this.connectionUsage);
         this.connectionUsage.getOwnedRelationship().add(featureTypingConnectionUsage);
         var membershipEnd3 = SysmlFactory.eINSTANCE.createFeatureMembership();
         var membershipEnd4 = SysmlFactory.eINSTANCE.createFeatureMembership();

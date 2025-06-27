@@ -29,6 +29,7 @@
 - https://github.com/eclipse-syson/syson/issues/1398[#1398] [explorer] Fix an issue where a d'n'd of an `Element` in a diagram exposed the `Element` twice in the `ViewUsage` associated to the diagram.
 - https://github.com/eclipse-syson/syson/issues/1411[#1411] [syson] Fix an issue where model and diagrams referencing standard libraries elements might not correctly loaded.
 - https://github.com/eclipse-syson/syson/issues/1411[#1411] [syson] Fix an issue where model and diagrams referencing standard libraries elements might not correctly saved.
+- https://github.com/eclipse-syson/syson/issues/1407[#1407] [metamodel] Fix an issue where a `Feature` containing a `ChainingFeature` was not typed with the type of the last `ChainingFeature`.
 
 === Improvements
 
