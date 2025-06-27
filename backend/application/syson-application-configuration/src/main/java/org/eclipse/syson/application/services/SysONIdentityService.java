@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.core.api.IIdentityServiceDelegate;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
@@ -39,12 +40,17 @@ public class SysONIdentityService implements IIdentityServiceDelegate {
 
     @Override
     public boolean canHandle(Object object) {
-        return object instanceof Relationship;
+        return object instanceof Element;
     }
 
     @Override
     public String getId(Object object) {
-        var id = this.defaultIdentityService.getId(object);
+        String id = null;
+        if (object instanceof Element element && ElementUtil.isFromStandardLibrary(element)) {
+            id = element.getElementId();
+        } else {
+            id = this.defaultIdentityService.getId(object);
+        }
         if (id == null && object instanceof Relationship relationship && relationship.isIsImplied()) {
             var idAdapter = new IDAdapter(ElementUtil.generateUUID(relationship));
             relationship.eAdapters().add(idAdapter);

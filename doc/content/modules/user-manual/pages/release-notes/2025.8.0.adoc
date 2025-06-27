@@ -36,6 +36,7 @@ action a0 {
 Moreover, the tooling has been improved to:
 * Find the best containment location at creation time. In this case, "a0"
 * Handle properly source/target reconnection to recompute feature chain and the best container.
+- Fix an issue where model and diagrams referencing standard libraries elements might not correctly loaded.
 
 == Improvements
 

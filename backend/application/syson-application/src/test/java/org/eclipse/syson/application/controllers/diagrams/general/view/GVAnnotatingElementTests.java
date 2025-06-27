@@ -159,9 +159,10 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a Part Definition, when using the 'New TextualRepresentation' tool, then a new node should be created with an edge connecting it to the PartDefinition")
+    @DisplayName("GIVEN a Part Definition, WHEN using the 'New TextualRepresentation' tool, THEN a new node should be created with an edge connecting it to the PartDefinition")
     @Test
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void createTextualRepresentation() {
         String parentLabel = "part";
@@ -196,9 +197,10 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Given a TextualRepresentation, when using the 'Direct Edit' tool, then the body of the textual representation should be updated")
+    @DisplayName("GIVEN a TextualRepresentation, WHEN using the 'Direct Edit' tool, THEN the body of the textual representation should be updated")
     @Test
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void directEditTextualRepresentation() {
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram, GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_TEXTUAL_REP_ID,
