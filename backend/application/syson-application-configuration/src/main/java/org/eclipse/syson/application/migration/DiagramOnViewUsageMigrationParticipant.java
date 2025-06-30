@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -70,7 +71,7 @@ public class DiagramOnViewUsageMigrationParticipant implements IMigrationPartici
 
     @Transactional
     @Override
-    public void postObjectLoading(EObject eObject, JsonObject jsonObject) {
+    public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
         if (eObject instanceof Element element && !(element instanceof ViewUsage)) {
             var diagramsUUIDs = this.getDiagramsFromObjectId(this.identityService.getId(element));
             for (UUID diagramUUID : diagramsUUIDs) {

@@ -40,7 +40,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -67,7 +66,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     }
 
     @Test
-    @DisplayName("Given a PartUsage, when we subscribe to its properties events, then the form is sent")
+    @DisplayName("GIVEN a PartUsage, WHEN we subscribe to its properties events, THEN the form is sent")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -77,9 +76,6 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
         var flux = this.detailsEventSubscriptionRunner.run(input);
 
         Consumer<Object> formContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)

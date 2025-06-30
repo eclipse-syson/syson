@@ -79,8 +79,9 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a simple project, when we subscribe to its validation events, then the validation data are sent and backend console has no AQL errors")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a simple project, WHEN we subscribe to its validation events, THEN the validation data are sent and backend console has no AQL errors")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenASimpleProjectWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
         var input = new ValidationEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
@@ -108,8 +109,9 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project with many elements, when we subscribe to its validation events, then the validation data are sent and backend console has no AQL errors")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project with many elements, WHEN we subscribe to its validation events, THEN the validation data are sent and backend console has no AQL errors")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAProjectWithManyElementsWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
         var input = new ValidationEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());

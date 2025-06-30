@@ -82,7 +82,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
@@ -207,7 +206,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("topNodeParameters")
@@ -251,8 +250,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         this.verifier.then(semanticChecker);
     }
 
-    @DisplayName("Given an empty SysML Project, when New Namespace Import tool on diagram is requested, then a new NamespaceImport is created")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN an empty SysML Project, WHEN New Namespace Import tool on diagram is requested, THEN a new NamespaceImport is created")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createTopNamespaceImportNode() {
@@ -297,8 +296,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given an empty SysML Project, when we subscribe to the selection dialog tree of the NamespaceImport tool, then the tree is sent")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN an empty SysML Project, WHEN we subscribe to the selection dialog tree of the NamespaceImport tool, THEN the tree is sent")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAnEmptySysMLProjectWhenWeSubscribeToTheSelectionDialogTreeOfTheNamespaceImportToolThenTheTreeIsSent() {
         AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
@@ -386,9 +385,6 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
         return object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
                 .map(TreeRefreshedEventPayload.class::cast)
                 .map(TreeRefreshedEventPayload::tree)
