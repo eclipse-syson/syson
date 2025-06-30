@@ -52,10 +52,11 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
 
-    @Sql(scripts = { GeneralViewStateTransitionUsageProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewStateTransitionUsageProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a General View with multiplicity range, when the diagram is render, then the edge center label as an empty text")
+    @DisplayName("GIVEN a General View with multiplicity range, WHEN the diagram is render, THEN the edge center label as an empty text")
     public void checkMultiplicityLabel() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),

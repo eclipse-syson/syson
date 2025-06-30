@@ -73,9 +73,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         this.givenInitialServerState.initialize();
     }
 
-    @DisplayName("Given the Batmobile project template, when the mutation is performed, then the project is created")
+    @DisplayName("GIVEN the Batmobile project template, WHEN the mutation is performed, THEN the project is created")
     @Test
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenBatmobileProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
@@ -107,9 +108,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         assertEquals("Batmobile", rootObject.getDeclaredName());
     }
 
-    @DisplayName("Given the SysMLv2 project template, when the mutation is performed, then the project is created")
+    @DisplayName("GIVEN the SysMLv2 project template, WHEN the mutation is performed, THEN the project is created")
     @Test
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysMLv2ProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();
@@ -141,9 +143,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         assertEquals("Package 1", rootObject.getDeclaredName());
     }
 
-    @DisplayName("Given the SysMLv2-Library project template, when the mutation is performed, then the project is created")
+    @DisplayName("GIVEN the SysMLv2-Library project template, WHEN the mutation is performed, THEN the project is created")
     @Test
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSysMLv2LibraryProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
         TestTransaction.flagForCommit();

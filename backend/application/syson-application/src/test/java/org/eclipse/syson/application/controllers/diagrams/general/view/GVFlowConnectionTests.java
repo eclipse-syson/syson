@@ -143,8 +143,9 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a SysML Project with ItemUsages on ActionUsage, when creating a FlowConnectionUsage between them, then an edge should be displayed to represent that new flow")
-    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with ItemUsages on ActionUsage, WHEN creating a FlowConnectionUsage between them, THEN an edge should be displayed to represent that new flow")
+    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkFlowConnectionCreation() {
@@ -180,7 +181,7 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
         });
     }
 
-    @DisplayName("Given a SysML Project with ItemUsages on ActionUsage, when creating a BindingConnectorAsUsage between them, then an edge should be displayed to represent that new binding")
+    @DisplayName("GIVEN a SysML Project with ItemUsages on ActionUsage, WHEN creating a BindingConnectorAsUsage between them, THEN an edge should be displayed to represent that new binding")
     @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -220,8 +221,9 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a FlowConnectionUsage, when reconnecting the target, then the new target of the FlowConnectionUsage is correct")
-    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a FlowConnectionUsage, WHEN reconnecting the target, THEN the new target of the FlowConnectionUsage is correct")
+    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowConnectionUsageTarget() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
@@ -254,8 +256,9 @@ public class GVFlowConnectionTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a FlowConnectionUsage, when reconnecting the source, then the new source of the FlowConnectionUsage is correct")
-    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a FlowConnectionUsage, WHEN reconnecting the source, THEN the new source of the FlowConnectionUsage is correct")
+    @Sql(scripts = { GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowConnectionUsageSource() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,

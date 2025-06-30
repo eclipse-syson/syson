@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class SuccessionAsUsageTest {
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage using a implicit source feature, when checking for the source feature, then the previous feature should be returned")
+    @DisplayName("GIVEN a SuccessionAsUsage using a implicit source feature, WHEN checking for the source feature, then the previous feature should be returned")
     public void impliciteSourceFeature() {
         /**
          * <pre>
@@ -58,7 +58,7 @@ public class SuccessionAsUsageTest {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage using a implicit source feature define in a library, when checking for the source feature, then the previous feature should be returned")
+    @DisplayName("GIVEN a SuccessionAsUsage using a implicit source feature define in a library, WHEN checking for the source feature, then the previous feature should be returned")
     public void implicitSourceToStartFeature() {
         /**
          * <pre>
@@ -88,7 +88,7 @@ public class SuccessionAsUsageTest {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage using a explicit source feature, when checking for the source feature, then explicit source feature should be returned")
+    @DisplayName("GIVEN a SuccessionAsUsage using a explicit source feature, WHEN checking for the source feature, then explicit source feature should be returned")
     public void explictSourceTargetFeature() {
         /**
          * <pre>

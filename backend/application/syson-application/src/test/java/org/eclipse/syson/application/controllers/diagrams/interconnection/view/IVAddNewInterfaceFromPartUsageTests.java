@@ -116,8 +116,9 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Interface tool of first level element is requested on a PartUsage, then a new PartUsage and an Interface edge are created")
-    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Interface tool of first level element is requested on a PartUsage, THEN a new PartUsage and an Interface edge are created")
+    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewInterfaceToolIsRequestedOnAPartUsageThenANewPartUsageAndAInterfaceEdgeAreCreated() {
@@ -142,8 +143,9 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
     }
 
-    @DisplayName("Given a SysML Project, when New Interface tool of nested element is requested on a PartUsage, then a new PartUsage and an Interface edge are created")
-    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Interface tool of nested element is requested on a PartUsage, THEN a new PartUsage and an Interface edge are created")
+    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewInterfaceToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAnInterfaceEdgeAreCreated() {

@@ -133,8 +133,8 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a SysML Project with ports, when flow connection edge tool creation is request between two ports, then a new flow edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with ports, WHEN flow connection edge tool creation is request between two ports, THEN a new flow edge is created")
+    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenFlowConnectionEdgeToolCreationIsRequestedThenNewFlowConnectionEdgeIsCreated() {
@@ -167,7 +167,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Given a SysML Project with ports, when binding connector as usage edge tool creation is request between two ports, then a new binding connector edge is created")
+    @DisplayName("GIVEN a SysML Project with ports, WHEN binding connector as usage edge tool creation is request between two ports, THEN a new binding connector edge is created")
     @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
@@ -202,8 +202,8 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Given a SysML Project with ports, when interface edge tool creation is request between two ports, then a new interface edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with ports, WHEN interface edge tool creation is request between two ports, THEN a new interface edge is created")
+    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenInterfaceEdgeToolCreationIsRequestedThenNewInterfaceEdgeIsCreated() {

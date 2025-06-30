@@ -104,7 +104,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with ForkNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with ForkNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkForkNode() throws IOException {
         var input = """
                 action action1 {
@@ -129,7 +129,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with JoinNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with JoinNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkJoinNode() throws IOException {
         var input = """
                 action action1 {
@@ -169,7 +169,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with MergeNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with MergeNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkMergeNode() throws IOException {
         var input = """
                 action action1 {
@@ -187,7 +187,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with TextualRepresentation, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with TextualRepresentation, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkTextualRepresentation() throws IOException {
         var input = """
                 action def P1 {
@@ -200,7 +200,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with TransitionUsage used between actions, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with TransitionUsage used between actions, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkTransitionUsageBetweenActions() throws IOException {
         var input = """
                 action def A1 {
@@ -240,7 +240,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with AcceptActionUsage, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with AcceptActionUsage, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkAcceptActionUsage() throws IOException {
         var input = """
                 part part1 {
@@ -267,7 +267,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a DecisionNode with named TransitionUsage , when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with a DecisionNode with named TransitionUsage , WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkDecisionWithNamedTransition() throws IOException {
         var input = """
                 action def A1 {
@@ -300,7 +300,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a DecisionNode, when importing/exporting the file, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with a DecisionNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkDecisionNode() throws IOException {
         var input = """
                 action def A1 {
@@ -317,7 +317,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a PortDefinition, when importing/exporting the file, then check that the conjugated port reference is kept during the process.")
+    @DisplayName("GIVEN a model with a PortDefinition, WHEN importing/exporting the file, THEN check that the conjugated port reference is kept during the process.")
     public void checkConjugatedPortUse() throws IOException {
         var input = """
                 package Conjugated {
@@ -337,7 +337,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a named SuccessionAsUsage, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a named SuccessionAsUsage, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkNamedSuccessionAsUsageInActionDefinitionTest() throws IOException {
         var input = """
                 action def A4 {
@@ -350,7 +350,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with an implicit source feature, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a SuccessionAsUsage with an implicit source feature, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkSuccessionAsUsageImplicitSourceTest() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -365,7 +365,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with target defined after the then keyword, when importing and exporting the model,  then the exported text file should be semantically equal.")
+    @DisplayName("GIVEN a SuccessionAsUsage with target defined after the then keyword, WHEN importing and exporting the model,  then the exported text file should be semantically equal.")
     public void checkSuccessionDefiningImplicitTarget() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -395,7 +395,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, when importing and exporting the model, then the exported text file should be semantically equal.")
+    @DisplayName("GIVEN a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, WHEN importing and exporting the model, THEN the exported text file should be semantically equal.")
     public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -421,7 +421,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with an explicit source feature, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a SuccessionAsUsage with an explicit source feature, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkSuccessionAsUsageExplicitSourceTest() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -436,7 +436,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with unrestricted names, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with unrestricted names, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkUnrestrictedNamesResolution() throws IOException {
         var input = """
                 package p1 {
@@ -540,7 +540,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
      * @throws IOException
      */
     @Test
-    @DisplayName("Given a model with PortDefinition and PortUsage, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with PortDefinition and PortUsage, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkImportPort() throws IOException {
         var input = """
                 port def Port1;
@@ -556,7 +556,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
      * @throws IOException
      */
     @Test
-    @DisplayName("Given a model with AttributeUsages with default and initial value, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with AttributeUsages with default and initial value, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkScalarValueAttribute() throws IOException {
         var input = """
                 package Occurrences {
@@ -642,7 +642,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
      * <ul>
      */
     @Test
-    @DisplayName("Given a model with ConcernDefinition, ConcernUsage, StakeholderMembership, RequirementUsage, and RequirementDefinition, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with ConcernDefinition, ConcernUsage, StakeholderMembership, RequirementUsage, and RequirementDefinition, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkConcernTest() throws IOException {
 
         var input = """
@@ -737,7 +737,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a FeatureReferenceExpression set with a qualified name, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with a FeatureReferenceExpression set with a qualified name, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkFeatureReferenceExpressionWithQualifiedNameDeresolution() throws IOException {
         var input = """
                 package P1 {
@@ -753,7 +753,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with an AttributeUsage containing a LiteralString, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @DisplayName("GIVEN a model with an AttributeUsage containing a LiteralString, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkLiteralString() throws IOException {
         var input = """
                 attribute myAttribute = "value";""";
@@ -761,7 +761,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a PartUsage containing a Multiplicity with LiteralInteger bounds, when importing and exporting the model, then the exported text file should be the same as the imported one")
+    @DisplayName("GIVEN a model with a PartUsage containing a Multiplicity with LiteralInteger bounds, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one")
     public void checkMultiplicityRangeWithLiteralIntegerBounds() throws IOException {
         var input = """
                 part myPart [1..2];""";

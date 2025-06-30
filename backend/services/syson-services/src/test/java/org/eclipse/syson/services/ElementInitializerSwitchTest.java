@@ -65,7 +65,7 @@ public class ElementInitializerSwitchTest {
 
     }
 
-    @DisplayName("Given an Actor, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN an Actor, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testActorDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -83,7 +83,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedA2.getDeclaredName()).isEqualTo("actor2");
     }
 
-    @DisplayName("Given a EnumerationDefinition, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN a EnumerationDefinition, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testEnumerationDefinitionDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -99,7 +99,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedED2.getDeclaredName()).isEqualTo("EnumerationDefinition2");
     }
 
-    @DisplayName("Given a Package, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN a Package, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testPackageDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -115,7 +115,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedP2.getDeclaredName()).isEqualTo("Package2");
     }
 
-    @DisplayName("Given a PartDefinition, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN a PartDefinition, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testPartDefinitionDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -131,7 +131,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedP2.getDeclaredName()).isEqualTo("PartDefinition2");
     }
 
-    @DisplayName("Given a PartUsage, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN a PartUsage, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testPartUsageDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -147,7 +147,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedP2.getDeclaredName()).isEqualTo("part2");
     }
 
-    @DisplayName("Given a Stakeholder, when it is initialized, then it's name contains the count of the same kind of elements")
+    @DisplayName("GIVEN a Stakeholder, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")
     @Test
     public void testStakeholderDefaultName() {
         var root = SysmlFactory.eINSTANCE.createPackage();
@@ -165,7 +165,7 @@ public class ElementInitializerSwitchTest {
         assertThat(initializedS2.getDeclaredName()).isEqualTo("stakeholder2");
     }
 
-    @DisplayName("Given a ViewUsage, when it is initialized, then it's typed by default with the GeneralView ViewDefinition")
+    @DisplayName("GIVEN a ViewUsage, WHEN it is initialized, THEN it's typed by default with the GeneralView ViewDefinition")
     @Test
     public void testViewUsageDefaultType() {
         var root = SysmlFactory.eINSTANCE.createPackage();

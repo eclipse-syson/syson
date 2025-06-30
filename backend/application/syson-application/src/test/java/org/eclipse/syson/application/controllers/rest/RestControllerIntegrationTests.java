@@ -53,7 +53,7 @@ public class RestControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for several queries involving dates, then all queries should return correctly")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for several queries involving dates, THEN all queries should return correctly")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

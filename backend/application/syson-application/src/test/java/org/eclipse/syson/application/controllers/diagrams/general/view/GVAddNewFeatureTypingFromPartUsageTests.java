@@ -144,8 +144,8 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 5));
     }
 
-    @DisplayName("Given a SysML Project, when the New Feature Typing tool is requested on a PartUsage, then a new PartDefinition node and a FeatureTyping edge are created")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN the New Feature Typing tool is requested on a PartUsage, THEN a new PartDefinition node and a FeatureTyping edge are created")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partUsageNodeParameters")

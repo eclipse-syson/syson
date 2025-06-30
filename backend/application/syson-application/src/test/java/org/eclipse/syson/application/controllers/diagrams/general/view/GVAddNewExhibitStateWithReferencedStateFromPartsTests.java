@@ -135,8 +135,9 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Exhibit State with referenced State tool is requested on a PartUsage, then a new ExhibitStateUsage node is created")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Exhibit State with referenced State tool is requested on a PartUsage, THEN a new ExhibitStateUsage node is created")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartUsage() {
@@ -165,8 +166,9 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
         });
     }
 
-    @DisplayName("Given a SysML Project, when New Exhibit State with referenced State tool is requested on a PartDefinition, then a new ExhibitStateUsage node is created")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Exhibit State with referenced State tool is requested on a PartDefinition, THEN a new ExhibitStateUsage node is created")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartDefinition() {

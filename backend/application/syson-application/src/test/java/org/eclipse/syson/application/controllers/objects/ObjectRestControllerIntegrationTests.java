@@ -65,7 +65,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for all elements, then all elements should be returned")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for all elements, THEN all elements should be returned")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -93,7 +93,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for all elements in an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for all elements in an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -111,7 +111,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for a specific element, then it should return the element")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for a specific element, THEN it should return the element")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -139,7 +139,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for a specific element in an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for a specific element in an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -156,7 +156,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for the relationships of an element, then it should return the relationships")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for the relationships of an element, THEN it should return the relationships")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -185,7 +185,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for the relationships of an element in an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for the relationships of an element in an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -203,7 +203,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for the root elements, then it should return the root elements")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for the root elements, THEN it should return the root elements")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -231,7 +231,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for the root elements of an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for the root elements of an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

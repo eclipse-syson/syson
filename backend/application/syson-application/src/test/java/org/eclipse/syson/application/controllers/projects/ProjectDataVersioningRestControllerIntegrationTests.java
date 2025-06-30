@@ -62,7 +62,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for all changes, then all changes should be returned")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for all changes, THEN all changes should be returned")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -90,7 +90,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for all changes in an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for all changes in an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -108,7 +108,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for changes of a specific element, then those changes should be returned")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for changes of a specific element, THEN those changes should be returned")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -137,7 +137,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
     }
 
     @Test
-    @DisplayName("Given the SysON REST API, when we ask for specific changes in an unknown project, then it should return an error")
+    @DisplayName("GIVEN the SysON REST API, WHEN we ask for specific changes in an unknown project, THEN it should return an error")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

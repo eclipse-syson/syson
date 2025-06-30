@@ -118,8 +118,9 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a SysML Project with an ActionDefinition that generalizes a UseCaseDefinition, when creating a subject in the UseCaseDefinition, then it should not be displayed in the ActionDefinition parameters compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an ActionDefinition that generalizes a UseCaseDefinition, WHEN creating a subject in the UseCaseDefinition, THEN it should not be displayed in the ActionDefinition parameters compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionDefinitionInParameter() {

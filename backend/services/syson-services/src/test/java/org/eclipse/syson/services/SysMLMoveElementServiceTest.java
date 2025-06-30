@@ -67,7 +67,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    @DisplayName("Given a PartUsage p1 in a Package, when we move its owning membership to a PartUsage p2, then p2's memberships are updated and the Package doesn't contain p1 anymore")
+    @DisplayName("GIVEN a PartUsage p1 in a Package, WHEN we move its owning membership to a PartUsage p2, THEN p2's memberships are updated and the Package doesn't contain p1 anymore")
     public void moveMembershipOfPartUsageInPackageToPartUsage() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(pack);
@@ -89,7 +89,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    @DisplayName("Given a read only element, when selected as a new parent during a move action, then the move action should fail")
+    @DisplayName("GIVEN a read only element, WHEN selected as a new parent during a move action, THEN the move action should fail")
     public void forbiddenMoveToReadOnlyElement() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(pack);
@@ -104,7 +104,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    @DisplayName("Given a read only element, when selected as a moving object during a move action, then the move action should fail")
+    @DisplayName("GIVEN a read only element, WHEN selected as a moving object during a move action, THEN the move action should fail")
     public void forbiddenMoveOfReadOnlyElement() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(pack);
@@ -119,7 +119,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    @DisplayName("Given an SysML Element, when selected as a moving object during a move action to a membership, then the move action should fail")
+    @DisplayName("GIVEN an SysML Element, WHEN selected as a moving object during a move action to a membership, THEN the move action should fail")
     public void forbiddenMoveToMembershit() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(pack);
@@ -147,7 +147,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    @DisplayName("Given a typed PartUsage in a Package, when we move its owning membership to a PartDefinition, then the PartDefinition's membership are updated, and the PartUsage's FeatureTyping is still there")
+    @DisplayName("GIVEN a typed PartUsage in a Package, WHEN we move its owning membership to a PartDefinition, THEN the PartDefinition's membership are updated, and the PartUsage's FeatureTyping is still there")
     public void moveMembershipOfTypedPartUsageInPackageToPartDefinition() {
         Package pack = SysmlFactory.eINSTANCE.createPackage();
         this.resource.getContents().add(pack);

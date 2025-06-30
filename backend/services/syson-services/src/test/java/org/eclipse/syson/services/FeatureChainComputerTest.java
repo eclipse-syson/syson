@@ -44,20 +44,20 @@ public class FeatureChainComputerTest {
     }
 
     @Test
-    @DisplayName("Given a source type and a direct feature, when computing the shortest feature chain, then the result if a direct access to the feature")
+    @DisplayName("GIVEN a source type and a direct feature, WHEN computing the shortest feature chain, THEN the result if a direct access to the feature")
     public void directAccess() {
         this.assertFeatures(this.computeShortestPath(this.model.getA11(), this.model.getI11Test()), this.model.getI11Test());
         this.assertFeatures(this.computeShortestPath(this.model.getA1(), this.model.getI1()), this.model.getI1());
     }
 
     @Test
-    @DisplayName("Given a source and a feature accessed via 1 intermediate feature, when computing the shortest feature chain, then the result is composed of two feature segments")
+    @DisplayName("GIVEN a source and a feature accessed via 1 intermediate feature, WHEN computing the shortest feature chain, THEN the result is composed of two feature segments")
     public void featureChain2Segments() {
         this.assertFeatures(this.computeShortestPath(this.model.getA1(), this.model.getId1()), this.model.getI2(), this.model.getId1());
     }
 
     @Test
-    @DisplayName("Given a source and a feature accessed via 2 intermediate features, when computing the shortest feature chain, then the result is composed of two feature segments")
+    @DisplayName("GIVEN a source and a feature accessed via 2 intermediate features, WHEN computing the shortest feature chain, THEN the result is composed of two feature segments")
     public void featureChain3Segments() {
         this.assertFeatures(this.computeShortestPath(this.model.getA1(), this.model.getId2()), this.model.getI2(), this.model.getId1(),
                 this.model.getId2());
@@ -65,21 +65,21 @@ public class FeatureChainComputerTest {
     }
 
     @Test
-    @DisplayName("Given a source with no access to a feature defined at root level, when computing the shortest feature chain, then the result is composed with a feature chain starting at root level")
+    @DisplayName("GIVEN a source with no access to a feature defined at root level, WHEN computing the shortest feature chain, THEN the result is composed with a feature chain starting at root level")
     public void rootAccessFeature() {
         this.assertFeatures(this.computeShortestPath(this.model.getExternalAction(), this.model.getI11()), this.model.getA0(), this.model.getA1(),
                 this.model.getA11(), this.model.getI11());
     }
 
     @Test
-    @DisplayName("Given a source and a feature accessed via 2 intermediate feature with one inherited, when computing the shortest feature chain, then the result is composed with a feature chain starting at root level")
+    @DisplayName("GIVEN a source and a feature accessed via 2 intermediate feature with one inherited, WHEN computing the shortest feature chain, THEN the result is composed with a feature chain starting at root level")
     public void inheritedFeature() {
         // Expected path i0.i3 (i3 is accessed using i0 which typed by ID4 which inherits from ID3)
         this.assertFeatures(this.computeShortestPath(this.model.getA0(), this.model.getId3()), this.model.getI0(), this.model.getId3());
     }
 
     @Test
-    @DisplayName("Given a source and a feature via multiple path, when computing all feature path, then all matching path are returned")
+    @DisplayName("GIVEN a source and a feature via multiple path, WHEN computing all feature path, THEN all matching path are returned")
     public void multiplePath() {
         ModelBuilder builder = new ModelBuilder();
         // Makes i1 typed by ID4
@@ -97,7 +97,7 @@ public class FeatureChainComputerTest {
 
     // Check against infinite loop
     @Test
-    @DisplayName("Given a source and a feature using type infinit loop, when computing the shortest feature chain, then no stackoverflow is thrown")
+    @DisplayName("GIVEN a source and a feature using type infinit loop, WHEN computing the shortest feature chain, THEN no stackoverflow is thrown")
     public void checkAgainstInfiniteLoop() {
         ModelBuilder builder = new ModelBuilder();
         builder.setType(this.model.getId2(), this.model.getIdef1());

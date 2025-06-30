@@ -72,7 +72,7 @@ public class ActionDefinitionImplTest {
         resource.getContents().add(root);
     }
 
-    @DisplayName("Given a ActionDefinition, when checking its specialization, then it should specialized the default Actions::Action and its feature should be visible")
+    @DisplayName("GIVEN a ActionDefinition, WHEN checking its specialization, THEN it should specialized the default Actions::Action and its feature should be visible")
     @Test
     public void inheritSuperActionFeature() {
         ActionDefinition actionDefinition = SysmlFactory.eINSTANCE.createActionDefinition();

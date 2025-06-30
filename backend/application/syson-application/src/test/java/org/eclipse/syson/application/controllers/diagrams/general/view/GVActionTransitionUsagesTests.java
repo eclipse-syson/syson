@@ -116,7 +116,7 @@ public class GVActionTransitionUsagesTests extends AbstractIntegrationTests {
     @Sql(scripts = { GeneralViewActionTransitionUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @DisplayName("Given a model with TransitionUsage ending on 'start' or 'done' ActionUsage, when adding existing nested element on the parent of the TransitionUsage, then the 'start' and 'done' node should be added to the ActionFlow compartment.")
+    @DisplayName("GIVEN a model with TransitionUsage ending on 'start' or 'done' ActionUsage, WHEN adding existing nested element on the parent of the TransitionUsage, THEN the 'start' and 'done' node should be added to the ActionFlow compartment.")
     @Test
     public void addExistingElementsOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),

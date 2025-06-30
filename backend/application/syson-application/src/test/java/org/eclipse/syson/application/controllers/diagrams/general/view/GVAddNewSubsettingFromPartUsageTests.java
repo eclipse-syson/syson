@@ -117,8 +117,9 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Subsetting tool is requested on a PartUsage, then a new PartUsage node and a Subsetting edge are created")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Subsetting tool is requested on a PartUsage, THEN a new PartUsage node and a Subsetting edge are created")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyTool() {

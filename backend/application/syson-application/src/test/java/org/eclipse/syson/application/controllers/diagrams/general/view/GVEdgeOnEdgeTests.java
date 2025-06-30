@@ -144,9 +144,10 @@ public class GVEdgeOnEdgeTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a Dependency graphical edge, when using the 'New Comment' tool, then a new node should be created with an edge connecting it to the Dependency edge")
+    @DisplayName("GIVEN a Dependency graphical edge, WHEN using the 'New Comment' tool, THEN a new node should be created with an edge connecting it to the Dependency edge")
     @Test
-    @Sql(scripts = { GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void createCommentOnDependency() {
         String selectedEdgeLabel = "dependency1";
@@ -180,9 +181,10 @@ public class GVEdgeOnEdgeTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    @DisplayName("Given a TransitionUsage graphical edge, when using the 'New Comment' tool, then a new node should be created with an edge connecting it to the TransitionUsage edge")
+    @DisplayName("GIVEN a TransitionUsage graphical edge, WHEN using the 'New Comment' tool, THEN a new node should be created with an edge connecting it to the TransitionUsage edge")
     @Test
-    @Sql(scripts = { GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewEdgeOnEdgeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void createCommentOnTransitionUsage() {
         String selectedEdgeLabel = "transition1";

@@ -65,7 +65,7 @@ public class SysMLReadOnlyServiceTest extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    @DisplayName("Given a simple SysML project, when we ask if an element is read only, then elements stored in standard libraries should be read-only whereas elements stored in other resources should be considered as editable")
+    @DisplayName("GIVEN a simple SysML project, WHEN we ask if an element is read only, THEN elements stored in standard libraries should be read-only whereas elements stored in other resources should be considered as editable")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
