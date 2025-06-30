@@ -47,7 +47,6 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -99,9 +98,6 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
                 .map(TreeRefreshedEventPayload.class::cast)
                 .map(TreeRefreshedEventPayload::tree)
@@ -132,9 +128,6 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updateTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
                 .map(TreeRefreshedEventPayload.class::cast)
                 .map(TreeRefreshedEventPayload::tree)
@@ -173,9 +166,6 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
                 .map(TreeRefreshedEventPayload.class::cast)
                 .map(TreeRefreshedEventPayload::tree)

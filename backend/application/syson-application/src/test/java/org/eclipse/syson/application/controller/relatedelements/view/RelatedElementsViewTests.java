@@ -40,7 +40,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
@@ -66,7 +65,7 @@ public class RelatedElementsViewTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    @DisplayName("Given an empty SysML Project, when the Related Elements View is requested, then no error is returned")
+    @DisplayName("GIVEN an empty SysML Project, WHEN the Related Elements View is requested, THEN no error is returned")
     @Sql(scripts = { InterconnectionViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -83,9 +82,6 @@ public class RelatedElementsViewTests extends AbstractIntegrationTests {
         };
 
         Predicate<Object> formContentMatcher = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
                 .filter(FormRefreshedEventPayload.class::isInstance)
                 .map(FormRefreshedEventPayload.class::cast)
                 .map(FormRefreshedEventPayload::form)

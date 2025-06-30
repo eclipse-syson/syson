@@ -9,6 +9,7 @@ image::view-usage-graphical-contents.png[ViewUsage graphical contents, width=65%
 Furthermore, when a diagram is created from the _Explorer_ view, a new `ViewUsage` element is also created and the new diagram is attached to this new `ViewUsage`.
 When a `ViewUsage` is created, it is automatically typed with the _General View_ `ViewDefinition` from the standard library.
 When a `ViewUsage` is created, a new _General View_ diagram is also created and the diagram is attached to this new `ViewUsage`.
+
 - *Manage Visibility*: A new action allows users to manage the visibility of graphical nodes and their children in the _General View_ diagram.
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
@@ -89,8 +90,8 @@ Menu actions can be used to `reveal all content`, `reveal valued content only`, 
 
 image::release-notes-manage-visibility.png[Manage Visibility modal, width=65%,height=65%]
 
-- In diagrams, a `FeatureValue` connecting two `Features` now displays its _implicit_ `BindingConnectorAsUsage_` as a graphical edge.
-Note that the _implicit_ `BindingConnectorAsUsage_` is not added to the model, but is only represented in the diagram.
+- In diagrams, a `FeatureValue` connecting two `Features` now displays its _implicit_ `BindingConnectorAsUsage` as a graphical edge.
+Note that the _implicit_ `BindingConnectorAsUsage` is not added to the model, but is only represented in the diagram.
 
 image::FeatureValueEdge.png[Feature Value Edges, width=65%,height=65%]
 
