@@ -53,8 +53,9 @@ public class ConnectorAsUsageMigrationParticipantTest extends AbstractIntegratio
     private IObjectService objectService;
 
     @Test
-    @DisplayName("Given a project with an old SysML model, when the model is loaded, ConnectorAsUsageSourceAndTargetMigrationParticipant migrates the model correctly meaning it does not deserialize source and target features")
-    @Sql(scripts = { "/scripts/database-content/ConnectorAsUsageSourceAndTargetMigrationParticipant-Test.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project with an old SysML model, WHEN the model is loaded, ConnectorAsUsageSourceAndTargetMigrationParticipant migrates the model correctly meaning it does not deserialize source and target features")
+    @Sql(scripts = { "/scripts/database-content/ConnectorAsUsageSourceAndTargetMigrationParticipant-Test.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void connectorAsUsageSourceAndTargetMigrationParticipantTest() {
         this.givenCommittedTransaction.commit();

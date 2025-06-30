@@ -160,11 +160,11 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    @DisplayName("Given a General View with view usage node, when child nodes are created, then nodes are added to the diagram")
+    @DisplayName("GIVEN a General View with view usage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));

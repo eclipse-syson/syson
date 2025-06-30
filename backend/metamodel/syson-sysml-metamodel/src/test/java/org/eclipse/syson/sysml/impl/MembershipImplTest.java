@@ -109,7 +109,7 @@ public class MembershipImplTest {
         assertNotNull(membership.getMemberElement());
     }
 
-    @DisplayName("Given two memberships containg different name and different type, when isDistinguishableFrom is called, then the result is true")
+    @DisplayName("GIVEN two memberships containg different name and different type, WHEN isDistinguishableFrom is called, then the result is true")
     @Test
     public void isDistinguishableFromTest1() {
         var lhs = this.p1.getOwningMembership();
@@ -117,7 +117,7 @@ public class MembershipImplTest {
         assertTrue(lhs.isDistinguishableFrom(rhs));
     }
 
-    @DisplayName("Given two memberships containg different name but same type, when isDistinguishableFrom is called, then the result is true")
+    @DisplayName("GIVEN two memberships containg different name but same type, WHEN isDistinguishableFrom is called, then the result is true")
     @Test
     public void isDistinguishableFromTest2() {
         var lhs = this.p1.getOwningMembership();
@@ -125,7 +125,7 @@ public class MembershipImplTest {
         assertTrue(lhs.isDistinguishableFrom(rhs));
     }
 
-    @DisplayName("Given two memberships containg same name but different type, when isDistinguishableFrom is called, then the result is false")
+    @DisplayName("GIVEN two memberships containg same name but different type, WHEN isDistinguishableFrom is called, then the result is false")
     @Test
     public void isDistinguishableFromTest3() {
         var lhs = this.p1.getOwningMembership();
@@ -133,7 +133,7 @@ public class MembershipImplTest {
         assertFalse(lhs.isDistinguishableFrom(rhs));
     }
 
-    @DisplayName("Given two memberships containg same name and same type, when isDistinguishableFrom is called, then the result is false")
+    @DisplayName("GIVEN two memberships containg same name and same type, WHEN isDistinguishableFrom is called, then the result is false")
     @Test
     public void isDistinguishableFromTest4() {
         var lhs = this.p1.getOwningMembership();
@@ -141,7 +141,7 @@ public class MembershipImplTest {
         assertFalse(lhs.isDistinguishableFrom(rhs));
     }
 
-    @DisplayName("Given same memberships, when isDistinguishableFrom is called, then the result is false")
+    @DisplayName("GIVEN same memberships, WHEN isDistinguishableFrom is called, then the result is false")
     @Test
     public void isDistinguishableFromTest5() {
         var lhs = this.p1.getOwningMembership();

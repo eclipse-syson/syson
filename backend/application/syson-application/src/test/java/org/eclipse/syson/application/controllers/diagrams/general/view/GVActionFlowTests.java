@@ -153,7 +153,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given two ActionUsages nested in each other,"
+    @DisplayName("GIVEN two ActionUsages nested in each other,"
             + "when using the 'New succession' tool between them, "
             + "then a SuccessionAsUsage should not be created and a message should be displayed to the user")
     public void creatSuccesionBetweenNestedActions() {
@@ -183,7 +183,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given two ActionUsages nested in each other,"
+    @DisplayName("GIVEN two ActionUsages nested in each other,"
             + "when using the 'New Transition' tool between them, "
             + "then a TransitionUsage should not be created and a message should be displayed to the user")
     public void creatTransitionBetweenNestedActions() {
@@ -213,7 +213,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given two ActionUsage,"
+    @DisplayName("GIVEN two ActionUsage,"
             + "when using the 'New Transition' tool between them, "
             + "then a TransitionUsage is created between the two actions")
     public void createTransitionUsageBetweenSubActions() {
@@ -249,7 +249,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a TransitionUsage,"
+    @DisplayName("GIVEN a TransitionUsage,"
             + "when reconnecting the target, "
             + "then the new target of the TransitionUsage is correct")
     public void reconnectTransitionUsageTarget() {
@@ -282,7 +282,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a TransitionUsage,"
+    @DisplayName("GIVEN a TransitionUsage,"
             + "when reconnecting the target, "
             + "then the reconnection to a TransitionUsage should be forbidden")
     public void reconnectTransitionUsageTargetOnTransitionForbidden() {
@@ -315,7 +315,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a TransitionUsage,"
+    @DisplayName("GIVEN a TransitionUsage,"
             + "when reconnecting the source, "
             + "then the new source of the TransitionUsage is correct")
     public void reconnectTransitionUsageSource() {
@@ -348,7 +348,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given two ActionUsage,"
+    @DisplayName("GIVEN two ActionUsage,"
             + "when using the 'New Succession' tool between them, "
             + "then a SuccessionAsUsage is created between the two actions")
     public void createSuccessionBetweenSubActions() {
@@ -385,7 +385,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given SuccessionAsUsage from 2 ActionUsages,"
+    @DisplayName("GIVEN SuccessionAsUsage from 2 ActionUsages,"
             + "when reconnecting the target to the 'done' usage, "
             + "then a SuccessionAsUsage should point to the 'done' action")
     public void reconnectSuccessionToDone() {
@@ -419,7 +419,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a start action and an ActionUsage,"
+    @DisplayName("GIVEN a start action and an ActionUsage,"
             + "when using the 'New Succession' tool between them, "
             + "then a SuccessionAsUsage is created between the 'start' and the selected ActionUsage")
     public void createSuccessionFromStart() {
@@ -455,7 +455,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a start action and  ActionUsage,"
+    @DisplayName("GIVEN a start action and  ActionUsage,"
             + "when using the 'New Succession' tool between them, "
             + "then a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     public void createSuccessionFromStartToDone() {
@@ -494,7 +494,7 @@ public class GVActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    @DisplayName("Given a sub action node and a done action,"
+    @DisplayName("GIVEN a sub action node and a done action,"
             + "when using the 'New Transition' tool between them, "
             + "then a TransitionUsage is created between the decisionNode to the 'done' element. The new TransitionUsage is stored in the container action")
     public void createTransitionUsageToDone() {

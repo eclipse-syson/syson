@@ -56,7 +56,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     private IEditingContextSearchService editingContextSearchService;
 
     @Test
-    @DisplayName("Given a SysML project, when the commands are queried, then regular and SysML commands are returned")
+    @DisplayName("GIVEN a SysML project, WHEN the commands are queried, THEN regular and SysML commands are returned")
     @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -76,7 +76,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     }
 
     @Test
-    @DisplayName("Given a Studio project, when the commands are queried, then regular and studio commands are returned")
+    @DisplayName("GIVEN a Studio project, WHEN the commands are queried, THEN regular and studio commands are returned")
     @Sql(scripts = { SysonStudioTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

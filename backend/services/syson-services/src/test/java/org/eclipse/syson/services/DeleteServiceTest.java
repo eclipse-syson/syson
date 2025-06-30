@@ -47,7 +47,7 @@ public class DeleteServiceTest {
         rSet.getResources().add(this.resource);
     }
 
-    @DisplayName("Given a part1 subsetting part2, when part2 is deleted, then the subsetting should also be deleted.")
+    @DisplayName("GIVEN a part1 subsetting part2, WHEN part2 is deleted, then the subsetting should also be deleted.")
     @Test
     void testSusbetting() {
         var part1 = SysmlFactory.eINSTANCE.createPartUsage();

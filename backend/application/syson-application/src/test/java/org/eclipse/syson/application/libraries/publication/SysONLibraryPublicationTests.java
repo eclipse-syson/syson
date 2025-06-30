@@ -104,8 +104,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project, when the library is published, then the library exists and its metadatas are correct")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project, WHEN the library is published, THEN the library exists and its metadatas are correct")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedThenLibraryExistsAndHasCorrectMetadatas() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
@@ -124,8 +125,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project, when the library is published twice with the same version, then the second publication fails and the library is not updated")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project, WHEN the library is published twice with the same version, THEN the second publication fails and the library is not updated")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedTwiceThenTheSecondPublicationFailsAndTheLibraryIsNotUpdated() {
         var input1 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
@@ -161,8 +163,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project, when the library is published, then the content of the library matches the content of the project")
-    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project, WHEN the library is published, THEN the content of the library matches the content of the project")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedThenContentOfLibraryMatchesContentOfProject() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
@@ -229,8 +232,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project with a resource flagged as imported, when the library is published, then the library does not contain the imported flag.")
-    @Sql(scripts = { "/scripts/database-content/imported-project.sql/" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project with a resource flagged as imported, WHEN the library is published, THEN the library does not contain the imported flag.")
+    @Sql(scripts = { "/scripts/database-content/imported-project.sql/" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithImportedResourceWhenLibraryIsPublishedThenLibraryDoesNotContainTheImportedFlag() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), IMPORTED_PROJECT, PUBLICATION_KIND, "1.0.0", "");
@@ -254,8 +258,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project with an used dependency to a library, when the library is published, then the library has the same dependency")
-    @Sql(scripts = { ProjectWithUsedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project with an used dependency to a library, WHEN the library is published, THEN the library has the same dependency")
+    @Sql(scripts = { ProjectWithUsedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithUsedDependencyToLibraryWhenLibraryIsPublishedThenItHasTheSameDependency() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
@@ -288,8 +293,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a project with an unused dependency to a library, when the library is published, then the library has no dependency")
-    @Sql(scripts = { ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a project with an unused dependency to a library, WHEN the library is published, THEN the library has no dependency")
+    @Sql(scripts = { ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithUnusedDependencyToLibraryWhenLibraryIsPublishedThenItHasNoDependency() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");

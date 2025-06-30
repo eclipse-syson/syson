@@ -139,7 +139,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model using a BindingConnectorAsUsage with feature chain, when importing the model, then model is correctly imported")
+    @DisplayName("GIVEN a model using a BindingConnectorAsUsage with feature chain, WHEN importing the model, THEN model is correctly imported")
     public void checkBindingConnectorWithFeatureChaine() throws IOException {
         var input = """
                 package pk1 {
@@ -173,7 +173,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
     @Test
-    @DisplayName("Given a model with a TextualRepresentation with a multiline body, when importing the model, then the boly is imported without /* and */")
+    @DisplayName("GIVEN a model with a TextualRepresentation with a multiline body, WHEN importing the model, THEN the boly is imported without /* and */")
     public void checkTextualRepresentationFeatures() throws IOException {
         var input = """
                 action def P1 {
@@ -205,7 +205,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a FeatureChainExpression, when importing the model, then target feature should be resolved")
+    @DisplayName("GIVEN a model with a FeatureChainExpression, WHEN importing the model, THEN target feature should be resolved")
     public void checkFeatureChainExpressionNameResolution() throws IOException {
         var input = """
                 action def P1 {
@@ -229,7 +229,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a SuccessionAsUsage targeting, when importing the model, then target feature should be resolved")
+    @DisplayName("GIVEN a model with a SuccessionAsUsage targeting, WHEN importing the model, THEN target feature should be resolved")
     public void checkSuccessionWithImplicitSourceWithIntermediareFeatures() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -258,7 +258,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a FeatureChainExpression containing an implicitly redefined parameter, when importing the mode, then the FeatureChaining are resolved")
+    @DisplayName("GIVEN a model with a FeatureChainExpression containing an implicitly redefined parameter, WHEN importing the mode, THEN the FeatureChaining are resolved")
     public void checkFeatureChainExpressionWithImplicitParameterRedefinitionNameResolution() throws IOException {
         var input = """
                 action def A1 {
@@ -290,7 +290,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with duplicated names, when importing the model, then the resolution of name should match the closest matching element")
+    @DisplayName("GIVEN a model with duplicated names, WHEN importing the model, THEN the resolution of name should match the closest matching element")
     public void checkNameResolutionProcessWithDuplicatedName() throws IOException {
         var input = """
                 package p1 {
@@ -318,7 +318,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a Redefintion, when importing the model, then the resolution of name should specialize Redefinition rules")
+    @DisplayName("GIVEN a model with a Redefintion, WHEN importing the model, THEN the resolution of name should specialize Redefinition rules")
     public void checkNameResolutionProcessInRedifinition() throws IOException {
         var input = """
                 package p1 {
@@ -348,7 +348,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a reference to an invalid type, when importing the model, then the resolution of name shoud not set a reference with an incompatible target")
+    @DisplayName("GIVEN a model with a reference to an invalid type, WHEN importing the model, THEN the resolution of name shoud not set a reference with an incompatible target")
     public void checkNameResolutionProcessWithInvalidTargetName() throws IOException {
         var input = """
                 package p1 {
@@ -375,7 +375,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with a TransitionUsage, when importing the model, then a TransitionUsage should be created.")
+    @DisplayName("GIVEN a model with a TransitionUsage, WHEN importing the model, THEN a TransitionUsage should be created.")
     public void checkSimpleTransitionUsage() throws IOException {
         var input = """
                 action def A1 {
@@ -403,7 +403,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with TransitionUsage with an implicit source, when importing the model, then the implicit source should be correctly resolved.")
+    @DisplayName("GIVEN a model with TransitionUsage with an implicit source, WHEN importing the model, THEN the implicit source should be correctly resolved.")
     public void checkTransitionWithImplicitSource() throws IOException {
         var input = """
                    action def A1 {
@@ -453,7 +453,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a model with PortDefinitions, when importing the model, then a conjugated port is created for each conjugated ports")
+    @DisplayName("GIVEN a model with PortDefinitions, WHEN importing the model, THEN a conjugated port is created for each conjugated ports")
     public void checkConjugatedPortCreation() throws IOException {
         var input = """
                 package Conjugated {
@@ -487,7 +487,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage using the syntax that create a new target action, when importing and exporting the model, then the source and target should be correctly computed.")
+    @DisplayName("GIVEN a SuccessionAsUsage using the syntax that create a new target action, WHEN importing and exporting the model, THEN the source and target should be correctly computed.")
     public void checkSuccessionToDefinedActionSourceTest() throws IOException {
         var input = """
                 action def ActionDef1 {
@@ -514,7 +514,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, "
+    @DisplayName("GIVEN a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, "
             + "when importing the model, "
             + "then a special membership should be created that reference the 'start' element.")
     public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
@@ -550,7 +550,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a SuccessionAsUsage with an explicit source feature targeting the 'start' standard library element, "
+    @DisplayName("GIVEN a SuccessionAsUsage with an explicit source feature targeting the 'start' standard library element, "
             + "when importing the model, "
             + "then no special membership should be created that reference the 'start'")
     public void checkSuccessionAsUsageWkithStartSourceTest() throws IOException {
@@ -579,7 +579,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a TransitionUsage with an AcceptActionUsage, when importing the model, then the TransitionFeatureMembership's kind is trigger")
+    @DisplayName("GIVEN a TransitionUsage with an AcceptActionUsage, WHEN importing the model, THEN the TransitionFeatureMembership's kind is trigger")
     public void checkTransitionUsageWithAcceptActionUsageTest() throws IOException {
         var input = """
                 attribute def StartSignal;
@@ -604,7 +604,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a TransitionUsage with an AcceptActionUsage containing a SendSignalActionUsage, when importing the model, then the TransitionFeatureMembership holding the SendSignalAction has the effect kind")
+    @DisplayName("GIVEN a TransitionUsage with an AcceptActionUsage containing a SendSignalActionUsage, WHEN importing the model, THEN the TransitionFeatureMembership holding the SendSignalAction has the effect kind")
     public void checkTransitionUsageWithAcceptActionUsageAndSendSignalActionTest() throws IOException {
         var input = """
                 attribute def StartSignal;
@@ -635,7 +635,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a RequirementUsage with an assume ConstraintUsage, when importing the model, then the RequirementConstraintMembership holding the ConstraintUsage has the assumption kind")
+    @DisplayName("GIVEN a RequirementUsage with an assume ConstraintUsage, WHEN importing the model, THEN the RequirementConstraintMembership holding the ConstraintUsage has the assumption kind")
     public void checkRequirementUsageWithAssumeConstraintUsageTest() throws IOException {
         var input = """
                 requirement myRequirement {
@@ -651,7 +651,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a RequirementUsage with an require ConstraintUsage, when importing the model, then the RequirementConstraintMembership holding the ConstraintUsage has the requirement kind")
+    @DisplayName("GIVEN a RequirementUsage with an require ConstraintUsage, WHEN importing the model, THEN the RequirementConstraintMembership holding the ConstraintUsage has the requirement kind")
     public void checkRequirementUsageWithRequireConstraintUsageTest() throws IOException {
         var input = """
                 requirement myRequirement {
@@ -667,7 +667,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given an AttributeUsage with a LiteralString, when importing the model, then the LiteralString value does not contain double quotes")
+    @DisplayName("GIVEN an AttributeUsage with a LiteralString, WHEN importing the model, THEN the LiteralString value does not contain double quotes")
     public void checkAttributeUsageLiteralStringValueTest() throws IOException {
         var input = """
                 attribute myAttribute = "value";
@@ -681,7 +681,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a PartUsage with a Multiplicity with LiteralInteger bounds, when importing the model, then the Multiplicity value is set")
+    @DisplayName("GIVEN a PartUsage with a Multiplicity with LiteralInteger bounds, WHEN importing the model, THEN the Multiplicity value is set")
     public void checkPartUsageMultiplicityLiteralIntegerBoundsValueTest() throws IOException {
         var input = """
                 part myPart[1..2];
@@ -702,7 +702,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a PartUsage with a Multiplicity with FeatureReferenceExpression bounds, when importing the model, then the Multiplicity value is set")
+    @DisplayName("GIVEN a PartUsage with a Multiplicity with FeatureReferenceExpression bounds, WHEN importing the model, THEN the Multiplicity value is set")
     public void checkPartUsageMultiplicityChainedFeatureReferenceExpressionBoundsTest() throws IOException {
         // The result of the bound expression(s) of a MultiplicityRange must be typed by ScalarValues::Integer (see
         // KerML 8.3.4.11.2).
@@ -737,7 +737,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given a PartUsage with a Multiplicity with top-level FeatureReferenceExpression bounds, when importing the model, then the Multiplicity value is set ")
+    @DisplayName("GIVEN a PartUsage with a Multiplicity with top-level FeatureReferenceExpression bounds, WHEN importing the model, THEN the Multiplicity value is set ")
     public void checkPartUsageMultiplicityTopLevelFeatureReferenceExpressionBoundTest() throws IOException {
         var input = """
                 attribute lower:ScalarValues::Integer = 1;

@@ -116,8 +116,9 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Binding Connector As Usage tool of first level element is requested on a PartUsage, then a new PartUsage and a Binding Connector As Usage edge are created")
-    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Binding Connector As Usage tool of first level element is requested on a PartUsage, THEN a new PartUsage and a Binding Connector As Usage edge are created")
+    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {
@@ -141,8 +142,9 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
     }
-    @DisplayName("Given a SysML Project, when New Binding Connector As Usage tool of nested element is requested on a PartUsage, then a new PartUsage and a Binding Connector As Usage edge are created")
-    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project, WHEN New Binding Connector As Usage tool of nested element is requested on a PartUsage, THEN a new PartUsage and a Binding Connector As Usage edge are created")
+    @Sql(scripts = { InterconnectionViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {

@@ -139,8 +139,9 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         }
     }
 
-    @DisplayName("Given a SysML Project with an Action Usage, when creating ItemUsage with direction in, then they should be displayed as bordered nodeand list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Usage, WHEN creating ItemUsage with direction in, THEN they should be displayed as bordered nodeand list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionUsageInParameter() {
@@ -148,8 +149,9 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     }
 
-    @DisplayName("Given a SysML Project with an Action Usage, when creating ItemUsage with direction out, then they should be displayed as BorderedNode and list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Usage, WHEN creating ItemUsage with direction out, THEN they should be displayed as BorderedNode and list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionUsageOutParameter() {
@@ -157,32 +159,36 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
 
     }
 
-    @DisplayName("Given a SysML Project with an Action Usage, when creating ItemUsage with direction inout, then they should be displayed as bordered node and list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Usage, WHEN creating ItemUsage with direction inout, THEN they should be displayed as bordered node and list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionUsageInOutParameter() {
         this.checkItemParameterOnActionUsage("Inout");
     }
 
-    @DisplayName("Given a SysML Project with an Action Definition, when creating ItemUsage with direction in, then they should be displayed as bordered node and list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Definition, WHEN creating ItemUsage with direction in, THEN they should be displayed as bordered node and list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionDefinitionInParameter() {
         this.checkItemParameterOnActionDefinition("In");
     }
 
-    @DisplayName("Given a SysML Project with an Action Definition, when creating ItemUsage with direction out, then they should be displayed as bordered node and list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Definition, WHEN creating ItemUsage with direction out, THEN they should be displayed as bordered node and list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionDefinitionOutParameter() {
         this.checkItemParameterOnActionDefinition("Out");
     }
 
-    @DisplayName("Given a SysML Project with an Action Definition, when creating ItemUsage with direction Inout, then they should be displayed as bordered node and list item in the nestedItems compartment")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a SysML Project with an Action Definition, WHEN creating ItemUsage with direction Inout, THEN they should be displayed as bordered node and list item in the nestedItems compartment")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkActionDefinitionInoutParameter() {

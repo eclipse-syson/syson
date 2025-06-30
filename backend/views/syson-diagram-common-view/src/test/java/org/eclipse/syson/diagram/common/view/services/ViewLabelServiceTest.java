@@ -84,7 +84,7 @@ public class ViewLabelServiceTest {
                 this.viewLabelService.getCompartmentItemLabel(attributeUsage));
     }
 
-    @DisplayName("Given a FeatureValue to an attribute, when it is an initial FeatureValue relationship, then the label should use the symbole ':=' instead of '='")
+    @DisplayName("GIVEN a FeatureValue to an attribute, WHEN it is an initial FeatureValue relationship, THEN the label should use the symbole ':=' instead of '='")
     @Test
     public void testInitalFeatureValueSymboleLabel() {
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
@@ -104,7 +104,7 @@ public class ViewLabelServiceTest {
 
     }
 
-    @DisplayName("Given a FeatureValue to an attribute, when it is a default FeatureValue relationship, then the label should use the symbole ':=' instead of '='")
+    @DisplayName("GIVEN a FeatureValue to an attribute, WHEN it is a default FeatureValue relationship, THEN the label should use the symbole ':=' instead of '='")
     @Test
     public void testDefaultFeatureValueSymboleLabel() {
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
@@ -167,7 +167,7 @@ public class ViewLabelServiceTest {
                 this.viewLabelService.getCompartmentItemLabel(attributeUsage));
     }
 
-    @DisplayName("Given a ConstraintUsage with no expression, when its label is computed, then the label contains the name of the constraint")
+    @DisplayName("GIVEN a ConstraintUsage with no expression, WHEN its label is computed, THEN the label contains the name of the constraint")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithNoExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -178,7 +178,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME);
     }
 
-    @DisplayName("Given a ConstraintUsage with a boolean expression, when its label is computed, then the label represents the expression")
+    @DisplayName("GIVEN a ConstraintUsage with a boolean expression, WHEN its label is computed, THEN the label represents the expression")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithBooleanExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -197,7 +197,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= 2");
     }
 
-    @DisplayName("Given a ConstraintUsage with an expression containing a subject reference, when its label is computed, then the label represents the expression")
+    @DisplayName("GIVEN a ConstraintUsage with an expression containing a subject reference, WHEN its label is computed, THEN the label represents the expression")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithSubjectReferenceExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -221,7 +221,7 @@ public class ViewLabelServiceTest {
 
     }
 
-    @DisplayName("Given a ConstraintUsage with an expression containing an attribute reference, when its label is computed, then the label represents the expression")
+    @DisplayName("GIVEN a ConstraintUsage with an expression containing an attribute reference, WHEN its label is computed, THEN the label represents the expression")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithAttributeReferenceExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -245,7 +245,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= myAttribute");
     }
 
-    @DisplayName("Given a ConstraintUsage with an expression containing a single feature chaining, when its label is computed, then the label represents the expression")
+    @DisplayName("GIVEN a ConstraintUsage with an expression containing a single feature chaining, WHEN its label is computed, THEN the label represents the expression")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithSingleFeatureChainingExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -270,7 +270,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= myAttribute.mySubAttribute");
     }
 
-    @DisplayName("Given a ConstraintUsage with an expression containing multiple feature chainings, when its label is computed, then the label represents the expression")
+    @DisplayName("GIVEN a ConstraintUsage with an expression containing multiple feature chainings, WHEN its label is computed, THEN the label represents the expression")
     @Test
     public void testGetCompartmentItemLabelOfConstraintWithMultipleFeatureChainingExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
@@ -303,7 +303,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= x.y.z");
     }
 
-    @DisplayName("Given a Dependency with a name and short name, when its edge label is computed, then the label contains the name and short name")
+    @DisplayName("GIVEN a Dependency with a name and short name, WHEN its edge label is computed, THEN the label contains the name and short name")
     @Test
     public void testGetDependencyLabelOfDependencyWithNameAndShortName() {
         Dependency dependency = SysmlFactory.eINSTANCE.createDependency();
@@ -313,7 +313,7 @@ public class ViewLabelServiceTest {
         assertThat(this.viewLabelService.getDependencyLabel(dependency)).isEqualTo(SHORT_NAME_LABEL + " dependency");
     }
 
-    @DisplayName("Given an Interface with a name and short name, when its edge label is computed, then the label contains the name and short name")
+    @DisplayName("GIVEN an Interface with a name and short name, WHEN its edge label is computed, THEN the label contains the name and short name")
     @Test
     public void testGetEdgeLabelOfInterfaceWithNameAndShortName() {
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();

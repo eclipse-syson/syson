@@ -119,8 +119,9 @@ public class IVFlowConnectionFromPartUsageTests extends AbstractIntegrationTests
     }
 
     @Test
-    @DisplayName("Given a FlowConnectionUsage, when reconnecting the target, then the new target of the FlowConnectionUsage is correct")
-    @Sql(scripts = { InterconnectionViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a FlowConnectionUsage, WHEN reconnecting the target, THEN the new target of the FlowConnectionUsage is correct")
+    @Sql(scripts = { InterconnectionViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowConnectionUsageTarget() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewTestProjectData.EDITING_CONTEXT_ID,
@@ -153,8 +154,9 @@ public class IVFlowConnectionFromPartUsageTests extends AbstractIntegrationTests
     }
 
     @Test
-    @DisplayName("Given a FlowConnectionUsage, when reconnecting the source, then the new source of the FlowConnectionUsage is correct")
-    @Sql(scripts = { InterconnectionViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("GIVEN a FlowConnectionUsage, WHEN reconnecting the source, THEN the new source of the FlowConnectionUsage is correct")
+    @Sql(scripts = { InterconnectionViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowConnectionUsageSource() {
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewTestProjectData.EDITING_CONTEXT_ID,

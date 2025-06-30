@@ -94,7 +94,7 @@ public class InterconnectionViewCreateServiceTests {
         this.build();
     }
 
-    @DisplayName("Given an existing model, when the createBindingConnectorAsUsage service is called, then a BindingConnectorAsUsage is created under the common ancestor of the source and target.")
+    @DisplayName("GIVEN an existing model, WHEN the createBindingConnectorAsUsage service is called, THEN a BindingConnectorAsUsage is created under the common ancestor of the source and target.")
     @Test
     public void testCreateBindingConnectorAsUsage() {
         BindingConnectorAsUsage bindingConnectorAsUsage = this.interconnectionViewCreateService.createBindingConnectorAsUsage(this.port2, this.port3);
@@ -104,7 +104,7 @@ public class InterconnectionViewCreateServiceTests {
         assertInstanceOf(FeatureMembership.class, owningMembership);
     }
 
-    @DisplayName("Given an existing model, when the createInterfaceUsage service is called, then an InterfaceUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createInterfaceUsage service is called, THEN an InterfaceUsage is created under the root Package and an OwningMembership.")
     @Test
     public void testCreateInterfaceUsage() {
         InterfaceUsage interfaceUsage = this.interconnectionViewCreateService.createInterfaceUsage(this.port2, this.port3);
@@ -115,7 +115,7 @@ public class InterconnectionViewCreateServiceTests {
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
 
-    @DisplayName("Given an existing model, when the createFlowConnectionUsage service is called, then an FlowConnectionUsage is created under the root Package and an OwningMembership.")
+    @DisplayName("GIVEN an existing model, WHEN the createFlowConnectionUsage service is called, THEN an FlowConnectionUsage is created under the root Package and an OwningMembership.")
     @Test
     public void testCreateFlowConnectionUsage() {
         FlowConnectionUsage flowConnectionUsage = this.interconnectionViewCreateService.createFlowConnectionUsage(this.port2, this.port3);
