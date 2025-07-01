@@ -14,6 +14,8 @@ package org.eclipse.syson.application.configuration;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -72,7 +74,11 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
             sourceResourceSet.getResources().forEach(sourceResource -> {
                 Resource targetResource = targetResourceSet.getResource(sourceResource.getURI(), false);
                 if (targetResource == null) {
-                    targetResource = new JSONResourceFactory().createResource(sourceResource.getURI());
+                    Map<String, Object> options = new HashMap<>();
+                    // allows to persist references to standard libraries elements with URI containing elementId instead
+                    // of id from SiriusWeb
+                    options.put(JsonResource.OPTION_FORCE_DEFAULT_REFERENCE_SERIALIZATION, Boolean.TRUE);
+                    targetResource = new JSONResourceFactory().createResource(sourceResource.getURI(), options);
                     Optional<ResourceMetadataAdapter> resourceAdapter = sourceResource.eAdapters().stream()
                             .filter(ResourceMetadataAdapter.class::isInstance)
                             .map(ResourceMetadataAdapter.class::cast)
