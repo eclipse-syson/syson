@@ -231,6 +231,7 @@ public class ASTTransformer {
             this.fixConjugatedPorts(root);
             this.fixParameterFeatureDirection(root);
             this.fixReturnParameterFeatureDirection(root);
+            this.fixReferenceSubsettingWithNestedFeature(root);
         }
         this.logger.info("Pre resolving fixing phase done");
     }
@@ -376,8 +377,8 @@ public class ASTTransformer {
         return null;
     }
 
-    private boolean hasImplicitSourceFeature(SuccessionAsUsage successionUsage) {
-        EList<Feature> ends = successionUsage.getConnectorEnd();
+    private boolean hasImplicitSourceFeature(SuccessionAsUsage successionAsUsage) {
+        EList<Feature> ends = successionAsUsage.getConnectorEnd();
         if (!ends.isEmpty()) {
             Feature sourceEnd = ends.get(0);
             return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
@@ -390,8 +391,8 @@ public class ASTTransformer {
         return source == null;
     }
 
-    private boolean hasImplicitTargetFeature(SuccessionAsUsage successionUsage) {
-        EList<Feature> ends = successionUsage.getConnectorEnd();
+    private boolean hasImplicitTargetFeature(SuccessionAsUsage successionAsUsage) {
+        EList<Feature> ends = successionAsUsage.getConnectorEnd();
         if (ends.size() > 1) {
             Feature sourceEnd = ends.get(1);
             return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
@@ -420,7 +421,7 @@ public class ASTTransformer {
     public void logTransformationMessages() {
         List<Message> messages = this.getTransformationMessages();
         if (!messages.isEmpty()) {
-            String logMessage = messages.stream().map(this::toLogMessage).collect(joining("\n", "Folling messages have been reported during conversion : \n", ""));
+            String logMessage = messages.stream().map(this::toLogMessage).collect(joining("\n", "Following messages have been reported during conversion: \n", ""));
             boolean isError = messages.stream().anyMatch(m -> m.level() == MessageLevel.WARNING || m.level() == MessageLevel.ERROR);
             if (isError) {
                 this.logger.error(logMessage);
@@ -445,6 +446,7 @@ public class ASTTransformer {
         referenceSubsetting.getOwnedRelatedElement().stream()
                 .filter(e -> e.eClass() == SysmlPackage.eINSTANCE.getFeature() && !((Feature) e).getChainingFeature().isEmpty())
                 .map(Feature.class::cast)
+                .filter(f -> !f.eIsProxy())
                 .findFirst()
                 .ifPresent(referenceSubsetting::setReferencedFeature);
     }
