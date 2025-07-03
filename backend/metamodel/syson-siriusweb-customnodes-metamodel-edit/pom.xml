@@ -23,13 +23,13 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
-	<version>2025.6.2</version>
+	<version>2025.6.5</version>
 	<name>syson-siriusweb-customnodes-metamodel-edit</name>
 	<description>SysON SysMLv2 Custom Nodes Metamodel - Edit Support</description>
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.web.version>2025.6.2</sirius.web.version>
+		<sirius.web.version>2025.6.5</sirius.web.version>
 	</properties>
 
 	<repositories>
@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-			<version>2025.6.2</version>
+			<version>2025.6.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>

@@ -179,7 +179,7 @@ All validation rules have been updated to comply with the {sysmlv2} 2025-04 spec
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.2]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.5]
 - Switch to SysIDE 0.9.0
 - Switch to Sirius EMF-JSON 2.5.3
 - Switch to Node 22.16.0
