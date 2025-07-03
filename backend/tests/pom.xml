@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2024 Obeo.
+ Copyright (c) 2024, 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-tests-parent</artifactId>
-	<version>2025.6.2</version>
+	<version>2025.6.5</version>
 
 	<name>syson-tests-parent</name>
 	<description>SysON Tests Parent</description>
