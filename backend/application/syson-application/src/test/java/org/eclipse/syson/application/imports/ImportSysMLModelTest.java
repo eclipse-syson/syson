@@ -47,6 +47,7 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
@@ -136,6 +137,39 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with a FlowUsage using a FeatureChain, WHEN importing the model, THEN the source and the target of the FlowUsage should be properly resolved")
+    public void checkFlowUsageWithFeatureChain() throws IOException {
+        var input = """
+                part def P1Def {
+                    port po1 : PortDef1;
+                }
+                port def PortDef1 {
+                    out item item1: P2Def;
+                }
+                part def P2Def;
+                part def P3Def {
+                    in item item2 : P3Def;
+                }
+                part p1 {
+                    part p2 : P1Def
+                    part p3 : P3Def;
+                    flow from p2.po1.item1 to p3.item2;
+                }
+                """;
+
+        this.checker.checkImportedModel(resource -> {
+            List<FlowUsage> flows = EMFUtils.allContainedObjectOfType(resource, FlowUsage.class)
+                    .toList();
+            assertThat(flows).hasSize(1);
+
+            FlowUsage flow = flows.get(0);
+            assertThat(flow.getSourceOutputFeature().getFeatureTarget().getName()).isEqualTo("item1");
+            assertThat(flow.getTargetInputFeature().getFeatureTarget().getName()).isEqualTo("item2");
+
+        }).check(input);
     }
 
     @Test

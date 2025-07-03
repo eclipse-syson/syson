@@ -63,6 +63,46 @@ Type T3 {
 
 The `FeatureChain` _t1Feature.t2Feature_ is now typed with _T3_.
 
+- Fix a name resolution problem during textual import of elements used in a `FlowConnectionAsUsage`.
+In the following example, the last segment of the `FlowConnectionAsUsage` ends were not propertly resolved during import.
+
+```
+package 'Port Example' {
+    attribute def Temp;
+    part def Fuel;
+    port def FuelOutPort {
+        attribute temperature : Temp;
+        out item fuelSupply : Fuel;
+        in item fuelReturn : Fuel;
+    }
+    port def FuelInPort {
+        attribute temperature : Temp;
+        in item fuelSupply : Fuel;
+        out item fuelReturn : Fuel;
+    }
+    part def FuelTankAssembly {
+        port fuelTankPort : FuelOutPort;
+    }
+    part def Engine {
+        port engineFuelPort : FuelInPort;
+    }
+}
+package 'Flow Connection Interface Example' {
+    private import 'Port Example'::*;
+    part def Vehicle;
+    part vehicle : Vehicle {
+        part tankAssy : FuelTankAssembly;
+        part eng : Engine;
+        flow of Fuel
+            from tankAssy.fuelTankPort.fuelSupply // Failed to resolved fuelSupply
+            to eng.engineFuelPort.fuelSupply; // Failed to resolved fuelSupply
+        flow of Fuel
+            from eng.engineFuelPort.fuelReturn // Failed to resolved fuelReturn
+            to tankAssy.fuelTankPort.fuelReturn; // Failed to resolved fuelReturn
+    }
+}
+```
+
 == Improvements
 
 - Align metamodel to {sysmlv2} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/SysML/ for more details) and {kerml} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/KerML/ for more details).
