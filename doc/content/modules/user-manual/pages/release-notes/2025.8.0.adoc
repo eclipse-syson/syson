@@ -14,6 +14,10 @@ All existing models/projects in {product} will be automatically migrated to this
 * The constructors of `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, and `UserLibrariesDirectory` now have a new `parent` parameter.
 * `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 * `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+- To facilitate the creation of projects on top of SysON, it's no longer necessary to declare the following files (you just need to re-use them):
+* SysONDocumentTreeItemContextMenuContribution
+* SysONExtensionRegistryMergeStrategy
+* SysONObjectTreeItemContextMenuContribution
 
 == New features
 

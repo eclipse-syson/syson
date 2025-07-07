@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,28 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, ServerContext, ServerContextValue, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
-import GetAppIcon from '@mui/icons-material/GetApp';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Fragment, forwardRef, useContext, useState } from 'react';
-import { NewRootObjectModal } from '@eclipse-sirius/sirius-web-application';
+import { Fragment, forwardRef, useState } from 'react';
+import { NewObjectModal } from '@eclipse-sirius/sirius-web-application';
+import { NewRepresentationModal } from '@eclipse-sirius/sirius-web-application';
 
-type Modal = 'CreateNewRootObject';
+type Modal = 'CreateNewObject' | 'CreateNewRepresentation';
 
-export const SysONDocumentTreeItemContextMenuContribution = forwardRef(
+export const SysONObjectTreeItemContextMenuContribution = forwardRef(
   (
     { editingContextId, treeId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
-    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const [modal, setModal] = useState<Modal | null>(null);
     const { setSelection } = useSelection();
 
-    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusWeb://document')) {
+    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusComponents://semantic')) {
       return null;
     }
 
@@ -41,27 +40,36 @@ export const SysONDocumentTreeItemContextMenuContribution = forwardRef(
       onClose();
     };
 
-    let modalElement = null;
-    if (modal === 'CreateNewRootObject') {
+    let modalElement: JSX.Element | null = null;
+    if (modal === 'CreateNewObject') {
       modalElement = (
-        <NewRootObjectModal
+        <NewObjectModal
           editingContextId={editingContextId}
           item={item}
           onObjectCreated={onObjectCreated}
           onClose={onClose}
         />
       );
+    } else if (modal === 'CreateNewRepresentation') {
+      modalElement = (
+        <NewRepresentationModal
+          editingContextId={editingContextId}
+          item={item}
+          onRepresentationCreated={onObjectCreated}
+          onClose={onClose}
+        />
+      );
     }
 
-    let menuItems = [];
+    let menuItems: JSX.Element[] = [];
     if (item.editable) {
       menuItems.push(
         <MenuItem
           key="new-object"
+          onClick={() => setModal('CreateNewObject')}
           data-testid="new-object"
-          onClick={() => setModal('CreateNewRootObject')}
-          ref={ref}
           disabled={readOnly}
+          ref={ref}
           aria-disabled>
           <ListItemIcon>
             <AddIcon fontSize="small" />
@@ -69,26 +77,23 @@ export const SysONDocumentTreeItemContextMenuContribution = forwardRef(
           <ListItemText primary="New object" />
         </MenuItem>
       );
+      menuItems.push(
+        <MenuItem
+          key="new-representation"
+          onClick={() => setModal('CreateNewRepresentation')}
+          data-testid="new-representation"
+          disabled={readOnly}
+          aria-disabled>
+          <ListItemIcon>
+            <AddIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="New representation" />
+        </MenuItem>
+      );
     }
-    menuItems.push(
-      <MenuItem
-        key="download"
-        divider
-        onClick={onClose}
-        component="a"
-        href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
-        type="application/octet-stream"
-        data-testid="download"
-        aria-disabled>
-        <ListItemIcon>
-          <GetAppIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="Download" aria-disabled />
-      </MenuItem>
-    );
 
     return (
-      <Fragment key="document-tree-item-context-menu-contribution">
+      <Fragment key="object-tree-item-context-menu-contribution">
         {menuItems}
         {modalElement}
       </Fragment>
