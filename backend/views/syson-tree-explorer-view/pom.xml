@@ -23,7 +23,7 @@
 	</parent>
   	<groupId>org.eclipse.syson</groupId>
   	<artifactId>syson-tree-explorer-view</artifactId>
-  	<version>2025.6.5</version>
+  	<version>2025.6.6</version>
   	<name>syson-tree-explorer-view</name>
   	<description>SysON Sirius Web tree description of the explorer view</description>
 
@@ -68,17 +68,17 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.6.5</version>
+			<version>2025.6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application-configuration</artifactId>
-			<version>2025.6.5</version>
+			<version>2025.6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2025.6.5</version>
+			<version>2025.6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>

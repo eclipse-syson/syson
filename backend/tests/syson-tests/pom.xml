@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-tests</artifactId>
-	<version>2025.6.5</version>
+	<version>2025.6.6</version>
 	<name>syson-tests</name>
 	<description>SysON Tests</description>
 
