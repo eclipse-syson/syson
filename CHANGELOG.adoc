@@ -111,6 +111,7 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/1396[#1396] [general-view] Add a graphical edge representation for `IncludeUseCaseUsage` in the  _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1405[#1405] [export] Implement the textual export of `FlowUsage`.
 
 == v2025.6.0
 
