@@ -12,6 +12,8 @@
  *******************************************************************************/
 export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSysMLv2MenuContribution';
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
+export { SysONDocumentTreeItemContextMenuContribution } from './extensions/contextMenu/SysONDocumentTreeItemContextMenuContribution';
+export { SysONObjectTreeItemContextMenuContribution } from './extensions/contextMenu/SysONObjectTreeItemContextMenuContribution';
 export { SysONNavigationBarMenuIcon } from './extensions/navigationBarMenu/SysONNavigationBarMenuIcon';
 export { PublishProjectSysMLContentsAsLibraryCommand } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand';
 export type { PublishProjectSysMLContentsAsLibraryCommandState } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand.types';
@@ -19,6 +21,7 @@ export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
 export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
 export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';
 export { SysONDiagramPanelMenu } from './extensions/SysONDiagramPanelMenu';
+export { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
 export { useInsertTextualSysMLv2 } from './extensions/useInsertTextualSysMLv2';
 export { SysMLImportedPackageNode } from './nodes/imported_package/SysMLImportedPackageNode';
 export { SysMLImportedPackageNodeConverter } from './nodes/imported_package/SysMLImportedPackageNodeConverter';

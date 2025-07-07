@@ -87,6 +87,12 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 * `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 * `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 
+- https://github.com/eclipse-syson/syson/issues/1422[#1422] [releng] The following files have been move to `syson-components` and it is no longer necessary to add them to a project on top of SysON:
+* SysONDocumentTreeItemContextMenuContribution
+* SysONExtensionRegistryMergeStrategy
+* SysONObjectTreeItemContextMenuContribution
+
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]

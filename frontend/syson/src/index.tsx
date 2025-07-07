@@ -56,15 +56,15 @@ import {
   SysMLViewFrameNodeConverter,
   SysMLViewFrameNodeLayoutHandler,
   SysONDiagramPanelMenu,
+  SysONDocumentTreeItemContextMenuContribution,
+  SysONExtensionRegistryMergeStrategy,
   SysONNavigationBarMenuIcon,
+  SysONObjectTreeItemContextMenuContribution,
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
 import { httpOrigin, wsOrigin } from './core/URL';
-import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
-import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
 import { SysONFooter } from './extensions/SysONFooter';
 import { SysONNavigationBarIcon } from './extensions/SysONNavigationBarIcon';
-import { SysONObjectTreeItemContextMenuContribution } from './extensions/SysONObjectTreeItemContextMenuContribution';
 import './fonts.css';
 import './reset.css';
 import { sysonTheme } from './theme/sysonTheme';
