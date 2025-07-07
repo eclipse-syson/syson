@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -341,6 +342,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             this.appendFeatureReferenceMember(builder, membership, expression);
         }
+        return builder.toString();
+    }
+
+    @Override
+    public String caseFlowUsage(FlowUsage flowConnectionUsage) {
+        var builder = this.newAppender();
+        this.appendOccurrenceUsagePrefix(builder, flowConnectionUsage);
+        builder.appendWithSpaceIfNeeded("flow");
+        this.appendFlowDeclaration(builder, flowConnectionUsage);
+        this.appendDefinitionBody(builder, flowConnectionUsage);
         return builder.toString();
     }
 
@@ -2267,5 +2278,81 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendWithSpaceIfNeeded(this.doSwitch(expression));
             }
         }
+    }
+
+    private void appendFlowDeclaration(Appender builder, FlowUsage flowConnectionUsage) {
+        this.appendUsageDeclaration(builder, flowConnectionUsage);
+        EList<FlowEnd> ends = flowConnectionUsage.getFlowEnd();
+        Optional<PayloadFeature> payload = flowConnectionUsage.getFeatureMembership().stream()
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(PayloadFeature.class::isInstance)
+                .map(PayloadFeature.class::cast)
+                .findFirst();
+        if (payload.isPresent()) {
+            PayloadFeature payloadFeature = payload.get();
+            builder.appendWithSpaceIfNeeded("of");
+            Appender nameBuilder = this.newAppender();
+            this.appendNameWithShortName(nameBuilder, payloadFeature);
+
+            if (nameBuilder.isEmpty()) {
+                // If no identification part, switch to simple format:
+                // "ownedRelationship += OwnedFeatureTyping (ownedRelationship += OwnedMultiplicity )?"
+                this.appendOwnedFeatureTyping(builder, payloadFeature);
+                this.appendMultiplicityPart(builder, payloadFeature);
+            } else {
+                // Handle simple form "Identification? PayloadFeatureSpecializationPart ValuePart?" for the moment
+                builder.appendWithSpaceIfNeeded(nameBuilder.toString());
+                this.appendFeatureSpecilizationPart(builder, payloadFeature, false);
+                FeatureValue value = this.getValuation(payloadFeature);
+                if (value != null) {
+                    this.appendValuePart(builder, flowConnectionUsage);
+                }
+            }
+        }
+
+        if (!ends.isEmpty()) {
+            builder.appendWithSpaceIfNeeded("from");
+            FlowEnd sourceEnd = ends.get(0);
+            Feature sourceFeature = flowConnectionUsage.getSourceOutputFeature();
+            this.appendFlowEndSubsetting(builder, sourceEnd,sourceFeature);
+        }
+
+        if (ends.size() > 1) {
+            builder.appendWithSpaceIfNeeded("to");
+            FlowEnd targetEnd = ends.get(1);
+            Feature targetFeature = flowConnectionUsage.getTargetInputFeature();
+            this.appendFlowEndSubsetting(builder, targetEnd,targetFeature);
+        }
+    }
+
+    private void appendOwnedFeatureTyping(Appender builder, PayloadFeature payloadFeature) {
+        String types = payloadFeature.getOwnedTyping().stream()
+                .map(FeatureTyping::getType)
+                .filter(Objects::nonNull)
+                .map(t -> {
+                    if (t instanceof Feature feature) {
+                        return this.appendFeatureRefOrFeatureChain(feature, payloadFeature);
+                    } else {
+                        return this.getDeresolvableName(t, payloadFeature);
+                    }
+                }).collect(joining(","));
+        builder.appendWithSpaceIfNeeded(types);
+    }
+
+    private void appendFlowEndSubsetting(Appender builder, FlowEnd sourceEnd, Feature referencedFeature) {
+        ReferenceSubsetting refSubSetting = sourceEnd.getOwnedReferenceSubsetting();
+        Feature subFeature = refSubSetting.getSubsettedFeature();
+        builder.appendWithSpaceIfNeeded(this.appendFeatureRefOrFeatureChain(subFeature, sourceEnd));
+        builder.append(".").append(this.getDeresolvableName(referencedFeature, sourceEnd));
+    }
+
+    private String appendFeatureRefOrFeatureChain(Feature feature, Element context) {
+        Appender builder = this.newAppender();
+        if (feature.getChainingFeature().isEmpty()) {
+            builder.appendWithSpaceIfNeeded(this.getDeresolvableName(feature, context));
+        } else {
+            this.appendFeatureChain(builder, feature);
+        }
+        return builder.toString();
     }
 }

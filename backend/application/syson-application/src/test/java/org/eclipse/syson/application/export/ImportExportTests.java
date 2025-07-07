@@ -104,6 +104,108 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with basic FlowUsages, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
+    public void checkFlowUsageBaseExample() throws IOException {
+        var input = """
+                part def P1Def {
+                    port po1 : PortDef1;
+                }
+                port def PortDef1 {
+                    out item item1 : P2Def;
+                }
+                part def P2Def;
+                part def P3Def {
+                    in item item2 : P3Def;
+                }
+                part p1 {
+                    part p2 : P1Def;
+                    part p3 : P3Def;
+                    flow from p2.po1.item1 to p3.item2;
+                    flow f1 from p2.po1.item1 to p3.item2;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with FlowUsages with payload, WHEN importing/exporting the file, THEN the exported text file should be semantically the same as the imported one.")
+    public void checkFlowUsageWithPayload() throws IOException {
+        var input = """
+                package 'Port Example' {
+                    attribute def Temp;
+                    part def Fuel;
+                    port def FuelOutPort {
+                        attribute temperature : Temp;
+                        out item fuelSupply : Fuel;
+                        in item fuelReturn : Fuel;
+                    }
+                    port def FuelInPort {
+                        attribute temperature : Temp;
+                        in item fuelSupply : Fuel;
+                        out item fuelReturn : Fuel;
+                    }
+                    part def FuelTankAssembly {
+                        port fuelTankPort : FuelOutPort;
+                    }
+                    part def Engine {
+                        port engineFuelPort : FuelInPort;
+                    }
+                }
+                package 'Flow Connection Interface Example' {
+                    private import 'Port Example'::*;
+                    part def Vehicle;
+                    part vehicle : Vehicle {
+                        part tankAssy : FuelTankAssembly;
+                        part eng : Engine;
+                        flow of Fuel from tankAssy.fuelTankPort.fuelSupply to eng.engineFuelPort.fuelSupply;
+                        flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of [1] Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of fuel : Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of fuel [1] : Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                    }
+                }""";
+        // Expected difference : Multiplicity are always after Type
+        var expected = """
+                package 'Port Example' {
+                    attribute def Temp;
+                    part def Fuel;
+                    port def FuelOutPort {
+                        attribute temperature : Temp;
+                        out item fuelSupply : Fuel;
+                        in item fuelReturn : Fuel;
+                    }
+                    port def FuelInPort {
+                        attribute temperature : Temp;
+                        in item fuelSupply : Fuel;
+                        out item fuelReturn : Fuel;
+                    }
+                    part def FuelTankAssembly {
+                        port fuelTankPort : FuelOutPort;
+                    }
+                    part def Engine {
+                        port engineFuelPort : FuelInPort;
+                    }
+                }
+                package 'Flow Connection Interface Example' {
+                    private import 'Port Example'::*;
+                    part def Vehicle;
+                    part vehicle : Vehicle {
+                        part tankAssy : FuelTankAssembly;
+                        part eng : Engine;
+                        flow of Fuel from tankAssy.fuelTankPort.fuelSupply to eng.engineFuelPort.fuelSupply;
+                        flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of fuel : Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of fuel : Fuel [1] from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                        flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
+                    }
+                }""";
+        this.checker.check(input, expected);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with ForkNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkForkNode() throws IOException {
         var input = """
