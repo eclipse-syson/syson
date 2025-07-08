@@ -202,7 +202,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
         expressionWidget.setName("ValueExpression");
         expressionWidget.setLabelExpression("Value");
-        expressionWidget.setValueExpression(AQLUtils.getSelfServiceCallExpression("getValueExpression"));
+        expressionWidget.setValueExpression(AQLUtils.getSelfServiceCallExpression("getValueExpressionTextualRepresentation"));
         expressionWidget.setIsEnabledExpression("aql:false");
 
         group.getChildren().add(expressionWidget);
