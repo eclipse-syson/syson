@@ -84,6 +84,8 @@ public class EClassifierTranslator {
             type = "FlowEnd";
         } else if ("ItemFeature".equals(type)) {
             type = "PayloadFeature";
+        } else if ("MetaclassReference".equals(type)) {
+            type = "MetadataUsage";
         }
 
         return SysmlPackage.eINSTANCE.getEClassifier(type);

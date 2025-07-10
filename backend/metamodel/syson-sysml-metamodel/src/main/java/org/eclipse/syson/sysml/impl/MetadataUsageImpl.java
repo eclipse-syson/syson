@@ -34,7 +34,6 @@ import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Metadata Usage</b></em>'. <!-- end-user-doc -->
@@ -124,7 +123,10 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
      */
     @Override
     public EList<Annotation> getOwnedAnnotatingRelationship() {
-        List<Usage> data = new ArrayList<>();
+        List<Annotation> data = this.getOwnedRelationship().stream()
+                .filter(Annotation.class::isInstance)
+                .map(Annotation.class::cast)
+                .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(), data.size(), data.toArray());
     }
 
@@ -192,7 +194,6 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     public Metaclass basicGetMetadataDefinition() {
 
         Metaclass metaClass = (Metaclass) this.getOwnedRelationship().stream()
-                .flatMap(rel -> rel.getOwnedRelatedElement().stream())
                 .filter(FeatureTyping.class::isInstance)
                 .map(FeatureTyping.class::cast)
                 .filter(ft -> ft.getType() instanceof Metaclass)

@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,10 +49,13 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MetadataDefinition;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.PartUsage;
@@ -61,6 +66,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -173,6 +179,79 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN some basic MetadataUsage (not inheriting SemanticMetadata), WHEN importing from textual format, THEN the references 'annotatedElement', 'metadataDefinition' and owned features should be properly handled.")
+    public void checkBasicMetadaUsage() throws IOException {
+        var input = """
+                package p1 {
+                    metadata def MD1 {
+                        attribute x : ScalarValues::String;
+                    }
+                    metadata def MD2 {
+                        attribute y : ScalarValues::String;
+                        :> annotatedElement : SysML::PartUsage;
+                    }
+
+                    #MD1 part p1;
+                    part p2 {
+                        @MD1 {
+                            x = "1";
+                    }
+                    }
+                    part p3;
+                    metadata MD1 about p3;
+                    part p4;
+                    metadata m1 : MD1 about p4;
+
+                    #MD2 part p5;
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<MetadataDefinition> definitions = EMFUtils.allContainedObjectOfType(resource, MetadataDefinition.class)
+                    .toList();
+            assertThat(definitions).hasSize(2);
+
+            MetadataDefinition md1Def = definitions.get(0);
+
+            assertThat(md1Def.getName()).isEqualTo("MD1");
+
+            assertThat(md1Def.getOwnedFeature()).hasSize(1).first()
+                    .matches(feature -> {
+                        return feature.getName().equals("x");
+                    });
+            assertThat(md1Def.getOwnedFeature()).hasSize(1);
+            Feature xFeature = md1Def.getOwnedFeature().get(0);
+
+            MetadataDefinition md2Def = definitions.get(1);
+
+            assertThat(md2Def.getName()).isEqualTo("MD2");
+
+            assertThat(md2Def.getOwnedFeature()).hasSize(2);
+
+            assertThat(md2Def.getOwnedFeature())
+                    .anyMatch(feature -> {
+                        return feature.getName().equals("y");
+                    }, "Has a feature named y");
+            assertThat(md2Def.getOwnedFeature())
+                    .anyMatch(feature -> {
+                        return this.isSubSettingFromStandardLib(feature, "Metaobjects::Metaobject::annotatedElement");
+                    }, "Has redefined the annotatedElement feature");
+
+            List<MetadataUsage> usages = EMFUtils.allContainedObjectOfType(resource, MetadataUsage.class)
+                    .toList();
+
+            assertThat(usages).hasSize(5);
+
+            this.checkMetadaUsage(usages.get(0), "MD1", "p1", Map.of());
+            this.checkMetadaUsage(usages.get(1), "MD1", "p2", Map.of(xFeature, "1"));
+            this.checkMetadaUsage(usages.get(2), "MD1", "p3", Map.of());
+            this.checkMetadaUsage(usages.get(3), "MD1", "p4", Map.of());
+            this.checkMetadaUsage(usages.get(4), "MD2", "p5", Map.of());
+
+        }).check(input);
+    }
+
+    
+
+    @Test
     @DisplayName("GIVEN a model using a BindingConnectorAsUsage with feature chain, WHEN importing the model, THEN model is correctly imported")
     public void checkBindingConnectorWithFeatureChaine() throws IOException {
         var input = """
@@ -206,6 +285,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
 
         }).check(input);
     }
+
     @Test
     @DisplayName("GIVEN a model with a TextualRepresentation with a multiline body, WHEN importing the model, THEN the boly is imported without /* and */")
     public void checkTextualRepresentationFeatures() throws IOException {
@@ -801,5 +881,37 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
 
         assertThat(arguments.get(0)).isInstanceOf(expectedFirstParameterType);
         assertThat(arguments.get(1)).isInstanceOf(expectedSecondParameterType);
+    }
+    
+    private boolean isSubSettingFromStandardLib(Feature feature, String expectedSubSettedFeature) {
+        return feature.getOwnedSpecialization().stream()
+                .filter(Subsetting.class::isInstance)
+                .map(Subsetting.class::cast)
+                .anyMatch(f -> f.getSubsettedFeature() != null && expectedSubSettedFeature.equals(f.getSubsettedFeature().getQualifiedName()));
+    }
+
+    private void checkMetadaUsage(MetadataUsage metadata, String expectedDefinitionName, String annotatedElementName, Map<Feature, String> attributeNameValue) {
+        assertThat(metadata.getMetadataDefinition().getName()).isEqualTo(expectedDefinitionName);
+        assertThat(metadata.getAnnotatedElement()).hasSize(1).as("Should annotate the element " + annotatedElementName).allMatch(e -> annotatedElementName.equals(e.getName()));
+
+        EList<Feature> features = metadata.getOwnedFeature();
+        assertThat(features).hasSize(attributeNameValue.size());
+
+        for (Entry<Feature, String> entry : attributeNameValue.entrySet()) {
+            Optional<ReferenceUsage> matchingFeature = features.stream()
+                    .filter(ReferenceUsage.class::isInstance)
+                    .map(ReferenceUsage.class::cast)
+                    .filter(ref -> ref.redefines(entry.getKey()))
+                    .findFirst();
+            assertThat(matchingFeature).get().satisfies(f -> this.assertStringValue(f, entry.getValue()));
+        }
+    }
+
+    private void assertStringValue(Feature f, String expectedValue) {
+        FeatureValue valuation = new UtilService().getValuation(f);
+        assertNotNull(valuation);
+        assertThat(valuation.getValue())
+                .isNotNull()
+                .matches(v -> v instanceof LiteralString vString && expectedValue.equals(vString.getValue()), "The feature should have a Literal String with value " + expectedValue);
     }
 }

@@ -128,6 +128,35 @@ package 'Flow Connection Interface Example' {
 }
 ```
 
+- Fix textual import issues when importing `MetadataUsage`.
+The following notations used to define `MetadataUsage` are now properly imported by SysON.
+
+
+```
+package p1 {
+    metadata def MD1 {
+        attribute x : ScalarValues::String;
+    }
+    metadata def MD2 {
+        attribute y : ScalarValues::String;
+        :> annotatedElement : SysML::PartUsage;
+    }
+
+    #MD1 part p1; // User Defined Keyword
+    part p2 {
+        @MD1 { // Nested Annotation
+            x = "1";
+    }
+    }
+    part p3;
+    metadata MD1 about p3; // KerML Style
+    part p4;
+    metadata m1 : MD1 about p4; // Named annotation
+
+    #MD2 part p5;
+}
+```
+
 == Improvements
 
 - Align metamodel to {sysmlv2} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/SysML/ for more details) and {kerml} 2025-04 specification released on April 2025 (see https://www.omg.org/spec/KerML/ for more details).
