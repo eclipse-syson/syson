@@ -823,9 +823,7 @@ public class SysMLElementSerializerTest {
         featuringType.setType(metaData1);
 
         MetadataUsage metaDataUsage = this.fact.createMetadataUsage();
-        OwningMembership owningMember = this.fact.createOwningMembership();
-        owningMember.getOwnedRelatedElement().add(featuringType);
-        metaDataUsage.getOwnedRelationship().add(owningMember);
+        metaDataUsage.getOwnedRelationship().add(featuringType);
 
         return metaDataUsage;
     }

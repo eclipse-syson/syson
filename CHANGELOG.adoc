@@ -109,6 +109,7 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 - https://github.com/eclipse-syson/syson/issues/1411[#1411] [syson] Fix an issue where model and diagrams referencing standard libraries elements might not correctly saved.
 - https://github.com/eclipse-syson/syson/issues/1407[#1407] [metamodel] Fix an issue where a `Feature` containing a `ChainingFeature` was not typed with the type of the last `ChainingFeature`.
 - https://github.com/eclipse-syson/syson/issues/1409[#1409] [import] Fix unresolved elements while importing element with `FeatureChain`.
+- https://github.com/eclipse-syson/syson/issues/1431[#1431] [import] Fix textual import issues when importing `MetadataUsage`.
 
 === Improvements
 
