@@ -89,7 +89,7 @@ Type T3 {
 The `FeatureChain` _t1Feature.t2Feature_ is now typed with _T3_.
 
 - Fix a name resolution problem during textual import of elements used in a `FlowConnectionAsUsage`.
-In the following example, the last segment of the `FlowConnectionAsUsage` ends were not propertly resolved during import.
+In the following example, the last segment of the `FlowConnectionAsUsage` ends were not properly resolved during import:
 
 ```
 package 'Port Example' {
@@ -116,21 +116,20 @@ package 'Flow Connection Interface Example' {
     private import 'Port Example'::*;
     part def Vehicle;
     part vehicle : Vehicle {
-        part tankAssy : FuelTankAssembly;
+        part tankAssembly : FuelTankAssembly;
         part eng : Engine;
         flow of Fuel
-            from tankAssy.fuelTankPort.fuelSupply // Failed to resolved fuelSupply
+            from tankAssembly.fuelTankPort.fuelSupply // Failed to resolved fuelSupply
             to eng.engineFuelPort.fuelSupply; // Failed to resolved fuelSupply
         flow of Fuel
             from eng.engineFuelPort.fuelReturn // Failed to resolved fuelReturn
-            to tankAssy.fuelTankPort.fuelReturn; // Failed to resolved fuelReturn
+            to tankAssembly.fuelTankPort.fuelReturn; // Failed to resolved fuelReturn
     }
 }
 ```
 
 - Fix textual import issues when importing `MetadataUsage`.
-The following notations used to define `MetadataUsage` are now properly imported by SysON.
-
+The following notations used to define `MetadataUsage` are now properly imported by SysON:
 
 ```
 package p1 {
@@ -233,7 +232,7 @@ All validation rules have been updated to comply with the {sysmlv2} 2025-04 spec
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.5]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.9]
 - Switch to SysIDE 0.9.0
 - Switch to Sirius EMF-JSON 2.5.3
 - Switch to Node 22.16.0
