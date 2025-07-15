@@ -13,7 +13,7 @@
 package org.eclipse.syson.application.controller.explorer.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -22,16 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
-import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
-import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
@@ -153,19 +147,19 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         AtomicReference<String> treeId = new AtomicReference<>();
         List<String> expandedTreeItemIds = new ArrayList<>();
 
-        var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             treeId.set(tree.getId());
             assertThat(tree.getChildren()).hasSize(2);
             TreeItem sysmlv2Model = tree.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            assertThat(sysmlv2Model.getLabel().toString()).isEqualTo("SysMLv2");
             sysmlModelTreeItemId.set(sysmlv2Model.getId());
             assertThat(sysmlv2Model.isDeletable()).isTrue();
             assertThat(sysmlv2Model.isEditable()).isTrue();
             assertThat(sysmlv2Model.isSelectable()).isTrue();
             assertThat(sysmlv2Model.isHasChildren()).isTrue();
             TreeItem librariesDirectory = tree.getChildren().get(1);
-            this.assertThatTreeItemHasLabel(librariesDirectory, "Libraries");
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
             librariesDirectoryTreeItemId.set(librariesDirectory.getId());
             assertThat(librariesDirectory.isDeletable()).isFalse();
             assertThat(librariesDirectory.isEditable()).isFalse();
@@ -185,26 +179,26 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
 
-        var updatedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var updatedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             TreeItem sysmlv2Model = tree.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            assertThat(sysmlv2Model.getLabel().toString()).isEqualTo("SysMLv2");
             assertThat(sysmlv2Model.isHasChildren()).isTrue();
             assertThat(sysmlv2Model.getChildren()).hasSize(1);
-            this.assertThatTreeItemHasLabel(sysmlv2Model.getChildren().get(0), "Package 1");
+            assertThat(sysmlv2Model.getChildren().get(0).getLabel().toString()).isEqualTo("Package 1");
             TreeItem librariesDirectory = tree.getChildren().get(1);
-            this.assertThatTreeItemHasLabel(librariesDirectory, "Libraries");
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
             assertThat(librariesDirectory.isHasChildren()).isTrue();
             assertThat(librariesDirectory.getChildren()).hasSize(2);
             TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(kermlDirectory, "KerML");
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
             assertThat(kermlDirectory.isDeletable()).isFalse();
             assertThat(kermlDirectory.isEditable()).isFalse();
             assertThat(kermlDirectory.isSelectable()).isTrue();
             assertThat(kermlDirectory.isHasChildren()).isTrue();
             TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
-            this.assertThatTreeItemHasLabel(sysmlDirectory, "SysML");
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
             assertThat(sysmlDirectory.isDeletable()).isFalse();
             assertThat(sysmlDirectory.isEditable()).isFalse();
             assertThat(sysmlDirectory.isSelectable()).isTrue();
@@ -228,11 +222,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
-        var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             TreeItem sysmlv2Model = tree.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            assertThat(sysmlv2Model.getLabel().toString()).isEqualTo("SysMLv2");
             assertThat(sysmlv2Model.isDeletable()).isTrue();
             assertThat(sysmlv2Model.isEditable()).isTrue();
             assertThat(sysmlv2Model.isSelectable()).isTrue();
@@ -240,7 +234,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(sysmlv2Model.isExpanded());
             assertThat(sysmlv2Model.getChildren()).hasSize(1);
             TreeItem namespaceItem = sysmlv2Model.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(namespaceItem, "Namespace");
+            assertThat(namespaceItem.getLabel().toString()).isEqualTo("Namespace");
         });
 
         StepVerifier.create(flux)
@@ -266,24 +260,24 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         AtomicReference<String> kermlDirectoryTreeItemId = new AtomicReference<>();
         AtomicReference<String> sysmlDirectoryTreeItemId = new AtomicReference<>();
 
-        var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             TreeItem sysmlv2Model = tree.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            assertThat(sysmlv2Model.getLabel().toString()).isEqualTo("SysMLv2");
             sysmlModelTreeItemId.set(sysmlv2Model.getId());
             assertThat(sysmlv2Model.isHasChildren()).isTrue();
             TreeItem librariesDirectory = tree.getChildren().get(1);
-            this.assertThatTreeItemHasLabel(librariesDirectory, "Libraries");
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
             librariesDirectoryTreeItemId.set(librariesDirectory.getId());
             assertThat(librariesDirectory.isHasChildren()).isTrue();
             assertThat(librariesDirectory.getChildren()).hasSize(2);
             TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
-            this.assertThatTreeItemHasLabel(kermlDirectory, "KerML");
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
             kermlDirectoryTreeItemId.set(kermlDirectory.getId());
             assertThat(kermlDirectory.isHasChildren()).isTrue();
             TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
-            this.assertThatTreeItemHasLabel(sysmlDirectory, "SysML");
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
             sysmlDirectoryTreeItemId.set(sysmlDirectory.getId());
             assertThat(sysmlDirectory.isHasChildren()).isTrue();
         });
@@ -307,17 +301,5 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> sysmlDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId,
                 sysmlDirectoryTreeItemId.get());
         assertThat(sysmlDirectoryContextMenu).isEmpty();
-    }
-
-    private void assertThatTreeItemHasLabel(TreeItem treeItem, String label) {
-        assertThat(treeItem.getLabel().styledStringFragments().stream().map(StyledStringFragment::text).collect(Collectors.joining())).isEqualTo(label);
-    }
-
-    private Consumer<Object> getTreeSubscriptionConsumer(Consumer<Tree> treeConsumer) {
-        return object -> Optional.of(object)
-                .filter(TreeRefreshedEventPayload.class::isInstance)
-                .map(TreeRefreshedEventPayload.class::cast)
-                .map(TreeRefreshedEventPayload::tree)
-                .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
 }
