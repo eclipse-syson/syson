@@ -229,6 +229,10 @@ The deletions are:
 All standard libraries have been updated to comply with the {sysmlv2} 2025-04 specification.
 All validation rules have been updated to comply with the {sysmlv2} 2025-04 specification.
 
+- Exclude referenced libraries from validation
+Referenced libraries are not validated anymore since users can't fix them in their project.
+It is the responsibility of the library owner to fix the validation issues in the project that contains the library.
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]

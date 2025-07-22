@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,10 @@ public class SysMLv2ValidationService implements IValidationService {
         var diagnostician = this.getNewDiagnostician();
 
         var objects = domain.getResourceSet().getResources().stream()
-                .filter(r -> r.getURI() != null && r.getURI().toString().startsWith(IEMFEditingContext.RESOURCE_SCHEME))
+                .filter(r -> r.getURI() != null
+                        && r.getURI().toString().startsWith(IEMFEditingContext.RESOURCE_SCHEME)
+                        // Do not validate referenced libraries: it is the responsibility of the library project
+                        && r.eAdapters().stream().noneMatch(LibraryMetadataAdapter.class::isInstance))
                 .map(Resource::getContents)
                 .flatMap(Collection::stream)
                 .map(eObject -> diagnostician.validate(eObject, options))
