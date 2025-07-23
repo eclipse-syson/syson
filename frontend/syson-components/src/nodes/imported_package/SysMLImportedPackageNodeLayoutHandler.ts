@@ -71,19 +71,23 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
 
-    if (node.data.resizedByUser) {
+    if (node.data.resizedByUser && !_forceDimensions?.width) {
       if (minNodeWidth > previousDimensions.width) {
         node.width = minNodeWidth;
       } else {
         node.width = previousDimensions.width;
       }
+    } else {
+      node.width = minNodeWidth;
+    }
+
+    if (node.data.resizedByUser && !_forceDimensions?.height) {
       if (minNodeHeight > previousDimensions.height) {
         node.height = minNodeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWidth;
       node.height = minNodeHeight;
     }
   }

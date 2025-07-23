@@ -189,19 +189,23 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
       (prevNode) => prevNode.id === node.id
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
-    if (node.data.resizedByUser) {
+    if (node.data.resizedByUser && !forceDimensions?.width) {
       if (nodeMinComputeWidth > previousDimensions.width) {
         node.width = nodeMinComputeWidth;
       } else {
         node.width = previousDimensions.width;
       }
+    } else {
+      node.width = nodeWidth;
+    }
+
+    if (node.data.resizedByUser && !forceDimensions?.height) {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = nodeWidth;
       node.height = nodeHeight;
     }
 
@@ -233,19 +237,23 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
 
-    if (node.data.resizedByUser) {
+    if (node.data.resizedByUser && !_forceDimensions?.width) {
       if (minNodeWidth > previousDimensions.width) {
         node.width = minNodeWidth;
       } else {
         node.width = previousDimensions.width;
       }
+    } else {
+      node.width = minNodeWidth;
+    }
+
+    if (node.data.resizedByUser && !_forceDimensions?.height) {
       if (minNodeHeight > previousDimensions.height) {
         node.height = minNodeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWidth;
       node.height = minNodeHeight;
     }
   }

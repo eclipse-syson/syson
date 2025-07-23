@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,24 +52,29 @@ export class SysMLNoteNodeLayoutHandler implements INodeLayoutHandler<SysMLNoteN
 
     const nodeMinComputeHeight = labelHeight + borderWidth * 2;
 
-    const nodeWith = forceDimensions?.width ?? node?.width ?? 200;
+    const nodeWidth = forceDimensions?.width ?? node?.width ?? 200;
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
-    if (node.data.resizedByUser) {
-      if (nodeWith > previousDimensions.width) {
-        node.width = nodeWith;
+
+    if (node.data.resizedByUser && !forceDimensions?.width) {
+      if (nodeWidth > previousDimensions.width) {
+        node.width = nodeWidth;
       } else {
         node.width = previousDimensions.width;
       }
+    } else {
+      node.width = nodeWidth;
+    }
+
+    if (node.data.resizedByUser && !forceDimensions?.height) {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = nodeWith;
       node.height = nodeHeight;
     }
 

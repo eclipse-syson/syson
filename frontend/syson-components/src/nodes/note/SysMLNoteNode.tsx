@@ -24,6 +24,7 @@ import {
   EdgeData,
   Label,
   NodeData,
+  useConnectionLineNodeStyle,
   useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
@@ -92,6 +93,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
 
     const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const node = reactFlowInstance.getNodes().find((node) => node.id === id);
@@ -135,6 +137,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
             ...sysMLNoteNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
+            ...connectionLineActiveNodeStyle,
           }}
           onDragOver={onDragOver}
           onDrop={handleOnDrop}

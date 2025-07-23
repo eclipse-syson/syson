@@ -105,6 +105,7 @@ const toViewFrameNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    connectionLinePositionOnNode: 'none',
   };
 
   data.insideLabel = convertInsideLabel(
