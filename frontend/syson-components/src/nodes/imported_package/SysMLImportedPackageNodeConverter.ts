@@ -107,6 +107,7 @@ const toSysMLImportedPackageNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    connectionLinePositionOnNode: 'none',
   };
 
   data.insideLabel = convertInsideLabel(

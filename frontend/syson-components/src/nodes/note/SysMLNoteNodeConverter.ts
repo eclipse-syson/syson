@@ -107,6 +107,7 @@ const toSysMLNoteNode = (
       gqlStyle: style,
       customizedStyleProperties,
     },
+    connectionLinePositionOnNode: 'none',
   };
 
   data.insideLabel = convertInsideLabel(

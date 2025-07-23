@@ -22,6 +22,7 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
+  useConnectionLineNodeStyle,
   useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
@@ -137,6 +138,7 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -226,6 +228,7 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
               ...importedPackageHeaderStyle(theme, data.style, !!selected, data.isHovered, data.faded),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
+              ...connectionLineActiveNodeStyle,
             }}
             data-svg="rect">
             {data.insideLabel ? (
@@ -237,6 +240,7 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
               ...importedPackageContainerStyle(theme, data.style, !!selected, data.isHovered, data.faded),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
+              ...connectionLineActiveNodeStyle,
             }}
             data-svg="rect">
             {labelElement}
