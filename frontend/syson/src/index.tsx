@@ -29,6 +29,7 @@ import {
   ApolloClientOptionsConfigurer,
   apolloClientOptionsConfigurersExtensionPoint,
   DiagramRepresentationConfiguration,
+  ExpandAllTreeItemContextMenuContribution,
   footerExtensionPoint,
   ImportLibraryCommand,
   navigationBarIconExtensionPoint,
@@ -37,7 +38,6 @@ import {
   NodeTypeRegistry,
   SiriusWebApplication,
   UpdateLibraryTreeItemContextMenuContribution,
-  ExpandAllTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
@@ -62,12 +62,15 @@ import {
   SysONObjectTreeItemContextMenuContribution,
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
+
 import { httpOrigin, wsOrigin } from './core/URL';
 import { SysONFooter } from './extensions/SysONFooter';
 import { SysONNavigationBarIcon } from './extensions/SysONNavigationBarIcon';
-import './fonts.css';
-import './reset.css';
 import { sysonTheme } from './theme/sysonTheme';
+
+import './fonts.css';
+import './ReactFlow.css';
+import './reset.css';
 import './variables.css';
 
 if (process.env.NODE_ENV !== 'production') {
