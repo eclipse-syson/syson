@@ -1,0 +1,50 @@
+/*******************************************************************************
+ * Copyright (c) 2025 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+
+/* The circle used to reconnect an edge */
+.react-flow__edgeupdater {
+  cursor: pointer;
+}
+
+/* Set the position of react-flow__edgeupdater inside the node */
+.target_handle_bottom ~ .react-flow__edgeupdater-target {
+  transform: translate(0px, -20px);
+}
+
+.target_handle_top ~ .react-flow__edgeupdater-target {
+  transform: translate(0px, 20px);
+}
+
+.target_handle_right ~ .react-flow__edgeupdater-target {
+  transform: translate(-20px, 0px);
+}
+
+.target_handle_left ~ .react-flow__edgeupdater-target {
+  transform: translate(20px, 0px);
+}
+
+.source_handle_bottom ~ .react-flow__edgeupdater-source {
+  transform: translate(0px, -20px);
+}
+
+.source_handle_top ~ .react-flow__edgeupdater-source {
+  transform: translate(0px, 20px);
+}
+
+.source_handle_right ~ .react-flow__edgeupdater-source {
+  transform: translate(-20px, 0px);
+}
+
+.source_handle_left ~ .react-flow__edgeupdater-source {
+  transform: translate(20px, 0px);
+}
