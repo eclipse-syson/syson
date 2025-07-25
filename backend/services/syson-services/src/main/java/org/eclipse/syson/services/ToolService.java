@@ -150,7 +150,7 @@ public class ToolService {
         var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
-            if (diagramTargetObject instanceof ViewUsage viewUsage) {
+            if (diagramTargetObject instanceof ViewUsage viewUsage && !this.isExposed(newExposedElement, viewUsage)) {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
@@ -177,7 +177,7 @@ public class ToolService {
         var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, viewUsageNode.getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
-            if (diagramTargetObject instanceof ViewUsage viewUsage) {
+            if (diagramTargetObject instanceof ViewUsage viewUsage && !this.isExposed(newExposedElement, viewUsage)) {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(newExposedElement.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
@@ -489,7 +489,11 @@ public class ToolService {
         return sourceNode;
     }
 
-    private void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {
+    protected boolean isExposed(Element element, ViewUsage viewUsage) {
+        return viewUsage.getExposedElement().contains(element);
+    }
+
+    protected void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {
         List<Node> childNodes = currentNode.getChildNodes();
         for (Node childNode : childNodes) {
             this.objectSearchService.getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> {
@@ -499,7 +503,7 @@ public class ToolService {
         }
     }
 
-    private void deleteExpose(List<Expose> exposed, Object exposedElement) {
+    protected void deleteExpose(List<Expose> exposed, Object exposedElement) {
         for (Expose expose : exposed) {
             if (Objects.equals(exposedElement, expose.getImportedElement())) {
                 this.deleteService.deleteFromModel(expose);

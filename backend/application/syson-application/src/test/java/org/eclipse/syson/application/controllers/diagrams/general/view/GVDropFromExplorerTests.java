@@ -50,6 +50,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -233,6 +234,57 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
+    }
+
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void dropFromExplorerTwiceShouldNotExposeElementTwice() {
+        AtomicReference<String> semanticElementId = new AtomicReference<>();
+        Runnable initialState = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
+                    semanticElementId.set(partUsageId);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        Runnable hasBeenExposed = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    var generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID).orElse(null);
+                    assertThat(generalViewViewUsage).isInstanceOf(ViewUsage.class);
+                    var part1 = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.PART_1_ELEMENT_ID).orElse(null);
+                    assertThat(part1).isInstanceOf(PartUsage.class);
+                    assertThat(((ViewUsage) generalViewViewUsage).getExposedElement()).hasSize(1);
+                    assertThat(((ViewUsage) generalViewViewUsage).getExposedElement()).contains((Element) part1);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        Runnable hasNotBeenExposedAgain = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    var generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID).orElse(null);
+                    assertThat(generalViewViewUsage).isInstanceOf(ViewUsage.class);
+                    var part1 = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.PART_1_ELEMENT_ID).orElse(null);
+                    assertThat(part1).isInstanceOf(PartUsage.class);
+                    assertThat(((ViewUsage) generalViewViewUsage).getExposedElement()).hasSize(1);
+                    assertThat(((ViewUsage) generalViewViewUsage).getExposedElement()).contains((Element) part1);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        this.verifier
+                .then(initialState)
+                .then(() -> {
+                    this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram,
+                            null, semanticElementId.get());
+                })
+                .consumeNextWith(payload -> Optional.of(payload))
+                .then(hasBeenExposed)
+                .then(() -> {
+                    this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram,
+                            null, semanticElementId.get());
+                })
+                .consumeNextWith(payload -> Optional.of(payload))
+                .then(hasNotBeenExposedAgain);
     }
 
     private String getSemanticElementWithTargetObjectLabel(IEditingContext editingContext, String targetObjectLabel) {
