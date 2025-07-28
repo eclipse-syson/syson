@@ -35,9 +35,9 @@ import org.springframework.stereotype.Service;
 public class SysONExplorerFilterService implements ISysONExplorerFilterService {
 
     private final UtilService utilService = new UtilService();
-    
+
     private final ISysONResourceService sysONResourceService;
-    
+
     public SysONExplorerFilterService(final ISysONResourceService sysONResourceService) {
         this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
     }

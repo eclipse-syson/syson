@@ -35,8 +35,9 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controller.explorer.testers.ExpandTreeItemTester;
+import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeItemTester;
 import org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester;
+import org.eclipse.syson.application.controller.explorer.testers.TreePathTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.SysonStudioTestProjectData;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
@@ -81,10 +82,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     private SysONTreeViewDescriptionProvider sysonTreeViewDescriptionProvider;
 
     @Autowired
-    private ExpandTreeItemTester expandTreeItemTester;
+    private ExpandAllTreeItemTester expandAllTreeItemTester;
 
     @Autowired
     private TreeItemContextMenuTester treeItemContextMenuTester;
+
+    @Autowired
+    private TreePathTester treePathTester;
 
     @Autowired
     private SysONTreeFilterProvider sysonTreeFilterProvider;
@@ -169,9 +173,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
-                .then(() -> expandedTreeItemIds.addAll(this.expandTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), sysmlModelTreeItemId.get())))
+                .then(() -> expandedTreeItemIds.addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), sysmlModelTreeItemId.get())))
                 .then(() -> expandedTreeItemIds
-                        .addAll(this.expandTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), librariesDirectoryTreeItemId.get())))
+                        .addAll(this.expandAllTreeItemTester.expandTreeItem(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), librariesDirectoryTreeItemId.get())))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
@@ -301,5 +305,45 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> sysmlDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId,
                 sysmlDirectoryTreeItemId.get());
         assertThat(sysmlDirectoryContextMenu).isEmpty();
+    }
+
+    @DisplayName("GIVEN an empty SysML Project, WHEN context menu is queried, THEN the tree path should take into accounts the Explorer filters.")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void treePathQueryApplyExplorerFilters() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        AtomicReference<String> treeId = new AtomicReference<>();
+        AtomicReference<String> sysmlv2DocumentTreeItemId = new AtomicReference<>();
+        AtomicReference<String> package1TreeItemId = new AtomicReference<>();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlv2DocumentTreeItem = tree.getChildren().get(0);
+            assertThat(sysmlv2DocumentTreeItem.getLabel().toString()).isEqualTo("SysMLv2");
+            sysmlv2DocumentTreeItemId.set(sysmlv2DocumentTreeItem.getId());
+            assertThat(sysmlv2DocumentTreeItem.isHasChildren()).isTrue();
+            TreeItem package1TreeItem = sysmlv2DocumentTreeItem.getChildren().get(0);
+            assertThat(package1TreeItem.getLabel().toString()).isEqualTo("Package 1");
+            package1TreeItemId.set(package1TreeItem.getId());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        // the list of tree item Ids to expand when a GetTreePath query is called on Package 1 with "Hide Memberships"
+        // and "Hide Root Namespaces" filters active.
+        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
+        assertThat(treeItemIdsToExpand).hasSize(1);
+        assertThat(treeItemIdsToExpand).contains(sysmlv2DocumentTreeItemId.get());
     }
 }
