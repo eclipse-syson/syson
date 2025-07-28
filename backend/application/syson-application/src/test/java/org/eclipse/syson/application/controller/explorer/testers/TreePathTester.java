@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,34 +19,34 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.TreePathQueryRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import reactor.test.StepVerifier;
 
 /**
- * Expands a tree item in the explorer.
+ * Get the tree path of a tree item in the explorer.
  * <p>
  * This class should be used as part of a subscription verification (see
  * {@link StepVerifier#create(org.reactivestreams.Publisher)}).
  * </p>
  *
- * @author gdaniel
+ * @author arichard
  */
 @Service
-public class ExpandTreeItemTester {
+public class TreePathTester {
 
     @Autowired
-    private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
+    private TreePathQueryRunner treePathQueryRunner;
 
-    public List<String> expandTreeItem(String editingContextId, String treeId, String treeItemId) {
-        Map<String, Object> expandVariables = Map.of(
+    public List<String> getTreeItemIdsToExpand(String editingContextId, String treeId, List<String> selectionEntryIds) {
+        Map<String, Object> getTreePathVariables = Map.of(
                 "editingContextId", editingContextId,
                 "treeId", treeId,
-                "treeItemId", treeItemId);
-        String result = this.expandAllTreePathQueryRunner.run(expandVariables);
-        List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+                "selectionEntryIds", selectionEntryIds);
+        String result = this.treePathQueryRunner.run(getTreePathVariables);
+        List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
         assertThat(treeItemIdsToExpand).isNotEmpty();
         return treeItemIdsToExpand;
     }
