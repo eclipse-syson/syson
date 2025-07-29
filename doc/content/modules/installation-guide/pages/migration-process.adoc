@@ -2,9 +2,48 @@
 
 If you're upgrading from an older version of {product} to the latest release, this section provides step-by-step guidance on migrating your existing data and settings to the new version.
 
+In any case, it is strongly recommended to back up your data before proceeding with any migration.
+
+== v2025.6.0
+
+Adopting the 2025.6.0 version doesn't require a migration process.
+
+== v2025.4.0
+
+Align metamodel to SysMLv2 2024-12 specification released on December 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML 2024-12 specification released on December 2024(see https://www.omg.org/spec/KerML/ for more details).
+Automatic migration process is provided to update your existing SysON models/projects to the new metamodel.
+But in any case, please download all your models/projects and backup your database before upgrading to 2025.4.0.
+
+== v2025.2.0
+
+Adopting the 2025.2.0 version doesn't require a migration process.
+
+== 2025.1.0
+
+Adopting the 2025.1.0 version doesn't require a migration process.
+
+== 2024.11.0
+
+Adopting the 2024.11.0 version doesn't require a migration process.
+
+== 2024.9.0
+
+Align metamodel to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+You may have to fix your existing SysON models/projects by your own means to still be able to open them with SysON.
+Please download all your models/projects and backup your database before upgrading to 2024.9.0.
+
+== 2024.7.0
+
+A reset of the database is needed.
+
 == 2024.5.0
 
-Adopting the 20245.0 version doesn't require a migration process.
+The `requirement-view` diagram has been introduced by error in the last release. This diagram is not defined in the SysMLv2 specification. It has been deleted in this release.
+You will not be able to open those diagrams anymore.
+
+== 2024.5.0
+
+Adopting the 2024.5.0 version doesn't require a migration process.
 
 == 2024.3.0
 
