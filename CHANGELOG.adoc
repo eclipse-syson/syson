@@ -10,6 +10,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/1454[#1454] [import] Fix an issue where importing textual models with `MetadataAccessExpression` failed.
+
 === Improvements
 
 === New features
