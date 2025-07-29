@@ -145,7 +145,7 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 ** `hasChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
 ** `getChildren`: new `List<RepresentationMetadata> existingRepresentations` parameter
 
-- https://github.com/eclipse-syson/syson/issues/1350[#1350] [metamodel] _org.eclipse.syson.sysml.textual.SysMLElementSerializer.SysMLElementSerializer_ now requires to be given an implementation of _INameDeresover_ as a constructor parameter.
+- https://github.com/eclipse-syson/syson/issues/1350[#1350] [metamodel] _org.eclipse.syson.sysml.textual.SysMLElementSerializer.SysMLElementSerializer_ now requires to be given an implementation of _INameDeresolver_ as a constructor parameter.
 The constructor with implicit parameters has disappeared and need to be replaced by the constructor with all parameters.
 
 === Dependency update
