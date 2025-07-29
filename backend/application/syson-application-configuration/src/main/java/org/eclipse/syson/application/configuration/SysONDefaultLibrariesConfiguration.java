@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -30,6 +31,7 @@ import org.eclipse.syson.application.libraries.SysONLibraryLoadingDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -78,12 +80,18 @@ public class SysONDefaultLibrariesConfiguration {
 
         final EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
         final ResourceSet resourceSet = new ResourceSetImpl();
+        LibraryNamespaceProvider libraryNamespaceProvider = new LibraryNamespaceProvider(resourceSet);
+        resourceSet.eAdapters().add(libraryNamespaceProvider);
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         this.populateWithDefaultEPackages(ePackageRegistry);
         this.populateWithDefaultLibraries(resourceSet);
 
         EMFUtils.resolveAllNonDerived(resourceSet);
+
+        for (Resource r : resourceSet.getResources()) {
+            libraryNamespaceProvider.addImmutableLibrariesNamespaces(r);
+        }
 
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toMillis();

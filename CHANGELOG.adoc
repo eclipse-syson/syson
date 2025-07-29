@@ -45,6 +45,9 @@ This contribution introduces some breaking changes:
 If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to https://doc.mbse-syson.org/syson/main/installation-guide/migration-process.html[the migration process page of the official documentation].
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
+- _ImplicitSpecializationSwitch_ now requires an _ILibraryNamespaceProvider_ to access element from `LibraryPackage`. A default implementation is given with _org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch_.
+This new object offers a way to register immutable `LibraryPackage`.
+Any `Namespace` stored in those libraries are now cached for quick access.
 
 === Dependency update
 
