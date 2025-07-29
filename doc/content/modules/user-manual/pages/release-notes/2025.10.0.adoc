@@ -1,0 +1,17 @@
+= 2025.10.0 (work in progress)
+
+== Key highlights
+
+== Breaking changes
+
+== New features
+
+== Bug fixes
+
+== Improvements
+
+== Dependency update
+
+== Technical details
+
+* For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
