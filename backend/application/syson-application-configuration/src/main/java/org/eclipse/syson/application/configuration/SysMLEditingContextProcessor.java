@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
+import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,17 +60,20 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     @Override
     public void preProcess(IEditingContext editingContext) {
+        // Do not initialize the editing context as a SysON editing context if it contains a studio.
         if (editingContext instanceof IEMFEditingContext siriusWebEditingContext
                 && !this.studioCapableEditingContextPredicate.test(editingContext.getId())) {
-            // Do not initialize the editing context as a SysON editing context if it contains a studio.
-            siriusWebEditingContext.getDomain().getResourceSet().eAdapters().add(new SysONEContentAdapter());
 
             Instant start = Instant.now();
             ResourceSet sourceResourceSet = this.defaultLibraries.getLibrariesResourceSet();
             ResourceSet targetResourceSet = siriusWebEditingContext.getDomain().getResourceSet();
-            /*
-             * Use a common copier for all the resources to make sure cross-references are correctly copied.
-             */
+            targetResourceSet.eAdapters().add(new SysONEContentAdapter());
+
+            // Register an adapter to ease the access to Namespaces using their full qualified name stored in Libraries
+            LibraryNamespaceProvider libraryNamespaceProvider = new LibraryNamespaceProvider(targetResourceSet);
+            targetResourceSet.eAdapters().add(libraryNamespaceProvider);
+
+            // Use a common copier for all the resources to make sure cross-references are correctly copied.
             SysONCopier copier = new SysONCopier();
             sourceResourceSet.getResources().forEach(sourceResource -> {
                 Resource targetResource = targetResourceSet.getResource(sourceResource.getURI(), false);
@@ -93,10 +97,15 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                     }
                 }
             });
-            /*
-             * Copy all the references after the elements to make sure cross-references are correctly copied.
-             */
+
+            // Copy all the references after the elements to make sure cross-references are correctly copied.
             copier.copyReferences();
+
+            // At this point only immutable PackageLibraries are present in the ResourceSet so can we register them as
+            // immutable in the LibraryNamespaceProvider
+            for (Resource r : targetResourceSet.getResources()) {
+                libraryNamespaceProvider.addImmutableLibrariesNamespaces(r);
+            }
             Instant finish = Instant.now();
             long timeElapsed = Duration.between(start, finish).toMillis();
             this.logger.info("Copied all default libraries in the editing context in {} ms", timeElapsed);
