@@ -45,6 +45,7 @@ import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.DecisionNode;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
@@ -54,6 +55,7 @@ import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
@@ -249,7 +251,62 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
-    
+    @Test
+    @DisplayName("GIVEN a model with a semantic MetadataDefinition, WHEN importing the model, THEN MetadataDefinition should be properly created")
+    public void checkSemanticMetadataDefinition() throws IOException {
+        var input = """
+                private import Metaobjects::SemanticMetadata;
+
+                part def Functions {
+                    attribute x : ScalarValues::String;
+                }
+
+                part functions : Functions [*] nonunique;
+
+                metadata def Function :> SemanticMetadata {
+                    :>> baseType = Functions meta SysML::ActionDefinition;
+                }
+                """;
+        this.checker.checkImportedModel(resource -> {
+            List<MetadataDefinition> metadatas = EMFUtils.allContainedObjectOfType(resource, MetadataDefinition.class)
+                    .toList();
+            assertThat(metadatas).hasSize(1);
+
+            MetadataDefinition metadata = metadatas.get(0);
+
+            assertThat(metadata.specializesFromLibrary("Metaobjects::SemanticMetadata")).isTrue();
+            assertThat(metadata.getOwnedFeature()).hasSize(1);
+
+            Feature baseTypeFeature = metadata.getOwnedFeature().get(0);
+            assertThat(baseTypeFeature.getName()).isEqualTo("baseType");
+            assertThat(baseTypeFeature.specializesFromLibrary("Metaobjects::SemanticMetadata::baseType")).isTrue();
+
+            FeatureValue baseTypeValuation = new UtilService().getValuation(baseTypeFeature);
+            Expression baseTypeValuevalue = baseTypeValuation.getValue();
+            assertThat(baseTypeValuevalue).isInstanceOf(OperatorExpression.class)
+                    .matches(exp -> "meta".equals(((OperatorExpression) exp).getOperator()));
+
+            OperatorExpression opExpression = (OperatorExpression) baseTypeValuevalue;
+
+            assertThat(opExpression.getParameter()).hasSize(2);
+
+            Feature seqParameter = opExpression.getParameter().get(0);
+            FeatureValue seqValuation = new UtilService().getValuation(seqParameter);
+            Expression seqValue = seqValuation.getValue();
+
+            assertThat(seqValue).isInstanceOf(MetadataAccessExpression.class);
+
+            MetadataAccessExpression metadataAccessExpression = (MetadataAccessExpression) seqValue;
+
+            assertThat(metadataAccessExpression.getReferencedElement()).isNotNull()
+                    .extracting(Element::getName).isEqualTo("Functions");
+
+            Feature result = opExpression.getResult();
+
+            assertThat(result.getType()).hasSize(1).allMatch(t -> "SysML::Systems::ActionDefinition".equals(t.getQualifiedName()));
+
+        }).check(input);
+    }
 
     @Test
     @DisplayName("GIVEN a model using a BindingConnectorAsUsage with feature chain, WHEN importing the model, THEN model is correctly imported")

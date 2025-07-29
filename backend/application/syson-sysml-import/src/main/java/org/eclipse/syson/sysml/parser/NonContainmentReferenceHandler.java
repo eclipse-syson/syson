@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -30,7 +31,7 @@ import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 
 /**
- * Class that handles non containment reference.
+ * Class that handles non containment references.
  *
  * @author gescande.
  */
@@ -44,43 +45,50 @@ public class NonContainmentReferenceHandler {
 
     private final LogNameProvider logNameProvider = new LogNameProvider();
 
+    private final ReferenceNodeTester referenceNodeTester = new ReferenceNodeTester();
+
     private final List<ProxiedReference> proxiesToResolve = new ArrayList<>();
 
     private final MessageReporter messageReporter;
 
+    private final SysIDENonContainmentIncompatibilitiesHandler sysideIncompatibilitiesHandler;
+
     public NonContainmentReferenceHandler(MessageReporter messageReporter) {
-        this.messageReporter = messageReporter;
+        this.messageReporter = Objects.requireNonNull(messageReporter);
+        this.sysideIncompatibilitiesHandler = new SysIDENonContainmentIncompatibilitiesHandler(this);
     }
 
     public boolean isNonContainmentReference(final Element owner, String referenceName, final JsonNode astValue) {
         if (astValue.isContainerNode()) {
             JsonNode referenceTypeNode = astValue.get("$type");
-            JsonNode textNode = astValue.get("text");
-            return referenceTypeNode != null && astValue.has("reference") && textNode != null && textNode.isTextual();
+            return referenceTypeNode != null && this.referenceNodeTester.test(astValue);
         }
         return false;
     }
 
     public void createProxy(final Element owner, String referenceName, final JsonNode astValue) {
-        JsonNode referenceTypeNode = astValue.get("$type");
-        JsonNode textNode = astValue.get("text");
-        String referenceType = referenceTypeNode.asText();
-        final EObject refrenceTypeInstance = this.typeBuilder.createObject(astValue);
+        boolean handled = this.sysideIncompatibilitiesHandler.handleNonContainmentReference(owner, referenceName, astValue);
+        if (!handled) {
+            JsonNode referenceTypeNode = astValue.get("$type");
+            JsonNode textNode = astValue.get("text");
+            String referenceType = referenceTypeNode.asText();
+            final EObject refrenceTypeInstance = this.typeBuilder.createObject(astValue);
 
-        if (refrenceTypeInstance instanceof InternalEObject internalTarget) {
-            String qualifiedNameTarget = textNode.asText();
-            internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", QUALIFIED_CONST, qualifiedNameTarget));
-            // It should be a reference
-            Optional<EReference> optEReference = this.referenceComputer.getNonContainmentReference(owner.eClass(), refrenceTypeInstance.eClass(), referenceName);
-            if (optEReference.isEmpty()) {
-                this.messageReporter.error(MessageFormat.format("Unable to find a reference from {0} to {1} with reference name {2} on object {3}", owner.eClass().getName(),
-                        refrenceTypeInstance.eClass().getName(), referenceType, this.logNameProvider.getName(owner)));
+            if (refrenceTypeInstance instanceof InternalEObject internalTarget) {
+                String qualifiedNameTarget = textNode.asText();
+                internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", QUALIFIED_CONST, qualifiedNameTarget));
+                // It should be a reference
+                Optional<EReference> optEReference = this.referenceComputer.getNonContainmentReference(owner.eClass(), refrenceTypeInstance.eClass(), referenceName);
+                if (optEReference.isEmpty()) {
+                    this.messageReporter.error(MessageFormat.format("Unable to find a reference from {0} to {1} with reference name {2} on object {3}", owner.eClass().getName(),
+                            refrenceTypeInstance.eClass().getName(), referenceType, this.logNameProvider.getName(owner)));
+                } else {
+                    EReference ref = optEReference.get();
+                    this.doSetProxy(owner, internalTarget, ref);
+                }
             } else {
-                EReference ref = optEReference.get();
-                this.doSetProxy(owner, internalTarget, ref);
+                this.messageReporter.error(MessageFormat.format("Unable to create on {0} for reference {1} with value {2}", this.logNameProvider.getName(owner), referenceName, astValue));
             }
-        } else {
-            this.messageReporter.error(MessageFormat.format("Unable to create on {0} for reference {1} with value {2}", this.logNameProvider.getName(owner), referenceName, astValue));
         }
     }
 
@@ -96,5 +104,4 @@ public class NonContainmentReferenceHandler {
         }
         this.proxiesToResolve.add(new ProxiedReference(owner, ref, refrenceTypeInstance));
     }
-
 }

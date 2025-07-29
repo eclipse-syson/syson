@@ -8,6 +8,23 @@
 
 == Bug fixes
 
+- Fix textual import issues while importing model with `MetadataAccessExpression`.
+The following model is now properly imported:
+
+```
+private import Metaobjects::SemanticMetadata;
+
+part def Functions {
+    attribute x : ScalarValues::String;
+}
+
+part functions : Functions [*] nonunique;
+
+metadata def Function :> SemanticMetadata {
+    :>> baseType = functions meta SysML::ActionUsage;
+}
+```
+
 == Improvements
 
 == Dependency update
