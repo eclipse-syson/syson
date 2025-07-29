@@ -18,6 +18,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataFeature;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -67,15 +69,17 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->The referencedElement of a MetadataAccessExpression is the memberElement of its first
+     * ownedMembership that is not a FeatureMembership <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Element basicGetReferencedElement() {
-        // TODO: implement this method to return the 'Referenced Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedMembership().stream()
+                .filter(f -> !(f instanceof FeatureMembership))
+                .map(Membership::getMemberElement)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
