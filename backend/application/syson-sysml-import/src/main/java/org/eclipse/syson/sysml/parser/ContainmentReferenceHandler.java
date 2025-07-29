@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
@@ -46,16 +47,18 @@ public class ContainmentReferenceHandler {
 
     private final EReferenceComputer referenceTranslator = new EReferenceComputer();
 
+    private final ReferenceNodeTester referenceNodeTester = new ReferenceNodeTester();
+
     private final MessageReporter messageReporter;
 
     public ContainmentReferenceHandler(MessageReporter messageReporter) {
-        this.messageReporter = messageReporter;
+        this.messageReporter = Objects.requireNonNull(messageReporter);
     }
 
     public boolean isContainmentReference(final EObject eObject, String referenceName, final JsonNode astValue) {
         if (astValue.isContainerNode()) {
             JsonNode referenceTypeNode = astValue.get("$type");
-            return referenceTypeNode != null && referenceTypeNode.isTextual() && !astValue.has("reference");
+            return referenceTypeNode != null && referenceTypeNode.isTextual() && !this.referenceNodeTester.test(astValue);
         }
         return false;
     }
@@ -129,5 +132,4 @@ public class ContainmentReferenceHandler {
         }
         return true;
     }
-
 }
