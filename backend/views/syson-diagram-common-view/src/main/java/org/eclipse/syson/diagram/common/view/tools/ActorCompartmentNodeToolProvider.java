@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.util.AQLUtils;
 
@@ -30,7 +31,7 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActorSelectionDialogElements"))
+                .elementsExpression(AQLUtils.getServiceCallExpression(IEditingContext.EDITING_CONTEXT, "getActorSelectionDialogElements"))
                 .childrenExpression(AQLUtils.getSelfServiceCallExpression("getActorSelectionDialogChildren"))
                 .isSelectableExpression("aql:self.oclIsKindOf(sysml::PartUsage)")
                 .build();

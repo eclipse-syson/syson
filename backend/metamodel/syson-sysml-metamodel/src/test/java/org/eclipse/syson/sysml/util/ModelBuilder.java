@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -232,6 +233,8 @@ public class ModelBuilder {
                 parent.getOwnedRelationship().add(newInstanceRelationship);
             } else if (newInstance instanceof EnumerationUsage feature && parent instanceof EnumerationDefinition) {
                 this.addVariantMembership(parent, feature);
+            } else if (parent instanceof Membership membership) {
+                membership.getOwnedRelatedElement().add(newInstance);
             } else if (newInstance instanceof Feature feature && !(parent instanceof Package)) {
                 this.addFeatureMembership(parent, feature);
             } else {

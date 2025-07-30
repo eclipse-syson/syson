@@ -69,10 +69,10 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
      */
     @Override
     public EList<PartUsage> getActorParameter() {
-        List<PartUsage> actorParameters = this.getParameter().stream()
-                .filter(PartUsage.class::isInstance)
-                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
-                .map(PartUsage.class::cast)
+        List<PartUsage> actorParameters = this.getFeatureMembership().stream()
+                .filter(ActorMembership.class::isInstance)
+                .map(ActorMembership.class::cast)
+                .map(ActorMembership::getOwnedActorParameter)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), actorParameters.size(), actorParameters.toArray());
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,20 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.List;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -82,7 +89,7 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     /**
      * Return the node tool icon URL expression to retrieve the icon of the tool visible in the compartment palette.
      *
-     * @return
+     * @return the node tool icon URL expression
      */
     protected abstract String getNodeToolIconURLsExpression();
 
@@ -91,14 +98,19 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         var builder = this.diagramBuilderHelper.newNodeTool();
         builder.dialogDescription(this.getSelectionDialogDescription());
 
+        var updateExposedElements = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("updateExposedElements", List.of("self", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)));
+
         var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getServiceCallExpression());
 
         if (this.revealOnCreate()) {
             var revealOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
-                    .build();
-            creationCompartmentItemServiceCall.children(revealOperation);
+                    .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                            List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+            creationCompartmentItemServiceCall.children(revealOperation.build(), updateExposedElements.build());
+        } else {
+            creationCompartmentItemServiceCall.children(updateExposedElements.build());
         }
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
