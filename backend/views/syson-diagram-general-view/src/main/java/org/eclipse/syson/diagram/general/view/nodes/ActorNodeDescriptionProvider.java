@@ -50,7 +50,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String createPreconditionExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isActor()");
+        return AQLUtils.getSelfServiceCallExpression("isActor");
     }
 
     @Override
