@@ -17,14 +17,15 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -54,40 +55,48 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
             gen.writeStringField(ID, id.get());
         }
         gen.writeStringField("@type", value.eClass().getName());
-        EList<EAttribute> eAllAttributes = value.eClass().getEAllAttributes();
-        for (EAttribute eAttribute : eAllAttributes) {
-            Object objectValue = value.eGet(eAttribute);
-            if (objectValue != null) {
-                // The writeObjectField does not handle enum values properly, as it generates the value in uppercase
-                // letters instead of lowercase.
-                if (objectValue instanceof Enumerator enumerator) {
-                    objectValue = enumerator.getLiteral();
-                }
-                gen.writeObjectField(eAttribute.getName(), objectValue);
-            } else {
-                gen.writeStringField(eAttribute.getName(), null);
-            }
-        }
-        EList<EReference> eAllReferences = value.eClass().getEAllReferences();
-        for (EReference eReference : eAllReferences) {
-            Object objectValue = value.eGet(eReference);
-            if (objectValue != null) {
-                if (eReference.isMany()) {
-                    this.writeArray(gen, eReference.getName(), objectValue);
-                } else if (objectValue instanceof Element elt && !VirtualLinkAdapter.hasVirtualLink(elt)) {
-                    // !VirtualLinkAdapter.hasVirtualLink(elt) allows to not serialize implicit elements
-                    var refElementId = elt.getElementId();
-                    if (refElementId != null) {
-                        gen.writeObjectFieldStart(eReference.getName());
-                        gen.writeStringField(ID, refElementId);
-                        gen.writeEndObject();
-                    }
-                }
-            } else {
-                gen.writeStringField(eReference.getName(), null);
+        var eAllSFs = value.eClass().getEAllStructuralFeatures().stream().sorted(Comparator.comparing(EStructuralFeature::getName)).toList();
+        for (EStructuralFeature eSF : eAllSFs) {
+            if (eSF instanceof EAttribute eAttribute) {
+                this.serializeAttribute(value, gen, eAttribute);
+            } else if (eSF instanceof EReference eReference) {
+                this.serializeReference(value, gen, eReference);
             }
         }
         gen.writeEndObject();
+    }
+
+    private void serializeAttribute(EObject value, JsonGenerator gen, EAttribute eAttribute) throws IOException {
+        Object objectValue = value.eGet(eAttribute);
+        if (objectValue != null) {
+            // The writeObjectField does not handle enum values properly, as it generates the value in uppercase
+            // letters instead of lowercase.
+            if (objectValue instanceof Enumerator enumerator) {
+                objectValue = enumerator.getLiteral();
+            }
+            gen.writeObjectField(eAttribute.getName(), objectValue);
+        } else {
+            gen.writeStringField(eAttribute.getName(), null);
+        }
+    }
+
+    private void serializeReference(EObject value, JsonGenerator gen, EReference eReference) throws IOException {
+        Object objectValue = value.eGet(eReference);
+        if (objectValue != null) {
+            if (eReference.isMany()) {
+                this.writeArray(gen, eReference.getName(), objectValue);
+            } else if (objectValue instanceof Element elt && !VirtualLinkAdapter.hasVirtualLink(elt)) {
+                // !VirtualLinkAdapter.hasVirtualLink(elt) allows to not serialize implicit elements
+                var refElementId = elt.getElementId();
+                if (refElementId != null) {
+                    gen.writeObjectFieldStart(eReference.getName());
+                    gen.writeStringField(ID, refElementId);
+                    gen.writeEndObject();
+                }
+            }
+        } else {
+            gen.writeStringField(eReference.getName(), null);
+        }
     }
 
     private void writeArray(JsonGenerator gen, String arrayName, Object objectValue) throws IOException {
