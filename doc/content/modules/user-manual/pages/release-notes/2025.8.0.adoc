@@ -237,6 +237,10 @@ All validation rules have been updated to comply with the {sysmlv2} 2025-04 spec
 Referenced libraries are not validated anymore since users can't fix them in their project.
 It is the responsibility of the library owner to fix the validation issues in the project that contains the library.
 
+- For all REST APIs, make `@id` and `elementId` attributes having the same value (the `elementId` one) in JSON serialization.
+The SysMLv2 standard has not decided if those two attributes should be the same or not.
+This change is made to ease the usage of the REST APIs and to avoid confusion.
+
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
