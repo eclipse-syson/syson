@@ -158,6 +158,7 @@ package p1 {
 
 - In the _Explorer_ view, fix an issue where the context menu of a tree item was loaded twice.
 - In diagrams, fix an issue where the `Actors` were not shown anymore in the _actors_ compartment.
+- For all REST APIs, fix an issue where string values were used instead of literal values for primitive types when serializing with JSON.
 
 
 == Improvements

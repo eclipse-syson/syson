@@ -1,172 +1,172 @@
 {
-    "@id": "9101be49-227d-3c8b-acc6-f122441edba1",
-    "@type": "DataVersion",
-    "identity": {
-        "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e",
-        "@type": "DataIdentity"
+  "@id": "9101be49-227d-3c8b-acc6-f122441edba1",
+  "@type": "DataVersion",
+  "identity": {
+    "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e",
+    "@type": "DataIdentity"
+  },
+  "payload": {
+    "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
+    "@type": "PartUsage",
+    "aliasIds": [],
+    "declaredName": "p",
+    "declaredShortName": null,
+    "elementId": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
+    "isImpliedIncluded": false,
+    "isLibraryElement": false,
+    "name": "p",
+    "qualifiedName": "Package1::p",
+    "shortName": null,
+    "isAbstract": false,
+    "isConjugated": false,
+    "isSufficient": false,
+    "direction": null,
+    "isComposite": true,
+    "isConstant": false,
+    "isDerived": false,
+    "isEnd": false,
+    "isNonunique": false,
+    "isOrdered": false,
+    "isPortion": false,
+    "isUnique": true,
+    "isVariable": false,
+    "isReference": false,
+    "isVariation": false,
+    "mayTimeVary": false,
+    "isIndividual": false,
+    "portionKind": null,
+    "eAnnotations": [],
+    "documentation": [],
+    "ownedAnnotation": [],
+    "ownedElement": [],
+    "ownedRelationship": [
+      {
+        "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
+      }
+    ],
+    "owner": {
+      "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490"
     },
-    "payload": {
-        "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
-        "@type": "PartUsage",
-        "aliasIds": "[]",
-        "declaredName": "p",
-        "declaredShortName": null,
-        "elementId": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
-        "isImpliedIncluded": "false",
-        "isLibraryElement": "false",
-        "name": "p",
-        "qualifiedName": "Package1::p",
-        "shortName": null,
-        "isAbstract": "false",
-        "isConjugated": "false",
-        "isSufficient": "false",
-        "direction": null,
-        "isComposite": "true",
-        "isConstant": "false",
-        "isDerived": "false",
-        "isEnd": "false",
-        "isNonunique": "false",
-        "isOrdered": "false",
-        "isPortion": "false",
-        "isUnique": "true",
-        "isVariable": "false",
-        "isReference": "false",
-        "isVariation": "false",
-        "mayTimeVary": "false",
-        "isIndividual": "false",
-        "portionKind": null,
-        "eAnnotations": [],
-        "documentation": [],
-        "ownedAnnotation": [],
-        "ownedElement": [],
-        "ownedRelationship": [
-            {
-                "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
-            }
-        ],
-        "owner": {
-            "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490"
-        },
-        "owningMembership": {
-            "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
-        },
-        "owningNamespace": {
-            "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490"
-        },
-        "owningRelationship": {
-            "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
-        },
-        "textualRepresentation": [],
-        "importedMembership": [],
-        "member": [],
-        "membership": [],
-        "ownedImport": [],
-        "ownedMember": [],
-        "ownedMembership": [],
-        "differencingType": [],
-        "directedFeature": [],
-        "endFeature": [],
-        "feature": [],
-        "featureMembership": [],
-        "inheritedFeature": [],
-        "inheritedMembership": [],
-        "input": [],
-        "intersectingType": [],
-        "multiplicity": null,
-        "output": [],
-        "ownedConjugator": null,
-        "ownedDifferencing": [],
-        "ownedDisjoining": [],
-        "ownedEndFeature": [],
-        "ownedFeature": [],
-        "ownedFeatureMembership": [],
-        "ownedIntersecting": [],
-        "ownedSpecialization": [
-            {
-                "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
-            }
-        ],
-        "ownedUnioning": [],
-        "unioningType": [],
-        "chainingFeature": [],
-        "crossFeature": null,
-        "endOwningType": null,
-        "featureTarget": {
-            "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d"
-        },
-        "featuringType": [],
-        "ownedCrossSubsetting": null,
-        "ownedFeatureChaining": [],
-        "ownedFeatureInverting": [],
-        "ownedRedefinition": [],
-        "ownedReferenceSubsetting": null,
-        "ownedSubsetting": [],
-        "ownedTypeFeaturing": [],
-        "ownedTyping": [
-            {
-                "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
-            }
-        ],
-        "owningFeatureMembership": null,
-        "owningType": null,
-        "type": [
-            {
-                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
-            }
-        ],
-        "definition": [
-            {
-                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
-            }
-        ],
-        "directedUsage": [],
-        "nestedAction": [],
-        "nestedAllocation": [],
-        "nestedAnalysisCase": [],
-        "nestedAttribute": [],
-        "nestedCalculation": [],
-        "nestedCase": [],
-        "nestedConcern": [],
-        "nestedConnection": [],
-        "nestedConstraint": [],
-        "nestedEnumeration": [],
-        "nestedFlow": [],
-        "nestedInterface": [],
-        "nestedItem": [],
-        "nestedMetadata": [],
-        "nestedOccurrence": [],
-        "nestedPart": [],
-        "nestedPort": [],
-        "nestedReference": [],
-        "nestedRendering": [],
-        "nestedRequirement": [],
-        "nestedState": [],
-        "nestedTransition": [],
-        "nestedUsage": [],
-        "nestedUseCase": [],
-        "nestedVerificationCase": [],
-        "nestedView": [],
-        "nestedViewpoint": [],
-        "owningDefinition": null,
-        "owningUsage": null,
-        "usage": [],
-        "variant": [],
-        "variantMembership": [],
-        "individualDefinition": null,
-        "occurrenceDefinition": [
-            {
-                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
-            }
-        ],
-        "itemDefinition": [
-            {
-                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
-            }
-        ],
-        "partDefinition": [
-            {
-                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
-            }
-        ]
-    }
+    "owningMembership": {
+      "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
+    },
+    "owningNamespace": {
+      "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490"
+    },
+    "owningRelationship": {
+      "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
+    },
+    "textualRepresentation": [],
+    "importedMembership": [],
+    "member": [],
+    "membership": [],
+    "ownedImport": [],
+    "ownedMember": [],
+    "ownedMembership": [],
+    "differencingType": [],
+    "directedFeature": [],
+    "endFeature": [],
+    "feature": [],
+    "featureMembership": [],
+    "inheritedFeature": [],
+    "inheritedMembership": [],
+    "input": [],
+    "intersectingType": [],
+    "multiplicity": null,
+    "output": [],
+    "ownedConjugator": null,
+    "ownedDifferencing": [],
+    "ownedDisjoining": [],
+    "ownedEndFeature": [],
+    "ownedFeature": [],
+    "ownedFeatureMembership": [],
+    "ownedIntersecting": [],
+    "ownedSpecialization": [
+      {
+        "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
+      }
+    ],
+    "ownedUnioning": [],
+    "unioningType": [],
+    "chainingFeature": [],
+    "crossFeature": null,
+    "endOwningType": null,
+    "featureTarget": {
+      "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d"
+    },
+    "featuringType": [],
+    "ownedCrossSubsetting": null,
+    "ownedFeatureChaining": [],
+    "ownedFeatureInverting": [],
+    "ownedRedefinition": [],
+    "ownedReferenceSubsetting": null,
+    "ownedSubsetting": [],
+    "ownedTypeFeaturing": [],
+    "ownedTyping": [
+      {
+        "@id": "9bfede6e-a370-451e-aa33-c1102942dcb7"
+      }
+    ],
+    "owningFeatureMembership": null,
+    "owningType": null,
+    "type": [
+      {
+        "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
+      }
+    ],
+    "definition": [
+      {
+        "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
+      }
+    ],
+    "directedUsage": [],
+    "nestedAction": [],
+    "nestedAllocation": [],
+    "nestedAnalysisCase": [],
+    "nestedAttribute": [],
+    "nestedCalculation": [],
+    "nestedCase": [],
+    "nestedConcern": [],
+    "nestedConnection": [],
+    "nestedConstraint": [],
+    "nestedEnumeration": [],
+    "nestedFlow": [],
+    "nestedInterface": [],
+    "nestedItem": [],
+    "nestedMetadata": [],
+    "nestedOccurrence": [],
+    "nestedPart": [],
+    "nestedPort": [],
+    "nestedReference": [],
+    "nestedRendering": [],
+    "nestedRequirement": [],
+    "nestedState": [],
+    "nestedTransition": [],
+    "nestedUsage": [],
+    "nestedUseCase": [],
+    "nestedVerificationCase": [],
+    "nestedView": [],
+    "nestedViewpoint": [],
+    "owningDefinition": null,
+    "owningUsage": null,
+    "usage": [],
+    "variant": [],
+    "variantMembership": [],
+    "individualDefinition": null,
+    "occurrenceDefinition": [
+      {
+        "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
+      }
+    ],
+    "itemDefinition": [
+      {
+        "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
+      }
+    ],
+    "partDefinition": [
+      {
+        "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
+      }
+    ]
+  }
 }

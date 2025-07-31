@@ -112,12 +112,13 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 - https://github.com/eclipse-syson/syson/issues/1431[#1431] [import] Fix textual import issues when importing `MetadataUsage`.
 - https://github.com/eclipse-syson/syson/issues/1458[#1458] [explorer] Fix an issue where the context menu of the _Explorer_ view was loaded twice.
 - https://github.com/eclipse-syson/syson/issues/1465[#1465] [diagrams] Fix an issue where the `Actors` were not shown anymore in the _actors_ compartment.
+- https://github.com/eclipse-syson/syson/issues/1469[#1469] [rest-apis] Fix an issue where string values were used instead of literal values for primitive types when serializing with JSON.
 
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/1384[#1384] [metamodel] Align metamodel to SysMLv2 2025-04 specification released on April 2025(see https://www.omg.org/spec/SysML/ for more details) and KerML 2025-04 specification released on April 2024(see https://www.omg.org/spec/KerML/ for more details).
-- https://github.com/eclipse-syson/syson/issues/1448[#1448] [syson] Exclude referenced libraries from validation
-- https://github.com/eclipse-syson/syson/issues/1467[#1467] [rest-apis] Make `@id` and `elementId` attributes having the same value (the `elementId` one) in JSON serialization for REST APIs
+- https://github.com/eclipse-syson/syson/issues/1448[#1448] [syson] Exclude referenced libraries from validation.
+- https://github.com/eclipse-syson/syson/issues/1467[#1467] [rest-apis] Make `@id` and `elementId` attributes having the same value (the `elementId` one) in JSON serialization for REST APIs.
 
 === New features
 
