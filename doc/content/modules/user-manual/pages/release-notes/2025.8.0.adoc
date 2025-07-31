@@ -241,6 +241,7 @@ It is the responsibility of the library owner to fix the validation issues in th
 - For all REST APIs, make `@id` and `elementId` attributes having the same value (the `elementId` one) in JSON serialization.
 The SysMLv2 standard has not decided if those two attributes should be the same or not.
 This change is made to ease the usage of the REST APIs and to avoid confusion.
+- For all REST APIs, use alphabetical order for the JSON serialization of attributes and references.
 
 == Dependency update
 
