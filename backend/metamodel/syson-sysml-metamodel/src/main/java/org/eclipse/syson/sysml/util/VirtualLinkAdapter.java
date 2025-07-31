@@ -48,6 +48,17 @@ public class VirtualLinkAdapter extends AdapterImpl {
                 .findFirst();
     }
 
+    /**
+     * Check if the given source has a VirtaulLinkAdapter.
+     *
+     * @param source
+     *            the source {@link EObject}
+     * @return <code>true</code> if the given source has a VirtaulLinkAdapter, <code>false</code> otherwise.
+     */
+    public static boolean hasVirtualLink(EObject source) {
+        return source.eAdapters().stream().anyMatch(VirtualLinkAdapter.class::isInstance);
+    }
+
     public VirtualLinkAdapter(Element virtualOwningRelatedElement, String virtualReferenceName) {
         super();
         this.virtualOwningRelatedElement = Objects.requireNonNull(virtualOwningRelatedElement);

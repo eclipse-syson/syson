@@ -1,6 +1,6 @@
 [
     {
-        "@id": "127c38e7-0e15-4232-aa02-76b342e3324a",
+        "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490",
         "@type": "Package",
         "aliasIds": "[]",
         "declaredName": "Package1",
@@ -11,74 +11,75 @@
         "name": "Package1",
         "qualifiedName": "Package1",
         "shortName": null,
+        "eAnnotations": [],
         "documentation": [],
         "ownedAnnotation": [],
         "ownedElement": [
             {
-                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+                "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d"
             }
         ],
         "ownedRelationship": [
             {
-                "@id": "0642ab55-a317-40c1-aa52-cc16306d937b"
+                "@id": "9f902e4a-4ca9-4787-92d8-713b3b06c490"
             },
             {
-                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+                "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
             }
         ],
         "owner": {
-            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+            "@id": "bea38691-2169-4b70-87ac-ffa289824fde"
         },
         "owningMembership": {
-            "@id": "e3c74bf2-55ba-4b0d-a4f5-9ab326f372c4"
+            "@id": "a6fce401-4aaf-47c8-88a6-d75462e3c6db"
         },
         "owningNamespace": {
-            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+            "@id": "bea38691-2169-4b70-87ac-ffa289824fde"
         },
         "owningRelationship": {
-            "@id": "e3c74bf2-55ba-4b0d-a4f5-9ab326f372c4"
+            "@id": "a6fce401-4aaf-47c8-88a6-d75462e3c6db"
         },
         "textualRepresentation": [],
         "importedMembership": [
             {
-                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+                "@id": "c0c5cec5-6606-4145-98c7-eef80964e95a"
             }
         ],
         "member": [
             {
-                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+                "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d"
             },
             {
-                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
             }
         ],
         "membership": [
             {
-                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+                "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
             },
             {
-                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+                "@id": "c0c5cec5-6606-4145-98c7-eef80964e95a"
             }
         ],
         "ownedImport": [
             {
-                "@id": "0642ab55-a317-40c1-aa52-cc16306d937b"
+                "@id": "9f902e4a-4ca9-4787-92d8-713b3b06c490"
             }
         ],
         "ownedMember": [
             {
-                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+                "@id": "d99634bb-d4e0-4afa-bbe4-ee553005937d"
             }
         ],
         "ownedMembership": [
             {
-                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+                "@id": "be359545-8e91-439c-8bdf-0638ab702f9d"
             }
         ],
         "filterCondition": []
     },
     {
-        "@id": "ec12f223-8639-42a3-96c2-34163c6eccce",
+        "@id": "40c37406-f22d-4424-981f-99935f039244",
         "@type": "Package",
         "aliasIds": "[]",
         "declaredName": "Package2",
@@ -89,51 +90,52 @@
         "name": "Package2",
         "qualifiedName": "Package2",
         "shortName": null,
+        "eAnnotations": [],
         "documentation": [],
         "ownedAnnotation": [],
         "ownedElement": [
             {
-                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
             }
         ],
         "ownedRelationship": [
             {
-                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+                "@id": "c0c5cec5-6606-4145-98c7-eef80964e95a"
             }
         ],
         "owner": {
-            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+            "@id": "bea38691-2169-4b70-87ac-ffa289824fde"
         },
         "owningMembership": {
-            "@id": "13001db6-0353-48ba-8bec-157bbd9a3b57"
+            "@id": "cd1165da-f4a1-4962-90f6-d117e8c7a354"
         },
         "owningNamespace": {
-            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+            "@id": "bea38691-2169-4b70-87ac-ffa289824fde"
         },
         "owningRelationship": {
-            "@id": "13001db6-0353-48ba-8bec-157bbd9a3b57"
+            "@id": "cd1165da-f4a1-4962-90f6-d117e8c7a354"
         },
         "textualRepresentation": [],
         "importedMembership": [],
         "member": [
             {
-                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
             }
         ],
         "membership": [
             {
-                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+                "@id": "c0c5cec5-6606-4145-98c7-eef80964e95a"
             }
         ],
         "ownedImport": [],
         "ownedMember": [
             {
-                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+                "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
             }
         ],
         "ownedMembership": [
             {
-                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+                "@id": "c0c5cec5-6606-4145-98c7-eef80964e95a"
             }
         ],
         "filterCondition": []

@@ -29,24 +29,24 @@ double checkCoverage(String module) {
 }
 
 record ModuleCoverage(String moduleName, double expectedCoverage) {}
-double expectedGlobalCoverage = 65.0;
+double expectedGlobalCoverage = 66.0;
 var moduleCoverageData = List.of(
-  new ModuleCoverage("syson-sysml-metamodel", 71.0),
+  new ModuleCoverage("syson-sysml-metamodel", 72.0),
   new ModuleCoverage("syson-sysml-metamodel-edit", 16.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 47.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 66.0),
   new ModuleCoverage("syson-services", 72.0),
-  new ModuleCoverage("syson-sysml-rest-api-services", 94.0),
+  new ModuleCoverage("syson-sysml-rest-api-services", 93.0),
   new ModuleCoverage("syson-sysml-import", 84.0),
   new ModuleCoverage("syson-sysml-export", 63.0),
   new ModuleCoverage("syson-sysml-validation", 99.0),
-  new ModuleCoverage("syson-diagram-common-view", 85.0),
+  new ModuleCoverage("syson-diagram-common-view", 86.0),
   new ModuleCoverage("syson-diagram-general-view", 98.0),
   new ModuleCoverage("syson-diagram-actionflow-view", 96.0),
   new ModuleCoverage("syson-diagram-statetransition-view", 94.0),
   new ModuleCoverage("syson-diagram-interconnection-view", 96.0),
-  new ModuleCoverage("syson-tree-explorer-view", 76.0),
+  new ModuleCoverage("syson-tree-explorer-view", 77.0),
   new ModuleCoverage("syson-application-configuration", 66.0),
   new ModuleCoverage("syson-application", 37.0)
 );

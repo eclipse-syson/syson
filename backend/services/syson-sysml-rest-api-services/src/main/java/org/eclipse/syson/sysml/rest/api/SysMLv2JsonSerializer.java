@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 /**
  * Custom JSON Serializer for SysMLv2 Elements.
@@ -41,7 +43,12 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
     @Override
     public void serialize(EObject value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        var id = this.eObjectIDManager.findId(value);
+        Optional<String> id = Optional.empty();
+        if (value instanceof Element elt) {
+            id = Optional.of(elt.getElementId());
+        } else {
+            id = this.eObjectIDManager.findId(value);
+        }
         if (id.isPresent()) {
             gen.writeStringField(ID, id.get());
         }
@@ -61,11 +68,11 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
             if (objectValue != null) {
                 if (eReference.isMany()) {
                     this.writeArray(gen, eReference.getName(), objectValue);
-                } else if (objectValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt)) {
-                    var refElementId = this.eObjectIDManager.findId(elt);
-                    if (refElementId.isPresent()) {
+                } else if (objectValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt) && !VirtualLinkAdapter.hasVirtualLink(elt)) {
+                    var refElementId = elt.getElementId();
+                    if (refElementId != null) {
                         gen.writeObjectFieldStart(eReference.getName());
-                        gen.writeStringField(ID, refElementId.get());
+                        gen.writeStringField(ID, refElementId);
                         gen.writeEndObject();
                     }
                 }
@@ -80,11 +87,11 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
         gen.writeArrayFieldStart(arrayName);
         if (objectValue instanceof List<?> listValue && !listValue.isEmpty()) {
             for (Object listElementValue : listValue) {
-                if (listElementValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt)) {
-                    var listElementId = this.eObjectIDManager.findId(elt);
-                    if (listElementId.isPresent()) {
+                if (listElementValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt) && !VirtualLinkAdapter.hasVirtualLink(elt)) {
+                    var listElementId = elt.getElementId();
+                    if (listElementId != null) {
                         gen.writeStartObject();
-                        gen.writeStringField(ID, listElementId.get());
+                        gen.writeStringField(ID, listElementId);
                         gen.writeEndObject();
                     }
                 }
