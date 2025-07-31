@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -57,7 +58,12 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
         for (EAttribute eAttribute : eAllAttributes) {
             Object objectValue = value.eGet(eAttribute);
             if (objectValue != null) {
-                gen.writeStringField(eAttribute.getName(), objectValue.toString());
+                // The writeObjectField does not handle enum values properly, as it generates the value in uppercase
+                // letters instead of lowercase.
+                if (objectValue instanceof Enumerator enumerator) {
+                    objectValue = enumerator.getLiteral();
+                }
+                gen.writeObjectField(eAttribute.getName(), objectValue);
             } else {
                 gen.writeStringField(eAttribute.getName(), null);
             }
@@ -68,7 +74,8 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
             if (objectValue != null) {
                 if (eReference.isMany()) {
                     this.writeArray(gen, eReference.getName(), objectValue);
-                } else if (objectValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt) && !VirtualLinkAdapter.hasVirtualLink(elt)) {
+                } else if (objectValue instanceof Element elt && !VirtualLinkAdapter.hasVirtualLink(elt)) {
+                    // !VirtualLinkAdapter.hasVirtualLink(elt) allows to not serialize implicit elements
                     var refElementId = elt.getElementId();
                     if (refElementId != null) {
                         gen.writeObjectFieldStart(eReference.getName());
@@ -87,6 +94,13 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
         gen.writeArrayFieldStart(arrayName);
         if (objectValue instanceof List<?> listValue && !listValue.isEmpty()) {
             for (Object listElementValue : listValue) {
+                // !ElementUtil.isFromStandardLibrary(elt) to avoid serializing all inherited elements from standard
+                // libraries.
+                // We don't know yet what to do about that case and allowing serialization of such elements produces a
+                // huge amount of data.
+                // The drawback of this approach is when an object references a standard library element which is not
+                // inherited, it won't be serialized.
+                // !VirtualLinkAdapter.hasVirtualLink(elt) allows to not serialize implicit elements
                 if (listElementValue instanceof Element elt && !ElementUtil.isFromStandardLibrary(elt) && !VirtualLinkAdapter.hasVirtualLink(elt)) {
                     var listElementId = elt.getElementId();
                     if (listElementId != null) {
