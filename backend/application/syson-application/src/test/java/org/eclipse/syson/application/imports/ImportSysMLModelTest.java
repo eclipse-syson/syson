@@ -40,6 +40,7 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectEditingCo
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
@@ -60,6 +61,7 @@ import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
@@ -264,8 +266,13 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 part functions : Functions [*] nonunique;
 
                 metadata def Function :> SemanticMetadata {
-                    :>> baseType = Functions meta SysML::ActionDefinition;
+                    :>> baseType = functions meta SysML::ActionUsage;
                 }
+
+                #Function action a0;
+                action a1;
+                metadata Function about a1;
+                #Function action def A0;
                 """;
         this.checker.checkImportedModel(resource -> {
             List<MetadataDefinition> metadatas = EMFUtils.allContainedObjectOfType(resource, MetadataDefinition.class)
@@ -299,11 +306,44 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             MetadataAccessExpression metadataAccessExpression = (MetadataAccessExpression) seqValue;
 
             assertThat(metadataAccessExpression.getReferencedElement()).isNotNull()
-                    .extracting(Element::getName).isEqualTo("Functions");
+                    .extracting(Element::getName).isEqualTo("functions");
 
             Feature result = opExpression.getResult();
 
-            assertThat(result.getType()).hasSize(1).allMatch(t -> "SysML::Systems::ActionDefinition".equals(t.getQualifiedName()));
+            assertThat(result.getType()).hasSize(1).allMatch(t -> "SysML::Systems::ActionUsage".equals(t.getQualifiedName()));
+
+            PartDefinition functionsDefinition = EMFUtils.allContainedObjectOfType(resource, PartDefinition.class)
+                    .filter(def -> "Functions".equals(def.getName()))
+                    .findFirst()
+                    .get();
+
+            PartUsage functionsUsage = EMFUtils.allContainedObjectOfType(resource, PartUsage.class)
+                    .filter(def -> "functions".equals(def.getName()))
+                    .findFirst()
+                    .get();
+
+            List<ActionUsage> actionUsages = EMFUtils.allContainedObjectOfType(resource, ActionUsage.class)
+                    .toList();
+
+            ActionUsage a0 = actionUsages.get(0);
+            assertThat(a0.getName()).isEqualTo("a0");
+            assertThat(a0.specializes(functionsUsage)).isTrue();
+
+            EList<Element> a0Element = a0.getOwnedElement();
+            assertThat(a0Element).hasSize(1).allMatch(MetadataUsage.class::isInstance);
+            MetadataUsage a0MetadataUsage = (MetadataUsage) a0Element.get(0);
+            this.checkMetadaUsage(a0MetadataUsage, "Function", "a0", Map.of());
+
+            List<ActionDefinition> actionDefinitions = EMFUtils.allContainedObjectOfType(resource, ActionDefinition.class)
+                    .toList();
+            ActionDefinition a0Def = actionDefinitions.get(0);
+            assertThat(a0Def.getName()).isEqualTo("A0");
+            assertThat(a0Def.specializes(functionsDefinition)).isTrue();
+
+            EList<Element> a0DefElement = a0Def.getOwnedElement();
+            assertThat(a0DefElement).hasSize(1).allMatch(MetadataUsage.class::isInstance);
+            MetadataUsage a0DefMetadataUsage = (MetadataUsage) a0DefElement.get(0);
+            this.checkMetadaUsage(a0DefMetadataUsage, "Function", "A0", Map.of());
 
         }).check(input);
     }
@@ -939,7 +979,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         assertThat(arguments.get(0)).isInstanceOf(expectedFirstParameterType);
         assertThat(arguments.get(1)).isInstanceOf(expectedSecondParameterType);
     }
-    
+
     private boolean isSubSettingFromStandardLib(Feature feature, String expectedSubSettedFeature) {
         return feature.getOwnedSpecialization().stream()
                 .filter(Subsetting.class::isInstance)
