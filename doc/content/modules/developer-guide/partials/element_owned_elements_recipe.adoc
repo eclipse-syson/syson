@@ -1,11 +1,11 @@
-= Element owned elements recipe
+= Element owned elements recipe (python script)
 
 Learn how to retrieve owned elements programmatically.
 Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
 
 Recipes covered:
 
-* xref:developer-guide:element_owned_elements_recipe.adoc#get_owned_elements[Get Owned Elements]: Retrieve owned elements.
+* <<get_owned_elements>>: Retrieve owned elements.
 
 [#get_owned_elements]
 == Get owned elements

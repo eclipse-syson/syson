@@ -1,14 +1,15 @@
-= Project and commit recipe
+= Project and commit recipe (python script)
 
 Learn how to manage projects and retrieve related commits programmatically.
 Each recipe includes a detailed explanation, step-by-step instructions, and code snippets.
 
 Recipes covered:
 
-* xref:project_commit_branch_tag_recipe.adoc#_get_projects[Get Projects]: Fetch and display all projects currently available on the server.
-* xref:project_commit_branch_tag_recipe.adoc#_create_a_new_project[Create a New Project]: Create a new project with a unique name.
-* xref:project_commit_branch_tag_recipe.adoc#_get_commits[Get Commits]: Retrieve a list of commits for a specific project.
+* <<get_projects>>: Fetch and display all projects currently available on the server.
+* <<create_a_new_project>>: Create a new project with a unique name.
+* <<get_commits>>: Retrieve a list of commits for a specific project.
 
+[#get_projects]
 == Get projects
 This code example demonstrates how to use Python's requests library to interact with the {product} API and retrieve a list of projects.
 It sends a `GET` request to the API endpoint for projects, processes the response, and prints the name and ID of each project.
@@ -53,6 +54,7 @@ Output:
 Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
 ----
 
+[#create_a_new_project]
 == Create a new project
 This recipe demonstrates how to create a new project in {product} using Python.
 It sends a `POST` request to the `/projects` endpoint to create a new project with a unique name and description.
@@ -106,6 +108,7 @@ Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
 Project Name: New Project - 2024-12-31 10:52:56, ID: d967b937-304f-43a9-8af6-b1f3a9d6adbe
 ----
 
+[#get_commits]
 == Get commits
 
 [IMPORTANT]

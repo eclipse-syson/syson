@@ -1,0 +1,241 @@
+= Create element recipe (swagger UI / REST client)
+
+Learn how to create and element through REST API.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+
+Test on simple SysMLv2 project (with `id` = `44ba0783-8476-442a-9ab3-b6c26e251734`) with only one element: a _Package_ named "Package1" with `elementId` = `b2426313-e795-47e8-a2b2-7e29adb12a56`
+
+1) Let's retrieve the elements with */elements* GET request
+
+[source, bash]
+----
+http://localhost:8080/api/rest/projects/44ba0783-8476-442a-9ab3-b6c26e251734/commits/44ba0783-8476-442a-9ab3-b6c26e251734/elements
+----
+
+TIP: Replace `http://localhost:8080` with the actual URL of your API server if hosted elsewhere.
+
+Use the swagger UI to execute the request (or your favorite REST client):
+
+image::create_element_recipe_1_get_elements.png[Swagger UI GET elements request]
+
+The JSON response is:
+
+[source, json]
+----
+[
+  {
+    "@id": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    "@type": "Package",
+    "declaredName": "Package1",
+    "elementId": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    ...
+  }
+]
+----
+
+2) Let's add a new _PartDefinition_ under our _Package_ "Package1".
+
+As you may know, with {sysmlv2}, an _Element_ is contained in an another _Element_ through an intermediate _Element_ called a _Membership_.
+In our case, an _OwningMembership_ is the appropriate intermediate _Element_.
+So we have to add two new _Elements_.
+The containment relation between an _Element_ and a _Membership_ is named "ownedRelationship".
+The containment relation between a _Membership_ and an _Element_ is named "ownedRelatedElement". 
+
+2.1) Execute the */commits* POST request, allowing to create the _OwningMembership_:
+
+[source, bash]
+----
+http://localhost:8080/api/rest/projects/44ba0783-8476-442a-9ab3-b6c26e251734/commits
+----
+
+with the following raw JSON body:
+
+[source, json]
+----
+{
+	"@type": "Commit",
+	"change": [
+		{
+			"@type": "DataVersion",
+			"identity": null,
+			"payload": {
+				"@id": "8e57348e-338f-4272-9e01-bb896784d849", // a random ID
+				"@type": "OwningMembership"
+			}
+		},
+		{
+			"@type": "DataVersion",
+			"identity": {
+				"@id":"b2426313-e795-47e8-a2b2-7e29adb12a56", // Package1 elementId
+				"@type" : "DataIdentity"
+			},
+			"payload": {
+				"@id": "f3d97864-09f0-4af7-95bd-44b1a3243fdb", // a random ID
+				"@type": "OwningMembership",
+				"ownedRelationship": [{
+					"@id": "8e57348e-338f-4272-9e01-bb896784d849" // the random ID used for the creation of the OwningMembership. This will not be the final elementId of the OwningMembership.
+				}]
+			}
+		}
+	]
+}
+----
+
+Use the swagger UI to execute the request (or your favorite REST client):
+
+image::create_element_recipe_2_1_post_owning_membership.png[Swagger UI POST commit request]
+
+
+The JSON response:
+
+[source, json]
+----
+{
+	"@id": "44ba0783-8476-442a-9ab3-b6c26e251734",
+	"@type": "Commit",
+	"created": "1970-01-01T00:00:00Z",
+	"description": "The one and only commit for this project",
+	"owningProject": {
+		"@id": "44ba0783-8476-442a-9ab3-b6c26e251734"
+	},
+	"previousCommits": []
+}
+----
+
+
+2.2) Execute the */elements* GET request, allowing to get the real "elementId" of the new _OwningMembership_ that will be the container of our new _PartDefinition_:
+
+[source, bash]
+----
+http://localhost:8080/api/rest/projects/44ba0783-8476-442a-9ab3-b6c26e251734/commits/44ba0783-8476-442a-9ab3-b6c26e251734/elements
+----
+
+Use the swagger UI to execute the request (or your favorite REST client):
+
+image::create_element_recipe_2_2_get_elements.png[Swagger UI GET elements request]
+
+The JSON response is:
+
+[source, json]
+----
+[
+  {
+    "@id": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    "@type": "Package",
+    "declaredName": "Package1",
+    "elementId": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    ...
+  },
+  {
+    "@id": "61508abd-26a6-4b23-9bf5-1ab100f32a47",
+    "@type": "OwningMembership",
+    "elementId": "61508abd-26a6-4b23-9bf5-1ab100f32a47", // This is the real elementId of the OwningMembership we just created
+    ...
+  }
+]
+----
+
+
+2.3) Now we have the "elementId" of our new _OwningMembership_, we can create a new _PartDefinition_ inside it.
+
+Execute the */commits* POST request, allowing to create the _PartDefinition_:
+
+[source, bash]
+----
+http://localhost:8080/api/rest/projects/44ba0783-8476-442a-9ab3-b6c26e251734/commits
+----
+
+with the following raw JSON body:
+
+[source, json]
+----
+{
+	"@type": "Commit",
+	"change": [
+		{
+			"@type": "DataVersion",
+			"identity": null,
+			"payload": {
+				"@id": "4d4596e7-27a3-493a-8c6a-de63dddfca2b", // random ID
+				"@type": "PartDefinition",
+				"declaredName": "MyRESTNewPartDef"
+			}
+		},
+		{
+			"@type": "DataVersion",
+			"identity": {
+				"@id":"61508abd-26a6-4b23-9bf5-1ab100f32a47", //OwningMembership elementId
+				"@type" : "DataIdentity"
+			},
+			"payload": {
+				"@id": "aff1e118-af4b-465d-b9a9-8a407017d4d2", // random ID
+				"@type": "PartDefinition",
+				"ownedRelatedElement": [{
+					"@id": "4d4596e7-27a3-493a-8c6a-de63dddfca2b" // the random ID used for the creation of the PartDefinition. This will not be the final elementId of the PartDefinition.
+				}]
+			}
+		}
+	]
+}
+----
+
+Use the swagger UI to execute the request (or your favorite REST client):
+
+image::create_element_recipe_2_3_post_part_definition.png[Swagger UI POST commit request]
+
+The JSON response:
+
+[source, json]
+----
+{
+	"@id": "44ba0783-8476-442a-9ab3-b6c26e251734",
+	"@type": "Commit",
+	"created": "1970-01-01T00:00:00Z",
+	"description": "The one and only commit for this project",
+	"owningProject": {
+		"@id": "44ba0783-8476-442a-9ab3-b6c26e251734"
+	},
+	"previousCommits": []
+}
+----
+
+
+3) Finally, retrieve the elements one last with */elements* GET request to confirm the new _PartDefinition_ has been created by the POST requests.
+
+[source, bash]
+----
+http://localhost:8080/api/rest/projects/44ba0783-8476-442a-9ab3-b6c26e251734/commits/44ba0783-8476-442a-9ab3-b6c26e251734/elements
+----
+
+Use the swagger UI to execute the request (or your favorite REST client):
+
+image::create_element_recipe_3_get_elements.png[Swagger UI GET elements request]
+
+The JSON response is:
+
+[source, json]
+----
+[
+  {
+    "@id": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    "@type": "Package",
+    "declaredName": "Package1",
+    "elementId": "b2426313-e795-47e8-a2b2-7e29adb12a56",
+    ...
+  },
+  {
+    "@id": "61508abd-26a6-4b23-9bf5-1ab100f32a47",
+    "@type": "OwningMembership",
+    "elementId": "61508abd-26a6-4b23-9bf5-1ab100f32a47",
+    ...
+  },
+  {
+    "@id": "b7403610-e104-4b8e-9eac-7d4ee5c41de0",
+    "@type": "PartDefinition",
+    "declaredName": "MyRESTNewPartDef",
+    "elementId": "b7403610-e104-4b8e-9eac-7d4ee5c41de0",
+    ...
+  }
+]
+----

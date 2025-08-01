@@ -16,11 +16,11 @@ Although we've set standard API implementation as a key development goal, {produ
 
 {product}’s commitment to incorporating standard REST APIs and {sysmlv2} textual specifications highlights its dedication to delivering a flexible and interoperable modeling solution.
 
-Refer to the xref:developer-guide:api-details.adoc[API Details Section] for more information about the supported APIs.
+Refer to the xref:developer-guide:api/api-details.adoc[API Details Section] for more information about the supported APIs.
 
 == APIs Cookbook
 
-For detailed examples, best practices, and guidance on using {product}’s REST APIs, consult the xref:developer-guide:api-cookbook.adoc[APIs Cookbook].
+For detailed examples, best practices, and guidance on using {product}’s REST APIs, consult the xref:developer-guide:api/api-cookbook.adoc[APIs Cookbook].
 The cookbook includes:
 
 * Step-by-step guides for common tasks.

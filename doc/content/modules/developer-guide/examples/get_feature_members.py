@@ -37,8 +37,8 @@ if __name__ == "__main__":
     print("Parts Tree:")
     get_member_features(host, project_id, commit_id, element_id, 'PartUsage', " ")
 
-    # Get Behaviour Tree
-    print("Behaviours Tree:")
+    # Get Behavior Tree
+    print("Behaviors Tree:")
     get_member_features(host, project_id, commit_id, element_id, 'ActionUsage', " ")
 
     # Get Requirements Tree

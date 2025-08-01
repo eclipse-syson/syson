@@ -2,4 +2,6 @@
 * xref:developer-guide:extend.adoc[]
 * xref:user-manual:integration/interoperability.adoc[]
 * xref:user-manual:integration/capella.adoc[]
-* xref:developer-guide:api.adoc[]
+* xref:developer-guide:api/api.adoc[]
+** xref:developer-guide:api/api-details.adoc[]
+** xref:developer-guide:api/api-cookbook.adoc[]

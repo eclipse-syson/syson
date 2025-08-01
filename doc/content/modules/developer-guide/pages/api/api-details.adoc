@@ -15,6 +15,15 @@ The commit ID and branch ID are same to the project ID.
 The API for creating additional commits isn't functional in the current implementation.
 ====
 
+[TIP]
+====
+To test the API on your local server, navigate to:
+http://localhost:8080/swagger-ui/index.html
+
+This URL opens the Swagger UI, an interactive documentation tool for APIs.
+The interface provides an overview of API endpoints, supports testing with input parameters, and displays responses for better understanding.
+====
+
 == Supported REST APIs in {product}
 
 Below is the list of REST APIs supported in {product}, along with descriptions of key concepts used in REST APIs:
@@ -59,12 +68,3 @@ function DisableTryItOutPlugin() {
   };
 </script>
 ++++
-
-[TIP]
-====
-To test the API on your local server, navigate to:
-http://localhost:8080/swagger-ui/index.html
-
-This URL opens the Swagger UI, an interactive documentation tool for APIs.
-The interface provides an overview of API endpoints, supports testing with input parameters, and displays responses for better understanding.
-====
