@@ -14,6 +14,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] Add implicit `Subclassification` or `Subsetting` when using semantic `MetadataUsage`.
+
 === New features
 
 
