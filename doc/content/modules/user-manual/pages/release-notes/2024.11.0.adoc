@@ -6,7 +6,7 @@
 All standard libraries have also been updated.
 - *Introduce {sysmlv2} REST APIs*: introduce partial support of the standard REST APIs from the OMG https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI].
 In this first implementation we've implemented Project-related & Object-related REST APIs.
-Read the xref:developer-guide:api.adoc[APIs section] in this documentation for more details.
+Read the xref:developer-guide:api/api.adoc[APIs section] in this documentation for more details.
 
 == Breaking changes
 
