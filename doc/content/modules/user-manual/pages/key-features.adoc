@@ -80,7 +80,7 @@ a|❌
 |xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
 a|✅ (Partial)
 
-|xref:developer-guide:api.adoc[{sysmlv2} Standard API]
+|xref:developer-guide:api/api.adoc[{sysmlv2} Standard API]
 a|✅ (Partial)
 |===
 

@@ -41,7 +41,7 @@ Other code snippets use this function.
 To run it, see the following section about recipes.
 
 === Step 3: Test code snippets
-Once you have configured the {sysmlv2} API access, you can start testing the xref:developer-guide:api-cookbook.adoc#recipes[recipes].
+Once you have configured the {sysmlv2} API access, you can start testing the xref:developer-guide:api/api-cookbook.adoc#recipes[recipes].
 
 === Troubleshooting
 
@@ -58,6 +58,8 @@ Once you have configured the {sysmlv2} API access, you can start testing the xre
 [#recipes]
 == Recipes
 
-include::developer-guide:project_commit_branch_tag_recipe.adoc[leveloffset=+2]
+include::developer-guide:partial$project_commit_branch_tag_recipe.adoc[leveloffset=+2]
 
-include::developer-guide:element_owned_elements_recipe.adoc[leveloffset=+2]
+include::developer-guide:partial$element_owned_elements_recipe.adoc[leveloffset=+2]
+
+include::developer-guide:partial$create_element_recipe.adoc[leveloffset=+2]

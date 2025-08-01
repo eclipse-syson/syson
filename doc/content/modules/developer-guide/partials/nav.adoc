@@ -3,6 +3,6 @@
 // A navigation file contains one or more AsciiDoc lists.
 // Each navigation file must be declared in the component descriptor if you want it to be displayed in the component’s navigation menu.
 * xref:developer-guide:index.adoc[]
-** xref:developer-guide:api.adoc[]
-*** xref:developer-guide:api-details.adoc[]
-*** xref:developer-guide:api-cookbook.adoc[]
+* xref:developer-guide:api/api.adoc[]
+** xref:developer-guide:api/api-details.adoc[]
+** xref:developer-guide:api/api-cookbook.adoc[]
