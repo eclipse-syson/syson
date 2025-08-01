@@ -19,101 +19,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionDefinition;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.ActorMembership;
-import org.eclipse.syson.sysml.AllocationDefinition;
-import org.eclipse.syson.sysml.AllocationUsage;
-import org.eclipse.syson.sysml.AnalysisCaseDefinition;
-import org.eclipse.syson.sysml.AnalysisCaseUsage;
-import org.eclipse.syson.sysml.AssertConstraintUsage;
-import org.eclipse.syson.sysml.AssignmentActionUsage;
-import org.eclipse.syson.sysml.AttributeUsage;
-import org.eclipse.syson.sysml.Behavior;
-import org.eclipse.syson.sysml.CalculationDefinition;
-import org.eclipse.syson.sysml.CalculationUsage;
-import org.eclipse.syson.sysml.CaseDefinition;
-import org.eclipse.syson.sysml.CaseUsage;
-import org.eclipse.syson.sysml.Classifier;
-import org.eclipse.syson.sysml.ConcernDefinition;
-import org.eclipse.syson.sysml.ConcernUsage;
-import org.eclipse.syson.sysml.ConnectionDefinition;
-import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.Connector;
-import org.eclipse.syson.sysml.ConstraintDefinition;
-import org.eclipse.syson.sysml.ConstraintUsage;
-import org.eclipse.syson.sysml.ControlNode;
-import org.eclipse.syson.sysml.DecisionNode;
-import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
-import org.eclipse.syson.sysml.EventOccurrenceUsage;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FlowDefinition;
-import org.eclipse.syson.sysml.FlowUsage;
-import org.eclipse.syson.sysml.ForLoopActionUsage;
-import org.eclipse.syson.sysml.ForkNode;
-import org.eclipse.syson.sysml.FramedConcernMembership;
-import org.eclipse.syson.sysml.IfActionUsage;
-import org.eclipse.syson.sysml.IncludeUseCaseUsage;
-import org.eclipse.syson.sysml.InterfaceDefinition;
-import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.ItemDefinition;
-import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.JoinNode;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.MergeNode;
-import org.eclipse.syson.sysml.MetadataDefinition;
-import org.eclipse.syson.sysml.MetadataUsage;
-import org.eclipse.syson.sysml.Multiplicity;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.OccurrenceDefinition;
-import org.eclipse.syson.sysml.OccurrenceUsage;
-import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.PerformActionUsage;
-import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.ReferenceUsage;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.RenderingDefinition;
-import org.eclipse.syson.sysml.RenderingUsage;
-import org.eclipse.syson.sysml.RequirementConstraintKind;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.RequirementDefinition;
-import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.sysml.RequirementVerificationMembership;
-import org.eclipse.syson.sysml.SendActionUsage;
-import org.eclipse.syson.sysml.Specialization;
-import org.eclipse.syson.sysml.StakeholderMembership;
-import org.eclipse.syson.sysml.StateDefinition;
-import org.eclipse.syson.sysml.StateSubactionKind;
-import org.eclipse.syson.sysml.StateSubactionMembership;
-import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.Step;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.SuccessionFlowUsage;
-import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.TriggerInvocationExpression;
-import org.eclipse.syson.sysml.TriggerKind;
-import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.UseCaseDefinition;
-import org.eclipse.syson.sysml.UseCaseUsage;
-import org.eclipse.syson.sysml.VerificationCaseDefinition;
-import org.eclipse.syson.sysml.VerificationCaseUsage;
-import org.eclipse.syson.sysml.ViewDefinition;
-import org.eclipse.syson.sysml.ViewRenderingMembership;
-import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.ViewpointDefinition;
-import org.eclipse.syson.sysml.ViewpointUsage;
-import org.eclipse.syson.sysml.WhileLoopActionUsage;
+import org.eclipse.syson.sysml.*;
 import org.eclipse.syson.sysml.util.ILibraryNamespaceProvider;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -123,7 +29,6 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author arichard
  */
 public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specialization>> {
-
 
     private final ImplicitSpecializationAccumulator implicitSpecializations;
 
@@ -1130,6 +1035,55 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     @Override
+    public List<Specialization> caseType(Type object) {
+        // Describe limitation with use of external metadata
+        List<MetadataUsage> metadataUsage = object.getOwnedMembership().stream()
+                .map(Membership::getMemberElement)
+                .filter(MetadataUsage.class::isInstance)
+                .map(MetadataUsage.class::cast)
+                .toList();
+
+        // Avoid any computation if no metadata usage is defined
+        if (!metadataUsage.isEmpty()) {
+            /*
+             * This code gets the MetadaUsage contained inside the object.
+             */
+            Type semanticMedatadaMetaclass = this.namespaceProvider.getNamespaceFromLibrary("Metaobjects::SemanticMetadata", Type.class);
+            List<Type> baseTypes = metadataUsage.stream()
+                    .filter(MetadataUsage::isSemantic)
+                    .flatMap(mu -> this.getBaseTypes(mu).stream())
+                    .toList();
+
+            boolean isAnnotatedTypeAUsage = object instanceof Usage;
+            boolean isAnnotatedTypeADefinition = object instanceof Definition;
+
+            for (Type baseType : baseTypes) {
+                if (isAnnotatedTypeADefinition) {
+                    Definition annotatedDefinition = (Definition) object;
+                    if (baseType instanceof Classifier baseClassifier) {
+                        this.implicitSpecializations.add(this.implicitSubclassification(annotatedDefinition, baseClassifier));
+                    } else if (baseType instanceof Feature baseFeature) {
+                        baseFeature.getType().stream()
+                                .filter(Classifier.class::isInstance)
+                                .map(Classifier.class::cast)
+                                .forEach(baseClassifier -> {
+                                    this.implicitSpecializations.add(this.implicitSubclassification(annotatedDefinition, baseClassifier));
+                                });
+                    }
+                } else if (isAnnotatedTypeAUsage) {
+                    Usage annotatedUsage = (Usage) object;
+                    if (baseType instanceof Feature basefeature) {
+                        this.implicitSpecializations.add(this.implicitReferenceSubsetting(annotatedUsage, basefeature));
+                    }
+                }
+            }
+        }
+
+        // Return null to iterate on other abstract EClass cases
+        return null;
+    }
+
+    @Override
     public List<Specialization> caseUseCaseDefinition(UseCaseDefinition object) {
         if (!this.implicitSpecializations.hasSubclassification()) {
             var implicitSubclassification = this.implicitSubclassification(object, "UseCases::UseCase");
@@ -1270,6 +1224,38 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         }
         // Return null to iterate on other abstract EClass cases
         return null;
+    }
+
+    private List<Type> getBaseTypes(MetadataUsage metadaUsage) {
+        String baseTypeFeatureQn = "Metaobjects::SemanticMetadata::baseType";
+        Feature baseTypeFeature = this.namespaceProvider.getNamespaceFromLibrary(baseTypeFeatureQn, Feature.class);
+        Expression valueExpression = metadaUsage.getMetadataDefinition().getOwnedFeature().stream()
+                .filter(f -> f.supertypes(true).contains(baseTypeFeature))
+                .findFirst()
+                .map(this::getValue)
+                .orElse(null);
+
+        if (valueExpression instanceof OperatorExpression opExpression && "meta".equals(opExpression.getOperator())) {
+            return opExpression.getParameter().stream()
+                    .map(this::getValue)
+                    .filter(MetadataAccessExpression.class::isInstance)
+                    .map(MetadataAccessExpression.class::cast)
+                    .map(MetadataAccessExpression::getReferencedElement)
+                    .filter(Type.class::isInstance)
+                    .map(Type.class::cast)
+                    .toList();
+        } else {
+            return List.of();
+        }
+    }
+
+    private Expression getValue(Feature f) {
+        return f.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .map(FeatureValue::getValue)
+                .orElse(null);
     }
 
     private Redefinition implicitRedefinition(Feature feature, String implicitRedefinedFeatureQualifiedName) {
@@ -1434,7 +1420,6 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     private boolean isValidSourceOrTargetFeaturForSuccession(Feature feature) {
         return !(feature instanceof Connector || feature instanceof TransitionUsage);
     }
-
 
     /**
      * Handle the creation of implicit redefinitions for feature that are parameters of their owner.
