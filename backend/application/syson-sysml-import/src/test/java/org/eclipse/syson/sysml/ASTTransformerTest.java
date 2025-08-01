@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysONLoadDefaultLibrariesOnApplicationStartConfiguration;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.util.ImmutableLibraryNamespaceProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -696,6 +697,9 @@ public class ASTTransformerTest {
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         // Not the safest way to import libraries but enough for this use case a make the test run faster
         resourceSet.getResources().addAll(standardLibraries);
+        ImmutableLibraryNamespaceProvider provider = new ImmutableLibraryNamespaceProvider();
+        resourceSet.getResources().stream().forEach(provider::addRootImmutableLibrary);
+        resourceSet.eAdapters().add(provider);
         return this.getResourceFromFile(testFilePath, resourceSet, noErrorExpected);
     }
 
