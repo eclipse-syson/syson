@@ -34,6 +34,8 @@ import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Metadata Usage</b></em>'. <!-- end-user-doc -->
@@ -222,6 +224,14 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
      */
     @Override
     public boolean isSemantic() {
+        Metaclass definition = this.getMetadataDefinition();
+        if (definition != null) {
+            LibraryNamespaceProvider provider = LibraryNamespaceProvider.getFrom(this);
+            if (provider != null) {
+                Type semanticMetadata = provider.getNamespaceFromLibrary("Metaobjects::SemanticMetadata", Type.class);
+                return definition.supertypes(true).contains(semanticMetadata);
+            }
+        }
         return false;
     }
 

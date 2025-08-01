@@ -18,6 +18,8 @@ Any `Namespace` stored in those libraries are now cached for quick access.
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] Add implicit `Subclassification` or `Subsetting` when using semantic `MetadataUsage`.
+
 === New features
 
 
