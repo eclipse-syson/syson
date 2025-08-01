@@ -33,6 +33,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.util.ImmutableLibraryNamespaceProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,11 +65,15 @@ public class ActionDefinitionImplTest {
     public void beforeEach() {
         this.resourceSet = new ResourceSetImpl();
         this.resourceSet.getResources().addAll(standardLibraries);
+        ImmutableLibraryNamespaceProvider namespaceProvider = new ImmutableLibraryNamespaceProvider();
+        this.resourceSet.eAdapters().add(namespaceProvider);
+        this.resourceSet.getResources().stream().forEach(namespaceProvider::addRootImmutableLibrary);
     }
 
     private void addToNewResource(EObject root) {
         JsonResource resource = new JSONResourceFactory().createResource(URI.createURI("fakeURI://" + new Random().nextInt() + ".sysml"));
         this.resourceSet.getResources().add(resource);
+
         resource.getContents().add(root);
     }
 

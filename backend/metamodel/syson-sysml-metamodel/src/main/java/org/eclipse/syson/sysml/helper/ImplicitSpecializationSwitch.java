@@ -114,7 +114,7 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.ViewpointUsage;
 import org.eclipse.syson.sysml.WhileLoopActionUsage;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.util.IImmutableLibraryNamespaceProvider;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -127,11 +127,11 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
 
     private final ImplicitSpecializationAccumulator implicitSpecializations;
 
-    private final ElementUtil elementUtil;
+    private final IImmutableLibraryNamespaceProvider namespaceProvider;
 
-    public ImplicitSpecializationSwitch(List<Specialization> existingSpecializations) {
+    public ImplicitSpecializationSwitch(List<Specialization> existingSpecializations, IImmutableLibraryNamespaceProvider namespaceProvider) {
+        this.namespaceProvider = namespaceProvider;
         this.implicitSpecializations = ImplicitSpecializationAccumulator.fromExistingSpecialisation(existingSpecializations);
-        this.elementUtil = new ElementUtil();
     }
 
     @Override
@@ -1273,7 +1273,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private Redefinition implicitRedefinition(Feature feature, String implicitRedefinedFeatureQualifiedName) {
-        var implicitFeature = this.elementUtil.findByNameAndType(feature, implicitRedefinedFeatureQualifiedName, Feature.class);
+        var implicitFeature = this.namespaceProvider.getNamespaceFromStandardLibrary(implicitRedefinedFeatureQualifiedName, Feature.class);
         if (implicitFeature != null) {
             return this.implicitRedefinition(feature, implicitFeature);
         }
@@ -1290,20 +1290,24 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private Subclassification implicitSubclassification(Classifier classifier, String implicitSuperclassifierQualifiedName) {
-        var implicitClassifier = this.elementUtil.findByNameAndType(classifier, implicitSuperclassifierQualifiedName, Classifier.class);
+        var implicitClassifier = this.namespaceProvider.getNamespaceFromStandardLibrary(implicitSuperclassifierQualifiedName, Classifier.class);
         if (implicitClassifier != null) {
-            var subclassification = SysmlFactory.eINSTANCE.createSubclassification();
-            subclassification.setDeclaredName("specializes (implicit)");
-            subclassification.setIsImplied(true);
-            subclassification.setSubclassifier(classifier);
-            subclassification.setSuperclassifier(implicitClassifier);
-            return subclassification;
+            return this.implicitSubclassification(classifier, implicitClassifier);
         }
         return null;
     }
 
+    private Subclassification implicitSubclassification(Classifier classifier, Classifier implicitClassifier) {
+        var subclassification = SysmlFactory.eINSTANCE.createSubclassification();
+        subclassification.setDeclaredName("specializes (implicit)");
+        subclassification.setIsImplied(true);
+        subclassification.setSubclassifier(classifier);
+        subclassification.setSuperclassifier(implicitClassifier);
+        return subclassification;
+    }
+
     private Subsetting implicitSubsetting(Feature feature, String implicitSubsettedFeatureQualifiedName) {
-        var implicitFeature = this.elementUtil.findByNameAndType(feature, implicitSubsettedFeatureQualifiedName, Feature.class);
+        var implicitFeature = this.namespaceProvider.getNamespaceFromStandardLibrary(implicitSubsettedFeatureQualifiedName, Feature.class);
         if (implicitFeature != null) {
             return this.implicitSubsetting(feature, implicitFeature);
         }
@@ -1329,7 +1333,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private FeatureTyping implicitTyping(Feature feature, String implicitTypeQualifiedName) {
-        var implicitType = this.elementUtil.findByNameAndType(feature, implicitTypeQualifiedName, Type.class);
+        var implicitType = this.namespaceProvider.getNamespaceFromStandardLibrary(implicitTypeQualifiedName, Type.class);
         if (implicitType != null) {
             var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
             featureTyping.setDeclaredName("typed by (implicit)");
@@ -1379,7 +1383,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         return result;
     }
 
-    private <T extends Relationship> List<T> getOwnedRelations(Class<T> type, Element parent) {
+    private <T extends Relationship> List<T> getOwnedRelations(java.lang.Class<T> type, Element parent) {
         return parent.getOwnedRelationship().stream()
                 .filter(type::isInstance)
                 .map(type::cast)
