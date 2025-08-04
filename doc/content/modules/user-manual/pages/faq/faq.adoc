@@ -16,7 +16,7 @@ To understand the intent of {product}, see the xref:user-manual:what-is.adoc[Wha
 ====
 The name {product} is a play on words that sounds such as "season" symbolizing a new season for system engineering tools and reflecting progress in the field.
 While "ON" doesn't have a single predefined meaning, it evokes activation and readiness—like “you’re ON.”
-It can also be interpreted as “Systems ON,” highlighting its role as an enabler for digital engineering, or {sysml} ON,” reinforcing its connection to {sysml}.
+It can also be interpreted as “Systems ON,” highlighting its role as an enabler for digital engineering, or {sysml} ON, reinforcing its connection to {sysml}.
 ====
 
 .*What's the difference between {product} and other {sysml} modeling tools?*
@@ -43,6 +43,15 @@ To discover the {product} features, see the xref:user-manual:key-features.adoc[K
 To explore the supported {sysmlv2} elements, read the xref:user-manual:features/features.adoc[Features] section in the user manual.
 ====
 
+.*Does {product} support modeling in {sysmlv2} graphical notation?*
+[%collapsible%open]
+====
+Yes.
+{product} comes with built-in graphical editors for the core {sysmlv2} diagram families (structure, behavior, and requirements).
+These editors are implemented with https://eclipse.dev/sirius/sirius-web.html[Sirius Web], so they stay in sync with the underlying model and can be customized through viewpoint extensions without modifying {product}’s code base.
+Diagram coverage is expanding—block, interface, activity, and state diagrams are supported today, while sequence diagrams and finer‐grained styling options are on the roadmap.
+====
+
 .*What are the supported diagram types?*
 [%collapsible%open]
 ====
@@ -60,6 +69,26 @@ To explore the supported {sysmlv2} views, read the xref:user-manual:features/fea
 [%collapsible%open]
 ====
 {product} aims at full compliance with the Systems Modeling API & Services specification.
+For more details, see the xref:developer-guide:api.adoc[APIs] section of the documentation.
+====
+
+.*Does {product} support model management?*
+[%collapsible%open]
+====
+No, {product} does not provide built-in features for model management such as versioning, branching, or access control.
+We believe these concerns are best handled by dedicated Configuration Management (CM) or version control tools, which can be integrated with {product} depending on your environment and needs.
+If model management is essential for your project, we encourage you to consult the xref:user-manual:support.adoc[Professional Support] page to explore how we can help you set up the appropriate infrastructure.
+====
+
+.*Does {product} support validationof a {sysmlv2} model?*
+[%collapsible%open]
+====
+Yes, {product} supports validation of {sysmlv2} models.
+It performs automatic checks to ensure conformance with the {sysmlv2} metamodel and key structural rules.
+At this stage, validation results are not yet presented directly within the graphical editors.
+However, this is a planned improvement for future versions, to provide more integrated and interactive feedback during modeling.
+Additional validation rules can also be added or customized to fit specific modeling guidelines or project requirements.
+If you need assistance setting up custom validations, we encourage you to consult the xref:user-manual:support.adoc[Professional Support] page.
 ====
 
 .*To what extent will your tool support collaborative modeling with configuration management?*
@@ -68,7 +97,7 @@ To explore the supported {sysmlv2} views, read the xref:user-manual:features/fea
 As a web application, {product} is inherently collaborative.
 However, it doesn't include a built-in Configuration Management (CM) tool.
 We believe that organizations and users should have the freedom to choose their preferred CM tools, and {product} is designed to be flexible enough to integrate with them.
-For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to .
+If you require assistance integrating {product} with a specific CM tool or setting up a collaborative environment, please refer to the xref:user-manual:support.adoc[Professional Support] page for details on available services.
 ====
 
 .*How do I create a new model?*
@@ -121,12 +150,21 @@ For hands-on learning, check out the xref:user-manual:hands-on/hands-on.adoc[{pr
 See xref:installation-guide:requirements.adoc[Prerequisites] for more details.
 ====
 
+.*Does {product} support version control work for {sysmlv2} models?*
+[%collapsible%open]
+====
+{product} doesn't include built-in version control.
+Instead, it is designed to be flexible and allows users to integrate their preferred version control systems.
+For more information, see xref:user-manual:features/cm.adoc[Version Control and Change Management].
+====
+
 .*How does version control work in {product}?*
 [%collapsible%open]
 ====
 {product} doesn't include built-in version control, allowing users to integrate their preferred solutions.
 For more details, see xref:user-manual:features/cm.adoc[Version control and change management].
 ====
+
 
 .*Is there a limit to the number of projects or models I can create in {product}?*
 [%collapsible%open]
@@ -148,12 +186,20 @@ Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] pa
 
 == Integration with other tools
 
-.*Will the {sysmlv2} tool support textual notation?*
+.*Does {product} support modeling in {sysmlv2} textual notation?*
 [%collapsible%open]
 ====
-{product} supports import and export with the textual notation.
-Certain information within {product} can be edited by using the textual notation.
-The team is currently working on integrating {product} with `SysIDE`, an open source textual editor for the {sysmlv2} syntax.
+{product} supports import and export using the {sysmlv2} textual notation.
+Some model information can also be edited directly in textual form.
+The team is currently working on integrating {product} with `SysIDE`, an open source textual editor for the {sysmlv2} syntax, to provide a more complete and synchronized modeling experience.
+====
+
+.*Does {product} support visualizing {sysmlv2} graphical view from a {sysmlv2} textual model?*
+[%collapsible%open]
+====
+Yes.
+{product} can render graphical views from a {sysmlv2} textual model, as long as the model is structurally valid and complete.
+This allows users to visualize diagrams based on models imported in textual form.
 ====
 
 .*How do I import and export models?*
@@ -168,6 +214,18 @@ To import or export models, read the xref:user-manual:integration/interoperabili
 Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] section to learn more about how to work together by using {product}.
 ====
 
+.*Does {product} provide an integration to office products that can be used to perform modeling activities?
+[%collapsible%open]
+====
+Yes, {product} provides integrations that support modeling-related activities outside the core modeling environment.
+
+* Office Integration: Through tools like M2Doc, {product} allows you to generate Word documents from your SysML v2 models.
+This is useful for producing model-based documentation, reports, and technical specifications that remain synchronized with the underlying model.
+* Diagram Export: Diagrams can be exported as SVG images, making it easy to include visual representations of the model in presentations, documents, or collaborative reviews.
+
+For more advanced use cases or custom document/report generation, consult the xref:user-manual:support.adoc[Professional Support] page.
+====
+
 .*How will models developed in your tool, be shared with other vendor {sysmlv2} tools? Are there any limitations we should be aware of?*
 [%collapsible%open]
 ====
@@ -179,6 +237,28 @@ The intent is to be fully compatible with the {sysmlv2} standard ensuring that m
 ====
 {product} is a pure {sysmlv2} player.
 Currently, {sysmlv1} models can't coexist within {product}, but coexistence might be possible within your {sysmlv1} tool.
+====
+
+.*Does {product} support transforming {sysmlv1} models to {sysmlv2} models?*
+[%collapsible%open]
+====
+While addressing {sysmlv1} model support is currently beyond the scope of {product}, we acknowledge its potential as a valuable extension for the tool.
+We're open to collaborations with individuals or organizations interested in contributing to such extensions.
+We invite those who share our vision and are committed to enhancing {product}'s capabilities to xref:user-manual:help.adoc[contact us] to discuss potential partnerships.
+====
+
+.*Does {product} support transforming {sysmlv2} models to {sysmlv1} models?*
+====
+No, {product} does not currently support transforming {sysmlv2} models into {sysmlv1} models.
+If this capability is important for your context, we recommend reviewing the xref:user-manual:support.adoc[Professional Support] page to explore the services available.
+Our team can help assess what’s possible for your specific use case and discuss potential solutions.
+====
+
+.*Does {product} support modeling in {sysmlv1}?*
+[%collapsible%open]
+====
+No, {product} does not support modeling in SysML v1. It is designed specifically for SysML v2, making use of its updated metamodel, semantics, and services.
+If you are currently working with SysML v1 and considering a transition, we invite you to consult the xref:user-manual:support.adoc[Professional Support] page to explore how we can help assess migration strategies or interoperability solutions.
 ====
 
 .*How do I integrate {product} with other tools or systems?*
@@ -202,12 +282,25 @@ This facilitates sharing and integration with other {sysmlv2} compatible tools.
 This will enable users to leverage {product}'s {sysmlv2} capabilities alongside Capella's powerful system architecture modeling tools, ensuring model interoperability.
 ====
 
-.*Will you have a method to convert {sysmlv1} models to {sysmlv2} models?*
+.*Does {product} support integration of a {sysmlv2} model with other models?*
 [%collapsible%open]
 ====
-While addressing {sysmlv1} model support is currently beyond the scope of {product}, we acknowledge its potential as a valuable extension for the tool.
-We're open to collaborations with individuals or organizations interested in contributing to such extensions.
-We invite those who share our vision and are committed to enhancing {product}'s capabilities to xref:user-manual:help.adoc[contact us] to discuss potential partnerships.
+{product} is designed to be extensible and can support the integration of {sysmlv2} models with other models or modeling tools, depending on the context.
+While there is no built-in, generic model integration feature, {product} provides the technical foundations—such as model import/export, references, and APIs—to enable such integrations.
+
+Common integration scenarios include linking SysML v2 models with requirements (e.g., Polarion), architecture frameworks (e.g., Arcadia), or domain-specific models.
+If you have a specific integration need, we encourage you to consult the xref:user-manual:support.adoc[Professional Support] page to explore how we can help you implement it.
+====
+
+.*Does {product} provide a capability to link data, trace data, across engineering domain using the {sysmlv2} API and Services?*
+[%collapsible%open]
+====
+Yes, {product} is built on top of the SysML v2 API and Services, which provide capabilities for accessing, linking, and tracing data across engineering domains.
+These services expose model content in a standardized way (e.g., via REST APIs), enabling integration with external tools such as requirements management systems, simulation tools, and PLM platforms.
+
+This supports traceability and consistency across system engineering workflows.
+Depending on your specific use case, additional development or configuration may be required.
+For guidance on setting up such integrations, see the xref:user-manual:support.adoc[Professional Support] page.
 ====
 
 == Troubleshooting
