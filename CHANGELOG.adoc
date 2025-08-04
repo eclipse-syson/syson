@@ -6,6 +6,10 @@
 
 === Breaking changes
 
+- _ImplicitSpecializationSwitch_ now requires an _ILibraryNamespaceProvider_ to access element from `LibraryPackage`. A default implementation is given with _org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch_.
+This new object offers a way to register immutable `LibraryPackage`.
+Any `Namespace` stored in those libraries are now cached for quick access.
+
 === Dependency update
 
 === Bug fixes
@@ -13,6 +17,8 @@
 - https://github.com/eclipse-syson/syson/issues/1454[#1454] [import] Fix an issue where importing textual models with `MetadataAccessExpression` failed.
 
 === Improvements
+
+- https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] Add implicit `Subclassification` or `Subsetting` when using semantic `MetadataUsage`.
 
 === New features
 

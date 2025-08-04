@@ -27,6 +27,27 @@ metadata def Function :> SemanticMetadata {
 
 == Improvements
 
+- Improve handling of `SemanticMetadata` by implicitly adding an implicit `Subclassification` or `Subsetting` to the annotated `Type`.
+
+In the following example, _a0_ now automatically subsets _functions_ and _A0_ now automatically subclassifies _Function_:
+
+```
+private import Metaobjects::SemanticMetadata;
+
+part def Functions {
+    attribute x : ScalarValues::String;
+}
+
+part functions : Functions [*] nonunique;
+
+metadata def Function :> SemanticMetadata {
+    :>> baseType = functions meta SysML::ActionUsage;
+}
+
+#Function action a0; // a0 subset functions
+#Function action def A0; // A0 subclassify Functions
+```
+
 == Dependency update
 
 == Technical details
