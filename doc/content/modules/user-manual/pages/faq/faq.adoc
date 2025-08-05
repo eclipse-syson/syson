@@ -69,7 +69,7 @@ To explore the supported {sysmlv2} views, read the xref:user-manual:features/fea
 [%collapsible%open]
 ====
 {product} aims at full compliance with the Systems Modeling API & Services specification.
-For more details, see the xref:developer-guide:api.adoc[APIs] section of the documentation.
+For more details, see the xref:developer-guide:api/api.adoc[APIs] section of the documentation.
 ====
 
 .*Does {product} support model management?*
