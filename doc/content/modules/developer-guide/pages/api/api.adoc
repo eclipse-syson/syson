@@ -18,6 +18,16 @@ Although we've set standard API implementation as a key development goal, {produ
 
 Refer to the xref:developer-guide:api/api-details.adoc[API Details Section] for more information about the supported APIs.
 
+== {product} GraphQL APIs
+
+{product} also supports a GraphQL API, which allows for flexible and efficient data retrieval.
+
+GraphQL enables clients to request only the data they need, reducing over-fetching and under-fetching of data.
+
+This is particularly useful in complex modeling scenarios where different clients may require different subsets of data.
+
+For more information about the GraphQL API, refer to the https://github.com/eclipse-sirius/sirius-web[Sirius Web repository] (on which SysON is built upon) which contains all GraphQL API used by SysON.
+
 == APIs Cookbook
 
 For detailed examples, best practices, and guidance on using {product}’s REST APIs, consult the xref:developer-guide:api/api-cookbook.adoc[APIs Cookbook].
