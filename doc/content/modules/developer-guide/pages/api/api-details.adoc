@@ -53,7 +53,7 @@ function DisableTryItOutPlugin() {
 
   window.onload = () => {
     window.ui = SwaggerUIBundle({
-      url: './_attachments/sirius-web-openapi.json',
+      url: './../_attachments/sirius-web-openapi.json',
       dom_id: '#swagger-ui',
       deepLinking: false,
       presets: [
