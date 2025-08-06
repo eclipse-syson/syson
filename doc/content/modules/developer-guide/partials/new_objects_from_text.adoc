@@ -1,0 +1,71 @@
+= Create new objects from text recipe (python script)
+
+Learn how to create and element through GraphQL API.
+
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* <<new_objects_from_text>>: creates new objects in SysON from a textual SysMLv2 file.
+
+[#new_objects_from_text]
+== New objects from text
+This example demonstrates how to create new objects from a textual SysMLv2 file by using the {product} GraphQL API.
+
+The script reads a SysMLv2 file, extracts its content, and creates new elements in a specified project and namespace.
+
+Example script to create new objects from text:
+
+[source,python]
+.get_owned_element.py
+----
+include::example$new_objects_from_text.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_editing_context` function* with two parameters:
+
+* `host`: The base API address.
+* `projectId`: The UUID of the SysON project in which you want to create you new objects from text.
+
+<3> *Define the `import_sysml_to_project` function* with four parameters:
+
+* `host`: The base API address.
+* `file_path`: The absolute file path of the textual SysMLv2 file containing the new objects.
+* `editing_context_id`: The UUID of the SysON editing context in which you want to create your new objects.
+* `object_id`: The UUID of the SysMLv2 Element in which you want to create your new objects.
+
+<4> *Sends a `POST` request* to the API, passing all script parameters as a query parameters.
+
+<5> Constructs the *API endpoint* address for fetching projects.
+
+<6> *Call the `import_sysml_to_project` function* passing all script parameters as a function parameters.
+
+<7> *Handles the API response*:
+
+* If the mutation is successful, a message is displayed.
+* If an error occurs, an error message is displayed.
+
+Run the script:
+[source,bash]
+----
+$ python new_objects_from_text.py url-of-syson-server file-path-of-sysmlv2-file your-project-id your-namespace-elementId
+----
+
+For example, to run the script, you would use the following command:
+[source,bash]
+----
+$ python new_objects_from_text.py http://localhost:8080 /Users/myUserFolder/myFolder/mySysMLv2File.sysml 76bb3f29-17d1-465a-a2ca-a331978c36f3 2c0ddeb4-b9fe-478e-951e-0ca312013a5b
+----
+
+Output example:
+[source,bash]
+----
+SysML v2 file imported successfully: /Users/myUserFolder/myFolder/mySysMLv2File.sysml
+----
+
+Then you can check the project in the {product} web application to see the newly created objects, or you can use the `get_owned_element.py` script to retrieve the owned elements of the project.

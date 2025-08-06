@@ -63,3 +63,5 @@ include::developer-guide:partial$project_commit_branch_tag_recipe.adoc[leveloffs
 include::developer-guide:partial$element_owned_elements_recipe.adoc[leveloffset=+2]
 
 include::developer-guide:partial$create_element_recipe.adoc[leveloffset=+2]
+
+include::developer-guide:partial$new_objects_from_text.adoc[leveloffset=+2]

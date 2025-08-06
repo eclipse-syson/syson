@@ -37,7 +37,7 @@ It highlights how to navigate relationships between elements efficiently by usin
 Run the script:
 [source,bash]
 ----
-$ python get_owned_elements.py
+$ python get_owned_elements.py your-project-id your-element-id
 ----
 
 Output example:
