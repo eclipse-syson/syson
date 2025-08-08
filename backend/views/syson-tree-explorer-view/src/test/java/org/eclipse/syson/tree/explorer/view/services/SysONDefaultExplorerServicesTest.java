@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EAttribute;
@@ -48,9 +49,12 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -59,14 +63,63 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * Tests the {@link SysONExplorerFilterService} class.
  * 
  * @author dvojtise
+ * @author flatombe
  */
 public class SysONDefaultExplorerServicesTest {
 
+    /**
+     * Mock implementation of {@link IRepresentationMetadataSearchService}.
+     * 
+     * @author dvojtise
+     * @author flatombe
+     */
+    private static final class IRepresentationMetadataSearchServiceNoOp implements IRepresentationMetadataSearchService {
+        @Override
+        public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<RepresentationMetadata> findMetadataById(UUID id) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
+            return null;
+        }
+
+        @Override
+        public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
+            return null;
+        }
+
+        @Override
+        public Window<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData, KeysetScrollPosition position, int limit) {
+            return null;
+        }
+
+        @Override
+        public boolean existsByIdAndKind(UUID id, List<String> kinds) {
+            return false;
+        }
+
+        @Override
+        public boolean existsById(UUID id) {
+            return false;
+        }
+
+        @Override
+        public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
+            return false;
+        }
+    }
+
     private static EditingContext editingContext;
 
-    private SysONDefaultExplorerServices sysONDefaultExplorerServices;
-    
-    private final ISysONResourceService sysONResourceService = new SysONResourceService();
+    private static ISysONResourceService resourceService;
+
+    private static ISysONDefaultExplorerService defaultExplorerService;
 
     @BeforeAll
     static void createEditingContext() {
@@ -82,70 +135,19 @@ public class SysONDefaultExplorerServicesTest {
         resourceSet.setPackageRegistry(ePackageRegistry);
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-    }
 
-    @Test
-    @DisplayName("hasChildren method can handle non sysml content")
-    public void hasChildrenCanHandleNonSysmlContent() {
-        this.createMockServicesForHasChildren();
-
-        EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
-        ePackage.setName("somePackage");
-        EClass c1 = EcoreFactory.eINSTANCE.createEClass();
-        ePackage.getEClassifiers().add(c1);
-        EClass c2 = EcoreFactory.eINSTANCE.createEClass();
-        ePackage.getEClassifiers().add(c2);
-        EAttribute c1a1 = EcoreFactory.eINSTANCE.createEAttribute();
-        c1.getEStructuralFeatures().add(c1a1);
-        EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
-        c1.getEStructuralFeatures().add(c1a2);
-
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
+        resourceService = new SysONResourceService();
+        defaultExplorerService = createMockDefaultExplorerService(resourceService);
     }
 
     /**
-     * Create instances of services required to test hasChildren. Use mock instances for non required services
+     * Creates an {@link ISysONDefaultExplorerService} instance with mocks that is good enough for the unit tests of
+     * this class.
      */
-    private void createMockServicesForHasChildren() {
-
+    private static ISysONDefaultExplorerService createMockDefaultExplorerService(final ISysONResourceService sysONResourceService) {
         IIdentityService identityService = new IIdentityService.NoOp();
         IContentService contentService = new IContentService.NoOp();
-        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService() {
-            @Override
-            public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
-                return Optional.empty();
-            }
-            @Override
-            public Optional<RepresentationMetadata> findMetadataById(UUID id) {
-                return Optional.empty();
-            }
-            @Override
-            public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
-                return null;
-            }
-            @Override
-            public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
-                return null;
-            }
-            @Override
-            public Window<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData, KeysetScrollPosition position, int limit) {
-                return null;
-            }
-            @Override
-            public boolean existsByIdAndKind(UUID id, List<String> kinds) {
-                return false;
-            }
-            @Override
-            public boolean existsById(UUID id) {
-                return false;
-            }
-            @Override
-            public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
-                return false;
-            }
-        };
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchServiceNoOp();
 
         IObjectService objectService = new IObjectService.NoOp();
         ILabelService labelService = new ILabelService.NoOp();
@@ -160,9 +162,82 @@ public class SysONDefaultExplorerServicesTest {
 
         IExplorerServices explorerServices = new ExplorerServices(objectService, labelService, List.of(), representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
 
-        ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
+        ISysONExplorerFilterService filterService = new SysONExplorerFilterService(sysONResourceService);
 
-        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, this.sysONResourceService);
+        return new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, sysONResourceService);
+    }
+
+    /**
+     * Unit tests for
+     * {@link ISysONDefaultExplorerService#hasChildren(Object, org.eclipse.sirius.components.core.api.IEditingContext, List, List, List)}.
+     * 
+     * @author flatombe
+     * @author dvojtise
+     */
+    @Nested
+    @DisplayName("boolean hasChildren(Object, IEditingContext, List<RepresentationMetadata>, List<String>, List<String>)")
+    public class TestHasChildren {
+        @Test
+        @DisplayName("Supports non-sysML model elements")
+        public void hasChildrenCanHandleNonSysmlContent() {
+            EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
+            ePackage.setName("somePackage");
+            EClass c1 = EcoreFactory.eINSTANCE.createEClass();
+            ePackage.getEClassifiers().add(c1);
+            EClass c2 = EcoreFactory.eINSTANCE.createEClass();
+            ePackage.getEClassifiers().add(c2);
+            EAttribute c1a1 = EcoreFactory.eINSTANCE.createEAttribute();
+            c1.getEStructuralFeatures().add(c1a1);
+            EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
+            c1.getEStructuralFeatures().add(c1a2);
+
+            assertThat(defaultExplorerService.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
+            assertThat(defaultExplorerService.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
+            assertThat(defaultExplorerService.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
+        }
+    }
+
+    /**
+     * Unit tests for {@link ISysONDefaultExplorerService#canCreateNewObjectsFromText(Object)}.
+     * 
+     * @author flatombe
+     */
+    @Nested
+    @DisplayName("boolean canCreateNewObjectsFromText(Object)")
+    public class TestCanCreateNewObjectsFromText {
+        @Test
+        @DisplayName("On a null object, cannot create new objects from text")
+        public void testNull() {
+            assertThat(defaultExplorerService.canCreateNewObjectsFromText(null)).isFalse();
+        }
+
+        @Test
+        @DisplayName("On a non-SysML model element, cannot create new objects from text")
+        public void testNonSysMLElements() {
+            final EPackage ePackage = EcorePackage.eINSTANCE;
+            assertThat(getAllConcreteEClasses(ePackage))
+                    .noneMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+                            ePackage.getEFactoryInstance().create(eClass)));
+        }
+
+        @Test
+        @DisplayName("On a SysML model element, can always create new objects from text")
+        public void testSysMLElements() {
+            final EPackage ePackage = SysmlPackage.eINSTANCE;
+            assertThat(getAllConcreteEClasses(ePackage))
+                    .allMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+                            ePackage.getEFactoryInstance().create(eClass)));
+        }
+
+        private static List<EClass> getAllConcreteEClasses(final EPackage ePackage) {
+            return ePackage.getEClassifiers().stream()
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .filter(
+                            Predicate.not(EClass::isInterface)
+                                    .and(Predicate.not(EClass::isAbstract)))
+                    .toList();
+        }
     }
 
 }
