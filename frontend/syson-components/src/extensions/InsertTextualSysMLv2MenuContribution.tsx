@@ -26,7 +26,7 @@ export const InsertTextualSysMLMenuContribution = forwardRef(
   ) => {
     const [modal, setModal] = useState<boolean>(false);
 
-    if (!treeId.startsWith('explorer://') || !item.kind.startsWith('siriusComponents://semantic') || !item.editable) {
+    if (!treeId.startsWith('explorer://') || !item.editable) {
       return null;
     }
     const onDialogClose = () => {

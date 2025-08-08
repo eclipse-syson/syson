@@ -49,6 +49,8 @@ public interface ISysONExplorerService {
 
     boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
     
+    boolean canCreateNewObjectsFromText(Object self);
+    
     List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
 
 }

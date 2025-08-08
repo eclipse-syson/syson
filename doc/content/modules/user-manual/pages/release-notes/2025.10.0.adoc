@@ -27,6 +27,9 @@ metadata def Function :> SemanticMetadata {
 - Fix an issue in the computation of the path of elements in Explorers defined with Sirius Tree APIs instead of Sirius View DSL APIs
 This issue was not visible in SysON but could appear in downstream applications defining explorers with the Sirius Tree APIs.
 
+- Fix action "New objects from text" being available on all semantic elements in the _Explorer_ view.
+Now it is only available on SysML model elements.
+
 == Improvements
 
 == Dependency update
