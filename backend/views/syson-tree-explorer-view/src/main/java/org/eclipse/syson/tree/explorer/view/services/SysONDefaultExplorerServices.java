@@ -202,6 +202,11 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
                 .toList();
         return treeItem.isHasChildren() && !nonExpandableDirectories.contains(treeItem.getKind());
     }
+    
+    @Override
+    public boolean canCreateNewObjectsFromText(Object self) {
+        return self instanceof Element && isEditable(self);
+    }
 
     @Override
     public Object getParent(Object self, String treeItemId, IEditingContext editingContext) {

@@ -48,6 +48,8 @@ public interface ISysONDefaultExplorerService {
     List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
     boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
+    
+    boolean canCreateNewObjectsFromText(Object self);
 
     List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
 

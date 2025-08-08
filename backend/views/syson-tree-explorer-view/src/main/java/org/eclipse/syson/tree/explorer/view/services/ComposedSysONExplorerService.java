@@ -128,6 +128,13 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
     }
 
     @Override
+    public boolean canCreateNewObjectsFromText(Object self) {
+        return this.getDelegate(self)
+                .map(delegate -> delegate.canCreateNewObjectsFromText(self))
+                .orElseGet(() -> this.defaultExplorerService.canCreateNewObjectsFromText(self));
+    }
+
+    @Override
     public List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds) {
         return this.getDelegate(editingContext)
                 .map(delegate -> delegate.getElements(editingContext, activeFilterIds))

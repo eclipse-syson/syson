@@ -14,6 +14,10 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1452[#1452] [explorer] Contextual menu action "New objects from text" is now defined in the backend.
+By default, it no longer appears for non-SysML semantic model elements.
+Consumers may override this by providing an implementation of `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate.canCreateNewObjectsFromText(Object)`.
+
 === New features
 
 
