@@ -140,11 +140,6 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   Component: SysONDocumentTreeItemContextMenuContribution,
 });
 
-extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `syson${treeItemContextMenuEntryExtensionPoint.identifier}_insertTextualSysML`,
-  Component: InsertTextualSysMLMenuContribution,
-});
-
 extensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
@@ -167,6 +162,12 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
       return entry.id.includes('expandAll');
     },
     component: ExpandAllTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id === 'newObjectsFromText';
+    },
+    component: InsertTextualSysMLMenuContribution,
   },
 ];
 

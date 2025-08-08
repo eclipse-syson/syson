@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EAttribute;
@@ -42,31 +42,34 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.KeysetScrollPosition;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Tests the {@link SysONExplorerFilterService} class.
  * 
  * @author dvojtise
+ * @author flatombe
  */
 public class SysONDefaultExplorerServicesTest {
 
     private static EditingContext editingContext;
 
-    private SysONDefaultExplorerServices sysONDefaultExplorerServices;
-    
-    private final ISysONResourceService sysONResourceService = new SysONResourceService();
+    private ISysONResourceService resourceService;
+
+    private ISysONDefaultExplorerService defaultExplorerService;
+
+    public SysONDefaultExplorerServicesTest() {
+        this.resourceService = new SysONResourceService();
+        this.defaultExplorerService = this.createMockDefaultExplorerService(resourceService);
+    }
 
     @BeforeAll
     static void createEditingContext() {
@@ -85,10 +88,8 @@ public class SysONDefaultExplorerServicesTest {
     }
 
     @Test
-    @DisplayName("hasChildren method can handle non sysml content")
+    @DisplayName("When service 'hasChildren' is called on non-SysML model elements, the result is based on the Ecore containments")
     public void hasChildrenCanHandleNonSysmlContent() {
-        this.createMockServicesForHasChildren();
-
         EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName("somePackage");
         EClass c1 = EcoreFactory.eINSTANCE.createEClass();
@@ -100,52 +101,43 @@ public class SysONDefaultExplorerServicesTest {
         EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
         c1.getEStructuralFeatures().add(c1a2);
 
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(this.sysONDefaultExplorerServices.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
+        assertThat(defaultExplorerService.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(defaultExplorerService.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(defaultExplorerService.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
+    }
+
+    @Test
+    @DisplayName("When service 'canCreateNewObjectsFromText' is called on null, the result is always negative")
+    public void testNull() {
+        assertThat(defaultExplorerService.canCreateNewObjectsFromText(null)).isFalse();
+    }
+
+    @Test
+    @DisplayName("When service 'canCreateNewObjectsFromText' is called on non-SysML model elements, the result is always negative")
+    public void testNonSysMLElements() {
+        final EPackage ePackage = EcorePackage.eINSTANCE;
+        assertThat(getAllConcreteEClasses(ePackage))
+                .noneMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+                        ePackage.getEFactoryInstance().create(eClass)));
+    }
+
+    @Test
+    @DisplayName("When service 'canCreateNewObjectsFromText' is called on SysML model elements, the result is always positive")
+    public void testSysMLElements() {
+        final EPackage ePackage = SysmlPackage.eINSTANCE;
+        assertThat(getAllConcreteEClasses(ePackage))
+                .allMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+                        ePackage.getEFactoryInstance().create(eClass)));
     }
 
     /**
-     * Create instances of services required to test hasChildren. Use mock instances for non required services
+     * Creates an {@link ISysONDefaultExplorerService} instance with mocks that is good enough for the unit tests of
+     * this class.
      */
-    private void createMockServicesForHasChildren() {
-
+    private ISysONDefaultExplorerService createMockDefaultExplorerService(final ISysONResourceService sysONResourceService) {
         IIdentityService identityService = new IIdentityService.NoOp();
         IContentService contentService = new IContentService.NoOp();
-        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService() {
-            @Override
-            public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
-                return Optional.empty();
-            }
-            @Override
-            public Optional<RepresentationMetadata> findMetadataById(UUID id) {
-                return Optional.empty();
-            }
-            @Override
-            public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
-                return null;
-            }
-            @Override
-            public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData) {
-                return null;
-            }
-            @Override
-            public Window<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData, KeysetScrollPosition position, int limit) {
-                return null;
-            }
-            @Override
-            public boolean existsByIdAndKind(UUID id, List<String> kinds) {
-                return false;
-            }
-            @Override
-            public boolean existsById(UUID id) {
-                return false;
-            }
-            @Override
-            public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
-                return false;
-            }
-        };
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchServiceNoOp();
 
         IObjectService objectService = new IObjectService.NoOp();
         ILabelService labelService = new ILabelService.NoOp();
@@ -160,9 +152,19 @@ public class SysONDefaultExplorerServicesTest {
 
         IExplorerServices explorerServices = new ExplorerServices(objectService, labelService, List.of(), representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
 
-        ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
+        ISysONExplorerFilterService filterService = new SysONExplorerFilterService(sysONResourceService);
 
-        this.sysONDefaultExplorerServices = new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, this.sysONResourceService);
+        return new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, sysONResourceService);
+    }
+
+    private List<EClass> getAllConcreteEClasses(final EPackage ePackage) {
+        return ePackage.getEClassifiers().stream()
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(
+                        Predicate.not(EClass::isInterface)
+                                .and(Predicate.not(EClass::isAbstract)))
+                .toList();
     }
 
 }

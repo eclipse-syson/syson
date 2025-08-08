@@ -39,6 +39,8 @@ public class SysONExplorerTreeDescriptionProvider {
 
     public static final String EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID = "expandAll";
 
+    public static final String NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID = "newObjectsFromText";
+
     public View createView() {
 
         var sysonDefaultTreeView = new ViewBuilders()
@@ -96,10 +98,14 @@ public class SysONExplorerTreeDescriptionProvider {
     }
 
     private List<TreeItemContextMenuEntry> getContextMenuEntries() {
+        final TreeItemContextMenuEntry newObjectsFromTextMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .contributionId(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
+                .preconditionExpression("aql:self.canCreateNewObjectsFromText()")
+                .build();
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
                 .contributionId(EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID)
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".canExpandAll(editingContext)")
                 .build();
-        return List.of(expandAllMenuEntry);
+        return List.of(newObjectsFromTextMenuEntry, expandAllMenuEntry);
     }
 }
