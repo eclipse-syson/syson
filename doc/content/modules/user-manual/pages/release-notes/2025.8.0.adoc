@@ -158,6 +158,9 @@ package p1 {
 
 - In the _Explorer_ view, fix an issue where the context menu of a tree item was loaded twice.
 
+- Fix action "New objects from text" being available on all semantic elements in the Explorer view.
+Now the backend may specify on which elements this contextual menu action is available.
+The default implementation only enables it on SysML model elements.
 
 == Improvements
 
