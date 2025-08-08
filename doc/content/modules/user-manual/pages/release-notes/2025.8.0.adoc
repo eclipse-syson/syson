@@ -246,7 +246,7 @@ This change is made to ease the usage of the REST APIs and to avoid confusion.
 == Dependency update
 
 - Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.10]
+- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.11]
 - Switch to SysIDE 0.9.0
 - Switch to Sirius EMF-JSON 2.5.3
 - Switch to Node 22.16.0
