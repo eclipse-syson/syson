@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-metamodel</artifactId>
-	<version>2025.6.11</version>
+	<version>2025.6.12</version>
 	<name>syson-sysml-metamodel</name>
 	<description>SysON SysMLv2 Metamodel</description>
 
