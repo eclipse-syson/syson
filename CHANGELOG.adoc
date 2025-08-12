@@ -4,13 +4,13 @@
 
 === Shapes
 
-- Add duplicate object menu item fro SysMLv2 elements in the _Explorer_ view
-- Add diagram tool to duplicate graphical nodes in diagrams
+- Added a duplicate object menu item for SysMLv2 elements in the _Explorer_ view.
+- Added a diagram tool to duplicate graphical nodes in diagrams.
 
 === Breaking changes
-- https://github.com/eclipse-syson/syson/issues/1384[#1384] [metamodel] Align metamodel to SysMLv2 2025-04 specification released on April 2025 (see https://www.omg.org/spec/SysML/ for more details) and KerML 2025-04 specification released on April 2025 (see https://www.omg.org/spec/KerML/ for more details).
+- https://github.com/eclipse-syson/syson/issues/1384[#1384] [metamodel] Aligned the metamodel with the SysMLv2 2025-04 specification released in April 2025 (see https://www.omg.org/spec/SysML/ for more details) and the KerML 2025-04 specification released in April 2025 (see https://www.omg.org/spec/KerML/ for more details).
 
-**Please download all your models/projects before upgrading to 2025.8.0.**
+**In any case, download all your existing models/projects and back up your database before upgrading to 2025.8.0 (as always).**
 
 The new concepts are:
 
@@ -19,64 +19,64 @@ The new concepts are:
 
 The new attributes are:
 
-* on `Feature`
+* On `Feature`
 ** `isConstant : EBoolean`
-* on `Usage`
+* On `Usage`
 ** `mayTimeVary : EBoolean`
 
 The new operations are:
 
-*	on `Element`
+* On `Element`
 ** `path() : EString`
-* on `Feature`
+* On `Feature`
 ** `isFeaturingType(Type) : EBoolean`
 ** `canAccess(Feature) : EBoolean`
-* on `Type`
+* On `Type`
 ** `isCompatibleWith(Type) : EBoolean`
 ** `allRedefinedFeaturesOf(Membership) : Feature`
 
 The new references are:
 
-* on `Connector`
-** `defaultFeaturingType : Type` 
-* on `InstantiationExpression`
+* On `Connector`
+** `defaultFeaturingType : Type`
+* On `InstantiationExpression`
 ** `argument : Expression`
 
 The updates are:
 
-* concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`
-* concept `FlowConnectionUsage` has been renamed to `FlowUsage`
-* concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`
-* concept `ItemFlow` has been renamed to `Flow`
-** reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`
-* concept `ItemFlowEnd` has been renamed to `FlowEnd`
-* concept `SuccessionItemFlow` has been renamed to `SuccessionFlow`TypeFeaturing
-** reference `featuringType : Type` doesn't redefine `type` anymore
-** reference `featureOfType : Feature` doesn't redefine `feature` anymore
-* concept `ItemFeature` has been renamed to `PayloadFeature`
-* on `MetadataAccessExpression`
-** reference `referencedElement : Element` is now derived and subsets `member`
-** on `FeatureMembership`
-** reference `owningType : Type` doesn't redefine `type` anymore
-** reference `ownedMemberFeature : Feature` doesn't redefine `feature` anymore
-* on `Feature`
-** attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`
+* The concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`.
+* The concept `FlowConnectionUsage` has been renamed to `FlowUsage`.
+* The concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`.
+* The concept `ItemFlow` has been renamed to `Flow`.
+** The reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`.
+* The concept `ItemFlowEnd` has been renamed to `FlowEnd`.
+* The concept `SuccessionItemFlow` has been renamed to `SuccessionFlowTypeFeaturing`.
+** The reference `featuringType : Type` no longer redefines `type`.
+** The reference `featureOfType : Feature` no longer redefines `feature`.
+* The concept `ItemFeature` has been renamed to `PayloadFeature`.
+* On `MetadataAccessExpression`
+** The reference `referencedElement : Element` is now derived and subsets `member`.
+* On `FeatureMembership`
+** The reference `owningType : Type` no longer redefines `type`.
+** The reference `ownedMemberFeature : Feature` no longer redefines `feature`.
+* On `Feature`
+** The attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`.
 
 The deletions are:
 
-* concept `Featuring`
-* concept `LifeClass`
-* on `Membership`
-** operation `allRedefinedFeature() : Feature`
-* on `Feature`
-** reference `valuation : FeatureValue`
-* on `OccurrenceDefinition`
-** reference `lifeClass : LifeClass`
-* on `Succession`
-** reference `effectStep : Step`
-** reference `guardExpression : Expression`
-** reference `transitionStep : Step`
-** reference `triggerStep : Step`
+* The concept `Featuring`
+* The concept `LifeClass`
+* On `Membership`
+** The operation `allRedefinedFeature() : Feature`
+* On `Feature`
+** The reference `valuation : FeatureValue`
+* On `OccurrenceDefinition`
+** The reference `lifeClass : LifeClass`
+* On `Succession`
+** The reference `effectStep : Step`
+** The reference `guardExpression : Expression`
+** The reference `transitionStep : Step`
+** The reference `triggerStep : Step`
 
 All standard libraries have been updated to comply with the SysMLv2 2025-04 specification.
 All validation rules have been updated to comply with the SysMLv2 2025-04 specification.
@@ -87,7 +87,7 @@ All validation rules have been updated to comply with the SysMLv2 2025-04 specif
 * `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 * `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 
-- https://github.com/eclipse-syson/syson/issues/1422[#1422] [releng] The following files have been move to `syson-components` and it is no longer necessary to add them to a project on top of SysON:
+- https://github.com/eclipse-syson/syson/issues/1422[#1422] [releng] The following files have been moved to `syson-components` and it is no longer necessary to add them to a project on top of SysON:
 * SysONDocumentTreeItemContextMenuContribution
 * SysONExtensionRegistryMergeStrategy
 * SysONObjectTreeItemContextMenuContribution
