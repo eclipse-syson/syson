@@ -4,7 +4,7 @@
 
 - *Model conformance to {sysmlv2} 2025-04 version*: the metamodel has been modified to conform to {sysmlv2} and {kerml} 2025-04 specifications released on April 2025 (see https://www.omg.org/spec/SysML/ for more details).
 All existing models/projects in {product} will be automatically migrated to this new version.
-**In any case, download all your existing models/projects before upgrading to 2025.8.0 (as always).**
+**In any case, download all your existing models/projects and back up your database before upgrading to 2025.8.0 (as always).**
 
 
 == Breaking changes
@@ -24,7 +24,7 @@ All existing models/projects in {product} will be automatically migrated to this
 - Add a new edge tool from `UseCaseUsage` to create `IncludeUseCaseUsage` in the _General view_ diagram.
 image::gv-IncludeUseCaseUsage.png[Manage Visibility modal, width=65%,height=65%]
 - Implement the textual export of `FlowUsage`.
-The following model now properly export the `FlowUsage` elements.
+The following model now properly exports the `FlowUsage` elements.
 
 ```
 part def P1Def {
@@ -48,9 +48,9 @@ part p1 {
 == Bug fixes
 
 - Fix an issue that made the _Expand All_ tool not work consistently in SysON _Explorer_ view.
-- Fix an issue where a d'n'd of an `Element` from the _Explorer_ view to a diagram exposed the `Element` twice in the `ViewUsage` associated to the diagram.
+- Fix an issue where a drag-and-drop of an `Element` from the _Explorer_ view to a diagram exposed the `Element` twice in the `ViewUsage` associated to the diagram.
 - In the _General View_ diagram, the creation of `BindingConnectorAsUsage` now computes the shortest feature path between the source feature and the target feature to create a feature chain if required.
-For example creating a `BindingConnectorAsUsage` between "i0" and "i11" in the following model will create the feature chain : _a1.a11.i11_.
+For example creating a `BindingConnectorAsUsage` between "i0" and "i11" in the following model will create the feature chain: _a1.a11.i11_.
 
 ```
 action a0 {
@@ -65,12 +65,12 @@ action a0 {
 
 Moreover, the tooling has been improved to:
 * Find the best containment location at creation time. In this case, "a0"
-* Handle properly source/target reconnection to recompute feature chain and the best container.
-- Fix an issue where model and diagrams referencing standard libraries elements might not correctly loaded.
-- Fix an issue where model and diagrams referencing standard libraries elements might not correctly saved.
+* Properly handle source/target reconnection to recompute the feature chain and the best container.
+- Fix an issue where models and diagrams referencing standard library elements might not be correctly loaded.
+- Fix an issue where models and diagrams referencing standard library elements might not be correctly saved.
 
 -  Fix an issue where the type property of `Feature` that owns `FeatureChaining` was not correctly set.
-The type of the last `FeatureChaining` is now added to the list of type of the owning feature.
+The type of the last `FeatureChaining` is now added to the list of types of the owning feature.
 
 For example in:
 
@@ -88,7 +88,7 @@ Type T3 {
 
 The `FeatureChain` _t1Feature.t2Feature_ is now typed with _T3_.
 
-- Fix a name resolution problem during textual import of elements used in a `FlowConnectionAsUsage`.
+- Fix an issue with name resolution during the textual import of elements used in a `FlowConnectionAsUsage`.
 In the following example, the last segment of the `FlowConnectionAsUsage` ends were not properly resolved during import:
 
 ```
@@ -119,17 +119,17 @@ package 'Flow Connection Interface Example' {
         part tankAssembly : FuelTankAssembly;
         part eng : Engine;
         flow of Fuel
-            from tankAssembly.fuelTankPort.fuelSupply // Failed to resolved fuelSupply
-            to eng.engineFuelPort.fuelSupply; // Failed to resolved fuelSupply
+            from tankAssembly.fuelTankPort.fuelSupply // Failed to resolve fuelSupply
+            to eng.engineFuelPort.fuelSupply; // Failed to resolve fuelSupply
         flow of Fuel
-            from eng.engineFuelPort.fuelReturn // Failed to resolved fuelReturn
-            to tankAssembly.fuelTankPort.fuelReturn; // Failed to resolved fuelReturn
+            from eng.engineFuelPort.fuelReturn // Failed to resolve fuelReturn
+            to tankAssembly.fuelTankPort.fuelReturn; // Failed to resolve fuelReturn
     }
 }
 ```
 
 - Fix textual import issues when importing `MetadataUsage`.
-The following notations used to define `MetadataUsage` are now properly imported by SysON:
+The following notations, used to define `MetadataUsage`, are now properly imported by SysON:
 
 ```
 package p1 {
@@ -172,84 +172,83 @@ The new concepts are:
 
 The new attributes are:
 
-* on `Feature`
+* On `Feature`
 ** `isConstant : EBoolean`
-* on `Usage`
+* On `Usage`
 ** `mayTimeVary : EBoolean`
 
 The new operations are:
 
-*	on `Element`
+* On `Element`
 ** `path() : EString`
-* on `Feature`
+* On `Feature`
 ** `isFeaturingType(Type) : EBoolean`
 ** `canAccess(Feature) : EBoolean`
-* on `Type`
+* On `Type`
 ** `isCompatibleWith(Type) : EBoolean`
 ** `allRedefinedFeaturesOf(Membership) : Feature`
 
 The new references are:
 
-* on `Connector`
-** `defaultFeaturingType : Type` 
-* on `InstantiationExpression`
+* On `Connector`
+** `defaultFeaturingType : Type`
+* On `InstantiationExpression`
 ** `argument : Expression`
 
 The updates are:
 
-* concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`
-* concept `FlowConnectionUsage` has been renamed to `FlowUsage`
-* concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`
-* concept `ItemFlow` has been renamed to `Flow`
-** reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`
-* concept `ItemFlowEnd` has been renamed to `FlowEnd`
-* concept `SuccessionItemFlow` has been renamed to `SuccessionFlow`TypeFeaturing
-** reference `featuringType : Type` doesn't redefine `type` anymore
-** reference `featureOfType : Feature` doesn't redefine `feature` anymore
-* concept `ItemFeature` has been renamed to `PayloadFeature`
-* on `MetadataAccessExpression`
-** reference `referencedElement : Element` is now derived and subsets `member`
-** on `FeatureMembership`
-** reference `owningType : Type` doesn't redefine `type` anymore
-** reference `ownedMemberFeature : Feature` doesn't redefine `feature` anymore
-* on `Feature`
-** attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`
+* The concept `FlowConnectionDefinition` has been renamed to `FlowDefinition`.
+* The concept `FlowConnectionUsage` has been renamed to `FlowUsage`.
+* The concept `SuccessionFlowConnectionUsage` has been renamed to `SuccessionFlowUsage`.
+* The concept `ItemFlow` has been renamed to `Flow`.
+** The reference `itemFlowEnd : ItemFlowEnd` has been renamed to `flowEnd : FlowEnd`.
+* The concept `ItemFlowEnd` has been renamed to `FlowEnd`.
+* The concept `SuccessionItemFlow` has been renamed to `SuccessionFlowTypeFeaturing`.
+** The reference `featuringType : Type` no longer redefines `type`.
+** The reference `featureOfType : Feature` no longer redefines `feature`.
+* The concept `ItemFeature` has been renamed to `PayloadFeature`.
+* On `MetadataAccessExpression`
+** The reference `referencedElement : Element` is now derived and subsets `member`.
+* On `FeatureMembership`
+** The reference `owningType : Type` no longer redefines `type`.
+** The reference `ownedMemberFeature : Feature` no longer redefines `feature`.
+* On `Feature`
+** The attribute `isReadOnly : EBoolean` has been renamed to `isVariable : EBoolean`.
 
 The deletions are:
 
-* concept `Featuring`
-* concept `LifeClass`
-* on `Membership`
-** operation `allRedefinedFeature() : Feature`
-* on `Feature`
-** reference `valuation : FeatureValue`
-* on `OccurrenceDefinition`
-** reference `lifeClass : LifeClass`
-* on `Succession`
-** reference `effectStep : Step`
-** reference `guardExpression : Expression`
-** reference `transitionStep : Step`
-** reference `triggerStep : Step`
+* The concept `Featuring`
+* The concept `LifeClass`
+* On `Membership`
+** The operation `allRedefinedFeature() : Feature`
+* On `Feature`
+** The reference `valuation : FeatureValue`
+* On `OccurrenceDefinition`
+** The reference `lifeClass : LifeClass`
+* On `Succession`
+** The reference `effectStep : Step`
+** The reference `guardExpression : Expression`
+** The reference `transitionStep : Step`
+** The reference `triggerStep : Step`
 
 All standard libraries have been updated to comply with the {sysmlv2} 2025-04 specification.
 All validation rules have been updated to comply with the {sysmlv2} 2025-04 specification.
 
-- Exclude referenced libraries from validation
+- Exclude referenced libraries from validation.
 Referenced libraries are not validated anymore since users can't fix them in their project.
 It is the responsibility of the library owner to fix the validation issues in the project that contains the library.
-
-- For all REST APIs, make `@id` and `elementId` attributes having the same value (the `elementId` one) in JSON serialization.
+- For all REST APIs, ensure that the `@id` and `elementId` attributes have the same value (the `elementId` value) in JSON serialization.
 The SysMLv2 standard has not decided if those two attributes should be the same or not.
-This change is made to ease the usage of the REST APIs and to avoid confusion.
+This change is made to ease the use of the REST APIs and to avoid confusion.
 - For all REST APIs, use alphabetical order for the JSON serialization of attributes and references.
 
 == Dependency update
 
-- Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
-- Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.12]
-- Switch to SysIDE 0.9.0
-- Switch to Sirius EMF-JSON 2.5.3
-- Switch to Node 22.16.0
+- Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
+- Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.12]
+- Update to SysIDE 0.9.0
+- Update to Sirius EMF-JSON 2.5.3
+- Update to Node 22.16.0
 
 == Technical details
 
