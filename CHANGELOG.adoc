@@ -11,6 +11,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1454[#1454] [import] Fix an issue where importing textual models with `MetadataAccessExpression` failed.
+- https://github.com/eclipse-syson/syson/issues/1487[#1487] [explorer] Fix NPE thrown by `getTreePath` on Explorers defined with Sirius Tree APIs instead of Sirius View DSL APIs.
+This issue was not visible in SysON but could appear in downstream applications defining explorers with the Sirius Tree APIs.
 
 === Improvements
 

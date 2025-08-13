@@ -22,10 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
@@ -40,6 +47,9 @@ import org.eclipse.syson.application.controller.explorer.testers.TreeItemContext
 import org.eclipse.syson.application.controller.explorer.testers.TreePathTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.SysonStudioTestProjectData;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
@@ -60,6 +70,7 @@ import reactor.test.StepVerifier;
  * @author gdaniel
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SysONExplorerTests extends AbstractIntegrationTests {
 
@@ -76,10 +87,19 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     private ExplorerDescriptionsQueryRunner explorerDescriptionsQueryRunner;
 
     @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
+    @Autowired
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
     private SysONTreeViewDescriptionProvider sysonTreeViewDescriptionProvider;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
 
     @Autowired
     private ExpandAllTreeItemTester expandAllTreeItemTester;
@@ -307,7 +327,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         assertThat(sysmlDirectoryContextMenu).isEmpty();
     }
 
-    @DisplayName("GIVEN an empty SysML Project, WHEN context menu is queried, THEN the tree path should take into accounts the Explorer filters.")
+    @DisplayName("GIVEN an empty SysML Project, WHEN the tree path is queried, THEN the returned tree path should take into accounts the Explorer filters.")
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
@@ -345,5 +365,82 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
         assertThat(treeItemIdsToExpand).hasSize(1);
         assertThat(treeItemIdsToExpand).contains(sysmlv2DocumentTreeItemId.get());
+    }
+
+    /**
+     * Tests that the {@code treePath} query behaves as expected in Sirius Web's default explorer.
+     * <p>
+     * Downstream applications integrating Sirius Web's default explorer should work as expected. The default behavior
+     * of Sirius Web is to <b>not</b> filter tree path entries based on filters. We should ensure SysON does not
+     * interfere with this behavior.
+     * </p>
+     */
+    @DisplayName("GIVEN an empty SysML Project, WHEN the tree path is queried in the Sirius Web default Explorer, THEN the returned tree path should not take into accounts the Explorer filters.")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void treePathQueryInSiriusWebDefaultExplorerDoesNotApplyExplorerFilters() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
+
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        AtomicReference<String> treeId = new AtomicReference<>();
+        AtomicReference<String> sysmlv2DocumentTreeItemId = new AtomicReference<>();
+        AtomicReference<String> package1TreeItemId = new AtomicReference<>();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+            // SysML and KerML libraries are at the root of the tree in the Sirius Web explorer.
+            assertThat(tree.getChildren()).hasSize(95);
+            Optional<TreeItem> optionalSysmlv2DocumentTreeItem = tree.getChildren().stream()
+                    .filter(treeItem -> Objects.equals(treeItem.getLabel().toString(), "SysMLv2"))
+                    .findFirst();
+            assertThat(optionalSysmlv2DocumentTreeItem).isPresent();
+            TreeItem sysmlv2DocumentTreeItem = optionalSysmlv2DocumentTreeItem.get();
+            sysmlv2DocumentTreeItemId.set(sysmlv2DocumentTreeItem.getId());
+            assertThat(sysmlv2DocumentTreeItem.isHasChildren()).isTrue();
+            TreeItem package1TreeItem = sysmlv2DocumentTreeItem.getChildren().get(0);
+            assertThat(package1TreeItem.getLabel().toString()).isEqualTo("Package 1");
+            package1TreeItemId.set(package1TreeItem.getId());
+        });
+
+        // Retrieve the Ids of the root Namespace and the OwningMembership containing the package, they should be part
+        // of the tree path.
+        AtomicReference<String> rootNamespaceId = new AtomicReference<>();
+        AtomicReference<String> owningMembershipId = new AtomicReference<>();
+
+        Runnable getNamespaceAndMembershipIds = () -> {
+            var getNamespaceAndMembershipIdsInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                    (editingContext, executeEditingContextFunctionInput) -> {
+                        Optional<Object> optionalPackage1 = this.objectSearchService.getObject(editingContext, package1TreeItemId.get());
+                        assertThat(optionalPackage1).isPresent().get().isInstanceOf(Package.class);
+                        Package package1 = (Package) optionalPackage1.get();
+                        EObject owningMembership = package1.eContainer();
+                        assertThat(owningMembership).isInstanceOf(OwningMembership.class);
+                        owningMembershipId.set(this.identityService.getId(owningMembership));
+                        EObject rootNamespace = owningMembership.eContainer();
+                        assertThat(rootNamespace).isInstanceOf(Namespace.class);
+                        rootNamespaceId.set(this.identityService.getId(rootNamespace));
+                        return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                    });
+            var payload = this.executeEditingContextFunctionRunner.execute(getNamespaceAndMembershipIdsInput).block();
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .then(getNamespaceAndMembershipIds)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        // The list of tree item Ids to expand when a GetTreePath query is called on Package 1 (since filters are
+        // ignored by Sirius Web this list contains all the ancestors of Package 1, including the ones filtered out by
+        // the explorer).
+        List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
+        assertThat(treeItemIdsToExpand).hasSize(3);
+        assertThat(treeItemIdsToExpand).containsExactly(owningMembershipId.get(), rootNamespaceId.get(), sysmlv2DocumentTreeItemId.get());
     }
 }
