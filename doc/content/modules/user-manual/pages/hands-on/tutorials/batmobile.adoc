@@ -31,8 +31,8 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 
 === Setting Multiplicity
 
-. Select the `Vehicle` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
-. Rename the part usage to `wheels`.
+. Select the `Batmobile` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
+. Rename the new part usage to `wheels`.
 
 === Using Drag and Drop
 
