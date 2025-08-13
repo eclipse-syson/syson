@@ -68,13 +68,17 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
 
     @Override
     public boolean canHandle(Tree tree) {
+        boolean result = false;
         if (tree != null) {
             var sysonExplorerId = UUID.nameUUIDFromBytes(SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER.getBytes()).toString();
             var parameters = this.urlParser.getParameterValues(tree.getDescriptionId());
-            var sourceId = parameters.get("sourceId").get(0);
-            return Objects.equals(sysonExplorerId, sourceId);
+            var sourceIdParameter = parameters.get("sourceId");
+            if (sourceIdParameter != null && !sourceIdParameter.isEmpty()) {
+                var sourceId = sourceIdParameter.get(0);
+                result = Objects.equals(sysonExplorerId, sourceId);
+            }
         }
-        return false;
+        return result;
     }
 
     @Override

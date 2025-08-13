@@ -24,6 +24,8 @@ metadata def Function :> SemanticMetadata {
     :>> baseType = functions meta SysML::ActionUsage;
 }
 ```
+- Fix an issue in the computation of the path of elements in Explorers defined with Sirius Tree APIs instead of Sirius View DSL APIs
+This issue was not visible in SysON but could appear in downstream applications defining explorers with the Sirius Tree APIs.
 
 == Improvements
 
