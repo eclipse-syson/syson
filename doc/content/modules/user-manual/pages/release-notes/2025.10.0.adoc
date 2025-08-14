@@ -31,6 +31,8 @@ This issue was not visible in SysON but could appear in downstream applications 
 
 == Dependency update
 
+- Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.4[Spring Boot 3.5.4].
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
