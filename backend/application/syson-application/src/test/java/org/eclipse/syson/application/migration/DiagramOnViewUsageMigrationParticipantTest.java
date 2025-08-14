@@ -16,18 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.common.base.Objects;
-
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -74,7 +74,10 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
 
     @Autowired
     private IRepresentationSearchService representationSearchService;
@@ -112,7 +115,7 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
     }
 
     private boolean testIsMigrationSuccessful(IEditingContext editingContext) {
-        Package pkg1 = (Package) this.objectService.getObject(editingContext, DiagramOnViewUsageMigrationParticipantTestProjectData.SemanticIds.PACKAGE_1_ID).get();
+        Package pkg1 = (Package) this.objectSearchService.getObject(editingContext, DiagramOnViewUsageMigrationParticipantTestProjectData.SemanticIds.PACKAGE_1_ID).get();
 
         var members = pkg1.getMember();
         assertTrue(members.stream().anyMatch(ViewUsage.class::isInstance));
@@ -128,7 +131,7 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
         var targetObjectId = diagram.getTargetObjectId();
 
         var viewUsage = optionalViewUsage.get();
-        assertEquals(this.objectService.getId(viewUsage), targetObjectId);
+        assertEquals(this.identityService.getId(viewUsage), targetObjectId);
 
         var viewDef = viewUsage.getType();
         assertEquals(1, viewDef.size());
@@ -142,8 +145,8 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
         // partA graphical node contains documentation, states, flow states as compartments visible graphical nodes
         // (3)
         for (Node node : rootNodes) {
-            if (Objects.equal("partA", node.getTargetObjectLabel())) {
-                List<Node> compartmentNodes = node.getChildNodes().stream().filter(childNode -> Objects.equal(ViewModifier.Normal, childNode.getState())).toList();
+            if (Objects.equals("partA", node.getTargetObjectLabel())) {
+                List<Node> compartmentNodes = node.getChildNodes().stream().filter(childNode -> Objects.equals(ViewModifier.Normal, childNode.getState())).toList();
                 assertEquals(3, compartmentNodes.size());
                 // each compartment graphical node contains one graphical node (3)
                 for (Node compartmentNode : compartmentNodes) {

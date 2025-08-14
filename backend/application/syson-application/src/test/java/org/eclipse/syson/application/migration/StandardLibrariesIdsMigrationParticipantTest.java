@@ -16,10 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.google.common.base.Objects;
-
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -119,7 +118,7 @@ public class StandardLibrariesIdsMigrationParticipantTest extends AbstractIntegr
         Runnable diagramChecker = () -> {
             var nodes = this.diagram.get().getNodes();
             assertTrue(nodes.size() == 1);
-            var optActionFlowCompartment = nodes.get(0).getChildNodes().stream().filter(n -> Objects.equal("action flow", n.getInsideLabel().getText())).findFirst();
+            var optActionFlowCompartment = nodes.get(0).getChildNodes().stream().filter(n -> Objects.equals("action flow", n.getInsideLabel().getText())).findFirst();
             assertTrue(optActionFlowCompartment.isPresent());
 
             List<Node> actionFlowChildNodes = optActionFlowCompartment.get().getChildNodes();
