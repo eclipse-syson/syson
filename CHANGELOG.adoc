@@ -9,6 +9,9 @@
 === Dependency update
 
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.4[Spring Boot 3.5.4].
+- [releng] Update to vite 7.1.1 and @vitejs/plugin-react 5.0.0
+- [releng] Update to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
+- [releng] Update to @types/node 22.16.0 to match the version of node that we are using
 
 === Bug fixes
 
