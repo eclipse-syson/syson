@@ -13,7 +13,6 @@
 package org.eclipse.syson.sysml.parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.Streams;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -122,7 +122,8 @@ public class AstTreeParser {
                 JsonNode valueNode = node.getValue();
                 final List<JsonNode> values;
                 if (valueNode.isArray()) {
-                    values = Streams.stream(valueNode.elements()).toList();
+                    Iterable<JsonNode> iterable = () -> valueNode.elements();
+                    values = StreamSupport.stream(iterable.spliterator(), false).toList();
                 } else {
                     values = List.of(valueNode);
                 }
