@@ -3,7 +3,7 @@
 version: "3.8"
 services:
   database:
-    image: postgres:12
+    image: postgres:15
     # Uncomment this option if you want to run this docker compose file on ARM architectures
     # platform: linux/amd64
     environment:

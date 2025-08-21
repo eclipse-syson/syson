@@ -41,6 +41,11 @@ This contribution introduces some breaking changes:
 ** `updateExposedElements` has been deleted and replaced by `ViewToolService#expose`
 * `NodeCreationTester` has been renamed to `ToolTester`
 
+- https://github.com/eclipse-syson/syson/issues/1497[#1497] [database] Update the PostgreSQL version used in the docker image (used for tests purposes) to 15.
+If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to https://doc.mbse-syson.org/syson/main/installation-guide/migration-process.html[the migration process page of the official documentation].
+Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
+Other versions, such as intermediate releases, are intended solely for testing purposes.
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.2]
@@ -60,6 +65,7 @@ This issue was not visible in SysON but could appear in downstream applications 
 - https://github.com/eclipse-syson/syson/issues/1452[#1452] [explorer] Contextual menu action "New objects from text" is now defined in the backend.
 By default, it no longer appears for non-SysML semantic model elements.
 Consumers may override this by providing an implementation of `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate.canCreateNewObjectsFromText(Object)`.
+- https://github.com/eclipse-syson/syson/issues/1497[#1497] [database] Update the PostgreSQL version used in the docker image (used for tests purposes) to 15.
 
 === New features
 
