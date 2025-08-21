@@ -66,6 +66,7 @@ This issue was not visible in SysON but could appear in downstream applications 
 By default, it no longer appears for non-SysML semantic model elements.
 Consumers may override this by providing an implementation of `org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate.canCreateNewObjectsFromText(Object)`.
 - https://github.com/eclipse-syson/syson/issues/1497[#1497] [database] Update the PostgreSQL version used in the docker image (used for tests purposes) to 15.
+- https://github.com/eclipse-syson/syson/issues/1502[#1502] [libraries] Update standard libraries to SysMLv2 2025-07 specification.
 
 === New features
 

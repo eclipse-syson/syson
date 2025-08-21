@@ -3,7 +3,7 @@
 == Key highlights
 
 - *Standard diagram switching*: in diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
-
+- *Standard libraries update*: Update standard libraries to SysMLv2 and KerML 2025-07 specification released on July 2025 (see https://github.com/Systems-Modeling/SysML-v2-Release for more details).
 
 == Breaking changes
 
@@ -77,6 +77,7 @@ Now it is only available on SysML model elements.
 If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to xref:installation-guide:migration-process.adoc[the migration process page of the official documentation].
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
+- Update standard libraries to SysMLv2 and KerML 2025-07 specification released on July 2025 (see https://github.com/Systems-Modeling/SysML-v2-Release for more details).
 
 == Dependency update
 
