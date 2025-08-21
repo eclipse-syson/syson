@@ -25,7 +25,7 @@ docker run -p 5433:5432 --name syson-test-postgres \
                              -e POSTGRES_USER=dbuser \
                              -e POSTGRES_PASSWORD=dbpwd \
                              -e POSTGRES_DB=syson-db \
-                             -d postgres:12
+                             -d postgres:15
 ```
 
 > [!NOTE]
@@ -60,8 +60,7 @@ The produced SQL file will replace the existing one.
 When creating a new project, creates the associated XXXTestProjectData Java class.
 Follow the pattern used in the existing files to stores required information such as:
 
-* Editing Context identifier
-* Graphical Element identifiers
-* Semantic identifiers
-* Name of the initialization script
-
+- Editing Context identifier
+- Graphical Element identifiers
+- Semantic identifiers
+- Name of the initialization script

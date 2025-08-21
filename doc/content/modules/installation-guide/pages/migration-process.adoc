@@ -9,7 +9,14 @@ In any case, it is strongly recommended to back up your data before proceeding w
 All diagram descriptions (General View, Interconnection View, Action Flow View, State Transition View) have been merged into one.
 Automatic migration process is provided to update your existing diagrams.
 
+The docker image (for testing purposes) has been updated to use PostgreSQL 15.
+If you are using the docker image and want to upgrade to PostgreSQL 15, you will need to follow the steps described in https://thomasbandt.com/postgres-docker-major-version-upgrade.
+You can also have a look at the official PostgreSQL documentation for more details on upgrading PostgreSQL: https://www.postgresql.org/docs/current/upgrading.html.
+
 But in any case, please download all your models/projects and back up your database before upgrading to 2025.10.0.
+
+Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
+Other versions, such as intermediate releases, are intended solely for testing purposes.
 
 == 2025.8.0
 

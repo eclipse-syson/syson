@@ -19,7 +19,7 @@ The application includes the Java Runtime Environment, as explained in the xref:
 ----
 keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks
 ----
-. If you have installed {product} with xref:how-tos/install/local_test.adoc#docker-install[docker], update your docker-compose file as shown below/.
+. If you have installed {product} with xref:how-tos/install/local_test.adoc#docker-install[docker], update your docker-compose file as shown below.
 Otherwise, proceed to the next instruction:
 +
 [source, bash]
