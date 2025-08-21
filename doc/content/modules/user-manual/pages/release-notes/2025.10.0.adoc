@@ -74,7 +74,7 @@ Now it is only available on SysML model elements.
 == Improvements
 
 - Update the PostgreSQL version used in the docker image (used for tests purposes) to 15.
-If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to xref:installation-guide:how-tos/install/migration-process.adoc[the migration process page of the official documentation].
+If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to xref:installation-guide:migration-process.adoc[the migration process page of the official documentation].
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
 
