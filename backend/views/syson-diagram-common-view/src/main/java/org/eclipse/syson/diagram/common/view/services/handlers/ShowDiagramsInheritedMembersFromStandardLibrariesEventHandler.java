@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
@@ -55,7 +55,7 @@ public class ShowDiagramsInheritedMembersFromStandardLibrariesEventHandler imple
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         if (diagramInput instanceof ShowDiagramsInheritedMembersFromStandardLibrariesInput showDiagramsInheritedMembersFromStandardLibrariesInput) {
             this.showDiagramsInheritedMembersService.setShowInheritedMembersFromStandardLibraries(showDiagramsInheritedMembersFromStandardLibrariesInput.show());
             IPayload payload = new ShowDiagramsInheritedMembersFromStandardLibrariesSuccessPayload(diagramInput.id(), showDiagramsInheritedMembersFromStandardLibrariesInput.show());

@@ -213,12 +213,12 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
         final Resource mainResource = projectResourceSet.getResources().stream().filter(resource -> this.getResourceName(resource).equals("ProjectUsingMyLibraryV1")).findFirst().get();
 
         // LibraryResource1 no longer exists, and AttributeDefinition1 has been renamed and moved to LibrayResource3
-        // So the type should be an unresolved proxy towards AttributeDefinition1.
+        // So the type should be null.
         final AttributeUsage attribute1 = Streams.of(mainResource.getAllContents()).filter(AttributeUsage.class::isInstance).map(AttributeUsage.class::cast)
                 .filter(attribute -> attribute.getDeclaredName().equals("attribute1")).findFirst().get();
         assertThat(attribute1.getType()).hasSize(1);
         final Type attribute1Type = attribute1.getType().get(0);
-        assertThat(attribute1Type.eIsProxy()).isTrue();
+        assertThat(attribute1Type).isNull();
 
         // LibraryResource2 is unchanged, so our assumptions should still hold.
         final AttributeUsage attribute2 = Streams.of(mainResource.getAllContents()).filter(AttributeUsage.class::isInstance).map(AttributeUsage.class::cast)
@@ -229,12 +229,12 @@ public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
         assertThat(attribute2Type.eResource().getResourceSet()).isEqualTo(projectResourceSet);
         assertThat(this.getResourceName(attribute2Type.eResource())).isEqualTo("LibraryResource2");
 
-        // AttributeDefinition3 has been removed, so the type should be an unresolved proxy now.
+        // AttributeDefinition3 has been removed, so the type should be null now.
         final AttributeUsage attribute3 = Streams.of(mainResource.getAllContents()).filter(AttributeUsage.class::isInstance).map(AttributeUsage.class::cast)
                 .filter(attribute -> attribute.getDeclaredName().equals("attribute3")).findFirst().get();
         assertThat(attribute3.getType()).hasSize(1);
         final Type attribute3Type = attribute3.getType().get(0);
-        assertThat(attribute3Type.eIsProxy()).isTrue();
+        assertThat(attribute3Type).isNull();
     }
 
     protected Library loadMyLibraryV1() {

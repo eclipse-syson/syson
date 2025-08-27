@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions.IManageVisibilityMenuActionHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -43,13 +43,13 @@ public class ManageVisibilityRevealValuedContentHandler implements IManageVisibi
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
         return actionId.equals(ManageVisibilityRevealValuedContentAction.ACTION_ID);
     }
 
     @Override
-    public IStatus handle(IEditingContext editingContext, IDiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
-        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.getDiagram(), diagramElement.getId());
+    public IStatus handle(IEditingContext editingContext, DiagramContext diagramContext, IDiagramElement diagramElement, String actionId) {
+        Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElement.getId());
         Set<String> nodesToReveal = new HashSet<>();
         Set<String> nodesToHide = new HashSet<>();
         if (optionalNode.isPresent()) {
@@ -60,8 +60,8 @@ public class ManageVisibilityRevealValuedContentHandler implements IManageVisibi
                     nodesToReveal.add(node.getId());
                 }
             });
-            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(nodesToReveal, false));
-            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(nodesToHide, true));
+            diagramContext.diagramEvents().add(new HideDiagramElementEvent(nodesToReveal, false));
+            diagramContext.diagramEvents().add(new HideDiagramElementEvent(nodesToHide, true));
         }
         return new Success();
     }

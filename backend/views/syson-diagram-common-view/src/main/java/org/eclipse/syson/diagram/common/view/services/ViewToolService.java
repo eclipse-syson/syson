@@ -32,9 +32,9 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -136,7 +136,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the service has been called (may be null if the tool has been called from
@@ -146,7 +146,7 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @return the given {@link Element}.
      */
-    public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var viewUsage = this.getViewUsage(editingContext, diagramContext, selectedNode);
         if (viewUsage != null) {
@@ -177,7 +177,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the service has been called (may be null if the tool has been called from
@@ -187,12 +187,12 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @return the given {@link Element}.
      */
-    public Element expose(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (this.isUnsynchronized(element)) {
             final Element parentElement;
             if (selectedNode == null) {
-                parentElement = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+                parentElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                         .filter(Element.class::isInstance)
                         .map(Element.class::cast)
                         .orElse(null);
@@ -226,7 +226,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the element has been dropped (may be null if the tool has been called from
@@ -236,7 +236,7 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @return the input {@link Element}.
      */
-    public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element dropElementFromExplorer(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         Optional<Object> optTargetElement;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> optNodeDescription = Optional.empty();
@@ -244,7 +244,7 @@ public class ViewToolService extends ToolService {
             optTargetElement = this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId());
             optNodeDescription = convertedNodes.entrySet().stream().filter(entry -> entry.getValue().getId().equals(selectedNode.getDescriptionId())).map(Entry::getKey).findFirst();
         } else {
-            optTargetElement = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+            optTargetElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId());
         }
         if (optNodeDescription.isPresent() && optNodeDescription.get().getName().contains("EmptyDiagram")) {
             // The element is dropped on the information box displayed on an empty diagram. This box is visible only if
@@ -287,14 +287,14 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
      * @return the input {@link Element}.
      */
-    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         final Element result;
         final Element realTargetElement;
@@ -327,7 +327,7 @@ public class ViewToolService extends ToolService {
      *            the given type.
      * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
      */
-    public boolean toolShouldBeAvailable(Element element, IEditingContext editingContext, IDiagramContext diagramContext, EClass newElementType) {
+    public boolean toolShouldBeAvailable(Element element, IEditingContext editingContext, DiagramContext diagramContext, EClass newElementType) {
         ViewDefinitionKind viewDefinitionKind = this.utilService.getViewDefinitionKind(element, List.of(), editingContext, diagramContext);
         var elt = this.utilService.getViewUsageOwner(element);
 
@@ -425,7 +425,7 @@ public class ViewToolService extends ToolService {
         return requirement;
     }
 
-    public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (targetElement instanceof RequirementUsage
                 || targetElement instanceof RequirementDefinition
@@ -442,7 +442,7 @@ public class ViewToolService extends ToolService {
         return droppedElement;
     }
 
-    public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (targetElement instanceof CaseUsage
                 || targetElement instanceof CaseDefinition) {
@@ -454,29 +454,29 @@ public class ViewToolService extends ToolService {
     }
 
     public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            IDiagramContext diagramContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
             this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-            diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+            diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
         return droppedElement;
     }
 
     public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            IDiagramContext diagramContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
             this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-            diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+            diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
         return droppedElement;
     }
 
     public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            IDiagramContext diagramContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint) {
             if (targetElement instanceof ConstraintUsage || targetElement instanceof ConstraintDefinition) {
@@ -488,7 +488,7 @@ public class ViewToolService extends ToolService {
                     this.deleteService.deleteFromModel(owningMembership);
                 }
                 this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-                diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+                diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
             }
         }
         return droppedElement;
@@ -618,7 +618,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
@@ -632,7 +632,7 @@ public class ViewToolService extends ToolService {
      *            Whether or not the created State is exhibited or not.
      * @return the created {@link StateUsage}.
      */
-    public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public StateUsage createChildState(Element parentState, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
         StateUsage childState = this.utilService.createChildState(parentState, isParallel, isExhibit);
         if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
@@ -811,7 +811,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the service has been called (may be null if the tool has been called from
@@ -820,18 +820,18 @@ public class ViewToolService extends ToolService {
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
      */
-    protected void handleUnsynchronizedElement(Element element, Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    protected void handleUnsynchronizedElement(Element element, Element parentElement, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (selectedNode == null) {
             this.createView(element, editingContext, diagramContext, selectedNode, convertedNodes);
         } else if (element instanceof Documentation && (parentElement instanceof Package || parentElement instanceof NamespaceImport || parentElement instanceof ViewUsage)) {
-            var parentNode = new NodeFinder(diagramContext.getDiagram()).getParent(selectedNode);
+            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
             this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
         } else if (element instanceof Comment && !(element instanceof Documentation)) {
-            var parentNode = new NodeFinder(diagramContext.getDiagram()).getParent(selectedNode);
+            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
             this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
         } else if (element instanceof TextualRepresentation) {
-            var parentNode = new NodeFinder(diagramContext.getDiagram()).getParent(selectedNode);
+            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
             this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
         } else {
             if (selectedNode.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
@@ -866,17 +866,17 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param node
      *            the selected node on which the element has been dropped (may be null if the tool has been called from
      *            the diagram). It corresponds to a variable accessible from the variable manager.
      * @return an Optional ViewUsage if found, an empty Optional otherwise.
      */
-    protected ViewUsage getViewUsage(IEditingContext editingContext, IDiagramContext diagramContext, Node node) {
+    protected ViewUsage getViewUsage(IEditingContext editingContext, DiagramContext diagramContext, Node node) {
         Optional<ViewUsage> optViewUsage = Optional.empty();
         if (node == null) {
-            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                     .filter(ViewUsage.class::isInstance)
                     .map(ViewUsage.class::cast);
         } else {
@@ -885,10 +885,10 @@ public class ViewToolService extends ToolService {
                     .map(ViewUsage.class::cast);
         }
         if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.getDiagram().getNodes();
+            List<Node> rootNodes = diagramContext.diagram().getNodes();
             for (Node rootNode : rootNodes) {
                 if (Objects.equals(rootNode, node)) {
-                    optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+                    optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                             .filter(ViewUsage.class::isInstance)
                             .map(ViewUsage.class::cast);
                     break;
@@ -896,7 +896,7 @@ public class ViewToolService extends ToolService {
             }
         }
         if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.getDiagram().getNodes();
+            List<Node> rootNodes = diagramContext.diagram().getNodes();
             List<Node> allSubNodes = this.getAllSubNodes(rootNodes);
             for (Node subNode : allSubNodes) {
                 if (subNode.getChildNodes().contains(node)) {
@@ -909,7 +909,7 @@ public class ViewToolService extends ToolService {
             }
         }
         if (optViewUsage.isEmpty()) {
-            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                     .filter(ViewUsage.class::isInstance)
                     .map(ViewUsage.class::cast);
         }
@@ -942,7 +942,7 @@ public class ViewToolService extends ToolService {
      * </p>
      * <p>
      * This method doesn't perform a drop of an element on the diagram to another element on the diagram. See
-     * {@link #dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, IDiagramContext, Map)} for
+     * {@link #dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)} for
      * in-diagram drag and drop.
      * </p>
      *
@@ -954,7 +954,7 @@ public class ViewToolService extends ToolService {
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param selectedNode
      *            the selected node on which the service has been called (may be null if the tool has been called from
@@ -963,7 +963,7 @@ public class ViewToolService extends ToolService {
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
      */
-    protected void dropElementFromExplorerInTarget(Element sourceElement, Element targetElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    protected void dropElementFromExplorerInTarget(Element sourceElement, Element targetElement, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (sourceElement instanceof Definition definition && targetElement instanceof Usage usage && !(targetElement instanceof ViewUsage)) {
             // Dropping a definition on a usage types the usage with the definition. It doesn't create a new node on the
@@ -973,13 +973,13 @@ public class ViewToolService extends ToolService {
             this.expose(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
         } else {
             ViewCreationRequest parentViewCreationRequest = this.createView(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
-            Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.getDiagram())
+            Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.diagram())
                     .getOneNodeMatching(diagramNode -> Objects.equals(diagramNode.getId(), this.getParentElementId(parentViewCreationRequest, diagramContext)));
             if (parentNodeOnDiagram.isPresent()) {
                 // The node already exist on the diagram, we don't need to create it.
                 // It is easier to check it in this order (first create the ViewCreationRequest then remove
                 // it) because we need the ViewCreationRequest anyways to check if the node is on the diagram.
-                diagramContext.getViewCreationRequests().remove(parentViewCreationRequest);
+                diagramContext.viewCreationRequests().remove(parentViewCreationRequest);
                 if (parentNodeOnDiagram.get().getModifiers().contains(ViewModifier.Hidden)) {
                     // The node exists on the diagram but is hidden, we can't create a new view representing
                     // it, but we reveal it.
@@ -1015,9 +1015,9 @@ public class ViewToolService extends ToolService {
      * @param convertedNodes
      *            the converted nodes
      */
-    protected void hideCompartments(ViewCreationRequest parentViewCreationRequest, IEditingContext editingContext, IDiagramContext diagramContext,
+    protected void hideCompartments(ViewCreationRequest parentViewCreationRequest, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.diagram().getDescriptionId());
         if (diagramDescription.isPresent() && parentViewCreationRequest != null) {
             DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
             String parentId = this.getParentElementId(parentViewCreationRequest, diagramContext);
@@ -1038,7 +1038,7 @@ public class ViewToolService extends ToolService {
                 }
                 // We can't use DiagramService here because the elements to hide aren't yet on the
                 // diagram.
-                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIdsToHide, true));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(childrenIdsToHide, true));
             });
         }
     }
@@ -1047,7 +1047,7 @@ public class ViewToolService extends ToolService {
      * Returns the elements contained by {@code parentElement} that should be rendered.
      * <p>
      * This method is typically used by
-     * {@link #addToExposedElements(Element, IEditingContext, IDiagramContext, Node, Map, boolean)} to navigate the
+     * {@link #addToExposedElements(Element, IEditingContext, DiagramContext, Node, Map, boolean)} to navigate the
      * model and find the elements to display.
      * </p>
      *
