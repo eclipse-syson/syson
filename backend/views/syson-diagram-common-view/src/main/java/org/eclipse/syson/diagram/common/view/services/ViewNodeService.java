@@ -25,9 +25,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -95,11 +95,11 @@ public class ViewNodeService {
      *            the {@link IEditingContext} of the node. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the node. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the node. It corresponds to a variable accessible from the variable
      *            manager.
      * @return
      */
-    public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.getExposedElements(element, null, domainType, ancestors, editingContext, diagramContext);
     }
 
@@ -119,11 +119,11 @@ public class ViewNodeService {
      *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
      * @return
      */
-    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         List<Element> elementsToExpose = new ArrayList<>();
         if (element instanceof ViewUsage viewUsage) {
             var exposedElements = new ArrayList<Element>();
@@ -163,7 +163,7 @@ public class ViewNodeService {
     }
 
     /**
-     * Check if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
+     * Check if the given {@link Element} displayed in the given {@link DiagramContext} is of the given
      * {@link ViewDefinition}.
      *
      * @param element
@@ -177,12 +177,12 @@ public class ViewNodeService {
      *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
-     * @return true if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
+     * @return true if the given {@link Element} displayed in the given {@link DiagramContext} is of the given
      *         {@link ViewDefinition}, false otherwise.
      */
-    public boolean isView(Element element, String viewDefinition, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public boolean isView(Element element, String viewDefinition, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean isView = false;
         if (element instanceof ViewUsage viewUsage) {
             var types = viewUsage.getType();
@@ -205,7 +205,7 @@ public class ViewNodeService {
     }
 
     /**
-     * Check if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
+     * Check if the given {@link Element} displayed in the given {@link DiagramContext} is of the given
      * {@link ViewDefinition}.
      *
      * @param element
@@ -218,12 +218,12 @@ public class ViewNodeService {
      *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
-     * @return true if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
+     * @return true if the given {@link Element} displayed in the given {@link DiagramContext} is of the given
      *         {@link ViewDefinition}, false otherwise.
      */
-    public boolean isView(Element element, String viewDefinition, Node selectedNode, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public boolean isView(Element element, String viewDefinition, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean isView = false;
         if (element instanceof ViewUsage viewUsage) {
             var types = viewUsage.getType();
@@ -236,7 +236,7 @@ public class ViewNodeService {
             }
         } else {
             // Retrieve ViewUsage exposing the given element
-            var ancestors = this.getAncestors(selectedNode, diagramContext.getDiagram(), editingContext);
+            var ancestors = this.getAncestors(selectedNode, diagramContext.diagram(), editingContext);
             var viewUsageContainingElement = ancestors.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast).findFirst();
             if (viewUsageContainingElement.isPresent()) {
                 // expose all elements of this ViewUsage
@@ -287,7 +287,7 @@ public class ViewNodeService {
      * @param targetElement
      *            the semantic element to reveal the compartment of
      * @param diagramContext
-     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            the {@link DiagramContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
      * @param editingContext
      *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
@@ -297,7 +297,7 @@ public class ViewNodeService {
      *            a variable accessible from the variable manager.
      * @return the node containing the compartments
      */
-    public Node revealCompartment(Node node, Element targetElement, IDiagramContext diagramContext, IEditingContext editingContext,
+    public Node revealCompartment(Node node, Element targetElement, DiagramContext diagramContext, IEditingContext editingContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
 
         if (!this.needToRevealCompartment(targetElement, this.isView(targetElement, "StandardViewDefinitions::GeneralView", node, editingContext, diagramContext))) {
@@ -324,7 +324,7 @@ public class ViewNodeService {
             if (compartmentCandidates.size() > 1) {
                 this.logger.warn("Multiple compartment candidates found for {} in {}.", targetElement.eClass().getName(), node.toString());
             }
-            NodeFinder nodeFinder = new NodeFinder(diagramContext.getDiagram());
+            NodeFinder nodeFinder = new NodeFinder(diagramContext.diagram());
             List<Node> candidateNodes = nodeFinder
                     .getAllNodesMatching(n -> compartmentCandidates.stream().map(NodeDescription::getId).anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
                             && Objects.equals(n.getTargetObjectId(), node.getTargetObjectId())
@@ -417,10 +417,10 @@ public class ViewNodeService {
      * @param editingContext
      *            the given {@link IEditingContext} in which this service has been called.
      * @param diagramContext
-     *            the given {@link IDiagramContext} in which this service has been called.
+     *            the given {@link DiagramContext} in which this service has been called.
      * @return the list of Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
      */
-    public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
@@ -464,7 +464,7 @@ public class ViewNodeService {
      * @return {@code true} if the provided annotated element of {@code element} is represented on the diagram,
      *         {@code false} otherwise
      */
-    public boolean showAnnotatingNode(Element element, IDiagramContext diagramContext, IEditingContext editingContext) {
+    public boolean showAnnotatingNode(Element element, DiagramContext diagramContext, IEditingContext editingContext) {
         boolean displayAnnotatingNode = false;
         if (element instanceof AnnotatingElement ae && diagramContext != null && editingContext != null) {
             EList<Element> annotatedElements = ae.getAnnotatedElement();
@@ -475,7 +475,7 @@ public class ViewNodeService {
             displayAnnotatingNode = this.isAnnotatingNodeOnRoot(diagramContext, editingContext, annotatedElements);
 
             if (!displayAnnotatingNode) {
-                for (Node node : diagramContext.getDiagram().getNodes()) {
+                for (Node node : diagramContext.diagram().getNodes()) {
                     matchingDiagramElement = this.getOneMatchingAnnotatedNode(node, annotatedElements, diagramContext, editingContext);
                     if (matchingDiagramElement != null) {
                         displayAnnotatingNode = true;
@@ -484,7 +484,7 @@ public class ViewNodeService {
                 }
             }
             if (!displayAnnotatingNode) {
-                for (Edge edge : diagramContext.getDiagram().getEdges()) {
+                for (Edge edge : diagramContext.diagram().getEdges()) {
                     matchingDiagramElement = this.getOneMatchingAnnotatedEdge(edge, annotatedElements, diagramContext, editingContext);
                     if (matchingDiagramElement != null) {
                         displayAnnotatingNode = true;
@@ -545,9 +545,9 @@ public class ViewNodeService {
         return contents;
     }
 
-    protected boolean isAnnotatingNodeOnRoot(IDiagramContext diagramContext, IEditingContext editingContext, EList<Element> annotatedElements) {
+    protected boolean isAnnotatingNodeOnRoot(DiagramContext diagramContext, IEditingContext editingContext, EList<Element> annotatedElements) {
         boolean isAnnotatingNodeOnRoot = false;
-        String diagramTargetObjectId = diagramContext.getDiagram().getTargetObjectId();
+        String diagramTargetObjectId = diagramContext.diagram().getTargetObjectId();
         Element diagramTargetObject = this.objectSearchService.getObject(editingContext, diagramTargetObjectId).stream()
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
@@ -570,12 +570,12 @@ public class ViewNodeService {
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage;
     }
 
-    protected Edge getOneMatchingAnnotatedEdge(Edge edge, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    protected Edge getOneMatchingAnnotatedEdge(Edge edge, List<Element> annotatedElements, DiagramContext diagramContext, IEditingContext editingContext) {
         Edge matchingAnnotatedEdge = null;
         Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
         if (semanticNodeOpt.isPresent()) {
             if (annotatedElements.contains(semanticNodeOpt.get())) {
-                boolean isDeletingAnnotatingEdge = diagramContext.getViewDeletionRequests().stream()
+                boolean isDeletingAnnotatingEdge = diagramContext.viewDeletionRequests().stream()
                         .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), edge.getId()));
                 if (!isDeletingAnnotatingEdge) {
                     // annotating edge is present and it is not planned to be removed
@@ -588,12 +588,12 @@ public class ViewNodeService {
         return matchingAnnotatedEdge;
     }
 
-    protected Node getOneMatchingAnnotatedNode(Node node, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    protected Node getOneMatchingAnnotatedNode(Node node, List<Element> annotatedElements, DiagramContext diagramContext, IEditingContext editingContext) {
         Node matchingAnnotatedNode = null;
         Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
         if (semanticNodeOpt.isPresent()) {
             if (annotatedElements.contains(semanticNodeOpt.get())) {
-                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream()
+                boolean isDeletingAnnotatingNode = diagramContext.viewDeletionRequests().stream()
                         .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), node.getId()));
                 if (!isDeletingAnnotatingNode) {
                     // annotating node is present and it is not planned to be removed
@@ -607,7 +607,7 @@ public class ViewNodeService {
         return matchingAnnotatedNode;
     }
 
-    protected Node getFirstMatchingChildAnnotatedNode(Node node, List<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+    protected Node getFirstMatchingChildAnnotatedNode(Node node, List<Element> annotatedElements, DiagramContext diagramContext, IEditingContext editingContext) {
         List<Node> childrenNodes = Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream()).toList();
         for (Node childNode : childrenNodes) {
             Node matchingChildAnnotatedNode = this.getOneMatchingAnnotatedNode(childNode, annotatedElements, diagramContext, editingContext);
