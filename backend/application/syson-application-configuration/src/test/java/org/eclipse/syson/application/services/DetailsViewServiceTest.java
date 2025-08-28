@@ -46,7 +46,7 @@ public class DetailsViewServiceTest {
     public void setUp() {
         // Use a dummy CompsedAdapterFactory, we don't test methods that require the one used by SysON for the moment.
         this.detailsViewService = new DetailsViewService(new ComposedAdapterFactory(), new IFeedbackMessageService.NoOp(),
-                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate(new SysONResourceService())), new DefaultReadOnlyObjectPredicate()));
+                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()));
     }
 
     @Test

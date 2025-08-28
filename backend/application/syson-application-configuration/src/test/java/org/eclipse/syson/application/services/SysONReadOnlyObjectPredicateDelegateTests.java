@@ -57,7 +57,7 @@ import org.junit.jupiter.api.Test;
  */
 public class SysONReadOnlyObjectPredicateDelegateTests {
 
-    private final IReadOnlyObjectPredicateDelegate readOnlyObjectPredicateDelegate = new SysONReadOnlyObjectPredicateDelegate(new SysONResourceService());
+    private final IReadOnlyObjectPredicateDelegate readOnlyObjectPredicateDelegate = new SysONReadOnlyObjectPredicateDelegate();
 
     @SafeVarargs
     private static Resource createResource(final URI uri, final Consumer<Resource>... postTreatments) {
@@ -310,12 +310,14 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                 @Test
                 @DisplayName("Imported resource containing LibraryPackage is read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlLibraryPackageImported() {
+                    // TODO this should not be the case anymore, we will rely on whether the resource is read-only
                     SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlLibraryPackage, true);
                 }
 
                 @Test
                 @DisplayName("Imported resource containing Package and LibraryPackage is read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlMixedPackagesImported() {
+                    // TODO this should not be the case anymore, we will rely on whether the resource is read-only
                     SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlMixedPackages, true);
                 }
             }
@@ -357,6 +359,7 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                 @Test
                 @DisplayName("Resource from referenced library containing Package is read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlPackageImported() {
+                    // TODO this is fixed by the new implementation
                     // Note that this might be a bug, see https://github.com/eclipse-syson/syson/issues/1342.
                     SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.referencedResourceWithSysmlPackage, false);
                 }

@@ -12,15 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.application.services;
 
-import java.util.Objects;
-
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate;
-import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.api.ISysONResourceService;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
@@ -42,12 +38,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysONReadOnlyObjectPredicateDelegate implements IReadOnlyObjectPredicateDelegate {
 
-    private final ISysONResourceService sysONResourceService;
-
-    public SysONReadOnlyObjectPredicateDelegate(final ISysONResourceService sysONResourceService) {
-        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
-    }
-
     @Override
     public boolean canHandle(Object candidate) {
         return candidate instanceof Element || candidate instanceof Resource || candidate instanceof EAnnotation;
@@ -59,13 +49,26 @@ public class SysONReadOnlyObjectPredicateDelegate implements IReadOnlyObjectPred
         boolean isReadOnly = false;
 
         if (candidate instanceof Resource resource) {
+            // TODO the library version is here for testing purpose before we get the actual update from Sirius Web
+            // isReadOnly = ElementUtil.isStandardLibraryResource(resource)
+            // || resource.eAdapters().stream()
+            // .filter(ResourceMetadataAdapter.class::isInstance)
+            // .map(ResourceMetadataAdapter.class::cast)
+            // .map(ResourceMetadataAdapter::isReadOnly)
+            // .findFirst()
+            // .orElse(false);
             isReadOnly = ElementUtil.isStandardLibraryResource(resource)
-                    || this.sysONResourceService.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
-        } else if (candidate instanceof Element || candidate instanceof EAnnotation) {
-            // Derive editability from the editability of the containing resource.
-            final EObject eObject = (EObject) candidate;
-            final Resource resource = eObject.eResource();
-            isReadOnly = this.test(resource);
+                    || resource.eAdapters().stream()
+                            .filter(LibraryMetadataAdapter.class::isInstance)
+                            .findFirst()
+                            .isPresent();
+
+        } else if (candidate instanceof Element element) {
+            // An element can be read-only if it is contained in a standard LibraryPackage, regardless of whether its
+            // containing resource is read-only or not.
+            isReadOnly = this.test(element.eResource()) || ElementUtil.isFromStandardLibrary(element);
+        } else if (candidate instanceof EAnnotation eAnnotation) {
+            isReadOnly = this.test(eAnnotation.eResource());
         }
 
         return isReadOnly;
