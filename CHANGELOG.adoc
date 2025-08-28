@@ -57,6 +57,8 @@ The `org.eclipse.syson.services.grammars` package in `syson-direct-edit-grammar`
 As a consequence, the `syson-table-requirements-view` and `syson-common-view` modules has been created.
 `IViewDescriptionProvider.java` and `SysONViewDescriptionProvider.java` have been moved from `syson-diagram-common-view` to `syson-common-view`.
 `GetIntermediateContainerCreationSwitch.java` has been moved from `syson-application-configuration` to `syson-services`.
+- https://github.com/eclipse-syson/syson/issues/1245[#1245] [syson] Standardize read-only computation.
+The class `SysMLReadOnlyService` and the interface `ISysMLReadOnlyService` have been removed, use `IReadOnlyObjectPredicate` instead.
 
 === Dependency update
 
@@ -91,6 +93,13 @@ Consumers may override this by providing an implementation of `org.eclipse.syson
 With this enhancement, users can now easily identify which `ViewDefinition` is used by a `ViewUsage`.
 - https://github.com/eclipse-syson/syson/issues/1535[#1535] [explorer] Since it is now possible to switch from a _Standard Diagram View_ to another in SysON (for example from _General View_ to _Interconnection View_), the `ViewUsages` default name does not contain the name of the `ViewDefinition` anymore.
 With this enhancement, users avoid confusion when switching from one _ViewDefinition_ to another one in a `ViewUsage`.
+- https://github.com/eclipse-syson/syson/issues/1245[#1245] [syson] Standardize read-only computation.
+We removed the assumptions SysON made on whether a resource is read-only.
+Resources are now considered read-only if:
+* They are Sirius Web libraries imported by reference
+* They are textual SysML files imported as read-only
+* They are standard libraries (SysML and KerML)
+All the other resources are read-write.
 
 === New features
 

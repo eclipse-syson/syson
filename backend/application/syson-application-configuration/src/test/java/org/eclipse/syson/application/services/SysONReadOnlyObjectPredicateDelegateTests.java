@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate;
 import org.eclipse.sirius.components.core.services.ComposedReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
@@ -57,7 +58,7 @@ import org.junit.jupiter.api.Test;
  */
 public class SysONReadOnlyObjectPredicateDelegateTests {
 
-    private final IReadOnlyObjectPredicateDelegate readOnlyObjectPredicateDelegate = new SysONReadOnlyObjectPredicateDelegate(new SysONResourceService());
+    private final IReadOnlyObjectPredicateDelegate readOnlyObjectPredicateDelegate = new SysONReadOnlyObjectPredicateDelegate();
 
     @SafeVarargs
     private static Resource createResource(final URI uri, final Consumer<Resource>... postTreatments) {
@@ -282,6 +283,8 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
 
                 private final Resource importedResourceWithSysmlLibraryPackage;
 
+                private final Resource importedResourceWithSysmlLibraryPackageAndFlaggedAsReadOnly;
+
                 private final Resource importedResourceWithSysmlMixedPackages;
 
                 public ImportedResources() {
@@ -293,6 +296,13 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                     this.importedResourceWithSysmlLibraryPackage = createResource(createEmfUri(), resource -> {
                         resource.getContents().addAll(EcoreUtil.copyAll(SysMLResources.this.resourceWithSysmlLibraryPackage.getContents()));
                         ElementUtil.setIsImported(resource, true);
+                    });
+
+                    this.importedResourceWithSysmlLibraryPackageAndFlaggedAsReadOnly = createResource(createEmfUri(), resource -> {
+                        resource.getContents().addAll(EcoreUtil.copyAll(SysMLResources.this.resourceWithSysmlLibraryPackage.getContents()));
+                        ElementUtil.setIsImported(resource, true);
+                        ResourceMetadataAdapter resourceMetadataAdapter = new ResourceMetadataAdapter("test", true);
+                        resource.eAdapters().add(resourceMetadataAdapter);
                     });
 
                     this.importedResourceWithSysmlMixedPackages = createResource(createEmfUri(), resource -> {
@@ -308,15 +318,21 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                 }
 
                 @Test
-                @DisplayName("Imported resource containing LibraryPackage is read-only (both the resource and all of its contents)")
+                @DisplayName("Imported resource containing LibraryPackage is not read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlLibraryPackageImported() {
-                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlLibraryPackage, true);
+                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlLibraryPackage, false);
                 }
 
                 @Test
-                @DisplayName("Imported resource containing Package and LibraryPackage is read-only (both the resource and all of its contents)")
+                @DisplayName("Imported resource containing LibraryPackage and flagged as read-only is read-only (both the resource and all of its contents)")
+                public void testResourceWithSysmlLibraryPackageImportedAndFlaggedAsReadOnly() {
+                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlLibraryPackageAndFlaggedAsReadOnly, true);
+                }
+
+                @Test
+                @DisplayName("Imported resource containing Package and LibraryPackage is not read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlMixedPackagesImported() {
-                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlMixedPackages, true);
+                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.importedResourceWithSysmlMixedPackages, false);
                 }
             }
 
@@ -339,26 +355,26 @@ public class SysONReadOnlyObjectPredicateDelegateTests {
                 public ReferencedResources() {
                     this.referencedResourceWithSysmlPackage = createResource(createEmfUri(), resource -> {
                         resource.getContents().addAll(EcoreUtil.copyAll(SysMLResources.this.resourceWithSysmlPackage.getContents()));
-                    }, resource -> resource.eAdapters().add(createLibraryMetadataAdapter()));
+                    }, ReferencedResources::addReferencedResourceAdapters);
 
                     this.referencedResourceWithSysmlLibraryPackage = createResource(createEmfUri(), resource -> {
                         resource.getContents().addAll(EcoreUtil.copyAll(SysMLResources.this.resourceWithSysmlLibraryPackage.getContents()));
-                    }, resource -> resource.eAdapters().add(createLibraryMetadataAdapter()));
+                    }, ReferencedResources::addReferencedResourceAdapters);
 
                     this.referencedResourceWithSysmlMixedPackages = createResource(createEmfUri(), resource -> {
                         resource.getContents().addAll(EcoreUtil.copyAll(SysMLResources.this.resourceWithSysmlMixedPackages.getContents()));
-                    }, resource -> resource.eAdapters().add(createLibraryMetadataAdapter()));
+                    }, ReferencedResources::addReferencedResourceAdapters);
                 }
 
-                private static LibraryMetadataAdapter createLibraryMetadataAdapter() {
-                    return new LibraryMetadataAdapter("namespace", "name", "version");
+                private static void addReferencedResourceAdapters(Resource resource) {
+                    resource.eAdapters().add(new LibraryMetadataAdapter("namespace", "name", "version"));
+                    resource.eAdapters().add(new ResourceMetadataAdapter("test", true));
                 }
 
                 @Test
                 @DisplayName("Resource from referenced library containing Package is read-only (both the resource and all of its contents)")
                 public void testResourceWithSysmlPackageImported() {
-                    // Note that this might be a bug, see https://github.com/eclipse-syson/syson/issues/1342.
-                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.referencedResourceWithSysmlPackage, false);
+                    SysONReadOnlyObjectPredicateDelegateTests.this.assertResourceAndAllContentsIsReadOnly(this.referencedResourceWithSysmlPackage, true);
                 }
 
                 @Test

@@ -109,6 +109,14 @@ With this enhancement, users avoid confusion when switching from one _ViewDefini
 
 image::view-usage-label-with-type-explorer-view.png[ViewUsage in Explorer View, width=65%,height=65%]
 
+- Standardize read-only computation.
+We removed the assumptions SysON made on whether a resource is read-only.
+Resources are now considered read-only if:
+* They are Sirius Web libraries imported by reference
+* They are textual SysML files imported as read-only
+* They are standard libraries (SysML and KerML)
+All the other resources are read-write.
+
 == Dependency update
 
 - Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.8]

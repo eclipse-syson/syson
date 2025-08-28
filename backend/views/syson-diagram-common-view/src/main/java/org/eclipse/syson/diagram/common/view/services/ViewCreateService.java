@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.Message;
@@ -32,7 +33,6 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -93,7 +93,7 @@ public class ViewCreateService {
 
     private final IObjectSearchService objectSearchService;
 
-    private final ISysMLReadOnlyService readOnlyService;
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     private final ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService;
 
@@ -105,11 +105,11 @@ public class ViewCreateService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ViewCreateService(IObjectSearchService objectSearchService, ISysMLReadOnlyService readOnlyService,
+    public ViewCreateService(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService feedbackMessageService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.readOnlyService = Objects.requireNonNull(readOnlyService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
@@ -1197,11 +1197,11 @@ public class ViewCreateService {
     private Element getEdgeSemanticContainer(Node source, Node target, Diagram diagram, IEditingContext editingContext) {
         final Element semanticContainer;
         Element semanticSourceGraphicalParent = this.getGraphicalContainerSemanticElement(source, diagram, editingContext);
-        if (semanticSourceGraphicalParent != null && !this.readOnlyService.isReadOnly(semanticSourceGraphicalParent)) {
+        if (semanticSourceGraphicalParent != null && !this.readOnlyObjectPredicate.test(semanticSourceGraphicalParent)) {
             semanticContainer = semanticSourceGraphicalParent;
         } else {
             Element semanticTargetGraphicalParent = this.getGraphicalContainerSemanticElement(target, diagram, editingContext);
-            if (semanticTargetGraphicalParent != null && !this.readOnlyService.isReadOnly(semanticTargetGraphicalParent)) {
+            if (semanticTargetGraphicalParent != null && !this.readOnlyObjectPredicate.test(semanticTargetGraphicalParent)) {
                 semanticContainer = semanticTargetGraphicalParent;
             } else {
                 semanticContainer = null;
