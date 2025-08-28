@@ -15,8 +15,8 @@ package org.eclipse.syson.services;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
-import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -38,14 +38,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMLMoveElementService implements ISysMLMoveElementService {
 
-    private final ISysMLReadOnlyService readOnlyService;
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     private final DeleteService deleteService;
 
     private final UtilService utilService;
 
-    public SysMLMoveElementService(ISysMLReadOnlyService readOnlyService) {
-        this.readOnlyService = Objects.requireNonNull(readOnlyService);
+    public SysMLMoveElementService(IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
     }
@@ -70,9 +70,9 @@ public class SysMLMoveElementService implements ISysMLMoveElementService {
             moveStatus = MoveStatus.buildFailure("Unable to move an Element to one of its descendant");
         } else if (newParent instanceof Membership) {
             moveStatus = MoveStatus.buildFailure("Membership can't be used as a target of a move");
-        } else if (this.readOnlyService.isReadOnly(element)) {
+        } else if (this.readOnlyObjectPredicate.test(element)) {
             moveStatus = MoveStatus.buildFailure("Unable to move a read only Element");
-        } else if (this.readOnlyService.isReadOnly(newParent)) {
+        } else if (this.readOnlyObjectPredicate.test(newParent)) {
             moveStatus = MoveStatus.buildFailure("Unable to move a Element to a read only Element");
         } else {
             moveStatus = this.doMoveElement(element, newParent);

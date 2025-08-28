@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.services.ComposedReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.application.object.services.DefaultReadOnlyObjectPredicate;
 import org.eclipse.syson.sysml.LibraryPackage;
@@ -46,7 +47,7 @@ public class DetailsViewServiceTest {
     public void setUp() {
         // Use a dummy CompsedAdapterFactory, we don't test methods that require the one used by SysON for the moment.
         this.detailsViewService = new DetailsViewService(new ComposedAdapterFactory(), new IFeedbackMessageService.NoOp(),
-                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate(new SysONResourceService())), new DefaultReadOnlyObjectPredicate()));
+                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()));
     }
 
     @Test
@@ -95,6 +96,20 @@ public class DetailsViewServiceTest {
         namespace.getOwnedRelationship().add(owningMembership);
         owningMembership.getOwnedRelatedElement().add(libraryPackage);
         ElementUtil.setIsImported(resource, true);
+        assertThat(this.detailsViewService.isReadOnly(libraryPackage)).isFalse();
+    }
+
+    @Test
+    public void isReadOnlyElementInImportedLibraryFlaggedAsReadOnly() {
+        Resource resource = new JSONResourceFactory().createResourceFromPath("testResource");
+        Namespace namespace = SysmlFactory.eINSTANCE.createNamespace();
+        resource.getContents().add(namespace);
+        LibraryPackage libraryPackage = SysmlFactory.eINSTANCE.createLibraryPackage();
+        OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        namespace.getOwnedRelationship().add(owningMembership);
+        owningMembership.getOwnedRelatedElement().add(libraryPackage);
+        ElementUtil.setIsImported(resource, true);
+        resource.eAdapters().add(new ResourceMetadataAdapter("test", true));
         assertThat(this.detailsViewService.isReadOnly(libraryPackage)).isTrue();
     }
 

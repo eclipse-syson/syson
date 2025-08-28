@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -32,10 +33,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.fragments.KerMLStandardLibraryDirectory;
 import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
@@ -67,20 +65,17 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final ISysONExplorerFilterService filterService;
 
-    private final UtilService utilService = new UtilService();
-
-    private final ISysONResourceService sysONResourceService;
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
     public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService,
-            IExplorerServices explorerServices, ILabelService labelService,
-            ISysONExplorerFilterService filterService, final ISysONResourceService sysONResourceService) {
+            IExplorerServices explorerServices, ILabelService labelService, ISysONExplorerFilterService filterService, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.labelService = Objects.requireNonNull(labelService);
         this.filterService = Objects.requireNonNull(filterService);
-        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
     }
 
     @Override
@@ -90,7 +85,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             siriusWebContext.getDomain().getResourceSet().getResources().stream()
                     .filter(r -> !this.filterService.isSysMLStandardLibrary(r))
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
-                    .filter(r -> !this.sysONResourceService.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
+                    .filter(r -> !this.filterService.isUserLibrary(r))
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", editingContext, this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), List.of(), activeFilterIds)) {
@@ -205,7 +200,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     
     @Override
     public boolean canCreateNewObjectsFromText(Object self) {
-        return self instanceof Element && isEditable(self);
+        return self instanceof Element && this.isEditable(self);
     }
 
     @Override
@@ -243,24 +238,10 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         boolean result = true;
         if (self instanceof ISysONExplorerFragment fragment) {
             result = fragment.isEditable();
-        } else if (self instanceof Namespace namespace) {
-            if (this.utilService.isRootNamespace(namespace)) {
-                result = !(this.filterService.isUserLibrary(namespace.eResource()))
-                        && namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
-            } else {
-                result = !ElementUtil.isFromStandardLibrary(namespace)
-                        && !(this.filterService.isUserLibrary(namespace.eResource()));
-            }
         } else if (self instanceof Element element) {
-            result = !ElementUtil.isFromStandardLibrary(element)
-                    && !(this.filterService.isUserLibrary(element.eResource()));
+            result = !this.readOnlyObjectPredicate.test(element);
         } else if (self instanceof Resource resource) {
-            result = !(this.filterService.isUserLibrary(resource))
-                    && resource.getContents().stream()
-                            .filter(Namespace.class::isInstance)
-                            .map(Namespace.class::cast)
-                            .flatMap(namespace -> namespace.getOwnedElement().stream())
-                            .noneMatch(ElementUtil::isFromStandardLibrary);
+            result = !this.readOnlyObjectPredicate.test(resource);
         }
         return result;
     }
@@ -269,26 +250,13 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     public boolean isDeletable(Object self) {
         boolean result = true;
         if (self instanceof ISysONExplorerFragment fragment) {
-            result = fragment.isEditable();
-        } else if (self instanceof Namespace namespace) {
-            if (this.utilService.isRootNamespace(namespace)) {
-                result = !(this.filterService.isUserLibrary(namespace.eResource()))
-                        && namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
-            } else {
-                result = !ElementUtil.isFromStandardLibrary(namespace)
-                        && !(this.filterService.isUserLibrary(namespace.eResource()));
-            }
+            result = fragment.isDeletable();
         } else if (self instanceof Element element) {
-            result = !ElementUtil.isFromStandardLibrary(element)
-                    && !(this.filterService.isUserLibrary(element.eResource()));
+            result = !this.readOnlyObjectPredicate.test(element);
         } else if (self instanceof Resource resource) {
-            // Allow to delete resources containing user libraries, users may want to remove an imported library from
-            // their project.
-            result = resource.getContents().stream()
-                    .filter(Namespace.class::isInstance)
-                    .map(Namespace.class::cast)
-                    .flatMap(namespace -> namespace.getOwnedElement().stream())
-                    .noneMatch(ElementUtil::isFromStandardLibrary);
+            // Allow to delete read-only resources imported from textual SysML, users may want to remove an imported
+            // library from their project.
+            result = !this.readOnlyObjectPredicate.test(resource) || ElementUtil.isImported(resource);
         }
         return result;
     }

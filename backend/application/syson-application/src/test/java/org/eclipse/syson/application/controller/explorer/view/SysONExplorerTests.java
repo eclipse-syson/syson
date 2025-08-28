@@ -236,6 +236,52 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     }
 
+    @DisplayName("GIVEN an empty SysML Project, WHEN the explorer is displayed with KerML and SysML libraries expanded, THEN the library models are visible")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentWithKerMLAndSysMLExpanded() {
+        String librariesTreeItemId = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
+        String sysmlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
+        String kermlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(librariesTreeItemId, sysmlLibrariesTreeItemId, kermlLibrariesTreeItemId), this.defaultFilters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+            assertThat(librariesDirectory.isDeletable()).isFalse();
+            assertThat(librariesDirectory.isEditable()).isFalse();
+            assertThat(librariesDirectory.isSelectable()).isTrue();
+            assertThat(librariesDirectory.isHasChildren()).isTrue();
+            assertThat(librariesDirectory.getChildren()).hasSize(2);
+            TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
+            assertThat(kermlDirectory.isDeletable()).isFalse();
+            assertThat(kermlDirectory.isEditable()).isFalse();
+            assertThat(kermlDirectory.isSelectable()).isTrue();
+            assertThat(kermlDirectory.isHasChildren()).isTrue();
+            assertThat(kermlDirectory.getChildren()).allMatch(children -> !children.isDeletable() && !children.isEditable());
+            TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
+            assertThat(sysmlDirectory.isDeletable()).isFalse();
+            assertThat(sysmlDirectory.isEditable()).isFalse();
+            assertThat(sysmlDirectory.isSelectable()).isTrue();
+            assertThat(sysmlDirectory.isHasChildren()).isTrue();
+            assertThat(sysmlDirectory.getChildren()).allMatch(children -> !children.isDeletable() && !children.isEditable());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN an empty SysML Project, WHEN the explorer is displayed with its root model expanded and the hide memberships and hide KerML libraries filters, THEN the root model is visible and is expanded")
     @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

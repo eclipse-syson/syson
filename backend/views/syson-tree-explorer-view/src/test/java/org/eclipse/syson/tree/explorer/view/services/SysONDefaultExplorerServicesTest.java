@@ -68,7 +68,7 @@ public class SysONDefaultExplorerServicesTest {
 
     public SysONDefaultExplorerServicesTest() {
         this.resourceService = new SysONResourceService();
-        this.defaultExplorerService = this.createMockDefaultExplorerService(resourceService);
+        this.defaultExplorerService = this.createMockDefaultExplorerService(this.resourceService);
     }
 
     @BeforeAll
@@ -101,23 +101,23 @@ public class SysONDefaultExplorerServicesTest {
         EAttribute c1a2 = EcoreFactory.eINSTANCE.createEAttribute();
         c1.getEStructuralFeatures().add(c1a2);
 
-        assertThat(defaultExplorerService.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(defaultExplorerService.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
-        assertThat(defaultExplorerService.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
+        assertThat(this.defaultExplorerService.hasChildren(ePackage, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(this.defaultExplorerService.hasChildren(c1, editingContext, List.of(), List.of(), List.of())).isTrue();
+        assertThat(this.defaultExplorerService.hasChildren(c1a1, editingContext, List.of(), List.of(), List.of())).isFalse();
     }
 
     @Test
     @DisplayName("When service 'canCreateNewObjectsFromText' is called on null, the result is always negative")
     public void testNull() {
-        assertThat(defaultExplorerService.canCreateNewObjectsFromText(null)).isFalse();
+        assertThat(this.defaultExplorerService.canCreateNewObjectsFromText(null)).isFalse();
     }
 
     @Test
     @DisplayName("When service 'canCreateNewObjectsFromText' is called on non-SysML model elements, the result is always negative")
     public void testNonSysMLElements() {
         final EPackage ePackage = EcorePackage.eINSTANCE;
-        assertThat(getAllConcreteEClasses(ePackage))
-                .noneMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+        assertThat(this.getAllConcreteEClasses(ePackage))
+                .noneMatch(eClass -> this.defaultExplorerService.canCreateNewObjectsFromText(
                         ePackage.getEFactoryInstance().create(eClass)));
     }
 
@@ -125,8 +125,8 @@ public class SysONDefaultExplorerServicesTest {
     @DisplayName("When service 'canCreateNewObjectsFromText' is called on SysML model elements, the result is always positive")
     public void testSysMLElements() {
         final EPackage ePackage = SysmlPackage.eINSTANCE;
-        assertThat(getAllConcreteEClasses(ePackage))
-                .allMatch(eClass -> defaultExplorerService.canCreateNewObjectsFromText(
+        assertThat(this.getAllConcreteEClasses(ePackage))
+                .allMatch(eClass -> this.defaultExplorerService.canCreateNewObjectsFromText(
                         ePackage.getEFactoryInstance().create(eClass)));
     }
 
@@ -154,7 +154,7 @@ public class SysONDefaultExplorerServicesTest {
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(sysONResourceService);
 
-        return new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, sysONResourceService);
+        return new SysONDefaultExplorerServices(identityService, contentService, representationMetadataSearchService, explorerServices, labelService, filterService, readOnlyObjectPredicate);
     }
 
     private List<EClass> getAllConcreteEClasses(final EPackage ePackage) {
