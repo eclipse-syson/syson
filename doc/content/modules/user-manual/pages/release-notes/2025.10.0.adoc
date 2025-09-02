@@ -79,6 +79,26 @@ If you are using the docker image and want to upgrade to PostgreSQL 15, please r
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
 - Update standard libraries to SysMLv2 and KerML 2025-07 specification released on July 2025 (see https://github.com/Systems-Modeling/SysML-v2-Release for more details).
+- Improve handling of `SemanticMetadata` by implicitly adding an implicit `Subclassification` or `Subsetting` to the annotated `Type`.
+
+In the following example, _a0_ now automatically subsets _functions_ and _A0_ now automatically subclassifies _Function_:
+
+```
+private import Metaobjects::SemanticMetadata;
+
+part def Functions {
+    attribute x : ScalarValues::String;
+}
+
+part functions : Functions [*] nonunique;
+
+metadata def Function :> SemanticMetadata {
+    :>> baseType = functions meta SysML::ActionUsage;
+}
+
+#Function action a0; // a0 subset functions
+#Function action def A0; // A0 subclassify Functions
+```
 
 == Dependency update
 

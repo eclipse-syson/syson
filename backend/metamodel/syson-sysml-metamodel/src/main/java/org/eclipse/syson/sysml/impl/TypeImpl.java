@@ -49,6 +49,8 @@ import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
+import org.eclipse.syson.sysml.util.ILibraryNamespaceProvider;
+import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
 import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 /**
@@ -517,7 +519,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .map(Specialization.class::cast)
                 .filter(spec -> this.equals(spec.getSpecific()))
                 .forEach(ownedSpecializations::add);
-        var implicitSpecializations = new ImplicitSpecializationSwitch(ownedSpecializations).doSwitch(this);
+
+        ILibraryNamespaceProvider nsProvider = LibraryNamespaceProvider.getFrom(this);
+        if (nsProvider == null) {
+            nsProvider = new LibraryNamespaceProvider(this);
+        }
+        var implicitSpecializations = new ImplicitSpecializationSwitch(ownedSpecializations, nsProvider).doSwitch(this);
         for (var specialization : implicitSpecializations) {
             // See {@link SpecializationImpl#getOwningRelatedElement()} for explanation
             specialization.eAdapters().add(new VirtualLinkAdapter(this, SysmlPackage.eINSTANCE.getRelationship_OwningRelatedElement().getName()));
@@ -854,7 +861,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
                     .filter(Objects::nonNull)
                     .forEach(supertypes::add);
         } else {
-            this.getOwnedSpecialization().stream()
+            // Here we do not want to return implicit specializations so we do not use getOwnedSpecialization() as it
+            // computes them using the ImplicitSpecializationSwitch.
+            // See implementation of org.eclipse.syson.sysml.impl.TypeImpl.getOwnedSpecialization()
+            this.getOwnedRelationship().stream()
+                    .filter(Specialization.class::isInstance)
+                    .map(Specialization.class::cast)
+                    .filter(spec -> this.equals(spec.getSpecific()))
                     .filter(spe -> !spe.isIsImplied())
                     .map(Specialization::getGeneral)
                     .filter(Objects::nonNull)
