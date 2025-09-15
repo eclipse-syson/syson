@@ -93,7 +93,7 @@ public class SysONEditingContextSnapshotService implements IEditingContextSnapsh
 
             for (var documentSnapshot : siriusWebSnapshot.documents()) {
                 var optionalResource = this.resourceLoader.toResource(resourceSet, documentSnapshot.document().getId().toString(), documentSnapshot.document().getName(),
-                        documentSnapshot.document().getContent(), false);
+                        documentSnapshot.document().getContent(), false, documentSnapshot.document().isReadOnly());
                 optionalResource.filter(resource -> siriusWebSnapshot.libraryAdapterResourcesMap().containsKey(resource.getURI()))
                         .ifPresent(resource -> resource.eAdapters().add(siriusWebSnapshot.libraryAdapterResourcesMap().get(resource.getURI())));
             }
