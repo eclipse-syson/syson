@@ -88,7 +88,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                             .map(ResourceMetadataAdapter.class::cast)
                             .findFirst();
                     if (resourceAdapter.isPresent()) {
-                        targetResource.eAdapters().add(new ResourceMetadataAdapter(resourceAdapter.get().getName()));
+                        targetResource.eAdapters().add(new ResourceMetadataAdapter(resourceAdapter.get().getName(), true));
                     }
                     targetResourceSet.getResources().add(targetResource);
                     EList<EObject> contents = sourceResource.getContents();

@@ -51,7 +51,7 @@ public class SysONExplorerTreeDescriptionProvider {
         UUID resourceId = UUID.nameUUIDFromBytes(SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER.getBytes());
         String resourcePath = resourceId.toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter(SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER));
+        resource.eAdapters().add(new ResourceMetadataAdapter(SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER, true));
         resource.getContents().add(sysonDefaultTreeView);
 
         return sysonDefaultTreeView;

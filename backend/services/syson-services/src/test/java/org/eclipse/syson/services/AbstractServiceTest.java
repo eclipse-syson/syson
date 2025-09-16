@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public abstract class AbstractServiceTest {
                     emfResource = this.loadFromXMI(uri, inputStream);
                 }
                 resourceSet.getResources().add(emfResource);
-                emfResource.eAdapters().add(new ResourceMetadataAdapter(modelPath));
+                emfResource.eAdapters().add(new ResourceMetadataAdapter(modelPath, false));
             } catch (IOException e) {
                 this.logger.warn("An error occured while loading model: {}.", e.getMessage());
                 resourceSet.getResources().remove(emfResource);

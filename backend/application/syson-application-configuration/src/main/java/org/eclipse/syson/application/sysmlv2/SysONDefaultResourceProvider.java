@@ -53,7 +53,7 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
     public Resource getEmptyResource(UUID resourcePath, String name) {
         var resource = new JSONResourceFactory().createResourceFromPath(resourcePath.toString());
 
-        var resourceMetadataAdapter = new ResourceMetadataAdapter(name);
+        var resourceMetadataAdapter = new ResourceMetadataAdapter(name, false);
         var migrationService = new MigrationService(this.migrationParticipants);
 
         resourceMetadataAdapter.addMigrationData(migrationService.getMostRecentParticipantMigrationData());

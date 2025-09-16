@@ -85,7 +85,7 @@ public class ColorProvider implements IColorProvider {
             try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
                 resourceSet.getResources().add(resource);
                 resource.load(inputStream, null);
-                resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
+                resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes", true));
             } catch (IOException exception) {
                 this.logger.warn("An error occurred while loading document studioColorPalettes.json: {}.", exception.getMessage());
                 resourceSet.getResources().remove(resource);
