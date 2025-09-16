@@ -77,21 +77,21 @@ public class GVStateTransitionUsageTests extends AbstractIntegrationTests {
                             .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ON_ID.equals(e.getId()))
                             .findFirst()
                             .get();
-                    assertThat(offOnEdge.getCenterLabel().getText()).isEqualTo("TurnOn via commPort");
+                    assertThat(offOnEdge.getCenterLabel().text()).isEqualTo("TurnOn via commPort");
                     assertThat(offOnEdge.getSourceId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ID);
                     assertThat(offOnEdge.getTargetId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_ID);
                     Edge onOffEdge = diagram.getEdges().stream()
                             .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_OFF_ID.equals(e.getId()))
                             .findFirst()
                             .get();
-                    assertThat(onOffEdge.getCenterLabel().getText()).isEqualTo("after 5 [min] via ");
+                    assertThat(onOffEdge.getCenterLabel().text()).isEqualTo("after 5 [min] via ");
                     assertThat(onOffEdge.getSourceId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_ID);
                     assertThat(onOffEdge.getTargetId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.OFF_ID);
                     Edge onIdleEdge = diagram.getEdges().stream()
                             .filter(e -> GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_IDLE_ID.equals(e.getId()))
                             .findFirst()
                             .get();
-                    assertThat(onIdleEdge.getCenterLabel().getText()).isEqualTo("[x > 0]");
+                    assertThat(onIdleEdge.getCenterLabel().text()).isEqualTo("[x > 0]");
                     assertThat(onIdleEdge.getSourceId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.ON_ID);
                     assertThat(onIdleEdge.getTargetId()).isEqualTo(GeneralViewStateTransitionUsageProjectData.GraphicalIds.IDLE_ID);
                 }, () -> fail("Missing diagram"));

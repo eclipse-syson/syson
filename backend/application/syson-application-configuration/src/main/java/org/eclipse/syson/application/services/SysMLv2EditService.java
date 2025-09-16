@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
@@ -33,12 +34,12 @@ import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
@@ -69,7 +70,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final ILabelService labelService;
 
-    private final IEMFKindService emfKindService;
+    private final IObjectSearchService objectSearchService;
 
     private final IDiagramCreationService diagramCreationService;
 
@@ -83,12 +84,12 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final UtilService utilService;
 
-    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IEMFKindService emfKindService, IDiagramCreationService diagramCreationService,
+    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IObjectSearchService objectSearchService, IDiagramCreationService diagramCreationService,
             IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
             IRepresentationPersistenceService representationPersistenceService) {
         this.defaultEditService = Objects.requireNonNull(defaultEditService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
@@ -140,15 +141,20 @@ public class SysMLv2EditService implements IEditServiceDelegate {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind) {
-        List<ChildCreationDescription> result;
-        String ePackageName = this.emfKindService.getEPackageName(kind);
-        if (SysmlPackage.eNS_PREFIX.equals(ePackageName)) {
-            List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
-            String eClassName = this.emfKindService.getEClassName(kind);
-            Optional<EClass> eClass = this.getEClass(eClassName);
-            if (eClass.isPresent()) {
-                List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(eClass.get());
+    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind) {
+        List<ChildCreationDescription> result = new ArrayList<>();
+
+        var optionalContainer = this.objectSearchService.getObject(editingContext, containerId)
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast);
+
+        if (optionalContainer.isPresent()) {
+            EObject container = optionalContainer.get();
+            EClass eClass = container.eClass();
+            EPackage ePackage = eClass.getEPackage();
+            if (SysmlPackage.eNS_PREFIX.equals(ePackage.getNsPrefix())) {
+                List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
+                List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(eClass);
                 childrenCandidates.forEach(candidate -> {
                     List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(candidate));
                     StyledString styledLabel = this.labelService.getStyledLabel(candidate);
@@ -159,10 +165,10 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                     ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     childCreationDescriptions.add(childCreationDescription);
                 });
+                result = childCreationDescriptions;
+            } else {
+                result = this.defaultEditService.getChildCreationDescriptions(editingContext, containerId, referenceKind);
             }
-            result = childCreationDescriptions;
-        } else {
-            result = this.defaultEditService.getChildCreationDescriptions(editingContext, kind, referenceKind);
         }
         Collections.sort(result, Comparator.comparing(ChildCreationDescription::label, String.CASE_INSENSITIVE_ORDER));
         return result;
@@ -238,12 +244,6 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                 .map(Element.class::cast);
 
         optionalElement.ifPresent(element -> this.deleteService.deleteFromModel(element));
-    }
-
-    private Optional<EClass> getEClass(String eClassName) {
-        return Optional.ofNullable(SysmlPackage.eINSTANCE.getEClassifier(eClassName))
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast);
     }
 
     /**

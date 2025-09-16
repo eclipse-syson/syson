@@ -165,7 +165,7 @@ public class GVIncludeUseCaseUsageTests extends AbstractIntegrationTests {
             assertThat(newEdge).hasSourceId(IncludeUseCaseUsageProjectData.GraphicalIds.INCLUDING_USE_CASE_ID);
             assertThat(newEdge).hasTargetId(IncludeUseCaseUsageProjectData.GraphicalIds.INCLUDED_USE_CASE_2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputFillClosedArrow);
-            assertThat(newEdge.getCenterLabel().getText()).isEqualTo(LabelConstants.OPEN_QUOTE + "include" + LabelConstants.CLOSE_QUOTE);
+            assertThat(newEdge.getCenterLabel().text()).isEqualTo(LabelConstants.OPEN_QUOTE + "include" + LabelConstants.CLOSE_QUOTE);
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);

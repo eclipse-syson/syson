@@ -37,7 +37,11 @@ export class Explorer {
 
   public select(treeItemLabel: string, multiSelection: boolean = false): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist');
-    this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection });
+    if (!multiSelection) {
+      this.getTreeItemByLabel(treeItemLabel).first().click();
+    } else {
+      this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: true });
+    }
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-testid', 'selected');
   }
 

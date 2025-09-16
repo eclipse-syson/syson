@@ -286,7 +286,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         this.verifier.consumeNextWith(updatedDiagramContentConsumer);
 
         Runnable newDiagramLayout = () -> {
-            var layoutData = new DiagramLayoutDataInput(List.of(), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of());
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram.get().getId(),
                     DiagramRefreshedEventPayload.CAUSE_REFRESH, layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
