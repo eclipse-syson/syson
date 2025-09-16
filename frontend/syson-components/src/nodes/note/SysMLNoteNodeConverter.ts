@@ -152,6 +152,13 @@ const toSysMLNoteNode = (
     node.width = data.defaultWidth ?? 200;
   }
 
+  if (nodeLayoutData?.size.height && nodeLayoutData?.size.width) {
+    node.measured = {
+      height: nodeLayoutData.size.height,
+      width: nodeLayoutData.size.width,
+    };
+  }
+
   return node;
 };
 
