@@ -45,7 +45,8 @@ This contribution introduces some breaking changes:
 If you are using the docker image and want to upgrade to PostgreSQL 15, please refer to https://doc.mbse-syson.org/syson/main/installation-guide/migration-process.html[the migration process page of the official documentation].
 Also please remember only YEAR.MONTH.0 versions are stable and suitable for production deployments.
 Other versions, such as intermediate releases, are intended solely for testing purposes.
-- _ImplicitSpecializationSwitch_ now requires an _ILibraryNamespaceProvider_ to access element from `LibraryPackage`. A default implementation is given with _org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch_.
+- https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] _ImplicitSpecializationSwitch_ now requires an _ILibraryNamespaceProvider_ to access element from `LibraryPackage`.
+A default implementation is given with _org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch_.
 This new object offers a way to register immutable `LibraryPackage`.
 Any `Namespace` stored in those libraries are now cached for quick access.
 
@@ -63,7 +64,9 @@ Any `Namespace` stored in those libraries are now cached for quick access.
 - https://github.com/eclipse-syson/syson/issues/1487[#1487] [explorer] Fix NPE thrown by `getTreePath` on Explorers defined with Sirius Tree APIs instead of Sirius View DSL APIs.
 This issue was not visible in SysON but could appear in downstream applications defining explorers with the Sirius Tree APIs.
 - https://github.com/eclipse-syson/syson/issues/1509[#1509] [publication] Fix library update performance and ensure it does not impact standard libraries.
-
+- https://github.com/eclipse-syson/syson/issues/1507[#1507] [publication] The bump to Sirius Web 2025.8.3 revealed an issue with the way `UpdateLibraryExecutor` looks for proxies in the resource set.
+`SysONUpdateLibraryExecutor` was introduced to fix this issue.
+Now it has been fixed in Sirius Web 2025.8.4, `SysONUpdateLibraryExecutor` has been deleted and `UpdateLibraryExecutor` is used again.
 
 === Improvements
 
