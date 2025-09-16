@@ -71,7 +71,7 @@ public class GVRelationshipTests extends AbstractIntegrationTests {
                     assertThat(diagram.getNodes()).hasSize(4);
                     assertThat(diagram.getEdges()).hasSize(2);
                     assertThat(diagram.getEdges().get(0).getCenterLabel()).isNotNull();
-                    assertThat(diagram.getEdges().get(0).getCenterLabel().getText()).isBlank();
+                    assertThat(diagram.getEdges().get(0).getCenterLabel().text()).isBlank();
                     assertThat(diagram.getNodes()).satisfiesOnlyOnce(node -> assertThat(node.getInsideLabel().getText()).contains("[2]"));
 
                 }, () -> fail("Missing diagram"));

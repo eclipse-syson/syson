@@ -46,29 +46,29 @@ projects.set("syson-diagram-tests", "views");
 console.log("Updating the following pom.xml:");
 projects.forEach((folder, project) => {
   const pomXmlPath = path.join(
-      workspace,
-      "backend",
-      folder,
-      project,
-      "pom.xml"
+    workspace,
+    "backend",
+    folder,
+    project,
+    "pom.xml"
   );
   console.log(pomXmlPath);
 
-  const pomXmlContent = fs.readFileSync(pomXmlPath, {encoding: "utf-8"});
+  const pomXmlContent = fs.readFileSync(pomXmlPath, { encoding: "utf-8" });
   const startTagIndex = pomXmlContent.indexOf("<sirius.web.version>");
   const endTagIndex = pomXmlContent.indexOf("</sirius.web.version>");
   if (startTagIndex !== -1 && endTagIndex !== -1) {
     let newPomXmlContent = pomXmlContent.substring(
-        0,
-        startTagIndex + "<sirius.web.version>".length
+      0,
+      startTagIndex + "<sirius.web.version>".length
     );
     newPomXmlContent += newSiriusWebVersion;
     newPomXmlContent += pomXmlContent.substring(endTagIndex);
-    fs.writeFileSync(pomXmlPath, newPomXmlContent, {encoding: "utf-8"});
+    fs.writeFileSync(pomXmlPath, newPomXmlContent, { encoding: "utf-8" });
   }
 });
 
-const updateSiriusWebCommand = `npm install --save-exact @eclipse-sirius/sirius-components-browser@${newSiriusWebVersion} @eclipse-sirius/sirius-components-charts@${newSiriusWebVersion} @eclipse-sirius/sirius-components-core@${newSiriusWebVersion} @eclipse-sirius/sirius-components-deck@${newSiriusWebVersion} @eclipse-sirius/sirius-components-diagrams@${newSiriusWebVersion} @eclipse-sirius/sirius-components-formdescriptioneditors@${newSiriusWebVersion} @eclipse-sirius/sirius-components-forms@${newSiriusWebVersion} @eclipse-sirius/sirius-components-gantt@${newSiriusWebVersion} @eclipse-sirius/sirius-components-omnibox@${newSiriusWebVersion} @eclipse-sirius/sirius-components-portals@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-reference@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-table@${newSiriusWebVersion} @eclipse-sirius/sirius-components-selection@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tables@${newSiriusWebVersion} @eclipse-sirius/sirius-components-trees@${newSiriusWebVersion} @eclipse-sirius/sirius-components-validation@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tsconfig@${newSiriusWebVersion} @eclipse-sirius/sirius-web-application@${newSiriusWebVersion}`;
+const updateSiriusWebCommand = `npm install --save-exact @eclipse-sirius/sirius-components-browser@${newSiriusWebVersion} @eclipse-sirius/sirius-components-charts@${newSiriusWebVersion} @eclipse-sirius/sirius-components-core@${newSiriusWebVersion} @eclipse-sirius/sirius-components-deck@${newSiriusWebVersion} @eclipse-sirius/sirius-components-diagrams@${newSiriusWebVersion} @eclipse-sirius/sirius-components-formdescriptioneditors@${newSiriusWebVersion} @eclipse-sirius/sirius-components-forms@${newSiriusWebVersion} @eclipse-sirius/sirius-components-gantt@${newSiriusWebVersion} @eclipse-sirius/sirius-components-omnibox@${newSiriusWebVersion} @eclipse-sirius/sirius-components-palette@${newSiriusWebVersion} @eclipse-sirius/sirius-components-portals@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-reference@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-table@${newSiriusWebVersion} @eclipse-sirius/sirius-components-selection@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tables@${newSiriusWebVersion} @eclipse-sirius/sirius-components-trees@${newSiriusWebVersion} @eclipse-sirius/sirius-components-validation@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tsconfig@${newSiriusWebVersion} @eclipse-sirius/sirius-web-application@${newSiriusWebVersion}`;
 
 console.log("Updating @eclipse-sirius/sirius-web in the frontend");
 const sysonFrontendWorkingDirectory = path.join(workspace, "frontend", "syson");
@@ -77,12 +77,12 @@ childProcess.execSync(updateSiriusWebCommand, {
   stdio: "inherit",
 });
 
-const updateSiriusWebPeerCommand = `npm install --save-peer --save-exact @eclipse-sirius/sirius-components-browser@${newSiriusWebVersion} @eclipse-sirius/sirius-components-charts@${newSiriusWebVersion} @eclipse-sirius/sirius-components-core@${newSiriusWebVersion} @eclipse-sirius/sirius-components-deck@${newSiriusWebVersion} @eclipse-sirius/sirius-components-diagrams@${newSiriusWebVersion} @eclipse-sirius/sirius-components-formdescriptioneditors@${newSiriusWebVersion} @eclipse-sirius/sirius-components-forms@${newSiriusWebVersion} @eclipse-sirius/sirius-components-gantt@${newSiriusWebVersion} @eclipse-sirius/sirius-components-omnibox@${newSiriusWebVersion} @eclipse-sirius/sirius-components-portals@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-reference@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-table@${newSiriusWebVersion} @eclipse-sirius/sirius-components-selection@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tables@${newSiriusWebVersion} @eclipse-sirius/sirius-components-trees@${newSiriusWebVersion} @eclipse-sirius/sirius-components-validation@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tsconfig@${newSiriusWebVersion} @eclipse-sirius/sirius-web-application@${newSiriusWebVersion}`;
+const updateSiriusWebPeerCommand = `npm install --save-peer --save-exact @eclipse-sirius/sirius-components-browser@${newSiriusWebVersion} @eclipse-sirius/sirius-components-charts@${newSiriusWebVersion} @eclipse-sirius/sirius-components-core@${newSiriusWebVersion} @eclipse-sirius/sirius-components-deck@${newSiriusWebVersion} @eclipse-sirius/sirius-components-diagrams@${newSiriusWebVersion} @eclipse-sirius/sirius-components-formdescriptioneditors@${newSiriusWebVersion} @eclipse-sirius/sirius-components-forms@${newSiriusWebVersion} @eclipse-sirius/sirius-components-gantt@${newSiriusWebVersion} @eclipse-sirius/sirius-components-omnibox@${newSiriusWebVersion} @eclipse-sirius/sirius-components-palette@${newSiriusWebVersion} @eclipse-sirius/sirius-components-portals@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-reference@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-table@${newSiriusWebVersion} @eclipse-sirius/sirius-components-selection@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tables@${newSiriusWebVersion} @eclipse-sirius/sirius-components-trees@${newSiriusWebVersion} @eclipse-sirius/sirius-components-validation@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tsconfig@${newSiriusWebVersion} @eclipse-sirius/sirius-web-application@${newSiriusWebVersion}`;
 
 const sysonComponentsFrontendWorkingDirectory = path.join(
-    workspace,
-    "frontend",
-    "syson-components"
+  workspace,
+  "frontend",
+  "syson-components"
 );
 childProcess.execSync(updateSiriusWebPeerCommand, {
   cwd: sysonComponentsFrontendWorkingDirectory,
@@ -91,8 +91,8 @@ childProcess.execSync(updateSiriusWebPeerCommand, {
 
 const gitAddCommand = `git add .`;
 console.log(gitAddCommand);
-childProcess.execSync(gitAddCommand, {stdio: "inherit"});
+childProcess.execSync(gitAddCommand, { stdio: "inherit" });
 
 const gitCommitCommand = `git commit -s -m "[releng] Switch to Sirius Web ${newSiriusWebVersion}"`;
 console.log(gitCommitCommand);
-childProcess.execSync(gitCommitCommand, {stdio: "inherit"});
+childProcess.execSync(gitCommitCommand, { stdio: "inherit" });

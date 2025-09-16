@@ -269,7 +269,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);
             assertThat(newEdge)
-                    .extracting(e -> e.getCenterLabel().getText()).isEqualTo("=");
+                    .extracting(e -> e.getCenterLabel().text()).isEqualTo("=");
         };
 
         this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
@@ -302,7 +302,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);
             assertThat(newEdges).hasSize(1).first(EDGE)
-                    .extracting(e -> e.getCenterLabel().getText()).isEqualTo("=");
+                    .extracting(e -> e.getCenterLabel().text()).isEqualTo("=");
             result.set(newEdges.get(0).getTargetObjectId());
         };
 

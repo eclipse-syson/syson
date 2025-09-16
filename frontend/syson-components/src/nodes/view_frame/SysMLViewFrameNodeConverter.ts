@@ -85,7 +85,7 @@ const toViewFrameNode = (
       borderRadius: style.borderRadius,
     },
     insideLabel: null,
-    outsideLabels: convertOutsideLabels(outsideLabels),
+    outsideLabels: convertOutsideLabels(outsideLabels, gqlDiagram.layoutData.labelLayoutData),
     faded: state === GQLViewModifier.Faded,
     pinned,
     isBorderNode: isBorderNode,
