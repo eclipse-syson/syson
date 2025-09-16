@@ -47,6 +47,10 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
         return new Builder();
     }
 
+    public static Builder newSysMLPackageNodeStyle(SysMLPackageNodeStyle nodeStyle) {
+        return new Builder(nodeStyle);
+    }
+
     public String getBackground() {
         return this.background;
     }
@@ -94,6 +98,14 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
 
         private Builder() {
             // Prevent instantiation
+        }
+
+        private Builder(SysMLPackageNodeStyle nodeStyle) {
+            this.background = nodeStyle.getBackground();
+            this.borderColor = nodeStyle.getBorderColor();
+            this.borderSize = nodeStyle.getBorderSize();
+            this.borderStyle = nodeStyle.getBorderStyle();
+            this.childrenLayoutStrategy = nodeStyle.getChildrenLayoutStrategy();
         }
 
         public Builder background(String background) {

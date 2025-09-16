@@ -13,7 +13,12 @@
 
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
-import { diagramPanelActionExtensionPoint, NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  diagramPanelActionExtensionPoint,
+  NodeTypeContribution,
+  PaletteAppearanceSectionContributionProps,
+  paletteAppearanceSectionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLOmniboxCommand,
   OmniboxCommandOverrideContribution,
@@ -45,16 +50,20 @@ import {
   SysMLImportedPackageNode,
   SysMLImportedPackageNodeConverter,
   SysMLImportedPackageNodeLayoutHandler,
+  SysMLImportedPackageNodePaletteAppearanceSection,
   sysMLNodesStyleDocumentTransform,
   SysMLNoteNode,
   SysMLNoteNodeConverter,
   SysMLNoteNodeLayoutHandler,
+  SysMLNoteNodePaletteAppearanceSection,
   SysMLPackageNode,
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
+  SysMLPackageNodePaletteAppearanceSection,
   SysMLViewFrameNode,
   SysMLViewFrameNodeConverter,
   SysMLViewFrameNodeLayoutHandler,
+  SysMLViewFrameNodePaletteAppearanceSection,
   SysONDiagramPanelMenu,
   SysONDocumentTreeItemContextMenuContribution,
   SysONExtensionRegistryMergeStrategy,
@@ -176,9 +185,48 @@ extensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(treeItemCon
   data: treeItemContextMenuOverrideContributions,
 });
 
-/*
- * Custom node contribution
- */
+/*******************************************************************************
+ *
+ * Custom nodes appearance contributions
+ *
+ *******************************************************************************/
+const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+  {
+    canHandle: (element) => {
+      return element.type === 'sysMLPackageNode';
+    },
+    component: SysMLPackageNodePaletteAppearanceSection,
+  },
+  {
+    canHandle: (element) => {
+      return element.type === 'sysMLImportedPackageNode';
+    },
+    component: SysMLImportedPackageNodePaletteAppearanceSection,
+  },
+  {
+    canHandle: (element) => {
+      return element.type === 'sysMLNoteNode';
+    },
+    component: SysMLNoteNodePaletteAppearanceSection,
+  },
+  {
+    canHandle: (element) => {
+      return element.type === 'sysMLViewFrameNode';
+    },
+    component: SysMLViewFrameNodePaletteAppearanceSection,
+  },
+];
+
+extensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
+  identifier: `syson_${paletteAppearanceSectionExtensionPoint.identifier}`,
+  data: customNodePaletteAppearanceSectionContribution,
+});
+
+/*******************************************************************************
+ *
+ * Custom nodes contributions
+ *
+ *******************************************************************************/
 const nodeTypeRegistry: NodeTypeRegistry = {
   nodeLayoutHandlers: [
     new SysMLPackageNodeLayoutHandler(),

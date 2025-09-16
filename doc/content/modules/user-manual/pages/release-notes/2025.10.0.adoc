@@ -45,6 +45,7 @@ This contribution introduces some breaking changes:
 == New features
 
 - In diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
+- In diagrams, it is now possible to change the appearance (color, font...) of all diagram elements, through the new _Palette_ menu _Appearance_.
 
 == Bug fixes
 
