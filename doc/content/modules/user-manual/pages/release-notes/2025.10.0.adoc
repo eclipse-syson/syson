@@ -69,9 +69,7 @@ This issue was not visible in SysON but could appear in downstream applications 
 - Fix action "New objects from text" being available on all semantic elements in the _Explorer_ view.
 Now it is only available on SysML model elements.
 - Fix library update performance and ensure it does not impact standard libraries.
-- The bump to Sirius Web 2025.8.3 revealed an issue with the way `UpdateLibraryExecutor` looks for proxies in the resource set.
-`SysONUpdateLibraryExecutor` was introduced to fix this issue.
-Now it has been fixed in Sirius Web 2025.8.4, `SysONUpdateLibraryExecutor` has been deleted and `UpdateLibraryExecutor` is used again.
+- Fix an issue where diagrams' edges were blinking when refreshing a diagram.
 
 == Improvements
 

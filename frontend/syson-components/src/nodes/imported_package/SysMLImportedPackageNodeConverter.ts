@@ -149,6 +149,13 @@ const toSysMLImportedPackageNode = (
     };
   }
 
+  if (nodeLayoutData?.size.height && nodeLayoutData?.size.width) {
+    node.measured = {
+      height: nodeLayoutData.size.height,
+      width: nodeLayoutData.size.width,
+    };
+  }
+
   return node;
 };
 
