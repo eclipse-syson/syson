@@ -110,7 +110,7 @@ public class SysONLibraryLoader {
         try (InputStream inputStream = new ByteArrayInputStream(springResource.getContentAsByteArray())) {
             resourceSet.getResources().add(emfResource);
             emfResource.load(inputStream, Map.of());
-            emfResource.eAdapters().add(new ResourceMetadataAdapter(FilenameUtils.getBaseName(springResource.getFilename())));
+            emfResource.eAdapters().add(new ResourceMetadataAdapter(FilenameUtils.getBaseName(springResource.getFilename()), true));
             return Optional.of(emfResource);
         } catch (final IOException ioException) {
             resourceSet.getResources().remove(emfResource);
