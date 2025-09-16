@@ -82,6 +82,12 @@ Consumers may override this by providing an implementation of `org.eclipse.syson
 
 - https://github.com/eclipse-syson/syson/issues/1314[#1314] [diagrams] (Almost) All node descriptions are now synchronized (based on the exposed elements of ViewUsages).
 This contribution allows to switch from one _ViewDefinition_ to another one in a _ViewUsage_ without having to re-create the diagram.
+- https://github.com/eclipse-syson/syson/issues/1525[#1525] [diagrams] Add support for the management of the appearance of custom nodes (`Package`, `ImportedPackage`, `Note` and `ViewFrame`) with the extension point `PaletteAppearanceSectionContribution`.
+* `DiagramImporterSysMLPackageNodeStyleAppearanceChangeHandler implements IDiagramImporterNodeStyleAppearanceChangeHandler` allows the importation of diagram with `Package` nodes that have custom appearance.
+* `EditSysMLPackageNodeAppearanceEventHandler implements IDiagramEventHandler` adds the needed `appearanceChanges` to the `diagramContext` after receiving the mutation.
+* `SysMLPackageNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`.
+* A GraphQL mutation is also added through `editSysMLPackageNodeAppearance`.
+* Same mechanism is applied to `ImportedPackage`, `Note` and `ViewFrame` nodes.
 
 == v2025.8.0
 
