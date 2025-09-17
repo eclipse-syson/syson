@@ -99,6 +99,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-tests</artifactId>
+			<version>2025.8.5</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>

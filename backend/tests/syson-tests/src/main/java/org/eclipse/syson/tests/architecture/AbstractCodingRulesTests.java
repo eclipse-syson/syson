@@ -172,6 +172,7 @@ public abstract class AbstractCodingRulesTests {
         rule.check(this.getClasses());
     }
 
+    @Test
     public void noClassesShouldUseEcoreUtilDelete() {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()

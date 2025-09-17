@@ -40,11 +40,11 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arthur daussy
  */
-public abstract class AbtractItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbtractItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public AbstractItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }

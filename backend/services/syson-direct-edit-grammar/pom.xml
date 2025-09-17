@@ -68,7 +68,7 @@
 				<version>${antlr.version}</version>
 				<configuration>
 					<sourceDirectory>${basedir}/src/main/resources</sourceDirectory>
-					<outputDirectory>${basedir}/src/main/java/org/eclipse/syson/services/grammars</outputDirectory>
+					<outputDirectory>${basedir}/src/main/java/org/eclipse/syson/direct/edit/grammars</outputDirectory>
 					<outputEncoding>UTF-8</outputEncoding>
 				</configuration>
 				<executions>

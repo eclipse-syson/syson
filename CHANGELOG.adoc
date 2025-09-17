@@ -49,6 +49,10 @@ Other versions, such as intermediate releases, are intended solely for testing p
 A default implementation is given with _org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch_.
 This new object offers a way to register immutable `LibraryPackage`.
 Any `Namespace` stored in those libraries are now cached for quick access.
+- https://github.com/eclipse-syson/syson/issues/1355[#1355] [tests] Add coding rules tests on all modules.
+As a consequence, some coding rules violations have been fixed.
+The `org.eclipse.syson.services.grammars` package in `syson-direct-edit-grammar` has been renamed into `org.eclipse.syson.direct.edit.grammars`.
+`AbtractItemUsageBorderNodeDescriptionProvider` has been renamed to `AbstractItemUsageBorderNodeDescriptionProvider`.
 
 === Dependency update
 
@@ -77,6 +81,7 @@ Consumers may override this by providing an implementation of `org.eclipse.syson
 - https://github.com/eclipse-syson/syson/issues/1497[#1497] [database] Update the PostgreSQL version used in the docker image (used for tests purposes) to 15.
 - https://github.com/eclipse-syson/syson/issues/1502[#1502] [libraries] Update standard libraries to SysMLv2 2025-07 specification.
 - https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] Add implicit `Subclassification` or `Subsetting` when using semantic `MetadataUsage`.
+- https://github.com/eclipse-syson/syson/issues/1355[#1355] [tests] Add coding rules tests on all modules.
 
 === New features
 

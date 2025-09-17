@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.common.view.nodes.AbtractItemUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -26,7 +26,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author Arthur Daussy
  */
-public class ItemUsageBorderNodeDescriptionProvider extends AbtractItemUsageBorderNodeDescriptionProvider {
+public class ItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBorderNodeDescriptionProvider {
 
     public ItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

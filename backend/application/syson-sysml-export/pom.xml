@@ -71,6 +71,7 @@
 			<artifactId>syson-sysml-metamodel</artifactId>
 			<version>2025.8.5</version>
 		</dependency>
+		<!-- Tests -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -79,6 +80,12 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-tests</artifactId>
+			<version>2025.8.5</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
