@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-export</artifactId>
-	<version>2025.8.4</version>
+	<version>2025.8.5</version>
 	<name>syson-sysml-export</name>
 	<description>SysON SysML Export</description>
 
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.8.4</version>
+			<version>2025.8.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.8.4</version>
+			<version>2025.8.5</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
