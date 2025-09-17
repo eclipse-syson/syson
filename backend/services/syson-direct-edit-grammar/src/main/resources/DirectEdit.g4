@@ -25,7 +25,7 @@ grammar DirectEdit;
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services.grammars;
+package org.eclipse.syson.direct.edit.grammars;
 }
 
 // This rule is used as a top-level rule to parse expressions on graphical nodes.

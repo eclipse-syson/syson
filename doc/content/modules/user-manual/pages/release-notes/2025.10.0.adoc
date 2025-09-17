@@ -99,6 +99,7 @@ metadata def Function :> SemanticMetadata {
 #Function action a0; // a0 subset functions
 #Function action def A0; // A0 subclassify Functions
 ```
+- Add coding rules tests on all modules.
 
 == Dependency update
 
