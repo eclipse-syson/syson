@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TypeFeaturing;
 import org.eclipse.syson.sysml.VisibilityKind;
 
@@ -231,22 +232,16 @@ public class ElementUtil {
     }
 
     /**
-     * Count the number of existing elements having the same type than the given Element inside the owning Namespace of
-     * the given Element.
+     * Count the number of existing ViewUsages inside the given Namespace.
      *
-     * @param element
-     *            the given {@link Element}.
-     * @return the number of existing elements having the same type than the given Element inside the owning Namespace
-     *         of the given Element.
+     * @param namespace
+     *            the given {@link Namespace}.
+     * @return the number of existing ViewUsages inside the given Namespace.
      */
-    public long existingElementsCount(Element element) {
-        Namespace owningNamespace = element.getOwningNamespace();
-        if (owningNamespace != null) {
-            return owningNamespace.getOwnedMember().stream()
-                    .filter(member -> element.eClass().equals(member.eClass()))
-                    .count();
-        }
-        return 0;
+    public long existingViewUsagesCountForRepresentationCreation(Namespace namespace) {
+        return namespace.getOwnedMember().stream()
+                .filter(member -> SysmlPackage.eINSTANCE.getViewUsage().equals(member.eClass()))
+                .count();
     }
 
     /**

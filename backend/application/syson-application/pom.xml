@@ -116,6 +116,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-table-requirements-view</artifactId>
+			<version>2025.8.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tree-explorer-view</artifactId>
 			<version>2025.8.5</version>
 		</dependency>
@@ -145,6 +150,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
+			<version>${sirius.web.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-tables-tests</artifactId>
 			<version>${sirius.web.version}</version>
 			<scope>test</scope>
 		</dependency>

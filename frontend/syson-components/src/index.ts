@@ -17,6 +17,8 @@ export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Moda
 export { SysONNavigationBarMenuIcon } from './extensions/navigationBarMenu/SysONNavigationBarMenuIcon';
 export { PublishProjectSysMLContentsAsLibraryCommand } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand';
 export type { PublishProjectSysMLContentsAsLibraryCommandState } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand.types';
+export { CreateRequirementMenuEntry } from './extensions/requirementsTable/CreateRequirementMenuEntry';
+export { ExposeRequirementsMenuEntry } from './extensions/requirementsTable/ExposeRequirementsMenuEntry';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
 export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
 export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';

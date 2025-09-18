@@ -1015,16 +1015,14 @@ public class UtilService {
     }
 
     /**
-     * Count the number of existing elements having the same type than the given Element inside the owning Namespace of
-     * the given Element.
+     * Count the number of existing ViewUsages inside the given Namespace.
      *
-     * @param element
-     *            the given {@link Element}.
-     * @return the number of existing elements having the same type than the given Element inside the owning Namespace
-     *         of the given Element.
+     * @param namespace
+     *            the given {@link Namespace}.
+     * @return the number of existing ViewUsages inside the given Namespace.
      */
-    public long existingElementsCount(Element element) {
-        return this.elementUtil.existingElementsCount(element);
+    public long existingViewUsagesCountForRepresentationCreation(Namespace namespace) {
+        return this.elementUtil.existingViewUsagesCountForRepresentationCreation(namespace);
     }
 
     private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {

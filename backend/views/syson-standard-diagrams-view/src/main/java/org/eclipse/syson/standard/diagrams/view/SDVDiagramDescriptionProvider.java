@@ -297,7 +297,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .domainType(domainType)
                 .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
-                .titleExpression("aql:'view'+ Sequence{self.existingElementsCount(), 1}->sum()");
+                .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()");
 
         var diagramDescription = diagramDescriptionBuilder.build();
 

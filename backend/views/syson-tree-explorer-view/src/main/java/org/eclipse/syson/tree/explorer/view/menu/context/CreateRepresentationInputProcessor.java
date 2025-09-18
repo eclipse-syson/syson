@@ -25,13 +25,13 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.application.services.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ import reactor.core.publisher.Sinks.Many;
 
 /**
  * {@link IInputPreProcessor} and {@link IInputPostProcessor} allowing to create a ViewUsage element when creating a new
- * SysON SysMLv2 diagram. The SysON SysMLv2 diagram is then attached to this new ViewUsage.
+ * SysON SysMLv2 representation. The SysON SysMLv2 representation is then attached to this new ViewUsage.
  *
  * @author arichard
  */
@@ -60,7 +60,7 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
 
     @Override
     public IInput preProcess(IEditingContext editingContext, IInput input, Many<ChangeDescription> changeDescriptionSink) {
-        if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && canHandle(createRepresentationInput)) {
+        if (editingContext instanceof EditingContext && input instanceof CreateRepresentationInput createRepresentationInput && this.canHandle(createRepresentationInput)) {
             var optElement = this.getObject(editingContext, createRepresentationInput);
             if (optElement.isPresent()) {
                 Element containerElement = optElement.get();
@@ -73,8 +73,10 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
                     // ViewUsage.
                     viewUsage = this.createViewUsage(input, containerElement, createRepresentationInput.representationName());
                 }
-                // In any case we want to create the only "real" diagram
-                return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID,
+                // In any case we want to create the representation, either the general view (which applies for all 4
+                // standard diagrams) or the requirements table
+                String representationDescriptionId = this.getRepresentationDescriptionId(createRepresentationInput.representationDescriptionId());
+                return new CreateRepresentationInput(input.id(), createRepresentationInput.editingContextId(), representationDescriptionId,
                         viewUsage.getElementId(), createRepresentationInput.representationName());
             }
         }
@@ -99,8 +101,26 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
             canHandle = true;
         } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.STATE_TRANSITION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
             canHandle = true;
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID, representationDescriptionId)) {
+            canHandle = true;
         }
         return canHandle;
+    }
+
+    private String getRepresentationDescriptionId(String representationDescriptionId) {
+        String id = "";
+        if (Objects.equals(SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
+            id = SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID;
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
+            id = SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID;
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.ACTION_FLOW_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
+            id = SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID;
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.STATE_TRANSITION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
+            id = SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID;
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID, representationDescriptionId)) {
+            id = SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID;
+        }
+        return id;
     }
 
     private Optional<Element> getObject(IEditingContext editingContext, CreateRepresentationInput input) {
@@ -151,6 +171,8 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
         } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.STATE_TRANSITION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
             var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, "StandardViewDefinitions::StateTransitionView", ViewDefinition.class);
             optViewDef = Optional.ofNullable(generalViewViewDef);
+        } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID, representationDescriptionId)) {
+            optViewDef = Optional.empty();
         }
         return optViewDef;
     }

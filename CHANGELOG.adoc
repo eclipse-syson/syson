@@ -53,6 +53,9 @@ Any `Namespace` stored in those libraries are now cached for quick access.
 As a consequence, some coding rules violations have been fixed.
 The `org.eclipse.syson.services.grammars` package in `syson-direct-edit-grammar` has been renamed into `org.eclipse.syson.direct.edit.grammars`.
 `AbtractItemUsageBorderNodeDescriptionProvider` has been renamed to `AbstractItemUsageBorderNodeDescriptionProvider`.
+- https://github.com/eclipse-syson/syson/issues/1532[#1532] [tables] Add new Requirements table View.
+As a consequence, the `syson-table-requirements-view` and `syson-common-view` modules has been created.
+`IViewDescriptionProvider.java` and `SysONViewDescriptionProvider.java` have been moved from `syson-diagram-common-view` to `syson-common-view`.
 
 === Dependency update
 
@@ -98,6 +101,7 @@ This contribution allows to switch from one _ViewDefinition_ to another one in a
 * `SysMLPackageNodeAppearanceHandler implements INodeAppearanceHandler` handles how the node is updated from the `appearanceChanges`.
 * A GraphQL mutation is also added through `editSysMLPackageNodeAppearance`.
 * Same mechanism is applied to `ImportedPackage`, `Note` and `ViewFrame` nodes.
+- https://github.com/eclipse-syson/syson/issues/1532[#1532] [tables] Add new Requirements table View.
 
 == v2025.8.0
 

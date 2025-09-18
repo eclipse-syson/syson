@@ -13,7 +13,7 @@
 package org.eclipse.syson.standard.diagrams.view;
 
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.IViewDescriptionProvider;
+import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +29,7 @@ public class SDVDescriptionProvider implements IViewDescriptionProvider {
      * Descriptions Ids.
      */
     @Override
-    public String getViewDiagramId() {
+    public String getViewId() {
         return "GeneralViewDiagram";
     }
 
