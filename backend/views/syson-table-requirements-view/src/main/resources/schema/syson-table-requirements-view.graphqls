@@ -1,0 +1,20 @@
+extend type Mutation {
+  exposeRequirements(input: ExposeRequirementsInput!): ExposeRequirementsPayload!
+  createRequirement(input: CreateRequirementInput!): CreateRequirementPayload!
+}
+
+input ExposeRequirementsInput {
+  id: ID!
+  editingContextId: ID!
+  tableId: ID!
+}
+
+union ExposeRequirementsPayload = ErrorPayload | SuccessPayload
+
+input CreateRequirementInput {
+  id: ID!
+  editingContextId: ID!
+  tableId: ID!
+}
+
+union CreateRequirementPayload = ErrorPayload | SuccessPayload

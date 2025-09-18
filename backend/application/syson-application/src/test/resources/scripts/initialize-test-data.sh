@@ -16,8 +16,13 @@ if [[ $isTestContainerRunning -ne 1 ]]; then
 fi
 
 echo "Cleaning syson-db & importing ./${1}"
-# Remove winpty if you are not calling the script from git bash
-winpty psql -U dbuser -d syson-db --host "localhost" --port "5433" -f ./cleanup.sql -f ./${1}
+
+# Use the following command if you are not calling the script from git bash
+psql -U dbuser -d syson-db --host "localhost" --port "5433" -f ./cleanup.sql -f ./${1}
+
+# Use the following command if you are calling the script from git bash
+#winpty psql -U dbuser -d syson-db --host "localhost" --port "5433" -f ./cleanup.sql -f ./${1}
+
 echo "Done"
 
 exit 0

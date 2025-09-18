@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 , 2025 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.services;
+package org.eclipse.syson.util;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -30,10 +30,9 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
- * Switch for retrieving the intermediate container of the element to create, if there is one..
+ * Switch for retrieving the intermediate container of the element to create, if there is one.
  *
  * @author arichard
  */

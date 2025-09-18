@@ -24,6 +24,7 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import { settingButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
   treeItemContextMenuEntryExtensionPoint,
@@ -45,6 +46,8 @@ import {
   UpdateLibraryTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 import {
+  CreateRequirementMenuEntry,
+  ExposeRequirementsMenuEntry,
   InsertTextualSysMLMenuContribution,
   PublishProjectSysMLContentsAsLibraryCommand,
   SysMLImportedPackageNode,
@@ -157,6 +160,16 @@ extensionRegistry.addComponent(footerExtensionPoint, {
 extensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   identifier: `syson_${navigationBarMenuIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarMenuIcon,
+});
+
+extensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
+  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
+  Component: CreateRequirementMenuEntry,
+});
+
+extensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
+  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
+  Component: ExposeRequirementsMenuEntry,
 });
 
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [

@@ -15,9 +15,14 @@ if [[ $isTestContainerRunning -ne 1 ]]; then
 fi
 
 echo "Extracting test data from syson-db to ./${1}"
-# Remove winpty if you are not calling the script from git bash
+
+# Use the following commands if you are not calling the script from git bash
 pg_dump --host localhost --port 5433 --file "./${1}" --username dbuser --format=p --encoding UTF8 --data-only --column-inserts --table public.document --table public.project --table public.representation_metadata --table public.representation_content --table public.semantic_data --table public.project_semantic_data --table public.semantic_data_dependency --table public.semantic_data_domain --table public.image --table public.library --table public.nature --table public.project_image syson-db
+
+# Use the following commands if you are calling the script from git bash
+#winpty pg_dump --host localhost --port 5433 --file "./${1}" --username dbuser --format=p --encoding UTF8 --data-only --column-inserts --table public.document --table public.project --table public.representation_metadata --table public.representation_content --table public.semantic_data --table public.project_semantic_data --table public.semantic_data_dependency --table public.semantic_data_domain --table public.image --table public.library --table public.nature --table public.project_image syson-db
+#echo "Cleaning test data"
+#sed -i "/^SELECT pg_catalog.set_config('search_path', '', false);/d" ./${1}
+
 echo "Done"
-
-
 exit 0

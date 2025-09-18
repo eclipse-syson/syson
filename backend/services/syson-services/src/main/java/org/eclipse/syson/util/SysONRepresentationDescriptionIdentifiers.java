@@ -19,11 +19,11 @@ package org.eclipse.syson.util;
  */
 public final class SysONRepresentationDescriptionIdentifiers {
 
-    // All the general view diagrams have the same description
+    // All standard diagrams have the same description
     public static final String GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=db495705-e917-319b-af55-a32ad63f4089";
 
     /**
-     * All diagram descriptions have been merged into one.
+     * All standard diagram descriptions have been merged into one.
      *
      * @deprecated use GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID instead.
      */
@@ -31,7 +31,7 @@ public final class SysONRepresentationDescriptionIdentifiers {
     public static final String INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=e1bd3b6d-357b-3068-b2e9-e0c1e19d6856";
 
     /**
-     * All diagram descriptions have been merged into one.
+     * All standard diagram descriptions have been merged into one.
      *
      * @deprecated use GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID instead.
      */
@@ -39,12 +39,14 @@ public final class SysONRepresentationDescriptionIdentifiers {
     public static final String ACTION_FLOW_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=ea3511e5-5ba5-3d2c-8e80-9182db336675";
 
     /**
-     * All diagram descriptions have been merged into one.
+     * All standard diagram descriptions have been merged into one.
      *
      * @deprecated use GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID instead.
      */
     @Deprecated
     public static final String STATE_TRANSITION_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=be71dab0-25e1-3180-90d0-24b31f68df8f";
+
+    public static final String REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=tableDescription&sourceKind=view&sourceId=f445c867-006e-3b07-9385-40143a87f533&sourceElementId=05ffd328-a162-3d7e-b09b-7757ef23ef01";
 
     private SysONRepresentationDescriptionIdentifiers() {
         // Prevent instantiation
