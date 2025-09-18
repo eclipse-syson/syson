@@ -99,7 +99,7 @@ metadata def Function :> SemanticMetadata {
 #Function action a0; // a0 subset functions
 #Function action def A0; // A0 subclassify Functions
 ```
-- Add coding rules tests on all modules.
+- Move `RequirementUsage`'s _ReqId_ property from the _Advanced_ tab to the _Core_ tab of the _Details View_.
 
 == Dependency update
 
