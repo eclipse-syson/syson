@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view;
+package org.eclipse.syson.common.view.api;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,24 +28,24 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.syson.services.ColorProvider;
 
 /**
- * Abstract class used to register View diagram in the application.
+ * Abstract class used to register Views in the application.
  *
  * @author Jerome Gout
  */
 public interface IViewDescriptionProvider {
 
     /**
-     * Implementers should provide the ID of the view diagram this description provider is for.
+     * Implementers should provide the ID of the view this description provider is for.
      *
-     * @return the Id of the view diagram
+     * @return the Id of the view
      */
-    String getViewDiagramId();
+    String getViewId();
 
     /**
-     * Implementers should provide the {@link IRepresentationDescriptionProvider} of the view diagram this description
-     * provider is for.
+     * Implementers should provide the {@link IRepresentationDescriptionProvider} of the view this description provider
+     * is for.
      *
-     * @return the representation description provider of the view diagram
+     * @return the representation description provider of the view
      */
     IRepresentationDescriptionProvider getRepresentationDescriptionProvider();
 
@@ -66,9 +66,9 @@ public interface IViewDescriptionProvider {
         });
 
         // All programmatic Views need to be stored in a Resource and registered in IInMemoryViewRegistry
-        String resourcePath = UUID.nameUUIDFromBytes(this.getViewDiagramId().getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes(this.getViewId().getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter(this.getViewDiagramId(), true));
+        resource.eAdapters().add(new ResourceMetadataAdapter(this.getViewId(), true));
         resource.getContents().add(view);
 
         return List.of(view);

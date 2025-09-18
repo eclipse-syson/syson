@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view;
+package org.eclipse.syson.common.view;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
 import org.springframework.stereotype.Service;
 
 /**

@@ -43,6 +43,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-validation", 99.0),
   new ModuleCoverage("syson-diagram-common-view", 84.0),
   new ModuleCoverage("syson-standard-diagrams-view", 97.0),
+  new ModuleCoverage("syson-table-requirements-view", 0.0),
   new ModuleCoverage("syson-tree-explorer-view", 79.0),
   new ModuleCoverage("syson-application-configuration", 67.0),
   new ModuleCoverage("syson-application", 37.0)

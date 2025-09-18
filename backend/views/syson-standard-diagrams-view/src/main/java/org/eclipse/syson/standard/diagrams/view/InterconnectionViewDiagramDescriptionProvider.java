@@ -17,7 +17,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
-import org.eclipse.syson.diagram.common.view.IViewDescriptionProvider;
+import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -35,7 +35,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IViewDescr
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
     @Override
-    public String getViewDiagramId() {
+    public String getViewId() {
         return "InterconnectionViewDiagram";
     }
 
