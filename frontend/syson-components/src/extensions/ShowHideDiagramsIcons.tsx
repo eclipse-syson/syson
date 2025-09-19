@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,16 +54,31 @@ export const ShowHideDiagramsIcons = ({ editingContextId, diagramId }: DiagramPa
     message: null,
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    updateDiagramIconsVisibility(event.target.checked);
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('showIcons') && urlParams.get('showIcons') === 'false') {
+        updateDiagramIconsVisibility(false);
+      }
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const updateDiagramIconsVisibility = (show: boolean) => {
     const input: GQLShowDiagramsIconsMutationInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: diagramId,
-      show: event.target.checked,
+      show,
     };
     showDiagramsIcons({ variables: { input } });
     setState((prevState) => {
-      const checked: boolean = event.target.checked;
+      const checked: boolean = show;
       return { ...prevState, checked, tooltip: checked ? showTooltip : hideTooltip };
     });
   };
