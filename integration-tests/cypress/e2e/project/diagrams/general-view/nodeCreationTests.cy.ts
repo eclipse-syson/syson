@@ -18,7 +18,8 @@ import { Explorer } from '../../../../workbench/Explorer';
 
 describe('Node Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
-  const diagramLabel = 'General View';
+  const viewUsageLabel = 'view1 [GeneralView]';
+  const diagramLabel = 'view1';
 
   context('Given a SysMLv2 project with a General View diagram', () => {
     const diagram = new Diagram();
@@ -32,17 +33,9 @@ describe('Node Creation Tests', () => {
         explorer.expand(sysmlv2.getProjectLabel());
         explorer.getExplorerView().contains(sysmlv2.getRootElementLabel());
         explorer.expand(sysmlv2.getRootElementLabel());
-        explorer.expand(diagramLabel);
-        explorer
-          .getTreeItemByLabel(diagramLabel)
-          .should('have.length', 2)
-          .then(($elements) => {
-            // $elements is a collection of all tree items with the label 'diagramLabel'
-            // we want the second one, corresponding to the diagram
-            const diag = $elements[1];
-            diag?.click();
-          });
-        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - General View').should('exist');
+        explorer.expand(viewUsageLabel);
+        explorer.getTreeItemByLabel(diagramLabel).should('have.length', 1).click();
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - view1').should('exist');
         // Wait for the diagram to display
         cy.wait(400);
       })

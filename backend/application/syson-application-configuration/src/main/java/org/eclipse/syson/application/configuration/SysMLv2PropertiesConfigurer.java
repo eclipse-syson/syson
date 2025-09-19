@@ -126,7 +126,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
     @Override
     public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
         // Build the actual FormDescription that will be used in Detail view.
-        FormDescription viewFormDescription = this.createDetailsView();
+        FormDescription viewFormDescription = this.createDetailsViewForElement();
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(SysMLv2PropertiesConfigurer.class.getCanonicalName().getBytes()));
@@ -150,7 +150,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         }
     }
 
-    private FormDescription createDetailsView() {
+    private FormDescription createDetailsViewForElement() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
         FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName("SysON Details View");
@@ -186,6 +186,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         return form;
     }
+
 
     /**
      * Creates a group to display the value of a Feature or FeatureValue.

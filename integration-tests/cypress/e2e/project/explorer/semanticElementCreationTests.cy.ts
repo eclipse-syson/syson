@@ -57,8 +57,8 @@ describe('Semantic Element Creation Tests', () => {
             .siblings()
             .contains(sysmlv2.getProjectLabel())
             .should('exist');
-          // Check that the created part is a sibling of Package 1
-          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
+          // Check that the created part is a sibling of Package1
+          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package1').should('exist');
         }
       );
 
@@ -78,8 +78,8 @@ describe('Semantic Element Creation Tests', () => {
             .siblings()
             .contains(sysmlv2.getRootNamespaceLabel())
             .should('exist');
-          // Check that the created part is a sibling of Package 1
-          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
+          // Check that the created part is a sibling of Package1
+          explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package1').should('exist');
         }
       );
     });

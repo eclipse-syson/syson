@@ -1014,6 +1014,19 @@ public class UtilService {
                 .isEmpty();
     }
 
+    /**
+     * Count the number of existing elements having the same type than the given Element inside the owning Namespace of
+     * the given Element.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the number of existing elements having the same type than the given Element inside the owning Namespace
+     *         of the given Element.
+     */
+    public long existingElementsCount(Element element) {
+        return this.elementUtil.existingElementsCount(element);
+    }
+
     private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {
         FeatureChainComputer cmp = new FeatureChainComputer();
         List<Feature> sourceFeaturePath = cmp.computeShortestPath(connectorContainer, end).orElse(List.of());

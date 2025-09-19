@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.services.StateTransitionViewCreateService;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,7 +35,7 @@ public class StateTransitionViewJavaServiceProvider implements IJavaServiceProvi
                 .filter(desc -> StateTransitionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
                 .findFirst();
         if (optGVDescription.isPresent()) {
-            return List.of(StateTransitionViewCreateService.class);
+            return List.of(StateTransitionViewCreateService.class, UtilService.class);
         }
         return List.of();
     }

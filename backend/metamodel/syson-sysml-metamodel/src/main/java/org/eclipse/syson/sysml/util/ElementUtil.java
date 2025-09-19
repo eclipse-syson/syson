@@ -231,6 +231,25 @@ public class ElementUtil {
     }
 
     /**
+     * Count the number of existing elements having the same type than the given Element inside the owning Namespace of
+     * the given Element.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the number of existing elements having the same type than the given Element inside the owning Namespace
+     *         of the given Element.
+     */
+    public long existingElementsCount(Element element) {
+        Namespace owningNamespace = element.getOwningNamespace();
+        if (owningNamespace != null) {
+            return owningNamespace.getOwnedMember().stream()
+                    .filter(member -> element.eClass().equals(member.eClass()))
+                    .count();
+        }
+        return 0;
+    }
+
+    /**
      * Iterate over the children of the given root {@link EObject} to find an {@link Element} with the given qualified
      * name and type.
      *

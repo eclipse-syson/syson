@@ -140,7 +140,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         var emfEditingContext = (IEMFEditingContext) editingContext;
         var rootObject = this.getRooObject(emfEditingContext);
         assertNotNull(rootObject);
-        assertEquals("Package 1", rootObject.getDeclaredName());
+        assertEquals("Package1", rootObject.getDeclaredName());
     }
 
     @DisplayName("GIVEN the SysMLv2-Library project template, WHEN the mutation is performed, THEN the project is created")

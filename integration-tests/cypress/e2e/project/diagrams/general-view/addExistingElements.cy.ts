@@ -18,7 +18,8 @@ import { Explorer } from '../../../../workbench/Explorer';
 
 describe('Diagram Panel in General View Tests', () => {
   const batmobile = new Batmobile();
-  const viewUsage = 'view3';
+  const viewUsage = 'view3 [GeneralView]';
+  const diagramLabel = 'view3';
 
   context('Given a Batmobile Project with a General View diagram', () => {
     const explorer = new Explorer();
@@ -37,16 +38,8 @@ describe('Diagram Panel in General View Tests', () => {
 
         explorer.select(viewUsage);
         explorer.expand(viewUsage);
-        explorer
-          .getTreeItemByLabel(viewUsage)
-          .should('have.length', 2)
-          .then(($elements) => {
-            // $elements is a collection of all tree items with the label 'diagramLabel'
-            // we want the second one, corresponding to the diagram
-            const diag = $elements[1];
-            diag?.click();
-          });
-        diagram.getDiagram(viewUsage).should('exist').findByTestId(`FreeForm - ${viewUsage}`).should('exist');
+        explorer.getTreeItemByLabel(diagramLabel).click();
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId(`FreeForm - ${diagramLabel}`).should('exist');
       })
     );
 
@@ -58,9 +51,9 @@ describe('Diagram Panel in General View Tests', () => {
       () => {
         beforeEach(() => {
           diagram
-            .getDiagram(viewUsage)
+            .getDiagram(diagramLabel)
             .should('exist')
-            .findByTestId(`FreeForm - ${viewUsage}`)
+            .findByTestId(`FreeForm - ${diagramLabel}`)
             .should('exist')
             .rightclick()
             .rightclick();
@@ -73,9 +66,9 @@ describe('Diagram Panel in General View Tests', () => {
             .click();
           diagram.getPalette().should('not.exist', { timeout: 10000 });
           diagram
-            .getDiagram(viewUsage)
+            .getDiagram(diagramLabel)
             .should('exist')
-            .findByTestId(`FreeForm - ${viewUsage}`)
+            .findByTestId(`FreeForm - ${diagramLabel}`)
             .should('not.exist', { timeout: 10000 });
           diagram.arrangeAll();
           cy.getByTestId('arrange-all-circular-loading')
@@ -86,8 +79,8 @@ describe('Diagram Panel in General View Tests', () => {
         });
 
         it('The add existing elements (recursive) tool add elements recursively', () => {
-          diagram.getNodes(viewUsage, '«item def» Hero').should('exist');
-          diagram.getNodes(viewUsage, '«item» power : Power').should('exist');
+          diagram.getNodes(diagramLabel, '«item def» Hero').should('exist');
+          diagram.getNodes(diagramLabel, '«item» power : Power').should('exist');
         });
       }
     );
