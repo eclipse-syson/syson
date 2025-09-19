@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,6 +58,17 @@ export const SysONDiagramPanelMenu = ({ editingContextId, diagramId }: DiagramPa
     }
     prevOpen.current = open;
   }, [open]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('showIcons') && urlParams.get('showIcons') === 'false') {
+        setOpen(true);
+      }
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <span>
