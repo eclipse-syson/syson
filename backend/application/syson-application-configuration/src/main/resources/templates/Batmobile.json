@@ -6276,7 +6276,7 @@
                               "id": "b38b489f-9052-47f7-a417-0c1e137d0dca",
                               "eClass": "sysml:ViewUsage",
                               "data": {
-                                "declaredName": "General View",
+                                "declaredName": "view1",
                                 "elementId": "b63738a8-448c-4de2-a71d-00c512807fdf",
                                 "ownedRelationship": [
                                   {

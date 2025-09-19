@@ -72,7 +72,7 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
         var package1 = SysmlFactory.eINSTANCE.createPackage();
         rootNamespace.getOwnedRelationship().add(rootMembership);
         rootMembership.getOwnedRelatedElement().add(package1);
-        package1.setDeclaredName("Package 1");
+        package1.setDeclaredName("Package1");
         package1.setElementId(ElementUtil.generateUUID(package1).toString());
 
         resource.getContents().add(rootNamespace);

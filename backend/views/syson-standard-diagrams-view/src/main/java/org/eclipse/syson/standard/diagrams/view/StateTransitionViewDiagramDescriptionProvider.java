@@ -51,7 +51,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IViewDescr
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace()))
                         .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                         .name(DESCRIPTION_NAME)
-                        .titleExpression(DESCRIPTION_NAME)
+                        .titleExpression("aql:'view'+ Sequence{self.existingElementsCount(), 1}->sum()")
                         .build();
             }
         };

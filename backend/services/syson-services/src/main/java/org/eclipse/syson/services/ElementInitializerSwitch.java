@@ -119,7 +119,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseDefinition(Definition object) {
-        var existingElements = this.existingElementsCount(object);
+        var existingElements = this.elementUtil.existingElementsCount(object);
         object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
@@ -138,7 +138,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
-        var existingElements = this.existingElementsCount(object);
+        var existingElements = this.elementUtil.existingElementsCount(object);
         object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
@@ -155,7 +155,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element casePackage(Package object) {
-        var existingElements = this.existingElementsCount(object);
+        var existingElements = this.elementUtil.existingElementsCount(object);
         object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
@@ -193,7 +193,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element casePortDefinition(PortDefinition object) {
-        var existingElements = this.existingElementsCount(object);
+        var existingElements = this.elementUtil.existingElementsCount(object);
         object.setDeclaredName(object.eClass().getName() + existingElements);
         OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         object.getOwnedRelationship().add(owningMembership);
@@ -272,7 +272,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
             defaultName = defaultName.substring(0, defaultName.length() - 5);
         }
 
-        var existingElements = this.existingElementsCount(object);
+        var existingElements = this.elementUtil.existingElementsCount(object);
 
         object.setDeclaredName(defaultName + existingElements);
         object.setIsComposite(true);
@@ -288,16 +288,6 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         featureTyping.setType(generalViewViewDef);
         featureTyping.setTypedFeature(object);
         return object;
-    }
-
-    private long existingElementsCount(Element element) {
-        Namespace owningNamespace = element.getOwningNamespace();
-        if (owningNamespace != null) {
-            return owningNamespace.getOwnedMember().stream()
-                    .filter(member -> element.eClass().equals(member.eClass()))
-                    .count();
-        }
-        return 0;
     }
 
     private ParameterMembership createParameterMembershipWithReferenceUsage(String refName, FeatureDirectionKind direction) {

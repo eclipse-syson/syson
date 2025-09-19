@@ -20,7 +20,7 @@ import { Workbench } from '../../../../workbench/Workbench';
 // D&D does not work anymore with Cypress APIs
 describe.skip('Drop From Explorer Tests', () => {
   const sysmlv2 = new SysMLv2();
-  const diagramLabel = 'General View';
+  const diagramLabel = 'view1';
 
   context('Given a SysMLv2 project with a General View diagram', () => {
     const diagram = new Diagram();

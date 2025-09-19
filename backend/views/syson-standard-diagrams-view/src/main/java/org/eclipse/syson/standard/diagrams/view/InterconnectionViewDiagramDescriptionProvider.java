@@ -50,7 +50,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IViewDescr
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                         .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                         .name(DESCRIPTION_NAME)
-                        .titleExpression(DESCRIPTION_NAME)
+                        .titleExpression("aql:'view'+ Sequence{self.existingElementsCount(), 1}->sum()")
                         .build();
             }
         };

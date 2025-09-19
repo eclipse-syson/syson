@@ -292,7 +292,7 @@ package Batmobile {
         part :>> wheels = wheels.xWheel;
     }
 
-    view 'General View' : StandardViewDefinitions::GeneralView {
+    view 'view1' : StandardViewDefinitions::GeneralView {
 		expose Vehicle;
 		expose Vehicle::driver;
 		expose Vehicle::engine;
