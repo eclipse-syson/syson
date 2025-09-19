@@ -85,6 +85,8 @@ Consumers may override this by providing an implementation of `org.eclipse.syson
 - https://github.com/eclipse-syson/syson/issues/1530[#1530] [details] Move `RequirementUsage`'s _ReqId_ property from the _Advanced_ tab to the _Core_ tab of the _Details View_.
 - https://github.com/eclipse-syson/syson/issues/1534[#1534] [explorer] Since it is now possible to switch from a _Standard Diagram View_ to another in SysON (for example from _General View_ to _Interconnection View_), the `ViewDefinition` name in displayed in the label of the `ViewUsage` in the _Explorer View_.
 With this enhancement, users can now easily identify which `ViewDefinition` is used by a `ViewUsage`.
+- https://github.com/eclipse-syson/syson/issues/1535[#1535] [explorer] Since it is now possible to switch from a _Standard Diagram View_ to another in SysON (for example from _General View_ to _Interconnection View_), the `ViewUsages` default name does not contain the name of the `ViewDefinition` anymore.
+With this enhancement, users avoid confusion when switching from one _ViewDefinition_ to another one in a `ViewUsage`.
 
 === New features
 
