@@ -87,13 +87,24 @@ public class SysONExplorerTreeDescriptionProvider {
                 .newTreeItemLabelDescription()
                 .name("Default style")
                 .preconditionExpression("aql:true")
-                .children(this.getDefaultLabelFragmentDescription())
+                .children(this.getDefaultLabelFragmentDescription(),
+                        this.getTypeFragmentDescription())
                 .build();
     }
 
     private TreeItemLabelFragmentDescription getDefaultLabelFragmentDescription() {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
                 .labelExpression("aql:self.getLabel()")
+                .build();
+    }
+
+    private TreeItemLabelFragmentDescription getTypeFragmentDescription() {
+        return new TreeBuilders().newTreeItemLabelFragmentDescription()
+                .labelExpression("aql:self.getType()")
+                .style(new ViewBuilders().newTextStyleDescription()
+                        .name("GOLD_TEXT_STYLE_NAME")
+                        .foregroundColorExpression("aql:'#ab8b01'")
+                        .build())
                 .build();
     }
 

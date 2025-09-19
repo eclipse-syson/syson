@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate;
@@ -139,6 +140,19 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
         return this.getDelegate(editingContext)
                 .map(delegate -> delegate.getElements(editingContext, activeFilterIds))
                 .orElseGet(() -> this.defaultExplorerService.getElements(editingContext, activeFilterIds));
+    }
+
+    public String getType(Object self) {
+        StringBuilder type = new StringBuilder();
+        if (self instanceof ViewUsage viewUsage) {
+            var viewDefinition = viewUsage.getViewDefinition();
+            if (viewDefinition != null) {
+                type.append(" [");
+                type.append(viewDefinition.getDeclaredName());
+                type.append("]");
+            }
+        }
+        return type.toString();
     }
 
     private Optional<ISysONExplorerServiceDelegate> getDelegate(Object object) {

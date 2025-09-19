@@ -140,7 +140,7 @@ public class ViewNodeService {
             elementsToExpose.addAll(filteredExposedElements);
             // if it is not a General View, we don't want to display nested nodes as tree (i.e. sibling nodes +
             // composition edges), if it an ActionFlow view, we only want to display Action Nodes as root nodes, ...
-            var viewDefKind = this.utilService.getViewDefinitionKind(viewUsage, ancestors, editingContext, diagramContext);
+            var viewDefKind = this.utilService.getViewDefinitionKind(viewUsage, ancestors, editingContext);
             for (Element filteredExposedElement : filteredExposedElements) {
                 boolean canBeDisplayed = new ViewFilterSwitch(viewDefKind, exposedElements, parent).doSwitch(filteredExposedElement);
                 if (!canBeDisplayed) {

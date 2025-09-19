@@ -328,7 +328,7 @@ public class ViewToolService extends ToolService {
      * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
      */
     public boolean toolShouldBeAvailable(Element element, IEditingContext editingContext, DiagramContext diagramContext, EClass newElementType) {
-        ViewDefinitionKind viewDefinitionKind = this.utilService.getViewDefinitionKind(element, List.of(), editingContext, diagramContext);
+        ViewDefinitionKind viewDefinitionKind = this.utilService.getViewDefinitionKind(element, List.of(), editingContext);
         var elt = this.utilService.getViewUsageOwner(element);
 
         return switch (viewDefinitionKind) {

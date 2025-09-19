@@ -104,16 +104,18 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SYSMLV2_DOCUMENT_NAME);
                     resourceSet.getResources().add(resource);
 
+                    // General View is the description name of SDVDiagramDescriptionProvider
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getOrCreateViewUsage(resource);
-                        if (viewUsage.isPresent()) {
+                        var optViewUsage = this.getOrCreateViewUsage(resource);
+                        if (optViewUsage.isPresent()) {
                             var variableManager = new VariableManager();
+                            var viewUsage = optViewUsage.get();
                             variableManager.put(VariableManager.SELF, viewUsage);
-                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage, generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -139,16 +141,18 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(UUID.randomUUID(), SYSMLV2_LIBRARY_DOCUMENT_NAME);
                     resourceSet.getResources().add(resource);
 
+                    // General View is the description name of SDVDiagramDescriptionProvider
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getOrCreateViewUsage(resource);
-                        if (viewUsage.isPresent()) {
+                        var optViewUsage = this.getOrCreateViewUsage(resource);
+                        if (optViewUsage.isPresent()) {
                             var variableManager = new VariableManager();
+                            var viewUsage = optViewUsage.get();
                             variableManager.put(VariableManager.SELF, viewUsage);
-                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage, generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -177,16 +181,18 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     // Load after adding the resource to the resourceSet, to be sure that references will be resolved.
                     this.defaultSysMLv2ResourceProvider.loadBatmobileResource(resource);
 
+                    // General View is the description name of SDVDiagramDescriptionProvider
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        var viewUsage = this.getOrCreateViewUsage(resource);
-                        if (viewUsage.isPresent()) {
+                        var optViewUsage = this.getOrCreateViewUsage(resource);
+                        if (optViewUsage.isPresent()) {
                             var variableManager = new VariableManager();
+                            var viewUsage = optViewUsage.get();
                             variableManager.put(VariableManager.SELF, viewUsage);
-                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
-                            Diagram diagram = this.diagramCreationService.create(viewUsage.get(), generalViewDiagram, editingContext);
+                            Diagram diagram = this.diagramCreationService.create(viewUsage, generalViewDiagram, editingContext);
                             List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
@@ -249,7 +255,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         return element.getOwnedElement().stream()
                 .filter(ViewUsage.class::isInstance)
                 .map(ViewUsage.class::cast)
-                .filter(vu -> Objects.equals(vu.getDeclaredName(), "General View"))
+                .filter(vu -> Objects.equals(vu.getDeclaredName(), "view1"))
                 .findFirst();
     }
 
@@ -258,7 +264,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
         element.getOwnedRelationship().add(viewUsageMembership);
         viewUsageMembership.getOwnedRelatedElement().add(viewUsage);
-        viewUsage.setDeclaredName("General View");
+        viewUsage.setDeclaredName("view1");
         viewUsage.setElementId(ElementUtil.generateUUID(viewUsage).toString());
 
         var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();

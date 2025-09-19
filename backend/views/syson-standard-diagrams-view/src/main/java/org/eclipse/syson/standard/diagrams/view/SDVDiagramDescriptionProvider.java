@@ -297,7 +297,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .domainType(domainType)
                 .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
-                .titleExpression(DESCRIPTION_NAME);
+                .titleExpression("view");
 
         var diagramDescription = diagramDescriptionBuilder.build();
 
