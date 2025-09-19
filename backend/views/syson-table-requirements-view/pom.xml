@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2023, 2025 Obeo.
+ Copyright (c) 2025 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -11,21 +11,21 @@
  Contributors:
      Obeo - initial API and implementation
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>org.eclipse.syson</groupId>
-	<artifactId>syson-standard-diagrams-view</artifactId>
-	<version>2025.8.5</version>
-	<name>syson-standard-diagrams-view</name>
-	<description>SysON Sirius Web diagram description of the SysMLv2 Standard Diagrams Views</description>
+  	<groupId>org.eclipse.syson</groupId>
+  	<artifactId>syson-table-requirements-view</artifactId>
+  	<version>2025.8.5</version>
+  	<name>syson-table-requirements-view</name>
+  	<description>SysON Table Requirements View</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -62,47 +62,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-emf</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-emf</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>${sirius.web.version}</version>
+			<artifactId>org.eclipse.sirius.emfjson</artifactId>
+			<version>2.5.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.8.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-			<version>2025.8.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
 			<version>2025.8.5</version>
 		</dependency>
 		<dependency>
@@ -115,12 +85,7 @@
 			<artifactId>syson-common-view</artifactId>
 			<version>2025.8.5</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2025.8.5</version>
-		</dependency>
-		<!-- Tests -->
+		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -129,12 +94,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.syson</groupId>
-			<artifactId>syson-diagram-tests</artifactId>
-			<version>2025.8.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -199,4 +158,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
