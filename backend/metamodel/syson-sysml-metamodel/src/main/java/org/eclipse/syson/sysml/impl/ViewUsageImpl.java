@@ -152,13 +152,14 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ViewDefinition basicGetViewDefinition() {
-        // TODO: implement this method to return the 'View Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getType().stream()
+                .filter(ViewDefinition.class::isInstance)
+                .map(ViewDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
