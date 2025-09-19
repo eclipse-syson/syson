@@ -976,13 +976,10 @@ public class UtilService {
      * @param editingContext
      *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
      *            manager.
-     * @param diagramContext
-     *            the {@link IDiagramContext} of the element. It corresponds to a variable accessible from the variable
-     *            manager.
      * @return true if the given {@link Element} displayed in the given {@link IDiagramContext} is of the given
      *         {@link ViewDefinition}, false otherwise.
      */
-    public ViewDefinitionKind getViewDefinitionKind(Element element, List<Object> ancestors, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public ViewDefinitionKind getViewDefinitionKind(Element element, List<Object> ancestors, IEditingContext editingContext) {
         ViewDefinitionKind kind = ViewDefinitionKind.GENERAL_VIEW;
         if (element instanceof ViewUsage viewUsage) {
             var types = viewUsage.getType();
@@ -995,7 +992,7 @@ public class UtilService {
             var viewUsageContainingElement = ancestors.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast).findFirst();
             if (viewUsageContainingElement.isPresent()) {
                 ViewUsage viewUsage = viewUsageContainingElement.get();
-                kind = this.getViewDefinitionKind(viewUsage, List.of(), editingContext, diagramContext);
+                kind = this.getViewDefinitionKind(viewUsage, List.of(), editingContext);
             }
         }
         return kind;
