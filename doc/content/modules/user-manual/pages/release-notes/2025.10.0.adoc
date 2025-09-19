@@ -100,6 +100,10 @@ metadata def Function :> SemanticMetadata {
 #Function action def A0; // A0 subclassify Functions
 ```
 - Move `RequirementUsage`'s _ReqId_ property from the _Advanced_ tab to the _Core_ tab of the _Details View_.
+- Since it is now possible to switch from a _Standard Diagram View_ to another in SysON (for example from _General View_ to _Interconnection View_), the `ViewDefinition` name in displayed in the label of the `ViewUsage` in the _Explorer View_.
+With this enhancement, users can now easily identify which `ViewDefinition` is used by a `ViewUsage`.
+
+image::view-usage-label-with-type-explorer-view.png[ViewUsage in Explorer View, width=65%,height=65%]
 
 == Dependency update
 

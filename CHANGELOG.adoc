@@ -83,6 +83,8 @@ Consumers may override this by providing an implementation of `org.eclipse.syson
 - https://github.com/eclipse-syson/syson/issues/1432[#1432] [metamodel] Add implicit `Subclassification` or `Subsetting` when using semantic `MetadataUsage`.
 - https://github.com/eclipse-syson/syson/issues/1355[#1355] [tests] Add coding rules tests on all modules.
 - https://github.com/eclipse-syson/syson/issues/1530[#1530] [details] Move `RequirementUsage`'s _ReqId_ property from the _Advanced_ tab to the _Core_ tab of the _Details View_.
+- https://github.com/eclipse-syson/syson/issues/1534[#1534] [explorer] Since it is now possible to switch from a _Standard Diagram View_ to another in SysON (for example from _General View_ to _Interconnection View_), the `ViewDefinition` name in displayed in the label of the `ViewUsage` in the _Explorer View_.
+With this enhancement, users can now easily identify which `ViewDefinition` is used by a `ViewUsage`.
 
 === New features
 
