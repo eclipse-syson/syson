@@ -23,6 +23,10 @@
 	<description>SysON</description>
 	<packaging>pom</packaging>
 
+<properties>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/releng/syson-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+	</properties>
+
 	<distributionManagement>
 		<repository>
 			<id>github</id>
@@ -51,6 +55,20 @@
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>sonar</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.sonarsource.scanner.maven</groupId>
+							<artifactId>sonar-maven-plugin</artifactId>
+							<version>5.1.0.4751</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
 		<profile>
 		  <id>verify-iplog</id>
 		  <build>
