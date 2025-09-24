@@ -19,9 +19,9 @@ export interface SysMLViewFrameNodeData extends NodeData {}
 export interface GQLSysMLViewFrameNodeStyle extends GQLNodeStyle {
   background: string;
   borderColor: string;
+  borderRadius: number;
   borderStyle: string;
-  borderSize: string;
-  borderRadius: string;
+  borderSize: number;
 }
 
 export interface NodeDataMap {

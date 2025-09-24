@@ -13,25 +13,36 @@
 
 import {
   LabelAppearancePart,
+  NodeData,
   PaletteAppearanceSectionContributionComponentProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import { Node, useNodesData } from '@xyflow/react';
 
+import { GQLSysMLNoteNodeStyle } from './SysMLNoteNode.types';
 import { SysMLNoteNodePart } from './SysMLNoteNodePart';
 
 export const SysMLNoteNodePaletteAppearanceSection = ({
-  element,
   elementId,
 }: PaletteAppearanceSectionContributionComponentProps) => {
+  const nodeData = useNodesData<Node<NodeData>>(elementId);
+
+  if (!nodeData) {
+    return null;
+  }
   return (
     <>
-      <SysMLNoteNodePart element={element} />
-      {element.data.insideLabel ? (
+      <SysMLNoteNodePart
+        nodeId={elementId}
+        style={nodeData.data.nodeAppearanceData.gqlStyle as GQLSysMLNoteNodeStyle}
+        customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
+      />
+      {nodeData.data.insideLabel ? (
         <LabelAppearancePart
           diagramElementId={elementId}
-          labelId={element.data.insideLabel.id}
+          labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
-          style={element.data.insideLabel.appearanceData.gqlStyle}
-          customizedStyleProperties={element.data.insideLabel.appearanceData.customizedStyleProperties}
+          style={nodeData.data.insideLabel.appearanceData.gqlStyle}
+          customizedStyleProperties={nodeData.data.insideLabel.appearanceData.customizedStyleProperties}
         />
       ) : null}
     </>

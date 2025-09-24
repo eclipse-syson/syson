@@ -68,8 +68,11 @@ describe('Semantic Element Creation Tests', () => {
         () => {
           const explorer = new Explorer();
           explorer.getFilter('Hide Root Namespaces').should('exist').click();
+          cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').should('not.be.checked');
+          cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').should('exist').type('{esc}');
           explorer.select(sysmlv2.getProjectLabel());
           explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
+          explorer.expand('Namespace');
           // Check that the created part is a child of the root Namespace
           explorer
             .getTreeItemByLabel('part1')

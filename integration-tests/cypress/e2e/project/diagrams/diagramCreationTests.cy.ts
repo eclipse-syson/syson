@@ -189,8 +189,9 @@ describe('Diagram Creation Tests', () => {
       it('Then we can create a new representation in it', { retries: 3 }, () => {
         const explorer = new Explorer();
         cy.getByTestId('tree-filter-menu-icon').should('exist').click();
-        cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').click();
-        explorer.getTreeItemByLabel('Namespace').should('exist');
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').should('exist').click({ force: true });
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').should('not.be.checked');
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').should('exist').type('{esc}');
         explorer.createRepresentation('Namespace', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });

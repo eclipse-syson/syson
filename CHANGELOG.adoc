@@ -56,10 +56,11 @@ The `org.eclipse.syson.services.grammars` package in `syson-direct-edit-grammar`
 - https://github.com/eclipse-syson/syson/issues/1532[#1532] [tables] Add new Requirements table View.
 As a consequence, the `syson-table-requirements-view` and `syson-common-view` modules has been created.
 `IViewDescriptionProvider.java` and `SysONViewDescriptionProvider.java` have been moved from `syson-diagram-common-view` to `syson-common-view`.
+`GetIntermediateContainerCreationSwitch.java` has been moved from `syson-application-configuration` to `syson-services`.
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.5]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.8]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.5[Spring Boot 3.5.5]
 - [releng] Update to vite 7.1.1 and @vitejs/plugin-react 5.0.0
 - [releng] Update to vitest 3.2.4 and @vitest/coverage-v8 3.2.4

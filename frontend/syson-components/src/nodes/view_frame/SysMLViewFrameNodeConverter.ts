@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
   GQLDiagramDescription,
@@ -24,6 +23,7 @@ import {
   GQLViewModifier,
   IConvertEngine,
   INodeConverter,
+  convertBorderNodePosition,
   convertHandles,
   convertInsideLabel,
   convertLineStyle,
@@ -92,12 +92,13 @@ const toViewFrameNode = (
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     connectionHandles,
     labelEditable,
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
+    isDraggedNode: false,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
