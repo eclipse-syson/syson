@@ -25,10 +25,7 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
-import {
-  GQLSysMLImportedPackageNodeStyle,
-  SysMLImportedPackageNodePartProps,
-} from './SysMLImportedPackageNodePart.types';
+import { SysMLImportedPackageNodePartProps } from './SysMLImportedPackageNodePart.types';
 import { useUpdateSysMLImportedPackageNodeAppearance } from './useUpdateSysMLImportedPackageNodeAppearance';
 import { GQLSysMLImportedPackageNodeAppearanceInput } from './useUpdateSysMLImportedPackageNodeAppearance.types';
 
@@ -39,19 +36,20 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const SysMLImportedPackageNodePart = ({ element }: SysMLImportedPackageNodePartProps) => {
-  const style = element.data.nodeAppearanceData.gqlStyle as GQLSysMLImportedPackageNodeStyle;
-  const customizedStyleProperties = element.data.nodeAppearanceData.customizedStyleProperties;
-
+export const SysMLImportedPackageNodePart = ({
+  nodeId,
+  style,
+  customizedStyleProperties,
+}: SysMLImportedPackageNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateSysMLImportedPackageNodeAppearance } = useUpdateSysMLImportedPackageNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, element.id, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLSysMLImportedPackageNodeAppearanceInput>) =>
-    updateSysMLImportedPackageNodeAppearance(editingContextId, diagramId, element.id, newValue);
+    updateSysMLImportedPackageNodeAppearance(editingContextId, diagramId, nodeId, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 
@@ -63,14 +61,14 @@ export const SysMLImportedPackageNodePart = ({ element }: SysMLImportedPackageNo
         <AppearanceColorPicker
           label={'Background'}
           initialValue={style.background}
-          isDisabled={isDisabled('BACKGROUND')}
+          disabled={isDisabled('BACKGROUND')}
           onEdit={(newValue) => handleEditProperty({ background: newValue })}
           onReset={() => handleResetProperty('BACKGROUND')}></AppearanceColorPicker>
 
         <AppearanceColorPicker
           label={'Border Color'}
           initialValue={style.borderColor}
-          isDisabled={isDisabled('BORDER_COLOR')}
+          disabled={isDisabled('BORDER_COLOR')}
           onEdit={(newValue) => handleEditProperty({ borderColor: newValue })}
           onReset={() => handleResetProperty('BORDER_COLOR')}></AppearanceColorPicker>
 
@@ -78,7 +76,7 @@ export const SysMLImportedPackageNodePart = ({ element }: SysMLImportedPackageNo
           icon={<LineWeightIcon />}
           label={'Border Size'}
           initialValue={style.borderSize}
-          isDisabled={isDisabled('BORDER_SIZE')}
+          disabled={isDisabled('BORDER_SIZE')}
           onEdit={(newValue) => handleEditProperty({ borderSize: newValue })}
           onReset={() => handleResetProperty('BORDER_SIZE')}></AppearanceNumberTextfield>
 
@@ -87,7 +85,7 @@ export const SysMLImportedPackageNodePart = ({ element }: SysMLImportedPackageNo
           label={'Border Line Style'}
           options={LINE_STYLE_OPTIONS}
           initialValue={style.borderStyle}
-          isDisabled={isDisabled('BORDER_STYLE')}
+          disabled={isDisabled('BORDER_STYLE')}
           onEdit={(newValue) => handleEditProperty({ borderStyle: newValue })}
           onReset={() => handleResetProperty('BORDER_STYLE')}></AppearanceSelect>
       </Box>

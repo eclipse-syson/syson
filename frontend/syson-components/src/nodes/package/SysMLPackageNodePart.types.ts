@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { InternalNode, Node } from '@xyflow/react';
+import { GQLNodeStyle } from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface GQLSysMLPackageNodeStyle extends GQLNodeStyle {
   background: string;
@@ -21,5 +20,7 @@ export interface GQLSysMLPackageNodeStyle extends GQLNodeStyle {
 }
 
 export interface SysMLPackageNodePartProps {
-  element: InternalNode<Node<NodeData>>;
+  nodeId: string;
+  style: GQLSysMLPackageNodeStyle;
+  customizedStyleProperties: string[];
 }
