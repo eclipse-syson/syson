@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-releng-parent</artifactId>
-	<version>2025.8.8</version>
+	<version>2025.8.9</version>
 
 	<name>syson-releng-parent</name>
 	<description>SysON Releng Parent</description>
