@@ -83,6 +83,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.NodeFinder;
 
 /**
  * Creation-related Java shared services used by several diagrams.

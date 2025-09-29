@@ -59,6 +59,9 @@ As a consequence, the `syson-table-requirements-view` and `syson-common-view` mo
 `GetIntermediateContainerCreationSwitch.java` has been moved from `syson-application-configuration` to `syson-services`.
 - https://github.com/eclipse-syson/syson/issues/1245[#1245] [syson] Standardize read-only computation.
 The class `SysMLReadOnlyService` and the interface `ISysMLReadOnlyService` have been removed, use `IReadOnlyObjectPredicate` instead.
+- https://github.com/eclipse-syson/syson/issues/1546[#1546] [diagrams] Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
+As a consequence, the `ViewToolService#expose` method has been moved into `ToolService.java` and `NodeFinder.java` has been moved from `syson-diagram-common-view` to `syson-services`.
+
 
 === Dependency update
 
@@ -79,6 +82,7 @@ This issue was not visible in SysON but could appear in downstream applications 
 Now it has been fixed in Sirius Web 2025.8.4, `SysONUpdateLibraryExecutor` has been deleted and `UpdateLibraryExecutor` is used again.
 - https://github.com/eclipse-syson/syson/issues/1522[#1522] [diagrams] To avoid edge blinking when refreshing the diagram, we need to set the properties `measured.height` and `measured.width` with the value of the node layout data when converting a custom node accordingly to the xyflow https://reactflow.dev/learn/advanced-use/ssr-ssg-configuration#node-dimensions[documentation].
 - https://github.com/eclipse-syson/syson/issues/1545[#1545] [diagrams] Add _interconnection_ compartment to `PartDefinition` nodes in the standard diagrams.
+- https://github.com/eclipse-syson/syson/issues/1546[#1546] [diagrams] Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
 
 === Improvements
 

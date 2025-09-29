@@ -57,6 +57,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

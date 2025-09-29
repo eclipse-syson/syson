@@ -18,7 +18,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -43,14 +42,12 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -76,7 +73,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -90,13 +86,13 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -161,56 +157,6 @@ public class ViewToolService extends ToolService {
                     if (childElement instanceof Package || recursive) {
                         membershipExpose.setIsRecursive(true);
                     }
-                }
-            }
-        }
-        return element;
-    }
-
-    /**
-     * For the given element, search its ViewUsage (if this service has been called from the diagram background it will
-     * be the ViewUsage itself), and add the given element to the exposed elements of this ViewUsage.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param selectedNode
-     *            the selected node on which the service has been called (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     * @return the given {@link Element}.
-     */
-    public Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (this.isUnsynchronized(element)) {
-            final Element parentElement;
-            if (selectedNode == null) {
-                parentElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                        .filter(Element.class::isInstance)
-                        .map(Element.class::cast)
-                        .orElse(null);
-            } else {
-                parentElement = this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId())
-                        .filter(Element.class::isInstance)
-                        .map(Element.class::cast)
-                        .orElse(null);
-            }
-            this.handleUnsynchronizedElement(element, parentElement, editingContext, diagramContext, selectedNode, convertedNodes);
-        } else {
-            var viewUsage = this.getViewUsage(editingContext, diagramContext, selectedNode);
-            if (viewUsage != null && !this.isExposed(element, viewUsage)) {
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(element.getOwningMembership());
-                viewUsage.getOwnedRelationship().add(membershipExpose);
-                if (element instanceof Package) {
-                    membershipExpose.setIsRecursive(true);
                 }
             }
         }
@@ -798,139 +744,6 @@ public class ViewToolService extends ToolService {
      */
     public List<? extends Object> getActionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getActionUsage());
-    }
-
-    /**
-     * Handle unsynchronized nodes.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @param parentElement
-     *            the parent element of the given {@link Element}.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param selectedNode
-     *            the selected node on which the service has been called (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     */
-    protected void handleUnsynchronizedElement(Element element, Element parentElement, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (selectedNode == null) {
-            this.createView(element, editingContext, diagramContext, selectedNode, convertedNodes);
-        } else if (element instanceof Documentation && (parentElement instanceof Package || parentElement instanceof NamespaceImport || parentElement instanceof ViewUsage)) {
-            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-            this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
-        } else if (element instanceof Comment && !(element instanceof Documentation)) {
-            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-            this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
-        } else if (element instanceof TextualRepresentation) {
-            var parentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-            this.createView(element, editingContext, diagramContext, parentNode, convertedNodes);
-        } else {
-            if (selectedNode.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                for (Node compartmentNode : selectedNode.getChildNodes()) {
-                    var compartmentNodeDescription = convertedNodes.values().stream()
-                            .filter(nd -> Objects.equals(nd.getId(), compartmentNode.getDescriptionId()))
-                            .findFirst()
-                            .orElse(null);
-                    var candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentElement, List.of(compartmentNodeDescription), convertedNodes, editingContext,
-                            diagramContext);
-                    for (NodeDescription candidate : candidates) {
-                        if (candidate.getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
-                            this.createView(element, compartmentNode.getId(), candidate.getId(), editingContext, diagramContext, NodeContainmentKind.CHILD_NODE);
-                        }
-                    }
-                }
-            } else {
-                // The parent doesn't have compartments, we want to add elements directly inside it if possible.
-                // This is for example the case with Package elements.
-                this.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode, convertedNodes)
-                        .ifPresent(descriptionId -> {
-                            this.createView(element, editingContext, diagramContext, selectedNode, convertedNodes);
-                        });
-            }
-        }
-    }
-
-    /**
-     * Search and retrieve the ViewUsage corresponding to the parent Node/diagram of the given Node.
-     *
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param node
-     *            the selected node on which the element has been dropped (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
-     * @return an Optional ViewUsage if found, an empty Optional otherwise.
-     */
-    protected ViewUsage getViewUsage(IEditingContext editingContext, DiagramContext diagramContext, Node node) {
-        Optional<ViewUsage> optViewUsage = Optional.empty();
-        if (node == null) {
-            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                    .filter(ViewUsage.class::isInstance)
-                    .map(ViewUsage.class::cast);
-        } else {
-            optViewUsage = this.objectSearchService.getObject(editingContext, node.getTargetObjectId())
-                    .filter(ViewUsage.class::isInstance)
-                    .map(ViewUsage.class::cast);
-        }
-        if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.diagram().getNodes();
-            for (Node rootNode : rootNodes) {
-                if (Objects.equals(rootNode, node)) {
-                    optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                            .filter(ViewUsage.class::isInstance)
-                            .map(ViewUsage.class::cast);
-                    break;
-                }
-            }
-        }
-        if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.diagram().getNodes();
-            List<Node> allSubNodes = this.getAllSubNodes(rootNodes);
-            for (Node subNode : allSubNodes) {
-                if (subNode.getChildNodes().contains(node)) {
-                    var vu = this.getViewUsage(editingContext, diagramContext, subNode);
-                    if (vu != null) {
-                        optViewUsage = Optional.of(vu);
-                        break;
-                    }
-                }
-            }
-        }
-        if (optViewUsage.isEmpty()) {
-            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                    .filter(ViewUsage.class::isInstance)
-                    .map(ViewUsage.class::cast);
-        }
-        return optViewUsage.orElse(null);
-    }
-
-    /**
-     * Get all sub nodes (nod border nodes, only child nodes) of the given list of nodes.
-     *
-     * @param nodes
-     *            the given list of nodes.
-     * @return all sub nodes of the given list of nodes.
-     */
-    protected List<Node> getAllSubNodes(List<Node> nodes) {
-        var allSubNodes = new LinkedList<Node>();
-        for (Node node : nodes) {
-            var children = new LinkedList<Node>();
-            children.addAll(node.getChildNodes());
-            allSubNodes.addAll(this.getAllSubNodes(children));
-        }
-        return allSubNodes;
     }
 
     /**
