@@ -413,7 +413,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForNestedAction(colorProvider));
 
         // Compartment "interconnection" (many usages and defintions) is defined for:
-        // PartUsage
+        // PartUsage, PartDefinition
         compartmentNodeDescriptionProviders.addAll(this.createInterconnectionCompartment(colorProvider));
 
         // Compartment "state transition" (OwnedState) is defined for:
@@ -514,6 +514,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
 
         compartmentNodeDescriptionProviders.add(new InterconnectionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InterconnectionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartDefinition(), colorProvider, this.getDescriptionNameGenerator()));
 
         return compartmentNodeDescriptionProviders;
     }
@@ -1056,6 +1057,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
     private void linkInterconnectionCompartment(IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
+                .ifPresent(nd -> cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME))
+                        .ifPresent(nd.getReusedChildNodeDescriptions()::add));
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()))
                 .ifPresent(nd -> cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME))
                         .ifPresent(nd.getReusedChildNodeDescriptions()::add));
     }

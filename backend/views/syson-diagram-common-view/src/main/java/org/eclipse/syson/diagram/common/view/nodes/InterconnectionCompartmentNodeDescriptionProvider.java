@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -68,7 +68,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .preconditionExpression(
                         AQLUtils.getSelfServiceCallExpression("isView",
                                 List.of("'StandardViewDefinitions::InterconnectionView'", org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
-                                        IDiagramContext.DIAGRAM_CONTEXT)))
+                                        DiagramContext.DIAGRAM_CONTEXT)))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
@@ -126,7 +126,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .fontSize(12)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:false")
+                .showIconExpression(AQLConstants.AQL_FALSE)
                 .withHeader(true)
                 .build();
     }
