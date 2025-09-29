@@ -42,10 +42,6 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * compartments.
  * </p>
  * <p>
- * In Interconnection View, the nested Nodes should not be displayed. They are handled by other NodeDescriptions, inside
- * compartments.
- * </p>
- * <p>
  * Root elements return true for this switch because the NodeDescriptions calling ViewNodeService#getExposedElements are
  * the same for root and nested Nodes.
  * </p>
