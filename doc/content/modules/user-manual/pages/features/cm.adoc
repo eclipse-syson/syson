@@ -4,6 +4,7 @@
 
 If you want to manage different versions of your project, you can use an external Git repository.
 Here's how:
+
 * For each version or iteration of your project, you can download it as a zip archive by following these instructions: xref:hands-on/how-tos/project-management.adoc#download-project[download project].
 * Then you can integrate the downloaded zip archive into your Git repository.
 
