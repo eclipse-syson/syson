@@ -73,7 +73,7 @@ This issue was not visible in SysON but could appear in downstream applications 
 Now it is only available on SysML model elements.
 - Fix library update performance and ensure it does not impact standard libraries.
 - Fix an issue where diagrams' edges were blinking when refreshing a diagram.
-- Add _interconnection_ compartment to `PartDefinition` nodes in the standard diagrams.
+- Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
 
 == Improvements
 

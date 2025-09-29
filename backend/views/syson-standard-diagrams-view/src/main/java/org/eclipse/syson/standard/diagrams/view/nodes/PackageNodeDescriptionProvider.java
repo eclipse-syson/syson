@@ -28,7 +28,7 @@ import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * Used to create the package node description in the General View diagram.
+ * Used to create the package node description in the Standard Diagram Views.
  *
  * @author arichard
  */
