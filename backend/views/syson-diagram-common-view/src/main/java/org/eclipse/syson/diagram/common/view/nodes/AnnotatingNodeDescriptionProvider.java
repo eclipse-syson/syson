@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
@@ -78,7 +78,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .style(this.createNoteNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("showAnnotatingNode", List.of(IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT)))
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("showAnnotatingNode", List.of(DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT)))
                 .build();
     }
 

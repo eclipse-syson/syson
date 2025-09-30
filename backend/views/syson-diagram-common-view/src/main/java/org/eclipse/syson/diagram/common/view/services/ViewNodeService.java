@@ -301,7 +301,8 @@ public class ViewNodeService {
     public Node revealCompartment(Node node, Element targetElement, DiagramContext diagramContext, IEditingContext editingContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
 
-        if (!this.needToRevealCompartment(targetElement, this.isView(targetElement, "StandardViewDefinitions::GeneralView", node, editingContext, diagramContext))) {
+        if (!this.utilService.isUnsynchronized(targetElement)
+                && !this.needToRevealCompartment(targetElement, this.isView(targetElement, "StandardViewDefinitions::GeneralView", node, editingContext, diagramContext))) {
             return node;
         }
         var nodeDescription = convertedNodes.values().stream()

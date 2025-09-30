@@ -148,7 +148,7 @@ public class ViewToolService extends ToolService {
         if (viewUsage != null) {
             var childElements = this.getChildElementsToRender(element, recursive);
             for (Element childElement : childElements) {
-                if (this.isUnsynchronized(childElement)) {
+                if (this.utilService.isUnsynchronized(childElement)) {
                     this.handleUnsynchronizedElement(childElement, element, editingContext, diagramContext, selectedNode, convertedNodes);
                 } else if (!Objects.equals(viewUsage, childElement) && !(childElement instanceof ViewUsage) && !this.isExposed(childElement, viewUsage)) {
                     var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
@@ -896,7 +896,7 @@ public class ViewToolService extends ToolService {
         if (recursive) {
             childElements.forEach(child -> {
                 Set<Element> childElementsToRender = this.getChildElementsToRender(child, true);
-                childElementsToRender.removeIf(elt -> !this.isUnsynchronized(elt));
+                childElementsToRender.removeIf(elt -> !this.utilService.isUnsynchronized(elt));
                 contents.addAll(childElementsToRender);
             });
         }

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -60,7 +60,7 @@ public class NodeDescriptionService {
      * @return the child descriptions of {@code nodeDescriptions} that can render {@code element}
      */
     public List<NodeDescription> getChildNodeDescriptionsForRendering(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IEditingContext editingContext, IDiagramContext diagramContext) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IEditingContext editingContext, DiagramContext diagramContext) {
         List<NodeDescription> candidates = new ArrayList<>();
         for (NodeDescription node : nodeDescriptions) {
             List<NodeDescription> allChildren = new ArrayList<>();
@@ -97,7 +97,7 @@ public class NodeDescriptionService {
      * @return the list of node descriptions that can be used to render the given semantic element.
      */
     public List<NodeDescription> getNodeDescriptionsForRenderingElementAsChild(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IEditingContext editingContext, IDiagramContext diagramContext) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IEditingContext editingContext, DiagramContext diagramContext) {
         List<NodeDescription> candidates = new ArrayList<>();
         for (NodeDescription node : nodeDescriptions) {
             List<NodeDescription> allChildNodeDescriptions = Stream.concat(
@@ -130,14 +130,14 @@ public class NodeDescriptionService {
      * @return <code>true</code> if the given node description can be used to render the given semantic element and
      *         <code>false</code> otherwise.
      */
-    public boolean canNodeDescriptionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject, IEditingContext editingContext, IDiagramContext diagramContext) {
+    public boolean canNodeDescriptionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean canNodeDescriptionRenderElement = false;
         VariableManager semanticElementsProviderVariableManager = new VariableManager();
         semanticElementsProviderVariableManager.put(VariableManager.SELF, ownerObject);
         semanticElementsProviderVariableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-        semanticElementsProviderVariableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+        semanticElementsProviderVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         var ancestors = new ArrayList<>();
-        this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId())
+        this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                 .filter(ViewUsage.class::isInstance)
                 .map(ViewUsage.class::cast)
                 .ifPresent(ancestors::add);
@@ -149,7 +149,7 @@ public class NodeDescriptionService {
             VariableManager shouldRenderPredicateVariableManager = new VariableManager();
             shouldRenderPredicateVariableManager.put(VariableManager.SELF, element);
             shouldRenderPredicateVariableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            shouldRenderPredicateVariableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
+            shouldRenderPredicateVariableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
             shouldRenderPredicateVariableManager.put(NodeDescription.ANCESTORS, null);
             canNodeDescriptionRenderElement = nodeDescription.getShouldRenderPredicate().test(shouldRenderPredicateVariableManager);
         }
