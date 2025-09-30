@@ -41,7 +41,6 @@ import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
-import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -114,7 +113,7 @@ public class ToolService {
      */
     public Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (this.isUnsynchronized(element)) {
+        if (this.utilService.isUnsynchronized(element)) {
             final Element parentElement;
             if (selectedNode == null) {
                 parentElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
@@ -158,7 +157,7 @@ public class ToolService {
     public Object getParentNode(Element element, Node selectedNode, Edge selectedEdge, DiagramContext diagramContext) {
         Object parentNode = null;
         if (selectedEdge != null) {
-            Node sourceNode = this.getSourceNode(selectedEdge, diagramContext.getDiagram());
+            Node sourceNode = this.getSourceNode(selectedEdge, diagramContext.diagram());
             if (sourceNode != null) {
                 parentNode = this.getParentNode(element, sourceNode, diagramContext);
             } else {
@@ -183,7 +182,7 @@ public class ToolService {
      */
     public Object getParentNode(Element element, IDiagramElement diagramElement, DiagramContext diagramContext) {
         Object parentNode = null;
-        var diagram = diagramContext.getDiagram();
+        var diagram = diagramContext.diagram();
         var nodes = diagram.getNodes();
         var edges = diagram.getEdges();
         if (nodes.contains(diagramElement)) {
@@ -275,7 +274,7 @@ public class ToolService {
      * @return always <code>true</code>.
      */
     public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
-        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
             if (diagramTargetObject instanceof ViewUsage viewUsage) {
@@ -312,7 +311,7 @@ public class ToolService {
                 node.getChildNodes().stream().forEach(cn -> childNodes.addAll(cn.getChildNodes()));
             }
         } else {
-            var diagram = diagramContext.getDiagram();
+            var diagram = diagramContext.diagram();
             childNodes.addAll(diagram.getNodes());
         }
         return childNodes;
@@ -342,7 +341,7 @@ public class ToolService {
     protected ViewCreationRequest createView(Element element, String parentElementId, String descriptionId, IEditingContext editingContext, DiagramContext diagramContext,
             NodeContainmentKind nodeKind) {
         ViewCreationRequest request = null;
-        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId())
+        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.diagram().getDescriptionId())
                 .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast);
         var nodeDescription = this.diagramDescriptionService.findDiagramElementDescriptionById(diagramDescription.get(), descriptionId)
@@ -356,7 +355,7 @@ public class ToolService {
                     .parentElementId(parentElementId)
                     .targetObjectId(this.identityService.getId(element))
                     .build();
-            diagramContext.getViewCreationRequests().add(request);
+            diagramContext.viewCreationRequests().add(request);
         }
         return request;
     }
@@ -383,7 +382,7 @@ public class ToolService {
                     NodeContainmentKind.CHILD_NODE,
                     viewCreationRequest.getTargetObjectId());
         } else {
-            parentElementId = diagramContext.getDiagram().getId();
+            parentElementId = diagramContext.diagram().getId();
         }
         return parentElementId;
     }
@@ -428,8 +427,8 @@ public class ToolService {
             parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
             candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else {
-            var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-            parentObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
+            var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.diagram().getDescriptionId());
+            parentObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId()).orElse(null);
             candidates = diagramDescription
                     .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
@@ -570,13 +569,13 @@ public class ToolService {
                     .parentElementId(this.getParentElementId(parentViewCreationRequest, diagramContext))
                     .targetObjectId(childNode.getTargetObjectId())
                     .build();
-            diagramContext.getViewCreationRequests().add(childViewCreationRequest);
+            diagramContext.viewCreationRequests().add(childViewCreationRequest);
             this.moveSubNodes(childViewCreationRequest, childNode, diagramContext);
             if (childNode.getModifiers().contains(ViewModifier.Hidden)) {
                 // Hide the new element if it was hidden before the drop, we want the new elements to look like the
                 // dropped ones. We can't use DiagramServices here because we don't have access to the elements to hide
                 // (only their IDs, they haven't been rendered yet).
-                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
             }
         }
         for (Node borderNode : parentNode.getBorderNodes()) {
@@ -586,10 +585,10 @@ public class ToolService {
                     .parentElementId(this.getParentElementId(parentViewCreationRequest, diagramContext))
                     .targetObjectId(borderNode.getTargetObjectId())
                     .build();
-            diagramContext.getViewCreationRequests().add(childViewCreationRequest);
+            diagramContext.viewCreationRequests().add(childViewCreationRequest);
             this.moveSubNodes(childViewCreationRequest, borderNode, diagramContext);
             if (borderNode.getModifiers().contains(ViewModifier.Hidden)) {
-                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
             }
         }
     }
@@ -648,28 +647,6 @@ public class ToolService {
 
     protected boolean isExposed(Element element, ViewUsage viewUsage) {
         return viewUsage.getExposedElement().contains(element);
-    }
-
-    /**
-     * Check if the given {@link Element} is represented by an unsynchronized node.
-     *
-     * @param element
-     *            the given {@link Element}
-     * @return <code>true</code> if the given {@link Element} is represented by an unsynchronized node,
-     *         <code>false</code> otherwise.
-     */
-    protected boolean isUnsynchronized(Element element) {
-        boolean isUnsynchronized = false;
-        if (Objects.equals(element, this.utilService.retrieveStandardStartAction(element))) {
-            isUnsynchronized = true;
-        } else if (Objects.equals(element, this.utilService.retrieveStandardDoneAction(element))) {
-            isUnsynchronized = true;
-        } else if (element instanceof NamespaceImport) {
-            isUnsynchronized = true;
-        } else if (element instanceof AnnotatingElement) {
-            isUnsynchronized = true;
-        }
-        return isUnsynchronized;
     }
 
     protected void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {

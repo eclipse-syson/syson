@@ -34,6 +34,7 @@ import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConnectionUsage;
@@ -53,6 +54,7 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -1023,6 +1025,28 @@ public class UtilService {
      */
     public long existingViewUsagesCountForRepresentationCreation(Namespace namespace) {
         return this.elementUtil.existingViewUsagesCountForRepresentationCreation(namespace);
+    }
+
+    /**
+     * Check if the given {@link Element} is represented by an unsynchronized node.
+     *
+     * @param element
+     *            the given {@link Element}
+     * @return <code>true</code> if the given {@link Element} is represented by an unsynchronized node,
+     *         <code>false</code> otherwise.
+     */
+    public boolean isUnsynchronized(Element element) {
+        boolean isUnsynchronized = false;
+        if (Objects.equals(element, this.retrieveStandardStartAction(element))) {
+            isUnsynchronized = true;
+        } else if (Objects.equals(element, this.retrieveStandardDoneAction(element))) {
+            isUnsynchronized = true;
+        } else if (element instanceof NamespaceImport) {
+            isUnsynchronized = true;
+        } else if (element instanceof AnnotatingElement) {
+            isUnsynchronized = true;
+        }
+        return isUnsynchronized;
     }
 
     private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {

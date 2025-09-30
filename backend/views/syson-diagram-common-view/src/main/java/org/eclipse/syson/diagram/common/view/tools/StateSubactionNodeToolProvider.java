@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.ChangeContext;
@@ -78,7 +78,7 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
     private ChangeContext getCreateSubactionOperation() {
         var revealOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                        List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                        List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var params = new ArrayList<String>();
         if (this.isReferencing) {

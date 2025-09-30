@@ -154,7 +154,7 @@ public class ActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void creatSuccesionBetweenNestedActions() {
+    public void createSuccesionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -182,7 +182,7 @@ public class ActionFlowTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void creatTransitionBetweenNestedActions() {
+    public void createTransitionBetweenNestedActions() {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
         this.verifier.then(() -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
