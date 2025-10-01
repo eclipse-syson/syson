@@ -15,7 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -114,7 +114,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
         return AQLUtils.getSelfServiceCallExpression("getExposedActors",
-                List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT));
+                List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT));
     }
 
     @Override

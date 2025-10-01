@@ -472,7 +472,7 @@ public class ViewCreateService {
      *         find it.
      */
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
-        Diagram diagram = diagramService.getDiagramContext().getDiagram();
+        Diagram diagram = diagramService.getDiagramContext().diagram();
         String id;
         var parentNode = new NodeFinder(diagram).getParent(sourceNode);
         if (parentNode instanceof Node node) {
@@ -1086,7 +1086,7 @@ public class ViewCreateService {
     public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService, IEditingContext editingContext) {
         if (this.isInSameGraphicalContainer(source, target, diagramService)) {
             // Check source and target have the same parent
-            Element semanticContainer = this.getEdgeSemanticContainer(source, target, diagramService.getDiagramContext().getDiagram(), editingContext);
+            Element semanticContainer = this.getEdgeSemanticContainer(source, target, diagramService.getDiagramContext().diagram(), editingContext);
             if (semanticContainer != null) {
                 Element sourceParentElement = sourceUsage.getOwner();
                 if (this.utilService.isParallelState(sourceParentElement)) {
@@ -1250,7 +1250,7 @@ public class ViewCreateService {
     }
 
     private boolean isInSameGraphicalContainer(Node sourceNode, Node targetNode, IDiagramService diagramService) {
-        Diagram diagram = diagramService.getDiagramContext().getDiagram();
+        Diagram diagram = diagramService.getDiagramContext().diagram();
         var sourceParentNode = new NodeFinder(diagram).getParent(sourceNode);
         var targetParentNode = new NodeFinder(diagram).getParent(targetNode);
         return Objects.equals(sourceParentNode, targetParentNode);

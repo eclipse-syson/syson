@@ -15,7 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -64,7 +64,7 @@ public class CaseDefinitionSubjectCompartmentNodeDescriptionProvider extends Abs
     @Override
     protected String getDropElementFromDiagramExpression() {
         return AQLUtils.getServiceCallExpression("droppedElement", "dropSubjectFromDiagram",
-                List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+                List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
     }
 
     @Override

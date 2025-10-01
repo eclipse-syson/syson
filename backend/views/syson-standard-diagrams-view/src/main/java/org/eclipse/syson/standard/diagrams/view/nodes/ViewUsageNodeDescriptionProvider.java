@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -83,7 +83,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getNodeDescriptionName())
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getExposedElements",
-                        List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT)))
+                        List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                 .style(this.createViewFrameNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -226,7 +226,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
-                        AQLUtils.getSelfServiceCallExpression("expose", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        AQLUtils.getSelfServiceCallExpression("expose", List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
