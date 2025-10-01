@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -52,7 +52,7 @@ public class PartUsageBindingConnectorAsUsageNodeToolProvider implements INodeTo
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var creationBindingConnectorAsUsageServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createPartUsageAndBindingConnectorAsUsage"))

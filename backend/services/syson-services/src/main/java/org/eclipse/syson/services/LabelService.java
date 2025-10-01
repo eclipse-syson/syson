@@ -199,7 +199,7 @@ public class LabelService {
         DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
         listener.resolveProxies().forEach(proxy -> {
-            this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to resolve `{0}`", proxy.nameToResolve()), MessageLevel.WARNING));
+            this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to resolve \u2035{0}\u2035", proxy.nameToResolve()), MessageLevel.WARNING));
         });
         return element;
     }

@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -272,7 +272,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     protected DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT,
+                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         return this.diagramBuilderHelper.newDropNodeTool()

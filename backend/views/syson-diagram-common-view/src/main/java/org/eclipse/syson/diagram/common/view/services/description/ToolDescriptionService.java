@@ -20,7 +20,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
@@ -183,7 +183,7 @@ public class ToolDescriptionService {
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
-                        AQLUtils.getSelfServiceCallExpression("addToExposedElements", List.of("" + recursive, IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        AQLUtils.getSelfServiceCallExpression("addToExposedElements", List.of("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
@@ -322,7 +322,7 @@ public class ToolDescriptionService {
         var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
                 .expression(
                         AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer",
-                                List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                                List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")
@@ -436,7 +436,7 @@ public class ToolDescriptionService {
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
@@ -485,7 +485,7 @@ public class ToolDescriptionService {
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .preconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
+                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
                 .build();
     }
 
@@ -521,7 +521,7 @@ public class ToolDescriptionService {
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
@@ -576,7 +576,7 @@ public class ToolDescriptionService {
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .preconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable",
-                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
+                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, SysMLMetamodelHelper.buildQualifiedName(eClass))))
                 .build();
     }
 }
