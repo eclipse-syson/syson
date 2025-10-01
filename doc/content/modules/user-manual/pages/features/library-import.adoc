@@ -57,6 +57,13 @@ Upon selecting this action, a dialog prompts for the new version of the library 
 
 image::release-notes-library-update-dialog.png[Dialog for the 'Update library' action, width=85%,height=85%]
 
+Select the new version of the library, then click on the 'Update' button.
+A dialog prompts showing the impact analysis report associated to the library update.
+This dialog lists references that will be removed from your models because their target doesn't exist anymore (e.g. a `PartDefinition` that was typing a `PartUsage` in your model but doesn't exist in the new version of the library).
+Clicking on the 'Execute' button will perform the update, including the impacts listed in the dialog. If you don't want to update the library you can close the dialog and your models will remain unchanged.
+
+image::release-notes-library-update-impact-analysis.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
+
 After the library update has been performed, if successful, a notification appears.
 
 image::release-notes-library-update-success.png[Dialog for the 'Update library' action, width=30%,height=30%]

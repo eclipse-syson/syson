@@ -119,6 +119,11 @@ Resources are now considered read-only if:
 * They are textual SysML files imported as read-only
 * They are standard libraries (SysML and KerML)
 All the other resources are read-write.
+- Update the user documentation with information on library update impact analysis.
+A dialog containing an impact analysis report is now displayed when an user attempts to update a library.
+This dialog lists references that will be removed from the models because their target doesn't exist anymore (e.g. a `PartDefinition` that was typing a `PartUsage` in a model but doesn't exist in the new version of the library).
+
+image::release-notes-library-update-impact-analysis.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
 
 == Dependency update
 
