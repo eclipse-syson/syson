@@ -125,6 +125,8 @@ This dialog lists references that will be removed from the models because their 
 
 image::release-notes-library-update-impact-analysis.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
 
+- Update the user documentation with information on read-only model upload.
+
 == Dependency update
 
 - Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.9]

@@ -44,10 +44,17 @@ To upload a model from a file previously exported, follow these steps:
 . Click the `Upload` button at the top of the {explorer} in the toolbar.
 . It opens the `Upload Model` modal.
 . Select a model from your file system.
+. Select the import mode for your model: read-write (default), or read-only
 +
 image::hands-on-upload-model.png[Upload model]
 +
 . The uploaded model is automatically created and opened.
+
+[NOTE]
+====
+Read-only models cannot be renamed and their content cannot be modified.
+Note that it is possible to delete a read-only model.
+====
 
 [#rename-model]
 == Rename a model
@@ -292,7 +299,7 @@ If _SomeTypeName_ doesn't exist, it's created as an appropriate type element (fo
 * Typing `[x]` on an element or a relationship sets its cardinality to _x_.
 * Typing `[1..x]` on an element or a relationship sets its cardinality to _1..x_.
 * Typing `[x..*]` on an element or a relationship sets its cardinality to _x..*_.
-* Typing `someElement:>otherElement` on a element sets _someElement_ as a `subsetting` of the _otherElement_ if both element are of the same type.
+* Typing `someElement:>otherElement` on a element sets _someElement_ as a `Subsetting` of the _otherElement_ if both element are of the same type.
 Otherwise, it creates a `specialization` relationship between _someElement_ and _otherElement_.
 * Typing `someElement:>>otherElement` on an element sets _someElement_ as a `redefinition` of _otherElement_.
 * On a `Feature`, typing `= someExpression` sets a bounded value to the feature (at the moment only `LiteralExpression` are handled in the expression part).
