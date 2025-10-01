@@ -133,9 +133,6 @@ public class ToolService {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(element.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
-                if (element instanceof Package) {
-                    membershipExpose.setIsRecursive(true);
-                }
             }
         }
         return element;

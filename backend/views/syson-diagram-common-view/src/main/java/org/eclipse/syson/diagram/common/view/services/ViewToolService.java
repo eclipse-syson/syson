@@ -154,7 +154,7 @@ public class ViewToolService extends ToolService {
                     var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                     membershipExpose.setImportedMembership(childElement.getOwningMembership());
                     viewUsage.getOwnedRelationship().add(membershipExpose);
-                    if (childElement instanceof Package || recursive) {
+                    if (recursive) {
                         membershipExpose.setIsRecursive(true);
                     }
                 }

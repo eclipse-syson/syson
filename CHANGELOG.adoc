@@ -84,6 +84,7 @@ Now it has been fixed in Sirius Web 2025.8.4, `SysONUpdateLibraryExecutor` has b
 - https://github.com/eclipse-syson/syson/issues/1545[#1545] [diagrams] Add _interconnection_ compartment to `PartDefinition` nodes in the standard diagrams.
 - https://github.com/eclipse-syson/syson/issues/1546[#1546] [diagrams] Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
 - https://github.com/eclipse-syson/syson/issues/1550[#1550] [diagrams] Fix an issue where the _action flow_ compartment was not revealed when the _New Start Action_ was executed.
+- https://github.com/eclipse-syson/syson/issues/1547[#1547] [diagrams] Fix an issue where the _Delete from diagram_ action did nothing on elements inside a _Package_ in diagrams.
 
 === Improvements
 
