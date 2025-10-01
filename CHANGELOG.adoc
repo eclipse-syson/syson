@@ -107,6 +107,7 @@ Resources are now considered read-only if:
 * They are textual SysML files imported as read-only
 * They are standard libraries (SysML and KerML)
 All the other resources are read-write.
+- https://github.com/eclipse-syson/syson/issues/1558[#1558] [doc] Add library update impact analysis in the user documentation.
 
 === New features
 
