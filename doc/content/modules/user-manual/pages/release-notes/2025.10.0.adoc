@@ -75,6 +75,7 @@ Now it is only available on SysML model elements.
 - Fix an issue where diagrams' edges were blinking when refreshing a diagram.
 - Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
 - Fix an issue where the _action flow_ compartment was not revealed when the _New Start Action_ was executed.
+- Fix an issue where the _Delete from diagram_ action did nothing on elements inside a _Package_ in diagrams.
 
 == Improvements
 

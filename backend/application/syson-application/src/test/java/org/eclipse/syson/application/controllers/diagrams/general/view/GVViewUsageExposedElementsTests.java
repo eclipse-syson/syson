@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.LayoutDiagramMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -213,7 +215,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         this.verifier.then(semanticChecker);
     }
 
-    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) (recursive) tool is executed, THEN a the ViewUsage#exposedElements is updated with partA and partB")
+    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) (recursive) tool is executed, THEN the ViewUsage#exposedElements is updated with partA and partB")
     @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -302,5 +304,48 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+    }
+
+    @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN an element is created inside a Package, THEN the element should only be visible inside the Package")
+    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void exposePackageChildShouldDisplayChildOnlyinPAckage() {
+        var newPackageToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("New Package");
+        assertThat(newPackageToolId).as("The tool 'New Package' should exist on the diagram").isNotNull();
+        var newInterfaceToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Interface");
+        assertThat(newInterfaceToolId).as("The tool 'New Interface' should exist on the Package").isNotNull();
+
+        Runnable newPackageTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, newPackageToolId);
+
+        var packageNodeId = new AtomicReference<String>();
+
+        Consumer<Object> updatedDiagramWithPackage = assertRefreshedDiagramThat(diag -> {
+            int diagramRootNodesCount = diag.getNodes().size();
+            assertThat(diagramRootNodesCount).isEqualTo(1);
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package1").getNode();
+            assertThat(packageNode).isNotNull();
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+            packageNodeId.set(packageNode.getId());
+        });
+
+        Runnable newInterfaceTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram.get().getId(), packageNodeId.get(), newInterfaceToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramWithInterface = assertRefreshedDiagramThat(diag -> {
+            int diagramRootNodesCount = diag.getNodes().size();
+            assertThat(diagramRootNodesCount).isEqualTo(1);
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package1").getNode();
+            assertThat(packageNode.getChildNodes()).hasSize(1);
+            var interfaceNode = new DiagramNavigator(diag).nodeWithLabel("Package1").childNodeWithLabel("\u00ABinterface\u00BB\ninterface1").getNode();
+            assertThat(interfaceNode).isNotNull();
+        });
+
+        this.verifier
+                .then(newPackageTool)
+                .consumeNextWith(updatedDiagramWithPackage)
+                .then(newInterfaceTool)
+                .consumeNextWith(updatedDiagramWithInterface);
     }
 }

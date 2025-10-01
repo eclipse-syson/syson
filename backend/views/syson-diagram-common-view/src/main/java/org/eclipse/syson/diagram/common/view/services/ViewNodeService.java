@@ -56,6 +56,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
@@ -512,21 +513,21 @@ public class ViewNodeService {
      */
     protected Set<Element> getDirectExposedElements(ViewUsage viewUsage) {
         var directExposedElements = new HashSet<Element>();
-        List<Expose> exposes = viewUsage.getOwnedRelationship().stream()
+        List<Expose> exposedElements = viewUsage.getOwnedRelationship().stream()
                 .filter(Expose.class::isInstance)
                 .map(Expose.class::cast)
                 .toList();
-        for (Expose expose : exposes) {
-            Element importedElement = expose.getImportedElement();
+        for (Expose exposedElement : exposedElements) {
+            Element importedElement = exposedElement.getImportedElement();
             if (importedElement instanceof Package) {
                 directExposedElements.add(importedElement);
-            } else if (expose instanceof MembershipExpose membershipExpose) {
+            } else if (exposedElement instanceof MembershipExpose membershipExpose) {
                 var importedMembership = membershipExpose.getImportedMembership();
                 if (importedMembership != null) {
                     var memberElement = importedMembership.getMemberElement();
-                    if (memberElement != null) {
+                    if (memberElement != null && !this.isChildOfExposedPackage(memberElement, exposedElements)) {
                         directExposedElements.add(memberElement);
-                        if (expose.isIsRecursive()) {
+                        if (exposedElement.isIsRecursive()) {
                             directExposedElements.addAll(this.getRecursiveContents(memberElement));
                         }
                     }
@@ -535,6 +536,29 @@ public class ViewNodeService {
             }
         }
         return directExposedElements;
+    }
+
+    /**
+     * Check if the given {@link Element} is a child of an exposed Package. In this case, we don't want to display it on
+     * the diagram background, or as a ViewUsage child node. It will be displayed inside another node.
+     *
+     * @param element
+     *            the element that could be a child of an exposed element
+     * @param exposedElements
+     *            the list of exposed elements
+     * @return <code>true</code> if the given {@link Element} is a child of an exposed element, <code>false</code>
+     *         otherwise.
+     */
+    protected boolean isChildOfExposedPackage(Element element, List<Expose> exposedElements) {
+        boolean isChildOfExposedElement = false;
+        for (Expose exposedElement : exposedElements) {
+            Element importedElement = exposedElement.getImportedElement();
+            if (importedElement instanceof Package && !Objects.equals(element, importedElement) && EMFUtils.isAncestor(importedElement, element)) {
+                isChildOfExposedElement = true;
+                break;
+            }
+        }
+        return isChildOfExposedElement;
     }
 
     protected List<Element> getRecursiveContents(Element element) {
