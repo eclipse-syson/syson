@@ -75,7 +75,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
     }
 
-    @DisplayName("Given a diagram with some nodes, when a node is dropped in another one, then the diagram is updated")
+    @DisplayName("GIVEN a diagram with some nodes, WHEN a node is dropped in another one, THEN the diagram is updated")
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

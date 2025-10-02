@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
@@ -75,13 +76,13 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean defaultCase(EObject object) {
         Boolean displayAsTreeNode = Boolean.FALSE;
         if (ViewDefinitionKind.isGeneralView(this.kind)) {
-            displayAsTreeNode = Boolean.TRUE;
+            displayAsTreeNode = this.parentElement == null || (this.isDirectNestedNode(object));
         } else if (ViewDefinitionKind.isActionFlowView(this.kind)) {
             displayAsTreeNode = object instanceof ActionUsage || object instanceof ActionDefinition;
         } else if (ViewDefinitionKind.isStateTransitionView(this.kind)) {
             displayAsTreeNode = object instanceof StateUsage || object instanceof StateDefinition;
         } else {
-            displayAsTreeNode = !this.isNestedNode(object);
+            displayAsTreeNode = !this.isIndirectNestedNode(object);
         }
         return displayAsTreeNode;
     }
@@ -90,7 +91,7 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean caseAttributeUsage(AttributeUsage object) {
         // For AttributeUsages we don't want nested Nodes, no matter the type of ViewDefinition.
         // The sub AttributeUsages are displayed in a compartment list called "attributes".
-        return !this.isNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
     }
 
     @Override
@@ -103,18 +104,51 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean casePortUsage(PortUsage object) {
         // For PortUsages we don't want nested Nodes, no matter the type of ViewDefinition.
         // The sub PortUsages are displayed in a compartment list called "ports" and/or as border nodes.
-        return !this.isNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
     }
 
-    private boolean isNestedNode(EObject object) {
-        boolean isNestedNode = false;
-        for (Element exposedElement : this.exposedElements) {
-            isNestedNode = !Objects.equals(exposedElement, object) && (this.parentElement == null && EMFUtils.isAncestor(exposedElement, object));
-            if (isNestedNode) {
-                break;
+    /**
+     * Check if the given object is an indirect nested node of the parentElement of this class.
+     *
+     * @param object
+     *            the given object
+     * @return <code>true</code> if the given object is an indirect node of the parentElement of this class,
+     *         <code>false</code> otherwise.
+     */
+    private boolean isIndirectNestedNode(EObject object) {
+        boolean isDirectNestedNode = false;
+        if (this.parentElement instanceof Namespace elt && !elt.getOwnedMember().contains(object)) {
+            isDirectNestedNode = true;
+        } else {
+            for (Element exposedElement : this.exposedElements) {
+                if (Objects.equals(exposedElement, object)) {
+                    continue;
+                } else if (this.parentElement == null && EMFUtils.isAncestor(exposedElement, object)) {
+                    isDirectNestedNode = true;
+                }
+                if (isDirectNestedNode) {
+                    break;
+                }
             }
         }
-        return isNestedNode;
+        return isDirectNestedNode;
     }
 
+    /**
+     * Check if the given object is a direct nested node of the parentElement of this class.
+     *
+     * @param object
+     *            the given object
+     * @return <code>true</code> if the given object is a direct nested node of the parentElement of this class,
+     *         <code>false</code> otherwise.
+     */
+    private boolean isDirectNestedNode(EObject object) {
+        boolean isDirectNestedNode = false;
+        if (this.parentElement instanceof Namespace elt && elt.getOwnedMember().contains(object)) {
+            isDirectNestedNode = true;
+        } else if (this.parentElement instanceof Package) {
+            isDirectNestedNode = true;
+        }
+        return isDirectNestedNode;
+    }
 }
