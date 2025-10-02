@@ -76,6 +76,8 @@ Now it is only available on SysML model elements.
 - Fix drag and drop of a graphical node from the diagram background into a _Package_ graphical node.
 - Fix an issue where the _action flow_ compartment was not revealed when the _New Start Action_ was executed.
 - Fix an issue where the _Delete from diagram_ action did nothing on elements inside a _Package_ in diagrams.
+- Fix an issue where a `PartUsage` contained in a `PartUsage` contained in a `Package` was not displayed, even though it was exposed in the `ViewUsage` corresponding to the diagram.
+`PartUsage` is just one example, but the same issue could appear with any other `Element` contained in `Element` contained in a `Package`.
 
 == Improvements
 

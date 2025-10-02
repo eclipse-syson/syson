@@ -137,7 +137,7 @@ public class ViewNodeService {
                 exposedElements.addAll(viewUsage.getExposedElement());
             }
             var filteredExposedElements = exposedElements.stream()
-                    .filter(elt -> elt != null && Objects.equals(elt.eClass(), domainType) && (parent == null || parent.getOwnedElement().contains(elt)))
+                    .filter(elt -> this.isTypeOf(elt, domainType) && (parent == null || (!Objects.equals(parent, elt) && EMFUtils.isAncestor(parent, elt))))
                     .toList();
             elementsToExpose.addAll(filteredExposedElements);
             // if it is not a General View, we don't want to display nested nodes as tree (i.e. sibling nodes +
@@ -685,5 +685,19 @@ public class ViewNodeService {
             }
         }
         return ancestors;
+    }
+
+    /**
+     * Check if the given {@link Element}'s {@link EClass} is the same than the given domainType.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param domainType
+     *            the given domainType as an {@link EClass}.
+     * @return <code>true</code> if the given {@link Element}'s {@link EClass} is the same than the given domainType,
+     *         <code>false</code> otherwise.
+     */
+    protected boolean isTypeOf(Element element, EClass domainType) {
+        return element != null && Objects.equals(element.eClass(), domainType);
     }
 }
