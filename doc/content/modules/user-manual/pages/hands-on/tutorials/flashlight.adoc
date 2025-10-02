@@ -28,7 +28,7 @@ image::flashlight-model-organization.png[Flashlight Model Organization]
 
 == Step 3: Flashlight Requirements Tree
 
-. In the explorer, select the `Requirements` package, click the "more" menu, and choose `New representation` 
+. In the `Explorer` view, select the `Requirements` package, click the "more" menu, and choose `New representation` 
 . Set the name of the representation to `Requirements General View`.
 . Create a new `General View` and open it.
 . In the main editor area, right-click on the diagram background to open the palette.
@@ -36,7 +36,7 @@ image::flashlight-model-organization.png[Flashlight Model Organization]
 . Rename it to `flashlightSpecification`.
 . Right-click on the `flashlightSpecification` requirement, then select `Requirements` -> `New Requirement` to create a nested requirement.
 . Rename the new requirement to `userInterface`.
-. In the explorer, select `flashlightSpecification`, click the "more" menu, and choose `New objects from text`.
+. In the `Explorer` view, select `flashlightSpecification`, click the "more" menu, and choose `New objects from text`.
 . In the modal input box, paste the following content:
 [source, sysml]
 ----
@@ -58,7 +58,7 @@ requirement physical{
 requirement reliability;
 requirement cost;
 ----
-. Select the newly created elements (`illumination`, `physical`, `reliability`, `cost`, `portability`, `size`, `weight`, `fieldOfView`, `lightPower`) in the explorer (Ctrl + Click), and drag-and-drop them into the diagram.
+. Select the newly created elements (`illumination`, `physical`, `reliability`, `cost`, `portability`, `size`, `weight`, `fieldOfView`, `lightPower`) in the `Explorer` view (Ctrl + Click), and drag-and-drop them into the diagram.
 . Use the `Arrange all elements` tool from the diagram toolbar to auto layout the diagram.
 . Right-click on the `size` requirement and select `Show/Hide -> Show valued content` to display the documentation in the diagram.
 . Repeat the operation for the children of `illumination`: `fieldOfView` and `lightPower`.
@@ -69,15 +69,15 @@ requirement cost;
 . Right-click on the background of diagram and use the tool `New Namespace Import`.
 Then select `SI/Library Package SI` to import it from the standard libraries.
 . Use the palette filter to locate the `New Required Constraint` tool, and apply it to the `weight` requirement.
-. Edit the constraint to: `actualweight\<=0.25[kg]`
+. Edit the constraint to: `actualweight \<= 0.25 [kg]`
 
 image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
 
 == Step 4: Produce Directed Light Action Flow
 
-. In the explorer, select the `ActionTree` package, click the "more" menu, and choose `New representation`.
-. Set the name of the representation to `Action Tree General View`.
-. Create a new `General View` and open it.
+. In the `Explorer` view, select the `ActionTree` package, click the "more" menu, and choose `New representation`.
+. Set the name of the representation to `Action Tree ActionFlow View`.
+. Create a new `ActionFlow View` and open it.
 . In the main editor area, right-click on the diagram background to open the palette.
 . Click on `Behavior` -> `New Action` to create a new action.
 . Rename it `produceDirectedLight`.
@@ -90,7 +90,7 @@ image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
 . Select `fork1` and use the connection tool to create a succession to the `provideDCPwr` action.
 . Right-click on `provideDCPwr`, then select `Structure`-> `New Item Out`.
 . Rename the item to `outdcPwr`.
-. In the explorer, select the `produceDirectedLight` action, click the "more" menu, and choose `New objects from text`.
+. In the `Explorer` view, select the `produceDirectedLight` action, click the "more" menu, and choose `New objects from text`.
 . In the model input box, paste the following content:
 [source,sysml]
 ----
@@ -112,18 +112,18 @@ action directLight{
 ----
 . In the `action flow` compartment of `produceDirectLight` use the tool `Related Elements -> Add existing element`.
 . Create a new transition between `fork1` and `connectDCPwr`.
-. Set the value of `connectDCPwr::onOffCmd` by renaming the item `in onOffCmd` of `connectDCPwr` to `in onOffCmd = produceDirectedLight.onOffCmd`
+. Set the value of `connectDCPwr::onOffCmd` by renaming the item `in onOffCmd` of `connectDCPwr` to `in onOffCmd = produceDirectedLight.onOffCmd`.
 . Create a `Flow Connection (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
 . Create a `Flow Connection (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
 . Create a `Flow Connection (flow)` between `outdcPwr` of `provideDCPwr` to `dcPwrIn` of `connectDCPwr`.
-. Using the eye icon on the `produceDirectLight` action display the `items` compartement
+. Using the eye icon on the `produceDirectLight` action display the `items` compartment.
 . Set the value of `produceDirectedLight::lightOut` by renaming the item `out lightOut` of `produceDirectedLight` to `out lightOut = directLight.lightOut`.
 
 image::flashlight-action-tree.png[Flashlight Requirements Tree]
 
 == Step 5: Flashlight Interconnection
 
-. In the explorer, select the `PartsTree` package, click the "more" menu, and choose `New representation`.
+. In the `Explorer` view, select the `PartsTree` package, click the "more" menu, and choose `New representation`.
 . Set the name of the representation to `Parts Tree General View`.
 . Create a new `General View` and open it.
 . In the main editor area, right-click on the diagram background to open the palette.
@@ -134,9 +134,10 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `fov:Real`.
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `illuminationLevel:Real`.
 . Right-click on `flashlight`, then select the `Behavior` -> `New Perform` and select the action `produceDirectedLight` created earlier.
-. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New representation`.
+. In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New representation`.
 . Set the name of the representation to `Flashlight Interconnection View`.
 . Create a new `Interconnection View` and open it.
+. Drag and drop `flashlight` from the `Explorer` view to newly created Interconnection View diagram.
 . Right-click on `flashlight`, then select the `Structure` -> `New Port`.
 . Rename it `cmdPort`.
 . Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
@@ -155,7 +156,7 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Right-click on `battery`, then select the `Structure` -> `New Port Out`.
 . Rename it `dcPwrOutPort`.
 . Select `dcPwrOutPort`, create a flow between `dcPwrOutPort` and `inPort`.
-. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New objects from text`.
+. In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New objects from text`.
 . In the model input box, paste the following content:
 [source,sysml]
 ----
@@ -192,7 +193,7 @@ image::flashlight-interconnection.png[Flashlight Interconnection]
 
 == Step 6: Flashlight States
 
-. In the explorer, select the `flashlight` part, click the "more" menu, and choose `New representation`.
+. In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New representation`.
 . Set the name of the representation to `Flashlight General View`.
 . Create a new `General View` and open it.
 . In the main editor area, right-click on the diagram background to open the palette.
@@ -210,13 +211,13 @@ image::flashlight-states.png[Flashlight States]
 
 == Step 7: Flashlight Requirements Allocation
 
-. In the explorer, select the `RequirementsAllocation` package, click the "more" menu, and choose `New representation`.
+. In the `Explorer` view, select the `RequirementsAllocation` package, click the "more" menu, and choose `New representation`.
 . Create a new `General View` and open it.
-. Drag and drop the following elements from the explorer to the diagram :
+. Drag and drop the following elements from the `Explorer` view to the diagram :
 ** *Requirements*:
 *** `flashlightSpecification`,
 *** `illumination`,
-*** `fieldofView`,
+*** `fieldOfView`,
 *** `lightPower`,
 *** `physical`,
 *** `weight`;
