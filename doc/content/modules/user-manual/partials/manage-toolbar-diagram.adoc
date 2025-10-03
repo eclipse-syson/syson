@@ -2,7 +2,7 @@
 
 The Diagram panel has global actions grouped in a horizontal toolbar underneath the diagram tabs.
 
-image::manage-toolbar-main.png[Main Toolbar]
+image::manage-toolbar-main.png[Main Toolbar, width=50%,height=50%]
 
 This toolbar has the following actions:
 
@@ -16,4 +16,12 @@ This toolbar has the following actions:
 * Arrange all elements,
 * Reveal hidden elements,
 * Reveal faded elements,
-* Unpin all elements.
+* Unpin all elements,
+* Select element in the diagram,
+** from wht is selected in the {explorer}.
+* Filter elements
+** this menu allows to select elements represented in the diagram, and then apply an action on them (collapse, expand, show, hide, fade, reveal faded, pin, unpin).
+* SysML actions
+** show/hide icons on diagram elements,
+** show/hide inherited members,
+** show/hide inherited members from standard libraries.

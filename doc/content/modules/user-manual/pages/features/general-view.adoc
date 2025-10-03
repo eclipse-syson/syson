@@ -12,7 +12,7 @@ image::gv-overview.png[{gv} Overview]
 
 == Create New General View Diagram
 
-User can create {gv} diagram on any element provided it inherits from Namespace type.
+User can create {gv} diagram on any element provided it inherits from _Namespace_ type.
 
 image::gv-diagram-creation.png[{gv} Diagram Creation]
 

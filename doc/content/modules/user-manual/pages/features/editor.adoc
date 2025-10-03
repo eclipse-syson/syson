@@ -49,7 +49,7 @@ The left sidebar provides information related to the project.
 
 [%noheader]
 |===
-a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer] a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Validation]
+a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer, width=50%,height=50%] a|image::editor-left-sidebar-validation.png[{editor} Left sidebar Validation, width=50%,height=50%]
 |===
 
 xref:hands-on/how-tos/user-interface-navigation.adoc#switch-left-sidebar[Explore the left sidebar...]

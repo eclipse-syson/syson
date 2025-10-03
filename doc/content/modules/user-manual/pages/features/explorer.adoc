@@ -4,7 +4,7 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {explorer} presents a hierarchical view of all models and their contents within the project, displayed as a tree structure with expandable and collapsible items.
 
-image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer]
+image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer, width=50%,height=50%]
 
 * *Models*: Represented by the models existing in the specific project.
 * *Semantic Elements*: Located within the models, these are instances of your business domain concepts, each with its own set of children.
@@ -17,7 +17,7 @@ At the top of the {explorer}, a toolbar provides quick access to essential actio
 
 * xref:hands-on/how-tos/model-management.adoc#create-model[Add a Model]: Enables the creation of a new model within the project.
 * xref:hands-on/how-tos/model-management.adoc#upload-model[Upload a Model]: Allows users to upload and integrate an external model into the project.
-* xref:hands-on/how-tos/explorer.adoc#sync-editor[Synchronize Editor] with Explorer: Ensures alignment between the explorer view and the editor, providing a seamless and up-to-date navigation experience.
+* xref:hands-on/how-tos/explorer.adoc#select[Select] element in Explorer: Selects in the explorer view what is already in the editor.
 
 == Selection
 
