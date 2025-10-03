@@ -78,7 +78,7 @@ The following element in _Definition_ compartments can be displayed in the {gv} 
   * Interface in _Interface Definition_,
   * Port in _Interface Definition_/_Part Definition_,
   * Reference in _Metadata Definition_/_Port Definition_,
-  * Occurence in _Occurrence Definition_,
+  * Occurrence in _Occurrence Definition_,
   * Assumed Constraint in _Requirement Definition_,
   * Required Constraint in _Requirement Definition_.
 
