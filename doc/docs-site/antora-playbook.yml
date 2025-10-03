@@ -1,6 +1,6 @@
 site:
   title: SysON Docs
-  start_page: v2025.8.0@syson::index.adoc
+  start_page: v2025.10.0@syson::index.adoc
 
 output:
   clean: true
