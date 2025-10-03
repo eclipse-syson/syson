@@ -63,13 +63,17 @@ requirement cost;
 . Right-click on the `size` requirement and select `Show/Hide -> Show valued content` to display the documentation in the diagram.
 . Repeat the operation for the children of `illumination`: `fieldOfView` and `lightPower`.
 . Right-click on the `weight` requirement and select the `New Documentation` tool.
-.  In the newly created `doc` element, enter the text:  `The weight shall be less than 0.25 kg.`
+. In the newly created `doc` element, enter the text:  `The weight shall be less than 0.25 kg.`
 . Right-click on the `weight` requirement again and choose `Structure -> New Attribute`.
 . Edit the new attribute to `actualweight :> mass`.
+This well set the _declaredName_ property of the attribute to `actualweight` and its type to `mass` (automatically imported from the standard library `ISQBase`).
 . Right-click on the background of diagram and use the tool `New Namespace Import`.
+It is located in the `Structure` section of the palette.
 Then select `SI/Library Package SI` to import it from the standard libraries.
+This will allow you to use standard units, such as the kilogram.
 . Use the palette filter to locate the `New Required Constraint` tool, and apply it to the `weight` requirement.
-. Edit the constraint to: `actualweight \<= 0.25 [kg]`
+. In the `require constraints` compartment of the `weight` requirement, edit the constraint to: `actualweight \<= 0.25 [kg]`
+This will set the predicate of the constraint.
 
 image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
 
