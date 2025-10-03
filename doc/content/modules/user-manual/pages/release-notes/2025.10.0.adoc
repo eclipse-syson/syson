@@ -4,6 +4,7 @@
 
 - *Standard diagram switching*: in diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
 - *Standard libraries update*: Update standard libraries to SysMLv2 and KerML 2025-07 specification released on July 2025 (see https://github.com/Systems-Modeling/SysML-v2-Release for more details).
+- *Requirements table view*: Add a new table view named _Requirements Table_ to display and edit requirements in a tabular way. This table is available on any element. xref:user-manual:features/requirement-managaement.adoc[See the documentation for more details].
 
 == Breaking changes
 
@@ -47,8 +48,8 @@ This contribution introduces some breaking changes:
 - In diagrams, it is now possible to switch from one _ViewDefinition_ to another one without having to re-create the diagram.
 - In diagrams, it is now possible to change the appearance (color, font...) of all diagram elements, through the new _Palette_ menu _Appearance_.
 - Add a new table view named _Requirements Table_ to display and edit requirements in a tabular way.
-This table is available on _ViewUsages_ elements.
-
+This table is available on any element.
+xref:user-manual:features/requirement-managaement.adoc[See the documentation for more details].
 == Bug fixes
 
 - Fix textual import issues while importing model with `MetadataAccessExpression`.

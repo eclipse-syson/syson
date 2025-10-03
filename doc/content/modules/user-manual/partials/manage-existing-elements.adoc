@@ -8,3 +8,24 @@ image::manage-existing-elements-add.png[Add existing elements, width=70%,height=
 
 User can click on _Add existing elements_ to display elements directly contained by the selection.
 User can also click on _Add existing elements (recursive)_ to display elements directly contained by the selection and elements contained by these elements and so on.
+
+=== Expose Package
+
+When a _Package_ is created in a diagram, it is exposed in the _ViewUsage_ corresponding to the diagram, as any other element created from the diagram.
+
+image::gv-expose-package.png[An exposed Package, width=60%,height=60%]
+
+By default, the expose element (a _MembershipExpose_) corresponding to the _Package_ is not set to recursive.
+It means that every element created inside the _Package_ will be automatically exposed in the _ViewUsage_, in its own expose element (a _MembershipExpose_).
+
+image::gv-expose-part-in-package.png[An exposed Part inside a Package, width=60%,height=60%]
+
+If user wants to expose all elements contained by the _Package_, user can set the expose element corresponding to the _Package_ to recursive.
+In the _Details_ view of the expose element corresponding to the _Package_, just check the _is Recursive_ property.
+Then you will see a "::**" at the end of the expose element label in the _Explorer_ view.
+
+image::gv-expose-package-recursive.png[An exposed Package with is Recursive, width=60%,height=60%]
+
+When the _is Recursive_ property, all elements contained by the _Package_ are automatically visible inside the _Package_ graphical node in the diagram.
+No new expose element will be created in the _ViewUsage_ when a new element will be created inside the _Package_ graphical node. 
+In this case, this also means that the _Delete from Diagram_ action will have no effect on those elements.
