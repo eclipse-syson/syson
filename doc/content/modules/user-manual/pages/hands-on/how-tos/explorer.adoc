@@ -7,6 +7,8 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 Allows to select in the {explorer} view what is selected in the main editor area (in the visible diagram/table).
 
+image::explorer-toolbar-select-action.png[Explorer toolbar Select action, width=40%,height=40%]
+
 [#expand-all]
 == Expand all
 
