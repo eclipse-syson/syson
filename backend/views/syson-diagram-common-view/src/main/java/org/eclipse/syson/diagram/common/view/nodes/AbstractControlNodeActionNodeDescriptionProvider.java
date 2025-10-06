@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -120,7 +121,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
         return this.diagramBuilderHelper.newOutsideLabelStyle()
                 .borderSize(0)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:false")
+                .showIconExpression(AQLConstants.AQL_FALSE)
                 .build();
     }
 

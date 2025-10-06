@@ -51,6 +51,7 @@ This contribution introduces some breaking changes:
 - Add a new table view named _Requirements Table_ to display and edit requirements in a tabular way.
 This table is available on any element.
 xref:user-manual:features/requirement-management.adoc[See the documentation for more details].
+
 == Bug fixes
 
 - Fix textual import issues while importing model with `MetadataAccessExpression`.
@@ -80,6 +81,7 @@ Now it is only available on SysML model elements.
 - Fix an issue where the _Delete from diagram_ action did nothing on elements inside a _Package_ in diagrams.
 - Fix an issue where a `PartUsage` contained in a `PartUsage` contained in a `Package` was not displayed, even though it was exposed in the `ViewUsage` corresponding to the diagram.
 `PartUsage` is just one example, but the same issue could appear with any other `Element` contained in `Element` contained in a `Package`.
+- Fix an issue where the _action flow_ compartment was not revealed when the _New Decision_/_New Fork_/_New Join_/_New Merge_ tools were executed.
 
 == Improvements
 
@@ -128,8 +130,6 @@ A dialog containing an impact analysis report is now displayed when an user atte
 This dialog lists references that will be removed from the models because their target doesn't exist anymore (e.g. a `PartDefinition` that was typing a `PartUsage` in a model but doesn't exist in the new version of the library).
 
 image::release-notes-library-update-impact-analysis.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
-
-- Update the user documentation with information on read-only model upload.
 
 == Dependency update
 
