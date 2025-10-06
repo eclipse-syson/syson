@@ -87,6 +87,7 @@ Now it has been fixed in Sirius Web 2025.8.4, `SysONUpdateLibraryExecutor` has b
 - https://github.com/eclipse-syson/syson/issues/1547[#1547] [diagrams] Fix an issue where the _Delete from diagram_ action did nothing on elements inside a _Package_ in diagrams.
 - https://github.com/eclipse-syson/syson/issues/1567[#1567] [diagrams] Fix an issue where a `PartUsage` contained in a `PartUsage` contained in a `Package` was not displayed, even though it was exposed in the `ViewUsage` corresponding to the diagram.
 `PartUsage` is just one example, but the same issue could appear with any other `Element` contained in `Element` contained in a `Package`.
+- https://github.com/eclipse-syson/syson/issues/1579[#1579] [diagrams] Fix an issue where the _action flow_ compartment was not revealed when the _New Decision_/_New Fork_/_New Join_/_New Merge_ tools were executed.
 
 === Improvements
 

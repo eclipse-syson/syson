@@ -804,9 +804,9 @@ public class ViewCreateService {
         if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var join = SysmlFactory.eINSTANCE.createJoinNode();
-            this.elementInitializerSwitch.doSwitch(join);
             featureMember.getOwnedRelatedElement().add(join);
             ownerElement.getOwnedRelationship().add(featureMember);
+            this.elementInitializerSwitch.doSwitch(join);
             return join;
         }
         return ownerElement;
@@ -842,9 +842,9 @@ public class ViewCreateService {
         if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var merge = SysmlFactory.eINSTANCE.createMergeNode();
-            this.elementInitializerSwitch.doSwitch(merge);
             featureMember.getOwnedRelatedElement().add(merge);
             ownerElement.getOwnedRelationship().add(featureMember);
+            this.elementInitializerSwitch.doSwitch(merge);
             return merge;
         }
         return ownerElement;

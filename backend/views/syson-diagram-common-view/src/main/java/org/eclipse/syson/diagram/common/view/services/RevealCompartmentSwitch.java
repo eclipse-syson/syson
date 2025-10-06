@@ -15,6 +15,10 @@ package org.eclipse.syson.diagram.common.view.services;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.DecisionNode;
+import org.eclipse.syson.sysml.ForkNode;
+import org.eclipse.syson.sysml.JoinNode;
+import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.StateUsage;
@@ -51,6 +55,26 @@ public class RevealCompartmentSwitch extends SysmlSwitch<Boolean> {
     @Override
     public Boolean caseConstraintUsage(ConstraintUsage object) {
         return !this.isGeneralView;
+    }
+
+    @Override
+    public Boolean caseDecisionNode(DecisionNode object) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean caseForkNode(ForkNode object) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean caseJoinNode(JoinNode object) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean caseMergeNode(MergeNode object) {
+        return Boolean.TRUE;
     }
 
     @Override
