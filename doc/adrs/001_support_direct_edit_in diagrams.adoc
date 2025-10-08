@@ -32,10 +32,6 @@ It will be used to create grammars dedicated to parse these complex cases.
 The first use case will be the direct edit of all `Usage` elements (`AttributeUsage`, `PartUsage`, `PortUsage`, ...) that are represented as compartment nodes inside node containers.
 Other use cases (unknown at the moment) may also use the same grammar or new ones depending on the context.
 
-== Status
-
-To be reviewed.
-
 == Consequences
 
 `syson-diagram-general-view` will depend on `antlr4-runtime` as maven dependency.
@@ -45,3 +41,7 @@ SysON will keep its version of ANTLR synchronized with the Sirius Web one.
 == References
 
 - https://www.antlr.org/
+
+== Status
+
+Accepted.
