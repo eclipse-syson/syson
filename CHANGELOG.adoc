@@ -6,6 +6,10 @@
 
 - https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Display inherited ports as border nodes in diagrams.
 
+=== Architectural decision records
+
+- [ADR-002] Services organization
+
 === Breaking changes
 
 === Dependency update
