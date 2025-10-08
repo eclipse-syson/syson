@@ -65,7 +65,7 @@ As a consequence, the `ViewToolService#expose` method has been moved into `ToolS
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.10]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.8.11]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.5[Spring Boot 3.5.5]
 - [releng] Update to vite 7.1.1 and @vitejs/plugin-react 5.0.0
 - [releng] Update to vitest 3.2.4 and @vitest/coverage-v8 3.2.4
