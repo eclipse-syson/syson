@@ -4,7 +4,7 @@ If you're upgrading from an older version of {product} to the latest release, th
 
 In any case, it is strongly recommended to back up your data before proceeding with any migration.
 
-== 2025.10.0 (work in progress)
+== 2025.10.0
 
 All diagram descriptions (General View, Interconnection View, Action Flow View, State Transition View) have been merged into one.
 Automatic migration process is provided to update your existing diagrams.

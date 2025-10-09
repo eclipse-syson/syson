@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-metamodel-edit</artifactId>
-	<version>2025.8.11</version>
+	<version>2025.10.0</version>
 	<name>syson-sysml-metamodel-edit</name>
 	<description>SysON SysMLv2 Metamodel - Edit Support</description>
 
@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 	</dependencies>
 
