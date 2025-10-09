@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-application-configuration</artifactId>
-	<version>2025.8.11</version>
+	<version>2025.10.0</version>
 	<name>syson-application-configuration</name>
 	<description>SysON Application Configuration</description>
 
@@ -69,27 +69,27 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel-edit</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 		</dependency>
 		<!-- Test Dependencies -->
 		<dependency>
@@ -105,7 +105,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tests</artifactId>
-			<version>2025.8.11</version>
+			<version>2025.10.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
