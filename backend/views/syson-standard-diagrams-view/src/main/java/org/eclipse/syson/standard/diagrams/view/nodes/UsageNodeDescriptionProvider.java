@@ -99,6 +99,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 listItems.forEach(eReference -> {
                     if (eReference.equals(SysmlPackage.eINSTANCE.getUsage_NestedPort())) {
                         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
+                        cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(borderNodes::add);
                     }
                 });
             }

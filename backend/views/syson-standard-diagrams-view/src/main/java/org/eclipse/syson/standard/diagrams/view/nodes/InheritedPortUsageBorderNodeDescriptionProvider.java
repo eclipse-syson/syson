@@ -22,25 +22,25 @@ import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the port usage border node description for general view diagram.
+ * Used to create the inherited port usage border node description.
  *
  * @author frouene
  */
-public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBorderNodeDescriptionProvider {
+public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBorderNodeDescriptionProvider {
 
-    public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public InheritedPortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider, nameGenerator);
     }
 
     @Override
     protected String getSemanticCandidatesExpression() {
-        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName();
+        return AQLUtils.getSelfServiceCallExpression("getInheritedCompartmentItems", "'" + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName() + "'");
     }
 
     @Override
     protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodeUsageLabel"))
+                .labelExpression(AQLConstants.AQL + "'^' + self.getBorderNodeUsageLabel()")
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -48,7 +48,6 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     @Override
     protected String getName() {
-        return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
+        return this.nameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
     }
-
 }
