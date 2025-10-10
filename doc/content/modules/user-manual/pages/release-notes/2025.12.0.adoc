@@ -6,6 +6,10 @@
 
 == New features
 
+- In diagrams, inherited ports are now displayed as border nodes.
+
+image::gv-inherited-port.png[Inherited port, width=65%,height=65%]
+
 == Bug fixes
 
 == Improvements

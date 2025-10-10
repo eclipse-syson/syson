@@ -56,6 +56,10 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
         return this.getName(prefix, "BorderNode", type);
     }
 
+    protected String getInheritedBorderNodeName(String prefix, String type) {
+        return this.getName(prefix, "InheritedBorderNode", type);
+    }
+
     protected String getCompartmentName(String prefix, String suffix) {
         return this.getName(prefix, "Compartment", suffix);
     }
@@ -173,6 +177,19 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     @Override
     public String getBorderNodeName(EClass eClass) {
         return this.getBorderNodeName(this.getDiagramPrefix(), eClass.getName());
+    }
+
+    /**
+     * Returns the name of an inherited border {@link NodeDescription} starting with the diagram prefix and followed by the name of
+     * the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}
+     */
+    @Override
+    public String getInheritedBorderNodeName(EClass eClass) {
+        return this.getInheritedBorderNodeName(this.getDiagramPrefix(), eClass.getName());
     }
 
     /**

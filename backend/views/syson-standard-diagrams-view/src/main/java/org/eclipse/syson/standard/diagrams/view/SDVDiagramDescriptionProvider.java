@@ -93,6 +93,7 @@ import org.eclipse.syson.standard.diagrams.view.nodes.CompartmentNodeDescription
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
+import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
@@ -349,6 +350,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         diagramElementDescriptionProviders.add(new GeneralViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new DefinitionOwnedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new InheritedPortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.addAll(this.createAllDefinitionOwnedUsageEdgeDescriptionProviders(colorProvider));

@@ -95,6 +95,15 @@ public interface IDescriptionNameGenerator {
     String getBorderNodeName(EClass eClass);
 
     /**
+     * Returns the name of an inherited border {@link NodeDescription} using the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @return a string used to name an inherited border {@link NodeDescription}.
+     */
+    String getInheritedBorderNodeName(EClass eClass);
+
+    /**
      * Returns the name of a compartment {@link NodeDescription} using the given {@link EClass} and {@link EReference}.
      *
      * @param eClass
