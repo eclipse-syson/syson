@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,8 @@ public interface ISysONExplorerFilterService {
     List<Object> hideMemberships(List<Object> elements);
 
     List<Object> hideRootNamespace(List<Object> elements);
+
+    List<Object> hideExposeElements(List<Object> elements);
 
     List<Object> applyFilters(List<?> elements, List<String> activeFilterIds);
 }
