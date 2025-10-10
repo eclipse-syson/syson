@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ const lines = result.split(/\r?\n/);
 
 console.log("The following commits will be reviewed:");
 console.log(lines);
-console.log();
 
 const changelog = fs.readFileSync(`${workspace}/CHANGELOG.adoc`, {
   encoding: "utf8",
@@ -39,16 +38,25 @@ const latestTag = childProcess.execSync("git describe --tags --abbrev=0", {
 // Get the next release version based on the latest tag
 const regexpCoordinates = /v(\d{4})\.(\d{1,2})\..*/g;
 const match = regexpCoordinates.exec(latestTag);
+console.log(`The latest tag is ${match}`);
+
 let yearReleaseVersion = Number(match[1]);
 let majorReleaseVersion = Number(match[2]);
 if (majorReleaseVersion === 11) {
   yearReleaseVersion++;
 }
-majorReleaseVersion = (majorReleaseVersion + 2) % 12;
+
+if (majorReleaseVersion === 10) {
+  majorReleaseVersion = 12;
+} else {
+  majorReleaseVersion = (majorReleaseVersion + 2) % 12;
+}
 if (majorReleaseVersion === 3) {
   majorReleaseVersion--;
 }
 const nextReleaseVersion = yearReleaseVersion + "." + majorReleaseVersion;
+console.log(`The next release version is ${nextReleaseVersion}.0`);
+
 const releaseNotesPath = `doc/content/modules/user-manual/pages/release-notes/${nextReleaseVersion}.0.adoc`;
 const releaseNotes = fs.readFileSync(`${workspace}/${releaseNotesPath}`);
 
