@@ -142,6 +142,28 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
     }
 
+    @DisplayName("GIVEN the SysON Explorer View, WHEN hide expose element filter is active, THEN the expose element are not return as tree item")
+    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testHideExposeElementFilter() {
+        var expandedIds = this.getAllTreeItemIds();
+        var activatedFilters = List.of(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+
+        var hasNoExposeElement = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).allSatisfy(this::assertNoExposeChildren));
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasNoExposeElement)
+                .thenCancel()
+                .verify(Duration.ofSeconds(100));
+
+    }
+
     private List<String> getAllTreeItemIds() {
         var optionalEditingContext = this.editingContextSearchService.findById(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID)
                 .filter(IEMFEditingContext.class::isInstance)
@@ -178,5 +200,18 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             String initialDirectEditLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
             assertThat(initialDirectEditLabel).isEqualTo(expectedLabel);
         };
+    }
+
+    private void assertNoExposeChildren(TreeItem item) {
+        if (item == null) {
+            return;
+        }
+        assertThat(item.getKind()).doesNotEndWith("entity=MembershipExpose");
+        List<TreeItem> children = item.getChildren();
+        if (children != null) {
+            for (TreeItem child : children) {
+                this.assertNoExposeChildren(child);
+            }
+        }
     }
 }

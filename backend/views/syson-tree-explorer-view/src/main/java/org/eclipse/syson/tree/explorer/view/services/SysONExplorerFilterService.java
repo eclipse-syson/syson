@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
+import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -107,6 +108,13 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     @Override
+    public List<Object> hideExposeElements(List<Object> elements) {
+        return elements.stream()
+                .filter(element -> !(element instanceof Expose))
+                .toList();
+    }
+
+    @Override
     public List<Object> applyFilters(List<?> elements, List<String> activeFilterIds) {
         List<Object> alteredElements = new ArrayList<>(elements);
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
@@ -123,6 +131,9 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements = this.hideRootNamespace(alteredElements);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
+            alteredElements = this.hideExposeElements(alteredElements);
         }
         return alteredElements;
     }

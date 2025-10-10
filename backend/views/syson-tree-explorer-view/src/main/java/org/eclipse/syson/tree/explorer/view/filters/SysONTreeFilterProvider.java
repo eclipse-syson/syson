@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
 
     public static final String HIDE_ROOT_NAMESPACES_ID = UUID.nameUUIDFromBytes("SysONTreeRootNamespacesFilter".getBytes()).toString();
 
+    public static final String HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID = UUID.nameUUIDFromBytes("SysONTreeExposeElementsFilter".getBytes()).toString();
+
     @Override
     public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId) {
         List<TreeFilter> filters = new ArrayList<>();
@@ -47,6 +49,7 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
         filters.add(new TreeFilter(HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID, "Hide SysML Standard Libraries", false));
         filters.add(new TreeFilter(HIDE_USER_LIBRARIES_TREE_FILTER_ID, "Hide User Libraries", false));
         filters.add(new TreeFilter(HIDE_ROOT_NAMESPACES_ID, "Hide Root Namespaces", true));
+        filters.add(new TreeFilter(HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID, "Hide Expose Elements", true));
         return filters;
     }
 }

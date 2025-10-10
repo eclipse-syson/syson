@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
@@ -149,6 +150,9 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements.removeIf(e -> e instanceof Namespace ns && this.utilService.isRootNamespace(ns));
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
+            alteredElements.removeIf(Expose.class::isInstance);
         }
         return alteredElements;
     }
