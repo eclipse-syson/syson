@@ -559,7 +559,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
         if (namespace.eContainer() == null && namespace.getName() == null) {
             // Root namespace are not serialized
-            String content = this.getContent(namespace.getOwnedMembership(), "");
+            String content = this.getContent(namespace.getOwnedRelationship(), "");
             if (content != null && !content.isBlank()) {
                 builder.append(content);
             }
