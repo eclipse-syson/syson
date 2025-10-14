@@ -57,6 +57,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -174,6 +175,54 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                             .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                             .hasTargetObjectLabel("part1")
                             .hasCompartmentCount(9)
+                            .check(this.diagram.get(), newDiagram);
+                }, () -> fail("Missing diagram"));
+
+        this.verifier.consumeNextWith(updatedDiagramConsumer);
+
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    ViewUsage generalViewViewUsage = this.objectSearchService.getObject(editingContext, GeneralViewAddExistingElementsTestProjectData.SemanticIds.GENERAL_VIEW_VIEW_USAGE_ID)
+                            .filter(ViewUsage.class::isInstance)
+                            .map(ViewUsage.class::cast)
+                            .orElse(null);
+                    assertThat(generalViewViewUsage).isNotNull();
+                    assertThat(generalViewViewUsage.getExposedElement()).hasSize(1);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        this.verifier.then(exposedElementsChecker);
+
+    }
+
+    @Sql(scripts = { GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    @DisplayName("GIVEN an Element with no declared name but having a declared short name, WHEN drag and dropping this element on a diagram, THEN graphical node should be created")
+    public void dropFromExplorerShortNameOnlyOnEmptyDiagram() {
+        this.verifier.then(() -> {
+            assertThat(this.diagram.get().getNodes()).hasSize(1);
+            Node emptyDiagramNode = this.diagram.get().getNodes().get(0);
+            String emptyDiagramNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
+            // Ensure the existing node is the "empty diagram" one.
+            assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram,
+                    GeneralViewAddExistingElementsTestProjectData.SemanticIds.SN_REQUIREMENT_ELEMENT_ID);
+        });
+
+        Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(newDiagram -> {
+                    new CheckDiagramElementCount(this.diagramComparator)
+                            .hasNewEdgeCount(0)
+                            // 1 node for the Requirement and 8 for its compartments and one for the documentation
+                            .hasNewNodeCount(10)
+                            .check(this.diagram.get(), newDiagram);
+                    new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
+                            .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
+                            .hasTargetObjectLabel("RequirementUsage")
+                            .hasCompartmentCount(8)
                             .check(this.diagram.get(), newDiagram);
                 }, () -> fail("Missing diagram"));
 

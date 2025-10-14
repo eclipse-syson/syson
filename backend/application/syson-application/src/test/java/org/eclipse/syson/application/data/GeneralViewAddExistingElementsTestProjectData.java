@@ -43,6 +43,8 @@ public class GeneralViewAddExistingElementsTestProjectData {
 
         public static final String PART_1_ELEMENT_ID = "67a57df8-2995-41ea-a838-dfb3a9a8ee7f";
 
+        public static final String SN_REQUIREMENT_ELEMENT_ID = "10a86ba3-aa07-4f0b-9aef-55ebc0e95347";
+
         public static final String SUCCESSION_START_ACTION_2_IDS = "18d6f2fc-2182-4217-8da2-bf68c36ffa41";
     }
 
