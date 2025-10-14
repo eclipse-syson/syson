@@ -17,6 +17,15 @@ image::explorer-hide-expose-element-filter.png[Hide expose element filter, width
 == Bug fixes
 
 - Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
+- Fix an issue where the drag and drop of an `Element` with a _declared short_ name but no _declared name_ from the _Explorer_ view to a diagram was not possible.
+For example, the following `Element` can now be safely drag and drop to a diagram:
+
+```
+requirement <'SN'> {
+    doc /* Some doc */
+    comment /* Some comment */
+}
+```
 
 == Improvements
 

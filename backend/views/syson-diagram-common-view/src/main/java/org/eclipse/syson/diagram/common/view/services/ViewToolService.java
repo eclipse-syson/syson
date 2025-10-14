@@ -949,13 +949,21 @@ public class ViewToolService extends ToolService {
      */
     protected boolean isExposable(Element element) {
         boolean isExposable = false;
-        var declaredName = element.getDeclaredName();
         if (this.utilService.isStandardDoneAction(element) || this.utilService.isStandardStartAction(element)) {
             isExposable = false;
         } else {
-            isExposable = declaredName != null && !declaredName.isBlank();
+            isExposable = this.hasIdentifier(element);
         }
         return isExposable;
+    }
+
+    private boolean hasIdentifier(Element element) {
+        String dName = element.getName();
+        if (dName != null && !dName.isBlank()) {
+            return true;
+        }
+        String sName = element.getShortName();
+        return sName != null && !sName.isBlank();
     }
 
     protected boolean containsDirectlyOrIndirectlyInstancesOf(Resource resource, EClassifier eClassifier) {
