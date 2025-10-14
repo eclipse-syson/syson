@@ -16,6 +16,8 @@ image::explorer-hide-expose-element-filter.png[Hide expose element filter, width
 
 == Bug fixes
 
+- Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
+
 == Improvements
 
 == Dependency update

@@ -104,6 +104,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with a import located in the root Namespace, WHEN importing/exporting the file, THEN the exported file should contain this import.")
+    public void checkExportRootExport() throws IOException {
+        var input = """
+                private import ScalarValues::*;
+                package p1;""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with basic FlowUsages, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkFlowUsageBaseExample() throws IOException {
         var input = """

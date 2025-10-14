@@ -12,6 +12,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/1604[#1604] Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
+
 === Improvements
 
 === New features
