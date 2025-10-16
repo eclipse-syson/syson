@@ -23,6 +23,8 @@ public class AQLConstants {
 
     public static final String AQL_SELF = "aql:self";
 
+    public static final String SELF = "self";
+
     public static final String AQL_TRUE = "aql:true";
 
     public static final String AQL_FALSE = "aql:false";

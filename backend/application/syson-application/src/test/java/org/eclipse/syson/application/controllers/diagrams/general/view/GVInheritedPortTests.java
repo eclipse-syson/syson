@@ -18,12 +18,19 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
+import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -35,6 +42,8 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -50,6 +59,7 @@ import reactor.test.StepVerifier;
  * @author frouene
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVInheritedPortTests extends AbstractIntegrationTests {
 
@@ -58,6 +68,12 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
+
+    @Autowired
+    private ConnectorToolsQueryRunner connectorToolsQueryRunner;
+
+    @Autowired
+    private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 
     @Autowired
     private ShowDiagramsInheritedMembersMutationRunner showDiagramsInheritedMembersMutationRunner;
@@ -86,10 +102,10 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("«part»\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("«part»\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
         });
@@ -105,17 +121,251 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(ShowDiagramsInheritedMembersSuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> updatedDiagramContentConsumerAfterInheritedVisibilityChange = assertRefreshedDiagramThat(diagram -> {
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("«part»\npart2").getNode();
+        Consumer<Object> updatedDiagramContentConsumerAfterUncheckInheritedVisibilityChange = assertRefreshedDiagramThat(diagram -> {
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("«part»\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(0);
+        });
+
+        Runnable checkShowInheritedMembersFilter = () -> {
+            var input = new ShowDiagramsInheritedMembersInput(
+                    UUID.randomUUID(),
+                    GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    diagramId.get(),
+                    true);
+            var result = this.showDiagramsInheritedMembersMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.showDiagramsInheritedMembers.__typename");
+            assertThat(typename).isEqualTo(ShowDiagramsInheritedMembersSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumerAfterCheckInheritedVisibilityChange = assertRefreshedDiagramThat(diagram -> {
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            assertThat(part2Node.getBorderNodes()).hasSize(1);
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(uncheckShowInheritedMembersFilter)
-                .consumeNextWith(updatedDiagramContentConsumerAfterInheritedVisibilityChange)
+                .consumeNextWith(updatedDiagramContentConsumerAfterUncheckInheritedVisibilityChange)
+                .then(checkShowInheritedMembersFilter)
+                .consumeNextWith(updatedDiagramContentConsumerAfterCheckInheritedVisibilityChange)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from inherited port, THEN inherited port is redefined")
+    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
+    public void checkInheritedPortSourceRedefinition(String parameterizedValue) {
+        var flux = this.givenSubscriptionToDiagram();
+        var diagramId = new AtomicReference<String>();
+        var port1Id = new AtomicReference<String>();
+        var inheritedPortId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            assertThat(part2Node.getBorderNodes()).hasSize(1);
+            assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
+            port1Id.set(part2Node.getBorderNodes().get(0).getId());
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
+            inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());
+            assertThat(diagram.getEdges()).hasSize(2);
+        });
+
+        Runnable triggerEdgeTool = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "sourceDiagramElementId", inheritedPortId.get(),
+                    "targetDiagramElementId", port1Id.get()
+            );
+            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+                    parameterizedValue));
+            String toolId = ids.get(0);
+
+            var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                    UUID.randomUUID(),
+                    GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    diagramId.get(),
+                    inheritedPortId.get(),
+                    port1Id.get(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    toolId,
+                    new ArrayList<>());
+            var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
+            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            assertThat(part2Node.getBorderNodes()).hasSize(1);
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(diagram.getEdges()).hasSize(3);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(triggerEdgeTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterEdgeTool)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke targeting an inherited port, THEN inherited port is redefined")
+    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
+    public void checkInheritedPortTargetRedefinition(String parameterizedValue) {
+        var flux = this.givenSubscriptionToDiagram();
+        var diagramId = new AtomicReference<String>();
+        var port1Id = new AtomicReference<String>();
+        var inheritedPortId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            assertThat(part2Node.getBorderNodes()).hasSize(1);
+            assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
+            port1Id.set(part2Node.getBorderNodes().get(0).getId());
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
+            inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());
+            assertThat(diagram.getEdges()).hasSize(2);
+        });
+
+        Runnable triggerEdgeTool = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "sourceDiagramElementId", port1Id.get(),
+                    "targetDiagramElementId", inheritedPortId.get()
+            );
+            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+                    parameterizedValue));
+            String toolId = ids.get(0);
+
+            var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                    UUID.randomUUID(),
+                    GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    diagramId.get(),
+                    port1Id.get(),
+                    inheritedPortId.get(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    toolId,
+                    new ArrayList<>());
+            var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
+            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            assertThat(part2Node.getBorderNodes()).hasSize(1);
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(diagram.getEdges()).hasSize(3);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(triggerEdgeTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterEdgeTool)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from an inherited port and targeting an inherited port, THEN both inherited ports are redefined")
+    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
+    public void checkInheritedPortAsSourceAndTargetRedefinition(String parameterizedValue) {
+        var flux = this.givenSubscriptionToDiagram();
+        var diagramId = new AtomicReference<String>();
+        var inheritedPortV1Id = new AtomicReference<String>();
+        var inheritedPortV2Id = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
+            inheritedPortV1Id.set(v1Node.getBorderNodes().get(0).getId());
+            var v2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv2 : Vehicle").getNode();
+            assertThat(v2Node.getBorderNodes()).hasSize(1);
+            assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
+            inheritedPortV2Id.set(v2Node.getBorderNodes().get(0).getId());
+            assertThat(diagram.getEdges()).hasSize(2);
+        });
+
+        Runnable triggerEdgeTool = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "sourceDiagramElementId", inheritedPortV1Id.get(),
+                    "targetDiagramElementId", inheritedPortV2Id.get()
+            );
+            var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
+            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Ports And %s')].id",
+                    parameterizedValue));
+            String toolId = ids.get(0);
+
+            var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                    UUID.randomUUID(),
+                    GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    diagramId.get(),
+                    inheritedPortV1Id.get(),
+                    inheritedPortV2Id.get(),
+                    0,
+                    0,
+                    0,
+                    0,
+                    toolId,
+                    new ArrayList<>());
+            var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
+            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            var v2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv2 : Vehicle").getNode();
+            assertThat(v2Node.getBorderNodes()).hasSize(1);
+            assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(diagram.getEdges()).hasSize(3);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(triggerEdgeTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterEdgeTool)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

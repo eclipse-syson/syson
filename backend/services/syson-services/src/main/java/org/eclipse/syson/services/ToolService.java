@@ -289,6 +289,7 @@ public class ToolService {
 
     protected Node getParentNode(IDiagramElement diagramElement, Node nodeContainer) {
         List<Node> nodes = nodeContainer.getChildNodes();
+        nodes.addAll(nodeContainer.getBorderNodes());
         if (nodes.contains(diagramElement)) {
             return nodeContainer;
         }

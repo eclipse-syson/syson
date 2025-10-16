@@ -49,6 +49,7 @@ public class FeatureValueEdgeDescriptionProvider extends AbstractFeatureValueEdg
         List<NodeDescription> nodes = new ArrayList<>();
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
         return nodes;
     }
 
@@ -57,6 +58,7 @@ public class FeatureValueEdgeDescriptionProvider extends AbstractFeatureValueEdg
         List<NodeDescription> nodes = new ArrayList<>();
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(nodes::add);
         return nodes;
     }
 
