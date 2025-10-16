@@ -49,6 +49,7 @@ public class FlowUsageEdgeDescriptionProvider extends AbstractFlowUsageEdgeDescr
         var sources = new ArrayList<NodeDescription>();
 
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(sources::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(sources::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(sources::add);
         return sources;
     }
@@ -57,6 +58,7 @@ public class FlowUsageEdgeDescriptionProvider extends AbstractFlowUsageEdgeDescr
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
         var targets = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(targets::add);
         return targets;
     }

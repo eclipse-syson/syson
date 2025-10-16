@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
@@ -70,6 +71,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -78,6 +80,8 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -744,6 +748,44 @@ public class ViewToolService extends ToolService {
      */
     public List<? extends Object> getActionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getActionUsage());
+    }
+
+    /**
+     * Redefine an inherited port.
+     *
+     * @param inheritedFeature
+     *            semantic inherited port
+     * @param inheritedGraphicalPort
+     *            graphical inherited port
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @return the new {@link PartUsage} that redefines the inherited one.
+     */
+    public PortUsage redefineInheritedPort(Feature inheritedFeature, IDiagramElement inheritedGraphicalPort, IEditingContext editingContext, DiagramContext diagramContext) {
+        Object parentNode = this.getParentNode(inheritedFeature, inheritedGraphicalPort, diagramContext);
+        if (parentNode instanceof Node node) {
+            var type = this.objectSearchService.getObject(editingContext, node.getTargetObjectId())
+                    .filter(Type.class::isInstance)
+                    .map(Type.class::cast)
+                    .orElse(null);
+            if (type != null) {
+                PortUsage portUsage = SysmlFactory.eINSTANCE.createPortUsage();
+                Membership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                membership.getOwnedRelatedElement().add(portUsage);
+                type.getOwnedRelationship().add(membership);
+
+                Redefinition redefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                redefinition.setRedefinedFeature(inheritedFeature);
+                redefinition.setRedefiningFeature(portUsage);
+
+                portUsage.getOwnedRelationship().add(redefinition);
+                return portUsage;
+            }
+        }
+        return null;
     }
 
     /**

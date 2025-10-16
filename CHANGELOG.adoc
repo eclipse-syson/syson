@@ -19,8 +19,9 @@
 
 === New features
 
-- https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Display inherited `PortUsages` as border nodes in diagrams
-- https://github.com/eclipse-syson/syson/issues/1589[#1589] [explorer] Add a filter to hide expose elements in `ViewUsage`
+- https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Display inherited `PortUsages` as graphical border nodes in diagrams.
+- https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Redefine inherited `PortUsages` when connected as graphical border nodes.
+- https://github.com/eclipse-syson/syson/issues/1589[#1589] [explorer] Add a filter to hide expose elements in `ViewUsage`.
 
 == v2025.10.0
 
