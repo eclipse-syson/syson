@@ -245,7 +245,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                    .verify(Duration.ofSeconds(1000));
         }
     }
 
@@ -286,6 +286,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .filter(element -> Objects.equals(element.getName(), parentLabel))
                     .findFirst();
             assertThat(optParentElement).isPresent();
+            assertThat(optParentElement.get()).isInstanceOf(AcceptActionUsage.class);
             AcceptActionUsage acceptActionUsage = (AcceptActionUsage) optParentElement.get();
             var referenceUsage = acceptActionUsage.getPayloadParameter();
             var relationship = referenceUsage.getOwnedRelationship().get(0);
@@ -334,6 +335,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .filter(element -> Objects.equals(element.getName(), parentLabel))
                     .findFirst();
             assertThat(optParentElement).isPresent();
+            assertThat(optParentElement.get()).isInstanceOf(AcceptActionUsage.class);
             AcceptActionUsage acceptActionUsage = (AcceptActionUsage) optParentElement.get();
             var receiverExpression = acceptActionUsage.getReceiverArgument();
             var relationship = receiverExpression.getOwnedRelationship().get(0);

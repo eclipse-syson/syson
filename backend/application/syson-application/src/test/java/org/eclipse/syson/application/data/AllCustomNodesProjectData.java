@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.application.data;
 
+import org.eclipse.syson.sysml.helper.LabelConstants;
+
 /**
  * Ids for project "AllCustomNodes".
  *
@@ -53,11 +55,11 @@ public class AllCustomNodesProjectData {
 
         public static final String PACKAGE = "Package1";
 
-        public static final String IMPORTED_PACKAGE = "\u00ABprivate\u00BB\nActions";
+        public static final String IMPORTED_PACKAGE = LabelConstants.OPEN_QUOTE + "private" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "Actions";
 
-        public static final String NOTE = "\u00ABcomment\u00BB\n\nadd comment here";
+        public static final String NOTE = LabelConstants.OPEN_QUOTE + "comment" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + LabelConstants.CR + "add comment here";
 
-        public static final String VIEW_FRAME = "\u00ABview\u00BB view2 : StandardViewDefinitions::GeneralView";
+        public static final String VIEW_FRAME = LabelConstants.OPEN_QUOTE + "view" + LabelConstants.CLOSE_QUOTE + " view2 : StandardViewDefinitions::GeneralView";
 
     }
 }

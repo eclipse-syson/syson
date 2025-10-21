@@ -28,25 +28,25 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import reactor.test.StepVerifier.Step;
 
 /**
- * Execute a "Delete From Diagram" tool.
+ * Execute a "Delete" tool (either delete from model or delete from diagram).
  *
  * @author Arthur Daussy
  */
-public class DeleteFromDiagramTester {
+public class DeleteToolTester {
 
-    private final DeleteFromDiagramRunner runner;
+    private final DeleteToolRunner runner;
 
     private final String editingContextId;
 
     private final String representationId;
 
-    public DeleteFromDiagramTester(DeleteFromDiagramRunner runner, String editingContextId, String representationId) {
+    public DeleteToolTester(DeleteToolRunner runner, String editingContextId, String representationId) {
         this.runner = Objects.requireNonNull(runner);
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.representationId = Objects.requireNonNull(representationId);
     }
 
-    public void checkRemoveFromDiagram(Step<DiagramRefreshedEventPayload> verifier, List<String> nodeIds, List<String> edgeIds,
+    public void checkDeleteTool(Step<DiagramRefreshedEventPayload> verifier, List<String> nodeIds, List<String> edgeIds,
             Consumer<DiagramRefreshedEventPayload> diagramConsumer) {
         Runnable requestRemoveFromDiagram = () -> {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Used to create a {@link PortUsage} as the receiver of an accept action usage.
@@ -37,7 +38,7 @@ public class AcceptActionPortUsageReceiverToolNodeProvider implements INodeToolP
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var creationPayloadServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".createAcceptActionReceiver()")
+                .expression(AQLUtils.getSelfServiceCallExpression("createAcceptActionReceiver"))
                 .build();
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
@@ -48,7 +49,7 @@ public class AcceptActionPortUsageReceiverToolNodeProvider implements INodeToolP
         return builder.name("New Port as Receiver")
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPortUsage().getName() + ".svg")
                 .body(rootChangContext)
-                .preconditionExpression(AQLConstants.AQL_SELF + ".isEmptyAcceptActionUsageReceiver()")
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("isEmptyAcceptActionUsageReceiver"))
                 .build();
     }
 }

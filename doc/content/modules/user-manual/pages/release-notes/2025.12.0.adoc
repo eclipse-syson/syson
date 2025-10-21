@@ -38,6 +38,8 @@ requirement <'SN'> {
 }
 ```
 
+- Fix an issue where the undo of the deletion of a graphical node in a diagram was not restoring the graphical node correctly.
+
 == Improvements
 
 == Technical details

@@ -40,6 +40,7 @@ import org.eclipse.syson.application.data.GeneralViewInheritedPortTestProjectDat
 import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersInput;
 import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersSuccessPayload;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -106,10 +107,10 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
         });
@@ -126,9 +127,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramContentConsumerAfterUncheckInheritedVisibilityChange = assertRefreshedDiagramThat(diagram -> {
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(0);
         });
 
@@ -144,9 +145,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramContentConsumerAfterCheckInheritedVisibilityChange = assertRefreshedDiagramThat(diagram -> {
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
         });
 
@@ -174,11 +175,11 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
             port1Id.set(part2Node.getBorderNodes().get(0).getId());
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());
@@ -215,9 +216,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
             assertThat(diagram.getEdges()).hasSize(3);
@@ -245,11 +246,11 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             assertThat(part2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("port1"));
             port1Id.set(part2Node.getBorderNodes().get(0).getId());
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());
@@ -286,9 +287,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
-            var part2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\npart2").getNode();
+            var part2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart2").getNode();
             assertThat(part2Node.getBorderNodes()).hasSize(1);
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
             assertThat(diagram.getEdges()).hasSize(3);
@@ -316,11 +317,11 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             inheritedPortV1Id.set(v1Node.getBorderNodes().get(0).getId());
-            var v2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv2 : Vehicle").getNode();
+            var v2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv2 : Vehicle").getNode();
             assertThat(v2Node.getBorderNodes()).hasSize(1);
             assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             inheritedPortV2Id.set(v2Node.getBorderNodes().get(0).getId());
@@ -357,10 +358,10 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
-            var v2Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv2 : Vehicle").getNode();
+            var v2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv2 : Vehicle").getNode();
             assertThat(v2Node.getBorderNodes()).hasSize(1);
             assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
             assertThat(diagram.getEdges()).hasSize(3);
@@ -386,7 +387,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
             assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());

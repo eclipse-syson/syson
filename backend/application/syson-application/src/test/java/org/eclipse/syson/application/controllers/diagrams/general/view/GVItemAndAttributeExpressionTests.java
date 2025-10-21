@@ -33,8 +33,8 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditEle
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controllers.diagrams.testers.DeleteFromDiagramRunner;
-import org.eclipse.syson.application.controllers.diagrams.testers.DeleteFromDiagramTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolRunner;
+import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
@@ -82,7 +82,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
     private DiagramComparator diagramComparator;
 
     @Autowired
-    private DeleteFromDiagramRunner deleteFromDiagramRunner;
+    private DeleteToolRunner deleteFromDiagramRunner;
 
     private Step<DiagramRefreshedEventPayload> verifier;
 
@@ -92,7 +92,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
     private DirectEditTester directEditTester;
 
-    private DeleteFromDiagramTester deleteFromDiagramTester;
+    private DeleteToolTester deleteFromDiagramTester;
 
     @BeforeEach
     public void setUp() {
@@ -105,7 +105,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
         this.directEditInitialLabelTester = new DirectEditInitialLabelTester(this.initialDirectEditElementLabelQueryRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
         this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID);
-        this.deleteFromDiagramTester = new DeleteFromDiagramTester(this.deleteFromDiagramRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+        this.deleteFromDiagramTester = new DeleteToolTester(this.deleteFromDiagramRunner, GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
     }
 
@@ -275,7 +275,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void deleteFeatureValueEdge() {
-        this.deleteFromDiagramTester.checkRemoveFromDiagram(this.verifier, List.of(), List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE),
+        this.deleteFromDiagramTester.checkDeleteTool(this.verifier, List.of(), List.of(GeneralViewItemAndAttributeProjectData.GraphicalIds.FEATURE_VALUE_A2_2_TO_A1_4_EDGE),
                 payload -> Optional.of(payload)
                         .map(DiagramRefreshedEventPayload::diagram)
                         .ifPresentOrElse(newDiagram -> {
