@@ -113,6 +113,7 @@ public class SDVDiagramDescriptionTests {
                         .and(this.diagramPredicates.isEmptyDiagramNode().negate())
                         .and(this.diagramPredicates.isCompartmentNode().negate())
                         .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate())
+                        .and(this.diagramPredicates.isInheritedBorderNode().negate())
                         .and(this.diagramPredicates.getIsNamespaceImportNode().negate())
                 )
                 .filter(nodeDescription -> nodeDescription.getInsideLabel() != null && nodeDescription.getInsideLabel().getLabelExpression() != null
@@ -129,6 +130,7 @@ public class SDVDiagramDescriptionTests {
                         .and(this.diagramPredicates.isEmptyDiagramNode().negate())
                         .and(this.diagramPredicates.isCompartmentNode().negate())
                         .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate())
+                        .and(this.diagramPredicates.isInheritedBorderNode().negate())
                         .and(this.diagramPredicates.isStartOrDoneNode().negate()))
                 .toList();
         new NodeDescriptionHasDeleteToolChecker().checkAll(nodeDescriptionCandidates);

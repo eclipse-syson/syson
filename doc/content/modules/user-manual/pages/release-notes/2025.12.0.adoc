@@ -7,6 +7,7 @@
 == New features
 
 - In diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
+These graphical border nodes cannot be edited or deleted.
 
 image::gv-inherited-port.png[Inherited port, width=65%,height=65%]
 
