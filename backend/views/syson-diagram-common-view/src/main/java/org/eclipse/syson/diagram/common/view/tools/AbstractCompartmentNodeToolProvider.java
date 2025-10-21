@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -71,9 +72,14 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         var builder = this.diagramBuilderHelper.newNodeTool();
         builder.dialogDescription(this.getSelectionDialogDescription());
 
-        var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                        List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+        ChangeContextBuilder revealOperation;
+        if (this.revealOnCreate()) {
+            revealOperation = this.viewBuilderHelper.newChangeContext()
+                    .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
+                            List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+        } else {
+            revealOperation = this.viewBuilderHelper.newChangeContext().expression(AQLConstants.AQL_SELF);
+        }
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("expose",

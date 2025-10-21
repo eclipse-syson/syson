@@ -184,7 +184,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 1),

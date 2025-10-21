@@ -58,7 +58,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     @Override
     protected String getName() {
-        return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
             edgeTools.add(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)));
             edgeTools.add(this.createInterfaceUsageEdgeTool(List.of(nodeDescription)));
             edgeTools.add(this.createFlowUsageEdgeTool(List.of(nodeDescription)));
-            cache.getNodeDescription(this.nameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+            cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
                     .ifPresent(inheritedPortBorderNode -> {
                         edgeTools.add(this.createBindingConnectorAsUsageToInheritedPortUsageEdgeTool(List.of(inheritedPortBorderNode)));
                         edgeTools.add(this.createInterfaceUsageToInheritedPortUsageEdgeTool(List.of(inheritedPortBorderNode)));
@@ -110,7 +110,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName()))
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -124,7 +124,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createInterfaceUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getInterfaceUsage().getName()))
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -138,7 +138,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getFlowUsage().getName()))
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -147,7 +147,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     private EdgeTool createBindingConnectorAsUsageToInheritedPortUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         return this.diagramBuilderHelper.newEdgeTool()
-                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
+                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName()))
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_TARGET, "redefineInheritedPort", List.of(
@@ -162,7 +162,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     private EdgeTool createInterfaceUsageToInheritedPortUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         return this.diagramBuilderHelper.newEdgeTool()
-                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
+                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getInterfaceUsage().getName()))
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_TARGET, "redefineInheritedPort", List.of(
@@ -177,7 +177,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     private EdgeTool createFlowUsageEdgeToInheritedPortUsageTool(List<NodeDescription> targetElementDescriptions) {
         return this.diagramBuilderHelper.newEdgeTool()
-                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
+                .name(REDEFINE_PORT_PREFIX_TOOL_NAME + this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
                 .iconURLsExpression(this.getToolIconURLsExpression(SysmlPackage.eINSTANCE.getFlowUsage().getName()))
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_TARGET, "redefineInheritedPort", List.of(

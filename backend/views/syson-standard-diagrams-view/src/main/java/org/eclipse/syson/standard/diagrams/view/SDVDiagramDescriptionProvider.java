@@ -80,6 +80,7 @@ import org.eclipse.syson.standard.diagrams.view.edges.TransitionEdgeDescriptionP
 import org.eclipse.syson.standard.diagrams.view.edges.UsageNestedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionItemNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.ActionUsageParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActorNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.AllocationDefinitionEndsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.AllocationDefinitionEndsCompartmentNodeDescriptionProvider;
@@ -92,18 +93,19 @@ import org.eclipse.syson.standard.diagrams.view.nodes.CaseUsageSubjectCompartmen
 import org.eclipse.syson.standard.diagrams.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
 import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.ReferenceUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementUsageActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementUsageStakeholdersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.SDVNodeDescriptionProviderSwitch;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -172,8 +174,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getAcceptActionUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getAllocationDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getAllocationUsage(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAllocation())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
@@ -230,7 +232,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             SysmlPackage.eINSTANCE.getPartUsage(),
             SysmlPackage.eINSTANCE.getPartDefinition(),
             SysmlPackage.eINSTANCE.getPortUsage(),
-            SysmlPackage.eINSTANCE.getPortDefinition()
+            SysmlPackage.eINSTANCE.getPortDefinition(),
+            SysmlPackage.eINSTANCE.getReferenceUsage()
             ));
 
     public static final ToolSectionDescription BEHAVIOR_TOOL_SECTION = new ToolSectionDescription(ToolConstants.BEHAVIOR, List.of(
@@ -305,9 +308,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = this.createDiagramElementDescriptionProviders(colorProvider);
 
-        diagramElementDescriptionProviders.stream()
-                .map(IDiagramElementDescriptionProvider::create)
-                .forEach(cache::put);
+        diagramElementDescriptionProviders.forEach(provider -> {
+            var diagramElementDescription = provider.create();
+            cache.put(diagramElementDescription);
+        });
 
         // link elements each other
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
@@ -328,7 +332,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
-        this.linkActionDefinitionParametersCompartment(cache);
+        this.linkActionParametersCompartment(cache);
         this.linkPartPerformActionsCompartment(cache);
         this.linkActionPerformActionsCompartment(cache);
         this.linkInterconnectionCompartment(cache);
@@ -352,6 +356,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedPortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ItemUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.addAll(this.createAllDefinitionOwnedUsageEdgeDescriptionProviders(colorProvider));
         diagramElementDescriptionProviders.addAll(this.createAllUsageCompositeEdgeDescriptionProviders(colorProvider));
@@ -364,7 +369,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         });
 
         // create a node description provider for each element found in a section
-        var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
+        var nodeDescriptionProviderSwitch = new SDVNodeDescriptionProviderSwitch(colorProvider);
         TOOL_SECTIONS.forEach(sectionTool -> {
             sectionTool.elements().forEach(eClass -> {
                 diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
@@ -406,9 +411,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         // ActionDefinition
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForOwnedAction(colorProvider));
 
-        // Compartment "parameters" (DirectedFeature) is defined for:
-        // ActionDefinition
-        compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForActionDefinition(colorProvider));
+        // Compartment "parameters" (reference usages) is defined for:
+        // ActionDefinition, ActionUsage
+        compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForActionParameters(colorProvider));
 
         // Compartment "action flow" (NestedAction) is defined for:
         // ActionUsage, PartUsage, PerformActionUsage
@@ -531,13 +536,16 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         return compartmentNodeDescriptionProviders;
     }
 
-    private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForActionDefinition(IColorProvider colorProvider) {
+    private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForActionParameters(IColorProvider colorProvider) {
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
         compartmentNodeDescriptionProviders.add(new ActionDefinitionParametersCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter(), colorProvider,
+        compartmentNodeDescriptionProviders
+                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), colorProvider,
                 this.getDescriptionNameGenerator()));
-        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter(),
-                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new ActionUsageParametersCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders
+                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), colorProvider,
+                        this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
@@ -992,7 +1000,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         );
     }
 
-    private void linkActionDefinitionParametersCompartment(IViewDiagramElementFinder cache) {
+    private void linkActionParametersCompartment(IViewDiagramElementFinder cache) {
         NodeDescription actionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).get();
         String documentationCompartmentName = this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getElement_Documentation());
 
@@ -1004,9 +1012,27 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .map(documentationContainerDescription -> actionDefinitionNodeDescription.getReusedChildNodeDescriptions().indexOf(documentationContainerDescription))
                 .orElse(-1);
         cache.getNodeDescription(
-                        this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getBehavior_Parameter()))
-                .ifPresent(parameterContainerNodeDescription -> {
-                    actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parameterContainerNodeDescription);
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())
+                        + ActionDefinitionParametersCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)
+                .ifPresent(parametersCompartmentNodeDescription -> {
+                    actionDefinitionNodeDescription.getReusedChildNodeDescriptions().add(documentationContainerIndex + 1, parametersCompartmentNodeDescription);
+                });
+
+        NodeDescription actionUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).get();
+        String usageDocumentationCompartmentName = this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getElement_Documentation());
+
+        // We want to add the Parameters container just after the documentation. If the documentation is not found, we
+        // will add it at the first index.
+        Integer usageDocumentationContainerIndex = actionUsageNodeDescription.getReusedChildNodeDescriptions().stream()
+                .filter(nodeDescription -> usageDocumentationCompartmentName.equals(nodeDescription.getName()))
+                .findFirst()
+                .map(documentationContainerDescription -> actionUsageNodeDescription.getReusedChildNodeDescriptions().indexOf(documentationContainerDescription))
+                .orElse(-1);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference())
+                        + ActionUsageParametersCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)
+                .ifPresent(parametersCompartmentNodeDescription -> {
+                    actionUsageNodeDescription.getReusedChildNodeDescriptions().add(usageDocumentationContainerIndex + 1, parametersCompartmentNodeDescription);
                 });
     }
 

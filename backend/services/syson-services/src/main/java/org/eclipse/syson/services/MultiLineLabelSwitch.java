@@ -58,6 +58,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
@@ -655,6 +656,30 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("port")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.labelService.getTypingLabel(object))
+                .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getSubsettingLabel(object))
+                .append(this.labelService.getValueLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseReferenceUsage(ReferenceUsage object) {
+        var defaultName = "reference";
+        var owner = object.getOwner();
+        if (owner instanceof ActionUsage || owner instanceof ActionDefinition) {
+            defaultName = "parameter";
+        }
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append(defaultName)
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))

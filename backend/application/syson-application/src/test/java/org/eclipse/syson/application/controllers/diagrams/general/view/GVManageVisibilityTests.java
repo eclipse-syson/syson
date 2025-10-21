@@ -97,9 +97,9 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     var diagram = diagramRefreshedEventPayload.diagram();
                     assertThat(diagram.getNodes()).hasSize(1);
                     nodeId.set(diagram.getNodes().get(0).getId());
-                    assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(5);
+                    assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(6);
                     var children = diagram.getNodes().get(0).getChildNodes();
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(5);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(6);
                     assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Normal))).hasSize(0);
                 }, () -> fail("Missing diagram"));
 
@@ -138,9 +138,9 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     var diagram = diagramRefreshedEventPayload.diagram();
                     assertThat(diagram.getNodes()).hasSize(1);
                     nodeId.set(diagram.getNodes().get(0).getId());
-                    assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(5);
+                    assertThat(diagram.getNodes().get(0).getChildNodes()).hasSize(6);
                     var children = diagram.getNodes().get(0).getChildNodes();
-                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(4);
+                    assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Hidden))).hasSize(5);
                     assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Normal))).hasSize(1);
                     assertThat(children.stream().filter(node -> node.getState().equals(ViewModifier.Faded))).hasSize(0);
                 }, () -> fail("Missing diagram"));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,9 +62,10 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
 
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
+        String nodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName);
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         assertThat(newDiagram.getNodes()).anySatisfy(childNode -> {
-            assertThat(childNode).hasDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName));
+            assertThat(childNode).hasDescriptionId(nodeDescriptionId);
             assertThat(childNode.getChildNodes()).hasSize(this.compartmentCount);
             if (this.targetObjectLabel != null) {
                 assertThat(childNode).hasTargetObjectLabel(this.targetObjectLabel);

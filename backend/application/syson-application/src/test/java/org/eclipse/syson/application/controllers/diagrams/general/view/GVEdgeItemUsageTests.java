@@ -200,11 +200,14 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "action", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            // One bordered node
+            // One border + one root node for Tree Composition (with 4 compartments) + new item in the items
+            // compartment
+            // One new Composite Edge
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewBorderNodeCount(1) // One bordered node
-                    .hasNewNodeCount(7) // One border + one root node for Tree Composition (with 4 compartments) +
-                                        // new item in the items compartment
-                    .hasNewEdgeCount(1) // Composite Edge
+                    .hasNewBorderNodeCount(1)
+                    .hasNewNodeCount(7)
+                    .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
 
             List<Node> newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
@@ -227,7 +230,6 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
                     .hasType("node:image")
                     .hasTargetObjectLabel(ITEM1 + kind)
                     .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
-
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
@@ -236,7 +238,6 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
             EList<Feature> parameters = actionUsage.getParameter();
             assertThat(parameters).hasSize(1).allMatch(p -> (ITEM1 + kind).equals(p.getDeclaredName()) && p.getDirection() == FeatureDirectionKind.get(kind.toLowerCase()));
         });
-
     }
 
     private void checkItemParameterOnActionDefinition(String kind) {
@@ -244,11 +245,14 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "ActionDefinition", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            // One bordered node
+            // One border + one root node for Tree Composition (with 4 compartments) + new item in the items
+            // compartment
+            // One new Composite Edge
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewBorderNodeCount(1) // One bordered node
-                    .hasNewNodeCount(7) // One border + one root node for Tree Composition (with 4 compartments) + new
-                                        // item in the parameters compartment
-                    .hasNewEdgeCount(1) // Composite Edge
+                    .hasNewBorderNodeCount(1)
+                    .hasNewNodeCount(7)
+                    .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
 
             List<Node> newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
@@ -271,7 +275,6 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
                     .hasType("node:image")
                     .hasTargetObjectLabel(ITEM1)
                     .hasTargetObjectKind("siriusComponents://semantic?domain=sysml&entity=ItemUsage");
-
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
@@ -280,7 +283,5 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
             EList<Feature> parameters = actionUsage.getParameter();
             assertThat(parameters).hasSize(1).allMatch(p -> "item1".equals(p.getDeclaredName()) && p.getDirection() == FeatureDirectionKind.get(kind.toLowerCase()));
         });
-
     }
-
 }

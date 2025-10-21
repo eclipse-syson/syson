@@ -27,16 +27,16 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * ActionDefinition Parameters Compartment node description.
+ * ActionUsage Parameters Compartment node description.
  *
- * @author fbarbin
+ * @author arichard
  */
-public class ActionDefinitionParametersCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class ActionUsageParametersCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     public static final String COMPARTMENT_NAME = "parameters";
 
-    public ActionDefinitionParametersCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), colorProvider, descriptionNameGenerator);
+    public ActionUsageParametersCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), colorProvider, descriptionNameGenerator);
     }
 
     @Override

@@ -21,12 +21,15 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractFlowUsageEdgeDescriptionProvider;
 import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to describe an {@link FlowUsage} edge between two {@link PortUsage}.
+ * Used to describe an {@link FlowUsage} edge between two {@link PortUsage}, {@link ItemUsage} or
+ * {@link ReferenceUsage}.
  *
  * @author frouene
  */
@@ -47,10 +50,10 @@ public class FlowUsageEdgeDescriptionProvider extends AbstractFlowUsageEdgeDescr
     @Override
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
         var sources = new ArrayList<NodeDescription>();
-
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(sources::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(sources::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(sources::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(sources::add);
         return sources;
     }
 
@@ -60,6 +63,7 @@ public class FlowUsageEdgeDescriptionProvider extends AbstractFlowUsageEdgeDescr
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(targets::add);
         return targets;
     }
 }

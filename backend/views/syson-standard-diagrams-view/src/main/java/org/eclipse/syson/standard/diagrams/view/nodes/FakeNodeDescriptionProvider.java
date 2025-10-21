@@ -132,6 +132,12 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())
                 + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference())
+                + ActionUsageParametersCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())
+                + ActionDefinitionParametersCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)
+                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
@@ -180,6 +186,8 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()))
                 .ifPresent(childrenNodes::add);
     }
 }

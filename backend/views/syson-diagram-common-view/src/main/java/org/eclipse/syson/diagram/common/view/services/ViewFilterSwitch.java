@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -104,6 +105,13 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean casePortUsage(PortUsage object) {
         // For PortUsages we don't want nested Nodes, no matter the type of ViewDefinition.
         // The sub PortUsages are displayed in a compartment list called "ports" and/or as border nodes.
+        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+    }
+
+    @Override
+    public Boolean caseReferenceUsage(ReferenceUsage object) {
+        // For ReferenceUsage we don't want nested Nodes, no matter the type of ViewDefinition.
+        // The sub ReferenceUsages are displayed in a compartment list called "references" and/or as border nodes.
         return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
     }
 

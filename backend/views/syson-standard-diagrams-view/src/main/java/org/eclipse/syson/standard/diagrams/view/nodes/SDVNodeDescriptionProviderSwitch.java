@@ -47,6 +47,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
@@ -64,11 +65,11 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  *
  * @author Jerome Gout
  */
-public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<INodeDescriptionProvider> {
+public class SDVNodeDescriptionProviderSwitch extends SysmlEClassSwitch<INodeDescriptionProvider> {
 
     private final IColorProvider colorProvider;
 
-    public GeneralViewNodeDescriptionProviderSwitch(IColorProvider colorProvider) {
+    public SDVNodeDescriptionProviderSwitch(IColorProvider colorProvider) {
         this.colorProvider = colorProvider;
     }
 
@@ -233,6 +234,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider casePortUsage(PortUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseReferenceUsage(ReferenceUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getReferenceUsage(), this.colorProvider);
     }
 
     @Override

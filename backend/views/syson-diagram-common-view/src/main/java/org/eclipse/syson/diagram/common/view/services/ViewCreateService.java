@@ -313,8 +313,8 @@ public class ViewCreateService {
         Objects.requireNonNull(selectedObject);
 
         if ((self instanceof RequirementUsage || self instanceof RequirementDefinition) && (selectedObject instanceof ItemUsage || selectedObject instanceof ItemDefinition)) {
-            final PartUsage createdPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            final var stakeholderMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getStakeholderMembership());
+            var createdPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            var stakeholderMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getStakeholderMembership());
             stakeholderMembership.getOwnedRelatedElement().add(createdPartUsage);
             this.elementInitializerSwitch.doSwitch(createdPartUsage);
 
@@ -328,6 +328,15 @@ public class ViewCreateService {
         } else {
             return self;
         }
+    }
+
+    public Element createActionParameter(Element self, String direction) {
+        var newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        var featureMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getFeatureMembership());
+        featureMembership.getOwnedRelatedElement().add(newReferenceUsage);
+        this.elementInitializerSwitch.doSwitch(newReferenceUsage);
+        newReferenceUsage.setDirection(FeatureDirectionKind.getByName(direction));
+        return newReferenceUsage;
     }
 
     /**
