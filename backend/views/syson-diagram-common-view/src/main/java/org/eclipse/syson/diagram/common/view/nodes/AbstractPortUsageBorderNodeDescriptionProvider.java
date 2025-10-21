@@ -69,6 +69,8 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     protected abstract OutsideLabelDescription createOutsideLabelDescription();
 
+    protected abstract NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription);
+
     protected abstract String getName();
 
     @Override
@@ -93,7 +95,7 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
         cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription)));
     }
 
-    private NodeStyleDescription createPortUnsetNodeStyle() {
+    protected NodeStyleDescription createPortUnsetNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
@@ -114,7 +116,7 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
                 .build();
     }
 
-    private List<ConditionalNodeStyle> createPortUsageConditionalNodeStyles() {
+    protected List<ConditionalNodeStyle> createPortUsageConditionalNodeStyles() {
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
@@ -132,33 +134,7 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
         );
     }
 
-    private NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
-
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Delete from Model")
-                .body(changeContext.build());
-
-        var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
-
-        var editTool = this.diagramBuilderHelper.newLabelEditTool()
-                .name("Edit")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
-                .body(callEditService.build());
-
-
-        return this.diagramBuilderHelper.newNodePalette()
-                .deleteTool(deleteTool.build())
-                .labelEditTool(editTool.build())
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
-                .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
-                .build();
-    }
-
     protected String getToolIconURLsExpression(String elementName) {
         return "/icons/full/obj16/" + elementName + ".svg";
     }
-
 }

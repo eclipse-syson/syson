@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ConnectorToolsQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -77,6 +78,9 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
 
     @Autowired
     private ShowDiagramsInheritedMembersMutationRunner showDiagramsInheritedMembersMutationRunner;
+
+    @Autowired
+    private PaletteQueryRunner paletteQueryRunner;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -366,6 +370,44 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(triggerEdgeTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterEdgeTool)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN palette is retrieved, THEN delete and rename tools should not be available")
+    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void checkInheritedPortPalette() {
+        var flux = this.givenSubscriptionToDiagram();
+        var diagramId = new AtomicReference<String>();
+        var inheritedPortId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var v1Node = new DiagramNavigator(diagram).nodeWithLabel("\u00ABpart\u00BB\nv1 : Vehicle").getNode();
+            assertThat(v1Node.getBorderNodes()).hasSize(1);
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
+            inheritedPortId.set(v1Node.getBorderNodes().get(0).getId());
+        });
+
+        Runnable triggerEdgeTool = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "diagramElementId", inheritedPortId.get()
+            );
+            var result = this.paletteQueryRunner.run(variables);
+            List<String> quickAccessToolIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+            assertThat(quickAccessToolIds).doesNotContain("semantic-delete", "edit");
+            List<String> editToolSectionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.id=='edit-section')].tools[*].id");
+            assertThat(editToolSectionIds).doesNotContain("semantic-delete", "edit");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(triggerEdgeTool)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

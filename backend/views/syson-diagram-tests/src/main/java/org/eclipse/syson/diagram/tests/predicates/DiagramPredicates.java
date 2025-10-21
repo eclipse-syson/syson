@@ -40,6 +40,8 @@ public class DiagramPredicates {
 
     private final Predicate<NodeDescription> isInheritedCompartmentItemNode;
 
+    private final Predicate<NodeDescription> isInheritedBorderNode;
+
     private final Predicate<NodeDescription> isNamespaceImportNode;
 
     private final Predicate<NodeDescription> isStartOrDoneNode;
@@ -51,6 +53,8 @@ public class DiagramPredicates {
         this.isCompartmentNode = n -> n.getName().contains(compartmentNameFragment);
         String inheritedCompartmentItemNameFragment = this.getInheritedCompartmentItemNameFragment(descriptionNameGenerator);
         this.isInheritedCompartmentItemNode = n -> n.getName().contains(inheritedCompartmentItemNameFragment);
+        String inheritedBorderNodeNameFragment = this.getInheritedBorderNodeNameFragment(descriptionNameGenerator);
+        this.isInheritedBorderNode = n -> n.getName().contains(inheritedBorderNodeNameFragment);
         this.isNamespaceImportNode = n -> n.getName().equals(diagramPrefix + " Node NamespaceImport");
         this.isStartOrDoneNode = n -> n.getName().equals(descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
                 || n.getName().equals(descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME));
@@ -70,6 +74,10 @@ public class DiagramPredicates {
 
     public Predicate<NodeDescription> isInheritedCompartmentItemNode() {
         return this.isInheritedCompartmentItemNode;
+    }
+
+    public Predicate<NodeDescription> isInheritedBorderNode() {
+        return this.isInheritedBorderNode;
     }
 
     public Predicate<NodeDescription> getIsNamespaceImportNode() {
@@ -107,6 +115,15 @@ public class DiagramPredicates {
 
         return fullName.replace(element.getName(), "")
                 .replace(reference.getName(), "")
+                .strip()
+                .concat(" ");
+    }
+
+    private String getInheritedBorderNodeNameFragment(IDescriptionNameGenerator nameGenerator) {
+        EClass element = SysmlPackage.eINSTANCE.getElement();
+        String fullName = nameGenerator.getInheritedBorderNodeName(element);
+
+        return fullName.replace(element.getName(), "")
                 .strip()
                 .concat(" ");
     }

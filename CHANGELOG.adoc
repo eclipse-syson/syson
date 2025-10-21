@@ -14,6 +14,7 @@
 
 - https://github.com/eclipse-syson/syson/issues/1604[#1604] [export] Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
 - https://github.com/eclipse-syson/syson/issues/1602[#1602] [diagrams] Fix an issue where the drag and drop of a `RequirementUsage` (or any other `Element`) with a declared short name but no declared name from the _Explorer_ view to a diagram was not possible.
+- https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Remove rename and delete tools from inherited port palette.
 
 === Improvements
 

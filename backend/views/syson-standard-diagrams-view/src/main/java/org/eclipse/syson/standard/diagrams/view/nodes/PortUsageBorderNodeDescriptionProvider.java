@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -58,6 +59,31 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
     @Override
     protected String getName() {
         return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
+    }
+
+    @Override
+    protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+
+        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+                .name("Delete from Model")
+                .body(changeContext.build());
+
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
+
+        var editTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
+                .body(callEditService.build());
+
+        return this.diagramBuilderHelper.newNodePalette()
+                .deleteTool(deleteTool.build())
+                .labelEditTool(editTool.build())
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
+                .build();
     }
 
     @Override
@@ -163,5 +189,4 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
-
 }
