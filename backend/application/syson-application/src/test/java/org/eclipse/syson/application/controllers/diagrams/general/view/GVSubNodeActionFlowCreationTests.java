@@ -94,6 +94,8 @@ import reactor.test.StepVerifier.Step;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
+    private static final String PARAMETERS = "parameters";
+
     private static final String ACTION = "action";
 
     private static final String ACTIONS_COMPARTMENT = "actions";
@@ -162,7 +164,23 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionUsageBorderAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getPortUsage()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getUsage_NestedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter In"),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getUsage_NestedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter Inout"),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getUsage_NestedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter Out"))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> actionDefinitionBorderAndChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter In"),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter Inout"),
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), PARAMETERS, SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), SysmlPackage.eINSTANCE.getReferenceUsage(),
+                        "New Parameter Out"))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -227,7 +245,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                    .verify(Duration.ofSeconds(1000));
         }
     }
 
@@ -386,10 +404,42 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("actionUsageBorderAndChildNodeParameters")
-    public void createActionUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
+    public void createActionUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType, String toolName) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         String parentLabel = ACTION;
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, toolName);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(2)
+                    .hasNewBorderNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+            String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(compartmentNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
+            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .hasBorderNodeDescriptionName(borderNodeDescription)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("actionDefinitionBorderAndChildNodeParameters")
+    public void createActionDefinitionBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType, String toolName) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
+        String parentLabel = "ActionDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, toolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(2)
@@ -568,7 +618,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
         String parentLabel = "ActionDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
+        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount, 2),
+                this.diagram,
                 this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }

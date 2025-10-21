@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAd
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
@@ -870,8 +871,7 @@ public class UtilService {
     }
 
     /**
-     * Retrieve all {@link org.eclipse.syson.sysml.PerformActionUsage} elements that are directly accessible from an
-     * element.
+     * Retrieve all {@link PerformActionUsage} elements that are directly accessible from an element.
      *
      * @param element
      *            The {@link Element} to start from
@@ -889,6 +889,24 @@ public class UtilService {
                 .map(PerformActionUsage.class::cast)
                 .filter(performActionUsage -> !(performActionUsage instanceof ExhibitStateUsage))
                 .toList();
+    }
+
+    /**
+     * Retrieve all {@link ReferenceUsage} elements considered as Parameters that are directly accessible from an
+     * element.
+     *
+     * @param element
+     *            The {@link Element} to start from
+     * @return The list of all {@link ReferenceUsage} elements
+     */
+    public List<ReferenceUsage> getReferenceUsagesParameters(Element element) {
+        List<ReferenceUsage> candidates = new ArrayList<>();
+        if (element instanceof ActionUsage usage) {
+            candidates = usage.getNestedReference();
+        } else if (element instanceof ActionDefinition def) {
+            candidates = def.getOwnedReference();
+        }
+        return candidates;
     }
 
     /**

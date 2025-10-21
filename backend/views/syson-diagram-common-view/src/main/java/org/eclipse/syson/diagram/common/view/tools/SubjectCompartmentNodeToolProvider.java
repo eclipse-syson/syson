@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.util.AQLUtils;
 
@@ -24,13 +25,13 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createReferenceUsageAsSubject(selectedObject)";
+        return AQLUtils.getSelfServiceCallExpression("createReferenceUsageAsSubject", "selectedObject");
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getSubjectSelectionDialogElements"))
+                .elementsExpression(AQLUtils.getServiceCallExpression(IEditingContext.EDITING_CONTEXT, "getSubjectSelectionDialogElements"))
                 .childrenExpression(AQLUtils.getSelfServiceCallExpression("getSubjectSelectionDialogChildren"))
                 .isSelectableExpression("aql:self.oclIsKindOf(sysml::Usage)")
                 .build();
@@ -52,7 +53,7 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
 
     @Override
     protected String getPreconditionExpression() {
-        return "aql:self.isEmptySubjectCompartment()";
+        return AQLUtils.getSelfServiceCallExpression("isEmptySubjectCompartment");
     }
 
     @Override

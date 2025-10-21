@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -42,11 +43,11 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     protected static final String REDEFINE_PORT_PREFIX_TOOL_NAME = "Redefine Port And ";
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbstractPortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public AbstractPortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     /**
@@ -95,6 +96,10 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
         cache.getNodeDescription(this.getName()).ifPresent(portUsageBorderNodeDescription -> portUsageBorderNodeDescription.setPalette(this.createNodePalette(cache, portUsageBorderNodeDescription)));
     }
 
+    protected String getToolIconURLsExpression(String elementName) {
+        return "/icons/full/obj16/" + elementName + ".svg";
+    }
+
     protected NodeStyleDescription createPortUnsetNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
@@ -110,7 +115,7 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
                 .fontSize(12)
                 .italic(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:false")
+                .showIconExpression(AQLConstants.AQL_FALSE)
                 .strikeThrough(false)
                 .underline(false)
                 .build();
@@ -132,9 +137,5 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
                         .style(this.createImageNodeStyleDescription("images/feature_inout.svg", borderColor, true))
                         .build()
         );
-    }
-
-    protected String getToolIconURLsExpression(String elementName) {
-        return "/icons/full/obj16/" + elementName + ".svg";
     }
 }

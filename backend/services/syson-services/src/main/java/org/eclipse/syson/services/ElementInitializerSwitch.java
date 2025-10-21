@@ -14,6 +14,8 @@ package org.eclipse.syson.services;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
@@ -221,9 +223,14 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseReferenceUsage(ReferenceUsage object) {
         this.caseUsage(object);
+        Element owner = object.getOwner();
         if (object.getOwningMembership() instanceof SubjectMembership) {
             object.setDeclaredName("subject");
+        } else if (owner instanceof ActionUsage || owner instanceof ActionDefinition) {
+            var existingElements = this.existingElementsCount(object);
+            object.setDeclaredName("parameter" + existingElements);
         }
+        object.setIsComposite(false);
         return object;
     }
 

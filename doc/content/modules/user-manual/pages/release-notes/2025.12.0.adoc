@@ -19,6 +19,11 @@ image::gv-inherited-port-edge-tools.png[Inherited port edge tool, width=65%,heig
 
 image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=65%,height=65%]
 
+- In diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
+Those parameters can be linked to other parameters using the _New Binding Connector As Usage (bind)_ and _New Flow (flow)_ graphical border node tools. 
+
+image::sdv-action-parameters.png[Action parameters, width=65%,height=65%]
+
 
 == Bug fixes
 

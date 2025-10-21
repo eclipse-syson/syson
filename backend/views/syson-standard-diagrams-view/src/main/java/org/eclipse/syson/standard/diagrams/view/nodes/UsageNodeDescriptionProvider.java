@@ -106,6 +106,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         });
         if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(borderNodes::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(borderNodes::add);
         }
         return borderNodes;
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -210,6 +211,11 @@ public class NodeToolSectionNameSwitch extends SysmlEClassSwitch<String> {
 
     @Override
     public String casePortUsage(PortUsage object) {
+        return ToolConstants.STRUCTURE;
+    }
+
+    @Override
+    public String caseReferenceUsage(ReferenceUsage object) {
         return ToolConstants.STRUCTURE;
     }
 
