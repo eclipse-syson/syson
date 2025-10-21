@@ -34,6 +34,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Tests the nodes inside the a PAckage nodes in the General View diagram.
+ * Tests the nodes inside the a Package nodes in the General View diagram.
  *
  * @author arichard
  */
@@ -103,7 +104,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
         assertThat(newPartToolId).as("The tool 'New Part' should exist on the Package").isNotNull();
 
         var newSubPartToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
-        assertThat(newPartToolId).as("The tool 'New Part' should exist on the PartUsage").isNotNull();
+        assertThat(newSubPartToolId).as("The tool 'New Part' should exist on the PartUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();
         var packageNodeId = new AtomicReference<String>();
@@ -127,7 +128,8 @@ public class GVPackageTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
             var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package").getNode();
 
-            var partNode = new DiagramNavigator(diag).nodeWithLabel("Package").childNodeWithLabel("\u00ABpart\u00BB\npart1").getNode();
+            var partNode = new DiagramNavigator(diag).nodeWithLabel("Package").childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1")
+                    .getNode();
             partNodeId.set(partNode.getId());
 
             assertThat(packageNode.getChildNodes()).hasSize(1);
