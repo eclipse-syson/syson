@@ -40,6 +40,7 @@ public class GeneralViewEmptyTestProjectData {
 
         public static final String PACKAGE_1_ID = "528fae42-60c2-40c8-baa3-684d874a950d";
 
+        public static final String VIEW_USAGE_ID = "73f66477-a239-4dfe-88c9-bc99ee7a25ee";
     }
 
 }

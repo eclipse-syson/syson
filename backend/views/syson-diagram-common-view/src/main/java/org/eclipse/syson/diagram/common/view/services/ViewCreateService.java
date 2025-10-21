@@ -601,8 +601,10 @@ public class ViewCreateService {
                 var oldParameterContent = parameterMembership.getOwnedMemberParameter();
                 if (oldParameterContent != null) {
                     // there is already a playload parameter, we need to delete it.
+                    // its' membership container will be automatically deleted with it
                     this.deleteService.deleteFromModel(oldParameterContent);
                 }
+                parameterMembership = this.getPayloadParameterMembership(self);
                 parameterMembership.getOwnedRelatedElement().add(referenceUsage);
                 self.getOwnedRelationship().add(parameterMembership);
             }
@@ -677,8 +679,10 @@ public class ViewCreateService {
         Feature oldParameterContent = parameterMembership.getOwnedMemberParameter();
         if (oldParameterContent != null) {
             // there is already an element, we need to delete this element
+            // its' membership container will be automatically deleted with it
             this.deleteService.deleteFromModel(oldParameterContent);
         }
+        parameterMembership = this.getReceiverParameterMembership(self);
         parameterMembership.getOwnedRelatedElement().add(referenceUsage);
         self.getOwnedRelationship().add(parameterMembership);
         return self;

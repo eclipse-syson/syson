@@ -35,6 +35,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,7 +111,8 @@ public class StartActionTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             diagram.set(diag);
-            var actionFlowCompartmentNode = new DiagramNavigator(diag).nodeWithLabel("\u00ABref action\u00BB\naction").childNodeWithLabel("action flow").getNode();
+            var actionFlowCompartmentNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action")
+                    .childNodeWithLabel("action flow").getNode();
             assertThat(actionFlowCompartmentNode.getState()).isEqualTo(ViewModifier.Hidden);
         });
 
@@ -119,9 +121,11 @@ public class StartActionTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(diag -> {
-            var actionFlowCompartmentNode = new DiagramNavigator(diag).nodeWithLabel("\u00ABref action\u00BB\naction").childNodeWithLabel("action flow").getNode();
+            var actionFlowCompartmentNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action")
+                    .childNodeWithLabel("action flow").getNode();
             assertThat(actionFlowCompartmentNode.getState()).isEqualTo(ViewModifier.Normal);
-            var startNode = new DiagramNavigator(diag).nodeWithLabel("\u00ABref action\u00BB\naction").childNodeWithLabel("action flow").childNodeWithTargetObjectId(START_ACTION_USAGE_ID).getNode();
+            var startNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action")
+                    .childNodeWithLabel("action flow").childNodeWithTargetObjectId(START_ACTION_USAGE_ID).getNode();
             assertThat(startNode).isNotNull();
 
         });

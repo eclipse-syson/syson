@@ -14,16 +14,17 @@ package org.eclipse.syson.services;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.util.SysONEcoreUtil;
 
 /**
  * Deletion-related Java services used by SysON representations.
@@ -41,17 +42,18 @@ public class DeleteService {
      * @return the deleted element.
      */
     public EObject deleteFromModel(Element element) {
-        Set<EObject> elementsToDelete = new HashSet<>();
+        Set<EObject> elementsToDelete = new LinkedHashSet<>();
         Set<EObject> relatedElements = new HashSet<>();
-        elementsToDelete.add(element);
         if (element.eContainer() instanceof Membership membership) {
             elementsToDelete.add(membership);
             this.collectRelatedElements(membership, relatedElements);
+        } else {
+            elementsToDelete.add(element);
         }
         this.collectRelatedElements(element, relatedElements);
         element.eAllContents().forEachRemaining(eObject -> this.collectRelatedElements(eObject, relatedElements));
         elementsToDelete.addAll(relatedElements);
-        EcoreUtil.removeAll(elementsToDelete);
+        SysONEcoreUtil.deleteAll(elementsToDelete, true);
         return element;
     }
 

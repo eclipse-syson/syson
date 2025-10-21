@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to invoke a remove from diagram tool with the GraphQL API.
+ * Used to invoke a delete tool (either delete from model or delete from diagram) with the GraphQL API.
  *
  * <p>
  * This class should be provided by Sirius Web, remove this once
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  * @author Arthur Daussy
  */
 @Service
-public class DeleteFromDiagramRunner implements IMutationRunner<DeleteFromDiagramInput> {
+public class DeleteToolRunner implements IMutationRunner<DeleteFromDiagramInput> {
 
     private static final String REMOVE_FROM_DIAGRAM_MUTATION = """
             mutation deleteFromDiagram($input: DeleteFromDiagramInput!) {
@@ -58,7 +58,7 @@ public class DeleteFromDiagramRunner implements IMutationRunner<DeleteFromDiagra
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public DeleteFromDiagramRunner(IGraphQLRequestor graphQLRequestor) {
+    public DeleteToolRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 

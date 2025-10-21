@@ -62,6 +62,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
@@ -338,7 +339,8 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
             assertThat(diagramRootNodesCount).isEqualTo(1);
             var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package1").getNode();
             assertThat(packageNode.getChildNodes()).hasSize(1);
-            var interfaceNode = new DiagramNavigator(diag).nodeWithLabel("Package1").childNodeWithLabel("\u00ABinterface\u00BB\ninterface1").getNode();
+            var interfaceNode = new DiagramNavigator(diag).nodeWithLabel("Package1")
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "interface" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "interface1").getNode();
             assertThat(interfaceNode).isNotNull();
         });
 
