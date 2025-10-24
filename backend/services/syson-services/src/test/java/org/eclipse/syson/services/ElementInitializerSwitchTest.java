@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
@@ -54,10 +54,8 @@ public class ElementInitializerSwitchTest {
     @BeforeEach
     public void setUp() {
         this.rSet = new ResourceSetImpl();
-        // Make sure the resources we manipulate use the Sirius Web CrossReferenceAdapter.
-        // This is particularly important when manipulating memberships, where the cross-referencer may produce
-        // unexpected behaviors that cannot be observed in a resource without it.
-        this.rSet.eAdapters().add(new EditingContextCrossReferenceAdapter());
+        // Make sure the resources we manipulate use a CrossReferenceAdapter.
+        this.rSet.eAdapters().add(new ECrossReferenceAdapter());
         this.resource = new JsonResourceFactoryImpl().createResource(URI.createURI("ElementInitializerSwitchTest"));
         this.rSet.getResources().add(this.resource);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
