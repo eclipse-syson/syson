@@ -40,8 +40,6 @@ requirement <'SN'> {
 
 == Improvements
 
-== Dependency update
-
 == Technical details
 
-* For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

@@ -1,4 +1,4 @@
-// Generated from DirectEdit.g4 by ANTLR 4.10.1
+// Generated from DirectEdit.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
  * Copyright (c) 2023, 2025 Obeo.
@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class DirectEditParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -195,6 +195,7 @@ public class DirectEditParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NodeExpressionContext extends ParserRuleContext {
 		public PrefixNodeExpressionContext prefixNodeExpression() {
 			return getRuleContext(PrefixNodeExpressionContext.class,0);
@@ -261,7 +262,7 @@ public class DirectEditParser extends Parser {
 			setState(92);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -125835274L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & -4538783999459333L) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & 536870911L) != 0)) {
 				{
 				setState(91);
 				name();
@@ -295,6 +296,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ListItemExpressionContext extends ParserRuleContext {
 		public PrefixListItemExpressionContext prefixListItemExpression() {
 			return getRuleContext(PrefixListItemExpressionContext.class,0);
@@ -364,7 +366,7 @@ public class DirectEditParser extends Parser {
 			setState(108);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << RBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -125835274L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & -4538783999459333L) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & 536870911L) != 0)) {
 				{
 				setState(107);
 				name();
@@ -408,6 +410,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrefixNodeExpressionContext extends ParserRuleContext {
 		public List<AbstractPrefixExpressionContext> abstractPrefixExpression() {
 			return getRuleContexts(AbstractPrefixExpressionContext.class);
@@ -497,6 +500,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrefixListItemExpressionContext extends ParserRuleContext {
 		public List<DirectionPrefixExpressionContext> directionPrefixExpression() {
 			return getRuleContexts(DirectionPrefixExpressionContext.class);
@@ -624,6 +628,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DirectionPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode IN_PREFIX() { return getToken(DirectEditParser.IN_PREFIX, 0); }
 		public TerminalNode OUT_PREFIX() { return getToken(DirectEditParser.OUT_PREFIX, 0); }
@@ -651,7 +656,7 @@ public class DirectEditParser extends Parser {
 			{
 			setState(138);
 			_la = _input.LA(1);
-			if ( !(((((_la - 94)) & ~0x3f) == 0 && ((1L << (_la - 94)) & ((1L << (IN_PREFIX - 94)) | (1L << (INOUT_PREFIX - 94)) | (1L << (OUT_PREFIX - 94)))) != 0)) ) {
+			if ( !(((((_la - 94)) & ~0x3f) == 0 && ((1L << (_la - 94)) & 16777221L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -672,6 +677,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AbstractPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode ABSTRACT_PREFIX() { return getToken(DirectEditParser.ABSTRACT_PREFIX, 0); }
 		public AbstractPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -709,6 +715,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariationPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode VARIATION_PREFIX() { return getToken(DirectEditParser.VARIATION_PREFIX, 0); }
 		public VariationPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -746,6 +753,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariantPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode VARIANT_PREFIX() { return getToken(DirectEditParser.VARIANT_PREFIX, 0); }
 		public VariantPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -783,6 +791,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ConstantPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode CONSTANT_PREFIX() { return getToken(DirectEditParser.CONSTANT_PREFIX, 0); }
 		public ConstantPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -820,6 +829,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DerivedPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode DERIVED_PREFIX() { return getToken(DirectEditParser.DERIVED_PREFIX, 0); }
 		public DerivedPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -857,6 +867,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EndPrefixExpressionContext extends ParserRuleContext {
 		public TerminalNode END_PREFIX() { return getToken(DirectEditParser.END_PREFIX, 0); }
 		public EndPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -894,6 +905,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ReferenceExpressionContext extends ParserRuleContext {
 		public TerminalNode REF_PREFIX() { return getToken(DirectEditParser.REF_PREFIX, 0); }
 		public ReferenceExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -931,6 +943,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicityExpressionContext extends ParserRuleContext {
 		public MultiplicityExpressionMemberContext lowerBound;
 		public MultiplicityExpressionMemberContext upperBound;
@@ -994,6 +1007,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicityPropExpressionContext extends ParserRuleContext {
 		public OrderedMultiplicityExpressionContext orderedMultiplicityExpression() {
 			return getRuleContext(OrderedMultiplicityExpressionContext.class,0);
@@ -1055,6 +1069,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class OrderedMultiplicityExpressionContext extends ParserRuleContext {
 		public TerminalNode ORDERED_SUFFIX() { return getToken(DirectEditParser.ORDERED_SUFFIX, 0); }
 		public OrderedMultiplicityExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -1092,6 +1107,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NonuniqueMultiplicityExpressionContext extends ParserRuleContext {
 		public TerminalNode NONUNIQUE_SUFFIX() { return getToken(DirectEditParser.NONUNIQUE_SUFFIX, 0); }
 		public NonuniqueMultiplicityExpressionContext(ParserRuleContext parent, int invokingState) {
@@ -1129,6 +1145,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicityExpressionMemberContext extends ParserRuleContext {
 		public TerminalNode Integer() { return getToken(DirectEditParser.Integer, 0); }
 		public TerminalNode STAR() { return getToken(DirectEditParser.STAR, 0); }
@@ -1176,6 +1193,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FeatureExpressionsContext extends ParserRuleContext {
 		public SubsettingExpressionContext subsettingExpression() {
 			return getRuleContext(SubsettingExpressionContext.class,0);
@@ -1251,7 +1269,7 @@ public class DirectEditParser extends Parser {
 				setState(183);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & ((1L << (EQUALS - 12)) | (1L << (ASSIGN_OP - 12)) | (1L << (DEFAULT_SUFFIX - 12)))) != 0)) {
+				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & 18014398509498369L) != 0)) {
 					{
 					setState(182);
 					featureValueExpression();
@@ -1299,7 +1317,7 @@ public class DirectEditParser extends Parser {
 				setState(193);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & ((1L << (EQUALS - 12)) | (1L << (ASSIGN_OP - 12)) | (1L << (DEFAULT_SUFFIX - 12)))) != 0)) {
+				if (((((_la - 12)) & ~0x3f) == 0 && ((1L << (_la - 12)) & 18014398509498369L) != 0)) {
 					{
 					setState(192);
 					featureValueExpression();
@@ -1321,6 +1339,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SubsettingExpressionContext extends ParserRuleContext {
 		public TerminalNode SUBSETS_OP() { return getToken(DirectEditParser.SUBSETS_OP, 0); }
 		public QualifiedNameContext qualifiedName() {
@@ -1363,6 +1382,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class RedefinitionExpressionContext extends ParserRuleContext {
 		public TerminalNode REDEFINES_OP() { return getToken(DirectEditParser.REDEFINES_OP, 0); }
 		public QualifiedNameContext qualifiedName() {
@@ -1405,6 +1425,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TypingExpressionContext extends ParserRuleContext {
 		public TerminalNode COLON() { return getToken(DirectEditParser.COLON, 0); }
 		public QualifiedNameContext qualifiedName() {
@@ -1447,6 +1468,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ValueExpressionContext extends ParserRuleContext {
 		public TerminalNode EQUALS() { return getToken(DirectEditParser.EQUALS, 0); }
 		public LiteralExpressionContext literalExpression() {
@@ -1509,6 +1531,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FeatureValueExpressionContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -1572,6 +1595,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LiteralExpressionContext extends ParserRuleContext {
 		public TerminalNode Real() { return getToken(DirectEditParser.Real, 0); }
 		public TerminalNode Boolean() { return getToken(DirectEditParser.Boolean, 0); }
@@ -1600,7 +1624,7 @@ public class DirectEditParser extends Parser {
 			{
 			setState(220);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 257698037760L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1621,6 +1645,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class MeasurementExpressionContext extends ParserRuleContext {
 		public List<TerminalNode> RBRACKET() { return getTokens(DirectEditParser.RBRACKET); }
 		public TerminalNode RBRACKET(int i) {
@@ -1668,7 +1693,7 @@ public class DirectEditParser extends Parser {
 				setState(225); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ESPACED_NAME) | (1L << WS) | (1L << LBRACKET) | (1L << LPAREN) | (1L << RPAREN) | (1L << LT) | (1L << GT) | (1L << COMMA) | (1L << DOT) | (1L << COLON) | (1L << EQUALS) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << SLASH) | (1L << SINGLE_QUOTE) | (1L << DOTDOT) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ABSTRACT_PREFIX) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << CONST) | (1L << CONST_PREFIX) | (1L << CONSTANT) | (1L << CONSTANT_PREFIX))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (DATATYPE - 64)) | (1L << (DEFAULT - 64)) | (1L << (DEFAULT_SUFFIX - 64)) | (1L << (DEPENDENCY - 64)) | (1L << (DERIVED - 64)) | (1L << (DERIVED_PREFIX - 64)) | (1L << (DIFFERENCES - 64)) | (1L << (DISJOINING - 64)) | (1L << (DISJOINT - 64)) | (1L << (DOC - 64)) | (1L << (ELSE - 64)) | (1L << (END - 64)) | (1L << (END_PREFIX - 64)) | (1L << (EXPR - 64)) | (1L << (FALSE - 64)) | (1L << (FEATURE - 64)) | (1L << (FEATURED - 64)) | (1L << (FEATURING - 64)) | (1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (IN_PREFIX - 64)) | (1L << (INOUT - 64)) | (1L << (INOUT_PREFIX - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NONUNIQUE_SUFFIX - 64)) | (1L << (NEW - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (ORDERED_SUFFIX - 64)) | (1L << (OUT - 64)) | (1L << (OUT_PREFIX - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIVATE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (REF - 64)))) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & ((1L << (REF_PREFIX - 128)) | (1L << (REFERENCES - 128)) | (1L << (REP - 128)) | (1L << (RETURN - 128)) | (1L << (SPECIALIZTION - 128)) | (1L << (SPECIALIZES - 128)) | (1L << (STEP - 128)) | (1L << (STRUCT - 128)) | (1L << (SUBCLASSIFIER - 128)) | (1L << (SUBSET - 128)) | (1L << (SUBSETS - 128)) | (1L << (SUBTYPE - 128)) | (1L << (SUCCESSION - 128)) | (1L << (THEN - 128)) | (1L << (TO - 128)) | (1L << (TRUE - 128)) | (1L << (TYPE - 128)) | (1L << (TYPED - 128)) | (1L << (TYPING - 128)) | (1L << (UNIONS - 128)) | (1L << (VAR - 128)) | (1L << (VARIATION - 128)) | (1L << (VARIATION_PREFIX - 128)) | (1L << (VARIANT - 128)) | (1L << (VARIANT_PREFIX - 128)) | (1L << (XOR_KEYWORD - 128)) | (1L << (REFNAME - 128)) | (1L << (ANY - 128)) | (1L << (XOR - 128)))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & -18L) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & -1L) != 0) || ((((_la - 128)) & ~0x3f) == 0 && ((1L << (_la - 128)) & 536870911L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -1682,6 +1707,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ConstraintExpressionContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -1721,6 +1747,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionContext extends ParserRuleContext {
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1732,6 +1759,7 @@ public class DirectEditParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BinaryOperationExprContext extends ExpressionContext {
 		public Token op;
 		public List<ExpressionContext> expression() {
@@ -1769,6 +1797,7 @@ public class DirectEditParser extends Parser {
 			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitBinaryOperationExpr(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrimaryExprContext extends ExpressionContext {
 		public PrimaryExpressionContext primaryExpression() {
 			return getRuleContext(PrimaryExpressionContext.class,0);
@@ -1825,7 +1854,7 @@ public class DirectEditParser extends Parser {
 					setState(233);
 					((BinaryOperationExprContext)_localctx).op = _input.LT(1);
 					_la = _input.LA(1);
-					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << GT) | (1L << PLUS) | (1L << MINUS) | (1L << STAR) | (1L << DIV) | (1L << MOD) | (1L << PIPE) | (1L << AMP) | (1L << DOTDOT) | (1L << POWER) | (1L << EQ) | (1L << NEQ) | (1L << EQ_STRICT) | (1L << NEQ_STRICT) | (1L << LTE) | (1L << GTE))) != 0) || _la==XOR_KEYWORD || _la==XOR) ) {
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 17050886528L) != 0) || _la==XOR_KEYWORD || _la==XOR) ) {
 						((BinaryOperationExprContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 					}
 					else {
@@ -1855,6 +1884,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrimaryExpressionContext extends ParserRuleContext {
 		public FeatureChainExpressionContext featureChainExpression() {
 			return getRuleContext(FeatureChainExpressionContext.class,0);
@@ -1936,6 +1966,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BracketAccessExpressionContext extends ParserRuleContext {
 		public PrimaryAtomContext primaryAtom() {
 			return getRuleContext(PrimaryAtomContext.class,0);
@@ -1986,6 +2017,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrimaryAtomContext extends ParserRuleContext {
 		public FeatureChainExpressionContext featureChainExpression() {
 			return getRuleContext(FeatureChainExpressionContext.class,0);
@@ -2063,6 +2095,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SequenceExpressionListContext extends ParserRuleContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -2126,6 +2159,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FeatureChainExpressionContext extends ParserRuleContext {
 		public RefNameContext refName() {
 			return getRuleContext(RefNameContext.class,0);
@@ -2181,6 +2215,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TransitionExpressionContext extends ParserRuleContext {
 		public TriggerExpressionContext triggerExpression() {
 			return getRuleContext(TriggerExpressionContext.class,0);
@@ -2255,6 +2290,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TriggerExpressionContext extends ParserRuleContext {
 		public List<TriggerExpressionNameContext> triggerExpressionName() {
 			return getRuleContexts(TriggerExpressionNameContext.class);
@@ -2318,6 +2354,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TriggerExpressionNameContext extends ParserRuleContext {
 		public NameContext name() {
 			return getRuleContext(NameContext.class,0);
@@ -2371,6 +2408,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class GuardExpressionContext extends ParserRuleContext {
 		public TerminalNode LBRACKET() { return getToken(DirectEditParser.LBRACKET, 0); }
 		public ValueExpressionContext valueExpression() {
@@ -2416,6 +2454,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EffectExpressionContext extends ParserRuleContext {
 		public TerminalNode SLASH() { return getToken(DirectEditParser.SLASH, 0); }
 		public List<QualifiedNameContext> qualifiedName() {
@@ -2482,6 +2521,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class QualifiedNameContext extends ParserRuleContext {
 		public List<NameContext> name() {
 			return getRuleContexts(NameContext.class);
@@ -2545,6 +2585,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ShortNameContext extends ParserRuleContext {
 		public TerminalNode LT() { return getToken(DirectEditParser.LT, 0); }
 		public TerminalNode GT() { return getToken(DirectEditParser.GT, 0); }
@@ -2598,6 +2639,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class RefNameContext extends ParserRuleContext {
 		public TerminalNode REFNAME() { return getToken(DirectEditParser.REFNAME, 0); }
 		public TerminalNode ESPACED_NAME() { return getToken(DirectEditParser.ESPACED_NAME, 0); }
@@ -2659,6 +2701,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class QualifiedName2Context extends ParserRuleContext {
 		public List<TerminalNode> REFNAME() { return getTokens(DirectEditParser.REFNAME); }
 		public TerminalNode REFNAME(int i) {
@@ -2747,6 +2790,7 @@ public class DirectEditParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NameContext extends ParserRuleContext {
 		public List<TerminalNode> COLON() { return getTokens(DirectEditParser.COLON); }
 		public TerminalNode COLON(int i) {
@@ -2820,7 +2864,7 @@ public class DirectEditParser extends Parser {
 					{
 					setState(335);
 					_la = _input.LA(1);
-					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LBRACKET) | (1L << COLON) | (1L << EQUALS) | (1L << NAMESPACE_SEP) | (1L << SUBSETS_OP) | (1L << REDEFINES_OP) | (1L << ASSIGN_OP))) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & ((1L << (DEFAULT_SUFFIX - 66)) | (1L << (NONUNIQUE_SUFFIX - 66)) | (1L << (ORDERED_SUFFIX - 66)))) != 0)) ) {
+					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & 125835272L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 1134695999864833L) != 0)) ) {
 					_errHandler.recoverInline(this);
 					}
 					else {

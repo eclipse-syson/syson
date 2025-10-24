@@ -10,6 +10,8 @@
 
 === Dependency update
 
+- [releng] Update to ANTLR 4.13.2 to match the version sirius-web is using
+
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1604[#1604] [export] Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
