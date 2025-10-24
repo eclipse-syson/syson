@@ -23,8 +23,8 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.object.dto.Direction;
 import org.eclipse.sirius.web.application.object.services.api.IDefaultObjectRestService;
@@ -120,12 +120,8 @@ public class SysONObjectRestService implements IObjectRestServiceDelegate {
 
     private Set<Object> getIngoingRelationships(Element elt) {
         Set<Object> ingoingRelationships = new HashSet<>();
-        var optAdapter = elt.eAdapters().stream()
-                .filter(EditingContextCrossReferenceAdapter.class::isInstance)
-                .map(EditingContextCrossReferenceAdapter.class::cast)
-                .findFirst();
-        if (optAdapter.isPresent()) {
-            EditingContextCrossReferenceAdapter referenceAdapter = optAdapter.get();
+        var referenceAdapter = ECrossReferenceAdapter.getCrossReferenceAdapter(elt);
+        if (referenceAdapter != null) {
             Collection<Setting> inverseReferences = referenceAdapter.getInverseReferences(elt);
             for (Setting setting : inverseReferences) {
                 EObject relatedElement = setting.getEObject();

@@ -1,4 +1,4 @@
-// Generated from DirectEdit.g4 by ANTLR 4.10.1
+// Generated from DirectEdit.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
  * Copyright (c) 2023, 2025 Obeo.
@@ -23,9 +23,9 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class DirectEditLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =

@@ -1,4 +1,4 @@
-// Generated from DirectEdit.g4 by ANTLR 4.10.1
+// Generated from DirectEdit.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
  * Copyright (c) 2023, 2025 Obeo.
@@ -24,6 +24,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class DirectEditBaseListener implements DirectEditListener {
 	/**
 	 * {@inheritDoc}
