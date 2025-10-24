@@ -18,8 +18,8 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
@@ -56,9 +56,8 @@ public class DeleteService {
     }
 
     private void collectRelatedElements(EObject eObject, Set<EObject> relatedElements) {
-        var optAdapter = eObject.eAdapters().stream().filter(EditingContextCrossReferenceAdapter.class::isInstance).map(EditingContextCrossReferenceAdapter.class::cast).findFirst();
-        if (optAdapter.isPresent()) {
-            EditingContextCrossReferenceAdapter referenceAdapter = optAdapter.get();
+        var referenceAdapter = ECrossReferenceAdapter.getCrossReferenceAdapter(eObject);
+        if (referenceAdapter != null) {
             Collection<Setting> inverseReferences = referenceAdapter.getInverseReferences(eObject);
             for (Setting setting : inverseReferences) {
                 EObject relatedElement = setting.getEObject();

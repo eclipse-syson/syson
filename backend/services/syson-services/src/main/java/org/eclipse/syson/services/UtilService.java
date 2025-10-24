@@ -25,10 +25,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.AcceptActionUsage;
@@ -392,10 +392,11 @@ public class UtilService {
      */
     public List<EObject> getEInverseRelatedElements(EObject eObject, EStructuralFeature eStructuralFeature) {
         List<EObject> result = new ArrayList<>();
-        var optAdapter = eObject.eAdapters().stream().filter(EditingContextCrossReferenceAdapter.class::isInstance).map(EditingContextCrossReferenceAdapter.class::cast).findFirst();
-        if (optAdapter.isPresent()) {
-            EditingContextCrossReferenceAdapter referenceAdapter = optAdapter.get();
-            referenceAdapter.getInverseReferences(eObject).stream().filter(set -> set.getEStructuralFeature().equals(eStructuralFeature)).forEach(set -> result.add(set.getEObject()));
+        var referenceAdapter = ECrossReferenceAdapter.getCrossReferenceAdapter(eObject);
+        if (referenceAdapter != null) {
+            referenceAdapter.getInverseReferences(eObject).stream()
+                    .filter(set -> set.getEStructuralFeature().equals(eStructuralFeature))
+                    .forEach(set -> result.add(set.getEObject()));
         }
         return result;
     }
