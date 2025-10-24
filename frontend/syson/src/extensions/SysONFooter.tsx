@@ -13,6 +13,7 @@
 import { FooterProps } from '@eclipse-sirius/sirius-web-application';
 import Link from '@mui/material/Link';
 import { Theme } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 
@@ -31,11 +32,15 @@ const useFooterStyles = makeStyles()((theme: Theme) => ({
 export const SysONFooter = ({}: FooterProps) => {
   const { classes } = useFooterStyles();
   const appVersion = import.meta.env.VITE_APP_VERSION;
+  const commitHash = import.meta.env.COMMIT_HASH;
+
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">
-        &copy; {new Date().getFullYear()} Obeo. SysON v{appVersion}. Powered by&nbsp;
-      </Typography>
+      <Tooltip title={commitHash}>
+        <Typography variant="caption">
+          &copy; {new Date().getFullYear()} Obeo. SysON v{appVersion}. Powered by&nbsp;
+        </Typography>
+      </Tooltip>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
       </Link>
