@@ -36,6 +36,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVControlNodeTests extends AbstractIntegrationTests {
 
-    private static final String ACTION_LABEL = "\u00ABref action\u00BB\naction";
+    private static final String ACTION_LABEL = LabelConstants.OPEN_QUOTE + "ref action" + LabelConstants.CLOSE_QUOTE + "\naction";
 
     private static final String ACTION_FLOW_LABEL = "action flow";
 

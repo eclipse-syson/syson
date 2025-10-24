@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -93,7 +94,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
             var packageNode = new DiagramNavigator(diagram).nodeWithLabel("Package").getNode();
             packageNodeId.set(packageNode.getId());
 
-            var partNode = new DiagramNavigator(diagram).nodeWithLabel("\u00ABref part\u00BB\npart").getNode();
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref part" + LabelConstants.CLOSE_QUOTE + "\npart").getNode();
             partNodeId.set(partNode.getId());
 
             assertThat(packageNode.getChildNodes()).hasSize(0);
@@ -116,7 +117,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterFirstDrop = assertRefreshedDiagramThat(diagram -> {
             var packageNode = new DiagramNavigator(diagram).nodeWithLabel("Package").getNode();
 
-            var partNode = new DiagramNavigator(diagram).nodeWithLabel("\u00ABref part\u00BB\npart").getNode();
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part").getNode();
             partNodeId.set(partNode.getId());
 
             assertThat(packageNode.getChildNodes()).hasSize(1);
@@ -140,7 +141,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterSecondDrop = assertRefreshedDiagramThat(diagram -> {
             var packageNode = new DiagramNavigator(diagram).nodeWithLabel("Package").getNode();
 
-            var partNode = new DiagramNavigator(diagram).nodeWithLabel("\u00ABref part\u00BB\npart").getNode();
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part").getNode();
 
             assertThat(packageNode.getChildNodes()).hasSize(0);
             assertThat(partNode).isNotNull();
