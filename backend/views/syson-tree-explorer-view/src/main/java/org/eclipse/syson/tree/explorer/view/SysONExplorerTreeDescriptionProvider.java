@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.TextStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
@@ -87,7 +88,8 @@ public class SysONExplorerTreeDescriptionProvider {
                 .newTreeItemLabelDescription()
                 .name("Default style")
                 .preconditionExpression("aql:true")
-                .children(this.getDefaultLabelFragmentDescription(),
+                .children(this.getShortNameLabelFragmentDescription(),
+                        this.getDefaultLabelFragmentDescription(),
                         this.getTypeFragmentDescription())
                 .build();
     }
@@ -95,6 +97,18 @@ public class SysONExplorerTreeDescriptionProvider {
     private TreeItemLabelFragmentDescription getDefaultLabelFragmentDescription() {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
                 .labelExpression("aql:self.getLabel()")
+                .build();
+    }
+
+    private TreeItemLabelFragmentDescription getShortNameLabelFragmentDescription() {
+        return new TreeBuilders().newTreeItemLabelFragmentDescription()
+                .labelExpression("aql:self.getShortName()")
+                .style(new TextStyleDescriptionBuilder()
+                        .name("ShortNamePrefixStyle")
+                        // Using color from MUI theme does not work so we use the hard coded color
+                        // See https://github.com/eclipse-sirius/sirius-web/issues/5672
+                        .foregroundColorExpression("aql:'#64669b'")
+                        .build())
                 .build();
     }
 

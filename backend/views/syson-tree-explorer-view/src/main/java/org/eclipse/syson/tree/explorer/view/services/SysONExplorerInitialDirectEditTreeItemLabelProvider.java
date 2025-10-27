@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
-import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -58,29 +58,19 @@ public class SysONExplorerInitialDirectEditTreeItemLabelProvider implements IIni
 
     @Override
     public IPayload handle(IEditingContext editingContext, Tree tree, InitialDirectEditElementLabelInput input) {
-        String initialLabel = tree.getChildren().stream()
-                .map(treeItems -> this.searchById(treeItems, input.treeItemId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(TreeItem::getLabel)
-                .map(StyledString::toString)
-                .findFirst()
-                .orElse("");
-
-        var optViewUsage = this.objectSearchService.getObject(editingContext, input.treeItemId()).filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast);
-        if (optViewUsage.isPresent()) {
-            if (initialLabel.endsWith("[GeneralView]")) {
-                initialLabel = this.replaceLast(initialLabel, " [GeneralView]", "");
-            } else if (initialLabel.endsWith("[InterconnectionView]")) {
-                initialLabel = this.replaceLast(initialLabel, " [InterconnectionView]", "");
-            } else if (initialLabel.endsWith("[ActionFlowView]")) {
-                initialLabel = this.replaceLast(initialLabel, " [ActionFlowView]", "");
-            } else if (initialLabel.endsWith("[StateTransitionView]")) {
-                initialLabel = this.replaceLast(initialLabel, " [StateTransitionView]", "");
-            }
-        }
-
-        return new InitialDirectEditElementLabelSuccessPayload(input.id(), initialLabel);
+        String label = this.objectSearchService.getObject(editingContext, input.treeItemId())
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .map(Element::getDeclaredName)
+                .orElseGet(() -> tree.getChildren().stream()
+                        .map(treeItems -> this.searchById(treeItems, input.treeItemId()))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(TreeItem::getLabel)
+                        .map(StyledString::toString)
+                        .findFirst()
+                        .orElse(""));
+        return new InitialDirectEditElementLabelSuccessPayload(input.id(), label);
     }
 
     private Optional<TreeItem> searchById(TreeItem treeItem, String id) {
@@ -95,13 +85,5 @@ public class SysONExplorerInitialDirectEditTreeItemLabelProvider implements IIni
                     .map(Optional::get).findFirst();
         }
         return optionalTreeItem;
-    }
-
-    String replaceLast(String string, String stringToReplace, String replacement) {
-        int index = string.lastIndexOf(stringToReplace);
-        if (index == -1) {
-            return string;
-        }
-        return string.substring(0, index) + replacement + string.substring(index + stringToReplace.length());
     }
 }

@@ -63,6 +63,11 @@ package Drone {
 
 In the example above, when using the direct edit capability to subclass the _Battery_ `Part Definition`, it is now possible to type _LA::CommonBattery_ instead of _Drone_LogicalArchitecture::CommonBattery_.
 
+- The _Explorer_ view now displays the _shortName_ as part of the label of `Elements`.
+
+image::explorer-short-name-label.png[Short name in labels, width=65%,height=65%]
+
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
