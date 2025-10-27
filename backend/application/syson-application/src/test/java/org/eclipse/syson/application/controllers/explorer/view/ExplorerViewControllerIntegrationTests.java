@@ -87,6 +87,18 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(1).getChildren().get(1),
             treeItem -> treeItem.getLabel().toString().equals("view4 [InterconnectionView]"));
 
+    private final TreeItemMatcher req1RU = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(1).getChildren().get(1),
+            treeItem -> treeItem.getLabel().toString().equals("<Req1> requirement1"));
+
+    private final TreeItemMatcher req2RU = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(1).getChildren().get(2),
+            treeItem -> treeItem.getLabel().toString().equals("<Req2> "));
+
+    private final TreeItemMatcher view1GVRepresentation = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0),
+            treeItem -> treeItem.getLabel().toString().equals("view1"));
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -126,7 +138,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.view1GV, this.view2AFV, this.view3STV, this.view4IV));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.view1GV, this.view2AFV, this.view3STV, this.view4IV, this.view1GVRepresentation));
 
         StepVerifier.create(treeFlux)
                 .consumeNextWith(hasProjectContent)
@@ -137,9 +149,35 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.VIEW_3_STV_ID), "view3"))
                 .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.VIEW_4_IV_ID), "view4"))
+                .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
+                        UUID.fromString(ExplorerViewDirectEditTestProjectData.GraphicalIds.VIEW_1_DIAGRAM_ID), "view1"))
                 .thenCancel()
                 .verify(Duration.ofSeconds(100));
+    }
 
+    @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit an Element with a shortName, THEN the shortName is not part of the initial value of the direct edit")
+    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testDirectEditOnElementWithShortName() {
+        var expandedIds = this.getAllTreeItemIds();
+        var activatedFilters = List.of(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.req1RU, this.req2RU));
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasProjectContent)
+                .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
+                        UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ1_RU_ID), "requirement1"))
+                .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
+                        UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ2_RU_ID), ""))
+                .thenCancel()
+                .verify(Duration.ofSeconds(100));
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN hide expose element filter is active, THEN the expose element are not return as tree item")
@@ -161,7 +199,6 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .consumeNextWith(hasNoExposeElement)
                 .thenCancel()
                 .verify(Duration.ofSeconds(100));
-
     }
 
     private List<String> getAllTreeItemIds() {

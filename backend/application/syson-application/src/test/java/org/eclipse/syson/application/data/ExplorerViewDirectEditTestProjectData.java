@@ -34,6 +34,7 @@ public class ExplorerViewDirectEditTestProjectData {
      */
     public static class GraphicalIds {
 
+        public static final String VIEW_1_DIAGRAM_ID = "6f8f34ed-5a94-4d60-878e-df1e0024e18d";
     }
 
     /**
@@ -56,6 +57,10 @@ public class ExplorerViewDirectEditTestProjectData {
         public static final String VIEW_3_STV_ID = "cca0616d-49d3-4311-a390-2511576cf759";
 
         public static final String VIEW_4_IV_ID = "c3b15305-e5fb-44a9-96a1-4e0245fc4f2c";
+
+        public static final String REQ1_RU_ID = "49ec0ce7-c6c4-45f2-a55b-d11a5dca62e4";
+
+        public static final String REQ2_RU_ID = "1380102d-9b85-4933-8f60-f691fab97672";
     }
 
 }

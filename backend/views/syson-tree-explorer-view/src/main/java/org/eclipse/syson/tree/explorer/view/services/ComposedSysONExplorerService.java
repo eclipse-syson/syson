@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService;
@@ -153,6 +154,16 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
             }
         }
         return type.toString();
+    }
+
+    public String getShortName(Object self) {
+        if (self instanceof Element element) {
+            String shortName = element.getShortName();
+            if (shortName != null && !shortName.isBlank()) {
+                return "<" + shortName + "> ";
+            }
+        }
+        return "";
     }
 
     private Optional<ISysONExplorerServiceDelegate> getDelegate(Object object) {

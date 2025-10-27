@@ -12,6 +12,9 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
+https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
+
 === Dependency update
 
 - [releng] Update to ANTLR 4.13.2 to match the version sirius-web is using
@@ -41,6 +44,7 @@
 - https://github.com/eclipse-syson/syson/issues/1587[#1587] [diagrams] Handle `ActionUsage` and `ActionDefinition` parameters as graphical border nodes.
 - https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
 https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
+- https://github.com/eclipse-syson/syson/issues/1606[#1606] [explorer] Display the _shortName_ of `Elements` as part of the label in the _Explorer_ view.
 
 == v2025.10.0
 

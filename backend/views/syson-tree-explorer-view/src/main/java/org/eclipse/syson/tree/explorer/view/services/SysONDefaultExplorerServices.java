@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.fragments.KerMLStandardLibraryDirectory;
 import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
@@ -123,13 +124,23 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         String label = "";
         if (self instanceof ISysONExplorerFragment fragment) {
             label = fragment.getLabel();
-        } else {
-            StyledString styledLabel = this.labelService.getStyledLabel(self);
-            if (styledLabel != null) {
-                label = styledLabel.toString();
+        } else if (self instanceof Type type) {
+            String name = type.getName();
+            if (name != null) {
+                label = name;
             }
+        } else {
+            label = this.getFallbackLabel(self);
         }
         return label;
+    }
+
+    private String getFallbackLabel(Object self) {
+        StyledString styledLabel = this.labelService.getStyledLabel(self);
+        if (styledLabel != null) {
+            return styledLabel.toString();
+        }
+        return "";
     }
 
     @Override
@@ -197,7 +208,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
                 .toList();
         return treeItem.isHasChildren() && !nonExpandableDirectories.contains(treeItem.getKind());
     }
-    
+
     @Override
     public boolean canCreateNewObjectsFromText(Object self) {
         return self instanceof Element && this.isEditable(self);
