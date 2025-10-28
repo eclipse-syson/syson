@@ -150,6 +150,64 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given of model with redefinition depending on inherited memberships computation, WHEN importing the model, THEN redefined feature should resolve properly using inherited memberships")
+    public void checkRedefinedFeatureToInheritedFields() throws IOException {
+        var input = """
+                private import ISQBase::mass;
+                #MP part p2 {
+                    attribute :>> mass = 2.0;
+                }
+                private import Metaobjects::SemanticMetadata;
+                part p {
+                    attribute mass;
+                }
+                metadata def MP :> SemanticMetadata {
+                    :>> baseType = p meta SysML::Systems::PartUsage;
+                    :> annotatedElement : SysML::Systems::PartUsage;
+                }
+                part p3 :> p1::p2::p0 {
+                    attribute :>> mass = 2.0;
+                }
+                package p1 {
+                    package p2 {
+                        part p0 :> p;
+                    }
+                }
+                part p {
+                    attribute mass;
+                }
+                """;
+
+        this.checker.checkImportedModel(resource -> {
+            Optional<AttributeUsage> pMass = EMFUtils.allContainedObjectOfType(resource, AttributeUsage.class)
+                    .filter(partUsage -> "p::mass".equals(partUsage.getQualifiedName()))
+                    .findFirst();
+
+            assertThat(pMass)
+                    .isPresent();
+
+            // Checks that p2::mass redefined p::mass and not ISQBase::mass because of the use of the semantic MetadataDefinition that implicitly makes p2 subset p
+            Optional<AttributeUsage> p2Mass = EMFUtils.allContainedObjectOfType(resource, AttributeUsage.class)
+                    .filter(partUsage -> "p2::mass".equals(partUsage.getQualifiedName()))
+                    .findFirst();
+            assertThat(p2Mass)
+                    .isPresent();
+
+            assertThat(p2Mass.get()).matches(attributeUsage -> attributeUsage.redefines(pMass.get()));
+
+            // Checks that p2::mass redefined p::mass and not ISQBase::mass because p3 subsets p1::p2::p0 and p0 subsets p
+            Optional<AttributeUsage> p3Mass = EMFUtils.allContainedObjectOfType(resource, AttributeUsage.class)
+                    .filter(partUsage -> "p3::mass".equals(partUsage.getQualifiedName()))
+                    .findFirst();
+            assertThat(p2Mass)
+                    .isPresent();
+
+            assertThat(p2Mass.get()).matches(attributeUsage -> attributeUsage.redefines(pMass.get()));
+
+        }).check(input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with a FlowUsage using a FeatureChain, WHEN importing the model, THEN the source and the target of the FlowUsage should be properly resolved")
     public void checkFlowUsageWithFeatureChain() throws IOException {
         var input = """

@@ -19,12 +19,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
@@ -157,6 +163,83 @@ public class AstTreeParser {
     }
 
     public void resolveAllReference(List<ProxiedReference> unresolvedReferences) {
+        /*
+         * We need to order some of the proxies to resolve. For example, redefinition resolution should be handled once
+         * all specializations have been handled. Indeed, the name resolution of a redefined feature on Redefinition can
+         * depend on either the Subclassification or Subsetting of its owning Namespace (that might be implied through
+         * the use of semantic MetadataUsage) or the type of the owning namespace</li> </ul></p>
+         */
+        Map<ReferenceType, List<ProxiedReference>> partitionedUnresolvedReferences = unresolvedReferences.stream().collect(Collectors.groupingBy(this::getProxyClassification));
+
+        // First resolve imports
+        List<ProxiedReference> unresolvedProxiesAfterImport = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.IMPORT,
+                "Import resolution phase", List.of());
+
+        // Then resolve unclassified proxies and the previous unresolved proxies
+        List<ProxiedReference> unresolvedProxiesAfterUnqualified = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.UNCLASSIFIED,
+                "Non qualified proxy resolution phase", unresolvedProxiesAfterImport);
+
+        // Then resolve specializations that are not redefinitions since redefinition needs to access inherited memberships
+        List<ProxiedReference> unresolvedAfterSpecialization = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.OTHER_SPECIALIZATION,
+                "Non redefinition specialization proxy resolution phase",
+                unresolvedProxiesAfterUnqualified);
+
+        // Then resolve base_type redefinition proxies stored MetadataDefinition since they may impact implicit inherited members
+        List<ProxiedReference> unresolvedAfterBaseTypeRedefinition = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.BASE_TYPE_METADATA_DEFINITION_REDEFINITION,
+                "Semantic MetadataData base_type redefinition proxy resolution phase", unresolvedAfterSpecialization);
+
+        // At the end resolve redefinition
+        List<ProxiedReference> unresolvedAfterRedefinition = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.OTHER_REDEFINITION, "Other redefinition proxy resolution phase",
+                unresolvedAfterBaseTypeRedefinition);
+
+        if (!unresolvedAfterRedefinition.isEmpty()) {
+            this.handleUnresolvableProxies(unresolvedAfterRedefinition);
+        }
+    }
+
+    private ReferenceType getProxyClassification(ProxiedReference proxyReference) {
+        EObject owner = proxyReference.owner();
+        InternalEObject targetProxy = proxyReference.targetProxy();
+        final ReferenceType result;
+        if (owner instanceof Redefinition && targetProxy.toString().contains("baseType")) {
+            result = ReferenceType.BASE_TYPE_METADATA_DEFINITION_REDEFINITION;
+        } else if (owner instanceof Import) {
+            result = ReferenceType.IMPORT;
+        } else if (owner instanceof Redefinition) {
+            result = ReferenceType.OTHER_REDEFINITION;
+        } else if (owner instanceof Specialization) {
+            result = ReferenceType.OTHER_SPECIALIZATION;
+        } else {
+            result = ReferenceType.UNCLASSIFIED;
+        }
+        return result;
+    }
+
+    /**
+     * Runs a resolution phase of a given class of proxy
+     *
+     * @param classifiedProxies
+     *         all the proxy classified
+     * @param proxyClass
+     *         the type of proxy to resolve
+     * @param resolutionPhaseName
+     *         a name of resolution phase
+     * @param yetNotResolved
+     *         A list of unresolved proxy from the previous phases
+     * @return all proxies that have not been resolved
+     */
+    private List<ProxiedReference> doResolveAllReference(Map<ReferenceType, List<ProxiedReference>> classifiedProxies, ReferenceType proxyClass, String resolutionPhaseName,
+            List<ProxiedReference> yetNotResolved) {
+        List<ProxiedReference> toResolve = classifiedProxies.get(proxyClass);
+        if (toResolve != null && !toResolve.isEmpty()) {
+            List<ProxiedReference> tmpToResolve = new ArrayList<>(toResolve);
+            tmpToResolve.addAll(yetNotResolved);
+            return this.doResolveAllReference(tmpToResolve, resolutionPhaseName);
+        }
+        return yetNotResolved;
+    }
+
+    private List<ProxiedReference> doResolveAllReference(List<ProxiedReference> unresolvedReferences, String resolutionPhase) {
         // Sorts proxies to resolve by breadth-first search strategy. This way we resolve first the import
         // generally located at top level part of the model. Those proxies are often used by lowest part of the
         // model to resolve their link
@@ -172,18 +255,19 @@ public class AstTreeParser {
             List<ProxiedReference> proxiedReferences = unresolvedReferencesTmp.stream()
                     .filter(proxiedReference -> !this.proxyResolver.resolveProxy(proxiedReference))
                     .toList();
-            LOGGER.info(MessageFormat.format("{0} remaining proxies to resolve after {1} try", Integer.toString(proxiedReferences.size()), Integer.toString(tryNb)));
+            LOGGER.info(MessageFormat.format("{2} : {0} remaining proxies to resolve after {1} try", Integer.toString(proxiedReferences.size()), Integer.toString(tryNb), resolutionPhase));
             if (proxiedReferences.equals(unresolvedReferencesTmp)) {
-                this.printResolutionError(proxiedReferences);
                 break;
             } else {
                 unresolvedReferencesTmp = proxiedReferences;
             }
         }
+
+        return unresolvedReferencesTmp;
     }
 
-    private void printResolutionError(List<ProxiedReference> proxiedReferences) {
-        for (ProxiedReference pr : proxiedReferences) {
+    private void handleUnresolvableProxies(List<ProxiedReference> unresolvableProxies) {
+        for (ProxiedReference pr : unresolvableProxies) {
             String msg = MessageFormat.format("Unable to resolve name ''{1}'' for reference ''{2}'' on element ''{0}''", this.logNameProvider.getName(pr.owner()),
                     pr.targetProxy().eProxyURI().fragment(),
                     pr.reference().getName());
@@ -232,5 +316,31 @@ public class AstTreeParser {
 
             return signum;
         }
+    }
+
+    /**
+     * Classification of proxy to resolve.
+     */
+    private enum ReferenceType {
+        /**
+         * A proxy related to imports.
+         */
+        IMPORT,
+        /**
+         * All proxies that do not belong to any other categories.
+         */
+        UNCLASSIFIED,
+        /**
+         * Proxy of the "base_type" redefinition feature of the "SemanticMetadata" used in MetadataDefinition.
+         */
+        BASE_TYPE_METADATA_DEFINITION_REDEFINITION,
+        /**
+         * All other redefinitions except the one stored in BASE_TYPE_METADATA_DEFINITION_REDEFINITION.
+         */
+        OTHER_REDEFINITION,
+        /**
+         * All specializations except the Redefinition.
+         */
+        OTHER_SPECIALIZATION
     }
 }
