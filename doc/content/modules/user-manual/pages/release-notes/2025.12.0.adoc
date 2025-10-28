@@ -40,6 +40,27 @@ requirement <'SN'> {
 - Fix an issue where the undo of the deletion of a graphical node in a diagram was not restoring the graphical node correctly.
 - Fix an issue where the _eAnnotations_ reference coming from the Ecore metamodel was taking into account by REST APIs serialization.
 - In diagrams, fix an issue where the creation of a _Package_ inside another _Package_ created the _Package_ at the root of the diagram in addition to the inside of the target _Package_.
+- Fix invalid resolution during textual import of _redefined Feature_ on `Redefinition`.
+This problem appears in cases of a name conflict between a global available item and an item accessible via _inherited membership_ such as in the following model:
+
+```
+private import ISQBase::mass; // Gives global access to "mass"
+
+#MP part p2 { // Implicit subsetting "p" using a semantic MetadataDefinition
+	attribute :>> mass = 2.0; // Should redefine "p::mass" and not "ISQBase::mass"
+}
+
+private import Metaobjects::SemanticMetadata;
+
+part p {
+	attribute mass;
+}
+
+metadata def MP :> SemanticMetadata {
+    :>> baseType = p meta SysML::PartUsage;
+    :> annotatedElement : SysML::PartUsage;
+}
+```
 
 == Improvements
 
