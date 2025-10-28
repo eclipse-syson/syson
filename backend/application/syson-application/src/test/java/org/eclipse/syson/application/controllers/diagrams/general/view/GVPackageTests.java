@@ -58,6 +58,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVPackageTests extends AbstractIntegrationTests {
 
+    private static final String PACKAGE = "Package";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -113,22 +115,21 @@ public class GVPackageTests extends AbstractIntegrationTests {
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             diagramId.set(diag.getId());
 
-            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package").getNode();
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
             packageNodeId.set(packageNode.getId());
 
             assertThat(packageNode.getChildNodes()).hasSize(0);
 
             assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
-
         });
 
         Runnable newPartUsageTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newPartToolId,
                 List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
-            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package").getNode();
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
 
-            var partNode = new DiagramNavigator(diag).nodeWithLabel("Package").childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1")
+            var partNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1")
                     .getNode();
             partNodeId.set(partNode.getId());
 
@@ -136,14 +137,13 @@ public class GVPackageTests extends AbstractIntegrationTests {
             assertThat(packageNode.getChildNodes().get(0)).isEqualTo(partNode);
 
             assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
-
         });
 
         Runnable newSubPartUsageTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeId.get(), newSubPartToolId,
                 List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterNewSubPart = assertRefreshedDiagramThat(diag -> {
-            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package").getNode();
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
 
             assertThat(packageNode.getChildNodes()).hasSize(2);
 
@@ -157,6 +157,57 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 .consumeNextWith(updatedDiagramContentConsumerAfterNewPart)
                 .then(newSubPartUsageTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterNewSubPart)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a Package node, WHEN a sub-Package node is created, THEN the sub-Package node is only visible inside the Package")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testCreatePackageInPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newPackageToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Package");
+        assertThat(newPackageToolId).as("The tool 'New Package' should exist on the Package").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            packageNodeId.set(packageNode.getId());
+
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newPackageTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newPackageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+
+            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1").getNode();
+
+            assertThat(packageNode.getChildNodes()).hasSize(1);
+            assertThat(packageNode.getChildNodes().get(0)).isEqualTo(subPackageNode);
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newPackageTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPart)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
