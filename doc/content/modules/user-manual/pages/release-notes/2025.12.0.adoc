@@ -44,6 +44,25 @@ requirement <'SN'> {
 
 == Improvements
 
+- In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
+If two or more `Elements` share the same _short name_, {product} will search for the best candidate based on the scope of the element.
+Furthermore, if an ambiguity exists between the _short name_ and the _declared name_ of two different `Elements`, the declared name will be preferred.
+
+For example in:
+
+```
+package Drone {
+   package <LA> Drone_LogicalArchitecture {
+      part def CommonBattery;
+   }
+   package <PA> Drone_PhysicalArchitecture {
+      part def Battery :> LA::CommonBattery;
+   }
+}
+```
+
+In the example above, when using the direct edit capability to subclass the _Battery_ `Part Definition`, it is now possible to type _LA::CommonBattery_ instead of _Drone_LogicalArchitecture::CommonBattery_.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
