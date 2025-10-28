@@ -9,7 +9,7 @@
 - In diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
 These graphical border nodes cannot be edited or deleted.
 
-image::gv-inherited-port.png[Inherited port, width=65%,height=65%]
+image::gv-inherited-port.png[Inherited port, width=25%,height=25%]
 
 - When connecting those inherited _PortUsages_ graphical border nodes to/from another graphical border nodes, the inherited _PortUsages_ are redefined.
 
@@ -17,7 +17,7 @@ image::gv-inherited-port-edge-tools.png[Inherited port edge tool, width=65%,heig
 
 - Add a new filter in the explorer to hide expose elements in `ViewUsage`.
 
-image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=65%,height=65%]
+image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
 
 - In diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
 Those parameters can be linked to other parameters using the _New Binding Connector As Usage (bind)_ and _New Flow (flow)_ graphical border node tools. 

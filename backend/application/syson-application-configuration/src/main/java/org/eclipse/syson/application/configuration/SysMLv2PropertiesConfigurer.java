@@ -53,6 +53,10 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.syson.application.services.DetailsViewService;
+import org.eclipse.syson.form.services.FormMutationAQLService;
+import org.eclipse.syson.form.services.FormQueryAQLService;
+import org.eclipse.syson.model.services.ModelMutationAQLService;
+import org.eclipse.syson.model.services.ModelQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -142,7 +146,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService),
+                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService,
+                        new ModelMutationAQLService(), new ModelQueryAQLService(), new FormMutationAQLService(), new FormQueryAQLService()),
                 List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {

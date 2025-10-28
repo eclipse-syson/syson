@@ -72,3 +72,49 @@ Here are the steps to follow:
 . Build and run the syson server locally (using docker compose as example) on `http://localhost:8080`.
 . Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
 . The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
+
+[#services_organization]
+== Services organization
+
+Since version 2025.10.2, {product} services are organized into several modules to improve maintainability and scalability.
+
+- Services that query/mutate the model are located in the module `syson-sysml-metamodel-services`.
+ - this module will depend on `syson-sysml-metamodel`.
+ - all services in this module won't depend on Spring, Sirius-Web or any diagram/table related code.
+- Services that query/mutate the model through Sirius-Web services are located in the module `syson-model-services`.
+  - all services in this module are allowed to depend on Sirius-Web
+  - for example, services that query the model through `IObjectSearchService`.
+- Services that query/mutate a diagram are located in the module `syson-diagram-services`.
+ - all services in this module are allowed to depend on Sirius-Web.
+- Services that query/mutate a table are located in the module `syson-table-services`.
+ - all services in this module are allowed to depend on Sirius-Web.
+- Services that query/mutate a tree are located in the module `syson-tree-services`.
+ - all services in this module are allowed to depend on Sirius-Web.
+- Services that query/mutate a form are located in the module `syson-form-services`.
+ - all services in this module are allowed to depend on Sirius-Web.
+- Services that query/mutate and are transversal/common to any representation are located in the module `syson-representation-services`.
+ - all services in this module are allowed to depend on Sirius-Web.
+ - will contain services that can be used in all representations
+
+- Services are grouped in classes by their purpose and usage:
+ - a service that query the model is in a class named `SomethingQueryService`.
+ - a service that mutate the model is in a class named `SomethingMutationService`.
+ - a service that query the diagram is in a class named `DiagramQueryService`.
+ - a service that mutate the diagram is in a class named `DiagramMutationService`.
+ - a service querying label of diagram elements is in a class named `DiagramLabelQueryService`.
+ - a service modifying the label of diagram elements is in a class named `DiagramLabelMutationService`.
+ - a service querying label of diagram elements is in a class named `LabelDiagramQueryService`.
+ - a service modifying the label of elements is in a class named `LabelDiagramMutationService`.
+ - `SomethingQueryService` and `SomethingMutationService` classes can be split in smaller classes if they contain too many services.
+
+- In addition to services classes, each module contains two specific services classes which are the entry points for services that are intended to be called from AQL expressions:
+ - these classes contain services that are intended to be called from AQL expressions.
+ - they are suffixed by _AQLService_.
+ - their only role are to expose services from other service classes.
+ - other service classes are not suffixed by _AQLService_ and contain services that are intended to be called from Java code or by _AQLService_ classes.
+
+To help you understand this new organization, and how to add new services, please refer to the schema below:
+
+image::dev-guide-how-to-create-a-service.png[Services organization schema, width=85%,height=85%]
+
+Old services that were in the `syson-services`, `syson-diagram-common-view`, `syson-standard-diagrams-view` modules will be migrated to the appropriate new modules in the next releases.

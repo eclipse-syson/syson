@@ -33,7 +33,14 @@
 
 	<modules>
 		<module>syson-direct-edit-grammar</module>
+		<module>syson-diagram-services</module>
+		<module>syson-form-services</module>
+		<module>syson-model-services</module>
+		<module>syson-representation-services</module>
 		<module>syson-services</module>
+		<module>syson-table-services</module>
+		<module>syson-tree-services</module>
+		<module>syson-sysml-metamodel-services</module>
 		<module>syson-sysml-rest-api-services</module>
 	</modules>
 </project>

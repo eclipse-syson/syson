@@ -47,7 +47,14 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-table-requirements-view", 77.0),
   new ModuleCoverage("syson-tree-explorer-view", 84.0),
   new ModuleCoverage("syson-application-configuration", 71.0),
-  new ModuleCoverage("syson-application", 37.0)
+  new ModuleCoverage("syson-application", 37.0),
+  new ModuleCoverage("syson-diagram-services", 0.0),
+  new ModuleCoverage("syson-form-services", 0.0),
+  new ModuleCoverage("syson-model-services", 0.0),
+  new ModuleCoverage("syson-representation-services", 0.0),
+  new ModuleCoverage("syson-sysml-metamodel-services", 0.0),
+  new ModuleCoverage("syson-table-services", 0.0),
+  new ModuleCoverage("syson-tree-services", 0.0)
 );
 
 void display(String module, double coverage, double expected) {
