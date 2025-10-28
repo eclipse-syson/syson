@@ -37,6 +37,8 @@
 - https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Redefine inherited `PortUsages` when connected as graphical border nodes.
 - https://github.com/eclipse-syson/syson/issues/1589[#1589] [explorer] Add a filter to hide expose elements in `ViewUsage`.
 - https://github.com/eclipse-syson/syson/issues/1587[#1587] [diagrams] Handle `ActionUsage` and `ActionDefinition` parameters as graphical border nodes.
+- https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
+xref:developer-guide:index#services_organization.adoc[See the developer guide in the documentation for more details].
 
 == v2025.10.0
 

@@ -16,6 +16,12 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.services.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.DiagramQueryAQLService;
+import org.eclipse.syson.model.services.ModelMutationAQLService;
+import org.eclipse.syson.model.services.ModelQueryAQLService;
+import org.eclipse.syson.representation.services.RepresentationMutationAQLService;
+import org.eclipse.syson.representation.services.RepresentationQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.services.StateTransitionViewCreateService;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +41,14 @@ public class StateTransitionViewJavaServiceProvider implements IJavaServiceProvi
                 .filter(desc -> StateTransitionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
                 .findFirst();
         if (optGVDescription.isPresent()) {
-            return List.of(StateTransitionViewCreateService.class, UtilService.class);
+            return List.of(StateTransitionViewCreateService.class,
+                    UtilService.class,
+                    DiagramMutationAQLService.class,
+                    DiagramQueryAQLService.class,
+                    ModelMutationAQLService.class,
+                    ModelQueryAQLService.class,
+                    RepresentationMutationAQLService.class,
+                    RepresentationQueryAQLService.class);
         }
         return List.of();
     }

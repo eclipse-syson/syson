@@ -134,8 +134,7 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
                 .map(ValidationRefreshedEventPayload::validation)
                 .ifPresentOrElse(validation -> {
                     assertNotNull(validation);
-                    // It remains some AQL Errors in console, should be false when all validation rules will be valid
-                    assertTrue(capturedOutput.getOut().contains("AQLInterpreter"));
+                    assertFalse(capturedOutput.getOut().contains("AQLInterpreter"));
                     // Some constraints are not respected, should be 0 when all validation rules will be valid, all
                     // derived references will be implemented and all implicit specialization added.
                     assertTrue(validation.getDiagnostics().size() > 0);

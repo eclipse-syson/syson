@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,11 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.syson.model.services.ModelMutationAQLService;
+import org.eclipse.syson.model.services.ModelQueryAQLService;
 import org.eclipse.syson.tree.explorer.view.services.ComposedSysONExplorerService;
+import org.eclipse.syson.tree.services.TreeMutationAQLService;
+import org.eclipse.syson.tree.services.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -36,13 +40,17 @@ public class SysONExplorerJavaServiceProvider implements IJavaServiceProvider {
         if (view.getDescriptions().stream()
                 .filter(TreeDescription.class::isInstance)
                 .anyMatch(this::isSysONDefaultExplorerTreeDescription)) {
-            serviceClasses.add(ComposedSysONExplorerService.class);
+            serviceClasses.addAll(List.of(ComposedSysONExplorerService.class,
+                    ModelMutationAQLService.class,
+                    ModelQueryAQLService.class,
+                    TreeMutationAQLService.class,
+                    TreeQueryAQLService.class));
         }
         return serviceClasses;
     }
 
     private boolean isSysONDefaultExplorerTreeDescription(RepresentationDescription representationDescription) {
-        return SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER.equals(((TreeDescription) representationDescription).getName());
+        return SysONExplorerTreeDescriptionProvider.SYSON_EXPLORER.equals(representationDescription.getName());
 
     }
 

@@ -16,10 +16,14 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.model.services.ModelMutationAQLService;
+import org.eclipse.syson.model.services.ModelQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.table.requirements.view.services.RTVMutationServices;
 import org.eclipse.syson.table.requirements.view.services.RTVQueryServices;
+import org.eclipse.syson.table.services.TableMutationAQLService;
+import org.eclipse.syson.table.services.TableQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -40,7 +44,11 @@ public class RTVJavaServiceProvider implements IJavaServiceProvider {
             return List.of(RTVQueryServices.class,
                     RTVMutationServices.class,
                     DeleteService.class,
-                    UtilService.class);
+                    UtilService.class,
+                    ModelMutationAQLService.class,
+                    ModelQueryAQLService.class,
+                    TableMutationAQLService.class,
+                    TableQueryAQLService.class);
         }
         return List.of();
     }
