@@ -13,7 +13,6 @@
       "declaredName": "Package1",
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "d51791b8-6666-46e3-8c60-c975e1f3e490",
       "filterCondition": [],
       "importedMembership": [
@@ -100,7 +99,6 @@
       "declaredName": null,
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "9f902e4a-4ca9-4787-92d8-713b3b06c490",
       "importOwningNamespace": {
         "@id": "d51791b8-6666-46e3-8c60-c975e1f3e490"
@@ -166,7 +164,6 @@
       "declaredName": null,
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "be359545-8e91-439c-8bdf-0638ab702f9d",
       "isImplied": false,
       "isImpliedIncluded": false,
@@ -251,7 +248,6 @@
       "directedUsage": [],
       "direction": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
       "endFeature": [],
       "endOwningType": null,
@@ -412,7 +408,6 @@
       "declaredName": null,
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "9bfede6e-a370-451e-aa33-c1102942dcb7",
       "general": {
         "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
@@ -484,7 +479,6 @@
       "declaredName": "Package2",
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "40c37406-f22d-4424-981f-99935f039244",
       "filterCondition": [],
       "importedMembership": [],
@@ -554,7 +548,6 @@
       "declaredName": null,
       "declaredShortName": null,
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "c0c5cec5-6606-4145-98c7-eef80964e95a",
       "isImplied": false,
       "isImpliedIncluded": false,
@@ -631,7 +624,6 @@
       "directedFeature": [],
       "directedUsage": [],
       "documentation": [],
-      "eAnnotations": [],
       "elementId": "47acdb65-63f9-4bd5-8675-e2596241dc2c",
       "endFeature": [],
       "feature": [],

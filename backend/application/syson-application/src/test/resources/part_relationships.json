@@ -6,7 +6,6 @@
     "declaredName": null,
     "declaredShortName": null,
     "documentation": [],
-    "eAnnotations": [],
     "elementId": "9bfede6e-a370-451e-aa33-c1102942dcb7",
     "general": {
       "@id": "47acdb65-63f9-4bd5-8675-e2596241dc2c"
@@ -70,7 +69,6 @@
     "declaredName": null,
     "declaredShortName": null,
     "documentation": [],
-    "eAnnotations": [],
     "elementId": "be359545-8e91-439c-8bdf-0638ab702f9d",
     "isImplied": false,
     "isImpliedIncluded": false,

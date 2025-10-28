@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -82,7 +83,9 @@ public class SysMLv2JsonSerializer extends JsonSerializer<EObject> {
 
     private void serializeReference(EObject value, JsonGenerator gen, EReference eReference) throws IOException {
         Object objectValue = value.eGet(eReference);
-        if (objectValue != null) {
+        if (EcorePackage.eINSTANCE.getEModelElement_EAnnotations().equals(eReference)) {
+            // nothing to do, the eAnnotations reference is not coming from SysMLv2
+        } else if (objectValue != null) {
             if (eReference.isMany()) {
                 this.writeArray(gen, eReference.getName(), objectValue);
             } else if (objectValue instanceof Element elt && !VirtualLinkAdapter.hasVirtualLink(elt)) {
