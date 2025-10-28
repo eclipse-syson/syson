@@ -31,6 +31,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1620[#1620] [services] Handle short names in qualified names when direct editing.
+
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/1581[#1581] [diagrams] Display inherited `PortUsages` as graphical border nodes in diagrams.

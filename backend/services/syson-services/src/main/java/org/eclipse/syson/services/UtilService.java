@@ -439,6 +439,19 @@ public class UtilService {
      * @return the found element or <code>null</code>.
      */
     public <T extends Element> T findByNameAndType(EObject object, String elementName, Class<T> elementType) {
+        // Use the semantic scoping rule based on Namespace resolution to find the most "valid" target
+        if (object instanceof Element element) {
+            Membership resolvedElement;
+            if (element instanceof Namespace namespace) {
+                resolvedElement = namespace.resolve(elementName);
+            } else {
+                resolvedElement = element.getOwningNamespace().resolve(elementName);
+            }
+            if (resolvedElement != null && elementType.isInstance(resolvedElement.getMemberElement())) {
+                return (T) resolvedElement.getMemberElement();
+            }
+        }
+        // No semantic valid target, fallback on any matching item but it might violate some scoping validation rule
         return this.elementUtil.findByNameAndType(object, elementName, elementType);
     }
 

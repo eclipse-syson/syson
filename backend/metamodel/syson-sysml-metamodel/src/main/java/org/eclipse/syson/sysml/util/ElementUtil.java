@@ -355,25 +355,33 @@ public class ElementUtil {
 
     /**
      * Check if the given element's name match the given String.
+     * If there is no match with the name, then the short name is checked.
      *
      * @param element
-     *            the {@link Element} to check.
+     *         the {@link Element} to check.
      * @param name
-     *            the name to match.
-     * @return <code>true</code> if the name match, <code>false</code> otherwise.
+     *         the name to match.
+     * @return <code>true</code> if a match is found, <code>false</code> otherwise.
      */
     private boolean nameMatches(Element element, String name) {
-        boolean matches = false;
-        if (element != null && name != null) {
-            String elementName = element.getName();
-            if (elementName != null) {
-                matches = elementName.strip().equals(name.strip());
-                if (!matches && name.startsWith("'") && name.endsWith("'")) {
-                    // We give the option to quote names, but the quotes aren't part of the model.
-                    elementName = "'" + elementName + "'";
-                    matches = elementName.strip().equals(name.strip());
-                }
-            }
+        if (element == null || name == null) {
+            return false;
+        }
+        if (this.equalsConsideringOptionalQuotes(element.getName(), name)) {
+            return true;
+        }
+        return this.equalsConsideringOptionalQuotes(element.getShortName(), name);
+    }
+
+    private boolean equalsConsideringOptionalQuotes(String candidate, String query) {
+        if (candidate == null || query == null) {
+            return false;
+        }
+        boolean matches = candidate.strip().equals(query.strip());
+        if (!matches && query.startsWith("'") && query.endsWith("'")) {
+            // We give the option to quote names, but the quotes aren't part of the model.
+            candidate = "'" + candidate + "'";
+            matches = candidate.strip().equals(query.strip());
         }
         return matches;
     }
