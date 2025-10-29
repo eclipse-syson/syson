@@ -445,7 +445,7 @@ public abstract class AbstractCodingRulesTests {
         return new DescribedPredicate<>("is not a lambda") {
             @Override
             public boolean apply(JavaMethod javaMethod) {
-                return !javaMethod.getName().startsWith("lambda$");
+                return !javaMethod.getName().startsWith("lambda$") && !javaMethod.getName().startsWith("$deserializeLambda$");
             }
         };
     }

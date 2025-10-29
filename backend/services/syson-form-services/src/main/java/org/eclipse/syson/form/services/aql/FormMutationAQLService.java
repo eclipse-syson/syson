@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.services;
+package org.eclipse.syson.form.services.aql;
 
 /**
- * Entry point for all tree-related services doing queries in trees and called by AQL expressions in tree descriptions.
+ * Entry point for all form-related services doing mutations in forms and called by AQL expressions in form
+ * descriptions.
  *
  * @author arichard
  */
-public class TreeQueryAQLService {
+public class FormMutationAQLService {
 
 }

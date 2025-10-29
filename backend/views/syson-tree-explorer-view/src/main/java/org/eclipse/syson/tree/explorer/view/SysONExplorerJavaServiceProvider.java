@@ -19,11 +19,11 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
-import org.eclipse.syson.model.services.ModelMutationAQLService;
-import org.eclipse.syson.model.services.ModelQueryAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.tree.explorer.view.services.ComposedSysONExplorerService;
-import org.eclipse.syson.tree.services.TreeMutationAQLService;
-import org.eclipse.syson.tree.services.TreeQueryAQLService;
+import org.eclipse.syson.tree.services.aql.TreeMutationAQLService;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
 /**

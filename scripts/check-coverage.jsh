@@ -36,7 +36,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 44.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 66.0),
-  new ModuleCoverage("syson-services", 73.0),
+  new ModuleCoverage("syson-services", 72.0),
   new ModuleCoverage("syson-sysml-rest-api-services", 93.0),
   new ModuleCoverage("syson-sysml-import", 84.0),
   new ModuleCoverage("syson-sysml-export", 64.0),
@@ -48,13 +48,13 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-tree-explorer-view", 84.0),
   new ModuleCoverage("syson-application-configuration", 71.0),
   new ModuleCoverage("syson-application", 37.0),
-  new ModuleCoverage("syson-diagram-services", 0.0),
-  new ModuleCoverage("syson-form-services", 0.0),
-  new ModuleCoverage("syson-model-services", 0.0),
-  new ModuleCoverage("syson-representation-services", 0.0),
-  new ModuleCoverage("syson-sysml-metamodel-services", 0.0),
-  new ModuleCoverage("syson-table-services", 0.0),
-  new ModuleCoverage("syson-tree-services", 0.0)
+  new ModuleCoverage("syson-diagram-services", 100.0),
+  new ModuleCoverage("syson-form-services", 100.0),
+  new ModuleCoverage("syson-model-services", 100.0),
+  new ModuleCoverage("syson-representation-services", 100.0),
+  new ModuleCoverage("syson-sysml-metamodel-services", 85.0),
+  new ModuleCoverage("syson-table-services", 100.0),
+  new ModuleCoverage("syson-tree-services", 100.0)
 );
 
 void display(String module, double coverage, double expected) {

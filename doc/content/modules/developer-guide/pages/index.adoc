@@ -117,3 +117,50 @@ To help you understand this new organization, and how to add new services, pleas
 image::dev-guide-how-to-create-a-service.png[Services organization schema, width=85%,height=85%]
 
 Old services that were in the `syson-services`, `syson-diagram-common-view`, `syson-standard-diagrams-view` modules will be migrated to the appropriate new modules in the next releases.
+
+=== ServiceMethod
+
+Since version 2025.10.2, {product} also introduce a new utility class called `ServiceMethod` (in `syson-services`).
+
+This class is an helper to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
+
+Why use it:
+- Refactoring friendly: IDE rename of the Java method updates call sites.
+- Navigation: find usages works, you can jump to the service implementation.
+- Fewer string literals, fewer typos.
+- Produces the exact same AQL strings as `AQLUtils` helpers.
+
+How it works:
+- You pass a <b>serializable</b> method reference to one of the factory methods _of0_, _of1_, _of2_, _of3_... for instance methods, or _ofStatic0_... for static methods.
+The arity suffix equals the number of AQL parameters after _self_.
+- The helper extracts the Java method name through the standard lambda serialization hook (reading a `SerializedLambda`).
+No service is invoked.
+- You then call _aqlSelf(String...)_ or _aql(String, String...)_ to build the final AQL string, delegating to `AQLUtils`.
+
+[CAUTION]
+====
+Important: the arguments passed to _aqlSelf(...)_ and _aql(var, ...)_ are AQL snippets, not Java values.
+For example use _"'declaredName'"_ for a string literal and _ViewFormDescriptionConverter.NEW_VALUE_ if it already returns an AQL snippet.
+====
+
+When to use which call:
+- _aqlSelf(String...)_ when the receiver is _self_, for expressions like _aql:self.myService(...)_.
+- _aql(String, String...)_ when you target another variable in the AQL context, for example _aql:elt.myService(...)_.
+
+
+Type inference:
+- if the compiler says something like _The type X does not define methodName(Object, Object,...)_, add a type witness to the factory so it can match the real signature.
+
+Examples:
+
+[source, java]
+----
+// setNewValue(Element, String, Object)
+ServiceMethod.<FormMutationAQLService, Element, String, Object> of2(FormMutationAQLService::setNewValue).aqlSelf("'declaredName'", ViewFormDescriptionConverter.NEW_VALUE);
+
+// setAsView(ViewUsage, String)
+ServiceMethod.<DiagramMutationAQLService, ViewUsage, String> of1(DiagramMutationAQLService::setAsView).aqlSelf("'StandardViewDefinitions::GeneralView'");
+
+// predicate isActor(Element)
+ServiceMethod.<ModelQueryAQLService, Element> of0(ModelQueryAQLService::isActor).aqlSelf();
+----

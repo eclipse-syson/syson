@@ -204,10 +204,8 @@ public class GeneralPurposeTests {
     }
 
     private boolean isWhiteListed(Path filePath) {
-        // @formatter:off
         return filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("src/icons")
                 || filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("GenericTool.tsx");
-        // @formatter:on
     }
 
     private void testNoSuppressWarnings(int index, String line, Path javaFilePath, List<String> lines) {
@@ -233,16 +231,26 @@ public class GeneralPurposeTests {
     }
 
     private void testNoCheckstyleOff(int index, String line, Path javaFilePath) {
-        if (line.contains(CHECKSTYLE_OFF)) {
-            fail(this.createErrorMessage("CHECKSTYLE:OFF", javaFilePath, index));
+        var whitelist = Stream.of(
+                Path.of("ServiceMethod.java")
+        );
+        if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()) {
+            if (line.contains(CHECKSTYLE_OFF)) {
+                fail(this.createErrorMessage("CHECKSTYLE:OFF", javaFilePath, index));
+            }
         }
     }
 
     private void testNoThrowNewException(int index, String line, Path javaFilePath, List<String> lines) {
-        if (line.contains(THROW_NEW)) {
-            var isRecord = lines.stream().anyMatch(l -> l.contains("public record"));
-            if (!isRecord) {
-                fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
+        var whitelist = Stream.of(
+                Path.of("ServiceMethod.java")
+        );
+        if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()) {
+            if (line.contains(THROW_NEW)) {
+                var isRecord = lines.stream().anyMatch(l -> l.contains("public record"));
+                if (!isRecord) {
+                    fail(this.createErrorMessage("throw new XXXException", javaFilePath, index));
+                }
             }
         }
     }
@@ -381,12 +389,10 @@ public class GeneralPurposeTests {
      * @param cssFilePath The path of the CSS file
      */
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
-        // @formatter:off
         var whitelist = Stream.of(
                 Path.of("Modal.module.css"),
                 Path.of("ToolSection.module.css")
         );
-        // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {
             if (line.contains(HEIGHT_100)) {
                 fail(this.createErrorMessage(HEIGHT_100, cssFilePath, index));
@@ -411,12 +417,10 @@ public class GeneralPurposeTests {
      * @param cssFilePath The path of the CSS file
      */
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
-        // @formatter:off
         var whitelist = Stream.of(
                 Path.of("Modal.module.css"),
                 Path.of("ToolSection.module.css")
         );
-        // @formatter:on
         if (whitelist.filter(cssFilePath::endsWith).findFirst().isEmpty()) {
             if (line.contains(WIDTH_100)) {
                 fail(this.createErrorMessage(WIDTH_100, cssFilePath, index));

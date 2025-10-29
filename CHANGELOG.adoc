@@ -14,6 +14,8 @@
 
 - https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
 https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
+Also introduces new `ServiceMethod` helper class to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
+- [services] _isActor(Element)_ has been moved from `ViewNodeService` to `ElementQueryService`.
 
 === Dependency update
 
@@ -44,6 +46,7 @@ https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organi
 - https://github.com/eclipse-syson/syson/issues/1587[#1587] [diagrams] Handle `ActionUsage` and `ActionDefinition` parameters as graphical border nodes.
 - https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
 https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
+Also introduces new `ServiceMethod` helper class to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
 - https://github.com/eclipse-syson/syson/issues/1606[#1606] [explorer] Display the _shortName_ of `Elements` as part of the label in the _Explorer_ view.
 
 == v2025.10.0

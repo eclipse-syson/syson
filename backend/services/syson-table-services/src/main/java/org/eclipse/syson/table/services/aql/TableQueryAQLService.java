@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.representation.services;
+package org.eclipse.syson.table.services.aql;
 
 /**
- * Entry point for all representation-related services doing mutations in representations and called by AQL expressions
- * in representation descriptions. In other words, put here common services that are not related to a specific kind of
- * representation description.
+ * Entry point for all table-related services doing queries in tables and called by AQL expressions in table
+ * descriptions.
  *
  * @author arichard
  */
-public class RepresentationMutationAQLService {
+public class TableQueryAQLService {
 
 }

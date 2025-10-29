@@ -10,14 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.services;
+package org.eclipse.syson.representation.services.aql;
 
 /**
- * Entry point for all diagram-related services doing queries in diagrams and called by AQL expressions in diagram
- * descriptions.
+ * Entry point for all representation-related services doing queries in representations and called by AQL expressions in
+ * representation descriptions. In other words, put here common services that are not related to a specific kind of
+ * representation description.
  *
  * @author arichard
  */
-public class DiagramQueryAQLService {
+public class RepresentationQueryAQLService {
 
 }
