@@ -20,71 +20,70 @@ The decision is to create a clear organization of the services in packages and c
 The main idea is to have services grouped by their purpose and usage.
 
 - Services that query/mutate the model will be located in the new module `syson-sysml-metamodel-services`.
- - this module will depend on `syson-sysml-metamodel`.
- - all services in this module won't depend on Spring, Sirius-Web or any diagram/table related code.
+* this module will depend on `syson-sysml-metamodel`.
+* all services in this module won't depend on Spring, Sirius-Web or any diagram/table related code.
 - Services that query/mutate the model through Sirius-Web services will be located in the new module `syson-model-services`.
-  - all services in this module will be allowed to depend on Sirius-Web
-  - for example, services that query the model through `IObjectSearchService`.
+* all services in this module will be allowed to depend on Sirius-Web
+* for example, services that query the model through `IObjectSearchService`.
 - Services that query/mutate a diagram will be located in the new module `syson-diagram-services`.
- - all services in this module will be allowed to depend on Sirius-Web.
+* all services in this module will be allowed to depend on Sirius-Web.
 - Services that query/mutate a table will be located in the new module `syson-table-services`.
- - all services in this module will be allowed to depend on Sirius-Web.
+* all services in this module will be allowed to depend on Sirius-Web.
 - Services that query/mutate a tree will be located in the new module `syson-tree-services`.
- - all services in this module will be allowed to depend on Sirius-Web.
+* all services in this module will be allowed to depend on Sirius-Web.
 - Services that query/mutate a form will be located in the new module `syson-form-services`.
- - all services in this module will be allowed to depend on Sirius-Web.
+* all services in this module will be allowed to depend on Sirius-Web.
 - Services that query/mutate and are transversal/common to any representation will be located in the new module `syson-representation-services`.
- - all services in this module will be allowed to depend on Sirius-Web.
- - will contain services that can be used in all representations
+* all services in this module will be allowed to depend on Sirius-Web.
+* will contain services that can be used in all representations
 
 - Services will be grouped in classes by their purpose and usage.
- - a service that query the model will be in a class named `SomethingQueryService`.
- - a service that mutate the model will be in a class named `SomethingMutationService`.
- - a service that query the diagram will be in a class named `DiagramQueryService`.
- - a service that mutate the diagram will be in a class named `DiagramMutationService`.
- - a service querying label of diagram elements will be in a class named `DiagramLabelQueryService`.
- - a service modifying the label of diagram elements will be in a class named `DiagramLabelMutationService`.
- - a service querying label of diagram elements will be in a class named `LabelDiagramQueryService`.
- - a service modifying the label of elements will be in a class named `LabelDiagramMutationService`.
- - `SomethingQueryService` and `SomethingMutationService` classes can be split in smaller classes if they contain too many services.
+* a service that query the model will be in a class named `ModelQueryService`.
+* a service that mutate the model will be in a class named `ModelMutationService`.
+* a service that query the diagram will be in a class named `DiagramQueryService`.
+* a service that mutate the diagram will be in a class named `DiagramMutationService`.
+* a service querying label of diagram elements will be in a class named `DiagramQueryLabelService`.
+* a service modifying the label of diagram elements will be in a class named `DiagramMutationLabelService`.
+* same for tables, trees, forms, representations.
+* `XXXQueryService`, `XXXMutationService`, `XXXQueryYYYService`, `XXXMutationYYYService` classes can be split in smaller classes if they contain too many services.
 
 - Only two services classes per module will be the entry points for services that are intended to be called from AQL expressions
- - these classes will contain services that are intended to be called from AQL expressions.
- - they will be suffixed by _AQLService_.
- - their only role will be to expose services from other service classes.
- - other service classes won't be suffixed by _AQLService_ and will contain services that are intended to be called from Java code or by _AQLService_ classes.
+* these classes will contain services that are intended to be called from AQL expressions.
+* they will be suffixed by _AQLService_.
+* their only role will be to expose services from other service classes.
+* other service classes won't be suffixed by _AQLService_ and will contain services that are intended to be called from Java code or by _AQLService_ classes.
 
 - The initial categories of services could be (initial list to be defined and refined later):
- - `syson-sysml-metamodel-services`
-  - Usage
-  - Definition
-  - Any other category needed in the future like Part, Action...
- - `syson-model-services`
-  - Create
-  - Delete
-  - Move
-  - DragAndDrop
- - `syson-diagram-services`
-  - GeneralView
-  - InterconnectionView
-  - ActionFlowView
-  - StateTransitionView
-  - Label
-  - DirectEdit
-  - Node
-  - Edge
+* `syson-sysml-metamodel-services`
+** Usage
+** Definition
+** Any other category needed in the future like Part, Action...
+* `syson-model-services`
+** Create
+** Delete
+** Move
+** DragAndDrop
+* `syson-diagram-services`
+** GeneralView
+** InterconnectionView
+** ActionFlowView
+** StateTransitionView
+** Label
+** DirectEdit
+** Node
+** Edge
 - `syson-table-services`
-  - RequirementsView
-  - Row
-  - Column
-  - Cell
+** RequirementsView
+** Row
+** Column
+** Cell
 - `syson-tree-services`
-  - Tree
-  - TreeItem
+** Tree
+** TreeItem
 - `syson-form-services`
-  - Widget
+** Widget
 - `syson-representation-services`
-  - Expose
+** Expose
 
 Finally, the development guidelines will be updated to explain this new organization and how to add new services following this organization.
 README files will be added in each module to explain the purpose of the module and how to add new services in it.

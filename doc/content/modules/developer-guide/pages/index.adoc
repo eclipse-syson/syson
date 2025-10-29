@@ -96,16 +96,15 @@ Since version 2025.10.2, {product} services are organized into several modules t
 * all services in this module are allowed to depend on Sirius-Web.
 * will contain services that can be used in all representations
 
-- Services are grouped in classes by their purpose and usage:
-* a service that query the model is in a class named `SomethingQueryService`.
-* a service that mutate the model is in a class named `SomethingMutationService`.
-* a service that query the diagram is in a class named `DiagramQueryService`.
-* a service that mutate the diagram is in a class named `DiagramMutationService`.
-* a service querying label of diagram elements is in a class named `DiagramLabelQueryService`.
-* a service modifying the label of diagram elements is in a class named `DiagramLabelMutationService`.
-* a service querying label of diagram elements is in a class named `LabelDiagramQueryService`.
-* a service modifying the label of elements is in a class named `LabelDiagramMutationService`.
-* `SomethingQueryService` and `SomethingMutationService` classes can be split in smaller classes if they contain too many services.
+- Services will be grouped in classes by their purpose and usage:
+* a service that query the model will be in a class named `ModelQueryService`.
+* a service that mutate the model will be in a class named `ModelMutationService`.
+* a service that query the diagram will be in a class named `DiagramQueryService`.
+* a service that mutate the diagram will be in a class named `DiagramMutationService`.
+* a service querying label of diagram elements will be in a class named `DiagramQueryLabelService`.
+* a service modifying the label of diagram elements will be in a class named `DiagramMutationLabelService`.
+* same for tables, trees, forms, representations.
+* `XXXQueryService`, `XXXMutationService`, `XXXQueryYYYService`, `XXXMutationYYYService` classes can be split in smaller classes if they contain too many services.
 
 - In addition to services classes, each module contains two specific services classes which are the entry points for services that are intended to be called from AQL expressions:
 * these classes contain services that are intended to be called from AQL expressions.
