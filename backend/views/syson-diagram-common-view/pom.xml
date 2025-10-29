@@ -95,6 +95,11 @@
 			<artifactId>syson-model-services</artifactId>
 			<version>2025.10.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-diagram-services</artifactId>
+			<version>2025.10.1</version>
+		</dependency>
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>

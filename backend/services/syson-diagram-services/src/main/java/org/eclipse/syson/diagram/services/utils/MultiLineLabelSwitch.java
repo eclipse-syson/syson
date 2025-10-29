@@ -10,11 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.diagram.services.utils;
 
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.diagram.services.api.IDiagramLabelService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -83,9 +84,9 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  */
 public class MultiLineLabelSwitch extends SysmlSwitch<String> {
 
-    private final LabelService labelService;
+    private final IDiagramLabelService labelService;
 
-    public MultiLineLabelSwitch(LabelService labelService) {
+    public MultiLineLabelSwitch(IDiagramLabelService labelService) {
         this.labelService = Objects.requireNonNull(labelService);
     }
 

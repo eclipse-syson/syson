@@ -21,7 +21,7 @@ import org.eclipse.syson.sysml.PartUsage;
  *
  * @author arichard
  */
-public class ElementQueryService {
+public class MetamodelElementQueryService {
 
     /**
      * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.

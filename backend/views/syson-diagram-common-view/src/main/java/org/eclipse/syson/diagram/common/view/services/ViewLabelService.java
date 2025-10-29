@@ -12,60 +12,33 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
-import static java.util.stream.Collectors.joining;
-
 import java.text.MessageFormat;
 import java.util.Objects;
-import java.util.function.BinaryOperator;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.services.LabelService;
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.ConstraintUsage;
-import org.eclipse.syson.sysml.Dependency;
-import org.eclipse.syson.sysml.Documentation;
+import org.eclipse.syson.services.SimpleNameDeresolver;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.textual.utils.Appender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Label-related Java services used in diagrams.
  *
  * @author arichard
  */
-public class ViewLabelService extends LabelService {
+public class ViewLabelService {
 
-    private static final String SPACE = " ";
-
-    /**
-     * The default separator used when printing a set of Trigger Actions for a TransitionUsage label
-     */
-    private static final String TRIGGER_ACTION_SEPARATOR = " | ";
-
-    /**
-     * The default separator used when printing a set of Guard Expressions for a TransitionUsage label
-     */
-    private static final String GUARD_EXPRESSION_SEPARATOR = "& ";
-
-    /**
-     * The default separator used when printing a set of Effect Action for a TransitionUsage label
-     */
-    private static final String EFFECT_ACTION_SEPARATOR = ", ";
+    private final Logger logger = LoggerFactory.getLogger(ViewLabelService.class);
 
     private final ShowDiagramsIconsService showDiagramsIconsService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     public ViewLabelService(IFeedbackMessageService feedbackMessageService, ShowDiagramsIconsService showDiagramsIconsService) {
-        super(feedbackMessageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.showDiagramsIconsService = Objects.requireNonNull(showDiagramsIconsService);
     }
 
@@ -81,267 +54,6 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Return the label for the given {@link Usage} when displayed as a compartment item.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label for the given {@link Usage}.
-     */
-    public String getCompartmentItemLabel(Usage usage) {
-        return this.getCompartmentItemStringRepresentation(usage, false);
-    }
-
-    private String getCompartmentItemStringRepresentation(Usage usage, boolean directEditInput) {
-        StringBuilder label = new StringBuilder();
-        if (usage instanceof ConstraintUsage constraintUsage
-                && usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            // Use the constraint-specific rendering only if the element is a constraint owned by a requirement. Other
-            // constraints (including requirements) are rendered as regular elements.
-            label.append(this.getCompartmentItemLabel(constraintUsage, directEditInput));
-        } else {
-            label.append(this.getUsageListItemPrefix(usage));
-            label.append(this.getIdentificationLabel(usage));
-            label.append(this.getMultiplicityStringRepresentation(usage, directEditInput));
-            label.append(this.getTypingLabel(usage));
-            label.append(this.getRedefinitionLabel(usage));
-            label.append(this.getSubsettingLabel(usage));
-            label.append(this.getValueStringRepresentation(usage, directEditInput));
-        }
-        return label.toString();
-    }
-
-    /**
-     * The default label for edges.
-     *
-     * @param element
-     *            the element to get the edge label from
-     * @return the edge label
-     */
-    public String getEdgeLabel(Element element) {
-        StringBuilder label = new StringBuilder();
-        label.append(this.getIdentificationLabel(element));
-        label.append(this.getTypingLabel(element));
-        return label.toString();
-    }
-
-    /**
-     * Returns the label for the given {@code dependency}.
-     *
-     * @param dependency
-     *            the dependency to get the edge label from
-     * @return the edge label
-     */
-    public String getDependencyLabel(Dependency dependency) {
-        return this.getIdentificationLabel(dependency);
-    }
-
-    /**
-     * Returns the label for the given {@link ConstraintUsage} when displayed as compartment item.
-     *
-     * @param constraintUsage
-     *            the given {@link ConstraintUsage}
-     * @return the label for the given {@link ConstraintUsage}
-     */
-    private String getCompartmentItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
-        StringBuilder label = new StringBuilder();
-        if (constraintUsage == null) {
-            label.append("");
-        } else if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            label.append(this.getSysmlTextualRepresentation(expression, directEditInput));
-        } else {
-            // The constraint doesn't have an expression, we use its name as default label.
-            label.append(this.getIdentificationLabel(constraintUsage));
-        }
-        return label.toString();
-    }
-
-    /**
-     * Return the label for the given {@link Documentation} when displayed as a compartment item.
-     *
-     * @param documentation
-     *            the given {@link Documentation}.
-     * @return the label for the given {@link Documentation}.
-     */
-    public String getCompartmentItemLabel(Documentation documentation) {
-        StringBuilder label = new StringBuilder();
-        String declaredName = documentation.getDeclaredName();
-        if (declaredName != null && !declaredName.isBlank()) {
-            label.append(declaredName);
-            label.append(LabelConstants.CR);
-        }
-        String body = documentation.getBody();
-        if (body != null) {
-            label.append(body);
-        }
-        return label.toString();
-    }
-
-    /**
-     * Get the value to display when a direct edit has been called on the given item list {@link Usage}.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the value to display.
-     */
-    public String getInitialDirectEditListItemLabel(Usage usage) {
-        String result;
-        if (usage instanceof ConstraintUsage constraintUsage &&
-                usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            result = this.getInitialDirectEditListItemLabel(constraintUsage, true);
-        } else {
-            result = this.getCompartmentItemStringRepresentation(usage, true);
-        }
-        return result;
-    }
-
-    private String getInitialDirectEditListItemLabel(ConstraintUsage constraintUsage, boolean directEditInput) {
-        String result;
-        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
-            result = this.getSysmlTextualRepresentation(expression, directEditInput);
-        } else {
-            // The constraint doesn't have an expression, we set an initial empty string for the direct edit.
-            result = "";
-        }
-        return result;
-    }
-
-    /**
-     * Get the value to display when a direct edit has been called on the given {@link Documentation}.
-     *
-     * @param documentation
-     *            the given {@link Documentation}.
-     * @return the value to display.
-     */
-    public String getInitialDirectEditListItemLabel(Documentation documentation) {
-        return documentation.getBody();
-    }
-
-    /**
-     * Get the value to display when a direct edit has been called on the given {@link Comment}.
-     *
-     * @param comment
-     *            the given {@link comment}.
-     * @return the value to display.
-     */
-    public String getInitialDirectEditListItemLabel(Comment comment) {
-        return comment.getBody();
-    }
-
-    public String getMultiplicityRangeInitialDirectEditLabel(Element element) {
-        return this.getMultiplicityRangeInitialDirectEditLabel(element);
-    }
-
-    public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, LabelService.NAME_OFF, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.TYPING_OFF, LabelService.VALUE_OFF);
-    }
-
-    public Element editEdgeCenterLabel(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.VALUE_OFF);
-    }
-
-    /**
-     * Computes the label for a {@link TransitionUsage}.
-     *
-     * @param transition
-     *            The {@link TransitionUsage} to compute the label for
-     * @param displayGuard
-     *            holds <code>true</code> to display the guard
-     */
-    public String getTransitionLabel(TransitionUsage transition, boolean displayGuard) {
-        // trigger-expression '/' ActionUsage
-        Appender appender = new Appender(SPACE, SPACE);
-
-        this.handleTransitionTriggerExpression(transition, displayGuard, appender, false);
-
-        EList<ActionUsage> effectActions = transition.getEffectAction();
-        if (!effectActions.isEmpty()) {
-            String effectLabel = this.getEffectActionsDefaultDirectEditLabel(effectActions);
-            if (!effectLabel.isBlank()) {
-                appender.appendWithSpaceIfNeeded("/ " + effectLabel);
-            }
-        }
-        return appender.toString();
-    }
-
-    /**
-     * Computes the label for a {@link TransitionUsage}.
-     *
-     * @param transition
-     *            The {@link TransitionUsage} to compute the label for
-     */
-    public String getTransitionLabel(TransitionUsage transition) {
-        return this.getTransitionLabel(transition, true);
-    }
-
-    /**
-     * Return the label for the given {@link Usage} represented as a border node.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label for the given {@link Usage}.
-     */
-    public String getBorderNodeUsageLabel(Usage usage) {
-        StringBuilder label = new StringBuilder();
-        String declaredName = usage.getDeclaredName();
-        if (declaredName != null && !declaredName.isBlank()) {
-            label.append(declaredName);
-        }
-        label
-                .append(this.getTypingLabel(usage))
-                .append(this.getRedefinitionLabel(usage))
-                .append(this.getSubsettingLabel(usage));
-        return label.toString();
-    }
-
-    private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
-        return elements.stream()
-                .map(action -> {
-                    if (action instanceof AcceptActionUsage aau && aau.getPayloadParameter() != null) {
-                        return this.getDefaultInitialDirectEditLabel(aau.getPayloadParameter());
-                    }
-                    return this.getDefaultInitialDirectEditLabel(action);
-                })
-                .reduce(reduceOperator)
-                .orElse("");
-    }
-
-    private String getEffectActionsDefaultDirectEditLabel(EList<ActionUsage> effectActions) {
-        String effectLabel;
-        effectLabel = this.getElementsDefaultInitialDirectEditLabel(effectActions, (a, b) -> {
-            return a + EFFECT_ACTION_SEPARATOR + b;
-        });
-        return effectLabel;
-    }
-
-    private void handleTransitionTriggerExpression(TransitionUsage transition, boolean displayGuard, Appender appender, boolean directEditInput) {
-        this.handleAcceptParameterPart(transition, appender, directEditInput);
-        if (displayGuard) {
-            this.handleGuardExpression(transition, appender, directEditInput);
-        }
-    }
-
-    private void handleGuardExpression(TransitionUsage transition, Appender appender, boolean directEditInput) {
-        EList<Expression> guardExpressions = transition.getGuardExpression();
-        if (!guardExpressions.isEmpty()) {
-            String textGuardExpression = guardExpressions.stream().map(exp -> this.getSysmlTextualRepresentation(exp, directEditInput))
-                    .filter(Objects::nonNull)
-                    .collect(joining(GUARD_EXPRESSION_SEPARATOR));
-            appender.appendWithSpaceIfNeeded("[").append(textGuardExpression).append("]");
-        }
-    }
-
-    private void handleAcceptParameterPart(TransitionUsage transition, Appender appender, boolean directEditInput) {
-        EList<AcceptActionUsage> triggerActions = transition.getTriggerAction();
-        if (!triggerActions.isEmpty()) {
-            SysMLElementSerializer sysmlSerializer = this.buildSerializer(directEditInput);
-            String textGuardExpression = triggerActions.stream().map(sysmlSerializer::getAcceptParameterPart)
-                    .filter(Objects::nonNull)
-                    .collect(joining(TRIGGER_ACTION_SEPARATOR));
-            appender.append(textGuardExpression);
-        }
-    }
-
-    /**
      * Send a feedback message to the user with a textual representation of an element.
      *
      * @param msg
@@ -354,7 +66,10 @@ public class ViewLabelService extends LabelService {
      * @return the element itself
      */
     public Element sendMessageWithTextualRepresentation(String msg, String level, Element element) {
-        this.getFeedbackMessageService().addFeedbackMessage(new Message(MessageFormat.format(msg, this.getSysmlTextualRepresentation(element, false)), MessageLevel.valueOf(level)));
+        var serializer = new SysMLElementSerializer("\n", " ", new SimpleNameDeresolver(), s -> {
+            this.logger.info(s.message());
+        });
+        this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format(msg, serializer.doSwitch(element)), MessageLevel.valueOf(level)));
         return element;
     }
 }

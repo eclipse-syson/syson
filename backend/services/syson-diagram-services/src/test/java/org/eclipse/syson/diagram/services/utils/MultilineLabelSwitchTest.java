@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.diagram.services.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,7 +18,8 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
+import org.eclipse.syson.diagram.services.api.IDiagramLabelService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
@@ -40,7 +41,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author jmallet
  */
-public class MultilineLabelSwitchTest extends AbstractServiceTest {
+public class MultilineLabelSwitchTest {
 
     private static final SysmlPackage SYSML = SysmlPackage.eINSTANCE;
 
@@ -120,7 +121,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        LabelService labelService = new LabelService(new IFeedbackMessageService.NoOp());
+        IDiagramLabelService labelService = new DiagramQueryLabelService();
         this.multiLineLabelSwitch = new MultiLineLabelSwitch(labelService);
     }
 

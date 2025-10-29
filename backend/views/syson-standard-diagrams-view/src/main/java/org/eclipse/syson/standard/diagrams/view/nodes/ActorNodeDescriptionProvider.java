@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.PartUsage;
@@ -94,7 +95,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
     @Override
     protected List<OutsideLabelDescription> createOutsideLabelDescriptions() {
         return List.of(this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
+                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getContainerLabel).aqlSelf())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .textAlign(LabelTextAlign.CENTER)
                 .style(this.diagramBuilderHelper.newOutsideLabelStyle()
