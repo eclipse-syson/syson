@@ -28,10 +28,12 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -53,7 +55,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String createPreconditionExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isActor");
+        return ServiceMethod.of0(ModelQueryAQLService::isActor).aqlSelf();
     }
 
     @Override

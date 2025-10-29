@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.model.services;
+package org.eclipse.syson.diagram.services.aql;
 
 /**
- * Entry point for all model-related services doing queries in models and called by AQL expressions in representation
+ * Entry point for all diagram-related services doing queries in diagrams and called by AQL expressions in diagram
  * descriptions.
  *
  * @author arichard
  */
-public class ModelQueryAQLService {
+public class DiagramQueryAQLService {
 
 }

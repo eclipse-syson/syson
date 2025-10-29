@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.form.services;
+package org.eclipse.syson.form.services.aql;
 
 /**
- * Entry point for all form-related services doing mutations in forms and called by AQL expressions in form
- * descriptions.
+ * Entry point for all form-related services doing queries in forms and called by AQL expressions in form descriptions.
  *
  * @author arichard
  */
-public class FormMutationAQLService {
+public class FormQueryAQLService {
 
 }

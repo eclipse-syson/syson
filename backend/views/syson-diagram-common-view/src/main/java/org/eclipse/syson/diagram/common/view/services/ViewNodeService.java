@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
@@ -57,6 +56,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.ElementQueryService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
@@ -77,10 +77,13 @@ public class ViewNodeService {
 
     private final ElementUtil elementUtil;
 
+    private final ElementQueryService elementQueryService;
+
     public ViewNodeService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.utilService = new UtilService();
         this.elementUtil = new ElementUtil();
+        this.elementQueryService = new ElementQueryService();
     }
 
     /**
@@ -427,7 +430,7 @@ public class ViewNodeService {
         return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
-                .filter(this::isActor)
+                .filter(this.elementQueryService::isActor)
                 .toList();
     }
 
@@ -438,20 +441,6 @@ public class ViewNodeService {
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
                 .toList();
-    }
-
-    /**
-     * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
-     * <p>
-     * An actor (typically of a UseCase or Requirement) is a kind of parameter stored in an {@link ActorMembership}.
-     * </p>
-     *
-     * @param element
-     *            the element to check
-     * @return {@code true} if the provided {@code element} is an actor, {@code false} otherwise
-     */
-    public boolean isActor(Element element) {
-        return element instanceof PartUsage && element.getOwningMembership() instanceof ActorMembership;
     }
 
     /**

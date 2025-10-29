@@ -24,7 +24,6 @@ Those parameters can be linked to other parameters using the _New Binding Connec
 
 image::sdv-action-parameters.png[Action parameters, width=65%,height=65%]
 
-
 == Bug fixes
 
 - Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.

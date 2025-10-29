@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.table.services;
+package org.eclipse.syson.tree.services.aql;
 
 /**
- * Entry point for all table-related services doing mutations in tables and called by AQL expressions in table
- * descriptions.
+ * Entry point for all tree-related services doing queries in trees and called by AQL expressions in tree descriptions.
  *
  * @author arichard
  */
-public class TableMutationAQLService {
+public class TreeQueryAQLService {
 
 }
