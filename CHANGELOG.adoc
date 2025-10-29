@@ -15,7 +15,30 @@
 - https://github.com/eclipse-syson/syson/issues/1628[#1628] [services] Introduce new services organization.
 https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
 Also introduces new `ServiceMethod` helper class to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
-- [services] _isActor(Element)_ has been moved from `ViewNodeService` to `ElementQueryService`.
+- [services] _isActor(Element)_ has been moved from `ViewNodeService` to `MetamodelElementQueryService`.
+- [services] The following services have been moved from `LabelService` and `ViewLabelService` to `DiagramQueryLabelService`:
+* String getBorderNodeUsageLabel(Usage usage)
+* String getCompartmentItemLabel(Documentation documentation)
+* String getCompartmentItemLabel(Usage usage)
+* String getContainerLabel(Element element)
+* String getDefaultInitialDirectEditLabel(Comment comment)
+* String getDefaultInitialDirectEditLabel(Element element)
+* String getDefaultInitialDirectEditLabel(TextualRepresentation textualRepresentation)
+* String getDependencyLabel(Dependency dependency)
+* String getEdgeLabel(Element element)
+* String getInitialDirectEditListItemLabel(Documentation documentation)
+* String getInitialDirectEditListItemLabel(Comment comment)
+* String getInitialDirectEditListItemLabel(Usage usage)
+* String getMultiplicityLabel(Element element)
+* String getTransitionLabel(TransitionUsage transition)
+- [services] The following services have been moved from `LabelService` and `ViewLabelService` to `DiagramMutationLabelService`:
+* Element directEdit(Element element, String newLabel)
+* Element directEdit(Element element, String newLabel, String... options)
+* Element directEdit(Element element, String newLabel, boolean isCompartmentItem, String... options)
+* Element directEditNode(Element element, String newLabel)
+* Element directEditListItem(Element element, String newLabel)
+* Element editMultiplicityRangeCenterLabel(Element element, String newLabel)
+* Element editEdgeCenterLabel(Element element, String newLabel)
 
 === Dependency update
 

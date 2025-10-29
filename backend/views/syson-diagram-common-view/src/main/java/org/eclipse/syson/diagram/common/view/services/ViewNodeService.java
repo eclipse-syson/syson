@@ -56,7 +56,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.eclipse.syson.sysml.metamodel.services.ElementQueryService;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
@@ -77,13 +77,13 @@ public class ViewNodeService {
 
     private final ElementUtil elementUtil;
 
-    private final ElementQueryService elementQueryService;
+    private final MetamodelElementQueryService elementQueryService;
 
     public ViewNodeService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.utilService = new UtilService();
         this.elementUtil = new ElementUtil();
-        this.elementQueryService = new ElementQueryService();
+        this.elementQueryService = new MetamodelElementQueryService();
     }
 
     /**

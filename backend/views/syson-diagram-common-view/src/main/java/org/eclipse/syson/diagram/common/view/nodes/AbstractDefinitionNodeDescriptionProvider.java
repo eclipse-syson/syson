@@ -43,9 +43,12 @@ import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -182,7 +185,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
+                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getContainerLabel).aqlSelf())
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .textAlign(LabelTextAlign.CENTER)
@@ -223,11 +226,11 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEditNode", "newLabel"));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::directEditNode).aqlSelf("newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
+                .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<EdgeTool>();

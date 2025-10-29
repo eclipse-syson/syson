@@ -26,11 +26,14 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -85,7 +88,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getDependencyLabel"))
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDependencyLabel).aqlSelf())
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -121,7 +124,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
     @Override
     protected LabelEditTool getEdgeEditTool() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"))
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::directEdit).aqlSelf("newLabel"))
                 .build();
 
         return this.diagramBuilderHelper.newLabelEditTool()

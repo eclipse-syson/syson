@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,12 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -76,7 +79,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getCompartmentItemLabel"))
+                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getCompartmentItemLabel).aqlSelf())
                 .overflowStrategy(LabelOverflowStrategy.WRAP)
                 .position(InsideLabelPosition.TOP_LEFT)
                 .style(this.createInsideLabelStyle())
@@ -119,11 +122,11 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .body(callDeleteService.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEditListItem", "newLabel"));
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::directEditListItem).aqlSelf("newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getInitialDirectEditListItemLabel"))
+                .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getInitialDirectEditListItemLabel).aqlSelf())
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()

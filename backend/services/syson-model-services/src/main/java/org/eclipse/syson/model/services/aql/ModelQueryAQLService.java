@@ -13,7 +13,7 @@
 package org.eclipse.syson.model.services.aql;
 
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.metamodel.services.ElementQueryService;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
 
 /**
  * Entry point for all model-related services doing queries in models and called by AQL expressions in representation
@@ -23,14 +23,14 @@ import org.eclipse.syson.sysml.metamodel.services.ElementQueryService;
  */
 public class ModelQueryAQLService {
 
-    private final ElementQueryService elementQueryService;
+    private final MetamodelElementQueryService elementQueryService;
 
     public ModelQueryAQLService() {
-        this.elementQueryService = new ElementQueryService();
+        this.elementQueryService = new MetamodelElementQueryService();
     }
 
     /**
-     * {@link ElementQueryService#isActor(Element)}.
+     * {@link MetamodelElementQueryService#isActor(Element)}.
      */
     public boolean isActor(Element element) {
         return this.elementQueryService.isActor(element);

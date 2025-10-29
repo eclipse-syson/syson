@@ -31,8 +31,11 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -145,12 +148,13 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
     @Override
     protected LabelEditTool getEdgeEditTool() {
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".editMultiplicityRangeCenterLabel(newLabel)");
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::editMultiplicityRangeCenterLabel).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
+                        "newLabel"));
 
         return this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
                 .initialDirectEditLabelExpression(
-                        AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityRangeInitialDirectEditLabel()")
+                        ServiceMethod.of0(DiagramQueryAQLService::getMultiplicityLabel).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET))
                 .body(callEditService.build()).build();
     }
 
