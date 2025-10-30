@@ -54,6 +54,7 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
@@ -203,7 +204,41 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     .isPresent();
 
             assertThat(p2Mass.get()).matches(attributeUsage -> attributeUsage.redefines(pMass.get()));
+        });
+    }
 
+    @Test
+    @DisplayName("GIVEN a model with rational numbers, WHEN importing the model, THEN the value should use LiteralRational")
+    public void checkLiteralRationalImport() throws IOException {
+        var input = """
+                private import ScalarValues::*;
+                part p1 {
+                    attribute a : Real = 1.0;
+                    attribute b = 3.14;
+                    attribute c = 2.5E-10;
+                    attribute d = .5;
+                    attribute e = 1E+3;
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            List<FeatureValue> values = EMFUtils.allContainedObjectOfType(resource, FeatureValue.class)
+                    .toList();
+            assertThat(values).hasSize(5);
+            assertThat(values.get(0).getValue())
+                    .isInstanceOf(LiteralRational.class)
+                    .matches(v -> ((LiteralRational) v).getValue() == 1.0);
+            assertThat(values.get(1).getValue())
+                    .isInstanceOf(LiteralRational.class)
+                    .matches(v -> ((LiteralRational) v).getValue() == 3.14);
+            assertThat(values.get(2).getValue())
+                    .isInstanceOf(LiteralRational.class)
+                    .matches(v -> ((LiteralRational) v).getValue() == 2.5E-10);
+            assertThat(values.get(3).getValue())
+                    .isInstanceOf(LiteralRational.class)
+                    .matches(v -> ((LiteralRational) v).getValue() == 0.5);
+            assertThat(values.get(4).getValue())
+                    .isInstanceOf(LiteralRational.class)
+                    .matches(v -> ((LiteralRational) v).getValue() == 1E+3);
         }).check(input);
     }
 

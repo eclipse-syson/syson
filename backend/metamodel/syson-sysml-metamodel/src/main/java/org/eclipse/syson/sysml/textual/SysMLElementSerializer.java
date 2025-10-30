@@ -18,13 +18,15 @@ import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_I
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_MEMBERSHIP;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_METADATA_USAGE;
 
-import java.lang.Class;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -36,8 +38,115 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.syson.sysml.*;
+import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AnalysisCaseUsage;
+import org.eclipse.syson.sysml.AssertConstraintUsage;
+import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.CalculationDefinition;
+import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.CollectExpression;
+import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.ConjugatedPortTyping;
+import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.ControlNode;
+import org.eclipse.syson.sysml.DecisionNode;
+import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Documentation;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowEnd;
+import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.ForkNode;
+import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
+import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.InvocationExpression;
+import org.eclipse.syson.sysml.ItemDefinition;
+import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.JoinNode;
+import org.eclipse.syson.sysml.LibraryPackage;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralExpression;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipExpose;
+import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MergeNode;
+import org.eclipse.syson.sysml.Metaclass;
+import org.eclipse.syson.sysml.MetadataAccessExpression;
+import org.eclipse.syson.sysml.MetadataDefinition;
+import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.NamespaceExpose;
+import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.NullExpression;
+import org.eclipse.syson.sysml.ObjectiveMembership;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
+import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.OperatorExpression;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PayloadFeature;
+import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.PortDefinition;
+import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.PortionKind;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RenderingUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
+import org.eclipse.syson.sysml.SelectExpression;
+import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StakeholderMembership;
+import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
+import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.TriggerInvocationExpression;
+import org.eclipse.syson.sysml.TriggerKind;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.VerificationCaseUsage;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.ViewpointDefinition;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.utils.Appender;
@@ -53,6 +162,10 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author Arthur Daussy
  */
 public class SysMLElementSerializer extends SysmlSwitch<String> {
+
+    private static final DecimalFormat SIMPLE_LITERAL_RATIONAL_FORMAT = new DecimalFormat("0.0#", new DecimalFormatSymbols(Locale.US));
+
+    private static final DecimalFormat SCIENTIFIC_LITERAL_RATIONAL_FORMAT = new DecimalFormat("0.0#####E0", new DecimalFormatSymbols(Locale.US));
 
     private final String lineSeparator;
 
@@ -511,8 +624,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseLiteralRational(LiteralRational literal) {
         Appender builder = this.newAppender();
-        builder.append(String.valueOf(literal.getValue()));
+        builder.append(this.toPreciseReal(literal.getValue()));
         return builder.toString();
+    }
+
+    private String toPreciseReal(double value) {
+        if (Math.abs(value) >= 1e-3 && Math.abs(value) < 1e6) {
+            return SIMPLE_LITERAL_RATIONAL_FORMAT.format(value);
+        } else {
+            return SCIENTIFIC_LITERAL_RATIONAL_FORMAT.format(value);
+        }
     }
 
     @Override

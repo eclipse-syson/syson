@@ -14,8 +14,6 @@ package org.eclipse.syson.sysml.parser.translation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.math.BigDecimal;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -61,16 +59,22 @@ public class EClassifierTranslator {
         } else if ("NamespaceReference".equals(type)) {
             type = "Namespace";
         } else if (type.equals("LiteralNumber")) {
-            final String literalValue = astJson.get(LITERAL_CONST).asText();
-            if (literalValue != null) {
-                try {
-                    final BigDecimal bd = new BigDecimal(literalValue);
-                    bd.intValueExact();
-                    type = "LiteralInteger";
-                } catch (final ArithmeticException e) {
+            // There is a bug in AST provided by SysIDE, the literal fields converts some the value from 1.0 to 1 making hard to distinguish between RationalLiteral and IntegerLiteral
+            final var textValueNode = astJson.at("/$cstNode/text");
+            if (textValueNode != null && textValueNode.asText() != null) {
+                final String textValue = textValueNode.asText();
+                if (textValue.contains(".") || textValue.contains("E") || textValue.contains("e")) {
+                    /*
+                     * <p>RealValue : Real = DECIMAL_VALUE? '.' ( DECIMAL_VALUE | EXPONENTIAL_VALUE ) | EXPONENTIAL_VALUE</p>
+                     * <p>EXPONENTIAL_VALUE = DECIMAL_VALUE ('e' | 'E') ('+' | '-')? DECIMAL_VALUE </p>
+                     */
                     type = "LiteralRational";
+                } else {
+                    type = "LiteralInteger";
                 }
             }
+
+
             // to remove when SysIDE will release a SysMLv2 2025-04 compliant version
         } else if ("FlowConnectionUsage".equals(type)) {
             type = "FlowUsage";

@@ -62,6 +62,43 @@ metadata def MP :> SemanticMetadata {
 }
 ```
 
+- Fix an issue during import and export of rational numbers.
+The following model is now properly imported:
+
+```
+package Occurrences {
+   private import ScalarValues::*;
+   occurrence def Occurrence1 {
+      attribute f : Real = 1.0;
+      attribute g = 3.14;
+      attribute h = 2.5E-10;
+      attribute i = .5;
+      attribute j = 1E+3;
+   }
+   enum def MyEnum {
+      enum1;
+   }
+}
+```
+
+Here is the textual export result:
+
+```
+package Occurrences {
+   private import ScalarValues::*;
+   occurrence def Occurrence1 {
+      attribute f : Real = 1.0;
+      attribute g = 3.14;
+      attribute h = 2.5E-10;
+      attribute i = 0.5;
+      attribute j = 1000.0;
+   }
+   enum def MyEnum {
+      enum1;
+   }
+}
+```
+
 == Improvements
 
 - In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
