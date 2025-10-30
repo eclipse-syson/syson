@@ -57,6 +57,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1618[#1618] [rest-apis] Fix an issue where the _eAnnotations_ reference coming from the Ecore metamodel was taking into account by REST APIs serialization.
 - https://github.com/eclipse-syson/syson/issues/1621[#1621] [diagrams] Fix an issue where the creation of a _Package_ inside another _Package_ created the _Package_ at the root of the diagram in addition to the inside of the target _Package_.
 - https://github.com/eclipse-syson/syson/issues/1617[#1617] [import] Fix incorrect resolution of _redefined feature_ on `Redefinitions` during textual import.
+- https://github.com/eclipse-syson/syson/issues/1627[#1627] [import] [export] Fix invalid textual import/export of `LiteralRational`.
 
 === Improvements
 
