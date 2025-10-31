@@ -1711,6 +1711,28 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    private void appendUnaryOperatorExpression(Appender builder, OperatorExpression expression) {
+
+        builder.appendSpaceIfNeeded().append(expression.getOperator());
+
+        expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .ifPresent(param -> {
+                    Appender localBuilder = this.newAppender();
+                    this.appendArgumentMember(localBuilder, param);
+                    if ("not".equals(expression.getOperator())) {
+                        // Keep heading space
+                        builder.appendWithSpaceIfNeeded(localBuilder.toString().trim());
+                    } else {
+                        // Remove heading space for the symbols : '+', '-' and '~'
+                        builder.append(localBuilder.toString().trim());
+                    }
+
+                });
+    }
+
     private void appendBinaryOperatorExpression(Appender builder, OperatorExpression expression) {
         Iterator<ParameterMembership> iterator = expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
@@ -1735,7 +1757,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         List<String> unaryOperators = List.of("+", "-", LabelConstants.CONJUGATED, "not");
 
         if (ownedRelationships.size() < 2 && (unaryOperators.contains(operator))) {
-            this.reportConsumer.accept(Status.warning("UnaryOperatorExpression are not handled yet {0}", expression.getElementId()));
+            this.appendUnaryOperatorExpression(builder, expression);
         } else {
             this.appendBinaryOperatorExpression(builder, expression);
         }

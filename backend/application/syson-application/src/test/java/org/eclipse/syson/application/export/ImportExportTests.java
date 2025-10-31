@@ -958,4 +958,18 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
         this.checker.check(input, expected);
     }
+
+    @Test
+    @DisplayName("GIVEN a model with FeatureValues using UnaryOperator, WHEN importing and exporting the model, THEN the FeatureValues should be exported properly")
+    public void checkUnaryOperator() throws IOException {
+        var input = """
+                private import ScalarValues::*;
+                part p1 {
+                    attribute a : Real = -1.0;
+                    attribute b : Integer = -1;
+                    attribute c : Integer = +1;
+                    attribute d : Boolean = not true;
+                }""";
+        this.checker.check(input, input);
+    }
 }
