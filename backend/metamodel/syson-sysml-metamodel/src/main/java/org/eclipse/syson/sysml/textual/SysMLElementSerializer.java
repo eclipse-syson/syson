@@ -1874,7 +1874,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String appendNameWithShortName(Appender builder, Element element) {
-        String shortName = element.getShortName();
+        String shortName = element.getDeclaredShortName();
         if (!this.isNullOrEmpty(shortName)) {
             builder.appendSpaceIfNeeded().append("<").appendPrintableName(shortName).append(">");
         }
