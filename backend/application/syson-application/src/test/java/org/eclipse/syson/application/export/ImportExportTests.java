@@ -926,4 +926,36 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 part myPart [1..2];""";
         this.checker.check(input, input);
     }
+
+    @Test
+    @DisplayName("GIVEN a model with OperatorExpression using the 'meta', WHEN importing and exporting the model, THEN the expression is properly handled")
+    public void checkMetaOperatorExpressionExport() throws IOException {
+        var input = """
+                private import Metaobjects::SemanticMetadata;
+                part p;
+                metadata def MD :> SemanticMetadata {
+                    :>> baseType = p meta SysML::Systems::PartUsage;
+                }
+                metadata def MD2 :> SemanticMetadata {
+                    :>> baseType default p meta SysML::Systems::PartUsage;
+                }""";
+
+        /*
+         * Both syntax ":>> baseType default p meta SysML::Systems::PartUsage;" and ":>> baseType default = p meta SysML::Systems::PartUsage;" are valid.
+         * <p>
+         * The BNF would only suggest the use of the form using the "default =" (see KerML v.10 8.2.5.10 Feature Values Concrete Syntax) but there is also a mention of an exception authorising the
+         *  use of the form without the "=" in SysML v1.0 "7.4.11 Feature Values" if the feature is bound. The current implementation has made the choice to always display the symbol "=".
+         * </p>
+         */
+        var expected = """
+                private import Metaobjects::SemanticMetadata;
+                part p;
+                metadata def MD :> SemanticMetadata {
+                    :>> baseType = p meta SysML::Systems::PartUsage;
+                }
+                metadata def MD2 :> SemanticMetadata {
+                    :>> baseType default = p meta SysML::Systems::PartUsage;
+                }""";
+        this.checker.check(input, expected);
+    }
 }

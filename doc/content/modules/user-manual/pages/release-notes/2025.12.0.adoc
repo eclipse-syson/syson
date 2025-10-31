@@ -160,6 +160,18 @@ In the example above, when using the direct edit capability to subclass the _Bat
 
 image::explorer-short-name-label.png[Short name in labels, width=65%,height=65%]
 
+- The textual export now handles the `OperatorExpressions` (mainly used in semantic `MetadataDefinition`) such as in:
+
+```
+private import Metaobjects::SemanticMetadata;
+part p;
+metadata def MD :> SemanticMetadata {
+   :>> baseType = p meta SysML::Systems::PartUsage;
+}
+metadata def MD2 :> SemanticMetadata {
+   :>> baseType default = p meta SysML::Systems::PartUsage;
+}
+```
 
 == Technical details
 
