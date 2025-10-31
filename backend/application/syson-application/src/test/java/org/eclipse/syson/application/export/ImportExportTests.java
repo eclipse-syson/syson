@@ -889,6 +889,29 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with an attribute redefining an attribute with a short name, WHEN importing and exporting the model, THEN the redefined attribute should not redefine the shortName")
+    public void checkRedefineAttributeWithShortName() throws IOException {
+        var input = """
+                part p {
+                    attribute <a> anAttribute;
+                }
+                
+                part p1 :> p {
+                    attribute :>> a;
+                }""";
+        var expected = """
+                part p {
+                    attribute <a> anAttribute;
+                }
+                part p1 :> p {
+                    attribute :>> anAttribute;
+                }""";
+
+        this.checker.check(input, expected);
+    }
+
+
+    @Test
     @DisplayName("GIVEN a model with an AttributeUsage containing a LiteralString, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkLiteralString() throws IOException {
         var input = """

@@ -62,7 +62,8 @@ metadata def MP :> SemanticMetadata {
 }
 ```
 
-- Fix an issue during import and export of rational numbers.
+- Fix an issue during texual import and export of rational numbers.
+
 The following model is now properly imported:
 
 ```
@@ -96,6 +97,41 @@ package Occurrences {
    enum def MyEnum {
       enum1;
    }
+}
+```
+
+- Fix an issue where a model with a redefining `AttributeUsage` incorrectly redefined a _short name_ during a textual export.
+For example with the following model:
+
+```
+part p {
+    attribute <a> anAttribute;
+}
+
+part p1 :> p {
+    attribute :>> anAttribute;
+}
+```
+
+The export gave :
+
+```
+part p {
+	attribute <a> anAttribute;
+}
+part p1 :> p {
+	attribute <a> :>> anAttribute;
+}
+```
+
+Instead, it now exports:
+
+```
+part p {
+	attribute <a> anAttribute;
+}
+part p1 :> p {
+	attribute :>> anAttribute;
 }
 ```
 
