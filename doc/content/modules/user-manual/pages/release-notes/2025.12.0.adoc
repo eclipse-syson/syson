@@ -135,6 +135,20 @@ part p1 :> p {
 }
 ```
 
+- Fix the textual export of `UnaryOperator` which are `Expression` using the operators '+', '-', 'not' or '~' with only one parameter.
+For example in the following model:
+
+```
+private import ScalarValues::*;
+
+part p1 {
+    attribute a : Real = -1.0;
+    attribute b : Integer = -1;
+    attribute c : Integer = +1;
+    attribute d : Boolean = not true;
+}
+```
+
 == Improvements
 
 - In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
