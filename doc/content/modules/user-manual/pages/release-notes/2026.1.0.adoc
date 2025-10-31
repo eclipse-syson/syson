@@ -13,8 +13,8 @@ These models are now correctly displayed under the _User libraries_ directory.
 
 == Improvements
 
-- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model.
-
+- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model:
++
 ```
 package Requirements {
     requirement <Req1> {
@@ -31,7 +31,10 @@ package ReqSatisfactions {
     assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
 }
 ```
-- SysMLv2EditService now supports creating non-SysML root objects by delegating to the default implementation in non-SysML scenarios.
+
+- In diagrams, a new compartment named _parts_ can be enabled on a `PartUsages` to show nested `PartUsages` as a list:
+
+image::gv-parts-compartment.png[Parts compartment, width=50%]
 
 == Technical details
 

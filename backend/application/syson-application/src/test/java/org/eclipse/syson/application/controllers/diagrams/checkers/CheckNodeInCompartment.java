@@ -84,8 +84,10 @@ public class CheckNodeInCompartment implements IDiagramChecker {
                 .childNodeWithLabel(this.compartmentName)
                 .getNode();
         assertThat(compartmentNode.getChildNodes()).anySatisfy(childNode -> {
-            assertThat(childNode).hasDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName));
-            assertThat(childNode.getChildNodes()).hasSize(this.compartmentCount);
+            String nodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName);
+            assertThat(childNode).hasDescriptionId(nodeDescriptionId);
+            var childNodes = childNode.getChildNodes();
+            assertThat(childNodes).hasSize(this.compartmentCount);
             assertThat(newNodes).contains(childNode);
         });
         if (this.isRevealed) {

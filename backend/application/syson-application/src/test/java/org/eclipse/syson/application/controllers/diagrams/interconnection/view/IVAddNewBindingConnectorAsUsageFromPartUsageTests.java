@@ -59,7 +59,7 @@ import reactor.test.StepVerifier.Step;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractIntegrationTests {
 
-    private static final int PART_USAGE_COMPARTMENT_COUNT = 12;
+    private static final int PART_USAGE_COMPARTMENT_COUNT = 13;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -131,10 +131,12 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    // we should have 1 more node for the new PartUsage, 3 more nodes for its compartments and
-                    // 2 more nodes for ports on each part usage.
-                    // we should have 1 more edge (the new binding connector as usage edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
+                    // We should have:
+                    // - 1 more node for the new PartUsage, with all its compartments
+                    // - 2 more nodes for ports on each part usage
+                    // - 1 more node (list item) in the parent's "parts" compartment for the new part
+                    // - 1 more edge (the new interface edge)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
@@ -168,10 +170,12 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    // we should have 1 more node for the new PartUsage, 3 more nodes for its compartments and
-                    // 2 more nodes for ports on each part usage.
-                    // we should have 1 more edge (the new binding connector as usage edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
+                    // We should have:
+                    // - 1 more node for the new PartUsage, with all its compartments
+                    // - 2 more nodes for ports on each part usage
+                    // - 1 more node (list item) in the parent's "parts" compartment for the new part
+                    // - 1 more edge (the new interface edge)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);

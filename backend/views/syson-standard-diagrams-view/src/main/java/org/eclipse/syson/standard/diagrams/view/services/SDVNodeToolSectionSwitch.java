@@ -553,8 +553,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.INOUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.OUT));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
@@ -578,7 +576,9 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+
         this.createToolsForCompartmentItems(object, sections, this.cache);
+
         this.toolDescriptionService.getNodeToolSection(sections, ToolConstants.BEHAVIOR).ifPresent(nts -> {
             // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
             nts.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));

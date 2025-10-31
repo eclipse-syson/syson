@@ -119,8 +119,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> allocationUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUsage(), 9))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -139,7 +138,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     private static Stream<Arguments> allocationDefinitionSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 9))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 10))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -151,8 +150,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> interfaceUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUsage(), 9))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -190,7 +188,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> portUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 10),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -211,7 +209,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> portDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 10),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
