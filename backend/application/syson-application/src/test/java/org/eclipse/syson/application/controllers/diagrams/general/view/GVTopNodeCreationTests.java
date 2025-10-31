@@ -180,7 +180,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 9),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 10),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),

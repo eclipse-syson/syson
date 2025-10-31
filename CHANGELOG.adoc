@@ -157,6 +157,7 @@ https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organi
 Also introduces new `ServiceMethod` helper class to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
 - https://github.com/eclipse-syson/syson/issues/1606[#1606] [explorer] Display the _shortName_ of `Elements` as part of the label in the _Explorer_ view.
 - https://github.com/eclipse-syson/syson/issues/1638[#1638] [diagrams] Add the capability to put an `Element` graphical node inside a `ViewUsage` in diagrams
+- https://github.com/eclipse-syson/syson/issues/1584[#1584] [diagram] Add a "parts" compartment in diagrams (hidden by default)
 
 == v2025.10.0
 

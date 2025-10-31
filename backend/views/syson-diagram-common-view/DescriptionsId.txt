@@ -1,49 +1,136 @@
 GV Node Fake => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b5c3af5f-feba-3b89-8254-a4f80032ca92
+GV Compartment ConcernDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4aadfaa2-5d27-306d-8fdd-3fc7a4c17f70
+GV InheritedCompartmentItem ConcernDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=98ef4806-cdf7-3986-9a2c-6f028f3fcbda
+GV CompartmentItem ConcernDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c5473e13-bbc5-33e4-ae2b-4eda5ce8fffa
+GV Compartment ConcernDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8cf2105a-e8dd-3027-8ca4-2a482b2f68cf
+GV InheritedCompartmentItem ConcernDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b0238e9e-1428-32e2-ba6b-8a31557cbef9
+GV CompartmentItem ConcernDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0e1c40ef-b789-35d4-9610-e60f1801d031
+GV Compartment ConcernDefinition ownedRequirement => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c31da06e-a2c3-36cb-8e30-9ecba04aa60b
+GV InheritedCompartmentItem ConcernDefinition ownedRequirement => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5e3bdcbc-50f0-34d8-9851-1cdc402f437a
+GV CompartmentItem ConcernDefinition ownedRequirement => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e85807c0-eb80-3042-b7f6-ea92ac44c823
+GV Compartment ConcernDefinition assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d1f57faf-6054-34ab-b52e-3b44012b28a1
+GV InheritedCompartmentItem ConcernDefinition assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f2215dad-53f0-36b9-93b2-5974a1a68c0c
+GV CompartmentItem ConcernDefinition assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=37f7e99c-e317-3e53-be44-6fa1c3b8ea02
+GV Compartment ConcernDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3401058e-d62a-3384-9425-6274b6fd5ef9
+GV InheritedCompartmentItem ConcernDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c78d8161-cb1b-30ea-ac5b-3bc9568b1ff2
+GV CompartmentItem ConcernDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=55e41dc9-6896-327f-b7cc-0328b7d338e2
+GV Compartment ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b111500-5e74-3c17-a829-9f8d7bb4242d
+GV InheritedCompartmentItem ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b414485-588b-3d91-9bb3-edabdf408e62
+GV CompartmentItem ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=29224b0f-cc17-34b6-9cc1-ed306b6f4c49
+GV Compartment ActionDefinition ownedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b677318b-942f-3af6-a998-ec01580567b0
+GV InheritedCompartmentItem ActionDefinition ownedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cf9cda9b-c736-3dbc-b8eb-a99fb187ee3b
+GV CompartmentItem ActionDefinition ownedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4ebfb239-600c-354b-a700-a4eb2bc8e2ac
+GV Compartment ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=41cc2762-86b7-3ac4-9b63-d8c3012bdb05
+GV InheritedCompartmentItem ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fcd36ab6-c739-376e-b85c-1b5b378e2aac
+GV CompartmentItem ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2be438e6-e42e-3f5e-8e43-321ee54ef79c
+GV Compartment PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c901d8ce-4c57-3ede-8fdb-3c5aa91b67ba
+GV InheritedCompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=65a4f9a9-da02-3f70-ba92-ac8510aac7a6
+GV CompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b99c088-3963-3beb-a9b6-3c181c191dfd
+GV Compartment PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a1300415-10e4-37bb-87ed-206ec95079f0
+GV InheritedCompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=03c163bc-ead4-3878-8771-412f9c2f3078
+GV CompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8121be3f-bf78-380a-b3bc-da8a9457ac54
+GV Compartment PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f664d1f2-e48d-3f5a-a073-141fc0ddc418
+GV InheritedCompartmentItem PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=60935dea-c031-3c53-8adb-1de2aabfee0c
+GV CompartmentItem PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a3a9b3db-f50e-30e6-81db-dc0835435dc8
+GV Compartment PartUsage nestedPart => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=84aaf577-0758-3fd6-b85c-a4ced98d2836
+GV InheritedCompartmentItem PartUsage nestedPart => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=56eb79ae-f721-35f9-acf3-422bf4bc6bf0
+GV CompartmentItem PartUsage nestedPart => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=892af7b9-5576-3b0b-84a4-f43e461677ec
+GV Compartment PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cc126737-2324-3253-ae11-37d5b0dee7b9
+GV InheritedCompartmentItem PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c3845b5a-d588-3376-814e-ac7defe0e20b
+GV CompartmentItem PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=feb64ff6-1216-3056-bc12-b9d78e349d7f
+GV Compartment ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4fb578fd-0766-30ae-94df-67882aa20bc4
+GV InheritedCompartmentItem ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c4cc62de-609f-3aae-9f0c-4aea8938c780
+GV CompartmentItem ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c8ae106-18f2-33b2-b3cb-28875fef80af
+GV Compartment ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=07b32dd9-07de-3291-9075-0cf8b9c449b1
+GV InheritedCompartmentItem ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9119577c-4015-3c3d-897c-f05b43bcee46
+GV CompartmentItem ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=35360a3d-64d1-3336-9438-40fa1de98b6a
+GV Compartment ItemUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=669ae7aa-4f13-37f5-abb4-7be12d641f17
+GV InheritedCompartmentItem ItemUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=94c5af31-dc67-36ae-8a8a-a7d65d0b4fad
+GV CompartmentItem ItemUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=68176f20-d42a-33e3-88bc-3e45a9ecc3d9
+GV Compartment ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7c2ec106-fc4b-3ee7-b43b-211893bfaa65
+GV InheritedCompartmentItem ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f4e8f931-7beb-3436-bfa4-e6267bba5b70
+GV CompartmentItem ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ae462bec-21fa-3ac3-80f8-976e9bad06b4
+GV Compartment ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1e5ed573-49f7-3cd1-a659-3ccd1c577402
+GV InheritedCompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b0797e55-a293-3263-b875-1e96a7506aea
+GV CompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=304f786f-1ec1-3925-b64f-e87192c8fa7b
+GV Compartment ActionUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=786bcac7-23f1-3287-9733-9d453476dd06
+GV InheritedCompartmentItem ActionUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=95bd2801-e5a1-3800-ae2b-fc1a4e43600d
+GV CompartmentItem ActionUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2fc90bd5-d24f-3e91-bbde-10f3bf53d5d3
+GV Compartment ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5f287f50-8d40-387f-a261-42f62d0fc29f
+GV InheritedCompartmentItem ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=09fb4751-6f82-3be4-a1c2-7d5a1865d7a3
+GV CompartmentItem ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=87499c19-ab91-39e9-8ba6-a3963af9e075
+GV Compartment ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=513b74fd-f039-3f7b-92ca-4345c730ece8
+GV InheritedCompartmentItem ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ed39b29-9c3f-33b2-a0d7-dd1a7873fe5d
+GV CompartmentItem ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2dd54548-6092-36c5-8262-9dde41bd15e1
 GV Compartment StateDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d38d3bed-3493-395d-a28c-ae1b8efce832
 GV InheritedCompartmentItem StateDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7a22a443-aa19-3f3a-bca7-1a6a8195d537
 GV CompartmentItem StateDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3bac7426-c83c-3022-bb29-3c9af80d3c2c
-GV Compartment UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6fe4f734-14e0-3728-a6f8-dbe902513b37
-GV InheritedCompartmentItem UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c08c713-f7b5-3a7f-8194-2eff3b19f437
-GV CompartmentItem UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4527f7d0-b69b-3720-9e93-092e521fea48
-GV Compartment PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=591b01d1-614f-300d-89a2-f7df2365062f
-GV InheritedCompartmentItem PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=80e3aebe-7715-3446-88ef-3969c85d7b87
-GV CompartmentItem PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=efb67976-5a6a-3121-b1ab-495bba385641
-GV Compartment PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e9210403-c20a-33fc-9e4a-d46eea0c7051
-GV InheritedCompartmentItem PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afb1881b-9f76-3fc3-b583-8e32c136b171
-GV CompartmentItem PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8b7aee75-6e10-3ab9-9f1e-68ff075ef334
-GV Compartment PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=90773f25-6b4c-3ecd-9b55-0cbeaec2a15a
-GV InheritedCompartmentItem PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b2bcbe3e-a675-32aa-aab4-5537f96ba54a
-GV CompartmentItem PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=417ab778-80f9-39a5-b5ac-00187b980998
-GV Compartment EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dbbbeb62-96bf-3ed2-a508-2d3e379f16b2
-GV InheritedCompartmentItem EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b18889c0-a1bb-3aa1-83c9-d6f31aa201f9
-GV CompartmentItem EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=790d8e2c-2a20-39ef-8521-406303df1542
-GV Compartment EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=77901616-8901-300f-b514-968c509e256d
-GV InheritedCompartmentItem EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25666766-64a7-382b-a47e-8c148e2dbb86
-GV CompartmentItem EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=42578628-9af9-39ea-bfd6-df36ffd6327c
-GV Compartment RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2dcb3118-bc32-367c-9dcc-db7ac6d23021
-GV InheritedCompartmentItem RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=84863e2a-9942-3aae-95ad-58fef739901b
-GV CompartmentItem RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c1183c55-76eb-3c07-af02-e4268170a968
-GV Compartment RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8a2d27b2-f4d9-3d4e-a16d-2604b01d8f47
-GV InheritedCompartmentItem RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afcaeb83-d4a9-3919-b5fe-901e9574d0ef
-GV CompartmentItem RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1af4e388-ac25-33fd-8a8f-a7d7413b37bf
-GV Compartment RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e4ec1b26-6866-31f7-9b0e-a54bc02bbd2d
-GV InheritedCompartmentItem RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25bdd38c-6f86-371a-94e1-32550c9cef48
-GV CompartmentItem RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=358e970f-c481-3ff5-9d47-82e5244d9e63
-GV Compartment RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c35b155a-ef54-3fd5-8925-9f1da66fb66b
-GV InheritedCompartmentItem RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bb0a5cff-605e-3c38-9d6b-4c62789ed076
-GV CompartmentItem RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=87f87366-c092-36d9-ad47-f5bdcb0c21ca
-GV Compartment ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=710ffbf9-9f90-301e-9444-1914d4072da8
-GV InheritedCompartmentItem ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c3fc95e9-1b05-31db-925f-ed296c273ffe
-GV CompartmentItem ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=19b77ca0-0136-37b4-bd22-541d3cdc7c41
-GV Compartment ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=011476c4-9d06-3c73-b89f-290ee57ade68
-GV InheritedCompartmentItem ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ebdc1d80-72df-3a5c-a3f1-fd7fc02cde19
-GV CompartmentItem ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4e9b5a58-4d0b-3dfe-9673-48bb35b6cda5
+GV Compartment StateDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ec51efa8-eea9-3635-ae6f-3af422690955
+GV InheritedCompartmentItem StateDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=11c0030c-4a50-3129-94fd-10e8e5ca75f7
+GV CompartmentItem StateDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=632903ad-1c85-3be8-aabc-f391e4c4c453
+GV Compartment ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cfb61132-a0e7-3a04-8083-f84ca2200b37
+GV InheritedCompartmentItem ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=14ce15e7-c7d5-3486-9cf2-32a652de5071
+GV CompartmentItem ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8f554163-3e96-38ea-82d6-3195e72ccb21
+GV Compartment ExhibitStateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=145e0848-1840-3d78-a7f6-884fe8139b1e
+GV InheritedCompartmentItem ExhibitStateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=923fe9c8-9b0b-3a3f-84a8-5732451f66b2
+GV CompartmentItem ExhibitStateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=84a67a4c-4469-3d20-98fd-d3e8c7721e6b
+GV Compartment AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7a7c982a-5795-3f9e-a5a1-7d58c1636960
+GV InheritedCompartmentItem AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4093fff2-da1a-3001-a19c-9ca3a5c0f6f9
+GV CompartmentItem AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d8ecb670-4b7f-3bbe-a7eb-03faa7c43964
+GV Compartment CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=92f89ad9-75ad-3a8d-92ce-d9c4f7503569
+GV InheritedCompartmentItem CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9a910b50-6aaf-3587-873f-6e1318bf3e20
+GV CompartmentItem CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=206dc801-6236-352a-84cc-76d8dc4f104d
+GV Compartment CaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e0ce01c4-ac88-3ca6-9fab-cd84f72bb99e
+GV InheritedCompartmentItem CaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bab71b06-64f9-3a75-95ad-1ef61ee51807
+GV CompartmentItem CaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5a869ab0-d573-3da0-bf7a-0b2a3fe38dcd
+GV Compartment CaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=60f576b2-50e6-30a1-9dcd-b54e63ee55f5
+GV InheritedCompartmentItem CaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=84a63005-f1b2-3f92-b7c9-36d6ec662d72
+GV CompartmentItem CaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5532f758-6c1c-33af-9a1f-9fc2231b5846
+GV Compartment MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=47856cc7-cfff-3bd4-aa9b-f4762d773c11
+GV InheritedCompartmentItem MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8ddf3df6-3a51-39f6-9775-b51496aed6bc
+GV CompartmentItem MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=917c5efb-f718-3ff7-998b-0e201b76a14c
+GV Compartment MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0bafcfc0-c607-35ad-bec5-5d58ba142ecb
+GV InheritedCompartmentItem MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=63eefc7b-7549-3935-9b3d-e34174aa41f2
+GV CompartmentItem MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fd8db5dd-3fe8-3228-9c78-af0baa508989
+GV Compartment MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b33e3fa3-aa85-340a-93bc-88010545c6a2
+GV InheritedCompartmentItem MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0139296f-ee47-378c-b653-a4cf8a9aa4bd
+GV CompartmentItem MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=39994fe6-76e9-358d-b4d3-08e484e13997
 GV Compartment ConstraintUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=65ed7c23-e99b-3a96-9df1-04bf1f4aec3a
 GV InheritedCompartmentItem ConstraintUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c879b634-3c51-3a4e-94bd-f0faaf26d29d
 GV CompartmentItem ConstraintUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=99580b3c-b826-3a19-a144-dcaf64748051
+GV Compartment ConstraintUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ba2bb485-1ee3-3886-b9fd-b9d3a2f0102e
+GV InheritedCompartmentItem ConstraintUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5995f4a6-7790-3cc7-a171-34e43c34156e
+GV CompartmentItem ConstraintUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=93735e1b-19a1-3c70-9d81-f04494fb6807
 GV Compartment ConstraintUsage nestedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=464b2bb6-2b22-32ba-81fc-47869042febe
 GV InheritedCompartmentItem ConstraintUsage nestedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2f79c6f7-71d7-38a1-864e-c903f1982505
 GV CompartmentItem ConstraintUsage nestedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b73c1c97-d11b-350b-ad75-8487be92c0c6
+GV Compartment ConstraintUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=61467986-7a81-3703-9f98-505119635e5c
+GV InheritedCompartmentItem ConstraintUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=11541143-4eea-396b-8317-be167167cbb6
+GV CompartmentItem ConstraintUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=793a6ce6-e6e8-366d-9bcf-c1a1940bd94b
+GV Compartment UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bf4304ca-583d-3861-9aff-82895fbf3c2d
+GV InheritedCompartmentItem UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9f7e9b9d-d1b4-33cd-b425-907448622795
+GV CompartmentItem UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fcebede1-aa7d-39b9-97e0-db6705dbcc4c
+GV Compartment AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ba322e6d-efe4-3d67-a3cc-60058331909a
+GV InheritedCompartmentItem AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8080e5c8-e7a8-3468-968e-195c9a1d2dfa
+GV CompartmentItem AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a5cbf338-a37e-3c60-ad93-a9da34a59db2
+GV Compartment AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=060a383b-89c8-311c-9a8d-6d460082ca12
+GV InheritedCompartmentItem AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e552dc5-dfdb-3b66-b9ee-78aa0ceaa280
+GV CompartmentItem AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e3a0850f-e801-3cca-946b-1408792638e7
+GV Compartment ConcernUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d781d855-33e3-3c7b-85d1-1c2aef84b93d
+GV InheritedCompartmentItem ConcernUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=534aceda-3bb2-34bb-933f-ec8202049b7b
+GV CompartmentItem ConcernUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bb52d22a-a81f-3036-ba9c-cc14d30db603
+GV Compartment ConcernUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b674dc67-55bd-3616-b71f-4280c3a33070
+GV InheritedCompartmentItem ConcernUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4ae44872-f832-3e30-b41e-7e966109f39e
+GV CompartmentItem ConcernUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8058366d-f8c1-3b39-92fb-54a5080d3cfe
+GV Compartment ConcernUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=170b42fc-82dd-3133-a2f7-4aaec2a6ec9c
+GV InheritedCompartmentItem ConcernUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3bcb6363-6ea7-383f-a0c0-8b468af96487
+GV CompartmentItem ConcernUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7369cfda-8043-3c5e-b561-f15ae862da1e
+GV Compartment ConcernUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ed502b88-cdba-37fc-a32a-3d6edc998e19
+GV InheritedCompartmentItem ConcernUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=acc9a573-1886-3882-bc0b-258d091cd288
+GV CompartmentItem ConcernUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fc3cc326-1e8f-32f1-9499-204328639daf
+GV Compartment ConcernUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0c8dff94-c87b-3d1b-9c35-7babba24fa38
+GV InheritedCompartmentItem ConcernUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8bb20b4a-fc4e-3947-b01e-3a3ea6ddd761
+GV CompartmentItem ConcernUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=450de61a-f8e5-3af5-82c8-4674b425bde4
 GV Compartment PerformActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9c8abe75-eba5-3569-aabd-9abbe026fe01
 GV InheritedCompartmentItem PerformActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7302cd4c-9ca1-3d18-9ff5-d43adc8cd50d
 GV CompartmentItem PerformActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=509695c7-d28a-3891-b496-25534593c9e9
@@ -53,90 +140,6 @@ GV CompartmentItem PerformActionUsage nestedItem => siriusComponents://nodeDescr
 GV Compartment PerformActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=218f8c2e-61ab-38e1-9ab4-4b0f91df8331
 GV InheritedCompartmentItem PerformActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c3c3ac97-a56b-3287-a54f-6a993a3e74ff
 GV CompartmentItem PerformActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1a0be442-95e7-371c-8814-183813e7a3f9
-GV Compartment OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5798b691-a8cc-36d4-8541-a856e151adac
-GV InheritedCompartmentItem OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=635ad772-e52f-33fb-83db-ef0f1a25ade0
-GV CompartmentItem OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e4c61a80-fd5d-3f2f-9a8f-92db6dcb4d70
-GV Compartment OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=54a34754-beca-39dd-bfea-848afee3a044
-GV InheritedCompartmentItem OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6114a726-a677-3ef1-9fd9-85b1db19fc5b
-GV CompartmentItem OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=43b62bee-fc40-339d-ac21-5740b95fb587
-GV Compartment AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dbbe0d89-2166-3e3c-b6fc-f2fbe43805ee
-GV InheritedCompartmentItem AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=66372a16-1bc4-38f5-a464-a0874870fc13
-GV CompartmentItem AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=62fb1587-4851-30c9-b2ea-a1528049b01e
-GV Compartment PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c901d8ce-4c57-3ede-8fdb-3c5aa91b67ba
-GV InheritedCompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=65a4f9a9-da02-3f70-ba92-ac8510aac7a6
-GV CompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b99c088-3963-3beb-a9b6-3c181c191dfd
-GV Compartment PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a1300415-10e4-37bb-87ed-206ec95079f0
-GV InheritedCompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=03c163bc-ead4-3878-8771-412f9c2f3078
-GV CompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8121be3f-bf78-380a-b3bc-da8a9457ac54
-GV Compartment PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cc126737-2324-3253-ae11-37d5b0dee7b9
-GV InheritedCompartmentItem PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c3845b5a-d588-3376-814e-ac7defe0e20b
-GV CompartmentItem PartUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=feb64ff6-1216-3056-bc12-b9d78e349d7f
-GV Compartment PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f664d1f2-e48d-3f5a-a073-141fc0ddc418
-GV InheritedCompartmentItem PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=60935dea-c031-3c53-8adb-1de2aabfee0c
-GV CompartmentItem PartUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a3a9b3db-f50e-30e6-81db-dc0835435dc8
-GV Compartment PartUsage nestedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7024f0ac-260c-3ac8-82b5-2b3c9fcc8ed3
-GV InheritedCompartmentItem PartUsage nestedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ace42afc-ca49-3cb7-86a1-d69b4b7db9b5
-GV CompartmentItem PartUsage nestedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e7bbaefc-4f0e-3bb3-b94b-57a91088c91a
-GV Compartment AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ba322e6d-efe4-3d67-a3cc-60058331909a
-GV InheritedCompartmentItem AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8080e5c8-e7a8-3468-968e-195c9a1d2dfa
-GV CompartmentItem AllocationUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a5cbf338-a37e-3c60-ad93-a9da34a59db2
-GV Compartment AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=060a383b-89c8-311c-9a8d-6d460082ca12
-GV InheritedCompartmentItem AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e552dc5-dfdb-3b66-b9ee-78aa0ceaa280
-GV CompartmentItem AllocationUsage nestedAllocation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e3a0850f-e801-3cca-946b-1408792638e7
-GV Compartment UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bf4304ca-583d-3861-9aff-82895fbf3c2d
-GV InheritedCompartmentItem UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9f7e9b9d-d1b4-33cd-b425-907448622795
-GV CompartmentItem UseCaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fcebede1-aa7d-39b9-97e0-db6705dbcc4c
-GV Compartment PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=32da1a41-7187-3da3-ae52-f3cfc927b133
-GV InheritedCompartmentItem PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=114b44c9-2776-3167-bc95-228320fecb31
-GV CompartmentItem PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=23973f7a-2187-3580-a836-28dd7fa6e5a4
-GV Compartment PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1d4e3253-3981-3d8a-9887-b887114e3a3e
-GV InheritedCompartmentItem PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7f775dbc-ec8a-3b1e-b688-a079eebed501
-GV CompartmentItem PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4ecff5eb-33f6-3757-9887-0950a3e59a24
-GV Compartment PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a677fbe5-68e8-3949-beab-d96b632c4cc0
-GV InheritedCompartmentItem PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38773e5f-8d5b-3944-9684-1274add00197
-GV CompartmentItem PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a00860fb-f304-3ed8-ab86-c9f1bbfdf671
-GV Compartment PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d1db77ad-fee0-3c33-bfe1-db84f9fbd027
-GV InheritedCompartmentItem PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d4826487-0f77-3a09-9644-633cc7c001ae
-GV CompartmentItem PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b33ffdab-3544-346b-835f-a6c1f9912254
-GV Compartment PartDefinition ownedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ccfe5fb7-d409-3891-b4ac-6ddf4d79da00
-GV InheritedCompartmentItem PartDefinition ownedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7628f5e8-10b6-3a92-800e-455236ee692b
-GV CompartmentItem PartDefinition ownedState => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=523f6ac4-cacf-3605-a683-7d96a1fc363e
-GV Compartment CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e7c3cc48-b407-3744-8d8c-c53336486b4b
-GV InheritedCompartmentItem CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a815db64-b130-31f2-9808-b2b11e4f31d3
-GV CompartmentItem CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c806786-180d-375e-88de-37b5c5d6f109
-GV Compartment ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cc917467-07d3-3cd6-9ec7-2ef563c1b866
-GV InheritedCompartmentItem ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7c5c5275-27c0-32a8-915d-de46b8f93eb6
-GV CompartmentItem ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1a5af341-b15c-3f19-811b-ca485e963036
-GV Compartment ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=30a26fb3-2835-36bf-b97a-23db1e1b2161
-GV InheritedCompartmentItem ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1bd889b8-7c8f-3d8e-8e83-1f1236f1ee1d
-GV CompartmentItem ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=58e0eb91-e7ba-3e20-b1ec-f0c6224d4ae5
-GV Compartment PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=64f75475-807d-348e-94db-23e3ec8dcb8e
-GV InheritedCompartmentItem PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2f01813a-2c36-3154-bfe8-c3e8de830d81
-GV CompartmentItem PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0135e2fd-a062-3956-b571-92ae769b64b2
-GV Compartment PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d746bba1-34af-30c7-b59f-a5e10bd55cd0
-GV InheritedCompartmentItem PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1c7329c8-165e-397d-98d8-c809870e1e57
-GV CompartmentItem PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=aabec12a-f0bf-3b50-bd73-fddd47420285
-GV Compartment PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3140062b-3378-3469-aa26-2cd89b03e3c5
-GV InheritedCompartmentItem PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=67d7f8cb-8bf5-37dc-a8cb-1dd7513990a9
-GV CompartmentItem PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=66cabc42-5d22-3bd3-bef9-519af4c6d208
-GV Compartment PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2d49fc1b-9383-306e-aa5a-be5f2ccc400d
-GV InheritedCompartmentItem PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8dfbb42d-8ace-3015-92cc-1f0392d59c7a
-GV CompartmentItem PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=02630228-a7ae-3efb-a060-b4245792323c
-GV Compartment ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b111500-5e74-3c17-a829-9f8d7bb4242d
-GV InheritedCompartmentItem ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b414485-588b-3d91-9bb3-edabdf408e62
-GV CompartmentItem ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=29224b0f-cc17-34b6-9cc1-ed306b6f4c49
-GV Compartment ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=41cc2762-86b7-3ac4-9b63-d8c3012bdb05
-GV InheritedCompartmentItem ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fcd36ab6-c739-376e-b85c-1b5b378e2aac
-GV CompartmentItem ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2be438e6-e42e-3f5e-8e43-321ee54ef79c
-GV Compartment InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d3dcd120-364a-380f-866f-0272d213c077
-GV InheritedCompartmentItem InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8a9fee29-ddbe-3616-8c60-9c8d1f371945
-GV CompartmentItem InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=359110d0-7e96-3448-8e3b-594d2979aff9
-GV Compartment InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=245a6d03-6c86-305f-9081-70e68701f275
-GV InheritedCompartmentItem InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1ca52103-21a8-389f-ad04-29e0e721f41e
-GV CompartmentItem InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=594b390e-651b-3261-875d-04de74dd88db
-GV Compartment InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0959bd41-d252-3c3a-be67-8f256837f1d4
-GV InheritedCompartmentItem InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=86d752f9-84a9-313a-b761-8054a8421c0c
-GV CompartmentItem InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25bbee20-426e-3c71-bee6-a9941f129b01
 GV Compartment RequirementDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5362b06b-0ed6-324d-a896-39f812723d4d
 GV InheritedCompartmentItem RequirementDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=56358542-c112-36e0-b368-f329c93ce558
 GV CompartmentItem RequirementDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=66c5cbdc-97ba-3e87-bf28-782130f7e931
@@ -152,30 +155,54 @@ GV CompartmentItem RequirementDefinition assumedConstraint => siriusComponents:/
 GV Compartment RequirementDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cd0aa201-6656-362d-a520-3488c846f463
 GV InheritedCompartmentItem RequirementDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=766210b3-bc05-3e3b-98af-e8cce4581ba1
 GV CompartmentItem RequirementDefinition requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=abac3fb3-40c9-3eec-a415-b59b89c9f9f0
-GV Compartment AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e8e1b443-702a-31c1-8b20-e212a2709ca6
-GV InheritedCompartmentItem AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1879b6a6-4b62-3d4f-b2d1-69ab4dc0eb3c
-GV CompartmentItem AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=61ae7856-f98d-39ea-89f1-e6d10cf7db98
-GV Compartment AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8e6e5743-ea1e-3ffc-9aec-405d987bd9f2
-GV InheritedCompartmentItem AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5af56dd7-4a06-3e35-abb3-e02dbc4d93b1
-GV CompartmentItem AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ac1ab5e9-d7cc-31a1-a821-e5ccfe867f0c
-GV Compartment ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4fb578fd-0766-30ae-94df-67882aa20bc4
-GV InheritedCompartmentItem ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c4cc62de-609f-3aae-9f0c-4aea8938c780
-GV CompartmentItem ItemUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c8ae106-18f2-33b2-b3cb-28875fef80af
-GV Compartment ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=07b32dd9-07de-3291-9075-0cf8b9c449b1
-GV InheritedCompartmentItem ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9119577c-4015-3c3d-897c-f05b43bcee46
-GV CompartmentItem ItemUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=35360a3d-64d1-3336-9438-40fa1de98b6a
-GV Compartment ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7c2ec106-fc4b-3ee7-b43b-211893bfaa65
-GV InheritedCompartmentItem ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f4e8f931-7beb-3436-bfa4-e6267bba5b70
-GV CompartmentItem ItemUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ae462bec-21fa-3ac3-80f8-976e9bad06b4
-GV Compartment MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=47856cc7-cfff-3bd4-aa9b-f4762d773c11
-GV InheritedCompartmentItem MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8ddf3df6-3a51-39f6-9775-b51496aed6bc
-GV CompartmentItem MetadataDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=917c5efb-f718-3ff7-998b-0e201b76a14c
-GV Compartment MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0bafcfc0-c607-35ad-bec5-5d58ba142ecb
-GV InheritedCompartmentItem MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=63eefc7b-7549-3935-9b3d-e34174aa41f2
-GV CompartmentItem MetadataDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fd8db5dd-3fe8-3228-9c78-af0baa508989
-GV Compartment MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b33e3fa3-aa85-340a-93bc-88010545c6a2
-GV InheritedCompartmentItem MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0139296f-ee47-378c-b653-a4cf8a9aa4bd
-GV CompartmentItem MetadataDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=39994fe6-76e9-358d-b4d3-08e484e13997
+GV Compartment PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=32da1a41-7187-3da3-ae52-f3cfc927b133
+GV InheritedCompartmentItem PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=114b44c9-2776-3167-bc95-228320fecb31
+GV CompartmentItem PartDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=23973f7a-2187-3580-a836-28dd7fa6e5a4
+GV Compartment PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1d4e3253-3981-3d8a-9887-b887114e3a3e
+GV InheritedCompartmentItem PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7f775dbc-ec8a-3b1e-b688-a079eebed501
+GV CompartmentItem PartDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4ecff5eb-33f6-3757-9887-0950a3e59a24
+GV Compartment PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a677fbe5-68e8-3949-beab-d96b632c4cc0
+GV InheritedCompartmentItem PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38773e5f-8d5b-3944-9684-1274add00197
+GV CompartmentItem PartDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a00860fb-f304-3ed8-ab86-c9f1bbfdf671
+GV Compartment PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d1db77ad-fee0-3c33-bfe1-db84f9fbd027
+GV InheritedCompartmentItem PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d4826487-0f77-3a09-9644-633cc7c001ae
+GV CompartmentItem PartDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b33ffdab-3544-346b-835f-a6c1f9912254
+GV Compartment StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cfd420ab-03fa-3b67-b503-7a16a764105a
+GV InheritedCompartmentItem StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d2333cf0-0b1e-363b-85b5-72cddf3a957f
+GV CompartmentItem StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2bf446dc-3919-3a82-8581-a5bed310e59e
+GV Compartment StateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1f25196c-0494-3543-8a46-331c08533073
+GV InheritedCompartmentItem StateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6cbd6587-db0b-3afb-a259-88672150901d
+GV CompartmentItem StateUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d84134b2-b80e-34a4-99c8-179c214239fe
+GV Compartment UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6fe4f734-14e0-3728-a6f8-dbe902513b37
+GV InheritedCompartmentItem UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c08c713-f7b5-3a7f-8194-2eff3b19f437
+GV CompartmentItem UseCaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4527f7d0-b69b-3720-9e93-092e521fea48
+GV Compartment UseCaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b6756fd-2736-3b9b-96e0-b74923b8bef4
+GV InheritedCompartmentItem UseCaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3d3af042-3d5c-37d5-9613-184144edfacd
+GV CompartmentItem UseCaseUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b6ae444c-7831-332c-a8cc-af5d9691d503
+GV Compartment UseCaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0a1053c1-7ccb-3cd2-addf-cc7a73b56bc3
+GV InheritedCompartmentItem UseCaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1e43977a-e3c3-383e-9b85-99978d9c217b
+GV CompartmentItem UseCaseUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7be0ba0d-b7d5-34ab-b4e2-1291e82dc04f
+GV Compartment PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=64f75475-807d-348e-94db-23e3ec8dcb8e
+GV InheritedCompartmentItem PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2f01813a-2c36-3154-bfe8-c3e8de830d81
+GV CompartmentItem PortDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0135e2fd-a062-3956-b571-92ae769b64b2
+GV Compartment PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d746bba1-34af-30c7-b59f-a5e10bd55cd0
+GV InheritedCompartmentItem PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1c7329c8-165e-397d-98d8-c809870e1e57
+GV CompartmentItem PortDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=aabec12a-f0bf-3b50-bd73-fddd47420285
+GV Compartment PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3140062b-3378-3469-aa26-2cd89b03e3c5
+GV InheritedCompartmentItem PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=67d7f8cb-8bf5-37dc-a8cb-1dd7513990a9
+GV CompartmentItem PortDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=66cabc42-5d22-3bd3-bef9-519af4c6d208
+GV Compartment PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2d49fc1b-9383-306e-aa5a-be5f2ccc400d
+GV InheritedCompartmentItem PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8dfbb42d-8ace-3015-92cc-1f0392d59c7a
+GV CompartmentItem PortDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=02630228-a7ae-3efb-a060-b4245792323c
+GV Compartment AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b6a2f60e-98ca-315c-9ced-4144bc84323f
+GV InheritedCompartmentItem AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afc39df4-c32c-33b6-9fb0-d18e4869b5f7
+GV CompartmentItem AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=30e0132c-8edf-3a85-bb9f-e7c278421161
+GV Compartment AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b7e1c89-a541-32a5-963c-23e6d2243042
+GV InheritedCompartmentItem AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d9f7e244-0bb1-33b1-8152-b7eb1fb7bd74
+GV CompartmentItem AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=62e7a8c2-c452-3057-ba52-6f208e5f6abf
+GV Compartment AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a81f207c-230d-3d46-a78f-c8320521461b
+GV InheritedCompartmentItem AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f0ed663c-7970-383f-834d-336d3e8e41db
+GV CompartmentItem AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6b91235f-6f9a-3e2e-99a4-be9caec8de55
 GV Compartment InterfaceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a2f9a659-3884-38ca-b193-d635705102f2
 GV InheritedCompartmentItem InterfaceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bfe5715b-4748-381d-9a1c-d5d35480d5c7
 GV CompartmentItem InterfaceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=839387f3-2d8f-3ea5-aea5-2345abd6d207
@@ -188,15 +215,93 @@ GV CompartmentItem InterfaceDefinition ownedInterface => siriusComponents://node
 GV Compartment InterfaceDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=050a7a1b-c579-3a95-a206-f8588d7cf46b
 GV InheritedCompartmentItem InterfaceDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=919df90b-dc91-3363-ba95-740c7de2fd9e
 GV CompartmentItem InterfaceDefinition ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=748e0c0d-dc41-313a-9828-31c0c06e7451
-GV Compartment ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cfb61132-a0e7-3a04-8083-f84ca2200b37
-GV InheritedCompartmentItem ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=14ce15e7-c7d5-3486-9cf2-32a652de5071
-GV CompartmentItem ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8f554163-3e96-38ea-82d6-3195e72ccb21
-GV Compartment StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cfd420ab-03fa-3b67-b503-7a16a764105a
-GV InheritedCompartmentItem StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d2333cf0-0b1e-363b-85b5-72cddf3a957f
-GV CompartmentItem StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2bf446dc-3919-3a82-8581-a5bed310e59e
-GV Compartment CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=92f89ad9-75ad-3a8d-92ce-d9c4f7503569
-GV InheritedCompartmentItem CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9a910b50-6aaf-3587-873f-6e1318bf3e20
-GV CompartmentItem CaseUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=206dc801-6236-352a-84cc-76d8dc4f104d
+GV Compartment SatisfyRequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dedfc2ec-2252-31c8-a89a-7129e7bffff8
+GV InheritedCompartmentItem SatisfyRequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d59b9ca2-c969-3190-bc6c-252f7b833998
+GV CompartmentItem SatisfyRequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=57fb7496-edb5-3774-8d62-07ff4adecc33
+GV Compartment SatisfyRequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25a865d7-ef35-3e38-8286-9b37ee066c48
+GV InheritedCompartmentItem SatisfyRequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dea80df9-fa0d-3996-b049-eb9be5116dfe
+GV CompartmentItem SatisfyRequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f784018a-7992-31e5-a969-3c299b5d476e
+GV Compartment SatisfyRequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8d60447c-b0c5-3e78-be21-db12c022c1e6
+GV InheritedCompartmentItem SatisfyRequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=22d78278-f7f8-32b6-aacd-fa5ce87b200a
+GV CompartmentItem SatisfyRequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d4c0924d-9f61-37f9-a758-7803610d750f
+GV Compartment SatisfyRequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=aac69ae9-7b0b-3a43-b68a-fb7383a53b52
+GV InheritedCompartmentItem SatisfyRequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7b08e239-0912-3580-af61-ba5309c9cdb8
+GV CompartmentItem SatisfyRequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6bf66a5b-e600-32d1-b6e6-68ea2f4633e5
+GV Compartment SatisfyRequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d8a604ac-dd5f-36f2-a5ca-9031a8bef4fe
+GV InheritedCompartmentItem SatisfyRequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6ccc4da2-dbe2-3095-adc8-648efadd7078
+GV CompartmentItem SatisfyRequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bba98046-798c-3ec8-b29e-9a99f32e189c
+GV Compartment CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e7c3cc48-b407-3744-8d8c-c53336486b4b
+GV InheritedCompartmentItem CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a815db64-b130-31f2-9808-b2b11e4f31d3
+GV CompartmentItem CaseDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6c806786-180d-375e-88de-37b5c5d6f109
+GV Compartment EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dbbbeb62-96bf-3ed2-a508-2d3e379f16b2
+GV InheritedCompartmentItem EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b18889c0-a1bb-3aa1-83c9-d6f31aa201f9
+GV CompartmentItem EnumerationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=790d8e2c-2a20-39ef-8521-406303df1542
+GV Compartment EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=77901616-8901-300f-b514-968c509e256d
+GV InheritedCompartmentItem EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25666766-64a7-382b-a47e-8c148e2dbb86
+GV CompartmentItem EnumerationDefinition enumeratedValue => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=42578628-9af9-39ea-bfd6-df36ffd6327c
+GV Compartment AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dbbe0d89-2166-3e3c-b6fc-f2fbe43805ee
+GV InheritedCompartmentItem AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=66372a16-1bc4-38f5-a464-a0874870fc13
+GV CompartmentItem AllocationDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=62fb1587-4851-30c9-b2ea-a1528049b01e
+GV Compartment ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=710ffbf9-9f90-301e-9444-1914d4072da8
+GV InheritedCompartmentItem ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c3fc95e9-1b05-31db-925f-ed296c273ffe
+GV CompartmentItem ConstraintDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=19b77ca0-0136-37b4-bd22-541d3cdc7c41
+GV Compartment ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=011476c4-9d06-3c73-b89f-290ee57ade68
+GV InheritedCompartmentItem ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ebdc1d80-72df-3a5c-a3f1-fd7fc02cde19
+GV CompartmentItem ConstraintDefinition ownedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4e9b5a58-4d0b-3dfe-9673-48bb35b6cda5
+GV Compartment InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d3dcd120-364a-380f-866f-0272d213c077
+GV InheritedCompartmentItem InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8a9fee29-ddbe-3616-8c60-9c8d1f371945
+GV CompartmentItem InterfaceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=359110d0-7e96-3448-8e3b-594d2979aff9
+GV Compartment InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=245a6d03-6c86-305f-9081-70e68701f275
+GV InheritedCompartmentItem InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1ca52103-21a8-389f-ad04-29e0e721f41e
+GV CompartmentItem InterfaceUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=594b390e-651b-3261-875d-04de74dd88db
+GV Compartment InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0959bd41-d252-3c3a-be67-8f256837f1d4
+GV InheritedCompartmentItem InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=86d752f9-84a9-313a-b761-8054a8421c0c
+GV CompartmentItem InterfaceUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25bbee20-426e-3c71-bee6-a9941f129b01
+GV Compartment ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cc917467-07d3-3cd6-9ec7-2ef563c1b866
+GV InheritedCompartmentItem ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7c5c5275-27c0-32a8-915d-de46b8f93eb6
+GV CompartmentItem ItemDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1a5af341-b15c-3f19-811b-ca485e963036
+GV Compartment ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=30a26fb3-2835-36bf-b97a-23db1e1b2161
+GV InheritedCompartmentItem ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1bd889b8-7c8f-3d8e-8e83-1f1236f1ee1d
+GV CompartmentItem ItemDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=58e0eb91-e7ba-3e20-b1ec-f0c6224d4ae5
+GV Compartment AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e8e1b443-702a-31c1-8b20-e212a2709ca6
+GV InheritedCompartmentItem AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1879b6a6-4b62-3d4f-b2d1-69ab4dc0eb3c
+GV CompartmentItem AttributeDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=61ae7856-f98d-39ea-89f1-e6d10cf7db98
+GV Compartment AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8e6e5743-ea1e-3ffc-9aec-405d987bd9f2
+GV InheritedCompartmentItem AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5af56dd7-4a06-3e35-abb3-e02dbc4d93b1
+GV CompartmentItem AttributeDefinition ownedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ac1ab5e9-d7cc-31a1-a821-e5ccfe867f0c
+GV Compartment OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5798b691-a8cc-36d4-8541-a856e151adac
+GV InheritedCompartmentItem OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=635ad772-e52f-33fb-83db-ef0f1a25ade0
+GV CompartmentItem OccurrenceUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e4c61a80-fd5d-3f2f-9a8f-92db6dcb4d70
+GV Compartment OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=54a34754-beca-39dd-bfea-848afee3a044
+GV InheritedCompartmentItem OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6114a726-a677-3ef1-9fd9-85b1db19fc5b
+GV CompartmentItem OccurrenceUsage nestedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=43b62bee-fc40-339d-ac21-5740b95fb587
+GV Compartment RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2dcb3118-bc32-367c-9dcc-db7ac6d23021
+GV InheritedCompartmentItem RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=84863e2a-9942-3aae-95ad-58fef739901b
+GV CompartmentItem RequirementUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c1183c55-76eb-3c07-af02-e4268170a968
+GV Compartment RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8a2d27b2-f4d9-3d4e-a16d-2604b01d8f47
+GV InheritedCompartmentItem RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afcaeb83-d4a9-3919-b5fe-901e9574d0ef
+GV CompartmentItem RequirementUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1af4e388-ac25-33fd-8a8f-a7d7413b37bf
+GV Compartment RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e4ec1b26-6866-31f7-9b0e-a54bc02bbd2d
+GV InheritedCompartmentItem RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25bdd38c-6f86-371a-94e1-32550c9cef48
+GV CompartmentItem RequirementUsage assumedConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=358e970f-c481-3ff5-9d47-82e5244d9e63
+GV Compartment RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c35b155a-ef54-3fd5-8925-9f1da66fb66b
+GV InheritedCompartmentItem RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bb0a5cff-605e-3c38-9d6b-4c62789ed076
+GV CompartmentItem RequirementUsage requiredConstraint => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=87f87366-c092-36d9-ad47-f5bdcb0c21ca
+GV Compartment RequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e5eee7e-867e-3dc1-9a9c-2df891707b2d
+GV InheritedCompartmentItem RequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6e465074-9514-3bc3-99ae-2f36a3ddef74
+GV CompartmentItem RequirementUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=114440b4-892e-3486-ae01-949365813a60
+GV Compartment PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=591b01d1-614f-300d-89a2-f7df2365062f
+GV InheritedCompartmentItem PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=80e3aebe-7715-3446-88ef-3969c85d7b87
+GV CompartmentItem PortUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=efb67976-5a6a-3121-b1ab-495bba385641
+GV Compartment PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e9210403-c20a-33fc-9e4a-d46eea0c7051
+GV InheritedCompartmentItem PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afb1881b-9f76-3fc3-b583-8e32c136b171
+GV CompartmentItem PortUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8b7aee75-6e10-3ab9-9f1e-68ff075ef334
+GV Compartment PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=90773f25-6b4c-3ecd-9b55-0cbeaec2a15a
+GV InheritedCompartmentItem PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b2bcbe3e-a675-32aa-aab4-5537f96ba54a
+GV CompartmentItem PortUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=417ab778-80f9-39a5-b5ac-00187b980998
+GV Compartment PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f7a5b016-d30f-3c5f-b4c5-0ccff5dcb389
+GV InheritedCompartmentItem PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6ab46901-18ca-30ac-a7b9-cb386b42ad41
+GV CompartmentItem PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b3700f7c-c439-31ab-b4bb-fe5f8031027c
 GV Compartment OccurrenceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ce98024-6514-3f11-871c-ae2f7ed336e8
 GV InheritedCompartmentItem OccurrenceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e6141286-dc33-3337-84b0-2e93a31c8800
 GV CompartmentItem OccurrenceDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=72d23c62-bdf5-36a1-a937-f1642f7ad40a
@@ -206,41 +311,42 @@ GV CompartmentItem OccurrenceDefinition ownedAttribute => siriusComponents://nod
 GV Compartment OccurrenceDefinition ownedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=564f24b9-6b43-35f9-b364-045e5465d461
 GV InheritedCompartmentItem OccurrenceDefinition ownedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5341ef28-480c-361c-9494-8aff555955cd
 GV CompartmentItem OccurrenceDefinition ownedOccurrence => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=484e86fb-7e67-3cef-ae7f-7fc1d1280501
-GV Compartment AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7a7c982a-5795-3f9e-a5a1-7d58c1636960
-GV InheritedCompartmentItem AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4093fff2-da1a-3001-a19c-9ca3a5c0f6f9
-GV CompartmentItem AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d8ecb670-4b7f-3bbe-a7eb-03faa7c43964
-GV Compartment ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1e5ed573-49f7-3cd1-a659-3ccd1c577402
-GV InheritedCompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b0797e55-a293-3263-b875-1e96a7506aea
-GV CompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=304f786f-1ec1-3925-b64f-e87192c8fa7b
-GV Compartment ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5f287f50-8d40-387f-a261-42f62d0fc29f
-GV InheritedCompartmentItem ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=09fb4751-6f82-3be4-a1c2-7d5a1865d7a3
-GV CompartmentItem ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=87499c19-ab91-39e9-8ba6-a3963af9e075
-GV Compartment ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=513b74fd-f039-3f7b-92ca-4345c730ece8
-GV InheritedCompartmentItem ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ed39b29-9c3f-33b2-a0d7-dd1a7873fe5d
-GV CompartmentItem ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2dd54548-6092-36c5-8262-9dde41bd15e1
-GV Compartment AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b6a2f60e-98ca-315c-9ced-4144bc84323f
-GV InheritedCompartmentItem AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=afc39df4-c32c-33b6-9fb0-d18e4869b5f7
-GV CompartmentItem AttributeUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=30e0132c-8edf-3a85-bb9f-e7c278421161
-GV Compartment AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b7e1c89-a541-32a5-963c-23e6d2243042
-GV InheritedCompartmentItem AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d9f7e244-0bb1-33b1-8152-b7eb1fb7bd74
-GV CompartmentItem AttributeUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=62e7a8c2-c452-3057-ba52-6f208e5f6abf
-GV Compartment AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a81f207c-230d-3d46-a78f-c8320521461b
-GV InheritedCompartmentItem AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f0ed663c-7970-383f-834d-336d3e8e41db
-GV CompartmentItem AttributeUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6b91235f-6f9a-3e2e-99a4-be9caec8de55
-GV Compartment StateUsage actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5fd15306-6f0f-3e6e-90e9-e33afd23f40d
-GV CompartmentItem StateUsage action => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5fc96455-61c4-3581-9ac3-a725b1bcaeb1
-GV Compartment ExhibitStateUsage actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2cc37240-e1b5-3dbb-88d2-f40ab715fcbf
-GV CompartmentItem ExhibitStateUsage action => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0be1eda3-5e4c-369e-a887-db5266a1116d
-GV Compartment StateDefinition actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=21933d16-fa5f-3904-9f57-34cf32a9907c
-GV CompartmentItem StateDefinition action => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d8de509e-f0ec-366f-bae7-d376a430522f
+GV Node DecisionAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d6e7c035-98ae-3fcf-a5a8-a8e502cd447e
+GV Node ForkAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=46dc7020-1788-3413-967d-e1e3053349ca
+GV Node JoinAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ae252080-4a68-3129-970b-2d049bb3e5a3
+GV Node MergeAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=91f597c3-96b8-3a9e-8b30-99e5401952fa
+GV Node StartAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bf75f645-8a6d-30d9-9514-4e9738e212a3
+GV Node DoneAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=03789d5f-51d6-3f66-a496-146b1685930c
 GV Compartment RequirementUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4d4fa034-2b92-36f6-9b8d-872703419b56
 GV CompartmentItem RequirementUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=10232aea-4757-356f-a62b-a3711eeb6705
 GV Compartment RequirementUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d44c436c-8886-37fb-86db-a35a90c2124f
 GV CompartmentItem RequirementUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b4a8e2c-fa60-3748-836c-e95b464ee471
+GV Compartment RequirementUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d84402c7-c521-317a-b4a6-01844a34de97
+GV CompartmentItem RequirementUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3e3ef389-a3a0-38f8-b236-ebb7d76f4e84
 GV Compartment RequirementDefinition subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=52bfcd14-267f-3197-9c52-631866c33529
 GV CompartmentItem RequirementDefinition subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1e63348e-d7a2-3f49-81fd-ec23a0386b41
 GV Compartment RequirementDefinition actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bd73c772-b3f9-323a-859a-6c8a185c1ca7
 GV CompartmentItem RequirementDefinition actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=593ffd80-3543-3320-84b1-0dd1d9fc91e1
+GV Compartment RequirementDefinition stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a2976b07-ec83-3e5f-8b10-4336a0ecbd79
+GV CompartmentItem RequirementDefinition stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bd38ecad-d528-38b0-9bd5-f7cf21b88cc1
+GV Compartment ConcernUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1a911b4d-084a-3d6d-99bf-1471f6b3ea90
+GV CompartmentItem ConcernUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f84f838f-2aeb-3b7a-ac3f-f36809e6d7f9
+GV Compartment ConcernUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d9eae8c2-8a72-36a3-bca3-ccac57b103db
+GV CompartmentItem ConcernUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=47d26ada-cd90-39f2-88a8-c543556edf29
+GV Compartment ConcernUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8383480f-ae44-3002-be57-aa7e879ab82d
+GV CompartmentItem ConcernUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=43edde15-1e8f-3b6a-ab05-684efc2d43c7
+GV Compartment ConcernDefinition subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e001788-8cb1-315b-b0d0-c0393c215a12
+GV CompartmentItem ConcernDefinition subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a9f874d8-8c7a-31e0-a8fd-c2b4e68873cf
+GV Compartment ConcernDefinition actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=753bf9bd-9b0e-35bb-b909-2697bd4133ab
+GV CompartmentItem ConcernDefinition actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4ed6eb2e-d708-39e1-850b-f46ed010059f
+GV Compartment ConcernDefinition stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a5722929-9465-30ca-8367-fe69b301a35d
+GV CompartmentItem ConcernDefinition stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cf51abdd-5415-3749-99c0-8dc312619d56
+GV Compartment SatisfyRequirementUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a374270d-bcea-380c-bdba-478bbf9a5a3a
+GV CompartmentItem SatisfyRequirementUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d9b56fb0-ffbc-3f63-a8f4-cdece5f8988b
+GV Compartment SatisfyRequirementUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=85bcaec5-1c59-3432-ac89-d100ea7ba5ed
+GV CompartmentItem SatisfyRequirementUsage actorParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4cf0f30c-fbb6-38f0-849b-1be94cc45e98
+GV Compartment SatisfyRequirementUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c5c9873d-eaeb-3d06-a096-444bf58a5a56
+GV CompartmentItem SatisfyRequirementUsage stakeholderParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=75d49b02-284d-3665-b4f4-0db6bfa6dd86
 GV Compartment CaseUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bf0c420a-25a9-3fcb-ba3f-b751956cf4fc
 GV CompartmentItem CaseUsage subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2031fecd-9832-3316-a5d6-2c7dee89a889
 GV Compartment CaseDefinition subjectParameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bf1b751a-b0ef-3997-abb2-5bcc07a3e73d
@@ -270,153 +376,86 @@ GV Compartment ExhibitStateUsage nestedState exhibit states => siriusComponents:
 GV CompartmentItem ExhibitStateUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b5bc4044-9776-32ea-99a8-480d79ee35b2
 GV Compartment ActionUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bb882f80-cc45-3f6b-8039-17517822bf25
 GV Compartment ActionDefinition ownedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8c141ab4-6df3-3bf6-a8df-b837e821cde1
+GV Compartment ActionUsage nestedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2e086be9-2d88-3100-ab3d-6788096a15d2
+GV CompartmentItem ActionUsage nestedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=50f37594-470c-33eb-9df4-20bd130e5ad4
+GV Compartment ActionDefinition ownedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5f8660e5-575b-3887-b9ce-30ba1fef43db
+GV CompartmentItem ActionDefinition ownedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9114a973-de41-3a60-af91-55c984245500
+GV Compartment ActionUsage nestedReferenceparameters => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6b73f453-da63-357f-84aa-8f78070025bf
+GV CompartmentItem ActionUsage nestedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=13741c47-3ceb-3a54-8de7-561921607b3d
+GV Compartment ActionDefinition ownedReferenceparameters => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=398bf050-6208-3a31-993f-5d151f7ba698
+GV CompartmentItem ActionDefinition ownedReference => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c15919b1-df9c-319c-a659-1e68415b54d9
 GV Compartment PerformActionUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3c9de7f8-86b0-317c-be18-41242c306556
+GV Compartment StateDefinition ownedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3c843274-1ef1-3cd5-b0c9-8fd30588a15f
+GV Compartment StateUsage nestedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5ad5964f-31d7-370c-8d05-372c7624c746
+GV Compartment ExhibitStateUsage nestedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=322fa6a8-d230-39eb-aa8c-4acfc5fc3dd1
+GV Compartment PartUsage nestedState states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c97028bb-f0ba-3e9e-97a6-170cb6345d62
+GV CompartmentItem PartUsage nestedState states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6ed73c0a-c715-3fe5-9824-9b391a0ec40c
+GV Compartment PartUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=a57f3491-bd3e-38c6-bb8b-b0a4b570bd3a
+GV CompartmentItem PartUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ffb91c0-1374-32c1-b5c8-25541e556ff3
+GV Compartment PartDefinition ownedState states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ba122573-ae0d-378c-9949-7622f6057511
+GV CompartmentItem PartDefinition ownedState states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b195672d-4bc0-37e2-aef9-bdca65fceb4d
+GV Compartment PartDefinition ownedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cbf68c65-4d8f-32ca-ac84-92fec0dbb646
+GV CompartmentItem PartDefinition ownedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=61d0d5aa-911c-37f8-ac1d-a9752fb7104b
 GV Compartment PartUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=30a9de2f-14f9-3de6-b68e-06b79b675555
 GV Compartment PartDefinition ownedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=55d4b9e8-0e72-318b-9548-34ed7657c16c
 GV Compartment PartUsage nestedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c47f5c71-1cc7-3f23-8c03-c335c2d13c66
 GV Compartment PartDefinition ownedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bbf5f364-e67f-3e69-9918-9eb94cc9d724
+GV Compartment PartUsage nestedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fe94bbc6-f9c3-34cb-90fa-34a6701f9c17
+GV CompartmentItem PartUsage nestedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=196a4970-a38a-34a2-ab14-831a57837ec5
+GV Compartment PartDefinition ownedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3868c242-24f7-3a1d-956f-21bd7488b2b6
+GV CompartmentItem PartDefinition ownedAction perform actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=340375af-9891-3d99-962e-9c53d69f2ef3
+GV Compartment interconnection FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6f8d80de-d97e-34a4-80ab-320ebefe26f5
+GV BorderNode PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6e63f4a7-2373-3f68-97b4-a3bae4e213d5
+GV BorderNode PortUsage ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c86ab75a-b52a-3e59-ae85-1327f3ed8d7a
+GV InheritedBorderNode PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3d72b0da-22b5-352e-9699-a2da5588d4ca
+GV InheritedBorderNode PortUsage ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25c4e278-af76-3ab0-afcf-4d58466f6dde
+GV BorderNode ItemUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=af106b58-1a88-3b79-8aa0-18d14ef52a64
+GV BorderNode ReferenceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=46dd0ebb-0a2c-3163-8b61-66c49510227a
 GV Node EmptyDiagram => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=024ab54f-ab81-3d02-8abd-f65af641e6c6
-GV Node StartAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=596f7e8d-ba35-38d6-937f-011e05b74063
-GV Node DoneAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e7465fdc-fec8-38da-b7c0-26ba953b96de
-GV Node JoinAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=061525a1-da10-3b71-993c-3171a02fe234
-GV Node ForkAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=89a979f3-f9b0-3a4b-b790-c3a36b94a15f
-GV Node MergeAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e128348-b41f-3726-8c55-4b7521c788be
-GV Node DecisionAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=645a1d06-8399-3a30-a57b-f1d3d548fead
-GV Node ReferencingPerformActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=259fc95b-7332-31dc-bdaa-66c968e9b018
 GV Node Actor => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dd6423cb-73ab-3dfa-89bb-75b7be57c1b6
-GV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=eaa5f5c9-136f-3d3d-9666-a1099a912d37
+GV Node NamespaceImport => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=4b5e1adb-c89b-306c-997a-185081f79ad3
 GV Node Comment => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e654cd17-6874-31a7-b323-54e9b63499a8
+GV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=eaa5f5c9-136f-3d3d-9666-a1099a912d37
+GV Node TextualRepresentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9fdd0a23-88ea-36de-aa02-d483617ca815
+GV Node ConcernUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1c432573-b9ee-3e59-aad0-a88c992f1cee
+GV Node ConcernDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6674046c-52c5-3ba8-baf9-818ad79b7fd7
+GV Node SatisfyRequirementUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2e5ced2c-cf16-3b73-bf62-c27fdb04bf99
+GV Node RequirementUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ac6d2b47-110c-3c85-ac67-f78f5c481433
+GV Node RequirementDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38402f15-6e82-36f0-8424-61f6f73a5ed2
+GV Node ConstraintUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=99c90c48-a9e9-38ef-bb19-13b2065f0ba2
+GV Node ConstraintDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dac6b449-1248-329c-900c-0c94205815a3
 GV Node AttributeUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38cf838b-0cb1-3b5b-acc9-17ceb28e9d0f
 GV Node AttributeDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=98d9aabb-5101-3179-b52a-751a397bd93e
+GV Node ConnectionDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=204645d0-5c71-3dd2-acec-abbe148ea7e2
 GV Node EnumerationDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=aa1e11f2-d001-3f01-a96e-5c06d850a775
+GV Node InterfaceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0ac228e6-1514-3913-86cb-bf28187f9236
+GV Node InterfaceDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e3f69f38-df4a-3b18-a1b6-df1a4d87f1bf
 GV Node ItemUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3276b2ca-7ffa-34eb-8962-0c08a02d3871
 GV Node ItemDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7b83d1e4-c130-3b90-a806-953d1b187d92
 GV Node Package => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c0ac286a-69c6-389a-9635-a559ec3e942d
 GV Node PartUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bd119f62-45c5-3868-9727-9f954e05e4fa
 GV Node PartDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=52de5719-4873-3c76-8e5b-8d94900d4b7f
-GV Node AllocationUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bc73a5b9-03a1-396b-b1ca-0423a651e9a1
-GV Node AllocationDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b8a8c2f-d1e6-3a50-9d5c-d60b27ac4252
-GV Node InterfaceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0ac228e6-1514-3913-86cb-bf28187f9236
-GV Node InterfaceDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e3f69f38-df4a-3b18-a1b6-df1a4d87f1bf
 GV Node PortUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dfd2161c-f5f1-3783-afaa-cae8d9c981e7
 GV Node PortDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=0446d587-cdd8-3fe5-8b6f-36d98f997af9
+GV Node ReferenceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=eed864f8-6433-37bd-82c8-38a0f485e2a2
+GV Node AllocationUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=bc73a5b9-03a1-396b-b1ca-0423a651e9a1
+GV Node AllocationDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=9b8a8c2f-d1e6-3a50-9d5c-d60b27ac4252
 GV Node AcceptActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6ed80d69-b1dd-3938-807e-72caad3d46aa
 GV Node ActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=77cfbd22-c903-3b4e-9792-03871fdfc3d4
 GV Node ActionDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=535cfc4c-559a-35e1-896e-fbfb4c5ddf1d
 GV Node AssignmentActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=d61f0e7c-2e8f-34d0-9ecb-ad7cd5062ff4
-GV Node ConstraintUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=99c90c48-a9e9-38ef-bb19-13b2065f0ba2
-GV Node ConstraintDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dac6b449-1248-329c-900c-0c94205815a3
-GV Node RequirementUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ac6d2b47-110c-3c85-ac67-f78f5c481433
-GV Node RequirementDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=38402f15-6e82-36f0-8424-61f6f73a5ed2
+GV Node ExhibitStateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2cb62815-a43c-3842-a933-a7ca5947b6ba
+GV Node OccurrenceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ecd2906-3d43-39b2-a471-5f6990d1d23c
+GV Node OccurrenceDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=82352687-7413-35a0-98f1-c9ae1010a666
+GV Node StateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=446c7a40-524c-33ee-9985-aceaa87fd35e
+GV Node StateDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c8a54ddd-4684-3ae0-9cc5-fa8fe10ade1c
+GV Node ViewUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7001fab9-43ec-356c-8dad-26574a6b2d53
 GV Node CaseUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=8fa64784-f332-3c8a-8200-55f7c65ee74c
 GV Node CaseDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=461e1f38-f63b-3e94-b94f-fd8680546949
 GV Node UseCaseUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fe1c9460-16f9-3a95-865e-cb2c628031e6
 GV Node UseCaseDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=aed2ff63-535e-33fb-be5b-9bc6e68117f5
-GV Node OccurrenceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7ecd2906-3d43-39b2-a471-5f6990d1d23c
-GV Node OccurrenceDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=82352687-7413-35a0-98f1-c9ae1010a666
 GV Node MetadataDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=1a38636f-ae0a-3b33-ad9f-1b1d326a002c
-GV Node ExhibitStateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=2cb62815-a43c-3842-a933-a7ca5947b6ba
-GV Node StateDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c8a54ddd-4684-3ae0-9cc5-fa8fe10ade1c
-GV Node StateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=446c7a40-524c-33ee-9985-aceaa87fd35e
 GV Node PerformActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e1c1ddc4-9cfb-3288-bdae-99aa2f22e798
-IV Node Fake => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=7dfd1e77-d564-3371-b763-a8b74a32aa6c
-IV Compartment ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=0cbcdebe-c87d-3e4d-ab50-fe886f65cee6
-IV InheritedCompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=b7940fbf-0ccf-3b33-adff-702fdaaa9bf2
-IV CompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=5146b4de-37c3-3234-a194-41a2b42e1caf
-IV Compartment PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=9f871f18-dbda-3798-8e28-094acfae6a2d
-IV InheritedCompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=5c1bb2fa-6f35-3114-97bf-c421991389e7
-IV CompartmentItem PartUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=ead1b457-81d2-3ed3-92e3-fbf1d0633176
-IV Compartment PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=85d2283f-c727-34f0-ba1b-695e544d15a7
-IV InheritedCompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=476c2177-8dca-3dfc-a55d-d5ab09e6eaf2
-IV CompartmentItem PartUsage nestedAttribute => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=5e24b2f2-ab56-32b3-bb96-63207d6fcf82
-IV Compartment ActionUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=09bac8f5-e6f0-3fb0-a612-a7242d9a256c
-IV Compartment PartUsage nestedPart FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=a77b4c6c-526d-3fe4-822b-de505f743123
-IV Node PartUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=ab0b9cd1-5556-30ae-80ce-2b9645fcaf03
-IV BorderNode PortUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=de70405c-a973-3bca-88a6-c6829548952d
-IV BorderNode ItemUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=76a103c2-9ca7-330e-9dcf-a4b4abfac68e
-IV Node ActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=4e4216b6-3f5f-3b5b-86f8-8b34f5613da4
-IV Node AcceptActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=8c091786-e6ad-39c7-acf8-7ed276295208
-IV Node PerformActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=6b28022d-98ff-32de-ada9-cf1592c0641e
-IV Node Element => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=4055a909-560d-3db5-a777-ea29c14cc2c2
-IV FirstLevelNode PartUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=700133eb-7806-3dce-98d2-9ec37d212aaa
-IV FirstLevelNode ActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=f19c2b1a-9494-3c07-b567-6a58b215e647
-IV BorderNode RootPortUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=9e813b81-da01-3300-8d02-c881f85ccadc
-IV Node Comment => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=51e8daf5-f756-346f-bdb9-240dd6e83d00
-IV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=a3ad7b49-33ae-32fb-9846-2eeb62a9a994
-IV Node StartAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=3b5381ea-c1e9-3719-842d-6f78594343b5
-IV Node DoneAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=93b0a9bd-a688-367d-b042-ec82a6e2c4db
-IV Node JoinAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=194d0a9a-6d60-3a3f-8221-d15f10bcf595
-IV Node ForkAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=5c7b20ce-d5b8-33aa-bf1f-59831c97cbbe
-IV Node MergeAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=543d74a1-574d-344a-83a4-edbba155cc75
-IV Node DecisionAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=f2943550-7dc2-3a7e-9b34-20547440cac7
-AFV Node Fake => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=4d482f6e-9648-3c55-b9f1-2b0c5922deef
-AFV Compartment AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a448fd6b-96c8-36a2-9c59-e90a82e63571
-AFV CompartmentItem AcceptActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=c1cc729e-3822-32c1-a60b-9d54c2c012f5
-AFV Compartment ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=fdf8a03a-4ff2-3d90-b076-c6cff6f58cf1
-AFV CompartmentItem ActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=28242b3b-4187-31f2-83a4-c87551c1287f
-AFV Compartment ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=6593bbbd-25fa-3c26-a4cc-8beb29e31383
-AFV CompartmentItem ActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=0a9fea98-9eb3-3ea1-8eca-c10a0c8dfa17
-AFV Compartment ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=94ac5180-5de3-3d80-bc94-340bd9f360d9
-AFV CompartmentItem ActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=0b183f19-eacd-39e6-a1bd-5c6864703078
-AFV Compartment PerformActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=93328109-0dec-3fa9-97a4-0ed2dcf89543
-AFV CompartmentItem PerformActionUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=0c0d7398-1c78-367f-addd-9830f81b1ee6
-AFV Compartment PerformActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a836b24c-6159-353a-8886-f294ef8649ad
-AFV CompartmentItem PerformActionUsage nestedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=d3b28839-318c-3d54-b23b-de2e96f868f0
-AFV Compartment PerformActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=52f0a61d-d595-3786-a2ac-a2b8143ba4b9
-AFV CompartmentItem PerformActionUsage nestedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=154d0b86-00cc-36be-a6cc-34a45d4b3778
-AFV Compartment ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=f6b83918-4601-3591-a3b6-d1a96a0f9448
-AFV CompartmentItem ActionDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=9eafd603-2655-39ce-bde9-1849c7ddc94a
-AFV Compartment ActionDefinition ownedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=acfbf6d0-4764-3cd2-81fc-d0d2f9652a6d
-AFV CompartmentItem ActionDefinition ownedItem => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=f8c6052d-64b7-3b3f-b9e5-a47b01b92b82
-AFV Compartment ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=ac3d3a20-b07e-3917-8056-108c2f7a37ef
-AFV CompartmentItem ActionDefinition ownedAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=ef50e345-0b76-35c8-bcd6-5d6eb5ef0aff
-AFV Compartment ActionUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a7429efe-8a49-3d4c-a4be-a11d812815a0
-AFV Compartment PerformActionUsage nestedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=e959c2df-0bb6-3c78-8123-8c8f4deb89d4
-AFV Compartment ActionDefinition ownedAction FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=cbbdb10f-3f32-3d53-b1dd-914ffbe59046
-AFV Node EmptyDiagram => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=d58b28b4-9351-353c-8a90-6b99df9e0c0a
-AFV Node StartAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a8e5309c-74b1-330f-9012-1db1b34cff29
-AFV Node DoneAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=16287cf0-42d6-37a7-a565-e109b4b59e15
-AFV Node JoinAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=f7392f46-058a-33fa-bdf3-5ff8505c0144
-AFV Node ForkAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=6729c00b-1d42-3022-bf4f-cb4bcbc256a8
-AFV Node MergeAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=42a54c79-c6a6-3b60-90f6-ffa7546a0b83
-AFV Node DecisionAction => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=c509f547-bab6-36e4-942b-fcf7258e0000
-AFV Node ReferencingPerformActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=f0e658cf-afbd-3f9f-9483-059859f0eea4
-AFV Node ActionDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=db2db1c6-657f-30af-a960-186357f40487
-AFV Node AcceptActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=02da2fd3-353e-3e29-a7d5-0b0681687cdb
-AFV Node ActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a107ce4d-10e3-3dc2-b387-e6d641e836b3
-AFV Node AssignmentActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=888711d5-e9b6-3b20-bc1e-e2a569798218
-AFV Node PerformActionUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=6a2c6167-6db5-36cc-b659-5d19daadc0f1
-AFV Node Comment => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=d65cb50d-e22b-3dac-ae1a-a640bf46b09c
-AFV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=3a6199d3-0f8b-33c9-aa01-d80e8a4ceb3d
-STV Node Fake => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=10ecbc9c-5ff6-3f24-ac6b-195e339e826a
-STV Compartment StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=65388d47-0749-3d43-bdc6-5bbfef431ee7
-STV CompartmentItem StateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=b9c5a4f8-607b-3997-89fd-9676dc93ddb7
-STV Compartment ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=cf027731-bf6a-3040-8c53-25cbc54f2389
-STV CompartmentItem ExhibitStateUsage documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=3c2da5d3-e90e-34d2-b126-04ba919c675f
-STV Compartment StateDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=f0392a5e-ab2a-3537-970b-29a59957bce9
-STV CompartmentItem StateDefinition documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=4e0993b5-5776-3446-9fd5-b8708fa70d1f
-STV Compartment StateUsage actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=20c1f294-949e-3285-acbc-d0ca42bda20e
-STV CompartmentItem StateUsage action => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=1087b169-68bb-38ed-b347-3ead4795a98a
-STV Compartment ExhibitStateUsage actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=485ef61e-3059-3083-9949-753821456a99
-STV CompartmentItem ExhibitStateUsage action => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=19369b8d-a685-31a3-9fef-869db31c1410
-STV Compartment StateDefinition actions => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=534b7f5c-302d-31bd-aae3-5e1ba8fa5e6b
-STV CompartmentItem StateDefinition action => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=074be222-bfde-30cc-8c98-6dfd2c6aee94
-STV Compartment StateDefinition ownedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=1b18f59f-14e1-3946-9a5d-49f4314a922e
-STV CompartmentItem StateDefinition ownedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=a0144598-eddc-3ac4-9548-36b681d007b3
-STV Compartment StateUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=1440cade-6d5d-3e2a-99a6-49bb1e82160e
-STV CompartmentItem StateUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=8d4b2ca2-0af8-39c7-812b-2178f8b8a223
-STV Compartment ExhibitStateUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=d4e40f4f-7042-3b96-bfd5-c89035fe736e
-STV CompartmentItem ExhibitStateUsage nestedState exhibit states => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=4d42c439-9e48-34fd-a1d5-c2cc4eb062cf
-STV Compartment StateDefinition ownedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=a9e806e2-3f9c-3fe8-97bc-1f2b6cfb0b70
-STV Compartment StateUsage nestedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=096c06bd-b619-335e-a5c1-701ad5270ce1
-STV Compartment ExhibitStateUsage nestedState FreeForm => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=ab622260-192d-305a-b6de-5aa0bbc5210d
-STV Node EmptyDiagram => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=3bfeb733-6964-3fe4-8e03-0d3fdf717dc3
-STV Node Package => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=522bead0-713e-3a11-b8a0-87c00e22b870
-STV Node StateDefinition => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=c921af16-5b5e-3f69-9cde-845f37932d57
-STV Node ExhibitStateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=6463a53f-855c-30e7-bb33-b6733d9450d5
-STV Node StateUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=c35c5f46-ca7d-31f2-b595-dcccb6b440ab
-STV Node Comment => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=b1b78629-c8d0-37f8-8807-6f60006de3d5
-STV Node Documentation => siriusComponents://nodeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=4652804a-4fb7-3725-a56f-69d2973acb81
 GV Edge Definition Owned ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=88a4781f-f2b6-3bcd-9ab6-67a9037c9d16
 GV Edge Definition Owned AllocationUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f4a99e5e-f368-3e49-b099-fa076118d288
 GV Edge Definition Owned AttributeUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=7e5ee41d-2a77-3c1d-9416-2bba6b787e64
@@ -430,6 +469,7 @@ GV Edge Definition Owned SatisfyRequirementUsage => siriusComponents://edgeDescr
 GV Edge Definition Owned StateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=fe0927e9-3dcb-3fbd-95aa-5ee1b8044dfa
 GV Edge Definition Owned ExhibitStateUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=5b69aa20-a316-37ef-a0eb-d03981114fe1
 GV Edge Definition Owned OccurrenceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=cb6e98a3-bb0a-343f-9ba7-46e498572897
+GV Edge Usage Nested AcceptActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=319ca9dd-1ae1-3c7e-8c46-03227ef3bdc3
 GV Edge Usage Nested ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ec59747a-cd33-3796-8fea-22b865b70d97
 GV Edge Usage Nested AllocationUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=41fab817-81ac-3598-8ede-2edc7f6b4b47
 GV Edge Usage Nested AttributeUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6066e53e-d353-3ba9-9a59-1cd4177c573f
@@ -438,6 +478,7 @@ GV Edge Usage Nested ExhibitStateUsage => siriusComponents://edgeDescription?sou
 GV Edge Usage Nested ItemUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=432ef012-6be7-3eb7-8c00-1a99d3a796a6
 GV Edge Usage Nested OccurrenceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=77c752dc-f2bb-3eab-83a0-382b30aad154
 GV Edge Usage Nested PartUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=919980e7-dd23-3ff4-9b86-ad2baa653052
+GV Edge Usage Nested PerformActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c9a7fcb8-ce16-3c08-877a-d75ea1f09b4b
 GV Edge Usage Nested PortUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c16e94e3-392a-36af-9aa4-0246fd2a66a5
 GV Edge Usage Nested RequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=f815b1c4-d181-3d02-8a0e-1e144a356baa
 GV Edge Usage Nested SatisfyRequirementUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=ea83c4b9-f602-3798-81d0-e2bed832e159
@@ -463,22 +504,3 @@ GV Edge FlowUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId
 GV Edge BindingConnectorAsUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c4e981ca-ce0c-394c-b896-1e84f56ff5d4
 GV Edge FeatureValue => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6fde9074-7fd4-375f-9ba0-c70c4408ca66
 GV Edge IncludeUseCaseUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=72e2d57a-8fd1-3b99-b9de-e6575a97ff10
-IV Edge BindingConnectorAsUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=3d1c5a31-5567-3e8a-8cd5-011bc74140f3
-IV Edge Allocate => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=18aff0ee-115d-302a-9fe2-75b9a5184984
-IV Edge InterfaceUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=7db99014-f420-3870-a82d-e89fe629a555
-IV Edge FlowUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=77bd31fb-d0b9-3afc-868a-b8fb398a0602
-IV Edge Succession => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=523eb30e-8d48-33c6-b64d-15c24b8e1fbb
-IV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=b9e95cbb-c9d2-3b22-bd62-47b30baee16f
-AFV Edge Allocate => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a24f16cc-8f14-3719-9909-0220050ba4ed
-AFV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=32e30f33-b509-30e3-8c68-4c3fb1bdb0f8
-AFV Edge Dependency => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a9cb500b-be1b-3a1b-a202-04d211ab1d7b
-AFV Edge FeatureTyping => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a1eac075-8069-31ef-8331-a2346429b537
-AFV Edge Redefinition => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=2c32d93d-2958-3e66-b2a4-e6890ae09649
-AFV Edge Subclassification => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=6fa4882e-8179-3d67-b866-7a908781cc31
-AFV Edge Subsetting => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=19f78067-e535-3b21-b8d8-40cbf4bc92f8
-AFV Edge Succession => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=256d51db-fd16-3cf4-bd03-962515b60944
-AFV Edge TransitionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=80cd07ef-f41c-32ab-a371-a3eb0a772e12
-AFV Edge Usage Nested ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=a19e91d5-5d8f-3cf9-9816-dced604596c9
-AFV Edge Definition Owned ActionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=0d6e5145-02ea-336b-b4d4-9be6b0e63786&sourceElementId=1d535a64-8693-30d6-8742-265e64568923
-STV Edge TransitionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=cab5bcd7-f3e2-39a2-8849-5cef695ade57
-STV Edge Annotation => siriusComponents://edgeDescription?sourceKind=view&sourceId=067eb84f-3fe2-3b1b-9d45-9ffb9b5bb65e&sourceElementId=8065fd0d-9fa4-3d02-9e3a-2791881af581
