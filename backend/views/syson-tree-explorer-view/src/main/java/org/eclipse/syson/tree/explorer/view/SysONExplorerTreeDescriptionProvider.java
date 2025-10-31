@@ -61,7 +61,7 @@ public class SysONExplorerTreeDescriptionProvider {
     private TreeDescription build() {
         TreeDescription description = new TreeDescriptionBuilder()
                 .name(SYSON_EXPLORER)
-                .childrenExpression("aql:self.getChildren(editingContext, existingRepresentations, expanded, activeFilterIds))")
+                .childrenExpression("aql:self.getChildren(editingContext, existingRepresentations, expanded, activeFilterIds)")
                 .deletableExpression("aql:self.isDeletable()")
                 .editableExpression("aql:self.isEditable()")
                 .elementsExpression("aql:editingContext.getElements(activeFilterIds)")
