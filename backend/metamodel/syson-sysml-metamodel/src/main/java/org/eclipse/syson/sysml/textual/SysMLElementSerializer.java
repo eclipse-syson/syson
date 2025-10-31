@@ -794,6 +794,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             case "implies":
                 this.appendConditionalBinaryOperatorExpression(builder, op);
                 break;
+            case "meta":
+                this.appendMetaClassificationExpression(builder, op);
+                break;
             default:
                 break;
         }
@@ -1214,6 +1217,47 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                     .map(FeatureValue.class::cast)
                     .forEach(val -> this.appendOwnedExpressionReference(builder, val.getValue()));
         }
+    }
+
+    private void appendMetaClassificationExpression(Appender builder, OperatorExpression op) {
+        // MetadataArgumentMember
+        op.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .flatMap(param -> param.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .flatMap(feature -> feature.getOwnedRelationship().stream())
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .map(FeatureValue::getValue)
+                .filter(MetadataAccessExpression.class::isInstance)
+                .map(MetadataAccessExpression.class::cast)
+                .map(MetadataAccessExpression::getReferencedElement)
+                .filter(Objects::nonNull)
+                .map(Element::getQualifiedName)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .ifPresent(builder::appendWithSpaceIfNeeded);
+
+        // MetaCastOperator
+        builder.appendWithSpaceIfNeeded("meta");
+
+        // TypeResultMember
+        op.getOwnedRelationship().stream()
+                .filter(ReturnParameterMembership.class::isInstance)
+                .map(ReturnParameterMembership.class::cast)
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(Objects::nonNull)
+                .flatMap(feature -> feature.getOwnedRelationship().stream())
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(Objects::nonNull)
+                .map(type -> this.getDeresolvableName(type, op))
+                .findFirst()
+                .ifPresent(builder::appendWithSpaceIfNeeded);
+
     }
 
     private void appendOwnedExpressionReference(Appender builder, Expression value) {
