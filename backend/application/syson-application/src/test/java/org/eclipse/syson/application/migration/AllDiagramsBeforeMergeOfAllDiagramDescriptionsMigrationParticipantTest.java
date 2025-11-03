@@ -37,6 +37,7 @@ import org.eclipse.syson.application.data.AllDiagramsBeforeMergeOfAllDiagramDesc
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -112,7 +113,7 @@ public class AllDiagramsBeforeMergeOfAllDiagramDescriptionsMigrationParticipantT
         assertEquals(3, members.stream().filter(ViewUsage.class::isInstance).count());
 
         var optionalGVViewUsage = members.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast)
-                .filter(vu -> "StandardViewDefinitions::GeneralView".equals(vu.getType().get(0).getQualifiedName())).findFirst();
+                .filter(vu -> StandardDiagramsConstants.GV_QN.equals(vu.getType().get(0).getQualifiedName())).findFirst();
         assertTrue(optionalGVViewUsage.isPresent());
 
         var optionalGVDiagram = this.representationSearchService.findById(editingContext, AllDiagramsBeforeMergeOfAllDiagramDescriptionsTestProjectData.GraphicalIds.GV_DIAGRAM_ID, Diagram.class);
@@ -123,7 +124,7 @@ public class AllDiagramsBeforeMergeOfAllDiagramDescriptionsMigrationParticipantT
         assertEquals(SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID, gvDescriptionId);
 
         var optionalAFVViewUsage = members.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast)
-                .filter(vu -> "StandardViewDefinitions::ActionFlowView".equals(vu.getType().get(0).getQualifiedName())).findFirst();
+                .filter(vu -> StandardDiagramsConstants.AFV_QN.equals(vu.getType().get(0).getQualifiedName())).findFirst();
         assertTrue(optionalAFVViewUsage.isPresent());
 
         var optionalAFVDiagram = this.representationSearchService.findById(editingContext, AllDiagramsBeforeMergeOfAllDiagramDescriptionsTestProjectData.GraphicalIds.AFV_DIAGRAM_ID, Diagram.class);
@@ -134,7 +135,7 @@ public class AllDiagramsBeforeMergeOfAllDiagramDescriptionsMigrationParticipantT
         assertEquals(SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID, afvDescriptionId);
 
         var optionalSTVViewUsage = members.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast)
-                .filter(vu -> "StandardViewDefinitions::StateTransitionView".equals(vu.getType().get(0).getQualifiedName())).findFirst();
+                .filter(vu -> StandardDiagramsConstants.STV_QN.equals(vu.getType().get(0).getQualifiedName())).findFirst();
         assertTrue(optionalSTVViewUsage.isPresent());
 
         var optionalSTVDiagram = this.representationSearchService.findById(editingContext, AllDiagramsBeforeMergeOfAllDiagramDescriptionsTestProjectData.GraphicalIds.STV_DIAGRAM_ID, Diagram.class);
@@ -151,7 +152,7 @@ public class AllDiagramsBeforeMergeOfAllDiagramDescriptionsMigrationParticipantT
         assertEquals(1, members.stream().filter(ViewUsage.class::isInstance).count());
 
         var optionalIVViewUsage = members.stream().filter(ViewUsage.class::isInstance).map(ViewUsage.class::cast)
-                .filter(vu -> "StandardViewDefinitions::InterconnectionView".equals(vu.getType().get(0).getQualifiedName())).findFirst();
+                .filter(vu -> StandardDiagramsConstants.IV_QN.equals(vu.getType().get(0).getQualifiedName())).findFirst();
         assertTrue(optionalIVViewUsage.isPresent());
 
         var optionalIVDiagram = this.representationSearchService.findById(editingContext, AllDiagramsBeforeMergeOfAllDiagramDescriptionsTestProjectData.GraphicalIds.IV_DIAGRAM_ID, Diagram.class);

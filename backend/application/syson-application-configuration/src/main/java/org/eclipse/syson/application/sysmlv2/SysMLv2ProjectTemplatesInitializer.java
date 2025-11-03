@@ -40,6 +40,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.springframework.stereotype.Service;
 
 /**
@@ -105,7 +106,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     resourceSet.getResources().add(resource);
 
                     // General View is the description name of SDVDiagramDescriptionProvider
-                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
+                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, StandardDiagramsConstants.GV);
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         var optViewUsage = this.getOrCreateViewUsage(resource);
@@ -142,7 +143,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     resourceSet.getResources().add(resource);
 
                     // General View is the description name of SDVDiagramDescriptionProvider
-                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
+                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, StandardDiagramsConstants.GV);
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         var optViewUsage = this.getOrCreateViewUsage(resource);
@@ -182,7 +183,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     this.defaultSysMLv2ResourceProvider.loadBatmobileResource(resource);
 
                     // General View is the description name of SDVDiagramDescriptionProvider
-                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
+                    var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, StandardDiagramsConstants.GV);
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         var optViewUsage = this.getOrCreateViewUsage(resource);
@@ -269,7 +270,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
         var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
         viewUsage.getOwnedRelationship().add(featureTyping);
-        var generalViewViewDef = this.elementUtil.findByNameAndType(element, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(element, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
         featureTyping.setType(generalViewViewDef);
         featureTyping.setTypedFeature(viewUsage);
 

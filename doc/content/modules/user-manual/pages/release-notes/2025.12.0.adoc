@@ -24,6 +24,17 @@ Those parameters can be linked to other parameters using the _New Binding Connec
 
 image::sdv-action-parameters.png[Action parameters, width=65%,height=65%]
 
+- In diagrams, it is now possible to put an `Element` graphical node inside a new `ViewUsage`, through the _View as >_ contextual menu item on an `Element` graphical node.
+This new `ViewUsage` is typed with a standard diagram `ViewDefinition`, one of `General View`, `Interconnection View`, `ActionFlow View` or `StateTransition View`.
+The new `ViewUsage` will be displayed in the diagram as a container for the `Element` graphical node.
+With this new functionality, it is possible to display some parts of the diagram in a different way, for example an `Interconnection View` inside a `General View` diagram.
+
+[cols="1,1"]
+|===
+a|image::view-as-node-tool.png[View as Node tool, width=75%,height=75%]
+a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=75%]
+|=== 
+
 == Bug fixes
 
 - Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
@@ -62,7 +73,7 @@ metadata def MP :> SemanticMetadata {
 }
 ```
 
-- Fix an issue during texual import and export of rational numbers.
+- Fix an issue during textual import and export of rational numbers.
 
 The following model is now properly imported:
 

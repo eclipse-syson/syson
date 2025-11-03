@@ -55,6 +55,7 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -180,12 +181,14 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
             sections.add(sectionBuilder.build());
         });
 
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsViewToolProvider("'StandardViewDefinitions::GeneralView'", "General View").create(cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
-                new SetAsViewToolProvider("'StandardViewDefinitions::InterconnectionView'", "Interconnection View").create(cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS, new SetAsViewToolProvider("'StandardViewDefinitions::ActionFlowView'", "ActionFlow View").create(cache));
+                new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
-                new SetAsViewToolProvider("'StandardViewDefinitions::StateTransitionView'", "StateTransition View").create(cache));
+                new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
+                new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV).create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
+                new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV).create(cache));
 
         sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
@@ -228,9 +231,8 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(
-                        AQLUtils.getSelfServiceCallExpression("expose", List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))

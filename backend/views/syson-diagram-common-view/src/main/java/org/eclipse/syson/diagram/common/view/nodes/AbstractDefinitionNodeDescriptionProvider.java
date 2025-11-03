@@ -273,15 +273,13 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      * @return The created {@link DropNodeTool}
      */
     protected DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
-        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
-
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
-                .body(dropElementFromDiagram.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 }

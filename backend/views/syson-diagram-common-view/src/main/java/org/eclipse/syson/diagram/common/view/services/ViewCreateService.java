@@ -82,6 +82,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 
@@ -106,6 +107,8 @@ public class ViewCreateService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final MetamodelMutationElementService metamodelElementMutationService;
+
     public ViewCreateService(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService, IFeedbackMessageService feedbackMessageService) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -115,6 +118,7 @@ public class ViewCreateService {
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
+        this.metamodelElementMutationService = new MetamodelMutationElementService();
     }
 
     /**
@@ -138,24 +142,6 @@ public class ViewCreateService {
      */
     public Element elementInitializer(Element element) {
         return this.elementInitializerSwitch.doSwitch(element);
-    }
-
-    /**
-     * Create the appropriate {@link Membership} child according to the given {@link Element}.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @return the newly created {@link Membership}.
-     */
-    public Membership createMembership(Element element) {
-        Membership membership = null;
-        if (element instanceof Package) {
-            membership = SysmlFactory.eINSTANCE.createOwningMembership();
-        } else {
-            membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        }
-        element.getOwnedRelationship().add(membership);
-        return membership;
     }
 
     /**
@@ -903,7 +889,7 @@ public class ViewCreateService {
 
     public Element createPerformAction(Element ownerElement) {
         // no subsetting relationship for the performed action since it is the same as the perform action
-        var featureMember = this.createMembership(ownerElement);
+        var featureMember = this.metamodelElementMutationService.createMembership(ownerElement);
         ownerElement.getOwnedRelationship().add(featureMember);
         var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
         featureMember.getOwnedRelatedElement().add(perform);

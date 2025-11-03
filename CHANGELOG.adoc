@@ -39,6 +39,24 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 * Element directEditListItem(Element element, String newLabel)
 * Element editMultiplicityRangeCenterLabel(Element element, String newLabel)
 * Element editEdgeCenterLabel(Element element, String newLabel)
+- [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationExposeService`:
+* Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
+* boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext)
+- [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationDndService`:
+* Element dropElementFromExplorer(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+* Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
+- [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationElementService`:
+* StateUsage createChildState(Element parentState, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,Map<NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit)
+- [services] The following services have been moved from `ViewCreateService` to `MetamodelMutationElementService`:
+* Membership createMembership(Element element)
+- [services] The following services have been moved from `ViewNodeService` to `ModelMutationElementService`:
+* Element setAsView(ViewUsage viewUsage, String newViewDefinition)
 
 === Dependency update
 
@@ -79,6 +97,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 https://doc.mbse-syson.org/syson/main/developer-guide/index.html#services_organization[See the developer guide in the documentation for more details].
 Also introduces new `ServiceMethod` helper class to build AQL service call expressions from type-safe Java method references instead of hardcoded strings.
 - https://github.com/eclipse-syson/syson/issues/1606[#1606] [explorer] Display the _shortName_ of `Elements` as part of the label in the _Explorer_ view.
+- https://github.com/eclipse-syson/syson/issues/1638[#1638] [diagrams] Add the capability to put an `Element` graphical node inside a `ViewUsage` in diagrams
 
 == v2025.10.0
 

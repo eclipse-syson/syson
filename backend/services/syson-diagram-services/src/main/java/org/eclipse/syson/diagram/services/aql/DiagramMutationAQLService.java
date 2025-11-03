@@ -12,10 +12,19 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services.aql;
 
+import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.syson.diagram.services.DiagramMutationDndService;
+import org.eclipse.syson.diagram.services.DiagramMutationElementService;
+import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.StateUsage;
 
 /**
  * Entry point for all diagram-related services doing mutations in diagrams and called by AQL expressions in diagram
@@ -25,10 +34,36 @@ import org.eclipse.syson.sysml.Element;
  */
 public class DiagramMutationAQLService {
 
+    private final DiagramMutationDndService diagramMutationDndService;
+
+    private final DiagramMutationElementService diagramMutationElementService;
+
+    private final DiagramMutationExposeService diagramMutationExposeService;
+
     private final DiagramMutationLabelService diagramMutationLabelService;
 
-    public DiagramMutationAQLService(DiagramMutationLabelService diagramMutationLabelService) {
+    public DiagramMutationAQLService(DiagramMutationDndService diagramMutationDndService, DiagramMutationElementService diagramMutationElementService,
+            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService) {
+        this.diagramMutationDndService = Objects.requireNonNull(diagramMutationDndService);
+        this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
+        this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.diagramMutationLabelService = Objects.requireNonNull(diagramMutationLabelService);
+    }
+
+    /**
+     * {@link DiagramMutationExposeService#addToExposedElements(Element, boolean, IEditingContext, DiagramContext, Node, Map)}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationExposeService.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createChildState(Element, IEditingContext, DiagramContext, Node, Map, boolean, boolean)}.
+     */
+    public StateUsage createChildState(Element parentState, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
+        return this.diagramMutationElementService.createChildState(parentState, editingContext, diagramContext, selectedNode, convertedNodes, isParallel, isExhibit);
     }
 
     /**
@@ -53,6 +88,65 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationDndService#dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromDiagram(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromDiagramInRequirementAssumeConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
+                convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropElementFromDiagramInRequirementRequireConstraintCompartment(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromDiagramInRequirementRequireConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
+                convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropElementFromDiagramInConstraintCompartment(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromDiagramInConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
+                convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropElementFromExplorer(Element, IEditingContext, DiagramContext, Node, Map)}.
+     */
+    public Element dropElementFromExplorer(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromExplorer(element, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropObjectiveRequirementFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropObjectiveRequirementFromDiagram(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropSubjectFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropSubjectFromDiagram(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+    }
+
+    /**
      * {@link DiagramMutationLabelService#editMultiplicityRangeCenterLabel(Element, String)}.
      */
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
@@ -64,5 +158,27 @@ public class DiagramMutationAQLService {
      */
     public Element editEdgeCenterLabel(Element element, String newLabel) {
         return this.diagramMutationLabelService.editEdgeCenterLabel(element, newLabel);
+    }
+
+    /**
+     * {@link DiagramMutationExposeService#expose(Element, IEditingContext, DiagramContext, Node, Map)}.
+     */
+    public Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationExposeService.expose(element, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationExposeService#removeFromExposedElements(Element, Node, IEditingContext, DiagramContext)}.
+     */
+    public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramMutationExposeService.removeFromExposedElements(element, selectedNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#viewNodeAs(Element, String, IEditingContext, DiagramContext, Node)}.
+     */
+    public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
+        return this.diagramMutationElementService.viewNodeAs(element, newViewDefinition, editingContext, diagramContext, selectedNode);
     }
 }

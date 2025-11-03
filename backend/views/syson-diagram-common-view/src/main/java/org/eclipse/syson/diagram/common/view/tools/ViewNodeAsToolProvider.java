@@ -14,20 +14,24 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.syson.model.services.ModelMutationElementService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.ServiceMethod;
 
 /**
- * Node Tool calling by "View as > XXXX View" and allowing to set the type of the View.
+ * Node Tool executed when "View as > XXXX View" is called and allowing to move the selected node inside a new ViewUsage
+ * typed by the XXXX View..
  *
  * @author arichard
  */
-public class SetAsViewToolProvider implements INodeToolProvider {
+public class ViewNodeAsToolProvider implements INodeToolProvider {
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -37,7 +41,7 @@ public class SetAsViewToolProvider implements INodeToolProvider {
 
     private final String label;
 
-    public SetAsViewToolProvider(String viewDefinition, String label) {
+    public ViewNodeAsToolProvider(String viewDefinition, String label) {
         this.viewDefinition = Objects.requireNonNull(viewDefinition);
         this.label = Objects.requireNonNull(label);
     }
@@ -48,8 +52,10 @@ public class SetAsViewToolProvider implements INodeToolProvider {
                 .name(this.label)
                 .iconURLsExpression("/icons/full/obj16/ViewUsage.svg")
                 .body(this.viewBuilderHelper.newChangeContext()
-                        .expression(ServiceMethod.of1(ModelMutationElementService::setAsView).aqlSelf(this.viewDefinition))
+                        .expression(
+                                ServiceMethod.of4(DiagramMutationAQLService::viewNodeAs).aqlSelf(this.viewDefinition, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE))
                         .build())
                 .build();
     }
+
 }

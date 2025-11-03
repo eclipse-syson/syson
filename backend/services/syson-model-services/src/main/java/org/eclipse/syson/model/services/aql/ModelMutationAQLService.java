@@ -12,6 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.model.services.aql;
 
+import java.util.Objects;
+
+import org.eclipse.syson.model.services.ModelMutationElementService;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
+
 /**
  * Entry point for all model-related services doing mutations in models and called by AQL expressions in representation
  * descriptions.
@@ -20,4 +28,26 @@ package org.eclipse.syson.model.services.aql;
  */
 public class ModelMutationAQLService {
 
+    private final ModelMutationElementService modelMutationElementService;
+
+    private final MetamodelMutationElementService metamodelElementMutationService;
+
+    public ModelMutationAQLService(ModelMutationElementService modelMutationElementService) {
+        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
+        this.metamodelElementMutationService = new MetamodelMutationElementService();
+    }
+
+    /**
+     * {@link MetamodelMutationElementService#createMembership(Element)}.
+     */
+    public Membership createMembership(Element element) {
+        return this.metamodelElementMutationService.createMembership(element);
+    }
+
+    /**
+     * {@link ModelMutationElementService#setAsView(ViewUsage, String)}.
+     */
+    public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
+        return this.modelMutationElementService.setAsView(viewUsage, newViewDefinition);
+    }
 }

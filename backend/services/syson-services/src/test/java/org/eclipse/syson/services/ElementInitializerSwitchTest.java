@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -173,7 +174,7 @@ public class ElementInitializerSwitchTest {
         this.addInParent(view1, root);
         var initializedView1 = this.elementInitializerSwitch.doSwitch(view1);
         assertThat(initializedView1).isInstanceOf(ViewUsage.class);
-        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
         assertThat(((ViewUsage) initializedView1).getType()).contains(generalViewViewDef);
 
     }

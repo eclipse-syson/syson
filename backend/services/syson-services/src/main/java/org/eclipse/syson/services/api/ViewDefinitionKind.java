@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.services.api;
 
+import org.eclipse.syson.util.StandardDiagramsConstants;
+
 /**
  * The list of Standard ViewDefintions handled in SysON.
  *
@@ -22,13 +24,13 @@ public enum ViewDefinitionKind {
 
     public static ViewDefinitionKind getKind(String viewDefinitionName) {
         ViewDefinitionKind kind = null;
-        if ("StandardViewDefinitions::GeneralView".equals(viewDefinitionName)) {
+        if (StandardDiagramsConstants.GV_QN.equals(viewDefinitionName)) {
             kind = GENERAL_VIEW;
-        } else if ("StandardViewDefinitions::InterconnectionView".equals(viewDefinitionName)) {
+        } else if (StandardDiagramsConstants.IV_QN.equals(viewDefinitionName)) {
             kind = INTERCONNECTION_VIEW;
-        } else if ("StandardViewDefinitions::ActionFlowView".equals(viewDefinitionName)) {
+        } else if (StandardDiagramsConstants.AFV_QN.equals(viewDefinitionName)) {
             kind = ACTION_FLOW_VIEW;
-        } else if ("StandardViewDefinitions::StateTransitionView".equals(viewDefinitionName)) {
+        } else if (StandardDiagramsConstants.STV_QN.equals(viewDefinitionName)) {
             kind = STATE_TRANSITION_VIEW;
         }
         return kind;
