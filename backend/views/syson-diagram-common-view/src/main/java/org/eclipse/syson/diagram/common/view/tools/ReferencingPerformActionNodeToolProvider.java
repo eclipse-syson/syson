@@ -22,9 +22,12 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -83,8 +86,8 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var reveal = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
@@ -110,7 +113,7 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
                 .selectionMessage("Select an existing Action to perform:");
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::createMembership).aqlSelf())
                 .children(createEClassInstance.build());
 
         return builder

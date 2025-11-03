@@ -29,7 +29,8 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in all diagram View.
@@ -75,16 +76,15 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
     }
 
     protected NodeTool getDeleteFromDiagramTool() {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("removeFromExposedElements", List.of(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)));
-
-        var deleteView = this.diagramBuilderHelper.newDeleteView()
-                .children(changeContext.build());
-
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Delete from Diagram")
                 .iconURLsExpression("/images/graphicalDelete.svg")
-                .body(deleteView.build())
+                .body(this.diagramBuilderHelper.newDeleteView()
+                        .children(this.viewBuilderHelper.newChangeContext()
+                                .expression(
+                                        ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                .build())
+                        .build())
                 .build();
     }
 }

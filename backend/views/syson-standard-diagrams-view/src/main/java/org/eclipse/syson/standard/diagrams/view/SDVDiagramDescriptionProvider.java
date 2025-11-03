@@ -61,6 +61,7 @@ import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNode
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
@@ -110,6 +111,8 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -1119,15 +1122,14 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport()))
                 .ifPresent(acceptedNodeTypes::add);
 
-        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
-
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
-                .body(dropElementFromDiagram.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode",
+                                IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 
@@ -1185,10 +1187,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
         } else if (VIEW_AS_TOOL_SECTION.name().equals(sectionName)) {
-            nodeTools.add(new SetAsViewToolProvider("'StandardViewDefinitions::GeneralView'", "General View").create(cache));
-            nodeTools.add(new SetAsViewToolProvider("'StandardViewDefinitions::InterconnectionView'", "Interconnection View").create(cache));
-            nodeTools.add(new SetAsViewToolProvider("'StandardViewDefinitions::ActionFlowView'", "ActionFlow View").create(cache));
-            nodeTools.add(new SetAsViewToolProvider("'StandardViewDefinitions::StateTransitionView'", "StateTransition View").create(cache));
+            nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(cache));
+            nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(cache));
+            nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV).create(cache));
+            nodeTools.add(new SetAsViewToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV).create(cache));
         }
         return nodeTools;
     }

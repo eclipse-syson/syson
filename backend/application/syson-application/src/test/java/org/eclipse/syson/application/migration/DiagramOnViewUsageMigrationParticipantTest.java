@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,7 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
 
         var viewDef = viewUsage.getType();
         assertEquals(1, viewDef.size());
-        var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
         assertEquals(generalViewViewDef, viewDef.get(0));
 
         // diagram contains partA (PartUsage), partB (PartUsage), PartDefinition1 (PartDefinition) as root nodes (3)

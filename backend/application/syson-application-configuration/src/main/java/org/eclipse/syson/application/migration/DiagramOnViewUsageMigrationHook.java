@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,16 +153,16 @@ public class DiagramOnViewUsageMigrationHook implements IEditingContextEventProc
     private Optional<ViewDefinition> getViewDefinition(Element containerElement, String representationDescriptionId) {
         Optional<ViewDefinition> optViewDef = Optional.empty();
         if (Objects.equals(SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
-            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
+            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
             optViewDef = Optional.ofNullable(generalViewViewDef);
         } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
-            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, "StandardViewDefinitions::InterconnectionView", ViewDefinition.class);
+            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, StandardDiagramsConstants.IV_QN, ViewDefinition.class);
             optViewDef = Optional.ofNullable(generalViewViewDef);
         } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.ACTION_FLOW_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
-            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, "StandardViewDefinitions::ActionFlowView", ViewDefinition.class);
+            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, StandardDiagramsConstants.AFV_QN, ViewDefinition.class);
             optViewDef = Optional.ofNullable(generalViewViewDef);
         } else if (Objects.equals(SysONRepresentationDescriptionIdentifiers.STATE_TRANSITION_VIEW_DIAGRAM_DESCRIPTION_ID, representationDescriptionId)) {
-            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, "StandardViewDefinitions::StateTransitionView", ViewDefinition.class);
+            var generalViewViewDef = this.elementUtil.findByNameAndType(containerElement, StandardDiagramsConstants.STV_QN, ViewDefinition.class);
             optViewDef = Optional.ofNullable(generalViewViewDef);
         }
         return optViewDef;

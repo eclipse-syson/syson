@@ -33,12 +33,15 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -181,10 +184,11 @@ public class ToolDescriptionService {
     public NodeTool addExistingElementsTool(boolean recursive, boolean nested) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
+
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
-                        AQLUtils.getSelfServiceCallExpression("addToExposedElements", List.of("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                        ServiceMethod.of5(DiagramMutationAQLService::addToExposedElements).aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
@@ -319,14 +323,12 @@ public class ToolDescriptionService {
      * @return the created {@link DropTool}
      */
     public DropTool createDropFromExplorerTool() {
-        var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
-                .expression(
-                        AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer",
-                                List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
-
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")
-                .body(dropElementFromExplorer.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of4(DiagramMutationAQLService::dropElementFromExplorer).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 
@@ -435,8 +437,8 @@ public class ToolDescriptionService {
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
@@ -454,7 +456,7 @@ public class ToolDescriptionService {
                 .children(changeContextNewInstance.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::createMembership).aqlSelf())
                 .children(createEClassInstance.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
@@ -520,8 +522,8 @@ public class ToolDescriptionService {
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));

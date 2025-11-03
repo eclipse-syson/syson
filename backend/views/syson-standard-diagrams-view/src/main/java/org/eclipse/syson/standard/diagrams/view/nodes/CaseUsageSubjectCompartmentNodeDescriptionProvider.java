@@ -24,9 +24,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * UseCase usage Subject Compartment node description.
@@ -63,8 +64,8 @@ public class CaseUsageSubjectCompartmentNodeDescriptionProvider extends Abstract
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return AQLUtils.getServiceCallExpression("droppedElement", "dropSubjectFromDiagram",
-                List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+        return ServiceMethod.of6(DiagramMutationAQLService::dropSubjectFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
+                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 
     @Override

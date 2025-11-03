@@ -25,9 +25,10 @@ import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConv
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * UseCase definition Objective Requirement Compartment node description.
@@ -57,8 +58,8 @@ public class CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvide
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return AQLUtils.getServiceCallExpression("droppedElement", "dropObjectiveRequirementFromDiagram",
-                List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+        return ServiceMethod.of6(DiagramMutationAQLService::dropObjectiveRequirementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
+                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 
     @Override

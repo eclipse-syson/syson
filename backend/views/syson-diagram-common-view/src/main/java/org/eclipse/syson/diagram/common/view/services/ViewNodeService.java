@@ -43,14 +43,11 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
@@ -59,6 +56,7 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,7 +189,7 @@ public class ViewNodeService {
         boolean isView = false;
         if (element instanceof ViewUsage viewUsage) {
             var types = viewUsage.getType();
-            if ((types == null || types.isEmpty()) && Objects.equals("StandardViewDefinitions::GeneralView", viewDefinition)) {
+            if ((types == null || types.isEmpty()) && Objects.equals(StandardDiagramsConstants.GV_QN, viewDefinition)) {
                 // a ViewUsage without a ViewDefinition is considered as a GeneralView
                 isView = true;
             } else {
@@ -232,7 +230,7 @@ public class ViewNodeService {
         boolean isView = false;
         if (element instanceof ViewUsage viewUsage) {
             var types = viewUsage.getType();
-            if ((types == null || types.isEmpty()) && Objects.equals("StandardViewDefinitions::GeneralView", viewDefinition)) {
+            if ((types == null || types.isEmpty()) && Objects.equals(StandardDiagramsConstants.GV_QN, viewDefinition)) {
                 isView = true;
             } else {
                 var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, viewDefinition, ViewDefinition.class);
@@ -249,33 +247,6 @@ public class ViewNodeService {
             }
         }
         return isView;
-    }
-
-    /**
-     * Set a new {@link ViewDefinition} for the given {@link ViewUsage}.
-     *
-     * @param viewUsage
-     *            the given {@link ViewUsage}.
-     * @param newViewDefinition
-     *            the new {@link ViewDefinition} to set, through its qualified name (for example,
-     *            "StandardViewDefinitions::GeneralView").
-     * @return the given {@link ViewUsage}.
-     */
-    public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
-        var types = viewUsage.getType();
-        var generalViewViewDef = this.elementUtil.findByNameAndType(viewUsage, newViewDefinition, ViewDefinition.class);
-        if (types == null || types.isEmpty()) {
-            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-            viewUsage.getOwnedRelationship().add(featureTyping);
-            featureTyping.setType(generalViewViewDef);
-            featureTyping.setTypedFeature(viewUsage);
-        } else {
-            Relationship relationship = viewUsage.getOwnedRelationship().get(0);
-            if (relationship instanceof FeatureTyping featureTyping) {
-                featureTyping.setType(generalViewViewDef);
-            }
-        }
-        return viewUsage;
     }
 
     /**
@@ -306,7 +277,7 @@ public class ViewNodeService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
 
         if (!this.utilService.isUnsynchronized(targetElement)
-                && !this.needToRevealCompartment(targetElement, this.isView(targetElement, "StandardViewDefinitions::GeneralView", node, editingContext, diagramContext))) {
+                && !this.needToRevealCompartment(targetElement, this.isView(targetElement, StandardDiagramsConstants.GV_QN, node, editingContext, diagramContext))) {
             return node;
         }
         var nodeDescription = convertedNodes.values().stream()

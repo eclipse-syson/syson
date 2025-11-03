@@ -26,11 +26,12 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Used to create a Compartment node description inside the General View diagram.
@@ -77,15 +78,18 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         String customExpression = super.getDropElementFromDiagramExpression();
         if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()) {
-            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInRequirementAssumeConstraintCompartment",
-                    List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+            customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInRequirementAssumeConstraintCompartment).aql("droppedElement", "droppedNode", "targetElement",
+                    "targetNode", IEditingContext.EDITING_CONTEXT,
+                    DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
-            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInRequirementRequireConstraintCompartment",
-                    List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+            customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInRequirementRequireConstraintCompartment).aql("droppedElement", "droppedNode", "targetElement",
+                    "targetNode", IEditingContext.EDITING_CONTEXT,
+                    DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         } else if (this.eReference == SysmlPackage.eINSTANCE.getUsage_NestedConstraint() || this.eReference == SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()) {
-            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInConstraintCompartment",
-                    List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+            customExpression = ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagramInConstraintCompartment).aql("droppedElement", "droppedNode", "targetElement",
+                    "targetNode", IEditingContext.EDITING_CONTEXT,
+                    DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
         }
         return customExpression;
     }

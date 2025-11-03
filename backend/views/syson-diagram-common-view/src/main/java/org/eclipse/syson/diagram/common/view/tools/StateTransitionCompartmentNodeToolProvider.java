@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for creating nested/owned states in the "state transition" State compartment.
@@ -38,9 +37,9 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
 
     @Override
     protected String getServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createChildState",
-                List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, String.valueOf(this.isParallel),
-                        String.valueOf(this.isExhibit)));
+        return ServiceMethod.of6(DiagramMutationAQLService::createChildState).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, String.valueOf(this.isParallel),
+                String.valueOf(this.isExhibit));
     }
 
     @Override

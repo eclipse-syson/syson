@@ -222,15 +222,14 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
-        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
-
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
-                .body(dropElementFromDiagram.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode",
+                                IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 
@@ -272,8 +271,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         }
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))

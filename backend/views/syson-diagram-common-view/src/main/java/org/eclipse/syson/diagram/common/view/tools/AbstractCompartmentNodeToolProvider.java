@@ -25,8 +25,10 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -82,8 +84,8 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         }
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("expose",
-                        List.of(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getServiceCallExpression())
