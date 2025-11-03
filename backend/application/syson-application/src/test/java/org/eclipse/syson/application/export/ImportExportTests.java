@@ -370,7 +370,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         action a1 accept s1 : S1 via p1;
                         action a2 accept S2 via p2;
                         accept S3 via p3;
-                        accept after 5 [minute];
+                        accept after 5 [min];
                         accept when b.f;
                     }
                 }""";
@@ -873,6 +873,53 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with a reference to an attribute with a short name only, WHEN importing and exporting the model, THEN the reference should be able to use the shortName as identifier")
+    public void checkReferencingWithShortName() throws IOException {
+        var input = """
+                part p1 {
+                    attribute <attr1>;
+                }
+                part p2 :> p1 {
+                    attribute :>> attr1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with a references to elements, WHEN importing and exporting the model, THEN the references should privileged short name over declared name when possible")
+    public void checkReferencingIdentifiers() throws IOException {
+        var input = """
+                enum def Enum1 {
+                    <e1> enumeration1;
+                    enumeration2;
+                }
+                part part1 {
+                    attribute attribute1 : Enum1 = Enum1::enumeration1;
+                    attribute attribute2 : Enum1 = enumeration1;
+                    attribute attribute3 : Enum1 = e1;
+                    attribute attribute4 : Enum1 = Enum1::enumeration2;
+                    attribute attribute5 = Enum1::enumeration1;
+                }""";
+        // Attribute 1,2,3 and 4 are typed with Enum1. It gives them direct access to enumeration literals through the featureTyping. In this case use the shortName if available (not the case for
+        // attribute4)
+        // Attribute 5 is not typed, need to use qualified name
+        var expected = """
+                enum def Enum1 {
+                    <e1> enumeration1;
+                    enumeration2;
+                }
+                part part1 {
+                    attribute attribute1 : Enum1 = e1;
+                    attribute attribute2 : Enum1 = e1;
+                    attribute attribute3 : Enum1 = e1;
+                    attribute attribute4 : Enum1 = enumeration2;
+                    attribute attribute5 = Enum1::enumeration1;
+                }""";
+        this.checker.check(input, expected);
+    }
+
+
+    @Test
     @DisplayName("GIVEN a model with a FeatureReferenceExpression set with a qualified name, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
     public void checkFeatureReferenceExpressionWithQualifiedNameDeresolution() throws IOException {
         var input = """
@@ -904,7 +951,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute <a> anAttribute;
                 }
                 part p1 :> p {
-                    attribute :>> anAttribute;
+                    attribute :>> a;
                 }""";
 
         this.checker.check(input, expected);

@@ -149,6 +149,32 @@ part p1 {
 }
 ```
 
+- Fix an issue during textual export where serializing a reference to an `Element` having only _declared short name_ (but no _declared name_) failed.
+The following models is now properly exported:
+
+```
+part p1 {
+    attribute <a1>;
+}
+
+part p2 :> p1 {
+    attribute :>> a1; // Previously " attribute :>> ;"
+}
+```
+
+Note that with this change, _declared short name_ reference will be privileged over _name_ reference when it is possible.
+For example, even if "a1" has a proper _declared name_ the model will be exported like this:
+
+```
+part p1 {
+    attribute <a1> attr1;
+}
+
+part p2 :> p1 {
+    attribute :>> a1; // And not "attribute :>> attr1;"
+}
+```
+
 == Improvements
 
 - In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
