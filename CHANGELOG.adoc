@@ -60,6 +60,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1627[#1627] [import] [export] Fix invalid textual import/export of `LiteralRational`.
 - https://github.com/eclipse-syson/syson/issues/1634[#1634] [export] Redefining an `AttributeUsage` with a _shortName_ does not properly export to the textual format.
 - https://github.com/eclipse-syson/syson/issues/1640[#1640] [export] Properly handle `UnaryOperator` during textual export.
+- https://github.com/eclipse-syson/syson/issues/1643[#1643] [export] Textual export fails to serialize a reference to an `Element` having only a _shortName_ (no _declaredName_).
 
 === Improvements
 

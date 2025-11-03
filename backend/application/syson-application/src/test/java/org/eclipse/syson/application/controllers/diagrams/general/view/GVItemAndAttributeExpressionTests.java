@@ -220,7 +220,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_X1_ID,
-                "a2_1 = 45 [kilogram]"); // We still need the qualified name or full name while editing
+                "a2_1 = 45 [kg]");
 
         // Inside P1_1 there is an import of S1::* so no need to use the qualified name
         // Test using qualified name
@@ -236,7 +236,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "a2_1 = 45 [kilogram]");
+                "a2_1 = 45 [kg]");
     }
 
     @DisplayName("GIVEN an ItemUsage, WHEN direct editing with a value referencing another ItemUsage, THEN an edge should connect the ItemUsage")

@@ -38,6 +38,7 @@ import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
+import org.eclipse.syson.sysml.helper.NameHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,14 +89,20 @@ public class FileNameDeresolver implements INameDeresolver {
             List<String> qualifiedNames = new ArrayList<>();
             for (Namespace deresolvingNamespace : deresolvingNamespaces) {
 
-                // An element is either reachable form its containment tree or via a reference Membership#memberElement
-                Set<Membership> elementAncestors = new HashSet<>(EMFUtils.getAncestors(Membership.class, element, null));
-                EMFUtils.getInverse(element, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream().map(s -> (Membership) s.getEObject()).forEach(elementAncestors::add);
-                String computedQualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
-                if (computedQualifiedName != null && !computedQualifiedName.isBlank()) {
-                    qualifiedNames.add(computedQualifiedName);
+                // Check if resolving the direct identifier works (declaredShortName or declaredName)
+                String directIdentifier = getResolvableDirectIdentifier(element, deresolvingNamespace);
+                if (directIdentifier != null) {
+                    qualifiedNames.add(directIdentifier);
+                } else {
+                    // If not, use a more complex computation
+                    // An element is either reachable form its containment tree or via a reference Membership#memberElement
+                    Set<Membership> elementAncestors = new HashSet<>(EMFUtils.getAncestors(Membership.class, element, null));
+                    EMFUtils.getInverse(element, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream().map(s -> (Membership) s.getEObject()).forEach(elementAncestors::add);
+                    String computedQualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
+                    if (computedQualifiedName != null && !computedQualifiedName.isBlank()) {
+                        qualifiedNames.add(computedQualifiedName);
+                    }
                 }
-
             }
             qualifiedName = qualifiedNames.stream().sorted(Comparator.comparing(String::length)).findFirst().orElse(this.getQualifiedName(element));
         }
@@ -123,13 +130,13 @@ public class FileNameDeresolver implements INameDeresolver {
      * Deresolve the name of the given element.
      *
      * @param element
-     *            the element to deresolve.
+     *         the element to deresolve.
      * @param sourceNamespace
-     *            the original owning namespace of the element
+     *         the original owning namespace of the element
      * @param deresolvingNamespace
-     *            the current namespace used to deresolved the name of the element
+     *         the current namespace used to deresolved the name of the element
      * @param ancestors
-     *            the ancestor memberships of the element from which it can be reached
+     *         the ancestor memberships of the element from which it can be reached
      * @return a name
      */
     private String deresolve(Element element, Namespace sourceNamespace, Namespace deresolvingNamespace, Set<Membership> ancestors) {
@@ -236,13 +243,48 @@ public class FileNameDeresolver implements INameDeresolver {
     }
 
     /**
+     * Tries to use the {@link Element#getDeclaredShortName()} or the {@link Element#getDeclaredName()} to access the targetElement
+     *
+     * @param targetElement
+     *         the element to target
+     * @param contextNamespace
+     *         the namespace used to test the resolution of the identifier
+     * @return an identifier or null if no direct resolvable identifier found.
+     */
+    private static String getResolvableDirectIdentifier(Element targetElement, Namespace contextNamespace) {
+        String identifier = null;
+        String shortName = targetElement.getDeclaredShortName();
+        if (shortName != null && !shortName.isBlank()) {
+            Membership shortNameMembership = contextNamespace.resolve(shortName);
+            if (shortNameMembership != null && shortNameMembership.getMemberElement() == targetElement) {
+                identifier = shortName;
+            }
+        }
+
+        if (identifier == null) {
+            String declaredName = targetElement.getDeclaredName();
+            if (declaredName != null && !declaredName.isBlank()) {
+                Membership declaredNameMembership = contextNamespace.resolve(declaredName);
+                if (declaredNameMembership != null && declaredNameMembership.getMemberElement() == targetElement) {
+                    identifier = declaredName;
+                }
+            }
+        }
+
+        if (identifier != null) {
+            identifier = NameHelper.toPrintableName(identifier);
+        }
+        return identifier;
+    }
+
+    /**
      * Checks if the resolved element is either the resolved element member or if it implicitly matches the naming
      * feature of unnamed element which name computation used the resolved element.
      *
      * @param element
-     *            the element to compute the name from
+     *         the element to compute the name from
      * @param resolvedElement
-     *            the resolution tested name in the local namespace
+     *         the resolution tested name in the local namespace
      * @return <code>true</code> if the elements match
      */
     private boolean match(Element element, Membership resolvedElement) {
