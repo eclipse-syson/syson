@@ -52,6 +52,7 @@ import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.DecisionNode;
@@ -339,6 +340,36 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
         // Conjugated port definition are implicit
         return "";
+    }
+
+    @Override
+    public String caseConnectionUsage(ConnectionUsage connectionUsage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, connectionUsage);
+
+        Appender declarationAndValueBuilder = this.newAppender();
+        this.appendUsageDeclaration(declarationAndValueBuilder, connectionUsage);
+        this.appendValuePart(declarationAndValueBuilder, connectionUsage);
+
+        var connectorPartBuilder = this.newAppender();
+        List<EndFeatureMembership> ends = this.appendConnectorPart(connectorPartBuilder, connectionUsage);
+
+
+        List<Membership> contentMemberships = connectionUsage.getOwnedMembership().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).filter(e -> !ends.contains(e)).toList();
+
+        if (!declarationAndValueBuilder.isEmpty() || !contentMemberships.isEmpty()) {
+            // If the ConnectionUsage as a declaration, a value or some content we need to use the keyword connection
+            builder.appendWithSpaceIfNeeded("connection").appendWithSpaceIfNeeded(declarationAndValueBuilder);
+        }
+
+        if (!connectorPartBuilder.isEmpty()) {
+            builder.appendWithSpaceIfNeeded("connect");
+            builder.appendWithSpaceIfNeeded(connectorPartBuilder);
+        }
+        this.appendChildrenContent(builder, connectionUsage, contentMemberships);
+
+        return builder.toString();
     }
 
     @Override
@@ -1115,6 +1146,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseUsage(Usage usage) {
+        // Only handle Usage type and not its subtypes (mostly to handle ExtendedUsage)
+        if (usage.eClass() == SysmlPackage.eINSTANCE.getUsage()) {
+            var builder = this.newAppender();
+
+            this.appendUnextendedUsagePrefix(builder, usage);
+            this.appendExtensionKeyword(builder, usage);
+            this.appendUsage(builder, usage);
+
+            return builder.toString();
+        }
+        return super.caseUsage(usage);
+    }
+
+    @Override
     public String caseUseCaseDefinition(UseCaseDefinition useCase) {
         var builder = this.newAppender();
         this.appendDefinitionPrefix(builder, useCase);
@@ -1180,6 +1226,27 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private Appender newAppender() {
         return new Appender(this.lineSeparator, this.indentation);
+    }
+
+    private List<EndFeatureMembership> appendConnectorPart(Appender appender, ConnectionUsage connectionUsage) {
+        List<EndFeatureMembership> ends = connectionUsage.getOwnedRelationship().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+
+        if (ends.size() == 2) {
+            this.appendConnectorEndMember(appender, ends.get(0));
+            appender.append(" to ");
+            this.appendConnectorEndMember(appender, ends.get(1));
+        } else if (ends.size() > 2) {
+            String endMembersContent = ends.stream().map(end -> {
+                Appender endBuilder = this.newAppender();
+                this.appendConnectorEndMember(endBuilder, end);
+                return endBuilder.toString();
+            }).collect(joining(", ", "(", ")"));
+            appender.appendWithSpaceIfNeeded(endMembersContent);
+        }
+        return ends;
     }
 
     private void appendStakeholderUsage(Appender builder, StakeholderMembership stakeholderMembership) {
@@ -1315,6 +1382,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendConnectorEnd(Appender builder, ReferenceUsage referenceUsage) {
+
+        // Handle ownedRelationship += OwnedMultiplicity
+        referenceUsage.getOwnedRelationship().stream().filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .filter(owningMembership -> owningMembership.getOwnedMemberElement() instanceof Feature)
+                .findFirst()
+                .ifPresent(owningMembership -> this.appendOwnedCrossMultiplicityMember(builder, owningMembership));
+
         String declaredName = referenceUsage.getDeclaredName();
 
         if (declaredName != null && !declaredName.isBlank()) {
@@ -1326,7 +1401,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (refSubsetting != null) {
             this.appendOwnedReferenceSubsetting(builder, refSubsetting);
         }
-        // We still need to implement this part here ( ownedRelationship += OwnedMultiplicity )?
     }
 
     private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
@@ -1343,6 +1417,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 }
                 builder.appendWithSpaceIfNeeded(deresolvedName);
             }
+        }
+    }
+
+    private void appendOwnedCrossMultiplicityMember(Appender builder, OwningMembership owningMembership) {
+        if (owningMembership.getOwnedMemberElement() instanceof Feature ownedFeature) {
+            this.appendMultiplicityPart(builder, ownedFeature);
         }
     }
 
@@ -2329,14 +2409,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                         .map(MetadataUsage.class::cast)
                         .map(MetadataUsage::getMetadataDefinition)
                         .filter(Objects::nonNull)
-                        .forEach(mDef -> this.appendPrefixMetadataMember(builder, mDef));
+                        .forEach(mDef -> this.appendPrefixMetadataMember(builder, mDef, type));
             }
         }
     }
 
-    private void appendPrefixMetadataMember(Appender builder, Metaclass def) {
-        builder.appendSpaceIfNeeded().append("#");
-        this.appendSimpleName(builder, def);
+    private void appendPrefixMetadataMember(Appender builder, Metaclass def, Type type) {
+        builder.appendSpaceIfNeeded().append("#").append(this.getDeresolvableName(def, type));
     }
 
     private void appendSimpleName(Appender appender, Element e) {
@@ -2350,6 +2429,22 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             appender.appendPrintableName(e.effectiveName());
         }
+    }
+
+    private void appendOwnedCrossFeature(Appender builder, ReferenceUsage referenceUsage) {
+        this.appendBasicUsagePrefix(builder, referenceUsage);
+        this.appendUsageDeclaration(builder, referenceUsage);
+    }
+
+    private void appendUnextendedUsagePrefix(Appender builder, Usage usage) {
+        if (usage.isIsEnd()) {
+            builder.appendWithSpaceIfNeeded("end");
+        }
+
+        usage.getOwnedMembership().stream()
+                .filter(membership -> membership.getMemberElement() instanceof ReferenceUsage)
+                .findFirst()
+                .ifPresent(membership -> this.appendOwnedCrossFeature(builder, (ReferenceUsage) membership.getMemberElement()));
     }
 
     private String getBasicDefinitionPrefix(Definition def) {
@@ -2501,14 +2596,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendWithSpaceIfNeeded("from");
             FlowEnd sourceEnd = ends.get(0);
             Feature sourceFeature = flowConnectionUsage.getSourceOutputFeature();
-            this.appendFlowEndSubsetting(builder, sourceEnd,sourceFeature);
+            this.appendFlowEndSubsetting(builder, sourceEnd, sourceFeature);
         }
 
         if (ends.size() > 1) {
             builder.appendWithSpaceIfNeeded("to");
             FlowEnd targetEnd = ends.get(1);
             Feature targetFeature = flowConnectionUsage.getTargetInputFeature();
-            this.appendFlowEndSubsetting(builder, targetEnd,targetFeature);
+            this.appendFlowEndSubsetting(builder, targetEnd, targetFeature);
         }
     }
 

@@ -39,7 +39,7 @@ public class Appender {
     }
 
     public boolean isEmpty() {
-        return this.builder.isEmpty() || this.builder.toString().isBlank();
+        return this.builder.isEmpty() || this.builder.toString().trim().isBlank();
     }
 
     public static String toPrintableName(String initialName) {
@@ -52,7 +52,17 @@ public class Appender {
     }
 
     public Appender appendWithSpaceIfNeeded(String content) {
-        return this.appendSpaceIfNeeded().append(content);
+        if (content != null && !content.trim().isBlank()) {
+            return this.appendSpaceIfNeeded().append(content);
+        }
+        return this;
+    }
+
+    public Appender appendWithSpaceIfNeeded(Appender content) {
+        if (!content.isEmpty()) {
+            return this.appendSpaceIfNeeded().append(content);
+        }
+        return this;
     }
 
     public Appender appendSpaceIfNeeded() {
@@ -96,6 +106,13 @@ public class Appender {
     public Appender append(String str) {
         if (str != null) {
             this.builder.append(str);
+        }
+        return this;
+    }
+
+    public Appender append(Appender otherAppender) {
+        if (otherAppender != null && !otherAppender.isEmpty()) {
+            this.builder.append(otherAppender.toString());
         }
         return this;
     }

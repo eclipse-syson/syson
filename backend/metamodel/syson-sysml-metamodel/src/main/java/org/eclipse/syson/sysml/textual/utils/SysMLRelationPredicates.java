@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VariantMembership;
 
 /**
@@ -48,9 +49,9 @@ public class SysMLRelationPredicates {
 
     public static final Predicate<Relationship> IS_METADATA_USAGE = m -> isMemberElementA(m, MetadataUsage.class);
 
-    // ExtendedUsage defined in the BNF is not implemented yet here
     public static final Predicate<Relationship> IS_NON_OCCURENCE_USAGE_MEMBER = r -> isMemberElementA(r, Definition.class, ReferenceUsage.class, AttributeUsage.class, EnumerationUsage.class,
-            BindingConnectorAsUsage.class, SuccessionAsUsage.class);
+            BindingConnectorAsUsage.class, SuccessionAsUsage.class) || isExtendedUsage(r);
+
 
     // https://issues.omg.org/issues/KERML-307
     public static final Predicate<Relationship> IS_ANNOTATING_ELEMENT = r -> isMemberElementA(r, AnnotatingElement.class) && !isMemberElementA(r, MetadataFeature.class);
@@ -86,5 +87,9 @@ public class SysMLRelationPredicates {
         } else {
             return Stream.of(types).filter(t -> t.isInstance(e)).findAny().isPresent();
         }
+    }
+
+    public static boolean isExtendedUsage(Relationship r) {
+        return r instanceof Membership membership && membership.getMemberElement() != null && membership.getMemberElement().eClass() == SysmlPackage.eINSTANCE.getUsage();
     }
 }

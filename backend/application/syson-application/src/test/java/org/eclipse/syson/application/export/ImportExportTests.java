@@ -1019,4 +1019,52 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }""";
         this.checker.check(input, input);
     }
+
+    @Test
+    @DisplayName("GIVEN a model with ConnectionUsage, WHEN importing and exporting the model, THEN the ConnectionUsage should be exported properly")
+    public void checkConnectionUsage() throws IOException {
+        var input = """
+                package Parts {
+                    part <p1> part1 {
+                        port po1;
+                    }
+                    part <p2> part2 {
+                        port po2;
+                    }
+                    part <p3> part3 {
+                        port po3;
+                    }
+                }
+                package Connections {
+                    private import Parts::part1;
+                    private import Parts::part2;
+                    connect p1 to p2;
+                    connect [1] p1 to [1] p2;
+                    connect (p1, p2, Parts::part3);
+                    connect p1.po1 to p2.po2;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with ConnectionUsage having a content in its body, WHEN importing and exporting the model, THEN the ConnectionUsage should be exported properly")
+    public void checkConnectionUsageWithBody() throws IOException {
+        var input = """
+                package MReqs {
+                    requirement <Mre1>;
+                }
+                package SReqs {
+                    requirement <Sre1>;
+                }
+                package Derivations {
+                    private import RequirementDerivation::*;
+                    private import MReqs::*;
+                    private import SReqs::*;
+                    #derivation connection {
+                        end #original ::> Mre1;
+                        end #derive ::> Sre1;
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
 }
