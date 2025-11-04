@@ -44,3 +44,12 @@ If you need to run {product} docker image on a Mac Silicon architecture, please 
 ----
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----
+
+== Keeping data throughout container recreation
+A container looses all internal data when it is recreated from an image.
+To keep the database when recreating the container, its files must be stored outside the container.
+This is done via mounting a local directory as volume. Add following lines to the database container configuration:
+----
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+----

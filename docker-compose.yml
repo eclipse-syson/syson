@@ -4,7 +4,8 @@ version: "3.8"
 services:
   database:
     image: postgres:15
-    # Uncomment this option to solve 'access denied' problems when using podman/podman-compose.
+    # A default Docker installation runs containers with root privileges. If your Container runtime
+    # is configured to run without root prigilegesu ncomment this option to solve 'access denied' problems.
     #privileged: true
     # Uncomment this option if you want to run this docker compose file on ARM architectures
     # platform: linux/amd64
@@ -14,13 +15,10 @@ services:
       POSTGRES_PASSWORD: password
     networks:
       - syson
-    # Uncomment the following two lines to keep your models between container restarts.
-    # Adopt the local path to your needs
-    #volumes:
-    #  - ./postgres-data:/var/lib/postgresql/data
   app:
     image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.10.0}"
-    # Uncomment this option to solve 'access denied' problems when using podman/podman-compose.
+    # A default Docker installation runs containers with root privileges. If your Container runtime
+    # is configured to run without root prigilegesu ncomment this option to solve 'access denied' problems.
     #privileged: true
     ports:
       - "8080:8080"
