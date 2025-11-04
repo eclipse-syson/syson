@@ -165,7 +165,21 @@ public class ASTTransformer {
             this.fixTransitionUsageImplicitSource(root);
             this.fixOperatorExpressionUsedAsRanges(root);
             this.fixReferenceSubsettingWithNestedFeature(root);
+            this.fixEndFeatureMembership(root);
         }
+    }
+
+    /**
+     * The current implementation of the parser does not force the memberFeature of EndFeatureMembership to have "isEnd = true" like stated in the SysML specification see "8.3.3.3.3
+     * EndFeatureMembership".
+     *
+     * @param root
+     *         the root of the imported object
+     */
+    private void fixEndFeatureMembership(EObject root) {
+        EMFUtils.allContainedObjectOfType(root, EndFeatureMembership.class)
+                .filter(endFeatureMembership -> endFeatureMembership.getOwnedMemberFeature() != null)
+                .forEach(endFeatureMembership -> endFeatureMembership.getOwnedMemberFeature().setIsEnd(true));
     }
 
     /**
