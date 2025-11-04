@@ -67,6 +67,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1620[#1620] [services] Handle short names in qualified names when direct editing.
 - https://github.com/eclipse-syson/syson/issues/1636[#1636] [export] Implement `OperationExpression` using operator 'meta'.
 - https://github.com/eclipse-syson/syson/issues/1647[#1647] [import] Textual import should enforce `Feature` reference as _memberFeature_ in `EndFeatureMembership` to have _isEnd_ set to _true_.
+- https://github.com/eclipse-syson/syson/issues/1642[#1642] [export] Export `ConnectionUsage` in textual format.
 
 === New features
 

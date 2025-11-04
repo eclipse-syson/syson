@@ -1492,7 +1492,7 @@ public class SysMLElementSerializerTest {
                     action {
                         /* This is an action with no name */
                     }
-                    first a_1 then ;
+                    first a_1 then;
                 }""", actionUsage);
 
         // Check that the error is reported
