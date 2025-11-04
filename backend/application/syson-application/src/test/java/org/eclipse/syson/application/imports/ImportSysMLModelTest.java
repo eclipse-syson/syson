@@ -47,6 +47,7 @@ import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
@@ -272,6 +273,27 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(flow.getSourceOutputFeature().getFeatureTarget().getName()).isEqualTo("item1");
             assertThat(flow.getTargetInputFeature().getFeatureTarget().getName()).isEqualTo("item2");
 
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with an EndFeatureMembership, WHEN importing the model, THEN the ReferenceUsage of the feature end should have isFeature = true")
+    public void checkMemberFeatureOfEndFeatureMembership() throws IOException {
+        var input = """
+                package pa1 {
+                    part pa1;
+                    part pa2;
+                
+                    connect pa1 to pa2;
+                }
+                """;
+
+        this.checker.checkImportedModel(resource -> {
+            List<EndFeatureMembership> endFeatureMemberships = EMFUtils.allContainedObjectOfType(resource, EndFeatureMembership.class)
+                    .toList();
+            assertThat(endFeatureMemberships)
+                    .hasSize(2)
+                    .allMatch(endFeatureMembership -> endFeatureMembership.getOwnedMemberFeature() != null && endFeatureMembership.getOwnedMemberFeature().isIsEnd());
         }).check(input);
     }
 

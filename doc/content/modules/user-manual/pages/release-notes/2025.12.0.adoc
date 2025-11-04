@@ -213,6 +213,18 @@ metadata def MD2 :> SemanticMetadata {
 }
 ```
 
+- The textual import now forces all the _memberFeature_ of _EndFeatureMemberships_ to have _isEnd = true_ like stated in the SysML Specification "8.3.3.3.3 EndFeatureMembership".
+For example, it means that the two features used as connector ends in the following models now have _isEnd = true_.
+
+```
+package pa1 {
+    part pa1;
+    part pa2;
+
+    connect pa1 to pa2; // Connector end features pa1 and pa2 now have isEnd = true
+}
+```
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
