@@ -4,9 +4,6 @@ version: "3.8"
 services:
   database:
     image: postgres:15
-    # A default Docker installation runs containers with root privileges. If your Container runtime
-    # is configured to run without root prigilegesu ncomment this option to solve 'access denied' problems.
-    #privileged: true
     # Uncomment this option if you want to run this docker compose file on ARM architectures
     # platform: linux/amd64
     environment:
@@ -17,9 +14,6 @@ services:
       - syson
   app:
     image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.10.0}"
-    # A default Docker installation runs containers with root privileges. If your Container runtime
-    # is configured to run without root prigilegesu ncomment this option to solve 'access denied' problems.
-    #privileged: true
     ports:
       - "8080:8080"
     environment:

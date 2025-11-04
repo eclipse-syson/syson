@@ -53,3 +53,11 @@ This is done via mounting a local directory as volume. Add following lines to th
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 ----
+
+== Problems when not using a standard Docker environment (i.e. docker desktop)
+If your container environment is not a standard Docker installation you may run into access problems.
+These can be solved by adding
+----
+    privileged: true
+----
+to both containers.
