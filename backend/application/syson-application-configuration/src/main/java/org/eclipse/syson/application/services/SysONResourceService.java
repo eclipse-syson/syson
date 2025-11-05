@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
@@ -40,6 +41,19 @@ public class SysONResourceService implements ISysONResourceService {
 
     public SysONResourceService(ILibrarySearchService librarySearchService) {
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
+    }
+
+    @Override
+    public boolean isSysML(Resource resource) {
+        final boolean isSysMLResource = resource.eAdapters()
+                .stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .findFirst()
+                .map(ResourceMetadataAdapter::getName)
+                .filter(name -> name.toLowerCase().endsWith(".sysml"))
+                .isPresent();
+        return isSysMLResource;
     }
 
     @Override

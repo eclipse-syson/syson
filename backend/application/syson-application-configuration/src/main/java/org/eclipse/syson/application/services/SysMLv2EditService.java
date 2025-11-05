@@ -23,6 +23,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -81,20 +83,25 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
+    private final ISysONResourceService sysONResourceService;
+
     private final DeleteService deleteService;
 
     private final UtilService utilService;
 
-    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IObjectSearchService objectSearchService, IDiagramCreationService diagramCreationService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
-            IRepresentationPersistenceService representationPersistenceService) {
+    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IObjectSearchService objectSearchService, ISysONResourceService sysONResourceService,
+            SysMLv2EditServiceExtraServices extraServices) {
         this.defaultEditService = Objects.requireNonNull(defaultEditService);
         this.labelService = Objects.requireNonNull(labelService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.sysONResourceService = Objects.requireNonNull(sysONResourceService);
+
+        Objects.requireNonNull(extraServices);
+        this.diagramCreationService = extraServices.diagramCreationService();
+        this.representationDescriptionSearchService = extraServices.representationDescriptionSearchService();
+        this.representationMetadataPersistenceService = extraServices.representationMetadataPersistenceService();
+        this.representationPersistenceService = extraServices.representationPersistenceService();
+
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
     }
@@ -112,7 +119,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
     @Override
     public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind) {
         final List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
-        if (SysmlPackage.eNS_URI.equals(domainId)) {
+        if (this.isSysMLDomainId(domainId)) {
             if (suggested) {
                 List<String> iconURL = this.labelService.getImagePaths(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
                 StyledString styledLabel = this.labelService.getStyledLabel(SysmlPackage.eINSTANCE.getPackage());
@@ -222,20 +229,61 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
             if (optionalResource.isPresent()) {
                 var resource = optionalResource.get();
-                var rootNamespace = resource.getContents().stream()
-                        .filter(Element.class::isInstance)
-                        .map(Element.class::cast)
-                        .filter(this.utilService::isRootNamespace)
-                        .findFirst()
-                        .orElseGet(() -> {
-                            Namespace namespace = (Namespace) EcoreUtil.create(SysmlPackage.eINSTANCE.getNamespace());
-                            resource.getContents().add(namespace);
-                            return namespace;
-                        });
-                createdObjectOptional = this.createChild(editingContext, rootNamespace, rootObjectCreationDescriptionId);
+
+                createdObjectOptional = this.createRootObjectInResource(editingContext, documentId, domainId, rootObjectCreationDescriptionId, resource);
             }
+        } else {
+            // Delegate to the default behavior for non-EMF editing contexts.
+            createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
         }
         return createdObjectOptional;
+    }
+
+    private Optional<Object> createRootObjectInResource(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, Resource resource) {
+        final Optional<Object> createdObjectOptional;
+        if (this.isSysMLDomainId(domainId)) {
+            var rootNamespace = resource.getContents().stream()
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .filter(this.utilService::isRootNamespace)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        // Only create the missing root Namespace if the resource looks like a SysML one.
+                        final boolean isSysMLResource = this.sysONResourceService.isSysML(resource);
+                        if (isSysMLResource) {
+                            final Namespace namespace = SysmlFactory.eINSTANCE.createNamespace();
+                            resource.getContents().add(namespace);
+                            return namespace;
+                        } else {
+                            return null;
+                        }
+                    });
+            if (rootNamespace != null) {
+                createdObjectOptional = this.createChild(editingContext, rootNamespace, rootObjectCreationDescriptionId);
+            } else {
+                // Delegate to the default behavior when trying to create a SysML element in a non-sysml
+                // resource.
+                createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+            }
+        } else {
+            // Delegate to the default behavior for non-SysML root object creation.
+            createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+        }
+        return createdObjectOptional;
+    }
+
+    private boolean isSysMLDomainId(String domainId) {
+        return SysmlPackage.eNS_URI.equals(domainId);
+    }
+
+    private Optional<Object> defaultCreateRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
+        final String rootObjectCreationDescriptionIdForDefaultEditService;
+        if (rootObjectCreationDescriptionId.startsWith(ID_PREFIX)) {
+            rootObjectCreationDescriptionIdForDefaultEditService = rootObjectCreationDescriptionId.substring(ID_PREFIX.length());
+        } else {
+            rootObjectCreationDescriptionIdForDefaultEditService = rootObjectCreationDescriptionId;
+        }
+        return this.defaultEditService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionIdForDefaultEditService);
     }
 
     @Override

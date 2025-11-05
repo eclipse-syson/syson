@@ -31,6 +31,7 @@ package ReqSatisfactions {
     assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
 }
 ```
+- SysMLv2EditService now supports creating non-SysML root objects by delegating to the default implementation in non-SysML scenarios.
 
 == Technical details
 

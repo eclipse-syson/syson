@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public interface ISysONResourceService {
 
+    boolean isSysML(Resource resource);
+
     boolean isImported(IEditingContext editingContext, Resource resource);
 
     boolean isFromReferencedLibrary(IEditingContext editingContext, Resource resource);
