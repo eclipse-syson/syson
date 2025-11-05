@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
@@ -222,20 +223,58 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
             if (optionalResource.isPresent()) {
                 var resource = optionalResource.get();
-                var rootNamespace = resource.getContents().stream()
-                        .filter(Element.class::isInstance)
-                        .map(Element.class::cast)
-                        .filter(this.utilService::isRootNamespace)
-                        .findFirst()
-                        .orElseGet(() -> {
-                            Namespace namespace = (Namespace) EcoreUtil.create(SysmlPackage.eINSTANCE.getNamespace());
-                            resource.getContents().add(namespace);
-                            return namespace;
-                        });
-                createdObjectOptional = this.createChild(editingContext, rootNamespace, rootObjectCreationDescriptionId);
+
+                if (SysmlPackage.eNS_URI.equals(domainId)) {
+                    var rootNamespace = resource.getContents().stream()
+                            .filter(Element.class::isInstance)
+                            .map(Element.class::cast)
+                            .filter(this.utilService::isRootNamespace)
+                            .findFirst()
+                            .orElseGet(() -> {
+                                // Only create the missing root namespace if the resource looks like a SysML one.
+                                final boolean resourceIsSysml = resource.eAdapters()
+                                        .stream()
+                                        .filter(ResourceMetadataAdapter.class::isInstance)
+                                        .map(ResourceMetadataAdapter.class::cast)
+                                        .findFirst()
+                                        .map(ResourceMetadataAdapter::getName)
+                                        .filter(name -> name.toLowerCase().endsWith(".sysml"))
+                                        .isPresent();
+                                if (resourceIsSysml) {
+                                    Namespace namespace = (Namespace) EcoreUtil.create(SysmlPackage.eINSTANCE.getNamespace());
+                                    resource.getContents().add(namespace);
+                                    return namespace;
+                                } else {
+                                    return null;
+                                }
+                            });
+                    if (rootNamespace != null) {
+                        createdObjectOptional = this.createChild(editingContext, rootNamespace, rootObjectCreationDescriptionId);
+                    } else {
+                        // Delegate to the default behavior when trying to create a SysML element in a non-sysml
+                        // resource.
+                        createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+                    }
+                } else {
+                    // Delegate to the default behavior for non-SysML root object creation.
+                    createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+                }
             }
+        } else {
+            // Delegate to the default behavior for non-EMF editing contexts.
+            createdObjectOptional = this.defaultCreateRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
         }
         return createdObjectOptional;
+    }
+
+    private Optional<Object> defaultCreateRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
+        final String rootObjectCreationDescriptionIdForDefaultEditService;
+        if (rootObjectCreationDescriptionId.startsWith(ID_PREFIX)) {
+            rootObjectCreationDescriptionIdForDefaultEditService = rootObjectCreationDescriptionId.substring(ID_PREFIX.length());
+        } else {
+            rootObjectCreationDescriptionIdForDefaultEditService = rootObjectCreationDescriptionId;
+        }
+        return this.defaultEditService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionIdForDefaultEditService);
     }
 
     @Override

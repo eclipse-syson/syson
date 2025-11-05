@@ -264,6 +264,8 @@ package Derivations {
 }
 ```
 
+- SysMLv2EditService now supports creating non-SysML root objects by delegating to the default implementation in non-SysML scenarios.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
