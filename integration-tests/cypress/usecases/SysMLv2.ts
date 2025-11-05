@@ -45,10 +45,10 @@ export class SysMLv2 {
   }
 
   public getKerMLLabel(): string {
-    return 'KerML';
+    return 'KerML [read-only]';
   }
 
   public getSysMLLabel(): string {
-    return 'SysML';
+    return 'SysML [read-only]';
   }
 }

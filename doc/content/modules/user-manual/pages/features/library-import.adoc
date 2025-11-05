@@ -31,10 +31,11 @@ The project contents are updated.
 
 image::release-notes-publication-import-result.png[Project contents after successfully importing a published library, width=50%,height=50%]
 
-If a document from an imported-by-reference library has a root element that is an instance of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
+If a document from an imported-by-reference library has root elements that are all instances of `LibraryPackage`, then that document is displayed under the 'User libraries' node in the 'Explorer' view.
 
-image::release-notes-publication-import-user-library.png[Imported published library under User libraries, width=50%,height=50%]
+image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported published library under User libraries, width=50%,height=50%]
 
+Note that imported-by-reference libraries have `library-name@library-version` in their label to quickly identify their containing library.
 
 == Updating the version of a library dependency
 

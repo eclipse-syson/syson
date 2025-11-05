@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.filters;
+package org.eclipse.syson.tree.explorer.filters;
 
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**

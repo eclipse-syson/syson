@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +19,10 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate;
+import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerServiceDelegate;
+import org.springframework.stereotype.Service;
 
 /**
  * Implementation of {@link ISysONExplorerService} which delegates to {@link ISysONExplorerServiceDelegate}.
@@ -34,6 +33,7 @@ import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDe
  *
  * @author gdaniel
  */
+@Service
 public class ComposedSysONExplorerService implements ISysONExplorerService {
 
     private final List<ISysONExplorerServiceDelegate> explorerServiceDelegate;
@@ -143,28 +143,34 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
                 .orElseGet(() -> this.defaultExplorerService.getElements(editingContext, activeFilterIds));
     }
 
+    @Override
     public String getType(Object self) {
-        StringBuilder type = new StringBuilder();
-        if (self instanceof ViewUsage viewUsage) {
-            var viewDefinition = viewUsage.getViewDefinition();
-            if (viewDefinition != null) {
-                type.append(" [");
-                type.append(viewDefinition.getDeclaredName());
-                type.append("]");
-            }
-        }
-        return type.toString();
+        return this.getDelegate(self)
+                .map(delegate -> delegate.getType(self))
+                .orElseGet(() -> this.defaultExplorerService.getType(self));
     }
 
+    @Override
     public String getShortName(Object self) {
-        if (self instanceof Element element) {
-            String shortName = element.getShortName();
-            if (shortName != null && !shortName.isBlank()) {
-                return "<" + shortName + "> ";
-            }
-        }
-        return "";
+        return this.getDelegate(self)
+                .map(delegate -> delegate.getShortName(self))
+                .orElseGet(() -> this.defaultExplorerService.getShortName(self));
     }
+
+    @Override
+    public String getReadOnlyTag(Object self) {
+        return this.getDelegate(self)
+                .map(delegate -> delegate.getReadOnlyTag(self))
+                .orElseGet(() -> this.defaultExplorerService.getReadOnlyTag(self));
+    }
+
+    @Override
+    public String getLibraryLabel(Object self) {
+        return this.getDelegate(self)
+                .map(delegate -> delegate.getLibraryLabel(self))
+                .orElseGet(() -> this.defaultExplorerService.getLibraryLabel(self));
+    }
+
 
     private Optional<ISysONExplorerServiceDelegate> getDelegate(Object object) {
         return this.explorerServiceDelegate.stream()

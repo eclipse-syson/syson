@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services.api;
+package org.eclipse.syson.tree.explorer.services.api;
 
 import java.util.List;
 
@@ -19,11 +19,11 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 
 /**
- * Interface of the default service interacting with the SysON explorer.
+ * Interface of the service used by the SysON explorer.
  *
  * @author gdaniel
  */
-public interface ISysONDefaultExplorerService {
+public interface ISysONExplorerService {
 
     String getTreeItemId(Object self);
 
@@ -48,9 +48,17 @@ public interface ISysONDefaultExplorerService {
     List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
     boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
-    
+
     boolean canCreateNewObjectsFromText(Object self);
 
     List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
+
+    String getType(Object self);
+
+    String getShortName(Object self);
+
+    String getReadOnlyTag(Object self);
+
+    String getLibraryLabel(Object self);
 
 }

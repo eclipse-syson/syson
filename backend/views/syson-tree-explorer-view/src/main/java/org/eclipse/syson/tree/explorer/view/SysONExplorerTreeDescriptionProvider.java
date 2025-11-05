@@ -15,6 +15,7 @@ package org.eclipse.syson.tree.explorer.view;
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -28,6 +29,8 @@ import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Description of the SysON explorer tree using the ViewBuilder API from Sirius Web.
@@ -61,22 +64,22 @@ public class SysONExplorerTreeDescriptionProvider {
     private TreeDescription build() {
         TreeDescription description = new TreeDescriptionBuilder()
                 .name(SYSON_EXPLORER)
-                .childrenExpression("aql:self.getChildren(editingContext, existingRepresentations, expanded, activeFilterIds)")
-                .deletableExpression("aql:self.isDeletable()")
-                .editableExpression("aql:self.isEditable()")
-                .elementsExpression("aql:editingContext.getElements(activeFilterIds)")
-                .hasChildrenExpression("aql:self.hasChildren(editingContext, existingRepresentations, expanded, activeFilterIds)")
-                .treeItemIconExpression("aql:self.getImageURL()")
-                .kindExpression("aql:self.getKind()")
-                .parentExpression("aql:self.getParent(id, editingContext)")
+                .childrenExpression(ServiceMethod.of4(TreeQueryAQLService::getChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, "existingRepresentations", "expanded", "activeFilterIds"))
+                .deletableExpression(ServiceMethod.of0(TreeQueryAQLService::isDeletable).aqlSelf())
+                .editableExpression(ServiceMethod.of0(TreeQueryAQLService::isEditable).aqlSelf())
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getElements).aql(IEditingContext.EDITING_CONTEXT, "activeFilterIds"))
+                .hasChildrenExpression(ServiceMethod.of4(TreeQueryAQLService::hasChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, "existingRepresentations", "expanded", "activeFilterIds"))
+                .treeItemIconExpression(ServiceMethod.of0(TreeQueryAQLService::getImageURL).aqlSelf())
+                .kindExpression(ServiceMethod.of0(TreeQueryAQLService::getKind).aqlSelf())
+                .parentExpression(ServiceMethod.of2(TreeQueryAQLService::getParent).aqlSelf("id", IEditingContext.EDITING_CONTEXT))
                 // This predicate will NOT be used while creating the explorer, but we don't want to see the description
                 // of the explorer in the list of representations that can be created. Thus, we will return false all
                 // the time.
                 .preconditionExpression("aql:false")
-                .selectableExpression("aql:self.isSelectable()")
+                .selectableExpression(ServiceMethod.of0(TreeQueryAQLService::isSelectable).aqlSelf())
                 .titleExpression(SYSON_EXPLORER)
-                .treeItemIdExpression("aql:self.getTreeItemId()")
-                .treeItemObjectExpression("aql:id.getTreeItemObject(editingContext)")
+                .treeItemIdExpression(ServiceMethod.of0(TreeQueryAQLService::getTreeItemId).aqlSelf())
+                .treeItemObjectExpression(ServiceMethod.of1(TreeQueryAQLService::getTreeItemObject).aql("id", IEditingContext.EDITING_CONTEXT))
                 .treeItemLabelDescriptions(this.createDefaultStyle())
                 .contextMenuEntries(this.getContextMenuEntries().toArray(TreeItemContextMenuEntry[]::new))
                 .build();
@@ -90,19 +93,21 @@ public class SysONExplorerTreeDescriptionProvider {
                 .preconditionExpression("aql:true")
                 .children(this.getShortNameLabelFragmentDescription(),
                         this.getDefaultLabelFragmentDescription(),
-                        this.getTypeFragmentDescription())
+                        this.getTypeFragmentDescription(),
+                        this.getLibraryLabelFragmentDescription(),
+                        this.getReadOnlyFragmentDescription())
                 .build();
     }
 
     private TreeItemLabelFragmentDescription getDefaultLabelFragmentDescription() {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
-                .labelExpression("aql:self.getLabel()")
+                .labelExpression(ServiceMethod.of0(TreeQueryAQLService::getLabel).aqlSelf())
                 .build();
     }
 
     private TreeItemLabelFragmentDescription getShortNameLabelFragmentDescription() {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
-                .labelExpression("aql:self.getShortName()")
+                .labelExpression(ServiceMethod.of0(TreeQueryAQLService::getShortName).aqlSelf())
                 .style(new TextStyleDescriptionBuilder()
                         .name("ShortNamePrefixStyle")
                         // Using color from MUI theme does not work so we use the hard coded color
@@ -114,9 +119,29 @@ public class SysONExplorerTreeDescriptionProvider {
 
     private TreeItemLabelFragmentDescription getTypeFragmentDescription() {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
-                .labelExpression("aql:self.getType()")
+                .labelExpression(ServiceMethod.of0(TreeQueryAQLService::getType).aqlSelf())
                 .style(new ViewBuilders().newTextStyleDescription()
                         .name("GOLD_TEXT_STYLE_NAME")
+                        .foregroundColorExpression("aql:'#ab8b01'")
+                        .build())
+                .build();
+    }
+
+    private TreeItemLabelFragmentDescription getReadOnlyFragmentDescription() {
+        return new TreeBuilders().newTreeItemLabelFragmentDescription()
+                .labelExpression(ServiceMethod.of0(TreeQueryAQLService::getReadOnlyTag).aqlSelf())
+                .style(new ViewBuilders().newTextStyleDescription()
+                        .name("ReadOnlyTagStyle")
+                        .foregroundColorExpression("aql:'#64669b'")
+                        .build())
+                .build();
+    }
+
+    private TreeItemLabelFragmentDescription getLibraryLabelFragmentDescription() {
+        return new TreeBuilders().newTreeItemLabelFragmentDescription()
+                .labelExpression(ServiceMethod.of0(TreeQueryAQLService::getLibraryLabel).aqlSelf())
+                .style(new ViewBuilders().newTextStyleDescription()
+                        .name("LibraryLabelStyle")
                         .foregroundColorExpression("aql:'#ab8b01'")
                         .build())
                 .build();
@@ -125,11 +150,11 @@ public class SysONExplorerTreeDescriptionProvider {
     private List<TreeItemContextMenuEntry> getContextMenuEntries() {
         final TreeItemContextMenuEntry newObjectsFromTextMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
                 .contributionId(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                .preconditionExpression("aql:self.canCreateNewObjectsFromText()")
+                .preconditionExpression(ServiceMethod.of0(TreeQueryAQLService::canCreateNewObjectsFromText).aqlSelf())
                 .build();
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
                 .contributionId(EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID)
-                .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".canExpandAll(editingContext)")
+                .preconditionExpression(ServiceMethod.of1(TreeQueryAQLService::canExpandAll).aql(TreeItem.SELECTED_TREE_ITEM, IEditingContext.EDITING_CONTEXT))
                 .build();
         return List.of(newObjectsFromTextMenuEntry, expandAllMenuEntry);
     }

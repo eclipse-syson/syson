@@ -31,7 +31,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 * String getInitialDirectEditListItemLabel(Usage usage)
 * String getMultiplicityLabel(Element element)
 * String getTransitionLabel(TransitionUsage transition)
-- [services] The following services have been moved from `LabelService` and `ViewLabelService` to `DiagramMutationLabelService`:
+- https://github.com/eclipse-syson/syson/issues/1638[#1638] [services] The following services have been moved from `LabelService` and `ViewLabelService` to `DiagramMutationLabelService`:
 * Element directEdit(Element element, String newLabel)
 * Element directEdit(Element element, String newLabel, String... options)
 * Element directEdit(Element element, String newLabel, boolean isCompartmentItem, String... options)
@@ -39,11 +39,11 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 * Element directEditListItem(Element element, String newLabel)
 * Element editMultiplicityRangeCenterLabel(Element element, String newLabel)
 * Element editEdgeCenterLabel(Element element, String newLabel)
-- [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationExposeService`:
+- https://github.com/eclipse-syson/syson/issues/1638[#1638] [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationExposeService`:
 * Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
 * Element expose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
 * boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext)
-- [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationDndService`:
+- https://github.com/eclipse-syson/syson/issues/1638[#1638] [services] The following services have been moved from `ToolService` and `ViewToolService` to `DiagramMutationDndService`:
 * Element dropElementFromExplorer(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<NodeDescription, NodeDescription> convertedNodes)
 * Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
 * Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext, Map<NodeDescription, NodeDescription> convertedNodes)
@@ -57,6 +57,11 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 * Membership createMembership(Element element)
 - [services] The following services have been moved from `ViewNodeService` to `ModelMutationElementService`:
 * Element setAsView(ViewUsage viewUsage, String newViewDefinition)
+- https://github.com/eclipse-syson/syson/issues/1609[#1609] [services] Update the explorer services to match the new infrastructure.
+* `ISysONExplorerService`, `ISysONExplorerServiceDelegate`, `ISysONExplorerFragment`, `ISysONExplorerFilterService`, `ISysONDefaultExplorerService` have been moved to the `org.eclipse.syson.tree.explorer.services.api` package of `syson-tree-services`.
+* `ComposedSysONExplorerService`, `SysONDefaultExplorerServices`, `SysONExplorerFilterService` have been moved to the `org.eclipse.syson.tree.explorer.services` package of `syson-tree-services`.
+* `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, `UserLibrariesDirectory` have been moved to the `org.eclipse.syson.tree.explorer.fragments` package of `syson-tree-services`.
+* `HideExposeElementsTreeItemAlteredContentProvider`, `HideKerMLStandardLibrariesTreeAlteredContentProvider`, `HideMembershipsTreeItemAlteredContentProvider`, `HideRootNamespaceTreeItemAlteredContentProvider`, `HideSysMLStandardLibrariesTreeAlteredContentProvider`, `HideUserLibrariesTreeAlteredContentProvider`, `SysONTreeFilterProvider` have been moved to the `org.eclipse.syson.tree.explorer.filters` package of `syson-tree-services`.
 
 === Dependency update
 
@@ -86,6 +91,12 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1636[#1636] [export] Implement `OperationExpression` using operator 'meta'.
 - https://github.com/eclipse-syson/syson/issues/1647[#1647] [import] Textual import should enforce `Feature` reference as _memberFeature_ in `EndFeatureMembership` to have _isEnd_ set to _true_.
 - https://github.com/eclipse-syson/syson/issues/1642[#1642] [export] Export `ConnectionUsage` in textual format.
+- https://github.com/eclipse-syson/syson/issues/1609[#1609] [explorer] Rework how the explorer displays libraries.
+The explorer now displays imported-by-reference libraries that only contain `LibraryPackage` in the `User libraries` directory.
+Other libraries are always displayed at the root of the explorer.
+The explorer now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
+The explorer now appends `library-name@library-version` to imported-by-reference library models.
+
 
 === New features
 

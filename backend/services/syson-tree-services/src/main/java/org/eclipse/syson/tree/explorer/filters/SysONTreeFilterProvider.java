@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.filters;
+package org.eclipse.syson.tree.explorer.filters;
 
 import java.util.ArrayList;
 import java.util.List;

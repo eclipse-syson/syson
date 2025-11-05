@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import java.util.List;
 import java.util.Optional;

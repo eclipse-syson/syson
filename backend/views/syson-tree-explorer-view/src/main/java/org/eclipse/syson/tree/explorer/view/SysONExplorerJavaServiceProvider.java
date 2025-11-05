@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
-import org.eclipse.syson.tree.explorer.view.services.ComposedSysONExplorerService;
 import org.eclipse.syson.tree.services.aql.TreeMutationAQLService;
 import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
@@ -40,8 +39,7 @@ public class SysONExplorerJavaServiceProvider implements IJavaServiceProvider {
         if (view.getDescriptions().stream()
                 .filter(TreeDescription.class::isInstance)
                 .anyMatch(this::isSysONDefaultExplorerTreeDescription)) {
-            serviceClasses.addAll(List.of(ComposedSysONExplorerService.class,
-                    ModelMutationAQLService.class,
+            serviceClasses.addAll(List.of(ModelMutationAQLService.class,
                     ModelQueryAQLService.class,
                     TreeMutationAQLService.class,
                     TreeQueryAQLService.class));

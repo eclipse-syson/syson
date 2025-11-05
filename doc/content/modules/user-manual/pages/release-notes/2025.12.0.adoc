@@ -15,7 +15,7 @@ image::gv-inherited-port.png[Inherited port, width=25%,height=25%]
 
 image::gv-inherited-port-edge-tools.png[Inherited port edge tool, width=65%,height=65%]
 
-- Add a new filter in the explorer to hide expose elements in `ViewUsage`.
+- Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
 
 image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
 
@@ -274,6 +274,15 @@ package Derivations {
     }
 }
 ```
+
+- The way the _Explorer_ view displays libraries has been reworked:
+* The _Explorer_ view now displays imported-by-reference libraries that only contain top-level `LibraryPackage` elements in the `User libraries` directory.
+* Libraries containing at least one top-level `Package` are always displayed at the root of the _Explorer_ view.
+* The _Explorer_ view now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
+* The _Explorer_ view now appends `library-name@library-version` to imported-by-reference library models.
+
+image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
+
 
 == Technical details
 

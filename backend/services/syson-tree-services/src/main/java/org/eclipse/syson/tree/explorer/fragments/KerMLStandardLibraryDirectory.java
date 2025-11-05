@@ -10,37 +10,33 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.fragments;
+package org.eclipse.syson.tree.explorer.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 
 /**
- * The directory containing referenced libraries displayed in the explorer.
+ * The <i>KerML</i> directory displayed in the explorer.
  *
  * @author gdaniel
  */
-public class UserLibrariesDirectory implements ISysONExplorerFragment {
+public class KerMLStandardLibraryDirectory implements ISysONExplorerFragment {
 
-    private final String id = UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString();
-
-    private String label;
+    private final String id = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
 
     private final Object parent;
 
     private final ISysONExplorerFilterService filterService;
 
-    public UserLibrariesDirectory(String label, Object parent, ISysONExplorerFilterService filterService) {
-        this.label = Objects.requireNonNull(label);
+    public KerMLStandardLibraryDirectory(Object parent, ISysONExplorerFilterService filterService) {
         this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
@@ -52,17 +48,12 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
 
     @Override
     public String getLabel() {
-        return this.label;
+        return "KerML";
     }
 
     @Override
     public String getKind() {
         return this.getClass().getSimpleName();
-    }
-
-    @Override
-    public Object getParent() {
-        return this.parent;
     }
 
     @Override
@@ -75,11 +66,14 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
         boolean hasChildren = false;
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             hasChildren = this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
-                    .filter(Resource.class::isInstance)
-                    .map(Resource.class::cast)
-                    .anyMatch(resource -> this.filterService.isUserLibrary(resource));
+                    .anyMatch(this.filterService::isKerMLStandardLibrary);
         }
         return hasChildren;
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override
@@ -87,9 +81,7 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
         List<Object> result = new ArrayList<>();
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
-                    .filter(Resource.class::isInstance)
-                    .map(Resource.class::cast)
-                    .filter(resource -> this.filterService.isUserLibrary(resource))
+                    .filter(this.filterService::isKerMLStandardLibrary)
                     .forEach(result::add);
         }
         return result;

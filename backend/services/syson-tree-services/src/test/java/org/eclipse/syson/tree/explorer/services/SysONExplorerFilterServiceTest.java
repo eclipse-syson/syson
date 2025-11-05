@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
@@ -27,21 +28,21 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link SysONExplorerFilterService} class.
- * 
+ *
  * @author gdaniel
  */
 public class SysONExplorerFilterServiceTest {
-    
+
     private final ISysONResourceService sysONResourceService = new SysONResourceService();
 
-    private ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
+    private final ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
-    private Resource.Factory resourceFactory = new JsonResourceFactoryImpl();
+    private final Resource.Factory resourceFactory = new JsonResourceFactoryImpl();
 
     @Test
     public void isKerMLStandardLibraryNotResource() {
@@ -125,6 +126,15 @@ public class SysONExplorerFilterServiceTest {
         List<Object> filteredElements = this.filterService.hideRootNamespace(initialElements);
         assertThat(filteredElements).hasSize(1);
         assertThat(filteredElements.get(0)).isEqualTo(partUsage);
+    }
+
+    /**
+     * Check that a non-imported resource can never be a user library.
+     */
+    @Test
+    public void isUserLibraryNotImportedResource() {
+        Resource resource = new ResourceImpl();
+        assertThat(this.filterService.isUserLibrary(resource)).isFalse();
     }
 
     private Resource createKerMLResource() {
