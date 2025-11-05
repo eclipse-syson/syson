@@ -186,6 +186,12 @@ part p2 :> p1 {
 }
 ```
 
+- The published libraries are accessible through the _Libraries_ menu at the top right corner of the application.
+On this page, the published libraries' projects are displayed.
+You can click on such project to see the content of the published library, in read-only mode.
+In those cases, there was an issue that made the _Explorer_ view displays libraries with only `LibraryPackage` top-level element(s) under the `User libraries` directory instead of the root of the _Explorer_ view.
+This issue is now fixed.
+
 == Improvements
 
 - In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.

@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.syson.tree.explorer.filters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,6 +31,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
+
+    private final Logger logger = LoggerFactory.getLogger(HideUserLibrariesTreeAlteredContentProvider.class);
 
     private final ISysONExplorerFilterService filterService;
 
@@ -42,6 +47,13 @@ public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTre
 
     @Override
     public List<Object> apply(List<Object> computedElements, VariableManager variableManager) {
-        return this.filterService.hideUserLibraries(computedElements);
+        List<Object> result = new ArrayList<>();
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        if (optionalEditingContext.isPresent()) {
+            result = this.filterService.hideUserLibraries(optionalEditingContext.get(), computedElements);
+        } else {
+            this.logger.warn("Cannot find variable editingContext");
+        }
+        return result;
     }
 }

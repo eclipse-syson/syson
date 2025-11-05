@@ -14,6 +14,8 @@ package org.eclipse.syson.tree.explorer.services.api;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+
 /**
  * Services to apply filters on SysON explorer.
  *
@@ -25,13 +27,13 @@ public interface ISysONExplorerFilterService {
 
     boolean isSysMLStandardLibrary(Object object);
 
-    boolean isUserLibrary(Object object);
+    boolean isUserLibrary(IEditingContext editingContext, Object object);
 
     List<Object> hideKerMLStandardLibraries(List<Object> elements);
 
     List<Object> hideSysMLStandardLibraries(List<Object> elements);
 
-    List<Object> hideUserLibraries(List<Object> elements);
+    List<Object> hideUserLibraries(IEditingContext editingContext, List<Object> elements);
 
     List<Object> hideMemberships(List<Object> elements);
 
@@ -39,6 +41,6 @@ public interface ISysONExplorerFilterService {
 
     List<Object> hideExposeElements(List<Object> elements);
 
-    List<Object> applyFilters(List<?> elements, List<String> activeFilterIds);
+    List<Object> applyFilters(IEditingContext editingContext, List<?> elements, List<String> activeFilterIds);
 
 }

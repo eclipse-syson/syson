@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
@@ -38,7 +39,7 @@ import org.junit.jupiter.api.Test;
  */
 public class SysONExplorerFilterServiceTest {
 
-    private final ISysONResourceService sysONResourceService = new SysONResourceService();
+    private final ISysONResourceService sysONResourceService = new SysONResourceService(new LibrarySearchServiceNoOp());
 
     private final ISysONExplorerFilterService filterService = new SysONExplorerFilterService(this.sysONResourceService);
 
@@ -134,7 +135,7 @@ public class SysONExplorerFilterServiceTest {
     @Test
     public void isUserLibraryNotImportedResource() {
         Resource resource = new ResourceImpl();
-        assertThat(this.filterService.isUserLibrary(resource)).isFalse();
+        assertThat(this.filterService.isUserLibrary(new IEditingContext.NoOp(), resource)).isFalse();
     }
 
     private Resource createKerMLResource() {

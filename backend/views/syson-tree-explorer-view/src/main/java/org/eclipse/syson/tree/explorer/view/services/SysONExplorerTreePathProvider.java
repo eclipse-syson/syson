@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * ITreePathProvider implementation for the SysON Explorer tree. This version handles the SysON Explorer filters.
- * 
+ *
  * @author arichard
  */
 @Service
@@ -93,12 +93,12 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
                 var parameters = this.urlParser.getParameterValues(tree.getId());
                 var activeFilterIdsParam = parameters.get("activeFilterIds").get(0);
                 var activeFilterIds = this.urlParser.getParameterEntries(activeFilterIdsParam);
-                var itemAncestorsObjects = new ArrayList<Object>();
+                var itemAncestorsObjects = new ArrayList<>();
                 for (String itemAncestor : itemAncestors) {
                     this.getTreeItemObject(editingContext, optTreeDescription.get(), tree, itemAncestor).ifPresent(itemAncestorsObjects::add);
                 }
                 var filteredItemAncestorsIds = new ArrayList<String>();
-                var filteredItemAncestorsObjects = this.applyFilters(itemAncestorsObjects, activeFilterIds);
+                var filteredItemAncestorsObjects = this.applyFilters(editingContext, itemAncestorsObjects, activeFilterIds);
                 for (Object filteredItemAncestorsObject : filteredItemAncestorsObjects) {
                     this.getItemId(editingContext, optTreeDescription.get(), tree, filteredItemAncestorsObject).ifPresent(filteredItemAncestorsIds::add);
                 }
@@ -134,8 +134,8 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
                 .map(TreeDescription.class::cast);
     }
 
-    private List<Object> applyFilters(List<Object> elements, List<String> activeFilterIds) {
-        var alteredElements = new ArrayList<Object>(elements);
+    private List<Object> applyFilters(IEditingContext editingContext, List<Object> elements, List<String> activeFilterIds) {
+        var alteredElements = new ArrayList<>(elements);
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
             alteredElements.removeIf(Membership.class::isInstance);
         }
@@ -146,7 +146,7 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
             alteredElements.removeIf(this.filterService::isSysMLStandardLibrary);
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
-            alteredElements.removeIf(this.filterService::isUserLibrary);
+            alteredElements.removeIf(element -> this.filterService.isUserLibrary(editingContext, element));
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements.removeIf(e -> e instanceof Namespace ns && this.utilService.isRootNamespace(ns));
