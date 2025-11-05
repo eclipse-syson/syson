@@ -88,7 +88,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             siriusWebContext.getDomain().getResourceSet().getResources().stream()
                     .filter(r -> !this.filterService.isSysMLStandardLibrary(r))
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
-                    .filter(r -> !this.filterService.isUserLibrary(r))
+                    .filter(r -> !this.filterService.isUserLibrary(editingContext, r))
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", editingContext, this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), List.of(), activeFilterIds)) {
@@ -162,9 +162,9 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             hasChildren = fragment.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds);
         } else if (self instanceof Resource resource) {
-            hasChildren = !this.filterService.applyFilters(resource.getContents(), activeFilterIds).isEmpty();
+            hasChildren = !this.filterService.applyFilters(editingContext, resource.getContents(), activeFilterIds).isEmpty();
         } else if (self instanceof Element element) {
-            List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
+            List<Object> contents = this.filterService.applyFilters(editingContext, this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
                     || this.hasRepresentation(element, editingContext);
         } else {
@@ -194,7 +194,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             result.addAll(this.explorerServices.getDefaultChildren(self, editingContext, expandedIds, existingRepresentations));
         }
 
-        result = this.filterService.applyFilters(result, activeFilterIds);
+        result = this.filterService.applyFilters(editingContext, result, activeFilterIds);
 
         // Remove annotations: they aren't part of the SysML standard and shouldn't be visible to the user.
         return result.stream()

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Expose;
@@ -55,9 +56,9 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     @Override
-    public boolean isUserLibrary(Object object) {
+    public boolean isUserLibrary(IEditingContext editingContext, Object object) {
         return object instanceof Resource res
-                && this.sysONResourceService.isImported(res)
+                && this.sysONResourceService.isImported(editingContext, res)
                 && this.containsOnlyLibraryPackages(res);
     }
 
@@ -85,9 +86,9 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     @Override
-    public List<Object> hideUserLibraries(List<Object> elements) {
+    public List<Object> hideUserLibraries(IEditingContext editingContext, List<Object> elements) {
         return elements.stream()
-                .filter(element -> !this.isUserLibrary(element))
+                .filter(element -> !this.isUserLibrary(editingContext, element))
                 .toList();
     }
 
@@ -125,7 +126,7 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     @Override
-    public List<Object> applyFilters(List<?> elements, List<String> activeFilterIds) {
+    public List<Object> applyFilters(IEditingContext editingContext, List<?> elements, List<String> activeFilterIds) {
         List<Object> alteredElements = new ArrayList<>(elements);
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
             alteredElements = this.hideMemberships(alteredElements);
@@ -137,7 +138,7 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
             alteredElements = this.hideSysMLStandardLibraries(alteredElements);
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
-            alteredElements = this.hideUserLibraries(alteredElements);
+            alteredElements = this.hideUserLibraries(editingContext, alteredElements);
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements = this.hideRootNamespace(alteredElements);

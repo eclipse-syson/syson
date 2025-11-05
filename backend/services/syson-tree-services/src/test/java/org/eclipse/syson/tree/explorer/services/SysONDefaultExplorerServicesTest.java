@@ -67,7 +67,7 @@ public class SysONDefaultExplorerServicesTest {
     private final ISysONDefaultExplorerService defaultExplorerService;
 
     public SysONDefaultExplorerServicesTest() {
-        this.resourceService = new SysONResourceService();
+        this.resourceService = new SysONResourceService(new LibrarySearchServiceNoOp());
         this.defaultExplorerService = this.createMockDefaultExplorerService(this.resourceService);
     }
 

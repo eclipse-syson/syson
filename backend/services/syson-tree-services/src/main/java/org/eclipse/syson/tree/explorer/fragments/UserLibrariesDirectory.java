@@ -33,7 +33,7 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
 
     private final String id = UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString();
 
-    private String label;
+    private final String label;
 
     private final Object parent;
 
@@ -74,10 +74,10 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
     public boolean hasChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         boolean hasChildren = false;
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            hasChildren = this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
+            hasChildren = this.filterService.applyFilters(editingContext, siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .filter(Resource.class::isInstance)
                     .map(Resource.class::cast)
-                    .anyMatch(resource -> this.filterService.isUserLibrary(resource));
+                    .anyMatch(resource -> this.filterService.isUserLibrary(editingContext, resource));
         }
         return hasChildren;
     }
@@ -86,10 +86,10 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
     public List<Object> getChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
+            this.filterService.applyFilters(editingContext, siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .filter(Resource.class::isInstance)
                     .map(Resource.class::cast)
-                    .filter(resource -> this.filterService.isUserLibrary(resource))
+                    .filter(resource -> this.filterService.isUserLibrary(editingContext, resource))
                     .forEach(result::add);
         }
         return result;

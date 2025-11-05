@@ -27,4 +27,5 @@ public class ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestP
 
     public static final String EDITING_CONTEXT = "9fcdc1e3-c28a-472e-97ac-27c9bcf87890";
 
+    public static final String LIBRARY_EDITING_CONTEXT = "ddee6b42-cb86-4809-b1fb-e431c6263b9f";
 }

@@ -130,7 +130,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                     Optional<Resource> optResource = this.getResource(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
                     assertThat(optResource).isPresent();
                     Resource resource = optResource.get();
-                    assertThat(this.sysONResourceService.isImported(resource)).isFalse();
+                    assertThat(this.sysONResourceService.isImported(editingContext, resource)).isFalse();
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 }).run();
     }

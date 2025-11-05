@@ -13,6 +13,7 @@
 package org.eclipse.syson.services.api;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
  * SysON services related to EMF {@link Resource}.
@@ -21,7 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  */
 public interface ISysONResourceService {
 
-    boolean isImported(Resource resource);
+    boolean isImported(IEditingContext editingContext, Resource resource);
 
-    boolean isFromReferencedLibrary(Resource resource);
+    boolean isFromReferencedLibrary(IEditingContext editingContext, Resource resource);
 }

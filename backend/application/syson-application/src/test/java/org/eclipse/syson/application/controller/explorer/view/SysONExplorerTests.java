@@ -596,4 +596,60 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    @DisplayName("GIVEN a SysML library containing a LibraryPackage, WHEN the explorer is displayed on the library's semantic data, THEN the library model is visible at the root of the explorer")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentOnLibrarySemanticDataWithLibraryPackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlModel = tree.getChildren().get(0);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOneLibraryPackage@1.0.0");
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML library containing a Package and a LibraryPackage, WHEN the explorer is displayed on the library's semantic data, THEN the library model is visible at the root of the explorer")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentOnLibrarySemanticDataWithPackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlModel = tree.getChildren().get(0);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOnePackageAndOneLibraryPackage@1.0.0");
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

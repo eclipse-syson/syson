@@ -62,6 +62,9 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 * `ComposedSysONExplorerService`, `SysONDefaultExplorerServices`, `SysONExplorerFilterService` have been moved to the `org.eclipse.syson.tree.explorer.services` package of `syson-tree-services`.
 * `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, `UserLibrariesDirectory` have been moved to the `org.eclipse.syson.tree.explorer.fragments` package of `syson-tree-services`.
 * `HideExposeElementsTreeItemAlteredContentProvider`, `HideKerMLStandardLibrariesTreeAlteredContentProvider`, `HideMembershipsTreeItemAlteredContentProvider`, `HideRootNamespaceTreeItemAlteredContentProvider`, `HideSysMLStandardLibrariesTreeAlteredContentProvider`, `HideUserLibrariesTreeAlteredContentProvider`, `SysONTreeFilterProvider` have been moved to the `org.eclipse.syson.tree.explorer.filters` package of `syson-tree-services`.
+- https://github.com/eclipse-syson/syson/issues/1166[#1166] [explorer] Fix library workbench to always displays the current library at the root of the explorer.
+* `ISysONService#isImported` and `ISysONService#isFromReferencedLibrary` now require an `IEditingContext` parameter
+* `ISysONExplorerFilterService#isUserLibrary`, `ISysONExplorerFilterService#hideUserLibraries`, and `ISysONExplorerFilterService#applyFilters` now require an `IEditingContext` parameter.
 
 === Dependency update
 
@@ -84,6 +87,8 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1634[#1634] [export] Redefining an `AttributeUsage` with a _shortName_ does not properly export to the textual format.
 - https://github.com/eclipse-syson/syson/issues/1640[#1640] [export] Properly handle `UnaryOperator` during textual export.
 - https://github.com/eclipse-syson/syson/issues/1643[#1643] [export] Textual export fails to serialize a reference to an `Element` having only a _shortName_ (no _declaredName_).
+- https://github.com/eclipse-syson/syson/issues/1166[#1166] [explorer] Fix library workbench to always displays the current library at the root of the explorer.
+Libraries containing only `LibraryPackage` instances were previously displayed under the `User libraries` directory.
 
 === Improvements
 

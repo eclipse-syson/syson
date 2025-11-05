@@ -70,7 +70,7 @@ public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
     public boolean hasChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         boolean hasChildren = false;
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            hasChildren = this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
+            hasChildren = this.filterService.applyFilters(editingContext, siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .anyMatch(this.filterService::isSysMLStandardLibrary);
         }
 
@@ -81,7 +81,7 @@ public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
     public List<Object> getChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
-            this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
+            this.filterService.applyFilters(editingContext, siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .filter(this.filterService::isSysMLStandardLibrary)
                     .forEach(result::add);
         }
