@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services.api;
+package org.eclipse.syson.tree.explorer.services.api;
 
 import java.util.List;
 
@@ -50,9 +50,17 @@ public interface ISysONExplorerServiceDelegate {
     List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
     boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
-    
+
     boolean canCreateNewObjectsFromText(Object self);
 
     List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
+
+    String getType(Object self);
+
+    String getShortName(Object self);
+
+    String getReadOnlyTag(Object self);
+
+    String getLibraryLabel(Object self);
 
 }

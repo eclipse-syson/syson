@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +20,17 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**
  * Services to apply filters on SysON explorer.
- * 
+ *
  * @author gdaniel
  */
 @Service
@@ -57,7 +58,16 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     public boolean isUserLibrary(Object object) {
         return object instanceof Resource res
                 && this.sysONResourceService.isImported(res)
-                && !new UtilService().getLibraries(res, false).isEmpty();
+                && this.containsOnlyLibraryPackages(res);
+    }
+
+    private boolean containsOnlyLibraryPackages(Resource resource) {
+        return resource.getContents().stream()
+                .filter(Namespace.class::isInstance)
+                .map(Namespace.class::cast)
+                .filter(this.utilService::isRootNamespace)
+                .flatMap(namespace -> namespace.getOwnedElement().stream())
+                .allMatch(LibraryPackage.class::isInstance);
     }
 
     @Override

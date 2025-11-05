@@ -36,9 +36,9 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
-import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**

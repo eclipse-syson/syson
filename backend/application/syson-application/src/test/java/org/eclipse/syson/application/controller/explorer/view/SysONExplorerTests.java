@@ -46,13 +46,16 @@ import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeIt
 import org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester;
 import org.eclipse.syson.application.controller.explorer.testers.TreePathTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.SysonStudioTestProjectData;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
-import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -216,13 +219,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(librariesDirectory.isHasChildren()).isTrue();
             assertThat(librariesDirectory.getChildren()).hasSize(2);
             TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
-            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML [read-only]");
             assertThat(kermlDirectory.isDeletable()).isFalse();
             assertThat(kermlDirectory.isEditable()).isFalse();
             assertThat(kermlDirectory.isSelectable()).isTrue();
             assertThat(kermlDirectory.isHasChildren()).isTrue();
             TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
-            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML [read-only]");
             assertThat(sysmlDirectory.isDeletable()).isFalse();
             assertThat(sysmlDirectory.isEditable()).isFalse();
             assertThat(sysmlDirectory.isSelectable()).isTrue();
@@ -261,19 +264,24 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(librariesDirectory.isHasChildren()).isTrue();
             assertThat(librariesDirectory.getChildren()).hasSize(2);
             TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
-            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML [read-only]");
             assertThat(kermlDirectory.isDeletable()).isFalse();
             assertThat(kermlDirectory.isEditable()).isFalse();
             assertThat(kermlDirectory.isSelectable()).isTrue();
             assertThat(kermlDirectory.isHasChildren()).isTrue();
-            assertThat(kermlDirectory.getChildren()).allMatch(children -> !children.isDeletable() && !children.isEditable());
+            assertThat(kermlDirectory.getChildren()).allMatch(children -> !children.isDeletable()
+                    && !children.isEditable()
+            // Standard library resources do not have the read only tag, it is set on their containing directory
+                    && !children.getLabel().toString().endsWith(" [read-only]"));
             TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
-            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML [read-only]");
             assertThat(sysmlDirectory.isDeletable()).isFalse();
             assertThat(sysmlDirectory.isEditable()).isFalse();
             assertThat(sysmlDirectory.isSelectable()).isTrue();
             assertThat(sysmlDirectory.isHasChildren()).isTrue();
-            assertThat(sysmlDirectory.getChildren()).allMatch(children -> !children.isDeletable() && !children.isEditable());
+            assertThat(sysmlDirectory.getChildren()).allMatch(children -> !children.isDeletable()
+                    && !children.isEditable()
+                    && !children.getLabel().toString().endsWith(" [read-only]"));
         });
 
         StepVerifier.create(flux)
@@ -345,11 +353,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(librariesDirectory.isHasChildren()).isTrue();
             assertThat(librariesDirectory.getChildren()).hasSize(2);
             TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
-            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML");
+            assertThat(kermlDirectory.getLabel().toString()).isEqualTo("KerML [read-only]");
             kermlDirectoryTreeItemId.set(kermlDirectory.getId());
             assertThat(kermlDirectory.isHasChildren()).isTrue();
             TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
-            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML");
+            assertThat(sysmlDirectory.getLabel().toString()).isEqualTo("SysML [read-only]");
             sysmlDirectoryTreeItemId.set(sysmlDirectory.getId());
             assertThat(sysmlDirectory.isHasChildren()).isTrue();
         });
@@ -492,5 +500,100 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> treeItemIdsToExpand = this.treePathTester.getTreeItemIdsToExpand(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(), List.of(package1TreeItemId.get()));
         assertThat(treeItemIdsToExpand).hasSize(3);
         assertThat(treeItemIdsToExpand).containsExactly(owningMembershipId.get(), rootNamespaceId.get(), sysmlv2DocumentTreeItemId.get());
+    }
+
+    @DisplayName("GIVEN a SysML Project with a dependency to a library containing one Package, WHEN the explorer is displayed, THEN the library model is visible at the root of the explorer")
+    @Sql(scripts = { ProjectWithUsedBatmobileLibraryDependencyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentWithImportedLibraryContainingOnePackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(3);
+            TreeItem batmobileModel = tree.getChildren().get(0);
+            assertThat(batmobileModel.getLabel().toString()).isEqualTo("Batmobile.sysml - Batmobile@1.0.0 [read-only]");
+            TreeItem sysmlModel = tree.getChildren().get(1);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("SysMLv2.sysml");
+            TreeItem librariesDirectory = tree.getChildren().get(2);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML Project with a dependency to a library containing one Package and one LibraryPackage, WHEN the explorer is displayed, THEN the library model is visible at the root of the explorer")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentWithImportedLibraryContainingPackageAndLibraryPackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(3);
+            TreeItem batmobileModel = tree.getChildren().get(0);
+            assertThat(batmobileModel.getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOnePackageAndOneLibraryPackage@1.0.0 [read-only]");
+            TreeItem sysmlModel = tree.getChildren().get(1);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("SysMLv2.sysml");
+            TreeItem librariesDirectory = tree.getChildren().get(2);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML Project with a dependency to a library containing one LibraryPackage, WHEN the explorer is displayed, THEN the library model is visible under the user libraries directory of the explorer")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentWithImportedLibraryContainingLibraryPackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlModel = tree.getChildren().get(0);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("SysMLv2.sysml");
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+            assertThat(librariesDirectory.isHasChildren()).isTrue();
+            List<TreeItem> librariesDirectoryChildren = librariesDirectory.getChildren();
+            assertThat(librariesDirectoryChildren).hasSize(3);
+            assertThat(librariesDirectoryChildren.get(2).getLabel().toString()).isEqualTo("User libraries");
+            TreeItem userLibrariesDirectory = librariesDirectoryChildren.get(2);
+            assertThat(userLibrariesDirectory.isHasChildren()).isTrue();
+            List<TreeItem> userLibrariesChildren = userLibrariesDirectory.getChildren();
+            assertThat(userLibrariesChildren).hasSize(1);
+            assertThat(userLibrariesChildren.get(0).getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOneLibraryPackage@1.0.0 [read-only]");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }

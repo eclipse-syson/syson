@@ -13,18 +13,18 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Identifiers for the "ProjectWithBatmobileLibraryDependency" project.
+ * Identifiers for the "ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData" project.
  *
  * @author gdaniel
  */
-public class ProjectWithUsedBatmobileLibraryDependencyTestProjectData {
+public class ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData {
 
-    public static final String SCRIPT_PATH = "/scripts/database-content/SysMLv2-ProjectWithUsedBatmobileLibraryDependency.sql";
+    public static final String SCRIPT_PATH = "/scripts/database-content/SysMLv2-ProjectWithLibraryDependencyContainingLibraryPackage.sql";
 
-    public static final String PROJECT_NAME = "SysMLv2-ProjectWithUsedBatmobileLibraryDependency";
+    public static final String PROJECT_NAME = "SysMLv2";
 
-    public static final String PROJECT_ID = "d1df5921-0ad7-4864-94b0-609609f92a24";
+    public static final String PROJECT_ID = "607aeefc-defc-414c-ad1c-c355b801fa59";
 
-    public static final String EDITING_CONTEXT = "64ec9d3e-f4bf-4e26-88f1-d035d93d133e";
+    public static final String EDITING_CONTEXT = "9c17ca3b-c1fe-43e2-92a4-c14c052a6d1a";
 
 }

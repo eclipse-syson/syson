@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services.api;
+package org.eclipse.syson.tree.explorer.services.api;
 
 import java.util.List;
 
 /**
  * Services to apply filters on SysON explorer.
- * 
+ *
  * @author gdaniel
  */
 public interface ISysONExplorerFilterService {
@@ -40,4 +40,5 @@ public interface ISysONExplorerFilterService {
     List<Object> hideExposeElements(List<Object> elements);
 
     List<Object> applyFilters(List<?> elements, List<String> activeFilterIds);
+
 }

@@ -54,7 +54,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-table-requirements-view", 77.0),
   new ModuleCoverage("syson-table-services", 100.0),
   new ModuleCoverage("syson-tree-explorer-view", 84.0),
-  new ModuleCoverage("syson-tree-services", 100.0)
+  new ModuleCoverage("syson-tree-services", 91.0)
 );
 
 void display(String module, double coverage, double expected) {

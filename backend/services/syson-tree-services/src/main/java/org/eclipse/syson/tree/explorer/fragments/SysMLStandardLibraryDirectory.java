@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.fragments;
+package org.eclipse.syson.tree.explorer.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 
 /**
  * The <i>SysML</i> directory displayed in the explorer.

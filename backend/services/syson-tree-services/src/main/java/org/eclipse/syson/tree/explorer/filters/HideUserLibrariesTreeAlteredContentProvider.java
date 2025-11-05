@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,38 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.filters;
+package org.eclipse.syson.tree.explorer.filters;
 
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**
- * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide KerML standard libraries documents
- * from Explorer tree.
+ * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide user libraries documents from
+ * Explorer tree.
  *
- * @author arichard
+ * @author gdaniel
  */
 @Service
-public class HideKerMLStandardLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
+public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
 
     private final ISysONExplorerFilterService filterService;
 
-    public HideKerMLStandardLibrariesTreeAlteredContentProvider(ISysONExplorerFilterService filterService) {
+    public HideUserLibrariesTreeAlteredContentProvider(ISysONExplorerFilterService filterService) {
         this.filterService = filterService;
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override
     public List<Object> apply(List<Object> computedElements, VariableManager variableManager) {
-        return this.filterService.hideKerMLStandardLibraries(computedElements);
+        return this.filterService.hideUserLibraries(computedElements);
     }
 }

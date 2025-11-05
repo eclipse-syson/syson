@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,15 +46,15 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests the {@link SysONExplorerFilterService} class.
- * 
+ *
  * @author dvojtise
  * @author flatombe
  */
@@ -62,9 +62,9 @@ public class SysONDefaultExplorerServicesTest {
 
     private static EditingContext editingContext;
 
-    private ISysONResourceService resourceService;
+    private final ISysONResourceService resourceService;
 
-    private ISysONDefaultExplorerService defaultExplorerService;
+    private final ISysONDefaultExplorerService defaultExplorerService;
 
     public SysONDefaultExplorerServicesTest() {
         this.resourceService = new SysONResourceService();

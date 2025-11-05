@@ -35,8 +35,8 @@ import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuil
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
-import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

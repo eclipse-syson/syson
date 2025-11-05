@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.tree.explorer.view.services;
+package org.eclipse.syson.tree.explorer.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +30,21 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.tree.explorer.view.fragments.KerMLStandardLibraryDirectory;
-import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
-import org.eclipse.syson.tree.explorer.view.fragments.SysMLStandardLibraryDirectory;
-import org.eclipse.syson.tree.explorer.view.fragments.UserLibrariesDirectory;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
+import org.eclipse.syson.tree.explorer.fragments.KerMLStandardLibraryDirectory;
+import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
+import org.eclipse.syson.tree.explorer.fragments.SysMLStandardLibraryDirectory;
+import org.eclipse.syson.tree.explorer.fragments.UserLibrariesDirectory;
+import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -275,5 +277,57 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     @Override
     public boolean isSelectable(Object self) {
         return true;
+    }
+
+    @Override
+    public String getType(Object self) {
+        StringBuilder type = new StringBuilder();
+        if (self instanceof ViewUsage viewUsage) {
+            var viewDefinition = viewUsage.getViewDefinition();
+            if (viewDefinition != null) {
+                type.append(" [");
+                type.append(viewDefinition.getDeclaredName());
+                type.append("]");
+            }
+        }
+        return type.toString();
+    }
+
+    @Override
+    public String getShortName(Object self) {
+        if (self instanceof Element element) {
+            String shortName = element.getShortName();
+            if (shortName != null && !shortName.isBlank()) {
+                return "<" + shortName + "> ";
+            }
+        }
+        return "";
+    }
+
+    @Override
+    public String getReadOnlyTag(Object self) {
+        String result = "";
+        if (self instanceof Resource resource) {
+            if (this.readOnlyObjectPredicate.test(resource) && !ElementUtil.isStandardLibraryResource(resource)) {
+                result = " [read-only]";
+            }
+        } else if (self instanceof KerMLStandardLibraryDirectory || self instanceof SysMLStandardLibraryDirectory) {
+            result = " [read-only]";
+        }
+        return result;
+    }
+
+    @Override
+    public String getLibraryLabel(Object self) {
+        String result = "";
+        if (self instanceof Resource resource) {
+            result = resource.eAdapters().stream()
+                    .filter(LibraryMetadataAdapter.class::isInstance)
+                    .map(LibraryMetadataAdapter.class::cast)
+                    .findFirst()
+                    .map(libraryMetadataAdapter -> " - " + libraryMetadataAdapter.getName() + "@" + libraryMetadataAdapter.getVersion())
+                    .orElse("");
+        }
+        return result;
     }
 }
