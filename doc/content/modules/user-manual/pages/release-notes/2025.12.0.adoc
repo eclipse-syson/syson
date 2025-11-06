@@ -289,6 +289,7 @@ package Derivations {
 
 image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
 
+- Extract the frontend extension registry in a separate file and move it from _syson_ to _syson-components_ frontend module in order to be easily used by downstream applications.
 
 == Technical details
 

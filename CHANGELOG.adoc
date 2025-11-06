@@ -101,7 +101,7 @@ The explorer now displays imported-by-reference libraries that only contain `Lib
 Other libraries are always displayed at the root of the explorer.
 The explorer now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
 The explorer now appends `library-name@library-version` to imported-by-reference library models.
-
+- https://github.com/eclipse-syson/syson/issues/1661[#1661] [frontend] Extract the frontend extension registry in a separate file and move it from _syson_ to _syson-components_ frontend module in order to be easily used by downstream applications.
 
 === New features
 
