@@ -12,66 +12,17 @@
  *******************************************************************************/
 
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
-  diagramPanelActionExtensionPoint,
-  NodeTypeContribution,
-  PaletteAppearanceSectionContributionProps,
-  paletteAppearanceSectionExtensionPoint,
-} from '@eclipse-sirius/sirius-components-diagrams';
-import {
-  GQLOmniboxCommand,
-  OmniboxCommandOverrideContribution,
-  omniboxCommandOverrideContributionExtensionPoint,
-} from '@eclipse-sirius/sirius-components-omnibox';
-import { settingButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
-import {
-  GQLTreeItemContextMenuEntry,
-  treeItemContextMenuEntryExtensionPoint,
-  treeItemContextMenuEntryOverrideExtensionPoint,
-  TreeItemContextMenuOverrideContribution,
-} from '@eclipse-sirius/sirius-components-trees';
-import {
-  ApolloClientOptionsConfigurer,
-  apolloClientOptionsConfigurersExtensionPoint,
   DiagramRepresentationConfiguration,
-  ExpandAllTreeItemContextMenuContribution,
   footerExtensionPoint,
-  ImportLibraryCommand,
   navigationBarIconExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
-  navigationBarMenuIconExtensionPoint,
-  NodeTypeRegistry,
   SiriusWebApplication,
-  UpdateLibraryTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 import {
-  CreateRequirementMenuEntry,
-  ExposeRequirementsMenuEntry,
-  InsertTextualSysMLMenuContribution,
-  PublishProjectSysMLContentsAsLibraryCommand,
-  SysMLImportedPackageNode,
-  SysMLImportedPackageNodeConverter,
-  SysMLImportedPackageNodeLayoutHandler,
-  SysMLImportedPackageNodePaletteAppearanceSection,
-  sysMLNodesStyleDocumentTransform,
-  SysMLNoteNode,
-  SysMLNoteNodeConverter,
-  SysMLNoteNodeLayoutHandler,
-  SysMLNoteNodePaletteAppearanceSection,
-  SysMLPackageNode,
-  SysMLPackageNodeConverter,
-  SysMLPackageNodeLayoutHandler,
-  SysMLPackageNodePaletteAppearanceSection,
-  SysMLViewFrameNode,
-  SysMLViewFrameNodeConverter,
-  SysMLViewFrameNodeLayoutHandler,
-  SysMLViewFrameNodePaletteAppearanceSection,
-  SysONDiagramPanelMenu,
-  SysONDocumentTreeItemContextMenuContribution,
+  sysONExtensionRegistry,
   SysONExtensionRegistryMergeStrategy,
-  SysONNavigationBarMenuIcon,
-  SysONObjectTreeItemContextMenuContribution,
+  sysONNodeTypeRegistry,
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
 
@@ -90,176 +41,20 @@ if (process.env.NODE_ENV !== 'production') {
   loadErrorMessages();
 }
 
-const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
-
-extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
+sysONExtensionRegistry.addComponent(navigationBarIconExtensionPoint, {
   identifier: `syson_${navigationBarIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarIcon,
 });
-extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
+
+sysONExtensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
   identifier: `syson_${navigationBarMenuHelpURLExtensionPoint.identifier}`,
   data: 'https://doc.mbse-syson.org',
 });
 
-const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
-  {
-    canHandle: (action: GQLOmniboxCommand) => {
-      return action.id === 'publishProjectSysMLContentsAsLibrary';
-    },
-    component: PublishProjectSysMLContentsAsLibraryCommand,
-  },
-  {
-    canHandle: (action: GQLOmniboxCommand) => {
-      return action.id === 'importPublishedLibrary';
-    },
-    component: ImportLibraryCommand,
-  },
-];
-
-extensionRegistry.putData<OmniboxCommandOverrideContribution[]>(omniboxCommandOverrideContributionExtensionPoint, {
-  identifier: `syson_${omniboxCommandOverrideContributionExtensionPoint.identifier}`,
-  data: omniboxCommandOverrides,
-});
-
-const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
-  const { documentTransform } = currentOptions;
-
-  const newDocumentTransform = documentTransform
-    ? documentTransform.concat(sysMLNodesStyleDocumentTransform)
-    : sysMLNodesStyleDocumentTransform;
-  return {
-    ...currentOptions,
-    documentTransform: newDocumentTransform,
-  };
-};
-extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
-  identifier: `syson_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
-  data: [apolloClientOptionsConfigurer],
-});
-
-extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
-  identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_CustomPanelEntriesMenu`,
-  Component: SysONDiagramPanelMenu,
-});
-
-extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object`,
-  Component: SysONObjectTreeItemContextMenuContribution,
-});
-
-extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`,
-  Component: SysONDocumentTreeItemContextMenuContribution,
-});
-
-extensionRegistry.addComponent(footerExtensionPoint, {
+sysONExtensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
 });
-
-extensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
-  identifier: `syson_${navigationBarMenuIconExtensionPoint.identifier}`,
-  Component: SysONNavigationBarMenuIcon,
-});
-
-extensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
-  Component: CreateRequirementMenuEntry,
-});
-
-extensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
-  Component: ExposeRequirementsMenuEntry,
-});
-
-const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
-  {
-    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('updateLibrary');
-    },
-    component: UpdateLibraryTreeItemContextMenuContribution,
-  },
-  {
-    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('expandAll');
-    },
-    component: ExpandAllTreeItemContextMenuContribution,
-  },
-  {
-    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id === 'newObjectsFromText';
-    },
-    component: InsertTextualSysMLMenuContribution,
-  },
-];
-
-extensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(treeItemContextMenuEntryOverrideExtensionPoint, {
-  identifier: `syson_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
-  data: treeItemContextMenuOverrideContributions,
-});
-
-/*******************************************************************************
- *
- * Custom nodes appearance contributions
- *
- *******************************************************************************/
-const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
-  {
-    canHandle: (element) => {
-      return element.type === 'sysMLPackageNode';
-    },
-    component: SysMLPackageNodePaletteAppearanceSection,
-  },
-  {
-    canHandle: (element) => {
-      return element.type === 'sysMLImportedPackageNode';
-    },
-    component: SysMLImportedPackageNodePaletteAppearanceSection,
-  },
-  {
-    canHandle: (element) => {
-      return element.type === 'sysMLNoteNode';
-    },
-    component: SysMLNoteNodePaletteAppearanceSection,
-  },
-  {
-    canHandle: (element) => {
-      return element.type === 'sysMLViewFrameNode';
-    },
-    component: SysMLViewFrameNodePaletteAppearanceSection,
-  },
-];
-
-extensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
-  identifier: `syson_${paletteAppearanceSectionExtensionPoint.identifier}`,
-  data: customNodePaletteAppearanceSectionContribution,
-});
-
-/*******************************************************************************
- *
- * Custom nodes contributions
- *
- *******************************************************************************/
-const nodeTypeRegistry: NodeTypeRegistry = {
-  nodeLayoutHandlers: [
-    new SysMLPackageNodeLayoutHandler(),
-    new SysMLNoteNodeLayoutHandler(),
-    new SysMLImportedPackageNodeLayoutHandler(),
-    new SysMLViewFrameNodeLayoutHandler(),
-  ],
-  nodeConverters: [
-    new SysMLPackageNodeConverter(),
-    new SysMLNoteNodeConverter(),
-    new SysMLImportedPackageNodeConverter(),
-    new SysMLViewFrameNodeConverter(),
-  ],
-  nodeTypeContributions: [
-    <NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />,
-    <NodeTypeContribution component={SysMLNoteNode} type={'sysMLNoteNode'} />,
-    <NodeTypeContribution component={SysMLImportedPackageNode} type={'sysMLImportedPackageNode'} />,
-    <NodeTypeContribution component={SysMLViewFrameNode} type={'sysMLViewFrameNode'} />,
-  ],
-};
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -269,7 +64,7 @@ root.render(
     wsOrigin={wsOrigin}
     theme={sysonTheme}
     extensionRegistryMergeStrategy={new SysONExtensionRegistryMergeStrategy()}
-    extensionRegistry={extensionRegistry}>
-    <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
+    extensionRegistry={sysONExtensionRegistry}>
+    <DiagramRepresentationConfiguration nodeTypeRegistry={sysONNodeTypeRegistry} />
   </SiriusWebApplication>
 );
