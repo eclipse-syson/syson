@@ -20,8 +20,10 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -64,35 +66,29 @@ public class DiagramQueryElementService {
                     .map(ViewUsage.class::cast);
         }
         if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.diagram().getNodes();
-            for (Node rootNode : rootNodes) {
-                if (Objects.equals(rootNode, node)) {
-                    optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                            .filter(ViewUsage.class::isInstance)
-                            .map(ViewUsage.class::cast);
-                    break;
-                }
-            }
-        }
-        if (optViewUsage.isEmpty()) {
-            List<Node> rootNodes = diagramContext.diagram().getNodes();
-            List<Node> allSubNodes = this.getAllSubNodes(rootNodes);
-            for (Node subNode : allSubNodes) {
-                if (subNode.getChildNodes().contains(node)) {
-                    var vu = this.getViewUsage(editingContext, diagramContext, subNode);
-                    if (vu != null) {
-                        optViewUsage = Optional.of(vu);
-                        break;
-                    }
-                }
-            }
-        }
-        if (optViewUsage.isEmpty()) {
-            optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
-                    .filter(ViewUsage.class::isInstance)
-                    .map(ViewUsage.class::cast);
+            optViewUsage = this.getParentViewUsage(node, editingContext, diagramContext);
         }
         return optViewUsage.orElse(null);
+    }
+
+    private Optional<ViewUsage> getParentViewUsage(Node node, IEditingContext editingContext, DiagramContext diagramContext) {
+        Optional<ViewUsage> optViewUsage = Optional.empty();
+        if (optViewUsage.isEmpty()) {
+            var parentGraphicalObj = new NodeFinder(diagramContext.diagram()).getParent(node);
+            if (parentGraphicalObj instanceof Node parentNode) {
+                optViewUsage = this.objectSearchService.getObject(editingContext, parentNode.getTargetObjectId())
+                        .filter(ViewUsage.class::isInstance)
+                        .map(ViewUsage.class::cast);
+                if (optViewUsage.isEmpty()) {
+                    return this.getParentViewUsage(parentNode, editingContext, diagramContext);
+                }
+            } else if (parentGraphicalObj instanceof Diagram diagram) {
+                optViewUsage = this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId())
+                        .filter(ViewUsage.class::isInstance)
+                        .map(ViewUsage.class::cast);
+            }
+        }
+        return optViewUsage;
     }
 
     /**

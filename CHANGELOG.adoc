@@ -89,6 +89,7 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1643[#1643] [export] Textual export fails to serialize a reference to an `Element` having only a _shortName_ (no _declaredName_).
 - https://github.com/eclipse-syson/syson/issues/1166[#1166] [explorer] Fix library workbench to always displays the current library at the root of the explorer.
 Libraries containing only `LibraryPackage` instances were previously displayed under the `User libraries` directory.
+- https://github.com/eclipse-syson/syson/issues/1664[#1664] [diagrams] Fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
 
 === Improvements
 
