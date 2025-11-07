@@ -192,6 +192,8 @@ You can click on such project to see the content of the published library, in re
 In those cases, there was an issue that made the _Explorer_ view displays libraries with only `LibraryPackage` top-level element(s) under the `User libraries` directory instead of the root of the _Explorer_ view.
 This issue is now fixed.
 
+- In diagrams, fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
+
 == Improvements
 
 - In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.

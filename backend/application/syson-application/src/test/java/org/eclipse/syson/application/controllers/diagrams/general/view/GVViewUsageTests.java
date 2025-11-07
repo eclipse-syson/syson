@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Duration;
@@ -26,6 +28,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -42,6 +45,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.AfterEach;
@@ -67,6 +71,10 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVViewUsageTests extends AbstractIntegrationTests {
 
+    private static final String VIEW_USAGE_NODE_LABEL = LabelConstants.OPEN_QUOTE + "view" + LabelConstants.CLOSE_QUOTE + " view1 : StandardViewDefinitions::GeneralView";
+
+    private static final String PART_USAGE_NODE_LABEL = LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1";
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     @Autowired
@@ -89,6 +97,9 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private DiagramComparator diagramComparator;
+
+    @Autowired
+    private ToolTester toolTester;
 
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
 
@@ -193,6 +204,65 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
                 }, () -> fail("Missing diagram"));
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
+    }
 
+    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @DisplayName("GIVEN a General View with ViewUsage node, WHEN sub-child nodes are created in the ViewUsage node, THEN nodes are added in the ViewUsage node")
+    public void checkViewUsageSubChildNodeCreation() {
+        var partOnViewUsageToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
+                this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var actionOnPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getActionUsage()));
+
+        var partNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+        });
+
+        Runnable newPartOnViewUsage = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID,
+                GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
+                partOnViewUsageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramAfterNewPart = assertRefreshedDiagramThat(diag -> {
+            var viewUsageNode = new DiagramNavigator(diag).nodeWithLabel(VIEW_USAGE_NODE_LABEL).getNode();
+
+            var partNode = new DiagramNavigator(diag).nodeWithLabel(VIEW_USAGE_NODE_LABEL)
+                    .childNodeWithLabel(PART_USAGE_NODE_LABEL)
+                    .getNode();
+            partNodeId.set(partNode.getId());
+
+            assertThat(viewUsageNode.getChildNodes()).hasSize(1);
+            assertThat(viewUsageNode.getChildNodes().get(0)).isEqualTo(partNode);
+        });
+
+        Runnable newActionOnPart = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID, partNodeId.get(),
+                actionOnPartToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramAfterNewSubPart = assertRefreshedDiagramThat(diag -> {
+            var viewUsageNode = new DiagramNavigator(diag).nodeWithLabel(VIEW_USAGE_NODE_LABEL).getNode();
+
+            var partNode = new DiagramNavigator(diag).nodeWithLabel(VIEW_USAGE_NODE_LABEL)
+                    .childNodeWithLabel(PART_USAGE_NODE_LABEL)
+                    .getNode();
+            partNodeId.set(partNode.getId());
+
+            var actionNode = new DiagramNavigator(diag).nodeWithLabel(VIEW_USAGE_NODE_LABEL)
+                    .childNodeWithLabel(PART_USAGE_NODE_LABEL)
+                    .getNode();
+
+            assertThat(viewUsageNode.getChildNodes()).hasSize(2);
+            assertThat(viewUsageNode.getChildNodes().get(0)).isEqualTo(partNode);
+            assertThat(viewUsageNode.getChildNodes().get(1)).isEqualTo(actionNode);
+        });
+
+        this.verifier
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newPartOnViewUsage)
+                .consumeNextWith(updatedDiagramAfterNewPart)
+                .then(newActionOnPart)
+                .consumeNextWith(updatedDiagramAfterNewSubPart);
     }
 }
