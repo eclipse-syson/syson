@@ -1,5 +1,9 @@
 # PLEASE READ ALL ITEMS AND CHECK ONLY RELEVANT CHECKBOXES BELOW
 
+## Auto review
+
+- [ ] Have you reviewed this PR? Please do a first quick review, It is very useful to detect typos and missing copyrights, check comments, check your code... The reviewer will thank you for that :)
+
 ## Project management
 
 - [ ] Has the pull request been added to the relevant milestone?
@@ -11,10 +15,10 @@
 ## Changelog and release notes
 
 - [ ] Has the `CHANGELOG.adoc` + `doc/content/modules/user-manual/pages/release-notes/YYYY.MM.0.adoc` been updated to reference the relevant issues?
-- [ ] Have the relevant API breaks been described in the `CHANGELOG.adoc` + `doc/content/modules/user-manual/pages/release-notes/YYYY.MM.0.adoc`?
+- [ ] Have the relevant API breaks been described in the `CHANGELOG.adoc`?
+- [ ] Are the new / upgraded dependencies mentioned in the relevant section of the `CHANGELOG.adoc`?
 - [ ] In case of a change with a visual impact, are there any screenshots in the `doc/content/modules/user-manual/pages/release-notes/YYYY.MM.0.adoc`?
 - [ ] In case of a key change, has the change been added to `Key highlights` section in `doc/content/modules/user-manual/pages/release-notes/YYYY.MM.0.adoc`?
-- [ ] Are the new / upgraded dependencies mentioned in the relevant section of the `CHANGELOG.adoc` + `doc/content/modules/user-manual/pages/release-notes/YYYY.MM.0.adoc`?
 
 ## Documentation
 
