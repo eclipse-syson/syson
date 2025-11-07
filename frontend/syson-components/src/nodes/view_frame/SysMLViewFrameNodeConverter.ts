@@ -70,6 +70,7 @@ const toViewFrameNode = (
   );
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
+  const movedByUser = gqlNodeLayoutData?.movedByUser ?? false;
 
   const data: SysMLViewFrameNodeData = {
     targetObjectId,
@@ -97,6 +98,7 @@ const toViewFrameNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    movedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDraggedNode: false,
     isDropNodeTarget: false,

@@ -17,7 +17,6 @@ import {
   ConnectionTargetHandle,
   DiagramContext,
   DiagramContextValue,
-  DiagramElementPalette,
   Label,
   useConnectionLineNodeStyle,
   useConnectorNodeStyle,
@@ -148,13 +147,6 @@ export const SysMLViewFrameNode: NodeComponentsMap['sysMLViewFrameNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`SysMLViewFrame - ${data?.insideLabel?.text}`}
           data-svg="rect">
-          {selected ? (
-            <DiagramElementPalette
-              diagramElementId={id}
-              targetObjectId={data.targetObjectId}
-              labelId={data.insideLabel ? data.insideLabel.id : null}
-            />
-          ) : null}
           {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />

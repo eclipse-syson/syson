@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ export const isCreateProjectFromTemplateSuccessPayload = (
 ): payload is CreateProjectFromTemplateSuccessPayload =>
   payload.__typename === 'CreateProjectFromTemplateSuccessPayload';
 
-Cypress.Commands.add('createProjectFromTemplate', (templateId) => {
+Cypress.Commands.add('createProjectFromTemplate', (name: string, templateId: string, natures: string[]) => {
   const query = `
   mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
     createProjectFromTemplate(input: $input) {
@@ -48,7 +48,9 @@ Cypress.Commands.add('createProjectFromTemplate', (templateId) => {
   const variables: CreateProjectFromTemplateVariables = {
     input: {
       id: crypto.randomUUID(),
+      name,
       templateId,
+      natures,
     },
   };
 

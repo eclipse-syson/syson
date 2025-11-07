@@ -21,7 +21,7 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
-import { settingButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
+import { toolsButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
   treeItemContextMenuEntryExtensionPoint,
@@ -51,7 +51,7 @@ import { CreateRequirementMenuEntry } from '../requirementsTable/CreateRequireme
 import { ExposeRequirementsMenuEntry } from '../requirementsTable/ExposeRequirementsMenuEntry';
 import { SysONDiagramPanelMenu } from '../SysONDiagramPanelMenu';
 
-export const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
+const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {
@@ -109,13 +109,13 @@ sysONExtensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   Component: SysONNavigationBarMenuIcon,
 });
 
-sysONExtensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
+sysONExtensionRegistry.addComponent(toolsButtonMenuEntryExtensionPoint, {
+  identifier: `syson_${toolsButtonMenuEntryExtensionPoint.identifier}`,
   Component: CreateRequirementMenuEntry,
 });
 
-sysONExtensionRegistry.addComponent(settingButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${settingButtonMenuEntryExtensionPoint.identifier}`,
+sysONExtensionRegistry.addComponent(toolsButtonMenuEntryExtensionPoint, {
+  identifier: `syson_${toolsButtonMenuEntryExtensionPoint.identifier}`,
   Component: ExposeRequirementsMenuEntry,
 });
 
@@ -155,26 +155,26 @@ sysONExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
  *******************************************************************************/
 const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
   {
-    canHandle: (element) => {
-      return element.type === 'sysMLPackageNode';
+    canHandle: (node, _edge) => {
+      return node?.type === 'sysMLPackageNode';
     },
     component: SysMLPackageNodePaletteAppearanceSection,
   },
   {
-    canHandle: (element) => {
-      return element.type === 'sysMLImportedPackageNode';
+    canHandle: (node, _edge) => {
+      return node?.type === 'sysMLImportedPackageNode';
     },
     component: SysMLImportedPackageNodePaletteAppearanceSection,
   },
   {
-    canHandle: (element) => {
-      return element.type === 'sysMLNoteNode';
+    canHandle: (node, _edge) => {
+      return node?.type === 'sysMLNoteNode';
     },
     component: SysMLNoteNodePaletteAppearanceSection,
   },
   {
-    canHandle: (element) => {
-      return element.type === 'sysMLViewFrameNode';
+    canHandle: (node, _edge) => {
+      return node?.type === 'sysMLViewFrameNode';
     },
     component: SysMLViewFrameNodePaletteAppearanceSection,
   },
@@ -184,3 +184,5 @@ sysONExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(pale
   identifier: `syson_${paletteAppearanceSectionExtensionPoint.identifier}`,
   data: customNodePaletteAppearanceSectionContribution,
 });
+
+export { sysONExtensionRegistry };

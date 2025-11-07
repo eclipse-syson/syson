@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { SettingsButtonMenuEntryProps } from '@eclipse-sirius/sirius-components-tables';
+import { ToolsButtonMenuEntryProps } from '@eclipse-sirius/sirius-components-tables';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { useCreateRequirement } from './useCreateRequirement';
 
-export const CreateRequirementMenuEntry = ({ editingContextId, tableId }: SettingsButtonMenuEntryProps) => {
+export const CreateRequirementMenuEntry = ({ editingContextId, tableId }: ToolsButtonMenuEntryProps) => {
   const { createRequirement } = useCreateRequirement();
 
   return (

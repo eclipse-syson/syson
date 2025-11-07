@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import { CreatedProjectData } from './Batmobile.types';
 
 export class Batmobile {
   public createBatmobileProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('batmobile-template').then((res) => {
+    return cy.createProjectFromTemplate('Batmobile', 'batmobile-template', []).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;

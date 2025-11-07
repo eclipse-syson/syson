@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
@@ -82,7 +83,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID, List.of());
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
@@ -117,7 +118,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID, List.of());
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
@@ -152,7 +153,8 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID);
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID, SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID,
+                List.of());
         var result = this.createProjectFromTemplateMutationRunner.run(input);
 
         String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");

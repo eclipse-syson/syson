@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IWorkbenchOmniboxCommandProvider;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.syson.application.omnibox.api.IPredicateCanEditingContextPublishSysMLProject;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
  * @author flatombe
  */
 @Service
-public class SysONOmniboxCommandProvider implements IOmniboxCommandProvider {
+public class SysONOmniboxCommandProvider implements IWorkbenchOmniboxCommandProvider {
 
     public static final String PUBLISH_SYSML_PROJECT_COMMAND_ID = "publishProjectSysMLContentsAsLibrary";
 

@@ -33,7 +33,7 @@ import { SysMLViewFrameNodeLayoutHandler } from '../../nodes/view_frame/SysMLVie
  * Custom nodes contributions
  *
  *******************************************************************************/
-export const sysONNodeTypeRegistry: NodeTypeRegistry = {
+const sysONNodeTypeRegistry: NodeTypeRegistry = {
   nodeLayoutHandlers: [
     new SysMLPackageNodeLayoutHandler(),
     new SysMLNoteNodeLayoutHandler(),
@@ -59,3 +59,5 @@ export const sysONNodeTypeRegistry: NodeTypeRegistry = {
     />,
   ],
 };
+
+export { sysONNodeTypeRegistry };

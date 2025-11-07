@@ -82,7 +82,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         UUID randomUUID = UUID.randomUUID();
-        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of()));
+        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of(), List.of()));
         assertThat(project instanceof CreateProjectSuccessPayload);
 
         TestTransaction.flagForCommit();
@@ -942,7 +942,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 part p {
                     attribute <a> anAttribute;
                 }
-                
+
                 part p1 :> p {
                     attribute :>> a;
                 }""";
