@@ -44,3 +44,12 @@ If you need to run {product} docker image on a Mac Silicon architecture, please 
 ----
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----
+
+== Problems when not using a standard Docker environment
+If your container environment is not a standard Docker installation (podman for example) you may run into access problems.
+These can be solved by adding
+[source, bash]
+----
+    privileged: true
+----
+to both containers (_database_ and _app_) in the `docker-compose.yml`.

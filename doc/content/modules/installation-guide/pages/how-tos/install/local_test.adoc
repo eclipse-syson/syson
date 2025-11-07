@@ -57,10 +57,24 @@ export DOCKER_DEFAULT_PLATFORM=linux/amd64
 To deploy a specific version `vYYYY.MM.0`, edit the `docker-compose.yml` file and replace the tagged version with your required version.
 For example, update the following line in the `docker-compose.yml`:
 
-[source,docker]
+[source, docker]
 ----
 app:
   image: "${IMAGE_TAG:-eclipsesyson/syson:*vYYYY.MM.0*}"
+----
+====
+
+[NOTE]
+====
+A container looses all internal data when it is recreated from an image.
+To keep the database when recreating the container, its files must be stored outside the container.
+This is done via mounting a local directory as volume. Add following lines to the database container configuration in the `docker-compose.yml`:
+
+[source, docker]
+----
+    volumes:
+      # Replace YOUR_LOCAL_DATA_FOLDER_PATH with your local data folder path
+      - YOUR_LOCAL_DATA_FOLDER_PATH:/var/lib/postgresql/data
 ----
 ====
 
