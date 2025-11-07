@@ -21,9 +21,9 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.sirius.components.collaborative.omnibox.OmniboxSearchCommandProvider;
+import org.eclipse.sirius.components.collaborative.omnibox.WorkbenchOmniboxSearchCommandProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.graphql.tests.OmniboxCommandsQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.web.application.studio.services.StudioImportLibraryCommandProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioPublicationCommandProvider;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -50,7 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
-    private OmniboxCommandsQueryRunner omniboxCommandsQueryRunner;
+    private WorkbenchOmniboxCommandsQueryRunner omniboxCommandsQueryRunner;
 
     @MockitoSpyBean
     private IEditingContextSearchService editingContextSearchService;
@@ -67,8 +67,8 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var omniboxCommandsQueryResult = this.omniboxCommandsQueryRunner.run(omniboxCommandsQueryVariables);
-        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.id");
-        assertThat(allCommandIds).hasSize(3).contains(OmniboxSearchCommandProvider.SEARCH_COMMAND_ID, SysONOmniboxCommandProvider.PUBLISH_SYSML_PROJECT_COMMAND_ID,
+        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
+        assertThat(allCommandIds).hasSize(3).contains(WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID, SysONOmniboxCommandProvider.PUBLISH_SYSML_PROJECT_COMMAND_ID,
                 SysONOmniboxCommandProvider.IMPORT_PUBLISHED_LIBRARY_COMMAND_ID);
         // Ensure the test never requested the editing context from IEditingContextSearchService.
         // Loading the editing context is time consuming since all the standard libraries need to be copied into it.
@@ -86,9 +86,9 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "selectedObjectIds", List.of(),
                 "query", "");
         var omniboxCommandsQueryResult = this.omniboxCommandsQueryRunner.run(omniboxCommandsQueryVariables);
-        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.omniboxCommands.edges[*].node.id");
+        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
         assertThat(allCommandIds).hasSize(4)
-                .contains(OmniboxSearchCommandProvider.SEARCH_COMMAND_ID,
+                .contains(WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID,
                         StudioPublicationCommandProvider.PUBLISH_STUDIO_COMMAND_ID,
                         StudioImportLibraryCommandProvider.IMPORT_LIBRARY_COMMAND_ID,
                         // It is possible to import SysML libraries in non-SysML projects, but it is not possible to

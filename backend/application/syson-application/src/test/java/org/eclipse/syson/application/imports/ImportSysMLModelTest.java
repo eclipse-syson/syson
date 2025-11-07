@@ -126,7 +126,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         UUID randomUUID = UUID.randomUUID();
-        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of()));
+        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of(), List.of()));
         assertThat(project instanceof CreateProjectSuccessPayload);
 
         TestTransaction.flagForCommit();
@@ -283,7 +283,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pa1 {
                     part pa1;
                     part pa2;
-                
+
                     connect pa1 to pa2;
                 }
                 """;

@@ -20,7 +20,6 @@ import {
   ConnectionTargetHandle,
   DiagramContext,
   DiagramContextValue,
-  DiagramElementPalette,
   EdgeData,
   Label,
   NodeData,
@@ -168,13 +167,6 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
             </svg>
           </div>
           {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
-          {!!selected ? (
-            <DiagramElementPalette
-              diagramElementId={id}
-              targetObjectId={data.targetObjectId}
-              labelId={data.insideLabel ? data.insideLabel.id : null}
-            />
-          ) : null}
           {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />

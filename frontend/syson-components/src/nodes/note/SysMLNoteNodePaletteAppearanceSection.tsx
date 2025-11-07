@@ -22,9 +22,9 @@ import { GQLSysMLNoteNodeStyle } from './SysMLNoteNode.types';
 import { SysMLNoteNodePart } from './SysMLNoteNodePart';
 
 export const SysMLNoteNodePaletteAppearanceSection = ({
-  elementId,
+  diagramElementId,
 }: PaletteAppearanceSectionContributionComponentProps) => {
-  const nodeData = useNodesData<Node<NodeData>>(elementId);
+  const nodeData = useNodesData<Node<NodeData>>(diagramElementId);
 
   if (!nodeData) {
     return null;
@@ -32,13 +32,13 @@ export const SysMLNoteNodePaletteAppearanceSection = ({
   return (
     <>
       <SysMLNoteNodePart
-        nodeId={elementId}
+        nodeId={diagramElementId}
         style={nodeData.data.nodeAppearanceData.gqlStyle as GQLSysMLNoteNodeStyle}
         customizedStyleProperties={nodeData.data.nodeAppearanceData.customizedStyleProperties}
       />
       {nodeData.data.insideLabel ? (
         <LabelAppearancePart
-          diagramElementId={elementId}
+          diagramElementId={diagramElementId}
           labelId={nodeData.data.insideLabel.id}
           position="Inside Label"
           style={nodeData.data.insideLabel.appearanceData.gqlStyle}

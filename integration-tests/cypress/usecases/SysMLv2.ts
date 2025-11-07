@@ -16,7 +16,7 @@ import { CreatedProjectData } from './SysMLv2.types';
 
 export class SysMLv2 {
   public createSysMLv2Project(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('sysmlv2-template').then((res) => {
+    return cy.createProjectFromTemplate('SysMLv2', 'sysmlv2-template', []).then((res) => {
       const payload = res.body.data.createProjectFromTemplate;
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const projectId = payload.project.id;
