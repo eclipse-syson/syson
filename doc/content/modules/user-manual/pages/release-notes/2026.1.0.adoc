@@ -10,6 +10,25 @@
 
 == Improvements
 
+- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model.
+
+```
+package Requirements {
+    requirement <Req1> {
+        doc /* Some doc */
+    }
+    requirement def REQ2;
+}
+part Context1 {
+    part 'System 1';
+}
+package ReqSatisfactions {
+    private import Requirements::*;
+    assert satisfy Req1 by Context1.'System 1';
+    assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
+}
+```
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

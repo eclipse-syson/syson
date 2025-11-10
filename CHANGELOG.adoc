@@ -12,6 +12,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1666[#1666] [export] Export `SatisfyRequirementUsage` in textual format.
+
 === New features
 
 == v2025.12.0
