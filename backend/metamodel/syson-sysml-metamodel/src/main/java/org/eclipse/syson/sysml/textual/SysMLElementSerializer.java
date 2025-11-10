@@ -990,8 +990,48 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseSatisfyRequirementUsage(SatisfyRequirementUsage satisfyRequirementUsage) {
-        this.reportUnhandledType(satisfyRequirementUsage);
-        return "";
+
+        var builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, satisfyRequirementUsage);
+
+        builder.appendWithSpaceIfNeeded("assert");
+        if (satisfyRequirementUsage.isIsNegated()) {
+            builder.append(" not");
+        }
+
+        builder.append(" satisfy");
+        ReferenceSubsetting ownedReferenceSubsetting = satisfyRequirementUsage.getOwnedReferenceSubsetting();
+        if (ownedReferenceSubsetting != null) {
+            this.appendOwnedReferenceSubsetting(builder, ownedReferenceSubsetting);
+
+            List<Specialization> ownedSpecialization = satisfyRequirementUsage.getOwnedSpecialization().stream()
+                    // The owned reference subsetting is already handled previously
+                    .filter(specialization -> specialization != ownedReferenceSubsetting)
+                    .toList();
+            this.appendFeatureSpecializationPart(builder, satisfyRequirementUsage, ownedSpecialization, false);
+        } else {
+            // Requirement usage definition
+            builder.appendWithSpaceIfNeeded("requirement");
+            this.appendUsageDeclaration(builder, satisfyRequirementUsage);
+        }
+
+        this.appendValuePart(builder, satisfyRequirementUsage);
+
+        builder.appendWithSpaceIfNeeded("by");
+        List<Relationship> ownedMembershipToPutInBody = new ArrayList<>(satisfyRequirementUsage.getOwnedRelationship());
+        ownedMembershipToPutInBody.stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .findFirst()
+                .ifPresent(subjectMembership -> {
+                    ownedMembershipToPutInBody.remove(subjectMembership);
+                    this.appendSatisfactionSubjectMember(builder, subjectMembership);
+                });
+
+        this.appendChildrenContent(builder, satisfyRequirementUsage, ownedMembershipToPutInBody);
+
+        return builder.toString();
     }
 
     @Override
@@ -1465,19 +1505,33 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return this.keywordProvider.doSwitch(usage);
     }
 
-    private void appendFeatureSpecilizationPart(Appender builder, Feature feature, boolean includeImplied) {
-        List<Redefinition> ownedRedefinition = feature.getOwnedRedefinition();
-        this.appendRedefinition(builder, ownedRedefinition, includeImplied);
 
-        this.appendReferenceSubsetting(builder, feature.getOwnedReferenceSubsetting(), includeImplied);
+    private void appendFeatureSpecializationPart(Appender builder, Feature feature, List<Specialization> specializations, boolean includeImplied) {
+        List<Redefinition> ownedRedefinitions = specializations.stream()
+                .filter(Redefinition.class::isInstance)
+                .map(Redefinition.class::cast)
+                .toList();
+        this.appendRedefinition(builder, ownedRedefinitions, includeImplied);
 
-        List<Subsetting> ownedSubsetting = new ArrayList<>(feature.getOwnedSubsetting());
-        ownedSubsetting.removeAll(ownedRedefinition);
-        ownedSubsetting.remove(feature.getOwnedReferenceSubsetting());
+        ReferenceSubsetting refSubSetting = specializations.stream()
+                .filter(ReferenceSubsetting.class::isInstance)
+                .map(ReferenceSubsetting.class::cast)
+                .findFirst().orElse(null);
+        this.appendReferenceSubsetting(builder, refSubSetting, includeImplied);
 
-        this.appendSubsettings(builder, ownedSubsetting, includeImplied);
+        List<Subsetting> ownedSubsettings = specializations.stream()
+                .filter(specialization -> specialization instanceof Subsetting && !(specialization instanceof Redefinition) && !(specialization instanceof ReferenceSubsetting))
+                .map(Subsetting.class::cast)
+                .toList();
 
-        this.appendFeatureTyping(builder, feature.getOwnedTyping());
+        this.appendSubsettings(builder, ownedSubsettings, includeImplied);
+
+        List<FeatureTyping> featureTypings = specializations.stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .toList();
+        this.appendFeatureTyping(builder, featureTypings);
+
         this.appendMultiplicityPart(builder, feature);
     }
 
@@ -1546,7 +1600,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return name != null && !name.isBlank();
     }
 
-    private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping) {
+    private void appendFeatureTyping(Appender builder, List<FeatureTyping> ownedTyping) {
         List<String> types = ownedTyping.stream()
                 .filter(ft -> this.isNotNullAndNotAProxy(ft.getType()))
                 .map(this::getFeatureTypingTypeName)
@@ -1695,7 +1749,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             }
         } else {
             if (membership.getMemberElement() instanceof Feature feature) {
-                builder.append(this.getDeresolvableName(feature, membership.getMemberElement()));
+                builder.appendWithSpaceIfNeeded(this.getDeresolvableName(feature, membership.getMemberElement()));
             }
         }
     }
@@ -2277,7 +2331,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendUsageDeclaration(Appender builder, Usage usage) {
         this.appendNameWithShortName(builder, usage);
-        this.appendFeatureSpecilizationPart(builder, usage, false);
+        this.appendFeatureSpecializationPart(builder, usage, usage.getOwnedSpecialization(), false);
     }
 
     /**
@@ -2512,6 +2566,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    private void appendSatisfactionSubjectMember(Appender builder, SubjectMembership subjectMembership) {
+        subjectMembership.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .flatMap(referenceUsage -> referenceUsage.getOwnedRelationship().stream())
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .flatMap(featureValue -> featureValue.getOwnedRelatedElement().stream())
+                .filter(FeatureReferenceExpression.class::isInstance)
+                .map(FeatureReferenceExpression.class::cast)
+                .flatMap(featureReferenceExpression -> featureReferenceExpression.getOwnedMembership().stream())
+                .findFirst()
+                .ifPresent(membership -> this.appendFeatureChainMember(builder, membership));
+    }
+
     private String getContent(List<? extends Relationship> children, String prefix) {
         return children.stream().filter(m -> !this.childrenMembershipToSkip.contains(m))
                 .map(this::doSwitch)
@@ -2584,7 +2653,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             } else {
                 // Handle simple form "Identification? PayloadFeatureSpecializationPart ValuePart?" for the moment
                 builder.appendWithSpaceIfNeeded(nameBuilder.toString());
-                this.appendFeatureSpecilizationPart(builder, payloadFeature, false);
+                this.appendFeatureSpecializationPart(builder, payloadFeature, payloadFeature.getOwnedSpecialization(), false);
                 FeatureValue value = this.getValuation(payloadFeature);
                 if (value != null) {
                     this.appendValuePart(builder, flowConnectionUsage);
