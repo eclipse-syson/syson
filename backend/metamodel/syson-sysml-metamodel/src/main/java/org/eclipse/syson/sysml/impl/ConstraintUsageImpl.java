@@ -446,7 +446,7 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public Feature namingFeature() {
-        OwningMembership owMembership = this.getOwningMembership();
+        OwningMembership owMembership = this.getOwningFeatureMembership();
         if (owMembership instanceof RequirementConstraintMembership && this.getOwnedReferenceSubsetting() != null) {
             return this.getOwnedReferenceSubsetting().getReferencedFeature();
         }
