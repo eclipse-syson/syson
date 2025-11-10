@@ -1167,6 +1167,7 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, "redefinition1");
         redefinition.setRedefinedFeature(feature);
+        redefinition.setRedefiningFeature(attributeUsage);
 
         this.assertTextualFormEquals("attribute attribute1 :>> redefinition1;", attributeUsage);
     }
@@ -1180,9 +1181,11 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, "redefinition1");
         redefinition.setRedefinedFeature(feature);
+        redefinition.setRedefiningFeature(attributeUsage);
 
         Feature feature1 = this.builder.createWithName(Feature.class, "redefinition2");
         redefinition1.setRedefinedFeature(feature1);
+        redefinition1.setRedefiningFeature(attributeUsage);
 
         this.assertTextualFormEquals("attribute attribute1 :>> redefinition1, redefinition2;", attributeUsage);
     }

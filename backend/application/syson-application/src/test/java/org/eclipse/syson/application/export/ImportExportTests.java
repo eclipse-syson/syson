@@ -1021,6 +1021,45 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with SatisfyRequirementUsage, WHEN importing and exporting the model, THEN the SatisfyRequirementUsage should be exported properly")
+    public void checkSatisfyRequirementUsage() throws IOException {
+        var input = """
+                package Requirements {
+                    requirement <Req1> {
+                        doc /* Some doc */
+                    }
+                    requirement def REQ2;
+                }
+                part Context1 {
+                    part 'System 1';
+                }
+                package ReqSatisfactions {
+                    private import Requirements::*;
+                    satisfy Req1 by Context1.'System 1';
+                    satisfy Req1 by Context1;
+                    satisfy requirement Req2 : REQ2 by Context1.'System 1';
+                }""";
+        // We use the strict BNF form of the SatisfyRequirementUsage that force the use of the "assert" keyword
+        var expected = """
+                package Requirements {
+                    requirement <Req1> {
+                        doc /* Some doc */
+                    }
+                    requirement def REQ2;
+                }
+                part Context1 {
+                    part 'System 1';
+                }
+                package ReqSatisfactions {
+                    private import Requirements::*;
+                    assert satisfy Req1 by Context1.'System 1';
+                    assert satisfy Req1 by Context1;
+                    assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
+                }""";
+        this.checker.check(input, expected);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with ConnectionUsage, WHEN importing and exporting the model, THEN the ConnectionUsage should be exported properly")
     public void checkConnectionUsage() throws IOException {
         var input = """
