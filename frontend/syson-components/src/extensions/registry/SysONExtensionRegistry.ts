@@ -24,17 +24,14 @@ import {
 import { toolsButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
-  treeItemContextMenuEntryExtensionPoint,
   treeItemContextMenuEntryOverrideExtensionPoint,
   TreeItemContextMenuOverrideContribution,
 } from '@eclipse-sirius/sirius-components-trees';
 import {
   ApolloClientOptionsConfigurer,
   apolloClientOptionsConfigurersExtensionPoint,
-  ExpandAllTreeItemContextMenuContribution,
   ImportLibraryCommand,
   navigationBarMenuIconExtensionPoint,
-  UpdateLibraryTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 
 import { SysMLImportedPackageNodePaletteAppearanceSection } from '../../nodes/imported_package/SysMLImportedPackageNodePaletteAppearanceSection';
@@ -42,8 +39,6 @@ import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNot
 import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/SysMLPackageNodePaletteAppearanceSection';
 import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocumentTransform';
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
-import { SysONDocumentTreeItemContextMenuContribution } from '../contextMenu/SysONDocumentTreeItemContextMenuContribution';
-import { SysONObjectTreeItemContextMenuContribution } from '../contextMenu/SysONObjectTreeItemContextMenuContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
@@ -94,16 +89,6 @@ sysONExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
   Component: SysONDiagramPanelMenu,
 });
 
-sysONExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `syson_${treeItemContextMenuEntryExtensionPoint.identifier}_object`,
-  Component: SysONObjectTreeItemContextMenuContribution,
-});
-
-sysONExtensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
-  identifier: `syson_${treeItemContextMenuEntryExtensionPoint.identifier}_document`,
-  Component: SysONDocumentTreeItemContextMenuContribution,
-});
-
 sysONExtensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   identifier: `syson_${navigationBarMenuIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarMenuIcon,
@@ -120,18 +105,6 @@ sysONExtensionRegistry.addComponent(toolsButtonMenuEntryExtensionPoint, {
 });
 
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
-  {
-    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('updateLibrary');
-    },
-    component: UpdateLibraryTreeItemContextMenuContribution,
-  },
-  {
-    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
-      return entry.id.includes('expandAll');
-    },
-    component: ExpandAllTreeItemContextMenuContribution,
-  },
   {
     canHandle: (entry: GQLTreeItemContextMenuEntry) => {
       return entry.id === 'newObjectsFromText';

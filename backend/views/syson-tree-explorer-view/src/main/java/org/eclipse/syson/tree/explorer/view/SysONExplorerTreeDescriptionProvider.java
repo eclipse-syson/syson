@@ -12,24 +12,22 @@
  *******************************************************************************/
 package org.eclipse.syson.tree.explorer.view;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.TextStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
-import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 
 /**
@@ -40,10 +38,6 @@ import org.eclipse.syson.util.ServiceMethod;
 public class SysONExplorerTreeDescriptionProvider {
 
     public static final String SYSON_EXPLORER = "SysON Explorer";
-
-    public static final String EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID = "expandAll";
-
-    public static final String NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID = "newObjectsFromText";
 
     public View createView() {
 
@@ -75,13 +69,12 @@ public class SysONExplorerTreeDescriptionProvider {
                 // This predicate will NOT be used while creating the explorer, but we don't want to see the description
                 // of the explorer in the list of representations that can be created. Thus, we will return false all
                 // the time.
-                .preconditionExpression("aql:false")
+                .preconditionExpression(AQLConstants.AQL_FALSE)
                 .selectableExpression(ServiceMethod.of0(TreeQueryAQLService::isSelectable).aqlSelf())
                 .titleExpression(SYSON_EXPLORER)
                 .treeItemIdExpression(ServiceMethod.of0(TreeQueryAQLService::getTreeItemId).aqlSelf())
                 .treeItemObjectExpression(ServiceMethod.of1(TreeQueryAQLService::getTreeItemObject).aql("id", IEditingContext.EDITING_CONTEXT))
                 .treeItemLabelDescriptions(this.createDefaultStyle())
-                .contextMenuEntries(this.getContextMenuEntries().toArray(TreeItemContextMenuEntry[]::new))
                 .build();
         return description;
     }
@@ -145,17 +138,5 @@ public class SysONExplorerTreeDescriptionProvider {
                         .foregroundColorExpression("aql:'#ab8b01'")
                         .build())
                 .build();
-    }
-
-    private List<TreeItemContextMenuEntry> getContextMenuEntries() {
-        final TreeItemContextMenuEntry newObjectsFromTextMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
-                .contributionId(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                .preconditionExpression(ServiceMethod.of0(TreeQueryAQLService::canCreateNewObjectsFromText).aqlSelf())
-                .build();
-        var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
-                .contributionId(EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID)
-                .preconditionExpression(ServiceMethod.of1(TreeQueryAQLService::canExpandAll).aql(TreeItem.SELECTED_TREE_ITEM, IEditingContext.EDITING_CONTEXT))
-                .build();
-        return List.of(newObjectsFromTextMenuEntry, expandAllMenuEntry);
     }
 }

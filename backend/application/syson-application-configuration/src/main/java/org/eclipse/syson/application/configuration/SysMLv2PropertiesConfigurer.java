@@ -31,10 +31,10 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.emf.ViewConverterResult;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -150,8 +150,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
                 List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService,
                         new ModelMutationAQLService(new ModelMutationElementService()), new ModelQueryAQLService(), new FormMutationAQLService(), new FormQueryAQLService()),
                 List.of(SysmlPackage.eINSTANCE));
-        IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
-        if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
+        ViewConverterResult converterResult = this.converter.convert(viewFormDescription, List.of(), interpreter);
+        if (converterResult != null && converterResult.representationDescription() instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
             formDescription.getPageDescriptions().forEach(registry::add);
         }
     }

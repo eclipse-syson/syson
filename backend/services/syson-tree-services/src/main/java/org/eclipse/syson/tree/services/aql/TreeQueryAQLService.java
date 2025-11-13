@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 
@@ -75,14 +74,6 @@ public class TreeQueryAQLService {
 
     public List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         return this.sysonExplorerService.getChildren(self, editingContext, existingRepresentations, expandedIds, activeFilterIds);
-    }
-
-    public boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext) {
-        return this.sysonExplorerService.canExpandAll(treeItem, editingContext);
-    }
-
-    public boolean canCreateNewObjectsFromText(Object self) {
-        return this.sysonExplorerService.canCreateNewObjectsFromText(self);
     }
 
     public List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds) {

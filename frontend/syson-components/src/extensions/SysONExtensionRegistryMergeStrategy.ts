@@ -11,13 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  ComponentExtension,
-  DataExtension,
-  ExtensionRegistryMergeStrategy,
-} from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
-import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import { treeItemContextMenuEntryOverrideExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
   apolloClientOptionsConfigurersExtensionPoint,
   DefaultExtensionRegistryMergeStrategy,
@@ -27,27 +23,6 @@ export class SysONExtensionRegistryMergeStrategy
   extends DefaultExtensionRegistryMergeStrategy
   implements ExtensionRegistryMergeStrategy
 {
-  public override mergeComponentExtensions(
-    _identifier: string,
-    existingValues: ComponentExtension<any>[],
-    newValues: ComponentExtension<any>[]
-  ): ComponentExtension<any>[] {
-    if (_identifier === treeItemContextMenuEntryExtensionPoint.identifier) {
-      return super.mergeComponentExtensions(
-        _identifier,
-        existingValues.filter((contribution) => {
-          // Discard default versions of these extensions, we want to replace them with our own.
-          return (
-            contribution.identifier !== `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object` &&
-            contribution.identifier !== `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`
-          );
-        }),
-        newValues
-      );
-    }
-    return super.mergeComponentExtensions(_identifier, existingValues, newValues);
-  }
-
   public override mergeDataExtensions(
     identifier: string,
     existingValues: DataExtension<any>,
@@ -58,6 +33,9 @@ export class SysONExtensionRegistryMergeStrategy
     }
     if (identifier === omniboxCommandOverrideContributionExtensionPoint.identifier) {
       return this.mergeOmniboxCommandOverrideContributions(existingValues, newValues);
+    }
+    if (identifier === treeItemContextMenuEntryOverrideExtensionPoint.identifier) {
+      return this.mergeTreeItemContributions(existingValues, newValues);
     }
     return newValues;
   }
@@ -79,6 +57,16 @@ export class SysONExtensionRegistryMergeStrategy
     return {
       identifier: `syson_${omniboxCommandOverrideContributionExtensionPoint.identifier}_merged`,
       data: [...existingOmniboxCommandOverrideContributions.data, ...newOmniboxCommandOverrideContributions.data],
+    };
+  }
+
+  private mergeTreeItemContributions(
+    existingContributions: DataExtension<any>,
+    newContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: `syson_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
+      data: [...existingContributions.data, ...newContributions.data],
     };
   }
 }

@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFun
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -54,8 +56,8 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
-import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
+import org.eclipse.syson.tree.explorer.view.menu.context.SysONExplorerTreeItemContextMenuEntryProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -118,11 +120,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     private List<String> defaultFilters;
 
-    private String treeDescriptionId;
+    private String sysONExplorerTreeDescriptionId;
 
     @BeforeEach
     public void beforeEach() {
-        this.treeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
+        this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
         this.givenInitialServerState.initialize();
         this.defaultFilters = this.sysonTreeFilterProvider.get(null, null, null).stream()
                 .filter(TreeFilter::defaultState)
@@ -141,7 +143,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
-        assertThat(explorerIds).contains(this.treeDescriptionId);
+        assertThat(explorerIds).contains(this.sysONExplorerTreeDescriptionId);
     }
 
     @DisplayName("GIVEN a SysON Studio Project, WHEN the available explorers are requested, THEN the Sirius Web explorer is returned")
@@ -164,7 +166,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithDefaultFilters() {
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), this.defaultFilters);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), this.defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();
@@ -202,7 +204,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-        var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, expandedTreeItemIds, this.defaultFilters);
+        var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedTreeItemIds, this.defaultFilters);
         var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
 
@@ -247,7 +249,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         String librariesTreeItemId = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
         String sysmlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
         String kermlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(librariesTreeItemId, sysmlLibrariesTreeItemId, kermlLibrariesTreeItemId), this.defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -296,7 +298,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();
@@ -329,7 +331,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void getContextMenuOfModelAndLibraryDirectories() {
         // Expand the Libraries directory when building the explorer, we want to check the context menu of elements
         // under it.
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString()), this.defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -369,9 +371,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         List<String> sysmlModelContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId,
                 sysmlModelTreeItemId.get());
-        // The expected size is 1: there is only one entry contributed from the backend, the other entries (new object,
-        // download, etc) are contributed from the frontend.
-        assertThat(sysmlModelContextMenu).hasSize(1).anyMatch(entry -> Objects.equals(entry, SysONExplorerTreeDescriptionProvider.EXPAND_ALL_MENU_ENTRY_CONTRIBUTION_ID));
+        assertThat(sysmlModelContextMenu).hasSize(3).anyMatch(entry -> Objects.equals(entry, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
         List<String> librariesDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId,
                 librariesDirectoryTreeItemId.get());
         assertThat(librariesDirectoryContextMenu).isEmpty();
@@ -389,7 +389,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void treePathQueryApplyExplorerFilters() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -509,7 +509,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentWithImportedLibraryContainingOnePackage() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), filters);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();
@@ -538,7 +538,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentWithImportedLibraryContainingPackageAndLibraryPackage() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), filters);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();
@@ -567,7 +567,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentWithImportedLibraryContainingLibraryPackage() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -604,7 +604,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentOnLibrarySemanticDataWithLibraryPackage() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -632,7 +632,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Test
     public void getExplorerContentOnLibrarySemanticDataWithPackage() {
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -651,5 +651,74 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialExplorerContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer, WHEN tree item context menu is requested, THEN the returned tree items are the appropriate one.")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void sysONExplorerTreeItemContextMenuEntriesTest() {
+        var expandedItemIds = List.of(
+                GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID,
+                GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID,
+                GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
+                GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID);
+
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, filters);
+
+        var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
+
+        Runnable getDocumentContextMenuActions = () -> {
+            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
+            assertThat(documentMenuEntriesIds).hasSize(3)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+        };
+
+        Runnable getRootNSContextMenuActions = () -> {
+            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID);
+            assertThat(documentMenuEntriesIds).hasSize(4)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
+                    .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+        };
+
+        Runnable getElementContextMenuActions = () -> {
+            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
+            assertThat(documentMenuEntriesIds).hasSize(4)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
+                    .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+        };
+
+        Runnable getDiagramContextMenuActions = () -> {
+            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
+            assertThat(documentMenuEntriesIds).hasSize(1)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION);
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(getDocumentContextMenuActions)
+                .then(getRootNSContextMenuActions)
+                .then(getElementContextMenuActions)
+                .then(getDiagramContextMenuActions)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
     }
 }

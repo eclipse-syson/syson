@@ -65,11 +65,14 @@ Also introduces new `ServiceMethod` helper class to build AQL service call expre
 - https://github.com/eclipse-syson/syson/issues/1166[#1166] [explorer] Fix library workbench to always displays the current library at the root of the explorer.
 * `ISysONService#isImported` and `ISysONService#isFromReferencedLibrary` now require an `IEditingContext` parameter
 * `ISysONExplorerFilterService#isUserLibrary`, `ISysONExplorerFilterService#hideUserLibraries`, and `ISysONExplorerFilterService#applyFilters` now require an `IEditingContext` parameter.
+- [explorer] _NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID_ constant has been moved from `org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider` to `org.eclipse.syson.tree.explorer.view.menu.context.SysONExplorerTreeItemContextMenuEntryProvider`.
+`SysONDocumentTreeItemContextMenuContribution` and `SysONObjectTreeItemContextMenuContribution` frontend components have been deleted.
+SysON now uses the Sirius-Web implementations of these components.
 
 === Dependency update
 
 - [releng] Update to ANTLR 4.13.2 to match the version sirius-web is using
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.10.2]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.10.3]
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.7[Spring Boot 3.5.7]
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0]
