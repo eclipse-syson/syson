@@ -38,6 +38,8 @@ public class GeneralViewEmptyTestProjectData {
 
         public static final String MODEL_ID = "82b6c2a2-43ab-4a8d-baa6-920652fd963f";
 
+        public static final String ROOT_NS_ID = "3c8831a2-9759-40da-a6a2-4ef4f5939136";
+
         public static final String PACKAGE_1_ID = "528fae42-60c2-40c8-baa3-684d874a950d";
 
         public static final String VIEW_USAGE_ID = "73f66477-a239-4dfe-88c9-bc99ee7a25ee";

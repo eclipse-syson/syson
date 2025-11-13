@@ -10,8 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export { SysONDocumentTreeItemContextMenuContribution } from './extensions/contextMenu/SysONDocumentTreeItemContextMenuContribution';
-export { SysONObjectTreeItemContextMenuContribution } from './extensions/contextMenu/SysONObjectTreeItemContextMenuContribution';
 export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSysMLv2MenuContribution';
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
 export { SysONNavigationBarMenuIcon } from './extensions/navigationBarMenu/SysONNavigationBarMenuIcon';
