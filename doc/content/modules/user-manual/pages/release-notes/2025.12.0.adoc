@@ -292,6 +292,24 @@ package Derivations {
 image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
 
 - Extract the frontend extension registry in a separate file and move it from _syson_ to _syson-components_ frontend module in order to be easily used by downstream applications.
+- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model.
+
+```
+package Requirements {
+    requirement <Req1> {
+        doc /* Some doc */
+    }
+    requirement def REQ2;
+}
+part Context1 {
+    part 'System 1';
+}
+package ReqSatisfactions {
+    private import Requirements::*;
+    assert satisfy Req1 by Context1.'System 1';
+    assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
+}
+```
 
 == Technical details
 
