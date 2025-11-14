@@ -573,7 +573,11 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var flux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();
 
+        var treeId = new AtomicReference<String>();
+        var userLibId = new AtomicReference<String>();
+
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            treeId.set(tree.getId());
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(2);
             TreeItem sysmlModel = tree.getChildren().get(0);
@@ -588,11 +592,24 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             assertThat(userLibrariesDirectory.isHasChildren()).isTrue();
             List<TreeItem> userLibrariesChildren = userLibrariesDirectory.getChildren();
             assertThat(userLibrariesChildren).hasSize(1);
-            assertThat(userLibrariesChildren.get(0).getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOneLibraryPackage@1.0.0 [read-only]");
+            TreeItem userLibTreeItem = userLibrariesChildren.get(0);
+            assertThat(userLibTreeItem.getLabel().toString()).isEqualTo("Library.sysml - LibraryWithOneLibraryPackage@1.0.0 [read-only]");
+            userLibId.set(userLibTreeItem.getId());
         });
+
+        Runnable getUserLibContextMenuActions = () -> {
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    userLibId.get());
+            assertThat(menuEntriesIds).hasSize(4)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY);
+        };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
+                .then(getUserLibContextMenuActions)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
