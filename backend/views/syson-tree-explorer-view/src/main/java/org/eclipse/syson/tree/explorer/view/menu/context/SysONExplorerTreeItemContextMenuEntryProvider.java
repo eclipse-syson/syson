@@ -159,7 +159,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
 
         if (optionalLibraryMetadataAdapter.isPresent()) {
             var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
-            if (this.isDirectDependency(editingContext, libraryMetadataAdapter) && this.sysonExplorerService.isEditable(optionalNotifier.get())) {
+            if (this.isDirectDependency(editingContext, libraryMetadataAdapter) && !this.sysonExplorerService.isEditable(optionalNotifier.get())) {
                 // We do not support the update or removal of a transitive dependency for the moment.
                 result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, "", List.of(), true));
                 result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true));
