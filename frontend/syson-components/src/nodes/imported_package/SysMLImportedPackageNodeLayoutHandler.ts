@@ -40,7 +40,7 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     node: Node<SysMLImportedPackageNodeData, 'sysMLImportedPackageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
-    _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);

@@ -39,7 +39,7 @@ export class SysMLNoteNodeLayoutHandler implements INodeLayoutHandler<SysMLNoteN
     node: Node<SysMLNoteNodeData, 'sysMLNoteNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
-    _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
