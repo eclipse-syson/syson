@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-metamodel-services</artifactId>
-	<version>2025.10.4</version>
+	<version>2025.10.5</version>
 	<name>syson-sysml-metamodel-services</name>
 	<description>SysON SysML Metamodel Services</description>
 
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 		</dependency>
 		<!-- Tests -->
 		<dependency>
@@ -71,14 +71,14 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tests</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.10.4</version>
+			<version>2025.10.5</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
