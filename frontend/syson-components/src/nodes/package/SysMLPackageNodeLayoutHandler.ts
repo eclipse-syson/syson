@@ -51,7 +51,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     node: Node<SysMLPackageNodeData, 'sysMLPackageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -64,7 +64,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         node,
         visibleNodes,
         directChildren,
-        newlyAddedNode,
+        newlyAddedNodes,
         borderWidth,
         forceDimensions
       );
@@ -79,11 +79,11 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     node: Node<SysMLPackageNodeData, 'sysMLPackageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -98,7 +98,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
-      const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
+      const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
 
       if (!!createdNode) {
         child.position = createdNode.position;
