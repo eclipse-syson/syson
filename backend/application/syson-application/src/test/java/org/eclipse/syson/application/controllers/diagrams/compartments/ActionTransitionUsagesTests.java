@@ -124,7 +124,7 @@ public class ActionTransitionUsagesTests extends AbstractIntegrationTests {
     @Test
     public void addExistingNestedElementsOnActionUsage() {
         this.givenCommittedTransaction.commit();
-        var toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
+        var toolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
                 "Add existing nested elements");
         assertThat(toolId).as("The tool 'Add existing elements' should exist on Action Usage").isNotNull();
 

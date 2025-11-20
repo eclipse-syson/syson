@@ -196,7 +196,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
     }
 
     private void checkItemParameterOnActionUsage(String kind) {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Item " + kind);
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Item " + kind);
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "action", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
@@ -241,7 +241,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
     }
 
     private void checkItemParameterOnActionDefinition(String kind) {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Item " + kind);
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Item " + kind);
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "ActionDefinition", creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {

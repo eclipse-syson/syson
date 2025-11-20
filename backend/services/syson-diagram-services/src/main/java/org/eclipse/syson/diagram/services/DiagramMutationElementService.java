@@ -17,9 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -30,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
@@ -62,6 +66,8 @@ public class DiagramMutationElementService {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
+    private final IDiagramQueryService diagramQueryService;
+
     private final DiagramQueryElementService diagramQueryElementService;
 
     private final ModelMutationElementService modelMutationElementService;
@@ -73,11 +79,13 @@ public class DiagramMutationElementService {
     private final NodeDescriptionService nodeDescriptionService;
 
     public DiagramMutationElementService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IDiagramDescriptionService diagramDescriptionService, DiagramQueryElementService diagramQueryElementService, ModelMutationElementService modelMutationElementService) {
+            IDiagramDescriptionService diagramDescriptionService, IDiagramQueryService diagramQueryService, DiagramQueryElementService diagramQueryElementService,
+            ModelMutationElementService modelMutationElementService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
         this.metamodelMutationElementService = new MetamodelMutationElementService();
@@ -309,5 +317,71 @@ public class DiagramMutationElementService {
         }
 
         return childState;
+    }
+
+    /**
+     * For the given {@link Element} and its associated selected {@link Node}, reveal all hidden linked nodes and hide
+     * selected {@link Node} compartments.
+     *
+     * @param element
+     *            the current context of the service.
+     * @param selectedNode
+     *            the selectedNode corresponding to the given Element
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link DiagramContext}.
+     * @return the given {@link Element}.
+     */
+    public Element showContentAsTree(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        List<Node> linkedNodes = new ArrayList<>();
+        var diagram = diagramContext.diagram();
+        var nodeId = selectedNode.getId();
+
+        Set<String> childNodesIds = selectedNode.getChildNodes().stream().map(Node::getId).collect(Collectors.toSet());
+        diagramContext.diagramEvents().add(new HideDiagramElementEvent(childNodesIds, true));
+
+        diagram.getEdges().forEach(edge -> {
+            if (Objects.equals(edge.getSourceId(), nodeId)) {
+                this.diagramQueryService.findNodeById(diagram, edge.getTargetId()).ifPresent(linkedNodes::add);
+            }
+        });
+        Set<String> linkedNodesIds = linkedNodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramContext.diagramEvents().add(new HideDiagramElementEvent(linkedNodesIds, false));
+
+        return element;
+    }
+
+    /**
+     * For the given {@link Element} and its associated selected {@link Node}, hide all hidden linked nodes and reveal
+     * selected {@link Node} children that are not empty.
+     *
+     * @param element
+     *            the current context of the service.
+     * @param selectedNode
+     *            the selectedNode corresponding to the given Element
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link DiagramContext}.
+     * @return the given {@link Element}.
+     */
+    public Element showContentAsNested(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        List<Node> linkedNodes = new ArrayList<>();
+        var diagram = diagramContext.diagram();
+        var nodeId = selectedNode.getId();
+
+        Set<String> notEmptyChildNodesIds = selectedNode.getChildNodes().stream().filter(n -> !n.getChildNodes().isEmpty()).map(Node::getId).collect(Collectors.toSet());
+        diagramContext.diagramEvents().add(new HideDiagramElementEvent(notEmptyChildNodesIds, false));
+
+        diagram.getEdges().forEach(edge -> {
+            if (Objects.equals(edge.getSourceId(), nodeId)) {
+                this.diagramQueryService.findNodeById(diagram, edge.getTargetId()).ifPresent(linkedNodes::add);
+            }
+        });
+        Set<String> linkedNodesIds = linkedNodes.stream().map(Node::getId).collect(Collectors.toSet());
+        diagramContext.diagramEvents().add(new HideDiagramElementEvent(linkedNodesIds, true));
+
+        return element;
     }
 }

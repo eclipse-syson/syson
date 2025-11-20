@@ -99,7 +99,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var viewAsInterconnectionViewToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
+        var viewAsInterconnectionViewToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
                 "Interconnection View");
         assertThat(viewAsInterconnectionViewToolId).as("The tool 'View as > Interconnection View' should exist on partB").isNotNull();
 

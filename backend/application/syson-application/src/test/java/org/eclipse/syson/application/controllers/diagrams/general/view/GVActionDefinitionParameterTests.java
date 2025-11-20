@@ -131,7 +131,7 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
         List<ToolVariable> variables = new ArrayList<>();
         variables.add(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, ToolVariableType.OBJECT_ID));
 
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition()), "New Subject");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition()), "New Subject");
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "UseCaseDefinition", creationToolId, variables));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {

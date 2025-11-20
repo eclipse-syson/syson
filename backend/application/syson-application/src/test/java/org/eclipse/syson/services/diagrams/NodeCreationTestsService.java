@@ -61,7 +61,7 @@ public class NodeCreationTestsService {
 
     public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
             AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName, List<ToolVariable> variables) {
-        String creationToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(parentEClass), toolName);
+        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(parentEClass), toolName);
         verifier.then(() -> this.toolTester.invokeTool(this.editingContextId,
                 diagram,
                 parentLabel,

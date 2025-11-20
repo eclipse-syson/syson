@@ -43,9 +43,9 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    protected final IColorProvider colorProvider;
-
     protected final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+
+    protected final IColorProvider colorProvider;
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
@@ -82,7 +82,34 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
-                                        ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                        ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT,
+                                                DiagramContext.DIAGRAM_CONTEXT))
+                                .build())
+                        .build())
+                .build();
+    }
+
+    protected NodeTool getShowContentAsNestedTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Show content as Nested")
+                .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
+                .body(this.diagramBuilderHelper.newDeleteView()
+                        .children(this.viewBuilderHelper.newChangeContext()
+                                .expression(
+                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsNested).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
+                                .build())
+                        .build())
+                .build();
+    }
+
+    protected NodeTool getShowContentAsTreeTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Show content as Tree")
+                .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
+                .body(this.diagramBuilderHelper.newDeleteView()
+                        .children(this.viewBuilderHelper.newChangeContext()
+                                .expression(
+                                        ServiceMethod.of3(DiagramMutationAQLService::showContentAsTree).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
                         .build())
                 .build();
