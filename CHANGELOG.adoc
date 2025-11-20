@@ -108,6 +108,10 @@ Other libraries are always displayed at the root of the explorer.
 The explorer now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
 The explorer now appends `library-name@library-version` to imported-by-reference library models.
 - https://github.com/eclipse-syson/syson/issues/1661[#1661] [frontend] Extract the frontend extension registry in a separate file and move it from _syson_ to _syson-components_ frontend module in order to be easily used by downstream applications.
+- https://github.com/eclipse-syson/syson/issues/1681[#1681] [diagrams] Improve the way elements are displayed in the _General View_ diagram by not display them twice. The new behavior is: by default, when no compartment is displayed inside a graphical node, the creation of a nested element from the graphical node displays it on the diagram background and links it with the graphical node through a composition graphical edge. Then, when any compartment inside a graphical node A containing a nested graphical node B is displayed, then any graphical node representing B and linked to graphical node A through a composition graphical edge disappear.
+In addition, two new tools are added to the palette of the _General View_ diagram:
+* Show content as Nested: allows to hide all graphical nodes linked to the selected graphical node through a composition graphical edge and show them as nested graphical nodes inside the selected graphical node.
+* Show content as Tree: allows to show all nested graphical nodes inside the selected graphical node into graphical nodes linked to the selected graphical node through a composition graphical edge and hide them as nested graphical nodes inside the selected graphical node.
 
 === New features
 

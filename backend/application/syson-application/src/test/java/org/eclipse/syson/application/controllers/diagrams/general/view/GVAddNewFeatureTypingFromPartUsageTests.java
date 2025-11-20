@@ -169,7 +169,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
         var diagramAfterRenameElement = this.givenDiagram.getDiagram(this.verifier);
 
-        String toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
+        String toolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
         assertThat(toolId).as("The tool 'New Feature Typing' should exist on a ").isNotNull();
 
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,

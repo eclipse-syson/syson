@@ -103,7 +103,7 @@ public class StartActionTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var toolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
+        var toolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()),
                 "New Start Action");
         assertThat(toolId).as("The tool 'New Start Action' should exist on ActionUsage").isNotNull();
 
@@ -135,6 +135,6 @@ public class StartActionTests extends AbstractIntegrationTests {
                 .then(invokeTool)
                 .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 }

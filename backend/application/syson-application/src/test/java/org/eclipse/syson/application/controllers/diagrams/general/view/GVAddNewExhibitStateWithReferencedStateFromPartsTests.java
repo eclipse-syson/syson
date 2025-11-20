@@ -141,7 +141,7 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartUsage() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Exhibit State with referenced State");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Exhibit State with referenced State");
         assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -172,7 +172,7 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testApplyNewExhibitStateWithReferencedStateToolFromPartDefinition() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State with referenced State");
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State with referenced State");
         assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartDefinition").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

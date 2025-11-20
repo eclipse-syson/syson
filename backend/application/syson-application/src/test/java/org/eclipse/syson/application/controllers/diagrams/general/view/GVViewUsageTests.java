@@ -177,7 +177,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @MethodSource("childNodeParameters")
     @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount) {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
@@ -210,9 +210,9 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a General View with ViewUsage node, WHEN sub-child nodes are created in the ViewUsage node, THEN nodes are added in the ViewUsage node")
     public void checkViewUsageSubChildNodeCreation() {
-        var partOnViewUsageToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
+        var partOnViewUsageToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
-        var actionOnPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
+        var actionOnPartToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getActionUsage()));
 
         var partNodeId = new AtomicReference<String>();

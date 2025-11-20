@@ -315,7 +315,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     public void exposePackageChildShouldDisplayChildOnlyinPAckage() {
         var newPackageToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("New Package");
         assertThat(newPackageToolId).as("The tool 'New Package' should exist on the diagram").isNotNull();
-        var newInterfaceToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Interface");
+        var newInterfaceToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Interface");
         assertThat(newInterfaceToolId).as("The tool 'New Interface' should exist on the Package").isNotNull();
 
         Runnable newPackageTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, newPackageToolId);

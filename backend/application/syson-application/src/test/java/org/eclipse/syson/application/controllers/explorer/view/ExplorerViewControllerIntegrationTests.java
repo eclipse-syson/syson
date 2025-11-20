@@ -152,7 +152,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.GraphicalIds.VIEW_1_DIAGRAM_ID), "view1"))
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit an Element with a shortName, THEN the shortName is not part of the initial value of the direct edit")
@@ -177,7 +177,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .then(this.triggerDirectEditTreeItemLabel(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId,
                         UUID.fromString(ExplorerViewDirectEditTestProjectData.SemanticIds.REQ2_RU_ID), ""))
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN hide expose element filter is active, THEN the expose element are not return as tree item")
@@ -198,7 +198,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         StepVerifier.create(treeFlux)
                 .consumeNextWith(hasNoExposeElement)
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 
     private List<String> getAllTreeItemIds() {

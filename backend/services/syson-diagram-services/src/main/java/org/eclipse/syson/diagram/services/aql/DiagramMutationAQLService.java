@@ -176,6 +176,20 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationExposeService#showContentAsNested(Element, Node, IEditingContext, DiagramContext)}.
+     */
+    public Element showContentAsNested(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramMutationElementService.showContentAsNested(element, selectedNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationExposeService#showContentAsTrees(Element, Node, IEditingContext, DiagramContext)}.
+     */
+    public Element showContentAsTree(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramMutationElementService.showContentAsTree(element, selectedNode, editingContext, diagramContext);
+    }
+
+    /**
      * {@link DiagramMutationElementService#viewNodeAs(Element, String, IEditingContext, DiagramContext, Node)}.
      */
     public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {

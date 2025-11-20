@@ -106,7 +106,7 @@ public class GVControlNodeTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newDecisionNodeToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Decision");
+        var newDecisionNodeToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Decision");
         assertThat(newDecisionNodeToolId).as("The tool 'New Decision' should exist on ActionUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();
@@ -155,7 +155,7 @@ public class GVControlNodeTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newForkNodeToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Fork");
+        var newForkNodeToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Fork");
         assertThat(newForkNodeToolId).as("The tool 'New Fork' should exist on ActionUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();
@@ -204,7 +204,7 @@ public class GVControlNodeTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newJoinNodeToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Join");
+        var newJoinNodeToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Join");
         assertThat(newJoinNodeToolId).as("The tool 'New Join' should exist on ActionUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();
@@ -253,7 +253,7 @@ public class GVControlNodeTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newMergeNodeToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Merge");
+        var newMergeNodeToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Merge");
         assertThat(newMergeNodeToolId).as("The tool 'New Merge' should exist on ActionUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();

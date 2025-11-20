@@ -102,10 +102,10 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newPartToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part");
+        var newPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part");
         assertThat(newPartToolId).as("The tool 'New Part' should exist on the Package").isNotNull();
 
-        var newSubPartToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
+        var newSubPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(newSubPartToolId).as("The tool 'New Part' should exist on the PartUsage").isNotNull();
 
         var diagramId = new AtomicReference<String>();
@@ -173,7 +173,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var newPackageToolId = diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Package");
+        var newPackageToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Package");
         assertThat(newPackageToolId).as("The tool 'New Package' should exist on the Package").isNotNull();
 
         var diagramId = new AtomicReference<String>();
