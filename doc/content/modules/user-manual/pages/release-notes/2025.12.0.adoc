@@ -194,6 +194,7 @@ This issue is now fixed.
 
 - In diagrams, fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
 - Fix some errors on validation rules using AQL expressions.
+- Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
 
 == Improvements
 
