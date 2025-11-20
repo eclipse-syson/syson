@@ -193,6 +193,7 @@ In those cases, there was an issue that made the _Explorer_ view displays librar
 This issue is now fixed.
 
 - In diagrams, fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
+- Fix some errors on validation rules using AQL expressions.
 
 == Improvements
 
