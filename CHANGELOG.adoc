@@ -3,6 +3,8 @@
 == v2026.1.0 (work in progress)
  
 === Shapes
+
+- https://github.com/eclipse-syson/syson/issues/1694[#1694] Customize Elasticsearch index to work with SysML metamodel
  
 === Breaking changes
  
