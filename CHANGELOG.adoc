@@ -1,5 +1,19 @@
 = Changelog
 
+== v2026.1.0 (work in progress)
+ 
+=== Shapes
+ 
+=== Breaking changes
+ 
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
 == v2025.12.0
 
 === Shapes
