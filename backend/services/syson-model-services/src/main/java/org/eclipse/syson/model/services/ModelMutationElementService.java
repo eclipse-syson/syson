@@ -12,12 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.model.services;
 
+import java.util.Optional;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +66,50 @@ public class ModelMutationElementService {
             }
         }
         return viewUsage;
+    }
+
+    /**
+     * Duplicates an Element.
+     *
+     * @param elementToDuplicate
+     *         the element to duplicate
+     * @param duplicateContent
+     *         holds true if the content of the object to duplicate need to be duplicated
+     * @param copyOutgoingReferences
+     *         holds true if the outgoing references need to be copied of the object to duplicate need to be duplicated
+     * @return an optional duplicated object
+     */
+    public Optional<Element> duplicateElement(Element elementToDuplicate, boolean duplicateContent, boolean copyOutgoingReferences) {
+        Optional<EObject> duplicateObject;
+        if (duplicateContent) {
+            EcoreUtil.Copier copier = new EcoreUtil.Copier();
+            EObject duplicatedObject = copier.copy(elementToDuplicate);
+            if (copyOutgoingReferences) {
+                copier.copyReferences();
+            }
+            duplicateObject = Optional.ofNullable(duplicatedObject);
+        } else {
+            SiriusEMFCopier copier = new SiriusEMFCopier();
+            EObject duplicatedObject = copier.copyWithoutContent(elementToDuplicate);
+            if (copyOutgoingReferences) {
+                copier.copyReferences();
+            }
+            duplicateObject = Optional.ofNullable(duplicatedObject);
+        }
+
+        return duplicateObject.filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .map(duplicate -> {
+                    // Change the name of element root element (not its content)
+                    if (elementToDuplicate.getDeclaredName() != null && !elementToDuplicate.getDeclaredName().isBlank()) {
+                        duplicate.setDeclaredName(elementToDuplicate.getDeclaredName() + "-copy");
+                    } else if (elementToDuplicate.getShortName() != null && !elementToDuplicate.getShortName().isBlank()) {
+                        duplicate.setDeclaredShortName(elementToDuplicate.getDeclaredShortName() + "-copy");
+                    }
+                    // Reset all ids
+                    EMFUtils.allContainedObjectOfType(duplicate, Element.class).forEach(element -> element.setElementId(ElementUtil.generateUUID(element).toString()));
+
+                    return duplicate;
+                });
     }
 }
