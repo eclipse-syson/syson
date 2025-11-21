@@ -40,6 +40,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibra
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
@@ -140,7 +142,12 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
                 } else {
                     entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
                 }
+
                 entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+
+                if (object instanceof Element && !(object instanceof Relationship)) {
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false));
+                }
                 return entries;
             }
         }

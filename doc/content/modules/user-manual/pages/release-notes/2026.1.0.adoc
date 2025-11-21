@@ -6,6 +6,13 @@
 
 == New features
 
+- A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
+Note this action is not available for `Relationships`.
+
+image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
+
+image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
+
 == Bug fixes
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
