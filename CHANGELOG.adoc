@@ -16,6 +16,8 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1565[#1565] Provide a way to duplicate semantic element in the Explorer view.
+
 == v2025.12.0
 
 === Shapes

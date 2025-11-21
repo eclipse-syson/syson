@@ -704,21 +704,23 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         Runnable getRootNSContextMenuActions = () -> {
             var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID);
-            assertThat(documentMenuEntriesIds).hasSize(4)
+            assertThat(documentMenuEntriesIds).hasSize(5)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                     .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT);
         };
 
         Runnable getElementContextMenuActions = () -> {
             var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
-            assertThat(documentMenuEntriesIds).hasSize(4)
+            assertThat(documentMenuEntriesIds).hasSize(5)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                     .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
-                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT);
         };
 
         Runnable getDiagramContextMenuActions = () -> {

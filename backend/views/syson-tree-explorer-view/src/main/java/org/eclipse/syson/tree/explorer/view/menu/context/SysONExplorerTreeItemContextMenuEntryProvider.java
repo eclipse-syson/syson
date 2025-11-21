@@ -37,6 +37,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -117,13 +119,21 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
         if (optionalEObject.isPresent()) {
             var object = optionalEObject.get();
             if (this.sysonExplorerService.isEditable(object)) {
-                return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+                return this.getEditableObjectContextMenuEntries(object);
             }
         }
         return List.of();
+    }
+
+    private List<ITreeItemContextMenuEntry> getEditableObjectContextMenuEntries(EObject object) {
+        List<ITreeItemContextMenuEntry> menuEntries = new ArrayList<>();
+        menuEntries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false));
+        menuEntries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
+        menuEntries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+        if (object instanceof Element && !(object instanceof Relationship)) {
+            menuEntries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false));
+        }
+        return menuEntries;
     }
 
     private List<ITreeItemContextMenuEntry> getRepresentationContextMenuEntries(IEMFEditingContext editingContext, TreeItem treeItem) {
