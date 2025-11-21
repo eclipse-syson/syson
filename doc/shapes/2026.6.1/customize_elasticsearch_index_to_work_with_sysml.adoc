@@ -1,0 +1,79 @@
+= Customize Elasticsearch index to work with SysML metamodel
+
+== Problem
+
+Sirius Web now provides a command in the omnibox of the `/projects` page to search elements in all the projects.
+This command is based on Elasticsearch, which contains indexed documents built from the semantic data of the projects.
+Sirius Web provides a default mechanism to create these documents, but it doesn't fit well the SysML metamodel:
+
+- Indices contain irrelevant information for SysON users (e.g. `Membership` instances).
+- Multi-level navigation is not possible (e.g. usage.definition.name), which works particularly poorly with SysML where all the links are reified.
+
+We need to provide a custom index document creation process, in order to support relevant queries for SysML users.
+The goal of this shape is to define these queries, the technical details of the serialization process will be discussed in a future ADR.
+
+== Prerequisites
+
+Sirius Web's search command relies on Elasticsearch https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query[query string DSL].
+This language allows to search for documents (i.e. objects stored in the index) matching a given input.
+It supports wildcards, regular expressions, fuzziness, and provides constructs to search in specific fields, check ranges, or exclude some values.
+
+For example, the following query searches for document with a `name` field containing values starting with `MyName`, and the `sibling.age` field between 5 and 10:
+
+----
+name:MyName* AND sibling.age:[5 TO 10]
+----
+
+== Solution
+
+All the `Element` instances are stored in the index.
+
+The `name`, `shortName`, and `qualifiedName` attributes can be used to find elements.
+
+The following references can be navigated as part of the query:
+- `Element#owner`
+- `Element#ownedElement`
+- `Type#ownedSpecialization`
+- `Specialization#general`
+
+Navigation has a maximum depth of 1: for example, it is possible to access the owner of an element, but not the owner of the owner of an element.
+This limitation is necessary to limit the number of fields stored in the index (by default the maximum number of fields is 1000), and to avoid false positive matches on unbounded queries (e.g. an indexed document can match a term if its n-th owner's name contains the term).
+
+In addition, Sirius Web provides the following attributes that can be used to find elements:
+- `@id`: the ID of the element
+- `@editingContextId`: the ID of the editing context containing the element (this is a technical field, it is usually not useful to write queries)
+- `@type`: the type of the element (by default its EClass)
+- `@label`: the label of the element (computed by `ILabelService`)
+- `@iconURLs`: the icons of the element (this is also a technical field)
+
+Note that these attributes are prefixed with `@` to avoid clashes with specific SysML attributes we could index, but they can be used as any attribute in the queries. 
+
+We will update how the `@type` attribute is filled to match the user experience in SysON: the type won't be prefixed with the EPackage, and "Usage" will be removed from type names.
+
+The list below shows some example of queries that should be supported/not supported by SysON:
+
+----
+// Get the element that have a field that matches "mySearchValue"
+mySearchValue
+// Get the elements with a name starting with "my" in Package1
+name:my* owner.name:Package1
+// Get the Packages containing elements with a name starting with "my" or "part"
+@type:Package AND ownedElement.name:(my* OR part*)
+// Get the elements typed by elements with qualified name a::MyType
+ownedSpecialization.@type:FeatureTyping AND ownedSpecialization.general.qualifiedName:a\:\:MyType
+// Not supported: the first level of navigation (ownedSpecialization.general) cannot be followed by another navigation (general.owner)
+ownedSpecialization.general.owner:Package1
+----
+
+== Cutting backs
+
+- (Nice to have) index `FeatureValue` to support queries such as "find all the attributes with a value greater than X"
+- (Nice to have) use more derived features in the queries to improve user experience (e.g. `ownedSubsetting` instead of `ownedSpecialization.@type:Subsetting`)
+
+== Rabbit holes
+
+No rabbit holes found.
+
+== No-gos
+
+Multi-level navigation could be properly supported by using ES|QL instead of the query string DSL, but the integration of ES|QL is out of the scope of this shape.
