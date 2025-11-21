@@ -50,6 +50,8 @@ public class SimpleProjectElementsTestProjectData {
         public static final String PART_ID = "a4f51a38-bfeb-4e0d-a870-55f8fe90405e";
 
         public static final String PACKAGE2_ID = "ec12f223-8639-42a3-96c2-34163c6eccce";
+        
+        public static final String ROOT_NAMESPACE = "686dee81-b94c-4393-b15b-65dd73dfdd24";
     }
 
 }

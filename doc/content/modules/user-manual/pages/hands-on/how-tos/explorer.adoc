@@ -76,3 +76,47 @@ To filter elements in the {explorer} by their kind using the filter tool:
 . Select filters to activate.
 
 image::hands-on-filter-element.png[Filter kind]
+
+[#duplicate-element]
+== Duplicate an Element
+
+To duplicate elements in the {explorer}, use the contextual menu _Duplicate object_.
+
+[NOTE]
+====
+This action is only available on SysML `Elements` which are not `Relationships`.
+====
+
+In the dialog:
+
+* Choose the target that will own the duplicated element.
+* In the drop-down list, choose the type of `Membership` to use if several kinds are available.
+
+Optionally, the following options can be used:
+
+* _Duplicate the content_ : When selected, the element **and its contained elements** are duplicated.
+Otherwise, only the selected element itself is duplicated.
+
+* _Copy outgoing references_ : When selected, all outgoing references (e.g. type references, usage links…) are preserved in the duplicated element.
+
+Example:
+
+```
+private ScalarValues::*
+
+part p1 {
+  attribute x : Real
+}
+```
+
+If `x` is duplicated **without** _Copy outgoing references_, the duplicate will **not** have its `type` set to `ScalarValues::Real`.
+
+[NOTE]
+====
+It is strongly recommended to keep this option enabled to ensure a consistent model.
+====
+
+* _Update incoming reference_ : This option is not yet fully implemented in SysON and currently has no effect.
+
+image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
+
