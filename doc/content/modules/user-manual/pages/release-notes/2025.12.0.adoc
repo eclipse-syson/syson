@@ -35,6 +35,10 @@ a|image::view-as-node-tool.png[View as Node tool, width=75%,height=75%]
 a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=75%]
 |=== 
 
+- In diagrams, a new compartment named _parts_ can be enabled on a part usages to show nested part usages as a list:
+
+image::gv-parts-compartment.png[Parts compartment, width=50%]
+
 == Bug fixes
 
 - Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
