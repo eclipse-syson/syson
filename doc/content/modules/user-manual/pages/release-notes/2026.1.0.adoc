@@ -1,0 +1,39 @@
+= 2026.1.0 (work in progress)
+
+== Key highlights
+
+== Breaking changes
+
+== New features
+
+- A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
+Note, that is action is not available for `Relationship`s.
+
+image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
+
+== Bug fixes
+
+== Improvements
+
+- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model.
+
+```
+package Requirements {
+    requirement <Req1> {
+        doc /* Some doc */
+    }
+    requirement def REQ2;
+}
+part Context1 {
+    part 'System 1';
+}
+package ReqSatisfactions {
+    private import Requirements::*;
+    assert satisfy Req1 by Context1.'System 1';
+    assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
+}
+```
+
+== Technical details
+
+* For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

@@ -142,49 +142,49 @@ public class ASTTransformerTest {
         // isAlias is present in the intermediary .ast.json format, so this blurb was introduced.
 
         // test isInitial
-        assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(7));
-        AttributeUsage isInitialTestAttribute = (AttributeUsage) packageObject.getMember().get(7);
+        assertInstanceOf(AttributeUsage.class, packageObject.getOwnedMember().get(7));
+        AttributeUsage isInitialTestAttribute = (AttributeUsage) packageObject.getOwnedMember().get(7);
         assertTrue(this.utilService.getValuation(isInitialTestAttribute).isIsInitial());
 
         // test isVariation
-        assertInstanceOf(PartDefinition.class, packageObject.getMember().get(8));
-        OccurrenceDefinition isVariationPartDef = (PartDefinition) packageObject.getMember().get(8);
+        assertInstanceOf(PartDefinition.class, packageObject.getOwnedMember().get(8));
+        OccurrenceDefinition isVariationPartDef = (PartDefinition) packageObject.getOwnedMember().get(8);
         assertTrue(isVariationPartDef.isIsVariation());
 
         // test isIndividual
-        assertInstanceOf(OccurrenceDefinition.class, packageObject.getMember().get(9));
-        OccurrenceDefinition isIndividualOccurenceDef = (OccurrenceDefinition) packageObject.getMember().get(9);
+        assertInstanceOf(OccurrenceDefinition.class, packageObject.getOwnedMember().get(9));
+        OccurrenceDefinition isIndividualOccurenceDef = (OccurrenceDefinition) packageObject.getOwnedMember().get(9);
         assertTrue(isIndividualOccurenceDef.isIsIndividual());
 
         // test isDefault
-        assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(10));
-        AttributeUsage isDefaultTestAttribute = (AttributeUsage) packageObject.getMember().get(10);
+        assertInstanceOf(AttributeUsage.class, packageObject.getOwnedMember().get(10));
+        AttributeUsage isDefaultTestAttribute = (AttributeUsage) packageObject.getOwnedMember().get(10);
         assertInstanceOf(FeatureValue.class, this.utilService.getValuation(isDefaultTestAttribute));
         assertTrue(this.utilService.getValuation(isDefaultTestAttribute).isIsDefault());
 
         // test isParallel
-        assertInstanceOf(StateUsage.class, packageObject.getMember().get(11));
-        StateUsage isParallelState = (StateUsage) packageObject.getMember().get(11);
+        assertInstanceOf(StateUsage.class, packageObject.getOwnedMember().get(11));
+        StateUsage isParallelState = (StateUsage) packageObject.getOwnedMember().get(11);
         assertTrue(isParallelState.isIsParallel());
 
         // test isAbstract
-        assertInstanceOf(ItemDefinition.class, packageObject.getMember().get(12));
-        ItemDefinition isAbstractTestItemDef = (ItemDefinition) packageObject.getMember().get(12);
+        assertInstanceOf(ItemDefinition.class, packageObject.getOwnedMember().get(12));
+        ItemDefinition isAbstractTestItemDef = (ItemDefinition) packageObject.getOwnedMember().get(12);
         assertTrue(isAbstractTestItemDef.isIsAbstract());
 
         // test isEnd
-        assertInstanceOf(ReferenceUsage.class, packageObject.getMember().get(13));
-        ReferenceUsage isEndTestReference = (ReferenceUsage) packageObject.getMember().get(13);
+        assertInstanceOf(ReferenceUsage.class, packageObject.getOwnedMember().get(13));
+        ReferenceUsage isEndTestReference = (ReferenceUsage) packageObject.getOwnedMember().get(13);
         assertTrue(isEndTestReference.isIsEnd());
 
         // test isConstant
-        assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(14));
-        AttributeUsage isConstantTestAttribute = (AttributeUsage) packageObject.getMember().get(14);
+        assertInstanceOf(AttributeUsage.class, packageObject.getOwnedMember().get(14));
+        AttributeUsage isConstantTestAttribute = (AttributeUsage) packageObject.getOwnedMember().get(14);
         assertTrue(isConstantTestAttribute.isIsConstant());
 
-        // test isDerived
-        assertInstanceOf(AttributeUsage.class, packageObject.getMember().get(15));
-        AttributeUsage isDerivedTestAttribute = (AttributeUsage) packageObject.getMember().get(15);
+        // test isDerivedS
+        assertInstanceOf(AttributeUsage.class, packageObject.getOwnedMember().get(15));
+        AttributeUsage isDerivedTestAttribute = (AttributeUsage) packageObject.getOwnedMember().get(15);
         assertTrue(isDerivedTestAttribute.isIsDerived());
     }
 
