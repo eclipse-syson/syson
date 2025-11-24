@@ -54,6 +54,9 @@ public class ViewNodeAsToolProvider implements INodeToolProvider {
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService::viewNodeAs).aqlSelf(this.viewDefinition, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE))
+                        .children(this.viewBuilderHelper.newChangeContext()
+                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT))
+                                .build())
                         .build())
                 .build();
     }

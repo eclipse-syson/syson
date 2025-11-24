@@ -212,7 +212,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(100));
+                    .verify(Duration.ofSeconds(10));
         }
     }
 

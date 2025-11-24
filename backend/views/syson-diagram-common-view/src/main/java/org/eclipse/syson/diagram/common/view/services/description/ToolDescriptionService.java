@@ -443,10 +443,13 @@ public class ToolDescriptionService {
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
+        var createDiagram = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT));
+
         if (direction != null) {
-            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build());
+            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build(), createDiagram.build());
         } else {
-            changeContextNewInstance.children(updateExposedElements.build());
+            changeContextNewInstance.children(updateExposedElements.build(), createDiagram.build());
         }
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()

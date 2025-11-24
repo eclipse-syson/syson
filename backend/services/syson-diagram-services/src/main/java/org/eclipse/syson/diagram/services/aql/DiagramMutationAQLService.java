@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.syson.diagram.services.DiagramMutationDiagramService;
 import org.eclipse.syson.diagram.services.DiagramMutationDndService;
 import org.eclipse.syson.diagram.services.DiagramMutationElementService;
 import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
@@ -42,12 +43,15 @@ public class DiagramMutationAQLService {
 
     private final DiagramMutationLabelService diagramMutationLabelService;
 
+    private final DiagramMutationDiagramService diagramMutationDiagramService;
+
     public DiagramMutationAQLService(DiagramMutationDndService diagramMutationDndService, DiagramMutationElementService diagramMutationElementService,
-            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService) {
+            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService) {
         this.diagramMutationDndService = Objects.requireNonNull(diagramMutationDndService);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.diagramMutationLabelService = Objects.requireNonNull(diagramMutationLabelService);
+        this.diagramMutationDiagramService = Objects.requireNonNull(diagramMutationDiagramService);
     }
 
     /**
@@ -56,6 +60,13 @@ public class DiagramMutationAQLService {
     public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.diagramMutationExposeService.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDiagramService#createDiagram(Element, IEditingContext)}.
+     */
+    public Element createDiagram(Element element, IEditingContext editingContext) {
+        return this.diagramMutationDiagramService.createDiagram(element, editingContext);
     }
 
     /**

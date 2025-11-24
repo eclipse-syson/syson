@@ -306,6 +306,8 @@ Then, when the _action flow_ compartment is displayed inside _actionA_, then _ac
 a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%] a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
 |===
 
+- When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes and dependency updates), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
