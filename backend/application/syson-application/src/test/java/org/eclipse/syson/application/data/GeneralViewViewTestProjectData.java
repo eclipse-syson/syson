@@ -39,6 +39,13 @@ public class GeneralViewViewTestProjectData {
      */
     public static final class SemanticIds {
 
+        public static final String DOCUMENT_ID = "32d35705-7907-4b58-b15f-30c0a9e06a9f";
+
+        public static final String PACKAGE_1_ID = "351775b8-5dc8-4c08-9f71-a12fdcb0d616";
+
+        public static final String VIEW_USAGE_VIEW1_ID = "31966893-cd7e-4440-84e0-5389a8e90b5c";
+
+        public static final String VIEW_USAGE_GV_ID = "ce128f2a-bb24-4ff7-8bab-0884ad9366cc";
     }
 
 }

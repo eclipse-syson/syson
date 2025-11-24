@@ -112,7 +112,8 @@ public class DiagramMutationElementService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
-     * @return
+     * @return the new {@link ViewUsage} or the given {@link Element} if its existing associated {@link ViewUsage} has
+     *         not been found.
      */
     public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
         var existingViewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode);
@@ -144,8 +145,9 @@ public class DiagramMutationElementService {
             var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
             membershipExpose.setImportedMembership(element.getOwningMembership());
             newViewUsage.getOwnedRelationship().add(membershipExpose);
-        }
 
+            return newViewUsage;
+        }
         return element;
     }
 

@@ -44,6 +44,8 @@ public class ViewAsOnNodeTestProjectData {
 
         public static final String PACKAGE_1_ELEMENT_ID = "ffb39eb5-5dc8-4c2f-9114-aa50591a3a21";
 
+        public static final String PACKAGE_1_ID = "6372c376-c615-4185-9582-5be0c8914765";
+
         public static final String VIEW_USAGE_GV_ELEMENT_ID = "174c0358-a095-4172-8f61-c00878ee6ef9";
 
         public static final String PART_A_ELEMENT_ID = "b87ed042-a552-4b0b-aebf-0c47b8d0cfbd";

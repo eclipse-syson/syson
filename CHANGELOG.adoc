@@ -113,6 +113,7 @@ The explorer now appends `library-name@library-version` to imported-by-reference
 In addition, two new tools are added to the palette of the _General View_ diagram:
 * Show content as Nested: allows to hide all graphical nodes linked to the selected graphical node through a composition graphical edge and show them as nested graphical nodes inside the selected graphical node.
 * Show content as Tree: allows to show all nested graphical nodes inside the selected graphical node into graphical nodes linked to the selected graphical node through a composition graphical edge and hide them as nested graphical nodes inside the selected graphical node.
+- https://github.com/eclipse-syson/syson/issues/1684[#1684] [diagrams] When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
 
 === New features
 
