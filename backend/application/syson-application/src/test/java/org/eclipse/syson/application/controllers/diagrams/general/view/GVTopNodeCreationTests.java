@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Duration;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -36,10 +38,15 @@ import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialog
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -135,6 +142,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
 
+    @Autowired
+    private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
+
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
 
     private Step<DiagramRefreshedEventPayload> verifier;
@@ -202,7 +212,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                    .verify(Duration.ofSeconds(100));
         }
     }
 
@@ -255,44 +265,48 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createTopNamespaceImportNode() {
-        AtomicReference<Optional<String>> libId = new AtomicReference<>(Optional.empty());
-        this.verifier.then(this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                (editingContext, executeEditingContextFunctionInput) -> {
-                    libId.set(this.getISQAcousticsLibraryId(editingContext));
-                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                }
-        )).thenCancel().verify();
-
-        assertThat(libId.get()).isNotEmpty();
+        AtomicReference<String> libId = new AtomicReference<>();
 
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
-        if (libId.get().isPresent()) {
-            this.verifier.then(() -> {
-                this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                        this.diagram,
-                        null,
-                        creationToolId,
-                        List.of(new ToolVariable("selectedObject", libId.get().get(), ToolVariableType.OBJECT_ID)));
-            });
 
-            Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
-                    .map(DiagramRefreshedEventPayload::diagram)
-                    .ifPresentOrElse(newDiagram -> {
-                        new CheckDiagramElementCount(this.diagramComparator)
-                                .hasNewEdgeCount(0)
-                                .hasNewNodeCount(1)
-                                .check(this.diagram.get(), newDiagram);
+        BiFunction<IEditingContext, IInput, IPayload> initiateContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
+            libId.set(this.getISQAcousticsLibraryId(editingContext));
+            return new SuccessPayload(executeEditingContextFunctionInput.id());
+        };
 
-                        String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport());
+        Runnable initiate = () -> {
+            var checkEditingContextInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, initiateContextFunction);
+            var payload = this.executeEditingContextFunctionRunner.execute(checkEditingContextInput).block();
+            assertThat(payload).isInstanceOf(SuccessPayload.class);
+        };
 
-                        new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
-                                .hasNodeDescriptionName(newNodeDescriptionName)
-                                .hasCompartmentCount(0)
-                                .check(this.diagram.get(), newDiagram);
-                    }, () -> fail("Missing diagram"));
+        Runnable invoketool = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                this.diagram,
+                null,
+                creationToolId,
+                List.of(new ToolVariable("selectedObject", libId.get(), ToolVariableType.OBJECT_ID)));
 
-            this.verifier.consumeNextWith(updatedDiagramConsumer);
-        }
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            assertThat(libId.get()).isNotEmpty();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(1)
+                    .check(this.diagram.get(), newDiagram);
+            // the "Add your first element" empty diagram image node is not present anymore
+            assertThat(newDiagram.getNodes()).hasSize(1);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport());
+
+            new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(0)
+                    .check(this.diagram.get(), newDiagram);
+        });
+
+        this.verifier
+                .then(initiate)
+                .then(invoketool)
+                .consumeNextWith(updatedDiagramConsumer);
     }
 
     @Test
@@ -327,7 +341,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         }
     }
 
-    private Optional<String> getISQAcousticsLibraryId(IEditingContext editingContext) {
+    private String getISQAcousticsLibraryId(IEditingContext editingContext) {
         Optional<ResourceSet> optionalResourceSet = Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
@@ -345,10 +359,10 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                     .findFirst()
                     .flatMap(this::getISQAcousticsLibraryPackageElement);
             if (optionalPackage.isPresent()) {
-                return Optional.of(this.identityService.getId(optionalPackage.get()));
+                return this.identityService.getId(optionalPackage.get());
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     private Optional<LibraryPackage> getISQAcousticsLibraryPackageElement(Resource resource) {

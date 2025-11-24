@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +21,9 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,11 @@ public class DiagramQueryElementService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final UtilService utilService;
+
     public DiagramQueryElementService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.utilService = new UtilService();
     }
 
     /**
@@ -54,7 +59,7 @@ public class DiagramQueryElementService {
      *            the diagram). It corresponds to a variable accessible from the variable manager.
      * @return an Optional ViewUsage if found, an empty Optional otherwise.
      */
-    protected ViewUsage getViewUsage(IEditingContext editingContext, DiagramContext diagramContext, Node node) {
+    public ViewUsage getViewUsage(IEditingContext editingContext, DiagramContext diagramContext, Node node) {
         Optional<ViewUsage> optViewUsage = Optional.empty();
         if (node == null) {
             optViewUsage = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
@@ -92,19 +97,65 @@ public class DiagramQueryElementService {
     }
 
     /**
-     * Get all sub nodes (nod border nodes, only child nodes) of the given list of nodes.
+     * Check if the diagram associated to the given {@link DiagramContext} contains nodes.
      *
-     * @param nodes
-     *            the given list of nodes.
-     * @return all sub nodes of the given list of nodes.
+     * @param editingContext
+     *            the {@link IEditingContext} retrieved from the Variable Manager.
+     * @param diagramContext
+     *            the {@link DiagramContext} retrieved from the Variable Manager.
+     * @param previousDiagram
+     *            the previous {@link Diagram} retrieved from the Variable Manager.
+     * @return the given {@link Element} if the diagram is empty, <code>null</code> otherwise.
      */
-    private List<Node> getAllSubNodes(List<Node> nodes) {
-        var allSubNodes = new LinkedList<Node>();
-        for (Node node : nodes) {
-            var children = new LinkedList<Node>();
-            children.addAll(node.getChildNodes());
-            allSubNodes.addAll(this.getAllSubNodes(children));
+    public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
+        boolean emptyDiagram = false;
+        if (previousDiagram != null && diagramContext != null && exposedElements == 0) {
+            List<Node> previousNodes = previousDiagram.getNodes();
+            var viewCreationRequests = diagramContext.viewCreationRequests();
+            var viewDeletionRequests = diagramContext.viewDeletionRequests();
+
+            if (viewCreationRequests.isEmpty() && this.previousNodesOnlyContainsEmptyDiagramImageNode(editingContext, previousNodes)) {
+                emptyDiagram = true;
+            } else if (viewDeletionRequests.isEmpty() && this.previousNodesOnlyContainsMissingElements(editingContext, previousNodes)) {
+                // Undo on a synchronized node
+                emptyDiagram = true;
+            } else if (!viewDeletionRequests.isEmpty() && this.previousNodesOnlyViewDeletionRequests(previousNodes, viewDeletionRequests)) {
+                // Undo on an unsynchronized node
+                emptyDiagram = true;
+            }
+        } else {
+            emptyDiagram = true;
         }
-        return allSubNodes;
+        return emptyDiagram;
+    }
+
+    private boolean previousNodesOnlyContainsEmptyDiagramImageNode(IEditingContext editingContext, List<Node> previousNodes) {
+        return previousNodes.isEmpty() || (previousNodes.size() == 1 && previousNodes.stream()
+                .anyMatch(
+                        node -> Objects.equals("siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=024ab54f-ab81-3d02-8abd-f65af641e6c6",
+                                node.getDescriptionId())));
+    }
+
+    private boolean previousNodesOnlyContainsMissingElements(IEditingContext editingContext, List<Node> previousNodes) {
+        for (Node node : previousNodes) {
+            var targetObjectId = node.getTargetObjectId();
+            var optObject = this.objectSearchService.getObject(editingContext, targetObjectId)
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast);
+            if (optObject.isPresent()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean previousNodesOnlyViewDeletionRequests(List<Node> previousNodes, List<ViewDeletionRequest> viewDeletionRequests) {
+        var nodesIds = previousNodes.stream().map(Node::getId).toList();
+        for (ViewDeletionRequest viewDeletionRequest : viewDeletionRequests) {
+            if (!nodesIds.contains(viewDeletionRequest.getElementId())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

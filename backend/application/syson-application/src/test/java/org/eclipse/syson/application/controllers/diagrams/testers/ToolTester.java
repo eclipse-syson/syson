@@ -64,12 +64,15 @@ public class ToolTester {
     }
 
     public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
-        String diagramElementId = diagram.get().getId();
+        String diagramId = diagram.get().getId();
+        String diagramElementId = null;
         if (selectedNodeTargetObjectLabel != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
             diagramElementId = diagramNavigator.nodeWithTargetObjectLabel(selectedNodeTargetObjectLabel).getNode().getId();
+        } else {
+            diagramElementId = diagramId;
         }
-        this.invokeTool(editingContextId, diagram.get().getId(), diagramElementId, toolId, variables);
+        this.invokeTool(editingContextId, diagramId, diagramElementId, toolId, variables);
     }
 
     public void invokeTool(String editingContextId, String diagramId, String diagramElementId, String toolId, List<ToolVariable> variables) {

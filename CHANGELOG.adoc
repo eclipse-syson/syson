@@ -95,6 +95,7 @@ Libraries containing only `LibraryPackage` instances were previously displayed u
 - https://github.com/eclipse-syson/syson/issues/1664[#1664] [diagrams] Fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
 - https://github.com/eclipse-syson/syson/issues/1679[#1679] [validation] Fix AQL errors on several validation rules.
 - https://github.com/eclipse-syson/syson/issues/1680[#1680] [explorer] Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
+- https://github.com/eclipse-syson/syson/issues/1683[#1683] [diagrams] Fix an error where the creation of a `NamespaceImport` graphical node as first element in a diagram was not hiding "Add your first element" graphical node.
 
 === Improvements
 
