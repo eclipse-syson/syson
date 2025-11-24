@@ -96,7 +96,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
-                .preconditionExpression("aql:self.exposedElement->size() == 0")
+                .preconditionExpression("aql:self.exposedElement->size() == 0 and editingContext.isDiagramEmpty(diagramContext, previousDiagram, self.exposedElement->size())")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEmptyDiagramNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)

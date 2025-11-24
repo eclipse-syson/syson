@@ -14,6 +14,10 @@ package org.eclipse.syson.diagram.services.aql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Dependency;
@@ -31,9 +35,12 @@ import org.eclipse.syson.sysml.Usage;
  */
 public class DiagramQueryAQLService {
 
+    private final DiagramQueryElementService diagramQueryElementService;
+
     private final DiagramQueryLabelService diagramQueryLabelService;
 
-    public DiagramQueryAQLService(DiagramQueryLabelService diagramQueryLabelService) {
+    public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService) {
+        this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.diagramQueryLabelService = Objects.requireNonNull(diagramQueryLabelService);
     }
 
@@ -125,5 +132,12 @@ public class DiagramQueryAQLService {
      */
     public String getTransitionLabel(TransitionUsage transition) {
         return this.diagramQueryLabelService.getTransitionLabel(transition);
+    }
+
+    /**
+     * {@link DiagramQueryElementService#isDiagramEmpty(editingContext, diagramContext, previousDiagram)}.
+     */
+    public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
+        return this.diagramQueryElementService.isDiagramEmpty(editingContext, diagramContext, previousDiagram, exposedElements);
     }
 }
