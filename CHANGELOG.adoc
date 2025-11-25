@@ -115,6 +115,11 @@ In addition, two new tools are added to the palette of the _General View_ diagra
 * Show content as Tree: allows to show all nested graphical nodes inside the selected graphical node into graphical nodes linked to the selected graphical node through a composition graphical edge and hide them as nested graphical nodes inside the selected graphical node.
 - https://github.com/eclipse-syson/syson/issues/1684[#1684] [diagrams] When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
 - https://github.com/eclipse-syson/syson/issues/1682[#1682] [explorer] Allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
+- https://github.com/eclipse-syson/syson/issues/1685[#1685] [explorer] Forbid the creation of a standard diagram on a `ViewUsage` with a standard diagram.
+Remove the Delete tool from the context menu of a standard diagram.
+Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
+Remove the Duplicate tool from the context menu of a standard diagram.
+
 
 === New features
 
