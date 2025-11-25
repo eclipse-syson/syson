@@ -1,11 +1,11 @@
 DELETE FROM library;
 DELETE FROM document;
+DELETE FROM representation_content;
+DELETE FROM representation_metadata;
 DELETE FROM semantic_data_dependency;
 DELETE FROM semantic_data_domain;
-DELETE FROM semantic_data;
 DELETE FROM project_semantic_data;
-DELETE FROM representation_metadata;
-DELETE FROM representation_content;
+DELETE FROM semantic_data;
 DELETE FROM image;
 DELETE FROM nature;
 DELETE FROM project;
