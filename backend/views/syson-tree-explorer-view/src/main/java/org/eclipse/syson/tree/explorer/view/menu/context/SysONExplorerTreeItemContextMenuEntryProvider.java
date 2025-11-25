@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -36,9 +38,12 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeIt
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -59,15 +64,19 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
+
     private final SysONTreeViewDescriptionProvider sysONTreeViewDescriptionProvider;
 
     private final ISysONExplorerService sysonExplorerService;
 
     public SysONExplorerTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService,
+            IRepresentationMetadataSearchService representationMetadataSearchService,
             SysONTreeViewDescriptionProvider sysONTreeViewDescriptionProvider, ISysONExplorerService sysonExplorerService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.sysONTreeViewDescriptionProvider = Objects.requireNonNull(sysONTreeViewDescriptionProvider);
         this.sysonExplorerService = Objects.requireNonNull(sysonExplorerService);
     }
@@ -117,10 +126,22 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
         if (optionalEObject.isPresent()) {
             var object = optionalEObject.get();
             if (this.sysonExplorerService.isEditable(object)) {
-                return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+                List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false));
+                if (object instanceof ViewUsage) {
+                    Optional<UUID> semanticDataId = new UUIDParser().parse(editingContext.getId());
+                    var sysonRepresentationAlreadyExists = this.representationMetadataSearchService
+                            .findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(semanticDataId.get()), treeItem.getId()).stream()
+                            .anyMatch(rm -> SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(rm.getDescriptionId())
+                                    || SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(rm.getDescriptionId()));
+                    if (!sysonRepresentationAlreadyExists) {
+                        entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
+                    }
+                } else {
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
+                }
+                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+                return entries;
             }
         }
         return List.of();
@@ -131,8 +152,12 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
                 .filter(RepresentationMetadata.class::isInstance)
                 .map(RepresentationMetadata.class::cast);
         if (optionalRepresentationMetadata.isPresent()) {
-            return List.of(
-                    new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false));
+            RepresentationMetadata representationMetadata = optionalRepresentationMetadata.get();
+            if (!SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())
+                    && !SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())) {
+                return List.of(
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false));
+            }
         }
         return List.of();
     }

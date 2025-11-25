@@ -35,7 +35,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-application-configuration", 71.0),
   new ModuleCoverage("syson-common-view", 100.0),
   new ModuleCoverage("syson-diagram-common-view", 88.0),
-  new ModuleCoverage("syson-diagram-services", 77.0),
+  new ModuleCoverage("syson-diagram-services", 79.0),
   new ModuleCoverage("syson-direct-edit-grammar", 67.0),
   new ModuleCoverage("syson-form-services", 100.0),
   new ModuleCoverage("syson-model-services", 82.0),
@@ -53,7 +53,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-validation", 99.0),
   new ModuleCoverage("syson-table-requirements-view", 77.0),
   new ModuleCoverage("syson-table-services", 100.0),
-  new ModuleCoverage("syson-tree-explorer-view", 86.0),
+  new ModuleCoverage("syson-tree-explorer-view", 85.0),
   new ModuleCoverage("syson-tree-services", 89.0)
 );
 

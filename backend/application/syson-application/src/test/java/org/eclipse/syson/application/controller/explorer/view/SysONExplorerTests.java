@@ -690,49 +690,79 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
 
         var treeId = new AtomicReference<String>();
-        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlModel = tree.getChildren().get(0);
+            assertThat(sysmlModel).isNotNull();
+            assertThat(sysmlModel.getChildren()).hasSize(1);
+            TreeItem rootNS = sysmlModel.getChildren().get(0);
+            assertThat(rootNS).isNotNull();
+            assertThat(rootNS.getChildren()).hasSize(1);
+            TreeItem pkg1 = rootNS.getChildren().get(0);
+            assertThat(pkg1).isNotNull();
+            assertThat(pkg1.getChildren()).hasSize(1);
+            TreeItem view1 = pkg1.getChildren().get(0);
+            assertThat(view1).isNotNull();
+            assertThat(view1.getChildren()).hasSize(2);
+            TreeItem diagram = view1.getChildren().get(0);
+            assertThat(diagram).isNotNull();
+            assertThat(diagram.isDeletable()).isFalse();
+        });
 
         Runnable getDocumentContextMenuActions = () -> {
-            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID);
-            assertThat(documentMenuEntriesIds).hasSize(3)
+            assertThat(menuEntriesIds).hasSize(3)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
         };
 
         Runnable getRootNSContextMenuActions = () -> {
-            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.ROOT_NS_ID);
-            assertThat(documentMenuEntriesIds).hasSize(4)
+            assertThat(menuEntriesIds).hasSize(4)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
                     .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
         };
 
-        Runnable getElementContextMenuActions = () -> {
-            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+        Runnable getPackageElementContextMenuActions = () -> {
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
-            assertThat(documentMenuEntriesIds).hasSize(4)
+            assertThat(menuEntriesIds).hasSize(4)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION)
+                    .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
+        };
+
+        Runnable getViewUsageElementContextMenuActions = () -> {
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID);
+            // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
+            assertThat(menuEntriesIds).hasSize(3)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
         };
 
         Runnable getDiagramContextMenuActions = () -> {
-            var documentMenuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
-            assertThat(documentMenuEntriesIds).hasSize(1)
-                    .contains(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION);
+            // no duplicate representation on standard diagram or requirements-table
+            assertThat(menuEntriesIds).hasSize(0);
         };
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
                 .then(getDocumentContextMenuActions)
                 .then(getRootNSContextMenuActions)
-                .then(getElementContextMenuActions)
+                .then(getPackageElementContextMenuActions)
+                .then(getViewUsageElementContextMenuActions)
                 .then(getDiagramContextMenuActions)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

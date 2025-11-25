@@ -45,6 +45,7 @@ import org.eclipse.syson.tree.explorer.fragments.UserLibrariesDirectory;
 import org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -270,6 +271,12 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             // Allow to delete read-only resources imported from textual SysML, users may want to remove an imported
             // library from their project.
             result = !this.readOnlyObjectPredicate.test(resource) || ElementUtil.isImported(resource);
+        } else if (self instanceof RepresentationMetadata representationMetadata) {
+            // If it is a standard diagram or a requirements-table, it has been created on a ViewUsage.
+            // In such cases, we don't want the Delete menu.
+            // Users will delete the ViewUsage to also delete the standard diagram or the requirements-table.
+            return !SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())
+                    && !SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId());
         }
         return result;
     }

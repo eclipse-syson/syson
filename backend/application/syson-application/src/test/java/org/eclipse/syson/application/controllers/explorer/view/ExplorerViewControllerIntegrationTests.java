@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQueryRunner;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionR
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -115,6 +118,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     private InitialDirectEditTreeItemLabelQueryRunner initialDirectEditTreeItemLabelQueryRunner;
 
     @Autowired
+    private RepresentationDescriptionsQueryRunner representationDescriptionsQueryRunner;
+
+    @Autowired
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
@@ -123,6 +129,42 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+    }
+
+    @DisplayName("GIVEN a Package, WHEN the New Representation menu is invoked, THEN InterconnectionView is a possible candidate")
+    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void canCreateInterconnectionViewOnPackage() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                "objectId", GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID);
+
+        var result = this.representationDescriptionsQueryRunner.run(variables);
+
+        // Needed because GeneralViewEmptyTestProject performs a migration of the diagram
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
+        assertThat(count).isEqualTo(5);
+
+        List<String> representationLabels = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.label");
+        assertThat(representationLabels).hasSize(5);
+        assertThat(representationLabels).contains("General View", "Action Flow View", "Interconnection View", "Requirements Table View", "State Transition View");
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit a ViewUsage typed with a standard diagram, THEN the type of ViewUsage is not part of the initial value of the direct edit")

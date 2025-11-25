@@ -308,6 +308,10 @@ a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%
 
 - When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
 - In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
+- In the _Explorer_ view, several improvements have been made about diagrams:
+* Forbid the creation of a standard diagram on a `ViewUsage` which already has a standard diagram. Standard diagrams are based on the `ViewDefinitions` that are types of `ViewUsage`, so It was not logical to allow the creation of a standard diagram on a `ViewUsage` that already has a standard diagram.
+* Remove the _Delete_ tool from the context menu of a standard diagram. Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
+* Remove the _Duplicate_ tool from the context menu of a standard diagram. It was not logical to duplicate a diagram associated to a `ViewUsage`.
 
 == Technical details
 
