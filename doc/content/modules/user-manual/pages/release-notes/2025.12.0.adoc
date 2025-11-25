@@ -307,6 +307,7 @@ a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%
 |===
 
 - When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
+- In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
 
 == Technical details
 

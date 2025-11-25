@@ -35,6 +35,7 @@ public class InterconnectionViewCreateService {
      */
     public boolean canCreateDiagram(Element element) {
         List<EClass> acceptedRootTypes = List.of(
+                SysmlPackage.eINSTANCE.getPackage(),
                 SysmlPackage.eINSTANCE.getUsage(),
                 SysmlPackage.eINSTANCE.getDefinition());
         return acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
