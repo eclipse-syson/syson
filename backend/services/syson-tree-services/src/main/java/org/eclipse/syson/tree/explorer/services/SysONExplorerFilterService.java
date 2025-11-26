@@ -67,7 +67,8 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .filter(this.utilService::isRootNamespace)
-                .flatMap(namespace -> namespace.getOwnedElement().stream())
+                .flatMap(namespace -> namespace.getOwnedElement().stream()
+                        .filter(Namespace.class::isInstance))
                 .allMatch(LibraryPackage.class::isInstance);
     }
 
