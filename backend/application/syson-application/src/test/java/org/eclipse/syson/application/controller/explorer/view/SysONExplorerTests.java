@@ -48,6 +48,7 @@ import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeIt
 import org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester;
 import org.eclipse.syson.application.controller.explorer.testers.TreePathTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
@@ -599,6 +600,60 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         Runnable getUserLibContextMenuActions = () -> {
             var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, treeId.get(),
+                    userLibId.get());
+            assertThat(menuEntriesIds).hasSize(4)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY)
+                    .contains(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY);
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .then(getUserLibContextMenuActions)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML Project with a dependency to a library containing a Comment and a LibraryPackage, WHEN the explorer is displayed, THEN the library model is visible under the user libraries directory of the explorer")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getExplorerContentWithImportedLibraryContainingCommentAndLibraryPackage() {
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
+                List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+        this.givenCommittedTransaction.commit();
+
+        var treeId = new AtomicReference<String>();
+        var userLibId = new AtomicReference<String>();
+
+        var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
+            treeId.set(tree.getId());
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlModel = tree.getChildren().get(0);
+            assertThat(sysmlModel.getLabel().toString()).isEqualTo("SysMLv2.sysml");
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            assertThat(librariesDirectory.getLabel().toString()).isEqualTo("Libraries");
+            assertThat(librariesDirectory.isHasChildren()).isTrue();
+            List<TreeItem> librariesDirectoryChildren = librariesDirectory.getChildren();
+            assertThat(librariesDirectoryChildren).hasSize(3);
+            assertThat(librariesDirectoryChildren.get(2).getLabel().toString()).isEqualTo("User libraries");
+            TreeItem userLibrariesDirectory = librariesDirectoryChildren.get(2);
+            assertThat(userLibrariesDirectory.isHasChildren()).isTrue();
+            List<TreeItem> userLibrariesChildren = userLibrariesDirectory.getChildren();
+            assertThat(userLibrariesChildren).hasSize(1);
+            TreeItem userLibTreeItem = userLibrariesChildren.get(0);
+            assertThat(userLibTreeItem.getLabel().toString()).isEqualTo("LibraryWithOneCommentAndOneLibraryPackage.sysml - LibraryWithOneCommentAndOneLibraryPackage@1.0.0 [read-only]");
+            userLibId.set(userLibTreeItem.getId());
+        });
+
+        Runnable getUserLibContextMenuActions = () -> {
+            var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT, treeId.get(),
                     userLibId.get());
             assertThat(menuEntriesIds).hasSize(4)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT)
