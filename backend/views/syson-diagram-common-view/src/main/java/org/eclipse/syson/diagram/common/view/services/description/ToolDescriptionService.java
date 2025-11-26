@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -443,13 +444,13 @@ public class ToolDescriptionService {
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
-        var createDiagram = this.viewBuilderHelper.newChangeContext()
+        var createDiagramIfNeeded = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT));
 
         if (direction != null) {
-            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build(), createDiagram.build());
+            changeContextNewInstance.children(setDirection.build(), updateExposedElements.build(), createDiagramIfNeeded.build());
         } else {
-            changeContextNewInstance.children(updateExposedElements.build(), createDiagram.build());
+            changeContextNewInstance.children(updateExposedElements.build(), createDiagramIfNeeded.build());
         }
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
@@ -558,7 +559,7 @@ public class ToolDescriptionService {
                 .children(createMembership.build());
 
         var changeContextRoot = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self")
+                .expression(AQLConstants.AQL_SELF)
                 .children(changeContextViewUsageOwner.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);

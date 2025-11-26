@@ -120,8 +120,8 @@ In addition, two new tools are added to the palette of the _General View_ diagra
 Remove the Delete tool from the context menu of a standard diagram.
 Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
 Remove the Duplicate tool from the context menu of a standard diagram.
-- https://github.com/eclipse-syson/syson/issues/1686[#1686] [diagram] Add _New Documentation_ tool on `Package` graphical nodes in standard diagrams.
-
+- https://github.com/eclipse-syson/syson/issues/1686[#1686] [diagrams] Add _New Documentation_ tool on `Package` graphical nodes in standard diagrams.
+- https://github.com/eclipse-syson/syson/issues/1689[#1689] [diagrams] Do not display _ports_ compartment when a _PortUsage_ is created from any graphical node in standard diagrams.
 
 === New features
 

@@ -314,6 +314,8 @@ a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%
 * Remove the _Delete_ tool from the context menu of a standard diagram. Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
 * Remove the _Duplicate_ tool from the context menu of a standard diagram. It was not logical to duplicate a diagram associated to a `ViewUsage`.
 - In diagrams, add _New Documentation_ tool on `Package` graphical nodes.
+- In diagrams, do not display _ports_ compartment anymore when a _PortUsage_ is created from any graphical node.
+The border graphical node representing the _PortUsage_ is sufficient.
 
 == Technical details
 
