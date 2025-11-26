@@ -8,6 +8,9 @@
 
 == Bug fixes
 
+- Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
+These models are now correctly displayed under the _User libraries_ directory.
+
 == Improvements
 
 - The textual export now properly exports `SatisfyRequirementUsage` such as in the following model.
