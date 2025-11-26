@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -85,6 +86,11 @@ public class RevealCompartmentSwitch extends SysmlSwitch<Boolean> {
     @Override
     public Boolean caseOccurrenceUsage(OccurrenceUsage object) {
         return !this.isGeneralView;
+    }
+
+    @Override
+    public Boolean casePortUsage(PortUsage object) {
+        return Boolean.FALSE;
     }
 
     @Override
