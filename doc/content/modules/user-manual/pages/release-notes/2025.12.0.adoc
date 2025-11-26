@@ -196,6 +196,7 @@ This issue is now fixed.
 - Fix some errors on validation rules using AQL expressions.
 - Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
 - Fix an error where the creation of a `NamespaceImport` graphical node as first element in a diagram was not hiding "Add your first element" graphical node.
+- In the _Details_ view, fix an error where the _reference widget_ 's object selection popup was switching from many-valuated to mono-valuated UI when selecting an element on the _Typed By_ property on `Feature`. elements.
 
 == Improvements
 

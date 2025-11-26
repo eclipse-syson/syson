@@ -356,24 +356,6 @@ public class DetailsViewService {
         return featureTyping;
     }
 
-    /**
-     * Get the real owner of the reference widget for the extra property "Typed by".
-     *
-     * @param element
-     *         the current {@link Element}.
-     * @return the real element that holds the property.
-     */
-    public Element getFeatureTypingOwnerExpression(Element element) {
-        Optional<FeatureTyping> featureTyping = element.getOwnedRelationship().stream()
-                .filter(FeatureTyping.class::isInstance)
-                .map(FeatureTyping.class::cast)
-                .findFirst();
-        if (featureTyping.isPresent()) {
-            return featureTyping.get();
-        }
-        return element;
-    }
-
     public AcceptActionUsage getAcceptActionUsage(Element self) {
         if (self instanceof AcceptActionUsage accept) {
             return accept;
