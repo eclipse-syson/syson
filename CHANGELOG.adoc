@@ -96,6 +96,7 @@ Libraries containing only `LibraryPackage` instances were previously displayed u
 - https://github.com/eclipse-syson/syson/issues/1679[#1679] [validation] Fix AQL errors on several validation rules.
 - https://github.com/eclipse-syson/syson/issues/1680[#1680] [explorer] Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
 - https://github.com/eclipse-syson/syson/issues/1683[#1683] [diagrams] Fix an error where the creation of a `NamespaceImport` graphical node as first element in a diagram was not hiding "Add your first element" graphical node.
+- https://github.com/eclipse-syson/syson/issues/1688[#1688] [details] Fix an error where the _reference widget_ 's object selection popup was switching from many-valuated to mono-valuated UI when selecting an element on the _Typed By_ property on `Feature` elements.
 
 === Improvements
 

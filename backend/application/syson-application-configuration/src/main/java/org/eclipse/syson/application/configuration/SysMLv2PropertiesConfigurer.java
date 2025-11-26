@@ -243,6 +243,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return group;
     }
 
+    // should handle multiple Redefinition
     private GroupDescription createExtraRedefinitionPropertiesGroup() {
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
@@ -290,6 +291,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return group;
     }
 
+    // should handle multiple Subclassification
     private GroupDescription createExtraSubclassificationPropertiesGroup() {
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
@@ -313,6 +315,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return group;
     }
 
+    // should handle multiple Subsetting
     private GroupDescription createExtraSubsettingPropertiesGroup() {
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
@@ -336,18 +339,23 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return group;
     }
 
+    // should handle multiple FeatureTyping
     private GroupDescription createExtraFeatureTypingPropertiesGroup() {
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TYPING_PROPERTIES);
         group.setLabelExpression("");
+        // This widget is declared on the Feature.type derived many-valuated reference.
+        // It allows to display the Typed By reference widget even if the Feature does not have a FeatureTyping yet.
+        // Feature.type is a derived many-valuated reference, containing the union of all mono-valuated
+        // "FeatureTyping.type" references of FeatureTyping children of this Feature
         group.setSemanticCandidatesExpression("aql:self->filter(sysml::Feature)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ExtraReferenceWidget");
         refWidget.setLabelExpression("Typed by");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeature_Type().getName());
-        refWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getFeatureTypingOwnerExpression"));
+        refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("handleFeatureTypingNewValue", ViewFormDescriptionConverter.NEW_VALUE));
