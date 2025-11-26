@@ -23,9 +23,12 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractPackageNodeDescriptio
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
+import org.eclipse.syson.diagram.common.view.tools.ViewNodeAsToolProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 
 /**
  * Used to create the package node description in the Standard Diagram Views.
@@ -82,7 +85,8 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
                 SDVDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION,
                 SDVDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION,
                 SDVDiagramDescriptionProvider.ANALYSIS_TOOL_SECTION,
-                SDVDiagramDescriptionProvider.EXTENSION_TOOL_SECTION);
+                SDVDiagramDescriptionProvider.EXTENSION_TOOL_SECTION,
+                SDVDiagramDescriptionProvider.VIEW_AS_TOOL_SECTION);
     }
 
     @Override
@@ -93,6 +97,11 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
         } else if (SDVDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache));
+        } else if (SDVDiagramDescriptionProvider.VIEW_AS_TOOL_SECTION.name().equals(sectionName)) {
+            nodeTools.add(new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(cache));
+            nodeTools.add(new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV).create(cache));
+            nodeTools.add(new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV).create(cache));
+            nodeTools.add(new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV).create(cache));
         }
         return nodeTools;
     }
