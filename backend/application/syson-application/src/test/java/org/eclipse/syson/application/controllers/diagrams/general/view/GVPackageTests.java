@@ -211,4 +211,54 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    @DisplayName("GIVEN a diagram with a Package node, WHEN a Documentation node is created, THEN the Documentation node is only visible beside the Package")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testCreateDocumentationInPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newDocumentationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Documentation");
+        assertThat(newDocumentationToolId).as("The tool 'New Documentation' should exist on the Package").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            packageNodeId.set(packageNode.getId());
+
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newDocumentationTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newDocumentationToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+
+            var docNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "doc" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + LabelConstants.CR + "add doc here").getNode();
+            assertThat(docNode).isNotNull();
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(4);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newDocumentationTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPart)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

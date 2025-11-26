@@ -35,7 +35,6 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeItemTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ViewAsOnNodeTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -98,9 +97,6 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
     @Autowired
     private SysONTreeFilterProvider sysonTreeFilterProvider;
-
-    @Autowired
-    private ExpandAllTreeItemTester expandAllTreeItemTester;
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -214,6 +210,71 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         StepVerifier.create(explorerFlux)
                 .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a GV diagram, WHEN the 'View as > Interconnection View' tool is applied on a Package, THEN a new ViewUsage (typed with IV) is created and visible in the GV and contain the Package.")
+    @Sql(scripts = { ViewAsOnNodeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testViewAsIVOnPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var packageToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPackage()));
+        assertThat(packageToolId).as("The tool 'New Package' should exist on diagram").isNotNull();
+
+        var viewAsGeneralViewToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "General View");
+        assertThat(viewAsGeneralViewToolId).as("The tool 'View as > General View' should exist on Package").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+        var view2Id = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+            assertThat(diag.getNodes()).hasSize(3);
+            assertThat(diag.getEdges()).hasSize(2);
+        });
+
+        Runnable packageTool = () -> this.toolTester.invokeTool(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), diagramId.get(), packageToolId, List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterPackageToolExecution = assertRefreshedDiagramThat(diag -> {
+            assertThat(diag.getNodes()).hasSize(4);
+            assertThat(diag.getEdges()).hasSize(2);
+
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package1").getNode();
+            assertThat(packageNode).isNotNull();
+            packageNodeId.set(packageNode.getId());
+        });
+
+        Runnable viewAsGeneralViewTool = () -> this.toolTester.invokeTool(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), viewAsGeneralViewToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterViewAsToolExecution = assertRefreshedDiagramThat(diag -> {
+            assertThat(diag.getNodes()).hasSize(4);
+            assertThat(diag.getEdges()).hasSize(2);
+
+            var view2NodeNavigator = new DiagramNavigator(diag)
+                    .nodeWithLabel(LabelConstants.OPEN_QUOTE + "view" + LabelConstants.CLOSE_QUOTE + " view2 : StandardViewDefinitions::GeneralView");
+            var newViewUsageNode = view2NodeNavigator.getNode();
+            assertThat(newViewUsageNode).isNotNull();
+            view2Id.set(newViewUsageNode.getTargetObjectId());
+
+            var packageNode = view2NodeNavigator.childNodeWithLabel("Package1").getNode();
+            assertThat(packageNode).isNotNull();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(packageTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterPackageToolExecution)
+                .then(viewAsGeneralViewTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterViewAsToolExecution)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

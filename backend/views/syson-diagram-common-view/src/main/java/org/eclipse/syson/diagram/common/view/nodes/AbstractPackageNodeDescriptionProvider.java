@@ -201,9 +201,13 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         var edgeTools = new ArrayList<>(this.getEdgeTools(nodeDescription, cache));
 
         var nodesWithoutSection = new ArrayList<>();
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getComment())).ifPresent(nodeComment -> {
-            nodesWithoutSection.add(this.createNodeTool(nodeComment, SysmlPackage.eINSTANCE.getComment()));
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getComment())).ifPresent(commentNodeDesc -> {
+            nodesWithoutSection.add(this.createNodeTool(commentNodeDesc, SysmlPackage.eINSTANCE.getComment()));
         });
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getDocumentation())).ifPresent(docNodeDesc -> {
+            nodesWithoutSection.add(this.createNodeTool(docNodeDesc, SysmlPackage.eINSTANCE.getDocumentation()));
+        });
+
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
