@@ -430,8 +430,7 @@ public class ToolDescriptionService {
             return this.createNodeToolFromDiagramBackground(nodeDescription, eClass);
         }
 
-        var setDirection = this.viewBuilderHelper.newSetValue()
-                .featureName("direction");
+        var setDirection = this.viewBuilderHelper.newSetValue().featureName("direction");
 
         if (direction != null) {
             setDirection.valueExpression(direction.getLiteral());
@@ -468,7 +467,7 @@ public class ToolDescriptionService {
                 .children(changeContextMembership.build());
 
         var changeContextRoot = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self")
+                .expression(AQLConstants.AQL_SELF)
                 .children(changeContextViewUsageOwner.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);

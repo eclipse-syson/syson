@@ -162,6 +162,16 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     public void testDisplayActionsCompartmentOnActionAShouldHideActionB() {
         var flux = this.givenSubscriptionToDiagram();
 
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GVSimpleNestedActionTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newActionToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Action");
+        assertThat(newActionToolId).as("The tool 'New Action' should exist on the ActionUsage").isNotNull();
+
+        var newItemInOutToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Item Inout");
+        assertThat(newActionToolId).as("The tool 'New Item Inout' should exist on the ActionUsage").isNotNull();
+
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             var actionB = new DiagramNavigator(diag).nodeWithId(GVSimpleNestedActionTestProjectData.GraphicalIds.ACTION_B_ID).getNode();
             assertThat(actionB).isNotNull();
@@ -204,10 +214,48 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
             assertThat(edgeAB.getState().equals(ViewModifier.Hidden)).isTrue();
         });
 
+        // then a 'New Action' on actionA will add an ActionUsage only in the actionA actions compartment, and not on
+        // the diagram background
+        Runnable newAction = () -> this.toolTester.invokeTool(GVSimpleNestedActionTestProjectData.EDITING_CONTEXT_ID, GVSimpleNestedActionTestProjectData.GraphicalIds.DIAGRAM_ID,
+                GVSimpleNestedActionTestProjectData.GraphicalIds.ACTION_A_ID, newActionToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewAction = assertRefreshedDiagramThat(diag -> {
+            assertThat(diag.getNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList()).hasSize(1);
+            assertThat(diag.getEdges().stream().filter(e -> e.getState().equals(ViewModifier.Normal)).toList()).hasSize(0);
+
+            var actionsCompartmentNavigator = new DiagramNavigator(diag).nodeWithId(GVSimpleNestedActionTestProjectData.GraphicalIds.ACTION_A_ID)
+                    .childNodeWithLabel("actions");
+            var actionsCompartment = actionsCompartmentNavigator.getNode();
+            assertThat(actionsCompartment).isNotNull();
+            assertThat(actionsCompartment.getState().equals(ViewModifier.Normal)).isTrue();
+            assertThat(actionsCompartment.getChildNodes().size()).isEqualTo(2);
+        });
+
+        // then a 'New Item' on actionA will add an ItemUsage only as a border node, and not on the diagram background
+        Runnable newItem = () -> this.toolTester.invokeTool(GVSimpleNestedActionTestProjectData.EDITING_CONTEXT_ID, GVSimpleNestedActionTestProjectData.GraphicalIds.DIAGRAM_ID,
+                GVSimpleNestedActionTestProjectData.GraphicalIds.ACTION_A_ID, newItemInOutToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewItem = assertRefreshedDiagramThat(diag -> {
+            assertThat(diag.getNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList()).hasSize(1);
+            assertThat(diag.getEdges().stream().filter(e -> e.getState().equals(ViewModifier.Normal)).toList()).hasSize(0);
+
+            var actionANode = new DiagramNavigator(diag).nodeWithId(GVSimpleNestedActionTestProjectData.GraphicalIds.ACTION_A_ID).getNode();
+            var itemBorderNode = actionANode.getBorderNodes().stream().filter(bn -> "item1Inout".equals(bn.getOutsideLabels().get(0).text())).findFirst();
+
+            assertThat(itemBorderNode).isNotEmpty();
+            assertThat(itemBorderNode.get().getState().equals(ViewModifier.Normal)).isTrue();
+        });
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(revealActionsCompartment)
                 .consumeNextWith(updatedDiagramContentConsumer)
+                .then(newAction)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewAction)
+                .then(newItem)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewItem)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

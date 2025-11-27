@@ -297,7 +297,7 @@ image::release-notes-publication-import-user-library-with-library-name-and-read-
 
 - Improve the way elements are displayed in the _General View_ diagram by not display them twice.
 The new behavior is: by default, when no compartment is displayed inside a graphical node, the creation of a nested element from the graphical node displays it on the diagram background and links it with the graphical node through a composition graphical edge.
-Then, when any compartment inside a graphical node A containing a nested graphical node B is displayed, then any graphical node representing B and linked to graphical node A through a composition graphical edge disappear.
+Then, when any compartment inside a graphical node _A_ containing a nested graphical node _B_ is displayed, then any graphical node representing _B_ and linked to graphical node _A_ through a composition graphical edge disappear.
 For example, in the following model, _actionA_ contains _actionB_.
 When no compartment is displayed inside _actionA_, _actionB_ is displayed on the diagram background and linked to _actionA_ through a composition graphical edge.
 Then, when the _action flow_ compartment is displayed inside _actionA_, then _actionB_ is not displayed on the diagram background anymore, only in the _action flow_ compartment of _actionA_.

@@ -16,20 +16,29 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
+import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
@@ -46,6 +55,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +69,12 @@ public class DiagramMutationExposeService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final IIdentityService identityService;
+
+    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
+
+    private final IDiagramIdProvider diagramIdProvider;
+
     private final DiagramMutationElementService diagramMutationElementService;
 
     private final DiagramQueryElementService diagramQueryElementService;
@@ -71,9 +87,13 @@ public class DiagramMutationExposeService {
 
     private final NodeDescriptionService nodeDescriptionService;
 
-    public DiagramMutationExposeService(IObjectSearchService objectSearchService, DiagramMutationElementService diagramMutationElementService, DiagramQueryElementService diagramQueryElementService,
+    public DiagramMutationExposeService(IObjectSearchService objectSearchService, IIdentityService identityService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService,
+            IDiagramIdProvider diagramIdProvider, DiagramMutationElementService diagramMutationElementService, DiagramQueryElementService diagramQueryElementService,
             ModelQueryElementService modelQueryElementService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
@@ -124,6 +144,13 @@ public class DiagramMutationExposeService {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(element.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
+                // if it is the General View, we want to hide tree nested elements if a compartment containing the same
+                // element is displayed or it is displayed as border node
+                if (selectedNode != null && ViewDefinitionKind.isGeneralView(this.utilService.getViewDefinitionKind(element, List.of(), editingContext))) {
+                    this.hideNodeIfVisibleCompartmentCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
+                    this.hideNodeIfBorderNodeCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
+
+                }
             }
         }
         return element;
@@ -328,5 +355,82 @@ public class DiagramMutationExposeService {
                 this.deleteService.deleteFromModel(expose);
             }
         }
+    }
+
+    private void hideNodeIfVisibleCompartmentCouldHostTheFutureNode(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        // 1- get visible compartments of selected node
+        // 2- get visible compartments that could host the future node
+        // 3- if a visible compartment could host the future node, then hide the tree node
+        List<Node> visibleCompartments = selectedNode.getChildNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList();
+        boolean visibleCompartmentsThatCouldHostTheFutureNode = false;
+        for (Node visibleCompartment : visibleCompartments) {
+            Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, visibleCompartment,
+                    convertedNodes);
+            if (childNodeDescriptionIdForRendering.isPresent()) {
+                visibleCompartmentsThatCouldHostTheFutureNode = true;
+                break;
+            }
+        }
+        if (visibleCompartmentsThatCouldHostTheFutureNode) {
+            var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
+            String parentId = null;
+            if (parent instanceof Node parentNode) {
+                parentId = parentNode.getId();
+            } else if (parent instanceof Diagram diagram) {
+                parentId = diagram.getId();
+            }
+            var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+            if (descriptionId.isPresent()) {
+                var nodeId = new NodeIdProvider().getNodeId(parentId,
+                        descriptionId.get(),
+                        NodeContainmentKind.CHILD_NODE,
+                        this.identityService.getId(element));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
+            }
+        }
+    }
+
+    private void hideNodeIfBorderNodeCouldHostTheFutureNode(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        // 1- get border nodes descriptions that could host the future node
+        // 3- if a border nodes description could host the future node, then hide the tree node
+        boolean borderNodeDecriptionCouldHostTheFutureNode = false;
+        var childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode,
+                convertedNodes);
+        // Child nodes are composed of compartment nodes and border nodes but compartment nodes are not appropriate
+        // candidates, so only border nodes are remaining.
+        if (childNodeDescriptionIdForRendering.isPresent()) {
+            borderNodeDecriptionCouldHostTheFutureNode = true;
+        }
+        if (borderNodeDecriptionCouldHostTheFutureNode) {
+            var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
+            String parentId = null;
+            if (parent instanceof Node parentNode) {
+                parentId = parentNode.getId();
+            } else if (parent instanceof Diagram diagram) {
+                parentId = diagram.getId();
+            }
+
+            var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+            if (descriptionId.isPresent()) {
+                var nodeId = new NodeIdProvider().getNodeId(parentId,
+                        descriptionId.get(),
+                        NodeContainmentKind.CHILD_NODE,
+                        this.identityService.getId(element));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
+            }
+        }
+    }
+
+    private Optional<String> getNodeDescriptionId(Element element, Diagram diagram, IEditingContext editingContext) {
+        var optViewDD = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
+        if (optViewDD.isPresent()) {
+            return EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                    .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))
+                    .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                    .findFirst();
+        }
+        return Optional.empty();
     }
 }
