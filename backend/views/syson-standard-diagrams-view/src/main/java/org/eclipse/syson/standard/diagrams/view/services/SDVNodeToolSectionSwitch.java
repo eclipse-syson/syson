@@ -189,7 +189,9 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActionParameterNodeTool(FeatureDirectionKind.IN));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActionParameterNodeTool(FeatureDirectionKind.INOUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActionParameterNodeTool(FeatureDirectionKind.OUT));
+
         this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem(), sections, this.cache);
+
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
 
