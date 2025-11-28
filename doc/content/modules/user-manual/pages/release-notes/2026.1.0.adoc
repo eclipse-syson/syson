@@ -36,6 +36,11 @@ package ReqSatisfactions {
 
 image::gv-parts-compartment.png[Parts compartment, width=50%]
 
+- The impact analysis dialog now displays changes in a tree.
+This dialog provides an overview of the impacts the operation will have on the model (number of elements created, deleted, modified), as well as a tree showing the impacted elements.
+
+image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysis with change tree, width=65%,height=65%]
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
