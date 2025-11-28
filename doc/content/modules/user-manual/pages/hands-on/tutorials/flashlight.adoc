@@ -151,15 +151,15 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Rename it `cmdPort`.
 . Create a new binding between the `cmdPort` of `flashlight` and the `cmdPort` of the `switch`.
 . Right-click on `switch`, then select the `Structure` -> `New Port In`.
-. Rename it `inPort`.
+. Rename it `in inPort`.
 . Right-click on `switch`, then select the `Structure` -> `New Port Out`.
-. Rename it `outPort`.
+. Rename it `out outPort`.
 . Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
 . Rename it `battery`.
 . In the `Details` view, select the `Advanced` tab and uncheck the `Is Composite` property, to declare that this is a reference.
-. Edit it to `battery[2]` to declare that the part has a multiplicity equal to 2.
+. Edit it to `ref battery[2]` to declare that the part has a multiplicity equal to 2 and to keep the `Is Composite` property to `false`.
 . Right-click on `battery`, then select the `Structure` -> `New Port Out`.
-. Rename it `dcPwrOutPort`.
+. Rename it `out dcPwrOutPort`.
 . Select `dcPwrOutPort`, create a flow between `dcPwrOutPort` and `inPort`.
 . In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New objects from text`.
 . In the model input box, paste the following content:
