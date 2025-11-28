@@ -38,27 +38,29 @@ public class NodeFinder {
     /**
      * Gets the parent of the given {@link Node}. It can either be another {@link Node} or a {@link Diagram}
      *
-     * @param searchNode
-     *            a non <code>null</code> node to search
+     * @param currentNode
+     *            a non <code>null</code> node to search the parent for
      * @return a parent {@link Node}, the {@link Diagram} or <code>null</code> if the given node is not in the current
      *         diagram
      */
-    public Object getParent(Node searchNode) {
-        Object result;
-        for (Node node : this.diagram.getNodes()) {
-            if (searchNode.getId().equals(node.getId())) {
-                result = this.diagram;
-            } else {
-                result = this.doSearchFirst(node, n ->
+    public Object getParent(Node currentNode) {
+        Object result = null;
+        if (currentNode != null) {
+            String currentNodeId = currentNode.getId();
+            for (Node node : this.diagram.getNodes()) {
+                if (Objects.equals(currentNodeId, node.getId())) {
+                    result = this.diagram;
+                } else {
+                    result = this.doSearchFirst(node, n ->
                     this.getAllChildrenCandidates(n, node.isBorderNode())
-                        .anyMatch(subNode -> searchNode.getId().equals(subNode.getId()))
-                ).orElse(null);
-            }
-            if (result != null) {
-                return result;
+                            .anyMatch(subNode -> Objects.equals(currentNodeId, subNode.getId()))).orElse(null);
+                }
+                if (result != null) {
+                    break;
+                }
             }
         }
-        return null;
+        return result;
     }
 
     /**

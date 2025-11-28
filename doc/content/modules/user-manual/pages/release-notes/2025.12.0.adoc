@@ -307,6 +307,8 @@ Then, when the _action flow_ compartment is displayed inside _actionA_, then _ac
 a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%] a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
 |===
 
+When a drag and drop of an _Element_ is made from the _Explorer_ view, the same behavior is applied: if the target graphical node has no candidate compartment displayed, then the dropped _Element_ is created on the diagram background and linked to the target graphical node through a composition graphical edge. If any visible compartment inside the existing graphical node corresponding the semantic parent of the dropped _Element_ is displayed, then the dropped _Element_ is created inside the target graphical node's compartment as a nested graphical node.
+
 - When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
 - In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
 - In the _Explorer_ view, several improvements have been made about diagrams:

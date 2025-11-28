@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -310,7 +311,16 @@ public class DiagramMutationDndService {
             // diagram.
             this.utilService.setFeatureTyping(usage, definition);
         } else if (this.modelQueryElementService.isExposable(sourceElement)) {
-            this.diagramMutationExposeService.expose(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
+            Node newSelectedNode = selectedNode;
+            if (selectedNode == null) {
+                // try to get the graphical node corresponding to the semantic parent
+                var parentId = new EObjectIDManager().findId(sourceElement.getOwner());
+                var optParentNode = diagramContext.diagram().getNodes().stream().filter(n -> parentId.isPresent() && Objects.equals(n.getTargetObjectId(), parentId.get())).findFirst();
+                if (optParentNode.isPresent()) {
+                    newSelectedNode = optParentNode.get();
+                }
+            }
+            this.diagramMutationExposeService.expose(sourceElement, editingContext, diagramContext, newSelectedNode, convertedNodes);
         } else {
             ViewCreationRequest parentViewCreationRequest = this.diagramMutationElementService.createView(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
             Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.diagram())
