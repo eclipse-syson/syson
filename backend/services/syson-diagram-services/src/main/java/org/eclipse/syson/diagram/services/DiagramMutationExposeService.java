@@ -373,15 +373,9 @@ public class DiagramMutationExposeService {
             }
         }
         if (visibleCompartmentsThatCouldHostTheFutureNode) {
-            var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-            String parentId = null;
-            if (parent instanceof Node parentNode) {
-                parentId = parentNode.getId();
-            } else if (parent instanceof Diagram diagram) {
-                parentId = diagram.getId();
-            }
+            var parentId = this.getGraphicalParentId(diagramContext, selectedNode);
             var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
-            if (descriptionId.isPresent()) {
+            if (parentId != null && descriptionId.isPresent()) {
                 var nodeId = new NodeIdProvider().getNodeId(parentId,
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
@@ -404,16 +398,9 @@ public class DiagramMutationExposeService {
             borderNodeDecriptionCouldHostTheFutureNode = true;
         }
         if (borderNodeDecriptionCouldHostTheFutureNode) {
-            var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-            String parentId = null;
-            if (parent instanceof Node parentNode) {
-                parentId = parentNode.getId();
-            } else if (parent instanceof Diagram diagram) {
-                parentId = diagram.getId();
-            }
-
+            var parentId = this.getGraphicalParentId(diagramContext, selectedNode);
             var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
-            if (descriptionId.isPresent()) {
+            if (parentId != null && descriptionId.isPresent()) {
                 var nodeId = new NodeIdProvider().getNodeId(parentId,
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
@@ -421,6 +408,19 @@ public class DiagramMutationExposeService {
                 diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
             }
         }
+    }
+
+    private String getGraphicalParentId(DiagramContext diagramContext, Node selectedNode) {
+        String parentId = null;
+        var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
+        if (parent instanceof Node parentNode) {
+            parentId = parentNode.getId();
+        } else if (parent instanceof Diagram diagram) {
+            parentId = diagram.getId();
+        } else {
+            parentId = diagramContext.diagram().getId();
+        }
+        return parentId;
     }
 
     private Optional<String> getNodeDescriptionId(Element element, Diagram diagram, IEditingContext editingContext) {
