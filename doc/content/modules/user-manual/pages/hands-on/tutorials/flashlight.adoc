@@ -71,6 +71,7 @@ This well set the _declaredName_ property of the attribute to `actualweight` and
 It is located in the `Structure` section of the palette.
 Then select `SI/Library Package SI` to import it from the standard libraries.
 This will allow you to use standard units, such as the kilogram.
+. Click on the `Manage Visibility -> require constraints` (i.e. the eye icon that will appear when the mouse pointer will be over the `weight` requirement) on the `weight` requirement to display the _require constraints_ compartment on the `weight` requirement.
 . Use the palette filter to locate the `New Required Constraint` tool, and apply it to the `weight` requirement.
 . In the `require constraints` compartment of the `weight` requirement, edit the constraint to: `actualweight \<= 0.25 [kg]`
 This will set the predicate of the constraint.
@@ -120,7 +121,7 @@ action directLight{
 . Create a `Flow Connection (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
 . Create a `Flow Connection (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
 . Create a `Flow Connection (flow)` between `outdcPwr` of `provideDCPwr` to `dcPwrIn` of `connectDCPwr`.
-. Using the eye icon on the `produceDirectLight` action display the `items` compartment.
+. Use the eye icon on the `produceDirectLight` action to display the `items` compartment.
 . Set the value of `produceDirectedLight::lightOut` by renaming the item `out lightOut` of `produceDirectedLight` to `out lightOut = directLight.lightOut`.
 
 image::flashlight-action-tree.png[Flashlight Requirements Tree]
