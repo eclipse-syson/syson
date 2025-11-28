@@ -18,15 +18,16 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodeMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodesMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -61,7 +62,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
     private IGivenDiagramSubscription givenDiagramSubscription;
 
     @Autowired
-    private DropNodeMutationRunner dropNodeMutationRunner;
+    private DropNodesMutationRunner dropNodesMutationRunner;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -101,16 +102,16 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
         });
 
         Runnable dropPartNodeFromDiagramToPackage = () -> {
-            var input = new DropNodeInput(
+            var input = new DropNodesInput(
                     UUID.randomUUID(),
                     GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    partNodeId.get(),
+                    List.of(partNodeId.get()),
                     packageNodeId.get(),
                     0,
                     0);
-            var result = this.dropNodeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNode.__typename");
+            var result = this.dropNodesMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -125,16 +126,16 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
         });
 
         Runnable dropPartNodeFromPackageToDiagram = () -> {
-            var input = new DropNodeInput(
+            var input = new DropNodesInput(
                     UUID.randomUUID(),
                     GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    partNodeId.get(),
+                    List.of(partNodeId.get()),
                     diagramId.get(),
                     0,
                     0);
-            var result = this.dropNodeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNode.__typename");
+            var result = this.dropNodesMutationRunner.run(input);
+            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

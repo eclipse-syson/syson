@@ -203,6 +203,8 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
             isVisible={!!selected}
             shouldResize={() => !data.isBorderNode}
             keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+            minWidth={data.minComputedWidth ?? undefined}
+            minHeight={data.minComputedHeight ?? undefined}
           />
         ) : null}
         <div
