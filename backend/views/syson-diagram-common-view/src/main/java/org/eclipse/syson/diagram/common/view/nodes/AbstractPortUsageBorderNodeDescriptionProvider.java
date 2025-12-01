@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
@@ -45,8 +46,11 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbstractPortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    protected final EReference eReference;
+
+    public AbstractPortUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.eReference = Objects.requireNonNull(eReference);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 

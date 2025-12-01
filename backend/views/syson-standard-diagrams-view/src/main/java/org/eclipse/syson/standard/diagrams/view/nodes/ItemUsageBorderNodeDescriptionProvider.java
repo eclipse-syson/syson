@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -39,9 +40,13 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBor
 
     @Override
     protected List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache) {
-        NodeDescription nodeDescription = cache.getNodeDescription(this.getName()).get();
-        NodeDescription portBorderNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
-        return List.of(nodeDescription, portBorderNodeDescription);
+        var nodes = new ArrayList<NodeDescription>();
+
+        cache.getNodeDescription(this.getName()).ifPresent(nodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
+
+        return nodes;
     }
 
 

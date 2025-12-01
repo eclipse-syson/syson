@@ -30,9 +30,9 @@ public class GeneralViewPortTestProjectData {
 
         public static final String DIAGRAM_ID = "a7a58223-9b72-46c3-be76-53ea6b5a467c";
 
-        public static final String PORT_1_BORDER_NODE_ID = "9462a470-d7ca-3d9f-8893-4bfa0c3fcbc5";
+        public static final String PORT_1_BORDER_NODE_ID = "9e00be9b-ecf6-31da-9ad9-360411309d46";
 
-        public static final String PORT_2_BORDER_NODE_ID = "97dde08f-1594-3fae-9edb-f0718ebda1ab";
+        public static final String PORT_2_BORDER_NODE_ID = "775129f7-7575-3703-91f9-3cb198da1ffc";
     }
 
     /**

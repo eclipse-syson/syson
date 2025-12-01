@@ -455,9 +455,9 @@ public class ViewEdgeService {
      * @return the flow itself
      */
     public FlowUsage reconnectSource(FlowUsage flow, Feature newSource) {
-        EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
-        if (!mFeatures.isEmpty()) {
-            FeatureMembership toDelete = mFeatures.get(0);
+        EList<FeatureMembership> featureMemberships = flow.getFeatureMembership();
+        if (!featureMemberships.isEmpty()) {
+            FeatureMembership toDelete = featureMemberships.get(0);
             int index = flow.getOwnedRelationship().indexOf(toDelete);
             flow.getOwnedRelationship().remove(index);
             flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newSource));
@@ -475,9 +475,9 @@ public class ViewEdgeService {
      * @return the flow itself
      */
     public FlowUsage reconnectTarget(FlowUsage flow, Feature newTarget) {
-        EList<FeatureMembership> mFeatures = flow.getFeatureMembership();
-        if (mFeatures.size() >= 2) {
-            FeatureMembership toDelete = mFeatures.get(1);
+        EList<FeatureMembership> featureMemberships = flow.getFeatureMembership();
+        if (featureMemberships.size() >= 2) {
+            FeatureMembership toDelete = featureMemberships.get(1);
             int index = flow.getOwnedRelationship().indexOf(toDelete);
             flow.getOwnedRelationship().remove(index);
             flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newTarget));

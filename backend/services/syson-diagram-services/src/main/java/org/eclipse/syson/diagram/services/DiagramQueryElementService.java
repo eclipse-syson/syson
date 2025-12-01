@@ -22,9 +22,11 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
-import org.eclipse.syson.services.UtilService;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -38,11 +40,14 @@ public class DiagramQueryElementService {
 
     private final IObjectSearchService objectSearchService;
 
-    private final UtilService utilService;
+    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
-    public DiagramQueryElementService(IObjectSearchService objectSearchService) {
+    private final IDiagramIdProvider diagramIdProvider;
+
+    public DiagramQueryElementService(IObjectSearchService objectSearchService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.utilService = new UtilService();
+        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
+        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
     }
 
     /**
@@ -157,5 +162,50 @@ public class DiagramQueryElementService {
             }
         }
         return true;
+    }
+
+    /**
+     * Get the parent ID of the given {@link Node}.
+     *
+     * @param diagramContext
+     *            the {@link DiagramContext} retrieved from the Variable Manager.
+     * @param node
+     *            the given {@link Node}.
+     * @return the parent ID of the given {@link Node}.
+     */
+    public String getGraphicalParentId(DiagramContext diagramContext, Node node) {
+        String parentId = null;
+        var parent = new NodeFinder(diagramContext.diagram()).getParent(node);
+        if (parent instanceof Node parentNode) {
+            parentId = parentNode.getId();
+        } else if (parent instanceof Diagram diagram) {
+            parentId = diagram.getId();
+        } else {
+            parentId = diagramContext.diagram().getId();
+        }
+        return parentId;
+    }
+
+    /**
+     * Generate the NodeDescription Id of the given {@link Element} in the context of the given {@link Diagram}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param diagram
+     *            the given {@link Diagram}.
+     * @param editingContext
+     *            the {@link IEditingContext} retrieved from the Variable Manager.
+     * @return an Optional NodeDescription Id of the given {@link Element} in the context of the given {@link Diagram}
+     *         if it exists, an empty Optional otherwise.
+     */
+    public Optional<String> getNodeDescriptionId(Element element, Diagram diagram, IEditingContext editingContext) {
+        var optViewDD = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
+        if (optViewDD.isPresent()) {
+            return EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                    .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))
+                    .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                    .findFirst();
+        }
+        return Optional.empty();
     }
 }

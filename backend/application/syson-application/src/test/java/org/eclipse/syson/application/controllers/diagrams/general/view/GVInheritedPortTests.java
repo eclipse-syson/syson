@@ -303,7 +303,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from an inherited port and targeting an inherited port, THEN both inherited ports are redefined")
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoked from an inherited port and targeting an inherited port, THEN both inherited ports are redefined")
     @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

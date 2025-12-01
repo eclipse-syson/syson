@@ -21,9 +21,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -32,30 +29,31 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
-import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
-import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.SiriusWebCoreServices;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -67,13 +65,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramMutationExposeService {
 
-    private final IObjectSearchService objectSearchService;
-
-    private final IIdentityService identityService;
-
-    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
-
-    private final IDiagramIdProvider diagramIdProvider;
+    private final SiriusWebCoreServices siriusWebCoreServices;
 
     private final DiagramMutationElementService diagramMutationElementService;
 
@@ -87,19 +79,15 @@ public class DiagramMutationExposeService {
 
     private final NodeDescriptionService nodeDescriptionService;
 
-    public DiagramMutationExposeService(IObjectSearchService objectSearchService, IIdentityService identityService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService,
-            IDiagramIdProvider diagramIdProvider, DiagramMutationElementService diagramMutationElementService, DiagramQueryElementService diagramQueryElementService,
+    public DiagramMutationExposeService(SiriusWebCoreServices siriusWebCoreServices, DiagramMutationElementService diagramMutationElementService, DiagramQueryElementService diagramQueryElementService,
             ModelQueryElementService modelQueryElementService) {
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.identityService = Objects.requireNonNull(identityService);
-        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
-        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.siriusWebCoreServices = Objects.requireNonNull(siriusWebCoreServices);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
-        this.nodeDescriptionService = new NodeDescriptionService(objectSearchService);
+        this.nodeDescriptionService = new NodeDescriptionService(siriusWebCoreServices.objectSearchService());
     }
 
     /**
@@ -127,12 +115,12 @@ public class DiagramMutationExposeService {
         if (this.utilService.isUnsynchronized(element)) {
             final Element parentElement;
             if (selectedNode == null) {
-                parentElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId())
+                parentElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, diagramContext.diagram().getTargetObjectId())
                         .filter(Element.class::isInstance)
                         .map(Element.class::cast)
                         .orElse(null);
             } else {
-                parentElement = this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId())
+                parentElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, selectedNode.getTargetObjectId())
                         .filter(Element.class::isInstance)
                         .map(Element.class::cast)
                         .orElse(null);
@@ -141,16 +129,16 @@ public class DiagramMutationExposeService {
         } else {
             var viewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode);
             if (viewUsage != null && !viewUsage.getExposedElement().contains(element)) {
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(element.getOwningMembership());
-                viewUsage.getOwnedRelationship().add(membershipExpose);
-                // if it is the General View, we want to hide tree nested elements if a compartment containing the same
+                // if it is the General View, we want to hide tree elements if a compartment containing the same
                 // element is displayed or it is displayed as border node
                 if (selectedNode != null && ViewDefinitionKind.isGeneralView(this.utilService.getViewDefinitionKind(element, List.of(), editingContext))) {
                     this.hideNodeIfVisibleCompartmentCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
                     this.hideNodeIfBorderNodeCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
-
+                    this.hideNodeIfNestedIsDefault(element, editingContext, diagramContext, selectedNode, convertedNodes);
                 }
+                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                membershipExpose.setImportedMembership(element.getOwningMembership());
+                viewUsage.getOwnedRelationship().add(membershipExpose);
             }
         }
         return element;
@@ -217,7 +205,7 @@ public class DiagramMutationExposeService {
      * @return always <code>true</code>.
      */
     public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
-        var optDiagramTargetObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId());
+        var optDiagramTargetObject = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, diagramContext.diagram().getTargetObjectId());
         if (optDiagramTargetObject.isPresent()) {
             var diagramTargetObject = optDiagramTargetObject.get();
             if (diagramTargetObject instanceof ViewUsage viewUsage) {
@@ -342,7 +330,7 @@ public class DiagramMutationExposeService {
     private void removeFromExposedElements(Node currentNode, IEditingContext editingContext, List<Expose> exposed) {
         List<Node> childNodes = currentNode.getChildNodes();
         for (Node childNode : childNodes) {
-            this.objectSearchService.getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> {
+            this.siriusWebCoreServices.objectSearchService().getObject(editingContext, childNode.getTargetObjectId()).ifPresent(childElt -> {
                 this.deleteExpose(exposed, childElt);
             });
             this.removeFromExposedElements(childNode, editingContext, exposed);
@@ -373,13 +361,13 @@ public class DiagramMutationExposeService {
             }
         }
         if (visibleCompartmentsThatCouldHostTheFutureNode) {
-            var parentId = this.getGraphicalParentId(diagramContext, selectedNode);
-            var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+            var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
             if (parentId != null && descriptionId.isPresent()) {
                 var nodeId = new NodeIdProvider().getNodeId(parentId,
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
-                        this.identityService.getId(element));
+                        this.siriusWebCoreServices.identityService().getId(element));
                 diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
             }
         }
@@ -398,39 +386,34 @@ public class DiagramMutationExposeService {
             borderNodeDecriptionCouldHostTheFutureNode = true;
         }
         if (borderNodeDecriptionCouldHostTheFutureNode) {
-            var parentId = this.getGraphicalParentId(diagramContext, selectedNode);
-            var descriptionId = this.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+            var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
             if (parentId != null && descriptionId.isPresent()) {
                 var nodeId = new NodeIdProvider().getNodeId(parentId,
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
-                        this.identityService.getId(element));
+                        this.siriusWebCoreServices.identityService().getId(element));
                 diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
             }
         }
     }
 
-    private String getGraphicalParentId(DiagramContext diagramContext, Node selectedNode) {
-        String parentId = null;
-        var parent = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
-        if (parent instanceof Node parentNode) {
-            parentId = parentNode.getId();
-        } else if (parent instanceof Diagram diagram) {
-            parentId = diagram.getId();
-        } else {
-            parentId = diagramContext.diagram().getId();
+    private void hideNodeIfNestedIsDefault(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (element instanceof AttributeUsage || element instanceof PortUsage || element instanceof ItemUsage) {
+            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+            var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+            if (parentId != null && descriptionId.isPresent()) {
+                var nodeId = new NodeIdProvider().getNodeId(parentId,
+                        descriptionId.get(),
+                        NodeContainmentKind.CHILD_NODE,
+                        this.siriusWebCoreServices.identityService().getId(element));
+                boolean hide = true;
+                if (this.modelQueryElementService.isExposed(element, this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode))) {
+                    hide = false;
+                }
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), hide));
+            }
         }
-        return parentId;
-    }
-
-    private Optional<String> getNodeDescriptionId(Element element, Diagram diagram, IEditingContext editingContext) {
-        var optViewDD = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
-        if (optViewDD.isPresent()) {
-            return EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
-                    .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))
-                    .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
-                    .findFirst();
-        }
-        return Optional.empty();
     }
 }

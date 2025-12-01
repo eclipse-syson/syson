@@ -181,9 +181,13 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
     }
 
     private void addReusableBorderedNode(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
-        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()))
                 .ifPresent(childrenNodes::add);

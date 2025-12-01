@@ -180,8 +180,23 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of an inherited border {@link NodeDescription} starting with the diagram prefix and followed by the name of
+     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the name of
      * the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the border node is containing.
+     * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}
+     */
+    @Override
+    public String getBorderNodeName(EClass eClass, EReference eReference) {
+        return this.getBorderNodeName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName());
+    }
+
+    /**
+     * Returns the name of an inherited border {@link NodeDescription} starting with the diagram prefix and followed by
+     * the name of the given {@link EClass}.
      *
      * @param eClass
      *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
@@ -190,6 +205,21 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     @Override
     public String getInheritedBorderNodeName(EClass eClass) {
         return this.getInheritedBorderNodeName(this.getDiagramPrefix(), eClass.getName());
+    }
+
+    /**
+     * Returns the name of an inherited border {@link NodeDescription} starting with the diagram prefix and followed by
+     * the name of the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the border node is containing.
+     * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}
+     */
+    @Override
+    public String getInheritedBorderNodeName(EClass eClass, EReference eReference) {
+        return this.getInheritedBorderNodeName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName());
     }
 
     /**

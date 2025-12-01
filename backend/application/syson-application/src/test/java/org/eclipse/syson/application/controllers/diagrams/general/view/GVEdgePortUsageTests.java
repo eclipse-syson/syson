@@ -137,7 +137,8 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenFlowUsageEdgeToolCreationIsRequestedThenNewFlowUsageEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()), "New Flow (flow)");
+        String creationToolId = this.diagramDescriptionIdProvider
+                .getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()), "New Flow (flow)");
         this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 "port1",
@@ -171,7 +172,8 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenBindingConnectorAsUsageEdgeToolCreationIsRequestedThenNewBindingConnectorEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()),
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Binding Connector As Usage (bind)");
         this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -206,7 +208,8 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenSysMLProjectWithPortsWhenInterfaceEdgeToolCreationIsRequestedThenNewInterfaceEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()),
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Interface (connect)");
         this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

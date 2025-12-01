@@ -90,9 +90,9 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean caseAttributeUsage(AttributeUsage object) {
-        // For AttributeUsages we don't want nested Nodes, no matter the type of ViewDefinition.
-        // The sub AttributeUsages are displayed in a compartment list called "attributes".
-        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+        // For AttributeUsages we don't want tree Nodes on InterconnectionView, ActionFlow View or StateTransition
+        // View.
+        return ViewDefinitionKind.isGeneralView(this.kind);
     }
 
     @Override
@@ -103,15 +103,14 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean casePackage(Package object) {
-        // For PAckages we don't want nested Nodes, no matter the type of ViewDefinition.
+        // For Packages we don't want nested Nodes, no matter the type of ViewDefinition.
         return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
     }
 
     @Override
     public Boolean casePortUsage(PortUsage object) {
-        // For PortUsages we don't want nested Nodes, no matter the type of ViewDefinition.
-        // The sub PortUsages are displayed in a compartment list called "ports" and/or as border nodes.
-        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+        // For PortUsages we don't want tree Nodes on InterconnectionView, ActionFlow View or StateTransition View.
+        return ViewDefinitionKind.isGeneralView(this.kind);
     }
 
     @Override
