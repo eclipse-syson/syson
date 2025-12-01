@@ -14,11 +14,14 @@ package org.eclipse.syson.application.controllers.diagrams.checkers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tngtech.archunit.thirdparty.com.google.common.base.Objects;
+
 import java.util.List;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 
 /**
@@ -57,9 +60,17 @@ public class CheckDiagramElementCount implements IDiagramChecker {
 
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
+        this.check(previousDiagram, newDiagram, false);
+    }
+
+    public void check(Diagram previousDiagram, Diagram newDiagram, boolean onlyNewVisibleNodesAndEdges) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
-        assertThat(newNodes).as("The diagram should contain " + this.newNodeCount + " new nodes").hasSize(this.newNodeCount);
         List<Edge> newEdges = this.diagramComparator.newEdges(previousDiagram, newDiagram);
+        if (onlyNewVisibleNodesAndEdges) {
+            newNodes = newNodes.stream().filter(n -> Objects.equal(n.getState(), ViewModifier.Normal)).toList();
+            newEdges = newEdges.stream().filter(e -> Objects.equal(e.getState(), ViewModifier.Normal)).toList();
+        }
+        assertThat(newNodes).as("The diagram should contain " + this.newNodeCount + " new nodes").hasSize(this.newNodeCount);
         assertThat(newEdges).as("The diagram should contain " + this.newEdgeCount + " new edges").hasSize(this.newEdgeCount);
         assertThat(newNodes.stream().filter(Node::isBorderNode).count()).as("The diagram should contain " + this.newBorderNodeCount + " new border nodes").isEqualTo(this.newBorderNodeCount);
     }

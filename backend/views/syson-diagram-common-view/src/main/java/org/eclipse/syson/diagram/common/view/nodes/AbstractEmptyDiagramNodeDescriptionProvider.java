@@ -19,7 +19,6 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -148,7 +147,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, null,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
@@ -171,10 +170,14 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .variableName("newOwningMembership")
                 .children(changeContexMembership.build());
 
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .children(createMembership.build());
+
         return builder
                 .name(this.nameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
+                .body(changeContextViewUsageOwner.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
     }

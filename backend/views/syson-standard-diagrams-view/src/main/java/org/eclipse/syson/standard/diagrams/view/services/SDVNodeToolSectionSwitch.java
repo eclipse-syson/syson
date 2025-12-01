@@ -183,7 +183,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     public List<NodeToolSection> caseActionUsage(ActionUsage object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()));
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActionParameterNodeTool(FeatureDirectionKind.IN));
@@ -263,8 +263,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     public List<NodeToolSection> caseCaseUsage(CaseUsage object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.IN));
@@ -274,14 +272,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.OUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.IN));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.INOUT));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.OUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
@@ -840,8 +830,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     public List<NodeToolSection> caseUseCaseUsage(UseCaseUsage object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.IN));
@@ -851,14 +839,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(), null, FeatureDirectionKind.OUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.IN));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.INOUT));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
-                .createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(), null, FeatureDirectionKind.OUT));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());

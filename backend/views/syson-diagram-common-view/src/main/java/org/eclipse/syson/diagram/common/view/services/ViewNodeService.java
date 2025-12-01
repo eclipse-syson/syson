@@ -71,17 +71,17 @@ public class ViewNodeService {
 
     private final IObjectSearchService objectSearchService;
 
+    private final MetamodelElementQueryService elementQueryService;
+
     private final UtilService utilService;
 
     private final ElementUtil elementUtil;
 
-    private final MetamodelElementQueryService elementQueryService;
-
     public ViewNodeService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.elementQueryService = new MetamodelElementQueryService();
         this.utilService = new UtilService();
         this.elementUtil = new ElementUtil();
-        this.elementQueryService = new MetamodelElementQueryService();
     }
 
     /**

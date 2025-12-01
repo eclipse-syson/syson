@@ -14,6 +14,7 @@ package org.eclipse.syson.model.services;
 
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +30,7 @@ public class ModelQueryElementService {
     public ModelQueryElementService() {
         this.utilService = new UtilService();
     }
+
     /**
      * Check is the given element can be added to the exposed elements of a ViewUsage.
      *
@@ -45,6 +47,19 @@ public class ModelQueryElementService {
             isExposable = this.hasName(element);
         }
         return isExposable;
+    }
+
+    /**
+     * Check is the given Element is exposed by the given ViewUsage.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param viewUsage
+     *            the given {@link ViewUsage}.
+     * @return <code>true</code> if the given element is exposed by the given ViewUsage, <code>false</code> otherwise.
+     */
+    public boolean isExposed(Element element, ViewUsage viewUsage) {
+        return viewUsage != null && viewUsage.getExposedElement().contains(element);
     }
 
     private boolean hasName(Element element) {

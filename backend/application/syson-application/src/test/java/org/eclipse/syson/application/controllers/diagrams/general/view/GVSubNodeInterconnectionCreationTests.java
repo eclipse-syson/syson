@@ -172,7 +172,6 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     private static Stream<Arguments> interfaceDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -180,6 +179,12 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     private static Stream<Arguments> interfaceDefinitionSiblingAndChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), 6, 1))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> interfaceDefinitionBorderAndChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getPortUsage()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -214,9 +219,14 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     private static Stream<Arguments> portDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
                 Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> portDefinitionBorderAndChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getPortUsage()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -354,9 +364,20 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceUsage();
         String parentLabel = "interface";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
@@ -371,10 +392,10 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(2)
+                    .hasNewNodeCount(1)
                     .hasNewBorderNodeCount(1)
                     .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram);
+                    .check(initialDiagram, newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
@@ -382,7 +403,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
-            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
             new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
@@ -401,9 +422,20 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceDefinition();
         String parentLabel = "InterfaceDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
@@ -437,6 +469,38 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
+    @MethodSource("interfaceDefinitionBorderAndChildNodeParameters")
+    public void createInterfaceDefinitionBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceDefinition();
+        String parentLabel = "InterfaceDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewBorderNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(compartmentNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
+            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .hasBorderNodeDescriptionName(borderNodeDescription)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
     @MethodSource("portUsageSiblingNodeParameters")
     public void createPortUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortUsage();
@@ -456,9 +520,20 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortUsage();
         String parentLabel = "port";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
@@ -473,10 +548,10 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(2)
+                    .hasNewNodeCount(1)
                     .hasNewBorderNodeCount(1)
                     .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram);
+                    .check(initialDiagram, newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
@@ -484,7 +559,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
-            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
             new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
@@ -517,9 +592,52 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortDefinition();
         String parentLabel = "PortDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("portDefinitionBorderAndChildNodeParameters")
+    public void createPortDefinitionBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getPortDefinition();
+        String parentLabel = "PortDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewBorderNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(compartmentNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+            String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
+            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .hasBorderNodeDescriptionName(borderNodeDescription)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 }

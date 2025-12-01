@@ -59,12 +59,22 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     @Override
     protected Set<NodeDescription> getReusedBorderNodes(IViewDiagramElementFinder cache) {
         var borderNodes = new LinkedHashSet<NodeDescription>();
-
+        SDVDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    if (eReference.equals(SysmlPackage.eINSTANCE.getDefinition_OwnedPort())) {
+                        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
+                                .ifPresent(borderNodes::add);
+                        cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
+                                .ifPresent(borderNodes::add);
+                    }
+                });
+            }
+        });
         if (SysmlPackage.eINSTANCE.getActionDefinition().equals(this.eClass)) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(borderNodes::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(borderNodes::add);
         }
-
         return borderNodes;
     }
 

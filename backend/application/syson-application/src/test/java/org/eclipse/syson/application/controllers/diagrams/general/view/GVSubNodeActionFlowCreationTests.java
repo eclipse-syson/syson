@@ -395,9 +395,20 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         String parentLabel = ACTION;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 

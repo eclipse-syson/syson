@@ -15,6 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -41,13 +42,13 @@ import org.eclipse.syson.util.ServiceMethod;
  */
 public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBorderNodeDescriptionProvider {
 
-    public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(colorProvider, nameGenerator);
+    public PortUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(eReference, colorProvider, nameGenerator);
     }
 
     @Override
     protected String getSemanticCandidatesExpression() {
-        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName();
+        return AQLConstants.AQL_SELF + "." + this.eReference.getName();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
 
     @Override
     protected String getName() {
-        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), this.eReference);
     }
 
     @Override
@@ -92,16 +93,25 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
     @Override
     protected List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         List<EdgeTool> edgeTools = new ArrayList<>();
-        if (cache.getNodeDescription(this.getName()).isPresent()) {
-            edgeTools.add(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)));
-            edgeTools.add(this.createInterfaceUsageEdgeTool(List.of(nodeDescription)));
-            edgeTools.add(this.createFlowUsageEdgeTool(List.of(nodeDescription)));
-            cache.getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
-                    .ifPresent(inheritedPortBorderNode -> {
-                        edgeTools.add(this.createBindingConnectorAsUsageToInheritedPortUsageEdgeTool(List.of(inheritedPortBorderNode)));
-                        edgeTools.add(this.createInterfaceUsageToInheritedPortUsageEdgeTool(List.of(inheritedPortBorderNode)));
-                        edgeTools.add(this.createFlowUsageEdgeToInheritedPortUsageTool(List.of(inheritedPortBorderNode)));
-                    });
+        var optNestedPort = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()));
+        var optOwnedPort = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()));
+        if (optNestedPort.isPresent() && optOwnedPort.isPresent()) {
+            var nestedPort = optNestedPort.get();
+            var ownedPort = optOwnedPort.get();
+            edgeTools.add(this.createBindingConnectorAsUsageEdgeTool(List.of(nestedPort, ownedPort)));
+            edgeTools.add(this.createInterfaceUsageEdgeTool(List.of(nestedPort, ownedPort)));
+            edgeTools.add(this.createFlowUsageEdgeTool(List.of(nestedPort, ownedPort)));
+        }
+        var optInheritedNestedPort = cache
+                .getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()));
+        var optInheritedOwnedPort = cache
+                .getNodeDescription(this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()));
+        if (optInheritedNestedPort.isPresent() && optInheritedOwnedPort.isPresent()) {
+            var inheritedNestedPort = optInheritedNestedPort.get();
+            var inheritedOwnedPort = optInheritedOwnedPort.get();
+            edgeTools.add(this.createBindingConnectorAsUsageToInheritedPortUsageEdgeTool(List.of(inheritedNestedPort, inheritedOwnedPort)));
+            edgeTools.add(this.createInterfaceUsageToInheritedPortUsageEdgeTool(List.of(inheritedNestedPort, inheritedOwnedPort)));
+            edgeTools.add(this.createFlowUsageEdgeToInheritedPortUsageTool(List.of(inheritedNestedPort, inheritedOwnedPort)));
         }
         return edgeTools;
     }

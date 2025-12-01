@@ -27,8 +27,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
@@ -45,6 +43,7 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.SiriusWebCoreServices;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
@@ -76,11 +75,9 @@ public class DiagramMutationDndService {
 
     private final Logger logger = LoggerFactory.getLogger(DiagramMutationDndService.class);
 
-    private final IObjectSearchService objectSearchService;
+    private final SiriusWebCoreServices siriusWebCoreServices;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
-
-    private final IFeedbackMessageService feedbackMessageService;
 
     private final DiagramMutationMoveService diagramMutationMoveService;
 
@@ -88,21 +85,23 @@ public class DiagramMutationDndService {
 
     private final DiagramMutationExposeService diagramMutationExposeService;
 
+    private final DiagramQueryElementService diagramQueryElementService;
+
     private final ModelQueryElementService modelQueryElementService;
 
     private final DeleteService deleteService;
 
     private final UtilService utilService;
 
-    public DiagramMutationDndService(IObjectSearchService objectSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-            IFeedbackMessageService feedbackMessageService, DiagramMutationMoveService diagramMutationMoveService, DiagramMutationElementService diagramMutationElementService,
-            DiagramMutationExposeService diagramMutationExposeService, ModelQueryElementService modelQueryElementService) {
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+    public DiagramMutationDndService(SiriusWebCoreServices siriusWebCoreServices, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
+            DiagramMutationMoveService diagramMutationMoveService, DiagramMutationElementService diagramMutationElementService, DiagramMutationExposeService diagramMutationExposeService,
+            ModelQueryElementService modelQueryElementService, DiagramQueryElementService diagramQueryElementService) {
+        this.siriusWebCoreServices = Objects.requireNonNull(siriusWebCoreServices);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.diagramMutationMoveService = Objects.requireNonNull(diagramMutationMoveService);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
+        this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
@@ -132,10 +131,10 @@ public class DiagramMutationDndService {
         Optional<Object> optTargetElement;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> optNodeDescription = Optional.empty();
         if (selectedNode != null) {
-            optTargetElement = this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId());
+            optTargetElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, selectedNode.getTargetObjectId());
             optNodeDescription = convertedNodes.entrySet().stream().filter(entry -> entry.getValue().getId().equals(selectedNode.getDescriptionId())).map(Entry::getKey).findFirst();
         } else {
-            optTargetElement = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId());
+            optTargetElement = this.siriusWebCoreServices.objectSearchService().getObject(editingContext, diagramContext.diagram().getTargetObjectId());
         }
         if (optNodeDescription.isPresent() && optNodeDescription.get().getName().contains("EmptyDiagram")) {
             // The element is dropped on the information box displayed on an empty diagram. This box is visible only if
@@ -200,6 +199,9 @@ public class DiagramMutationDndService {
         if (EMFUtils.isAncestor(droppedElement, realTargetElement)) {
             this.logAncestorError(droppedElement, realTargetElement);
             // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
+            result = null;
+        } else if (droppedNode.isBorderNode()) {
+            // Null prevents the drop of border node when we only want to move them along the border of their parent
             result = null;
         } else {
             this.diagramMutationMoveService.moveElement(droppedElement, droppedNode, realTargetElement, targetNode, editingContext, diagramContext, convertedNodes);
@@ -311,16 +313,26 @@ public class DiagramMutationDndService {
             // diagram.
             this.utilService.setFeatureTyping(usage, definition);
         } else if (this.modelQueryElementService.isExposable(sourceElement)) {
-            Node newSelectedNode = selectedNode;
-            if (selectedNode == null) {
-                // try to get the graphical node corresponding to the semantic parent
-                var parentId = new EObjectIDManager().findId(sourceElement.getOwner());
-                var optParentNode = diagramContext.diagram().getNodes().stream().filter(n -> parentId.isPresent() && Objects.equals(n.getTargetObjectId(), parentId.get())).findFirst();
-                if (optParentNode.isPresent()) {
-                    newSelectedNode = optParentNode.get();
+            if (this.modelQueryElementService.isExposed(sourceElement, this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode))) {
+                var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+                var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(sourceElement, diagramContext.diagram(), editingContext);
+                var nodeId = new NodeIdProvider().getNodeId(parentId,
+                        descriptionId.get(),
+                        NodeContainmentKind.CHILD_NODE,
+                        this.siriusWebCoreServices.identityService().getId(sourceElement));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
+            } else {
+                Node newSelectedNode = selectedNode;
+                if (selectedNode == null) {
+                    // try to get the graphical node corresponding to the semantic parent
+                    var parentId = new EObjectIDManager().findId(sourceElement.getOwner());
+                    var optParentNode = diagramContext.diagram().getNodes().stream().filter(n -> parentId.isPresent() && Objects.equals(n.getTargetObjectId(), parentId.get())).findFirst();
+                    if (optParentNode.isPresent()) {
+                        newSelectedNode = optParentNode.get();
+                    }
                 }
+                this.diagramMutationExposeService.expose(sourceElement, editingContext, diagramContext, newSelectedNode, convertedNodes);
             }
-            this.diagramMutationExposeService.expose(sourceElement, editingContext, diagramContext, newSelectedNode, convertedNodes);
         } else {
             ViewCreationRequest parentViewCreationRequest = this.diagramMutationElementService.createView(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
             Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.diagram())
@@ -338,7 +350,7 @@ public class DiagramMutationDndService {
                 } else {
                     String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", sourceElement.getName(), targetElement.getName());
                     this.logger.warn(errorMessage);
-                    this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                    this.siriusWebCoreServices.feedbackMessageService().addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
                 }
             } else if (parentViewCreationRequest != null) {
                 // The node doesn't exist on the diagram, it will be created with the ViewCreationRequest, we want to
@@ -451,6 +463,6 @@ public class DiagramMutationDndService {
             errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", parent.getName(), child.getName());
         }
         this.logger.warn(errorMessage);
-        this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+        this.siriusWebCoreServices.feedbackMessageService().addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
     }
 }

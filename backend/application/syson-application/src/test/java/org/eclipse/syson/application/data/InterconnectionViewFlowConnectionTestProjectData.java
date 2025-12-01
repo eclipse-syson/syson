@@ -17,7 +17,7 @@ package org.eclipse.syson.application.data;
  *
  * @author frouene
  */
-public class InterconnectionViewTestProjectData {
+public class InterconnectionViewFlowConnectionTestProjectData {
 
     public static final String SCRIPT_PATH = "/scripts/database-content/InterconnectionView-FlowConnectionTest.sql";
 
@@ -30,13 +30,13 @@ public class InterconnectionViewTestProjectData {
 
         public static final String DIAGRAM_ID = "f3d8af1e-d0da-4c6c-ad36-7292caa02335";
 
-        public static final String FLOW_CONNECTION_P1_P2_ID = "420ccac7-9bc1-3cd7-818d-62cb7e0656f2";
+        public static final String FLOW_CONNECTION_P1_P2_ID = "ed58f09c-a980-3577-8ae8-1e1d2a44c367";
 
-        public static final String PORT_PART_1_ID = "273352c1-17de-3e4b-97ac-86080949a8fa";
+        public static final String PORT_PART_1_ID = "a458dab0-18a8-3c46-ba52-7ee145b69fcc";
 
-        public static final String PORT_PART_2_ID = "ef7e461e-3cfc-3996-b5fd-c272affdd00d";
+        public static final String PORT_PART_2_ID = "df02cadd-e712-3f19-909c-b54f8093ac1a";
 
-        public static final String PORT_PART_3_ID = "1a79c739-e4af-3522-8998-0b0baa1f7c34";
+        public static final String PORT_PART_3_ID = "e305a6f5-15ab-3205-bd23-942474387b1a";
     }
 
     /**
