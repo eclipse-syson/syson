@@ -13,8 +13,11 @@
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   diagramPanelActionExtensionPoint,
+  EdgeAppearanceSection,
+  ImageNodeAppearanceSection,
   PaletteAppearanceSectionContributionProps,
   paletteAppearanceSectionExtensionPoint,
+  RectangularNodeAppearanceSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLOmniboxCommand,
@@ -127,6 +130,26 @@ sysONExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
  *
  *******************************************************************************/
 const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
+  // standard nodes and edges from Sirius Web
+  {
+    canHandle: (node, _edge) => {
+      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle';
+    },
+    component: RectangularNodeAppearanceSection,
+  },
+  {
+    canHandle: (node, _edge) => {
+      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle';
+    },
+    component: ImageNodeAppearanceSection,
+  },
+  {
+    canHandle: (_node, edge) => {
+      return !!edge;
+    },
+    component: EdgeAppearanceSection,
+  },
+  // custom nodes from SysON
   {
     canHandle: (node, _edge) => {
       return node?.type === 'sysMLPackageNode';
