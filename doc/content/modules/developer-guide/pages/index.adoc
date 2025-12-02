@@ -22,56 +22,453 @@ or HTTPS:
 git clone https://github.com/eclipse-syson/syson.git
 ----
 
+On MS Windows, you also have to set the following git config (apply from the root of the repositories):
+[source,shell]
+----
+git config core.autocrlf true
+git config core.eol lf
+----
+
 == Setting Up your Development Environment
 
-. Download your coding environment https://spring.io/tools[Spring Tools 4.22.0] (or newer).
-. Ensure that m2e version from your environment is >= 2.6.0
-+
-image::environment-m2e-version.png[m2e version]
-+
-. Retrieve the source code or fork it if you want to make contribution
-. Import _backend_ plugins from {product} repository in your workspace
-. Update _settings.xml_ file from your _.m2_ folder to give access to other repositories during the build
-  In order to see dependence with access to add in _settings.xml_, have a look on _backend\application\syson-application\pom.xml_
-  You need to create https://github.com/settings/tokens[access tokens] on Github to complete _settings.xml_.
-+
-image::environment-settings.png[settings file]
-+
-. Right click on _syson-services_ module and then _Properties>JavaBuildPath>Source_
-  Add _main/generated_ folder and remove _excluded_ content and former _antlr/grammar_
-  You should retrieve the following _Java build path_
-+
-image::environment-java-build-path.png[Java build path]
-+
-. Update Maven project by launching "ALT+F5" shortcut on all modules of your workspace
+=== Backend
 
-== Generate a new version of SysIDE CLI
+==== Java
 
-In the _syson-import_ module, you'll found a `syside-cli-.js` file in `src/main/resources`.
-This file is used by the import process, to parse the {sysmlv2} textual files.
-If you want to update the version on SysIDE used to parse textual files, you need to generate a new version of this `syside-cli-.js` file.
+All {product} backend modules use Java.
+The current version used by {product} is Java 17.
 
-Here are the steps to follow:
+You can download Java 17 JDK here: https://adoptium.net/temurin/archive/
 
-. Clone the https://github.com/sensmetry/sysml-2ls[SysIDE repository] from github.
-. Install https://pnpm.io/installation[pnpm].
-. Go to the root of your local SysIDE repository.
-. Execute `pnpm install` command.
-. Execute `pnpm run build` command.
-. Execute `pnpm run --dir packages/syside-cli/ esbuild` command.
-. It produces a `your_local_syside_repo/packages/syside-cli/out/index.js` file
-. Get a copy of the `your-local-syside-repo/packages/syside-cli/out/index.js` file.
-. Edit this file:
-.. add `#!/usr/bin/env node` as first line
-.. add `src_default();` as last line
-.. rename it to `syside-cli.js`
-. Copy the renamed file into `your_local_syson_repo/backend/application/syson-import/src/main/resources` (overwrite the existing file).
+Then, you can test that your favorite shell is using Java 17 by applying this command (from anywhere):
+[source,shell]
+----
+java --version
+----
 
-== Generate a new OpenAPI documentation of REST API
+==== Apache Maven
 
-. Build and run the syson server locally (using docker compose as example) on `http://localhost:8080`.
-. Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
-. The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
+All {product} backend modules are exposed as Maven artifacts.
+The minimum version is Maven 3.6.3, but please download the latest 3.x version and try to stay up-to-date.
+
+You can download Maven here: https://maven.apache.org/download.cgi
+
+You can follow the install instructions here: https://maven.apache.org/install.html
+
+
+Then, you can test that your favorite shell knows Maven by applying this command (from anywhere):
+[source,shell]
+----
+mvn --version
+----
+
+[#github-backend]
+==== Github and Github Personal Access Token
+
+You will need a github account and a github personal access token.
+
+Indeed, the backend components of {product} depends on link:https://github.com/eclipse-sirius/sirius-web[sirius-web] and link:https://github.com/eclipse-sirius/sirius-emf-json[sirius-emf-json], which are published as Maven artifacts in GitHub Packages.
+To build {product} locally, you need a GitHub Access Token so that Maven can download the `sirius-web` and `sirius-emf-json` artifacts.
+
+. Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
++
+WARNING: Once generated, a token cannot be displayed anymore, so make sure to copy it in a secure location.
+. Create or edit `$HOME/.m2/settings.xml` to tell Maven to use this token when accessing the `sirius-emf-json` / `sirius-web` / `syson` repositories:
++
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>github-sirius-emfjson</id>
+      <username>$GITHUB_USERNAME</username>
+      <password>$GITHUB_ACCESS_TOKEN</password>
+    </server>
+    <server>
+      <id>github-sirius-web</id>
+      <username>$GITHUB_USERNAME</username>
+      <password>$GITHUB_ACCESS_TOKEN</password>
+    </server>
+    <server>
+      <id>github-syson</id>
+      <username>$GITHUB_USERNAME</username>
+      <password>$GITHUB_ACCESS_TOKEN</password>
+    </server>
+  </servers>
+</settings>
+----
++
+Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your access token.
++
+IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson`, `github-sirius-web` and `github-syson` to match what is used in the POMs.
+
+[#docker]
+==== Docker
+
+Docker is the preferred way to install and manage the PostgreSQL database used by {product}.
+
+You can download Docker here: https://www.docker.com/products/docker-desktop/.
+On most Linux distribution, Docker is packaged and can be installed directly.
+
+Please download the latest version and try to stay up-to-date.
+
+Then, you can test that your favorite shell knows Docker by applying this command (from anywhere):
+[source,shell]
+----
+docker --version
+----
+
+When developing {product}, you can execute the following shell command (from anywhere):
+[source,shell]
+----
+docker run -p 5433:5432 --rm --name syson-postgres \
+                             -e POSTGRES_USER=dbuser \
+                             -e POSTGRES_PASSWORD=dbpwd \
+                             -e POSTGRES_DB=syson-db \
+                             -d postgres:15
+----
+
+It will setup a PostgreSQL instance with the appropriate parameters to locally test the {product} application.
+
+==== Development with Spring Tools 4 for Eclipse
+
+If you want to develop with Eclipse, you will need Spring Tools 4 for Eclipse.
+
+You can download Spring Tools 4 for Eclipse here: https://spring.io/tools
+
+Please download the latest version and try to stay up-to-date.
+
+Once launched, please check that your Eclipse is using Java 17. Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS) and then _Java > Installed JREs_.
+
+image::SetupDev_SpringToolSuite_Check_Java.png[Check installed JRE in Spring Tool Suite]
+
+===== Checkstyle plugin
+
+All {product} backend modules use Checkstyle to verify formatting, coding rules... so you must install Checkstyle plugin in Eclipse. The version to use is the latest *10.x.y*.
+
+Go to _Help > Install New Software..._ menu, then add _https://checkstyle.org/eclipse-cs-update-site/_ in the _Work with:_ select widget and type _enter_.
+Then, select _Eclipse Checkstyle Plug-in_, click on _Next >_, _Next >_, accept the terms of the license agreement and click on _Finish_.
+
+image::SetupDev_SpringToolSuite_Install_Checkstyle.png[Install Checkstyle in Spring Tool Suite, 80%]
+
+Trust all available authorities and artifacts, and restart your Eclipse when asked.
+
+===== EMF plugins
+
+Some {product} backend modules use EMF ecore metamodels. At some point, you may need to modify those metamodels. To do that, you will need EMF plugins. The version to use is the latest available from the update-site below.
+
+Go to _Help > Install New Software..._ menu, then select _https://download.eclipse.org/modeling/emf/emf/builds/release/latest_ in the _Work with:_ select widget and type _enter_.
+Then, select _Modeling > EMF - Eclipse Modeling Framework SDK_, click on _Next >_, _Next >_, accept the terms of the license agreement and click on _Finish_.
+
+image::SetupDev_SpringToolSuite_Install_EMF.png[Install EMF in Spring Tool Suite, 80%]
+
+Restart your Eclipse when asked.
+
+===== Configuration
+
+You need tell Eclipse to use the {product} code style configuration files.
+
+Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS).
+
+. Configure the Clean up action
++
+From the preferences menu, go to _Java > Code Style > Clean Up_  and then click on the _Import..._ button and then browse the _CleanupProfile.xml_ file located in `backend/releng/syson-resources/editor` in your {product} local repository:
++
+image::SetupDev_SpringToolSuite_Configure_Clean_Up.png[Configure Clean Up, 60%]
++
+Be sure the the active profile is `SysON`, then click on the _Apply_ button.
+
+. Configure the source code templates
++
+From the preferences menu, go to _Java > Code Style > Code Templates_  and then click on the _Import..._ button and then browse the _codetemplates.xml_ file located in `backend/releng/syson-resources/editor` in your {product} local repository:
++
+image::SetupDev_SpringToolSuite_Configure_Code_Templates.png[Configure Code Templates, 60%]
++
+Click on the _Apply_ button.
+
+. Configure the source code formatter
++
+From the preferences menu, go to _Java > Code Style > Formatter_  and then click on the _Import..._ button and then browse the _JavaFormatter.xml_ file located in `backend/releng/syson-resources/editor` in your {product} local repository:
++
+image::SetupDev_SpringToolSuite_Configure_Formatter.png[Configure Formatter, 60%]
++
+Be sure the the active profile is `SysON`, then click on the _Apply_ button.
+
+. Configure the Organize Imports action
++
+From the preferences menu, go to _Java > Code Style > Organize Imports_  and then click on the _Import..._ button and then browse the _syson.importorder_ file located in `backend/releng/syson-resources/editor` in your {product} local repository:
++
+image::SetupDev_SpringToolSuite_Configure_Organize_Imports.png[Configure Organize Imports, 60%]
++
+Click on the _Apply_ button.
+
+===== Import sources
+
+In your Eclipse, go to the Git perspective, and the click on _Add an existing local Git repository_ button.
+
+image::SetupDev_SpringToolSuite_Import_Sources_01.png[Add Git repository, 90%]
+
+Add your {product} local repository.
+
+Once added, import sources by right-clicking _Import Projects..._ on the *packages* directory:
+
+image::SetupDev_SpringToolSuite_Import_Sources_02.png[Import projects, 40%]
+
+Then select all projects and uncheck all _Maven_ folders or folders named _backend_ :
+
+image::SetupDev_SpringToolSuite_Import_Sources_03.png[Import sources, 80%]
+
+Click on _Finish_. Your projects should now be in the _Package Explorer_ of your _Java_ perspective. On the bottom right corner of your Eclipse, you should see Eclipse building the projects imported.
+Wait for the end of this task (this could take a while).
+
+===== Post-configuration
+
+You need tell checkstyle to use the {product} checkstyle configuration.
+
+Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS) and then _Checkstyle_.
+
+Then click on _New..._ button, select _Project Relative Configuration_ type, type _SysON_ for the name, and browse the {product} checkstyle configuration located in `backend/releng/syson-resources/checkstyle` in your {product} local repository:
+
+image::SetupDev_SpringToolSuite_Configure_Checkstyle_01.png[Configure Checkstyle, 50%]
+
+Click on _OK_.
+
+Then, after selected the newly imported _SysON_ checkstyle configuration, you have to click on _Set as Default_:
+
+image::SetupDev_SpringToolSuite_Configure_Checkstyle_02.png[Configure Checkstyle, 60%]
+
+Click on _Apply and Close_.
+
+=== Frontend
+
+==== Node/NPM
+
+All {product} frontend modules are NodeJS packages.
+The current Node version to use is 22.16.0.
+The current NPM version to use is 10.9.2.
+
+We strongly encourage the use of Node Version Manager (NVM) to manage your Node/NPM versions.
+Indeed, Node/NPM version have changed since the beginning of the development of {product} and will change again.
+
+NVM helps to quickly switch between different versions of Node/NPM.
+
+You can download and follow the installation instructions of NVM here: https://github.com/nvm-sh/nvm
+
+On MS Windows, please follow: https://github.com/coreybutler/nvm-windows
+
+Once installed, you can run the following shell command (from anywhere):
+[source,shell]
+----
+nvm install 22.16.0
+----
+This will install the appropriate version of NPM as well.
+
+Then check the node version with the following shell command (from anywhere):
+[source,shell]
+----
+node -v
+----
+
+[#github-frontend]
+=== Github and Github Personal Access Token
+
+As for the link:#github-backend[github backend configuration], the `sirius-web` and `syson` frontend packages are hosted on github.
+
+After creating your github personal access token, you will need to create a *.npmrc* file on your `$HOME`.
+
+Once created paste the following line in it:
+[source,txt]
+----
+//npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN
+----
+
+Be sure to replace `$GITHUB_ACCESS_TOKEN` with the value of your access token.
+
+==== Development with VSCode/VSCodium
+
+===== Prettier plugin
+
+All {product} frontend modules use Prettier to format the code, so you must install Prettier extension in VSCode/VSCodium.
+
+You can download Prettier for VSCode here: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+
+Please download the latest version and try to stay up-to-date.
+
+You can download Prettier for VSCodium here: https://open-vsx.org/extension/esbenp/prettier-vscode
+
+===== Import sources
+
+Just import the root folder of the {product} git repository in your VSCode/VSCodium.
+
+=== Build
+
+==== Backend
+
+Eclipse is configured to automatically build your source code.
+
+But, some of your sources may not compile after following the previous steps of this document.
+
+Here are two tips to help resolving compilation issues.
+
+[#maven_update]
+* Maven update
+
+Select all your {product} maven projects (`syson-resources` and `syson-test-coverage` are not maven projects), and then right-click on `Maven > Update Project...`:
+
+Then, select all projects, uncheck _Update project configuration from pom.xml_ and check _force Update of Snapshots/Releases_:
+
+Click on _OK_.
+
+On the bottom right corner of your Eclipse, you should see Maven updating the artifacts concerned. Wait the end of this task (this could take a while) and your compilation issues should be solved.
+
+* Clean and restart
+
+Eclipse and M2E are so funny that sometimes, even after a Maven Update, you will still face compilation issues.
+
+In this case, a drastic solution is to clean, close, restart your Eclipse and build your projects.
+
+First, disable the automatic build by unchecking the _Project > Build Automatically_ menu item.
+
+Then clean all your sources by clicking on _Project > Clean..._. close all your projects.
+
+Restart your Eclipse, open all your projects, and then enable the automatic build by checking the _Project > Build Automatically_ menu item.
+
+==== Frontend
+
+Just run the following shell command (from the root of the {product} git repository) to install all dependencies of all frontend packages:
+[source,shell]
+----
+npm ci
+----
+
+NOTE: this is only needed once (or when the dependencies from `*/*/package.json` are updated). 
+
+Then, just run the following shell command (from the root of the {product} git repository):
+[source,shell]
+----
+npm run build
+----
+
+=== Launch {product} application as a developer
+
+==== Database
+
+Just run the _syson-postgres_ container you have created in the link:#docker[docker section].
+
+image::SetupDev_SpringToolSuite_Docker_SysON.png[syson docker, 80%]
+
+NOTE: you can also use the Docker Container view included in your Spring Tool Suite, or the Docker extension in VSCode.
+
+==== Backend
+
+In Eclipse, you first need to create a run configuration.
+
+Go to _Run > Run Configurations..._ menu and then double-click on _Spring Boot App_ item.
+
+Fill the name, project, main type and profile properties of the run configuration as below:
+
+image::SetupDev_SpringToolSuite_Run_Configuration_SysON.png[syson run configuration, 80%]
+
+Then click on _Run_ button. You should now see the Eclipse console displaying information about the spring boot application:
+
+image::SetupDev_SpringToolSuite_SpringBootApp_Console_SysON.png[syson console, 70%]
+
+In case you see _Spring_ appears as logo in the console (instead of _SysON_ logo), try to apply a link:#maven_update[Maven Update] and retry.
+
+==== Frontend
+
+Just run the following shell command (from the root of the {product} git repository):
+[source,shell]
+----
+npm run start
+----
+
+== Testing strategy
+
+This page explains which kinds of tests we maintain in {product}, when to rely on each category, and how to avoid brittle suites.
+
+[IMPORTANT]
+====
+TL;DR — default to backend integration tests unless you truly need to validate complex UI interactions.
+
+They let you bootstrap precise domains/views/services, exercise collaborative workflows end to end, and run quickly in CI.
+====
+
+=== Test families
+
+We use the following types of tests:
+
+* Backend unit tests.
+* Backend integration tests.
+* End-to-end (E2E) tests with Cypress.
+* Manual exploratory/non-regression tests.
+
+=== Choosing the right kind of test
+
+==== Backend unit tests
+
+Use them sparingly to cover algorithms that live entirely inside a single method/service.
+Most of {product}’s complexity is the integration between components, so it is often more productive to exercise the feature with an integration or collaborative test instead of mocking repositories or event processors.
+
+==== Backend integration tests
+
+Default to these when the behavior is mostly on the backend and the UI side is simple.
+They shine when you need to:
+
+* Seed complex domains/views/services quickly (using fixtures or dedicated Spring beans).
+* Exercise the full lifecycle of a representation (create → inspect → run tools → inspect again).
+* Mock specifier extensions through test-only services.
+* Keep suites fast and deterministic.
+
+==== End-to-end tests (Cypress)
+
+Use an E2E framework when the frontend interactions are the main risk (diagram gestures, drag-and-drop, etc.).
+Cypress gives you full confidence that the UI behaves like the end user expects, but they come with steep costs:
+
+* Slow to author and maintain—every UI step must be scripted.
+* Hard to set up complex initial state because you only have access to the UI/API (no direct DB access).
+* Difficult to test invalid flows because the UI guards against most mistakes.
+* More brittle: it is easy to miss a `wait` and try to act before the server responded.
+
+Hence, only add E2E coverage when integration tests cannot exercise the behavior.
+
+==== Manual tests
+
+Manual runs are still needed, but only for scenarios that cannot be automated yet (for example multi-user concurrency) or for free-form exploratory testing to uncover new bugs.
+They are inefficient for regression testing because:
+
+* Maintaining scripts is tedious and error-prone.
+* Humans are bad at noticing small regressions.
+* CI cannot run them.
+
+If a manual test can be automated, invest in the automated version and drop the manual script.
+
+=== Decisions / guidelines
+
+* Prefer backend integration tests unless the UI behavior is the core of the change.
+* When frontend code is substantial, use E2E tests.
+* Remove manual regression tests once an automated equivalent exists.
+* Be frugal with E2E coverage: if a backend integration test can cover the scenario, add that instead.
+* Flaky E2E tests erode trust in CI. Delete them, track an issue, and either stabilize them or replace them with integration tests.
+
+== Contribute a change in the codebase
+
+You will need to fork the {product} repository on GitHub, create a branch, commit your changes and then create a pull request.
+
+The commit message must *strictly* follow this format:
+[source,shell]
+----
+[XXXX] Short description of the change (max 70 characters on the first line)(note the empty line after the first line)
+
+Bug: https://github.com/eclipse-syson/syson/issues/XXXX
+Signed-off-by: FirstName LastName <e-mail address>
+----
+
+In github, create a pull request from your branch to the `main` branch of the {product} repository.
+Make sure to follow the contribution guidelines described in the pull request page.
 
 [#services_organization]
 == Services organization
@@ -164,3 +561,10 @@ ServiceMethod.<DiagramMutationAQLService, ViewUsage, String> of1(DiagramMutation
 // predicate isActor(Element)
 ServiceMethod.<ModelQueryAQLService, Element> of0(ModelQueryAQLService::isActor).aqlSelf();
 ----
+
+[#generate_openapi]
+== Generate a new OpenAPI documentation of REST API
+
+. Build and run the syson server locally (using docker compose as example) on `http://localhost:8080`.
+. Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
+. The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
