@@ -2,32 +2,35 @@
 
 == Key highlights
 
-== Breaking changes
+- *Inherited PortUsages in diagrams*: in diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
+- *ActionUsage and ActionDefinition parameters in diagrams*: in diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
+- *ViewUsage as container in diagrams*: in diagrams, it is now possible to put an `Element` graphical node inside a new `ViewUsage`, through the _View as >_ contextual menu item on an `Element` graphical node.
+- *Updated developer guide*: the developer guide has been updated to explain how to setup the development environment and contribute changes to the codebase.
 
 == New features
 
-- In diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
+* In diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
 These graphical border nodes cannot be edited or deleted.
 
 image::gv-inherited-port.png[Inherited port, width=25%,height=25%]
 
-- When connecting those inherited _PortUsages_ graphical border nodes to/from another graphical border nodes, the inherited _PortUsages_ are redefined.
+* In diagrams, when connecting those inherited _PortUsages_ graphical border nodes to/from another graphical border nodes, the inherited _PortUsages_ are redefined.
 
 image::gv-inherited-port-edge-tools.png[Inherited port edge tool, width=65%,height=65%]
 
-- Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
-
-image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
-
-- In diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
+* In diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
 Those parameters can be linked to other parameters using the _New Binding Connector As Usage (bind)_ and _New Flow (flow)_ graphical border node tools. 
 
 image::sdv-action-parameters.png[Action parameters, width=65%,height=65%]
 
-- In diagrams, it is now possible to put an `Element` graphical node inside a new `ViewUsage`, through the _View as >_ contextual menu item on an `Element` graphical node.
+* In diagrams, it is now possible to put an `Element` graphical node inside a new `ViewUsage`, through the _View as >_ contextual menu item on an `Element` graphical node.
 This new `ViewUsage` is typed with a standard diagram `ViewDefinition`, one of `General View`, `Interconnection View`, `ActionFlow View` or `StateTransition View`.
 The new `ViewUsage` will be displayed in the diagram as a container for the `Element` graphical node.
 With this new functionality, it is possible to display some parts of the diagram in a different way, for example an `Interconnection View` inside a `General View` diagram.
+
+* Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
+
+image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
 
 [cols="1,1"]
 |===
@@ -37,8 +40,10 @@ a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=7
 
 == Bug fixes
 
-- Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
-- Fix an issue where the drag and drop of an `Element` with a _declared short_ name but no _declared name_ from the _Explorer_ view to a diagram was not possible.
+* In _Explorer_ view:
+
+** Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
+** Fix an issue where the drag and drop of an `Element` with a _declared short_ name but no _declared name_ from the _Explorer_ view to a diagram was not possible.
 For example, the following `Element` can now be safely drag and drop to a diagram:
 
 ```
@@ -47,11 +52,18 @@ requirement <'SN'> {
     comment /* Some comment */
 }
 ```
+** Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
 
-- Fix an issue where the undo of the deletion of a graphical node in a diagram was not restoring the graphical node correctly.
-- Fix an issue where the _eAnnotations_ reference coming from the Ecore metamodel was taking into account by REST APIs serialization.
-- In diagrams, fix an issue where the creation of a _Package_ inside another _Package_ created the _Package_ at the root of the diagram in addition to the inside of the target _Package_.
-- Fix invalid resolution during textual import of _redefined Feature_ on `Redefinition`.
+* In diagrams:
+
+** Fix an issue where the undo of the deletion of a graphical node in a diagram was not restoring the graphical node correctly.
+** Fix an issue where the creation of a _Package_ inside another _Package_ created the _Package_ at the root of the diagram in addition to the inside of the target _Package_.
+** Fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
+** Fix an error where the creation of a `NamespaceImport` graphical node as first element in a diagram was not hiding "Add your first element" graphical node.
+
+* In textual import/export:
+
+** Fix invalid resolution during textual import of _redefined Feature_ on `Redefinition`.
 This problem appears in cases of a name conflict between a global available item and an item accessible via _inherited membership_ such as in the following model:
 
 ```
@@ -73,7 +85,7 @@ metadata def MP :> SemanticMetadata {
 }
 ```
 
-- Fix an issue during textual import and export of rational numbers.
+** Fix an issue during textual import and export of rational numbers.
 
 The following model is now properly imported:
 
@@ -111,7 +123,7 @@ package Occurrences {
 }
 ```
 
-- Fix an issue where a model with a redefining `AttributeUsage` incorrectly redefined a _short name_ during a textual export.
+** Fix an issue where a model with a redefining `AttributeUsage` incorrectly redefined a _short name_ during a textual export.
 For example with the following model:
 
 ```
@@ -146,7 +158,7 @@ part p1 :> p {
 }
 ```
 
-- Fix the textual export of `UnaryOperator` which are `Expression` using the operators '+', '-', 'not' or '~' with only one parameter.
+** Fix the textual export of `UnaryOperator` which are `Expression` using the operators '+', '-', 'not' or '~' with only one parameter.
 For example in the following model:
 
 ```
@@ -160,7 +172,7 @@ part p1 {
 }
 ```
 
-- Fix an issue during textual export where serializing a reference to an `Element` having only _declared short name_ (but no _declared name_) failed.
+** Fix an issue during textual export where serializing a reference to an `Element` having only _declared short name_ (but no _declared name_) failed.
 The following models is now properly exported:
 
 ```
@@ -186,21 +198,40 @@ part p2 :> p1 {
 }
 ```
 
-- The published libraries are accessible through the _Libraries_ menu at the top right corner of the application.
+* Others:
+
+** Fix an issue where the _eAnnotations_ reference coming from the Ecore metamodel was taking into account by REST APIs serialization.
+** The published libraries are accessible through the _Libraries_ menu at the top right corner of the application.
 On this page, the published libraries' projects are displayed.
 You can click on such project to see the content of the published library, in read-only mode.
 In those cases, there was an issue that made the _Explorer_ view displays libraries with only `LibraryPackage` top-level element(s) under the `User libraries` directory instead of the root of the _Explorer_ view.
 This issue is now fixed.
-
-- In diagrams, fix an issue where the creation of some elements inside a `ViewUsage` graphical node was creating the element at the root of the diagram instead of inside the `ViewUsage` graphical node.
-- Fix some errors on validation rules using AQL expressions.
-- Fix an error where the creation of a `ViewUsage` from the _Explorer_ view was not typing the `ViewUsage` with the selected `ViewDefinition`.
-- Fix an error where the creation of a `NamespaceImport` graphical node as first element in a diagram was not hiding "Add your first element" graphical node.
-- In the _Details_ view, fix an error where the _reference widget_ 's object selection popup was switching from many-valuated to mono-valuated UI when selecting an element on the _Typed By_ property on `Feature`. elements.
+** Fix some errors on validation rules using AQL expressions.
+** In the _Details_ view, fix an error where the _reference widget_ 's object selection popup was switching from many-valuated to mono-valuated UI when selecting an element on the _Typed By_ property on `Feature`. elements.
 
 == Improvements
 
-- In diagrams, when using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
+* In _Explorer_ view:
+
+** The _Explorer_ view now displays the _shortName_ as part of the label of `Elements`.
+image::explorer-short-name-label.png[Short name in labels, width=65%,height=65%]
+
+** The way the _Explorer_ view displays libraries has been reworked:
+*** The _Explorer_ view now displays imported-by-reference libraries that only contain top-level `LibraryPackage` elements in the `User libraries` directory.
+***  Libraries containing at least one top-level `Package` are always displayed at the root of the _Explorer_ view.
+*** The _Explorer_ view now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
+***  The _Explorer_ view now appends `library-name@library-version` to imported-by-reference library models.
+image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
+
+** In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
+** In the _Explorer_ view, several improvements have been made about diagrams:
+*** Forbid the creation of a standard diagram on a `ViewUsage` which already has a standard diagram. Standard diagrams are based on the `ViewDefinitions` that are types of `ViewUsage`, so It was not logical to allow the creation of a standard diagram on a `ViewUsage` that already has a standard diagram.
+*** Remove the _Delete_ tool from the context menu of a standard diagram. Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
+*** Remove the _Duplicate_ tool from the context menu of a standard diagram. It was not logical to duplicate a diagram associated to a `ViewUsage`.
+
+* In diagrams:
+
+** When using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
 If two or more `Elements` share the same _short name_, {product} will search for the best candidate based on the scope of the element.
 Furthermore, if an ambiguity exists between the _short name_ and the _declared name_ of two different `Elements`, the declared name will be preferred.
 
@@ -219,11 +250,28 @@ package Drone {
 
 In the example above, when using the direct edit capability to subclass the _Battery_ `Part Definition`, it is now possible to type _LA::CommonBattery_ instead of _Drone_LogicalArchitecture::CommonBattery_.
 
-- The _Explorer_ view now displays the _shortName_ as part of the label of `Elements`.
+** Improve the way elements are displayed in the _General View_ diagram by not display them twice.
+The new behavior is the following: by default, when no compartment is displayed inside a graphical node, the creation of a nested element from the graphical node displays it on the diagram background and links it with the graphical node through a composition graphical edge.
+Then, when any compartment inside a graphical node _A_ containing a nested graphical node _B_ is displayed, then any graphical node representing _B_ and linked to graphical node _A_ through a composition graphical edge disappear.
+For example, in the following model, _actionA_ contains _actionB_.
+When no compartment is displayed inside _actionA_, _actionB_ is displayed on the diagram background and linked to _actionA_ through a composition graphical edge.
+Then, when the _action flow_ compartment is displayed inside _actionA_, then _actionB_ is not displayed on the diagram background anymore, only in the _action flow_ compartment of _actionA_.
 
-image::explorer-short-name-label.png[Short name in labels, width=65%,height=65%]
+[%noheader]
+|===
+a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%] a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
+|===
 
-- The textual export now handles the `OperatorExpressions` (mainly used in semantic `MetadataDefinition`) such as in:
+When a drag and drop of an _Element_ is made from the _Explorer_ view, the same behavior is applied: if the target graphical node has no candidate compartment displayed, then the dropped _Element_ is created on the diagram background and linked to the target graphical node through a composition graphical edge. If any visible compartment inside the existing graphical node corresponding the semantic parent of the dropped _Element_ is displayed, then the dropped _Element_ is created inside the target graphical node's compartment as a nested graphical node.
+
+** When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
+** In diagrams, add _New Documentation_ tool on `Package` graphical nodes.
+** In diagrams, do not display _ports_ compartment anymore when a _PortUsage_ is created from any graphical node.
+The border graphical node representing the _PortUsage_ is sufficient.
+
+* In textual import/export:
+
+** The textual export now handles the `OperatorExpressions` (mainly used in semantic `MetadataDefinition`) such as in:
 
 ```
 private import Metaobjects::SemanticMetadata;
@@ -236,7 +284,7 @@ metadata def MD2 :> SemanticMetadata {
 }
 ```
 
-- The textual import now forces all the _memberFeature_ of _EndFeatureMemberships_ to have _isEnd = true_ like stated in the SysML Specification "8.3.3.3.3 EndFeatureMembership".
+** The textual import now forces all the _memberFeature_ of _EndFeatureMemberships_ to have _isEnd = true_ like stated in the SysML Specification "8.3.3.3.3 EndFeatureMembership".
 For example, it means that the two features used as connector ends in the following models now have _isEnd = true_.
 
 ```
@@ -248,7 +296,7 @@ package pa1 {
 }
 ```
 
-- The textual export now properly exports `ConnectionUsages` such as in the following model.
+** The textual export now properly exports `ConnectionUsages` such as in the following model.
 
 ```
 package Parts {
@@ -286,38 +334,6 @@ package Derivations {
     }
 }
 ```
-
-- The way the _Explorer_ view displays libraries has been reworked:
-* The _Explorer_ view now displays imported-by-reference libraries that only contain top-level `LibraryPackage` elements in the `User libraries` directory.
-* Libraries containing at least one top-level `Package` are always displayed at the root of the _Explorer_ view.
-* The _Explorer_ view now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
-* The _Explorer_ view now appends `library-name@library-version` to imported-by-reference library models.
-
-image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
-
-- Improve the way elements are displayed in the _General View_ diagram by not display them twice.
-The new behavior is the following: by default, when no compartment is displayed inside a graphical node, the creation of a nested element from the graphical node displays it on the diagram background and links it with the graphical node through a composition graphical edge.
-Then, when any compartment inside a graphical node _A_ containing a nested graphical node _B_ is displayed, then any graphical node representing _B_ and linked to graphical node _A_ through a composition graphical edge disappear.
-For example, in the following model, _actionA_ contains _actionB_.
-When no compartment is displayed inside _actionA_, _actionB_ is displayed on the diagram background and linked to _actionA_ through a composition graphical edge.
-Then, when the _action flow_ compartment is displayed inside _actionA_, then _actionB_ is not displayed on the diagram background anymore, only in the _action flow_ compartment of _actionA_.
-
-[%noheader]
-|===
-a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%] a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
-|===
-
-When a drag and drop of an _Element_ is made from the _Explorer_ view, the same behavior is applied: if the target graphical node has no candidate compartment displayed, then the dropped _Element_ is created on the diagram background and linked to the target graphical node through a composition graphical edge. If any visible compartment inside the existing graphical node corresponding the semantic parent of the dropped _Element_ is displayed, then the dropped _Element_ is created inside the target graphical node's compartment as a nested graphical node.
-
-- When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
-- In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
-- In the _Explorer_ view, several improvements have been made about diagrams:
-* Forbid the creation of a standard diagram on a `ViewUsage` which already has a standard diagram. Standard diagrams are based on the `ViewDefinitions` that are types of `ViewUsage`, so It was not logical to allow the creation of a standard diagram on a `ViewUsage` that already has a standard diagram.
-* Remove the _Delete_ tool from the context menu of a standard diagram. Users will have to delete the `ViewUsage` from the _Explorer_ view to delete the associated diagram.
-* Remove the _Duplicate_ tool from the context menu of a standard diagram. It was not logical to duplicate a diagram associated to a `ViewUsage`.
-- In diagrams, add _New Documentation_ tool on `Package` graphical nodes.
-- In diagrams, do not display _ports_ compartment anymore when a _PortUsage_ is created from any graphical node.
-The border graphical node representing the _PortUsage_ is sufficient.
 
 == Technical details
 
