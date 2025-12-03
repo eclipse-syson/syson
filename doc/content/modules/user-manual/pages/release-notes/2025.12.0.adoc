@@ -5,7 +5,7 @@
 - *Inherited PortUsages in diagrams*: in diagrams, inherited _PortUsages_ are now displayed as graphical border nodes.
 - *ActionUsage and ActionDefinition parameters in diagrams*: in diagrams, handle `ActionUsage` and `ActionDefinition` parameters (i.e. `ReferenceUsages` elements) as graphical border nodes.
 - *ViewUsage as container in diagrams*: in diagrams, it is now possible to put an `Element` graphical node inside a new `ViewUsage`, through the _View as >_ contextual menu item on an `Element` graphical node.
-- *Updated developer guide*: the developer guide has been updated to explain how to setup the development environment and contribute changes to the codebase.
+- *Updated developer guide*: the xref:developer-guide:index.adoc[developer guide] has been updated to explain how to setup the development environment and contribute changes to the codebase.
 
 == New features
 
@@ -28,15 +28,15 @@ This new `ViewUsage` is typed with a standard diagram `ViewDefinition`, one of `
 The new `ViewUsage` will be displayed in the diagram as a container for the `Element` graphical node.
 With this new functionality, it is possible to display some parts of the diagram in a different way, for example an `Interconnection View` inside a `General View` diagram.
 
-* Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
-
-image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
-
 [cols="1,1"]
 |===
 a|image::view-as-node-tool.png[View as Node tool, width=75%,height=75%]
 a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=75%]
 |=== 
+
+* Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
+
+image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
 
 == Bug fixes
 
@@ -45,7 +45,7 @@ a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=7
 ** Fix an issue where the `Imports` located in the root `Namespace` were not exported in the textual format.
 ** Fix an issue where the drag and drop of an `Element` with a _declared short_ name but no _declared name_ from the _Explorer_ view to a diagram was not possible.
 For example, the following `Element` can now be safely drag and drop to a diagram:
-
++
 ```
 requirement <'SN'> {
     doc /* Some doc */
@@ -65,7 +65,7 @@ requirement <'SN'> {
 
 ** Fix invalid resolution during textual import of _redefined Feature_ on `Redefinition`.
 This problem appears in cases of a name conflict between a global available item and an item accessible via _inherited membership_ such as in the following model:
-
++
 ```
 private import ISQBase::mass; // Gives global access to "mass"
 
@@ -84,11 +84,11 @@ metadata def MP :> SemanticMetadata {
     :> annotatedElement : SysML::PartUsage;
 }
 ```
-
++
 ** Fix an issue during textual import and export of rational numbers.
-
++
 The following model is now properly imported:
-
++
 ```
 package Occurrences {
    private import ScalarValues::*;
@@ -104,9 +104,9 @@ package Occurrences {
    }
 }
 ```
-
++
 Here is the textual export result:
-
++
 ```
 package Occurrences {
    private import ScalarValues::*;
@@ -125,7 +125,7 @@ package Occurrences {
 
 ** Fix an issue where a model with a redefining `AttributeUsage` incorrectly redefined a _short name_ during a textual export.
 For example with the following model:
-
++
 ```
 part p {
     attribute <a> anAttribute;
@@ -135,9 +135,9 @@ part p1 :> p {
     attribute :>> anAttribute;
 }
 ```
-
++
 The export gave :
-
++
 ```
 part p {
 	attribute <a> anAttribute;
@@ -146,9 +146,9 @@ part p1 :> p {
 	attribute <a> :>> anAttribute;
 }
 ```
-
++
 Instead, it now exports:
-
++
 ```
 part p {
 	attribute <a> anAttribute;
@@ -159,8 +159,9 @@ part p1 :> p {
 ```
 
 ** Fix the textual export of `UnaryOperator` which are `Expression` using the operators '+', '-', 'not' or '~' with only one parameter.
++
 For example in the following model:
-
++
 ```
 private import ScalarValues::*;
 
@@ -173,8 +174,9 @@ part p1 {
 ```
 
 ** Fix an issue during textual export where serializing a reference to an `Element` having only _declared short name_ (but no _declared name_) failed.
++
 The following models is now properly exported:
-
++
 ```
 part p1 {
     attribute <a1>;
@@ -184,10 +186,11 @@ part p2 :> p1 {
     attribute :>> a1; // Previously " attribute :>> ;"
 }
 ```
-
++
 Note that with this change, _declared short name_ reference will be privileged over _name_ reference when it is possible.
++
 For example, even if "a1" has a proper _declared name_ the model will be exported like this:
-
++
 ```
 part p1 {
     attribute <a1> attr1;
@@ -234,9 +237,9 @@ image::release-notes-publication-import-user-library-with-library-name-and-read-
 ** When using direct edit on graphical elements, it's now possible to use _short names_ in the qualified names.
 If two or more `Elements` share the same _short name_, {product} will search for the best candidate based on the scope of the element.
 Furthermore, if an ambiguity exists between the _short name_ and the _declared name_ of two different `Elements`, the declared name will be preferred.
-
++
 For example in:
-
++
 ```
 package Drone {
    package <LA> Drone_LogicalArchitecture {
@@ -247,7 +250,7 @@ package Drone {
    }
 }
 ```
-
++
 In the example above, when using the direct edit capability to subclass the _Battery_ `Part Definition`, it is now possible to type _LA::CommonBattery_ instead of _Drone_LogicalArchitecture::CommonBattery_.
 
 ** Improve the way elements are displayed in the _General View_ diagram by not display them twice.
@@ -256,12 +259,13 @@ Then, when any compartment inside a graphical node _A_ containing a nested graph
 For example, in the following model, _actionA_ contains _actionB_.
 When no compartment is displayed inside _actionA_, _actionB_ is displayed on the diagram background and linked to _actionA_ through a composition graphical edge.
 Then, when the _action flow_ compartment is displayed inside _actionA_, then _actionB_ is not displayed on the diagram background anymore, only in the _action flow_ compartment of _actionA_.
-
-[%noheader]
++
+[cols="1,1"]
 |===
-a|release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%] a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
+a|image::release-notes-gv-do-not-display-twice-1.png[GV do not display twice, width=50%,height=50%]
+a|image::release-notes-gv-do-not-display-twice-2.png[GV do not display twice, width=50%,height=50%]
 |===
-
++
 When a drag and drop of an _Element_ is made from the _Explorer_ view, the same behavior is applied: if the target graphical node has no candidate compartment displayed, then the dropped _Element_ is created on the diagram background and linked to the target graphical node through a composition graphical edge. If any visible compartment inside the existing graphical node corresponding the semantic parent of the dropped _Element_ is displayed, then the dropped _Element_ is created inside the target graphical node's compartment as a nested graphical node.
 
 ** When a `ViewUsage` is created from any standard diagram, then a diagram is now created and associated to this `ViewUsage`.
