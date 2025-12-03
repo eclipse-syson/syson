@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-test-coverage</artifactId>
-	<version>2025.10.6</version>
+	<version>2025.10.7</version>
 	<name>syson-test-coverage-aggregation</name>
 	<description>SysON Test Coverage Aggregation</description>
 
@@ -43,122 +43,122 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel-edit</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-direct-edit-grammar</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-form-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-model-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-representation-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-table-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tree-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-rest-api-services</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-import</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-export</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-validation</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-common-view</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-standard-diagrams-view</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-table-requirements-view</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tree-explorer-view</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application-configuration</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application</artifactId>
-			<version>2025.10.6</version>
+			<version>2025.10.7</version>
 		</dependency>
 	</dependencies>
 
