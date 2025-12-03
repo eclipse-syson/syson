@@ -34,7 +34,7 @@ a|image::view-as-node-tool.png[View as Node tool, width=75%,height=75%]
 a|image::view-as-node-tool-after.png[View as Node tool after, width=75%,height=75%]
 |=== 
 
-* Add a new filter in the _Explorer_ view to hide expose elements in `ViewUsage`.
+* Add a new filter in the _Explorer_ view to hide `Expose` elements in `ViewUsage`.
 
 image::explorer-hide-expose-element-filter.png[Hide expose element filter, width=30%,height=30%]
 
