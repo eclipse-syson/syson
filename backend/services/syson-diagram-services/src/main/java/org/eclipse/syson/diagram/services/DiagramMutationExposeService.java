@@ -401,14 +401,25 @@ public class DiagramMutationExposeService {
     private void hideNodeIfNestedIsDefault(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (element instanceof AttributeUsage || element instanceof PortUsage || Objects.equals(SysmlPackage.eINSTANCE.getItemUsage(), element.eClass())) {
-            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
-            var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
-            if (parentId != null && descriptionId.isPresent()) {
-                var nodeId = new NodeIdProvider().getNodeId(parentId,
-                        descriptionId.get(),
-                        NodeContainmentKind.CHILD_NODE,
-                        this.siriusWebCoreServices.identityService().getId(element));
-                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
+            boolean compartmentOrBorderThatCouldHostTheFutureNode = false;
+            for (Node childNode : selectedNode.getChildNodes()) {
+                Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, childNode,
+                        convertedNodes);
+                if (childNodeDescriptionIdForRendering.isPresent()) {
+                    compartmentOrBorderThatCouldHostTheFutureNode = true;
+                    break;
+                }
+            }
+            if (compartmentOrBorderThatCouldHostTheFutureNode) {
+                var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+                var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+                if (parentId != null && descriptionId.isPresent()) {
+                    var nodeId = new NodeIdProvider().getNodeId(parentId,
+                            descriptionId.get(),
+                            NodeContainmentKind.CHILD_NODE,
+                            this.siriusWebCoreServices.identityService().getId(element));
+                    diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
+                }
             }
         }
     }
