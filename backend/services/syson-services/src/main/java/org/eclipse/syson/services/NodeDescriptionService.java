@@ -78,6 +78,42 @@ public class NodeDescriptionService {
     }
 
     /**
+     * Returns the border descriptions of {@code nodeDescriptions} that can render {@code element}.
+     * <p>
+     * This method looks for child {@link NodeDescription}s in border nodes, as well as reused border nodes.
+     * </p>
+     *
+     * @param element
+     *            the element to render
+     * @param ownerObject
+     *            the semantic parent of the element to render
+     * @param nodeDescriptions
+     *            the {@link NodeDescription}s to search in
+     * @param convertedNodes
+     *            the converted nodes
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @return the border descriptions of {@code nodeDescriptions} that can render {@code element}
+     */
+    public List<NodeDescription> getBorderNodeDescriptionsForRendering(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IEditingContext editingContext, DiagramContext diagramContext) {
+        List<NodeDescription> candidates = new ArrayList<>();
+        for (NodeDescription node : nodeDescriptions) {
+            List<NodeDescription> allChildren = new ArrayList<>();
+            allChildren.addAll(node.getBorderNodeDescriptions());
+            allChildren.addAll(convertedNodes.values().stream().filter(convNode -> node.getReusedBorderNodeDescriptionIds().contains(convNode.getId())).toList());
+            for (NodeDescription child : allChildren) {
+                if (this.canNodeDescriptionRenderElement(child, element, ownerObject, editingContext, diagramContext)) {
+                    candidates.add(child);
+                }
+            }
+        }
+        return candidates;
+    }
+
+    /**
      * Returns the list of candidate node descriptions that can be used to render the given semantic element knowing its
      * parent.
      *

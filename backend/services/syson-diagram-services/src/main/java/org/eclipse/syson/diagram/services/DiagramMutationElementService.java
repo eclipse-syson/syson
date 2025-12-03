@@ -222,25 +222,80 @@ public class DiagramMutationElementService {
     public Optional<String> getChildNodeDescriptionIdForRendering(Element element, IEditingContext editingContext, DiagramContext diagramContext, Object parent,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         List<NodeDescription> candidates = new ArrayList<>();
-        final Object parentObject;
 
         if (parent instanceof Node node) {
             NodeDescription parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), node.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
-            parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
+            var parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
             candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
             NodeDescription parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
-            parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
+            var parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
             candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else {
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.diagram().getDescriptionId());
-            parentObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId()).orElse(null);
+            var parentObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId()).orElse(null);
+            candidates = diagramDescription
+                    .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
+                    .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
+                    .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions)
+                    .orElse(List.of())
+                    .stream()
+                    .filter(nodeDescription -> this.nodeDescriptionService.canNodeDescriptionRenderElement(nodeDescription, element, parentObject, editingContext, diagramContext))
+                    .toList();
+        }
+
+        return candidates.stream()
+                .map(NodeDescription::getId)
+                .findFirst();
+    }
+
+    /**
+     * Returns the description id that can be used to render {@code element} in {@code parent}.
+     * <p>
+     * This method supports both {@link Node} and {@link ViewCreationRequest} as parent. This method returns the
+     * description id of a top-level element if the provided {@code parent} isn't a {@link Node} or a
+     * {@link ViewCreationRequest}.
+     * </p>
+     *
+     * @param element
+     *            the element to render
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param parent
+     *            the parent ({@link Node} or {@link ViewCreationRequest})
+     * @param convertedNodes
+     *            the converted nodes
+     * @return the description id
+     */
+    public Optional<String> getBorderNodeDescriptionIdForRendering(Element element, IEditingContext editingContext, DiagramContext diagramContext, Object parent,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        List<NodeDescription> candidates = new ArrayList<>();
+
+        if (parent instanceof Node node) {
+            NodeDescription parentNodeDescription = convertedNodes.values().stream()
+                    .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), node.getDescriptionId()))
+                    .findFirst()
+                    .orElse(null);
+            var parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
+            candidates = this.nodeDescriptionService.getBorderNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
+        } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
+            NodeDescription parentNodeDescription = convertedNodes.values().stream()
+                    .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
+                    .findFirst()
+                    .orElse(null);
+            var parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
+            candidates = this.nodeDescriptionService.getBorderNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
+        } else {
+            var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.diagram().getDescriptionId());
+            var parentObject = this.objectSearchService.getObject(editingContext, diagramContext.diagram().getTargetObjectId()).orElse(null);
             candidates = diagramDescription
                     .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)

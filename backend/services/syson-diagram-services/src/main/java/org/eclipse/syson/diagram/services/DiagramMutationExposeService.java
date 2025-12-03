@@ -43,7 +43,6 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
@@ -51,6 +50,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -129,6 +129,9 @@ public class DiagramMutationExposeService {
         } else {
             var viewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode);
             if (viewUsage != null && !viewUsage.getExposedElement().contains(element)) {
+                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                membershipExpose.setImportedMembership(element.getOwningMembership());
+                viewUsage.getOwnedRelationship().add(membershipExpose);
                 // if it is the General View, we want to hide tree elements if a compartment containing the same
                 // element is displayed or it is displayed as border node
                 if (selectedNode != null && ViewDefinitionKind.isGeneralView(this.utilService.getViewDefinitionKind(element, List.of(), editingContext))) {
@@ -136,9 +139,6 @@ public class DiagramMutationExposeService {
                     this.hideNodeIfBorderNodeCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
                     this.hideNodeIfNestedIsDefault(element, editingContext, diagramContext, selectedNode, convertedNodes);
                 }
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(element.getOwningMembership());
-                viewUsage.getOwnedRelationship().add(membershipExpose);
             }
         }
         return element;
@@ -376,13 +376,13 @@ public class DiagramMutationExposeService {
     private void hideNodeIfBorderNodeCouldHostTheFutureNode(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         // 1- get border nodes descriptions that could host the future node
-        // 3- if a border nodes description could host the future node, then hide the tree node
+        // 2- if a border nodes description could host the future node, then hide the tree node
         boolean borderNodeDecriptionCouldHostTheFutureNode = false;
-        var childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode,
+        var borderNodeDescriptionIdForRendering = this.diagramMutationElementService.getBorderNodeDescriptionIdForRendering(element, editingContext, diagramContext, selectedNode,
                 convertedNodes);
         // Child nodes are composed of compartment nodes and border nodes but compartment nodes are not appropriate
         // candidates, so only border nodes are remaining.
-        if (childNodeDescriptionIdForRendering.isPresent()) {
+        if (borderNodeDescriptionIdForRendering.isPresent()) {
             borderNodeDecriptionCouldHostTheFutureNode = true;
         }
         if (borderNodeDecriptionCouldHostTheFutureNode) {
@@ -400,7 +400,7 @@ public class DiagramMutationExposeService {
 
     private void hideNodeIfNestedIsDefault(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (element instanceof AttributeUsage || element instanceof PortUsage || element instanceof ItemUsage) {
+        if (element instanceof AttributeUsage || element instanceof PortUsage || Objects.equals(SysmlPackage.eINSTANCE.getItemUsage(), element.eClass())) {
             var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
             var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
             if (parentId != null && descriptionId.isPresent()) {
@@ -408,11 +408,7 @@ public class DiagramMutationExposeService {
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
                         this.siriusWebCoreServices.identityService().getId(element));
-                boolean hide = true;
-                if (this.modelQueryElementService.isExposed(element, this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode))) {
-                    hide = false;
-                }
-                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), hide));
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
             }
         }
     }
