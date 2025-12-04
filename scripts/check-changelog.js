@@ -35,43 +35,12 @@ const latestTag = childProcess.execSync("git describe --tags --abbrev=0", {
   encoding: "utf8",
 });
 
-// Get the next release version based on the latest tag
-const regexpCoordinates = /v(\d{4})\.(\d{1,2})\..*/g;
-const match = regexpCoordinates.exec(latestTag);
-console.log(`The latest tag is ${match}`);
-
-let yearReleaseVersion = Number(match[1]);
-let majorReleaseVersion = Number(match[2]);
-if (majorReleaseVersion === 11) {
-  yearReleaseVersion++;
-}
-
-if (majorReleaseVersion === 10) {
-  majorReleaseVersion = 12;
-} else {
-  majorReleaseVersion = (majorReleaseVersion + 2) % 12;
-}
-if (majorReleaseVersion === 3) {
-  majorReleaseVersion--;
-}
-const nextReleaseVersion = yearReleaseVersion + "." + majorReleaseVersion;
-console.log(`The next release version is ${nextReleaseVersion}.0`);
-
-const releaseNotesPath = `doc/content/modules/user-manual/pages/release-notes/${nextReleaseVersion}.0.adoc`;
-const releaseNotes = fs.readFileSync(`${workspace}/${releaseNotesPath}`);
-
 const invalidChangelogContent =
   changelog.includes("<<<<<<<") ||
   changelog.includes("=======") ||
   changelog.includes(">>>>>>>");
 
-const invalidReleaseNotesContent =
-  releaseNotes.includes("<<<<<<<") ||
-  releaseNotes.includes("=======") ||
-  releaseNotes.includes(">>>>>>>");
-
 const missingIssuesInChangelog = [];
-const missingIssuesInReleaseNotes = [];
 for (let index = 0; index < lines.length; index++) {
   const line = lines[index];
   const gitShowCommand = `git rev-list --format=%B --max-count=1 ${line}`;
@@ -96,16 +65,6 @@ for (let index = 0; index < lines.length; index++) {
         if (!changelog.includes(issueURL)) {
           missingIssuesInChangelog.push(issueURL);
         }
-
-        // Check that the release notes has been updated in the commit
-        const gitDescribeCommand = `git diff-tree --no-commit-id --name-only ${line} -r`;
-        const changedFiles = childProcess.execSync(gitDescribeCommand, {
-          encoding: "utf8",
-        });
-        const changedFilesLines = changedFiles.split(/\r?\n/);
-        if (!changedFilesLines.includes(releaseNotesPath)) {
-          missingIssuesInReleaseNotes.push(issueURL);
-        }
       }
     }
   }
@@ -117,20 +76,9 @@ if (missingIssuesInChangelog.length > 0) {
   );
   console.log(missingIssuesInChangelog);
   process.exit(1);
-} else if (missingIssuesInReleaseNotes.length > 0) {
-  console.log(
-    `The commits referencing the following issues should contain a modification of the latest release notes (${releaseNotesPath})`
-  );
-  console.log(missingIssuesInReleaseNotes);
-  process.exit(1);
 } else if (invalidChangelogContent) {
   console.log(
     'The CHANGELOG seems to contain Git conflict markers like "<<<<<<<", "=======" or ">>>>>>>"'
-  );
-  process.exit(1);
-} else if (invalidReleaseNotesContent) {
-  console.log(
-    'The release notes seems to contains Git conflict markers like "<<<<<<<", "=======" or ">>>>>>>"'
   );
   process.exit(1);
 }
