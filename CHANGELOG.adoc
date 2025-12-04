@@ -1,6 +1,6 @@
 = Changelog
 
-== v2025.12.0 (work in progress)
+== v2025.12.0
 
 === Shapes
 
@@ -72,7 +72,7 @@ SysON now uses the Sirius-Web implementations of these components.
 === Dependency update
 
 - [releng] Update to ANTLR 4.13.2 to match the version sirius-web is using
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.10.7]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.0]
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.7[Spring Boot 3.5.7]
 - [releng] Remove the dependency to xstate
 - [releng] Switch to AQL 8.1.0 from https://download.eclipse.org/acceleo/updates/releases/4.2/R202510230846/[Acceleo 4.2.0]

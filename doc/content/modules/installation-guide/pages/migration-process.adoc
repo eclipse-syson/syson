@@ -4,7 +4,7 @@ If you're upgrading from an older version of {product} to the latest release, th
 
 In any case, it is strongly recommended to back up your data before proceeding with any migration.
 
-== 2025.12.0 (work in progress)
+== 2025.12.0
 
 Adopting the 2025.12.0 version doesn't require a migration process.
 
