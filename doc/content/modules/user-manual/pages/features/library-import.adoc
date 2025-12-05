@@ -60,10 +60,20 @@ image::release-notes-library-update-dialog.png[Dialog for the 'Update library' a
 
 Select the new version of the library, then click on the 'Update' button.
 A dialog prompts showing the impact analysis report associated to the library update.
-This dialog lists references that will be removed from your models because their target doesn't exist anymore (e.g. a `PartDefinition` that was typing a `PartUsage` in your model but doesn't exist in the new version of the library).
+This dialog provides an overview of the impacts the operation will have on the model (number of elements created, deleted, modified), as well as a tree showing the impacted elements.
+Note that this tree shows the same element as the Explorer view with the default filters enabled (it hides the `Membership` elements, the root `Namespace`, and the `MembershipExpose` elements).
+
+The example below shows a library update operation that will:
+
+- Remove the old library dependency (`SysMLv2-Library@v1`)
+- Add the new library dependency (`SysMLv2-Library@v2`)
+- Remove `partLib` from the `subsettingFeature` in `part1`'s `Subsetting` (because `partLib` was removed between `SysMLv2-Library@v1` and `SysMLv2-Library@v2`)
+
+Note that the first two lines can be expanded to see the complete models of the removed/added libraries.
+
 Clicking on the 'Execute' button will perform the update, including the impacts listed in the dialog. If you don't want to update the library you can close the dialog and your models will remain unchanged.
 
-image::release-notes-library-update-impact-analysis.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
+image::release-notes-library-update-impact-analysis-with-tree.png[Dialog showing the impact analysis report of the 'Update library' action, width=85%,height=85%]
 
 After the library update has been performed, if successful, a notification appears.
 
