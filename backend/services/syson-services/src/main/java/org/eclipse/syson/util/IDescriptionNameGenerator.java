@@ -27,6 +27,114 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 public interface IDescriptionNameGenerator {
 
     /**
+     * Returns a name built from the given prefix, descType and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param descType
+     *            the string that should be prepended to the given suffix.
+     * @param suffix
+     *            the given suffix.
+     * @return a name built from the given prefix, descType and suffix.
+     */
+    default String getName(String prefix, String descType, String suffix) {
+        var name = new StringBuilder();
+        name.append(prefix).append(" ").append(descType).append(" ").append(suffix);
+        return name.toString();
+    }
+
+    /**
+     * Returns a node name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return a node name built from the given prefix and suffix.
+     */
+    default String getNodeName(String prefix, String suffix) {
+        return this.getName(prefix, "Node", suffix);
+    }
+
+    /**
+     * Returns a border node name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return a border node name built from the given prefix and suffix.
+     */
+    default String getBorderNodeName(String prefix, String suffix) {
+        return this.getName(prefix, "BorderNode", suffix);
+    }
+
+    /**
+     * Returns an inherited border node name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return an inherited border node name built from the given prefix and suffix.
+     */
+    default String getInheritedBorderNodeName(String prefix, String suffix) {
+        return this.getName(prefix, "InheritedBorderNode", suffix);
+    }
+
+    /**
+     * Returns a compartment name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return a compartment name built from the given prefix and suffix.
+     */
+    default String getCompartmentName(String prefix, String suffix) {
+        return this.getName(prefix, "Compartment", suffix);
+    }
+
+    /**
+     * Returns a compartment item name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return a compartment item name built from the given prefix and suffix.
+     */
+    default String getCompartmentItemName(String prefix, String suffix) {
+        return this.getName(prefix, "CompartmentItem", suffix);
+    }
+
+    /**
+     * Returns an inherited compartment item name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return an inherited compartment item name built from the given prefix and suffix.
+     */
+    default String getInheritedCompartmentItemName(String prefix, String suffix) {
+        return this.getName(prefix, "InheritedCompartmentItem", suffix);
+    }
+
+    /**
+     * Returns an edge name built from the given prefix and suffix.
+     *
+     * @param prefix
+     *            the given prefix.
+     * @param suffix
+     *            the given suffix.
+     * @return an edge name built from the given prefix and suffix.
+     */
+    default String getEdgeName(String prefix, String suffix) {
+        return this.getName(prefix, "Edge", suffix);
+    }
+
+    /**
      * Returns the name of a creation tool using the given {@link EClassifier} and a prefix.
      *
      * @param prefix

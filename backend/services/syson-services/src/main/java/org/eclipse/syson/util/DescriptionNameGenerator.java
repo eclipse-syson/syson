@@ -42,40 +42,6 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
         this.diagramPrefix = diagramPrefix;
     }
 
-    protected String getName(String prefix, String descType, String type) {
-        StringBuilder name = new StringBuilder();
-        name.append(prefix).append(SPACE).append(descType).append(SPACE).append(type);
-        return name.toString();
-    }
-
-    protected String getNodeName(String prefix, String type) {
-        return this.getName(prefix, "Node", type);
-    }
-
-    protected String getBorderNodeName(String prefix, String type) {
-        return this.getName(prefix, "BorderNode", type);
-    }
-
-    protected String getInheritedBorderNodeName(String prefix, String type) {
-        return this.getName(prefix, "InheritedBorderNode", type);
-    }
-
-    protected String getCompartmentName(String prefix, String suffix) {
-        return this.getName(prefix, "Compartment", suffix);
-    }
-
-    protected String getCompartmentItemName(String prefix, String suffix) {
-        return this.getName(prefix, "CompartmentItem", suffix);
-    }
-
-    protected String getInheritedCompartmentItemName(String prefix, String suffix) {
-        return this.getName(prefix, "InheritedCompartmentItem", suffix);
-    }
-
-    protected String getEdgeName(String prefix, String type) {
-        return this.getName(prefix, "Edge", type);
-    }
-
     /**
      * Returns the name of the creation tool of the given {@link EClassifier} with a specified prefix.
      *
