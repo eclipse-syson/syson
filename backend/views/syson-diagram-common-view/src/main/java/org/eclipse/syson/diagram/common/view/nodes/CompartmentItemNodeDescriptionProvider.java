@@ -132,6 +132,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
+                .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }

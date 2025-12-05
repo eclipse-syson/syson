@@ -14,6 +14,9 @@ image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, widt
 image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
 
 - A new tool section `Structure` is available on the palette of an interconnection node, it contains creation tools for `Part` and `Action`.
+- A new tool is available in the _General View_ palette to duplicate a node and its semantic `Element`.
+
+image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
 
 == Bug fixes
 
