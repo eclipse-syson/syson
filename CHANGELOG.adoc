@@ -7,7 +7,17 @@
 - https://github.com/eclipse-syson/syson/issues/1694[#1694] Customize Elasticsearch index to work with SysML metamodel
  
 === Breaking changes
- 
+
+- [services] move the following methods from `DescriptionNameGenerator` to default methods in `IDescriptionNameGenerator`:
+* `String getName(String prefix, String descType, String suffix)`
+* `String getNodeName(String prefix, String suffix)`
+* `String getBorderNodeName(String prefix, String suffix)`
+* `String getInheritedBorderNodeName(String prefix, String suffix)`
+* `String getCompartmentName(String prefix, String suffix)`
+* `String getCompartmentItemName(String prefix, String suffix)`
+* `String getInheritedCompartmentItemName(String prefix, String suffix)`
+* `String getEdgeName(String prefix, String suffix)`
+
 === Dependency update
 
 === Bug fixes
