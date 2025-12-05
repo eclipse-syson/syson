@@ -171,7 +171,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .quickAccessTools(this.getDeleteFromDiagramTool())
+                .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

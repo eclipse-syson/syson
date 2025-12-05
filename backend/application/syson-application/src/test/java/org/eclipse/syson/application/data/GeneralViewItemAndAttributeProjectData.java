@@ -37,6 +37,8 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String DIAGRAM_ID = "136fe011-4028-4ca6-b1b0-b95cb3bfd1a4";
 
+        public static final String P1_ID = "4811747f-094d-3c40-987e-32b0df2144e2";
+
         public static final String P1_X1_ID = "8b9d1985-8d3d-3403-a1d5-e462f0a840c3";
 
         public static final String P1_1_X1_ID = "632c779a-2810-3c1e-b897-21492656a05b";
@@ -54,6 +56,8 @@ public class GeneralViewItemAndAttributeProjectData {
         public static final String A2_1_ICON_AND_LABEL_ID = "6f121831-91b7-3710-9ba7-136db0a7b46f";
 
         public static final String A2_2_ICON_AND_LABEL_ID = "c4838f87-784b-3a30-b4a0-c8ab93c15dd6";
+
+        public static final String A1_1_ICON_AND_LABEL_ID = "b59e7239-d224-38da-847c-741cfe51d22b";
 
         public static final String FEATURE_VALUE_A2_2_TO_A1_4_EDGE = "8a737b89-6a9b-36ca-b31e-01bb6e39de27";
 

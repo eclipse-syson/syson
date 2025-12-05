@@ -279,7 +279,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
-                .quickAccessTools(this.getDeleteFromDiagramTool())
+                .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

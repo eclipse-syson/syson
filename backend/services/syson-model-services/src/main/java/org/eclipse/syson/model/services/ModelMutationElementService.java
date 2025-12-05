@@ -45,10 +45,10 @@ public class ModelMutationElementService {
      * Set a new {@link ViewDefinition} for the given {@link ViewUsage}.
      *
      * @param viewUsage
-     *            the given {@link ViewUsage}.
+     *         the given {@link ViewUsage}.
      * @param newViewDefinition
-     *            the new {@link ViewDefinition} to set, through its qualified name (for example,
-     *            StandardDiagramsConstants.GV).
+     *         the new {@link ViewDefinition} to set, through its qualified name (for example,
+     *         StandardDiagramsConstants.GV).
      * @return the given {@link ViewUsage}.
      */
     public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {

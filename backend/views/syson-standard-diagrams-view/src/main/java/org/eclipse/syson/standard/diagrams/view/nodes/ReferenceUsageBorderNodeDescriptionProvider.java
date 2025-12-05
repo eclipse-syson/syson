@@ -126,6 +126,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .edgeTools(this.getEdgeTools(cache, nodeDescription).toArray(EdgeTool[]::new))
                 .build();
     }

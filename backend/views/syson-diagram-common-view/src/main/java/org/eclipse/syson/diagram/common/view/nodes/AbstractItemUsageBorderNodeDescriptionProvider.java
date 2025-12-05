@@ -154,6 +154,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .edgeTools(
                         this.createBindingConnectorAsUsageEdgeTool(this.getBindingConectorAsUsageToolTarget(cache)),
                         this.createFlowUsageEdgeTool(this.getFlowConnectionToolTargets(cache)))
+                .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }
 
