@@ -32,6 +32,8 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1565[#1565] Provide a way to duplicate semantic element in the _Explorer_ view.
+
 == v2025.12.0
 
 === Shapes
