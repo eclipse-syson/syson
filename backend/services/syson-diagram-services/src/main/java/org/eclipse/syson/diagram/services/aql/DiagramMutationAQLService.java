@@ -15,8 +15,12 @@ package org.eclipse.syson.diagram.services.aql;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.syson.diagram.services.DiagramMutationDiagramService;
@@ -24,6 +28,7 @@ import org.eclipse.syson.diagram.services.DiagramMutationDndService;
 import org.eclipse.syson.diagram.services.DiagramMutationElementService;
 import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
+import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.StateUsage;
 
@@ -60,6 +65,13 @@ public class DiagramMutationAQLService {
     public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.diagramMutationExposeService.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDiagramService#DiagramMutationDiagramService(IDiagramCreationService, IRepresentationDescriptionSearchService, IRepresentationMetadataPersistenceService, IRepresentationPersistenceService, ModelMutationElementService, DiagramMutationExposeService)}.
+     */
+    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDiagramService.duplicateElementAndExpose(element, editingContext, diagramContext, node, convertedNodes);
     }
 
     /**
@@ -187,14 +199,14 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationExposeService#showContentAsNested(Element, Node, IEditingContext, DiagramContext)}.
+     * {@link DiagramMutationElementService#showContentAsNested(Element, Node, IEditingContext, DiagramContext)}.
      */
     public Element showContentAsNested(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramMutationElementService.showContentAsNested(element, selectedNode, editingContext, diagramContext);
     }
 
     /**
-     * {@link DiagramMutationExposeService#showContentAsTrees(Element, Node, IEditingContext, DiagramContext)}.
+     * {@link DiagramMutationElementService#showContentAsTree(Element, Node, IEditingContext, DiagramContext)}.
      */
     public Element showContentAsTree(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramMutationElementService.showContentAsTree(element, selectedNode, editingContext, diagramContext);

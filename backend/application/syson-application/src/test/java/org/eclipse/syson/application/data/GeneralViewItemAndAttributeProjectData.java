@@ -55,6 +55,8 @@ public class GeneralViewItemAndAttributeProjectData {
 
         public static final String A2_2_ICON_AND_LABEL_ID = "c4838f87-784b-3a30-b4a0-c8ab93c15dd6";
 
+        public static final String A1_1_ICON_AND_LABEL_ID = "b59e7239-d224-38da-847c-741cfe51d22b";
+
         public static final String FEATURE_VALUE_A2_2_TO_A1_4_EDGE = "8a737b89-6a9b-36ca-b31e-01bb6e39de27";
 
     }

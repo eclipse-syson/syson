@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
@@ -87,6 +88,21 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                                         ServiceMethod.of3(DiagramMutationAQLService::removeFromExposedElements).aqlSelf(Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT,
                                                 DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
+                        .build())
+                .build();
+    }
+
+    protected NodeTool getDuplicateElementAndNodeTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Duplicate Element")
+                .iconURLsExpression("/images/content_copy.svg")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(
+                                ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
+                                        .aqlSelf(IEditingContext.EDITING_CONTEXT,
+                                                DiagramContext.DIAGRAM_CONTEXT,
+                                                Node.SELECTED_NODE,
+                                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
     }
