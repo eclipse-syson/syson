@@ -39,7 +39,7 @@
     </module>
     <module name="JavadocVariable">
       <property name="severity" value="ignore"/>
-      <property name="scope" value="protected"/>
+      <property name="accessModifiers" value="protected"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="error"/>
     </module>
     <module name="ConstantName">
