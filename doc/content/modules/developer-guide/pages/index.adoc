@@ -147,7 +147,8 @@ image::SetupDev_SpringToolSuite_Check_Java.png[Check installed JRE in Spring Too
 
 ===== Checkstyle plugin
 
-All {product} backend modules use Checkstyle to verify formatting, coding rules... so you must install Checkstyle plugin in Eclipse. The version to use is the latest *10.x.y*.
+All {product} backend modules use Checkstyle to verify formatting, coding rules... so you must install Checkstyle plugin in Eclipse.
+The version to use is a version *10.x.y* but *inferior* to *10.22.0*.
 
 Go to _Help > Install New Software..._ menu, then add _https://checkstyle.org/eclipse-cs-update-site/_ in the _Work with:_ select widget and type _enter_.
 Then, select _Eclipse Checkstyle Plug-in_, click on _Next >_, _Next >_, accept the terms of the license agreement and click on _Finish_.
