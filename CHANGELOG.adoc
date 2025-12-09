@@ -29,6 +29,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 
 - https://github.com/eclipse-syson/syson/issues/1666[#1666] [export] Export `SatisfyRequirementUsage` in textual format.
 - https://github.com/eclipse-syson/syson/issues/1653[#1653] [services] Improve service for creating root objects in a document so that it delegates non-SysML scenarios to the default service implementation.
+- https://github.com/eclipse-syson/syson/issues/1735[#1735] [diagrams] Improve the performances of the visibility menu actions
 
 === New features
 

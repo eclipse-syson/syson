@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
@@ -30,7 +29,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.HideDiagramEleme
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -39,6 +37,8 @@ import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
@@ -68,9 +68,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler {
 
-    private final IEditingContextSearchService editingContextSearchService;
-
-    private final IRepresentationSearchService representationSearchService;
+    private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
@@ -80,11 +78,10 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
 
     private final ICollaborativeDiagramMessageService messageService;
 
-    public SysONShowHideSDVElementEventHandler(IEditingContextSearchService editingContextSearchService, IRepresentationSearchService representationSearchService,
+    public SysONShowHideSDVElementEventHandler(IRepresentationMetadataSearchService representationMetadataSearchService,
             IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider, IDiagramQueryService diagramQueryService,
             ICollaborativeDiagramMessageService messageService) {
-        this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
@@ -94,13 +91,10 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
         if (diagramInput instanceof HideDiagramElementInput hideInput) {
-            String editingContextId = hideInput.editingContextId();
-            var optEditingContext = this.editingContextSearchService.findById(editingContextId);
-            if (optEditingContext.isPresent()) {
-                var optDiagram = this.representationSearchService.findById(optEditingContext.get(), hideInput.representationId(), Diagram.class);
-                if (optDiagram.isPresent()) {
-                    return SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(optDiagram.get().getDescriptionId());
-                }
+            var optDiagram = new UUIDParser().parse(hideInput.representationId())
+                    .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(representationId));
+            if (optDiagram.isPresent()) {
+                return SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(optDiagram.get().getDescriptionId());
             }
         }
         return false;
@@ -109,11 +103,12 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext, IDiagramInput diagramInput) {
         if (diagramInput instanceof HideDiagramElementInput hideInput) {
-            this.handleHideDiagramElement(payloadSink, changeDescriptionSink, diagramContext, hideInput);
+            this.handleHideDiagramElement(payloadSink, changeDescriptionSink, editingContext, diagramContext, hideInput);
         }
     }
 
-    private void handleHideDiagramElement(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, DiagramContext diagramContext, HideDiagramElementInput diagramInput) {
+    private void handleHideDiagramElement(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DiagramContext diagramContext,
+            HideDiagramElementInput diagramInput) {
         List<String> errors = new ArrayList<>(diagramInput.elementIds().size());
         Set<String> resolvedIds = new HashSet<>();
         Set<String> nodeIdsToHide = new HashSet<>();
@@ -136,8 +131,7 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
                 // 4 - get the the nodes linked to the parent node through composition edges
                 // 5 - get the semantic elements Ids corresponding to 4
                 // 6 - hide all nodes of 4 with semantic element matching contained in 3 & 5
-                var optEditingContext = this.editingContextSearchService.findById(diagramInput.editingContextId());
-                if (!hide && this.isCompartmentNode(node, diagramContext.diagram(), optEditingContext.get())) {
+                if (!hide && this.isCompartmentNode(node, diagramContext.diagram(), editingContext)) {
                     var parentNode = this.getParentNode(node, diagramContext.diagram());
                     if (parentNode != null) {
                         List<String> compartmentSemanticChildren = this.getSemanticElements(node.getChildNodes());
