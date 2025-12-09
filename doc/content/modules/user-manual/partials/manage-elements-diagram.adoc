@@ -53,3 +53,9 @@ image::manage-elements-semantic-deletion.png[Semantic Deletion]
 This preference is stored in the local storage of the browser.
 You can reset it by deleting the {product} data in cache of your browser.
 ====
+
+=== Duplicate Element
+
+User can duplicate an `Element` (and its representation node) by clicking on the _Duplicate Element_ button in the palette.
+
+image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]

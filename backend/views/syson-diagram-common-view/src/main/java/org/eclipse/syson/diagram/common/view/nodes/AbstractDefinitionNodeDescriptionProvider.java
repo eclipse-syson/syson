@@ -253,7 +253,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
-                .quickAccessTools(this.getDeleteFromDiagramTool())
+                .quickAccessTools(this.getDeleteFromDiagramTool(), this.getDuplicateElementAndNodeTool())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

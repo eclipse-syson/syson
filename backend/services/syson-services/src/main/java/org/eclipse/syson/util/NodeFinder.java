@@ -52,8 +52,8 @@ public class NodeFinder {
                     result = this.diagram;
                 } else {
                     result = this.doSearchFirst(node, n ->
-                    this.getAllChildrenCandidates(n, node.isBorderNode())
-                            .anyMatch(subNode -> Objects.equals(currentNodeId, subNode.getId()))).orElse(null);
+                            this.getAllChildrenCandidates(n, currentNode.isBorderNode())
+                                    .anyMatch(subNode -> Objects.equals(currentNodeId, subNode.getId()))).orElse(null);
                 }
                 if (result != null) {
                     break;
@@ -134,9 +134,10 @@ public class NodeFinder {
 
     private Stream<Node> getAllChildrenCandidates(Node node, boolean isBorderNode) {
         if (isBorderNode) {
-            return node.getBorderNodes().stream();
+            // In case we are looking for a bordered node, first search in the BorderedNode list to avoid browsing all nested nodes if not necessary
+            return Stream.concat(node.getBorderNodes().stream(), node.getChildNodes().stream());
         } else {
-            return node.getChildNodes().stream();
+            return Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream());
         }
     }
 }
