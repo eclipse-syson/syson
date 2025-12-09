@@ -43,6 +43,9 @@ package ReqSatisfactions {
 
 image::gv-parts-compartment.png[Parts compartment, width=50%]
 
+- The performances of the Visibility menu actions when showing/hiding specific compartments has been improved.
+It should particularly be visible on large projects.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
