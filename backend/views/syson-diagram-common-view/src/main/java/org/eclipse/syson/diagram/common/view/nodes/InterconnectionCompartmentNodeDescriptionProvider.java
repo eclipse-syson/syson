@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -93,6 +94,13 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
         toolSections.add(this.toolDescriptionService.relatedElementsNodeToolSection(false));
+
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nodeDesc -> {
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.STRUCTURE,
+                    this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.STRUCTURE,
+                    this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage()));
+        });
 
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
 

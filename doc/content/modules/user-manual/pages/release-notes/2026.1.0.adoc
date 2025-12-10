@@ -13,6 +13,8 @@ image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, widt
 
 image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
 
+- A new tool section `Structure` is available on the palette of an interconnection node, it contains creation tools for `Part` and `Action`.
+
 == Bug fixes
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
