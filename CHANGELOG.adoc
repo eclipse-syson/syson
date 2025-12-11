@@ -24,6 +24,7 @@
 
 - https://github.com/eclipse-syson/syson/issues/1698[#1698] [explorer] Discard non-`Namespace` elements to compute whether a model is a user library.
 This fix ensure that imported models containing, for example, a top-level `LibraryPackage` and a top-level `Comment` is correctly displayed under the _User libraries_ directory.
+- https://github.com/eclipse-syson/syson/issues/1751[#1751] [diagrams] Make `Interconnection` compartment growable.
 
 === Improvements
 
