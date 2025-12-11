@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -22,32 +20,46 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractItemUsageBorderNodeDe
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Used to create the item usage border node description.
+ * Used to create the border node description for PortDefinition getDefinition_OwnedItem.
  *
  * @author Arthur Daussy
  */
-public class ItemUsageBorderNodeDescriptionProvider extends AbstractItemUsageBorderNodeDescriptionProvider {
+public class PortDefinitionOwnedItemBorderNodeDescriptionProvider extends AbstractItemUsageBorderNodeDescriptionProvider {
 
-    public ItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(colorProvider, descriptionNameGenerator);
+    public PortDefinitionOwnedItemBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eReference, colorProvider, descriptionNameGenerator);
+    }
+
+    @Override
+    protected String getName() {
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference);
+    }
+
+    @Override
+    protected String getSemanticCandidatesExpression() {
+        return "aql:self.ownedItem";
     }
 
     @Override
     protected List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
-        return List.of(cache.getNodeDescription(this.getName()).get());
+        var nodeDescriptions = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.getName()).ifPresent(nodeDescriptions::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodeDescriptions::add);
+        return nodeDescriptions;
     }
 
     @Override
     protected List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache) {
         var nodes = new ArrayList<NodeDescription>();
-
         cache.getNodeDescription(this.getName()).ifPresent(nodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
-
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
         return nodes;
     }
-
 
 }

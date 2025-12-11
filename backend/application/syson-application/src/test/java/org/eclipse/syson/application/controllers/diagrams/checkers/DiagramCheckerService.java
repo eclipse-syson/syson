@@ -91,6 +91,7 @@ public class DiagramCheckerService {
             int createdNodesExpectedCount = newNodesCount + compartmentCount;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewBorderNodeCount(1)
                     .hasNewEdgeCount(1)
                     .check(previousDiagram.get(), newDiagram);
 
