@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -45,12 +46,23 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final IDescriptionNameGenerator descriptionNameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbstractItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    protected final EReference eReference;
+
+    public AbstractItemUsageBorderNodeDescriptionProvider(EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.eReference = Objects.requireNonNull(eReference);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
+
+    protected abstract List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache);
+
+    protected abstract List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache);
+
+    protected abstract String getSemanticCandidatesExpression();
+
+    protected abstract String getName();
 
     @Override
     public NodeDescription create() {
@@ -61,16 +73,12 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .domainType(domainType)
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:self.parameter")
+                .semanticCandidatesExpression(this.getSemanticCandidatesExpression())
                 .style(this.createItemUnsetNodeStyle())
                 .conditionalStyles(this.createItemUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
-    }
-
-    public String getName() {
-        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage());
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {
@@ -157,10 +165,6 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }
-
-    protected abstract List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache);
-
-    protected abstract List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache);
 
     private EdgeTool createBindingConnectorAsUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
