@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
@@ -1092,10 +1093,20 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private void linkInterconnectionCompartment(IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                 .ifPresent(nd -> cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME))
-                        .ifPresent(nd.getReusedChildNodeDescriptions()::add));
+                        .ifPresent(compartmentNodeDescription -> {
+                            nd.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
+                            if (nd.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription listLayout) {
+                                listLayout.getGrowableNodes().add(compartmentNodeDescription);
+                            }
+                        }));
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()))
                 .ifPresent(nd -> cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME))
-                        .ifPresent(nd.getReusedChildNodeDescriptions()::add));
+                        .ifPresent(compartmentNodeDescription -> {
+                            nd.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
+                            if (nd.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription listLayout) {
+                                listLayout.getGrowableNodes().add(compartmentNodeDescription);
+                            }
+                        }));
     }
 
     private void addCompartmentNodeDescriptionInNodeDescription(IViewDiagramElementFinder cache, NodeDescription compartmentNodeDescription, EClass eClass) {
