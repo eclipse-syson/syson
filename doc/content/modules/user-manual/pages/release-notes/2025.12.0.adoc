@@ -217,13 +217,15 @@ This issue is now fixed.
 * In _Explorer_ view:
 
 ** The _Explorer_ view now displays the _shortName_ as part of the label of `Elements`.
-image::explorer-short-name-label.png[Short name in labels, width=65%,height=65%]
++
+image::explorer-short-name-label.png[Short name in labels, width=50%,height=50%]
 
 ** The way the _Explorer_ view displays libraries has been reworked:
 *** The _Explorer_ view now displays imported-by-reference libraries that only contain top-level `LibraryPackage` elements in the `User libraries` directory.
 ***  Libraries containing at least one top-level `Package` are always displayed at the root of the _Explorer_ view.
 *** The _Explorer_ view now appends `[read-only]` to read-only models and the `KerML` and `SysML` directories.
 ***  The _Explorer_ view now appends `library-name@library-version` to imported-by-reference library models.
++
 image::release-notes-publication-import-user-library-with-library-name-and-read-only.png[Imported-by-reference library under User libraries, width=50%,height=50%]
 
 ** In the _Explorer_ view, allow the creation of `InterconnectionView` diagrams from _Packages_ elements.
