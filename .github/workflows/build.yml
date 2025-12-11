@@ -154,21 +154,52 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Check the integration test code
+      - name: Check the Playwright integration test code
         run: |
           npm ci
           npm run eslint
-        working-directory: integration-tests
+        working-directory: integration-tests-playwright
 
-      - name: Run end to end tests against the application
+      - name: Install Playwright Browsers
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: npx playwright install --with-deps
+        working-directory: integration-tests-playwright
+
+      - name: Run Playwright tests against the application
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
+        run: |
+          docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
+          docker compose -f ../backend/application/syson-application/docker-compose.yml ps
+          npx wait-on -t 180000 http://localhost:8080
+          npx playwright test
+        working-directory: integration-tests-playwright
+        env:
+          IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Store Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: integration-tests-playwright/playwright-report/
+          retention-days: 5
+
+      - name: Check the Cypress integration test code
+        run: |
+          npm ci
+          npm run eslint
+        working-directory: integration-tests-cypress
+
+      - name: Run Cypress end to end tests against the application
         if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/main' && env.GITHUB_REF != 'refs/heads/cooldown'
         uses: cypress-io/github-action@6c143abc292aa835d827652c2ea025d098311070 # v6.10.1
         with:
-          build: docker compose -f docker-compose-integration-tests.yml up -d
-          start: docker compose -f docker-compose-integration-tests.yml ps
+          build: docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
+          start: docker compose -f ../backend/application/syson-application/docker-compose.yml ps
           wait-on: "http://localhost:8080"
           wait-on-timeout: 180
-          working-directory: integration-tests
+          working-directory: integration-tests-cypress
           record: false
         env:
           IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
@@ -179,7 +210,7 @@ jobs:
         if: always()
         with:
           name: cypress-screenshots
-          path: integration-tests/target/screenshots/**/*.png
+          path: integration-tests-cypress/target/screenshots/**/*.png
           retention-days: 5
 
       - name: Log in to Docker Hub

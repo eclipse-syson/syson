@@ -267,13 +267,16 @@ public class GeneralPurposeTests {
         Path frontendFolderPath = Paths.get(rootFolder.getAbsolutePath(), FRONTEND_SRC_FOLDER_PATH);
         List<Path> typescriptFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
         List<Path> typescriptJsxFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_JSX_FILE_EXTENSION, true);
-        Path integrationTestFolderPath = Paths.get(rootFolder.getAbsolutePath(), "integration-tests");
-        List<Path> integrationTestTypescriptFilePaths = this.findFilePaths(integrationTestFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
+        Path cypressIntegrationTestFolderPath = Paths.get(rootFolder.getAbsolutePath(), "integration-tests-cypress");
+        Path playwrightIntegrationTestFolderPath = Paths.get(rootFolder.getAbsolutePath(), "integration-tests-playwright");
+        List<Path> cypressIntegrationTestTypescriptFilePaths = this.findFilePaths(cypressIntegrationTestFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
+        List<Path> playwrightIntegrationTestTypescriptFilePaths = this.findFilePaths(playwrightIntegrationTestFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
 
         List<Path> filePaths = new ArrayList<>();
         filePaths.addAll(typescriptFilePaths);
         filePaths.addAll(typescriptJsxFilePaths);
-        filePaths.addAll(integrationTestTypescriptFilePaths);
+        filePaths.addAll(cypressIntegrationTestTypescriptFilePaths);
+        filePaths.addAll(playwrightIntegrationTestTypescriptFilePaths);
 
         for (Path javascriptFilePath : filePaths) {
             try {
@@ -291,7 +294,7 @@ public class GeneralPurposeTests {
                     this.testNoConfirm(index, line, javascriptFilePath);
                     this.testNoPrompt(index, line, javascriptFilePath);
                     this.testNoInvalidMaterialUIImport(index, line, javascriptFilePath);
-                    if (javascriptFilePath.toAbsolutePath().startsWith(integrationTestFolderPath.toAbsolutePath())) {
+                    if (javascriptFilePath.toAbsolutePath().startsWith(cypressIntegrationTestFolderPath.toAbsolutePath())) {
                         // Additional checks for cypress tests
                         this.testNoItOnly(index, line, javascriptFilePath);
                     }
