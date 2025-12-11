@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2022", "dom"],
+    "types": ["node"],
+    "allowUnreachableCode": false,
+    "alwaysStrict": true,
+    "module": "nodenext",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

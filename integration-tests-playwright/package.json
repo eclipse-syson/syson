@@ -1,0 +1,23 @@
+{
+  "name": "syson-integration-tests-playwright",
+  "version": "2025.12.0",
+  "license": "EPL-2.0",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.55.0",
+    "@types/node": "24.3.0",
+    "@typescript-eslint/eslint-plugin": "6.13.2",
+    "@typescript-eslint/parser": "6.13.2",
+    "eslint": "8.55.0",
+    "typescript": "5.1.6"
+  },
+  "scripts": {
+    "start": "npx playwright test",
+    "start:dev": "npx playwright test --ui",
+    "format-lint": "prettier --list-different \"playwright/**/*.ts\"",
+    "eslint": "npx eslint ./playwright/**/*.ts"
+  },
+  "dependencies": {
+    "prettier": "2.7.1"
+  }
+}

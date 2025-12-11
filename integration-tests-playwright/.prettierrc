@@ -1,0 +1,22 @@
+{
+  "printWidth": 120,
+  "singleQuote": true,
+  "bracketSameLine": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": true,
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    }
+  ]
+}
