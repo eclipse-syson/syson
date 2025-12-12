@@ -20,7 +20,9 @@ If only one kind of edge is possible, the edge is directly create without openin
 
 image::manage-relationships-createEdge-popup.png[Popup to create Edge]
 
-it's not possible for now to create an Edge between two Edges or between an Edge and a Node.
+It is not possible for now to create a graphical edge between two graphical edges or between a graphical edge and a graphical node.
+
+NOTE: In some cases, if {product} detects that the relationship you try to create already exists and creating a duplicate is not valid, it will tell you with a feedback message instead of creating a redundant relationship.
 
 === Reconnect relationship
 

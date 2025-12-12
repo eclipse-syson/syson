@@ -52,7 +52,7 @@ public class DiagramDescriptionIdProvider {
                 .filter(nodeTool -> nodeTool.getName().equals(toolName))
                 .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
                 .findFirst();
-        assertThat(creationToolId).as("Diagram tool " + toolName + " should exist").isPresent();
+        assertThat(creationToolId).as(this.shouldExist("Diagram tool " + toolName)).isPresent();
         return creationToolId.get();
     }
 
@@ -65,20 +65,20 @@ public class DiagramDescriptionIdProvider {
                         .filter(nodeTool -> nodeTool.getName().equals(toolName))
                         .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
                         .findFirst());
-        assertThat(nodeToolId).as(nodeDescriptionName + " node tool " + toolName + " should exist").isPresent();
+        assertThat(nodeToolId).as(this.shouldExist(nodeDescriptionName + " node tool " + toolName)).isPresent();
         return nodeToolId.get();
     }
 
     public String getNodeCreationToolIdOnEdge(String edgeDescriptionName, String toolName) {
         Optional<String> creationToolId = EMFUtils.allContainedObjectOfType(this.diagramDescription, EdgeDescription.class)
-                .filter(nodeDescription -> nodeDescription.getName().equals(edgeDescriptionName))
+                .filter(edgeDescription -> edgeDescription.getName().equals(edgeDescriptionName))
                 .findFirst()
                 .map(EdgeDescription::getPalette)
                 .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, NodeTool.class)
                         .filter(nodeTool -> nodeTool.getName().equals(toolName))
                         .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
                         .findFirst());
-        assertThat(creationToolId).as(edgeDescriptionName + " node tool " + toolName + " should exist").isPresent();
+        assertThat(creationToolId).as(this.shouldExist(edgeDescriptionName + " node tool " + toolName)).isPresent();
         return creationToolId.get();
     }
 
@@ -91,7 +91,7 @@ public class DiagramDescriptionIdProvider {
                         .filter(edgeTool -> edgeTool.getName().equals(toolName))
                         .map(edgeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(edgeTool).toString().getBytes()).toString())
                         .findFirst());
-        assertThat(creationToolId).as(nodeDescriptionName + " edge tool " + toolName + " should exist").isPresent();
+        assertThat(creationToolId).as(this.shouldExist(nodeDescriptionName + " edge tool " + toolName)).isPresent();
         return creationToolId.get();
     }
 
@@ -100,8 +100,21 @@ public class DiagramDescriptionIdProvider {
                 .filter(nodeDescription -> nodeDescription.getName().equals(name))
                 .map(this.diagramIdProvider::getId)
                 .findFirst();
-        assertThat(nodeDescriptionId).as("Node " + name + " should exist").isPresent();
+        assertThat(nodeDescriptionId).as(this.shouldExist("Node " + name)).isPresent();
         return nodeDescriptionId.get();
+    }
+
+    public String getEdgeDescriptionId(String name) {
+        Optional<String> edgeDescriptionId = EMFUtils.allContainedObjectOfType(this.diagramDescription, EdgeDescription.class)
+                .filter(edgeDescription -> edgeDescription.getName().equals(name))
+                .map(this.diagramIdProvider::getId)
+                .findFirst();
+        assertThat(edgeDescriptionId).as(this.shouldExist("Edge " + name)).isPresent();
+        return edgeDescriptionId.get();
+    }
+
+    private String shouldExist(String what) {
+        return what + "should exist";
     }
 
 }

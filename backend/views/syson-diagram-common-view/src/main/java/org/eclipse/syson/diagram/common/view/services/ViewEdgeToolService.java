@@ -25,11 +25,13 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -42,6 +44,8 @@ public class ViewEdgeToolService {
     private static final String METAMODEL_ICONS_PATH = "/icons/full/obj16/";
 
     private static final String SVG = ".svg";
+
+    private static final String NEW_INSTANCE = "newInstance";
 
     private final ViewBuilders viewBuilderHelper;
 
@@ -80,7 +84,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
 
         var setClient = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -91,17 +95,17 @@ public class ViewEdgeToolService {
                 .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(callElementInitializerService.build(), setClient.build(), setSupplier.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getDependency()))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newOwningMembership")
+                .expression(AQLConstants.AQL + "newOwningMembership")
                 .children(createInstance.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
@@ -126,7 +130,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
 
         var setSubclassifier = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
@@ -145,13 +149,13 @@ public class ViewEdgeToolService {
                 .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(callElementInitializerService.build(), setSubclassifier.build(), setSuperclassifier.build(), setSpecific.build(), setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubclassification()))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
         var body = this.viewBuilderHelper.newChangeContext()
@@ -170,7 +174,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
 
         var setRedefiningFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
@@ -197,7 +201,7 @@ public class ViewEdgeToolService {
                 .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(callElementInitializerService.build(), setRedefiningFeature.build(), setRedefinedFeature.build(), setSubsettingFeature.build(), setSubsettedFeature.build(),
                         setSpecific.build(),
                         setGeneral.build());
@@ -205,7 +209,7 @@ public class ViewEdgeToolService {
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRedefinition()))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
         var body = this.viewBuilderHelper.newChangeContext()
@@ -224,7 +228,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
 
         var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
@@ -243,14 +247,14 @@ public class ViewEdgeToolService {
                 .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(callElementInitializerService.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
                         setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubsetting()))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
         var body = this.viewBuilderHelper.newChangeContext()
@@ -269,7 +273,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
 
         var setTypedFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
@@ -288,18 +292,37 @@ public class ViewEdgeToolService {
                 .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(callElementInitializerService.build(), setTypedFeature.build(), setType.build(), setSpecific.build(), setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureTyping()))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
+
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf("'A feature typing already exists between these elements.'"))
+                .build();
+
+        String hasExistingFeatureTyping = "hasExistingFeatureTyping";
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingFeatureTyping)
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + hasExistingFeatureTyping)
+                .children(feedback);
+
+        var letExistingFeatureTyping = this.viewBuilderHelper.newLet()
+                .variableName(hasExistingFeatureTyping)
+                .valueExpression(AQLConstants.AQL_SELF + ".type->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
+                .children(createIfPossible.build(), informOtherwise.build());
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
-                .children(createInstance.build());
+                .children(letExistingFeatureTyping.build());
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))
