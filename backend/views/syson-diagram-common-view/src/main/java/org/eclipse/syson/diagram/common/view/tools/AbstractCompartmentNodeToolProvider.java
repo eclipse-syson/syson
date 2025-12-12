@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -25,9 +23,9 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 
 /**
@@ -36,6 +34,8 @@ import org.eclipse.syson.util.ServiceMethod;
  * @author gdaniel
  */
 public abstract class AbstractCompartmentNodeToolProvider implements INodeToolProvider {
+
+    private static final String NEW_INSTANCE = "newInstance";
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -77,8 +77,8 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         ChangeContextBuilder revealOperation;
         if (this.revealOnCreate()) {
             revealOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                            List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                    .expression(ServiceMethod.of4(ViewNodeService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                            ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
         } else {
             revealOperation = this.viewBuilderHelper.newChangeContext().expression(AQLConstants.AQL_SELF);
         }
@@ -87,19 +87,25 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
                 .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
-        var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getServiceCallExpression())
+        var exposeAndRevealNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
                 .children(addToExposedElements.build(), revealOperation.build());
+
+        var letNewInstance = this.viewBuilderHelper.newLet()
+                .variableName(NEW_INSTANCE)
+                .valueExpression(this.getServiceCallExpression())
+                .children(exposeAndRevealNewInstance.build());
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(creationCompartmentItemServiceCall.build())
+                .children(letNewInstance.build())
                 .build();
 
         return builder.name(this.getNodeToolName())
                 .iconURLsExpression(this.getNodeToolIconURLsExpression())
                 .body(rootChangContext)
                 .preconditionExpression(this.getPreconditionExpression())
+                .elementsToSelectExpression(AQLConstants.AQL + NEW_INSTANCE)
                 .build();
     }
 

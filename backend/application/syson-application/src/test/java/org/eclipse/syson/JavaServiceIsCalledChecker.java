@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,24 +27,11 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.interpreter.SimpleCrossReferenceProvider;
-import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
-import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.diagram.CreateView;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
-import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
-import org.eclipse.sirius.components.view.diagram.LabelEditTool;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
-import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.AQLConstants;
 
@@ -66,7 +52,7 @@ public class JavaServiceIsCalledChecker {
 
 
         this.aqlServiceNames = new HashSet<>();
-        Collection<String> aqlExpressions = this.collectAQLExpressionsInView(view);
+        Collection<String> aqlExpressions = this.collectAQLExpressions(view);
 
         List<String> aqlBodyExpressions = aqlExpressions.stream()
                 .filter(expression -> expression != null && !expression.isBlank())
@@ -93,140 +79,20 @@ public class JavaServiceIsCalledChecker {
                 .contains(service.getName());
     }
 
-    private Collection<String> collectAQLExpressionsInView(View view) {
+    private Collection<String> collectAQLExpressions(EObject eObject) {
         Set<String> expressions = new HashSet<>();
-        for (RepresentationDescription description : view.getDescriptions()) {
-            if (description instanceof DiagramDescription diagramDescription) {
-                expressions.addAll(this.collectAQLExpressionsInDiagramDescription(diagramDescription));
-            }
-        }
+        this.collectAQLExpressions(eObject, expressions);
         return expressions;
     }
 
-    private Collection<String> collectAQLExpressionsInDiagramDescription(DiagramDescription diagramDescription) {
-        Set<String> expressions = new HashSet<>();
-
-        expressions.add(diagramDescription.getPreconditionExpression());
-
-        final List<Tool> allDiagramTools = EMFUtils.allContainedObjectOfType(diagramDescription, Tool.class).toList();
-
-        for (Tool diagramTool : allDiagramTools) {
-            expressions.add(diagramTool.getPreconditionExpression());
-            for (Operation bodyOperation : diagramTool.getBody()) {
-                EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
-                        .map(ChangeContext::getExpression)
-                        .forEach(expressions::add);
-            }
-            if (diagramTool instanceof NodeTool nodeTool) {
-                if (nodeTool.getDialogDescription() instanceof SelectionDialogDescription selectionDialogDescription) {
-                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getElementsExpression());
-                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getChildrenExpression());
-                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getIsSelectableExpression());
-                }
-            }
-        }
-
-        EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
-                .map(this::collectAQLExpressionsInNodeDescription)
-                .forEach(expressions::addAll);
-        EMFUtils.allContainedObjectOfType(diagramDescription, EdgeDescription.class)
-                .map(this::collectAQLExpressionsInEdgeDescription)
-                .forEach(expressions::addAll);
-
-        EMFUtils.allContainedObjectOfType(diagramDescription, ConditionalNodeStyle.class)
-                .map(ConditionalNodeStyle::getCondition)
-                .forEach(expressions::add);
-        EMFUtils.allContainedObjectOfType(diagramDescription, ConditionalEdgeStyle.class)
-                .map(ConditionalEdgeStyle::getCondition)
-                .forEach(expressions::add);
-
-        return expressions;
+    private void collectAQLExpressions(EObject eObject, Set<String> expressions) {
+        // All interpreted expressions on the eOject itself
+        eObject.eClass().getEAllStructuralFeatures().stream()
+                .filter(EAttribute.class::isInstance)
+                .map(EAttribute.class::cast)
+                .filter(attr -> attr.getEType() == ViewPackage.Literals.INTERPRETED_EXPRESSION)
+                .forEach(expressionAttribute -> expressions.add((String) eObject.eGet(expressionAttribute)));
+        // Recurse on all its descendants
+        eObject.eAllContents().forEachRemaining(o -> this.collectAQLExpressions(o, expressions));
     }
-
-    private Collection<String> collectAQLExpressionsInNodeDescription(NodeDescription nodeDescription) {
-        Set<String> expressions = new HashSet<>();
-        Optional.ofNullable(nodeDescription.getSemanticCandidatesExpression())
-            .map(expressions::add);
-
-        Optional.ofNullable(nodeDescription.getInsideLabel()).map(InsideLabelDescription::getLabelExpression)
-                .map(expressions::add);
-
-        Optional.ofNullable(nodeDescription.getInsideLabel()).map(InsideLabelDescription::getStyle)
-                .map(InsideLabelStyle::getShowIconExpression)
-                .map(expressions::add);
-
-        Optional.ofNullable(nodeDescription.getOutsideLabels())
-                .ifPresent(outsideLabelDescriptions -> outsideLabelDescriptions.stream().map(OutsideLabelDescription::getLabelExpression).forEach(expressions::add));
-
-        Optional.ofNullable(nodeDescription.getIsHiddenByDefaultExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(nodeDescription.getPreconditionExpression())
-                .map(expressions::add);
-
-
-        List<Tool> nodeTools = Optional.ofNullable(nodeDescription.getPalette()).stream()
-                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, Tool.class))
-                .toList();
-
-        for (Tool nodeTool : nodeTools) {
-            expressions.add(nodeTool.getPreconditionExpression());
-            if (nodeTool instanceof LabelEditTool labelEditTool) {
-                expressions.add(labelEditTool.getInitialDirectEditLabelExpression());
-            }
-            if (nodeTool instanceof NodeTool createNodeTool) {
-                if (createNodeTool.getDialogDescription() instanceof SelectionDialogDescription selectionDialogDescription) {
-                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getElementsExpression());
-                }
-            }
-            for (Operation bodyOperation : nodeTool.getBody()) {
-                EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
-                        .forEach(changeContext -> expressions.add(changeContext.getExpression()));
-                EMFUtils.allContainedObjectOfType(bodyOperation, CreateView.class)
-                        .forEach(changeContext -> expressions.add(changeContext.getParentViewExpression()));
-            }
-        }
-        return expressions;
-    }
-
-    private Collection<String> collectAQLExpressionsInEdgeDescription(EdgeDescription edgeDescription) {
-        Set<String> expressions = new HashSet<>();
-        Optional.ofNullable(edgeDescription.getSemanticCandidatesExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getBeginLabelExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getCenterLabelExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getEndLabelExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getSourceExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getTargetExpression())
-                .map(expressions::add);
-
-        Optional.ofNullable(edgeDescription.getPreconditionExpression())
-                .map(expressions::add);
-
-        final List<Tool> allEdgeTools = EMFUtils.allContainedObjectOfType(edgeDescription, Tool.class).toList();
-
-        for (Tool edgeTool : allEdgeTools) {
-            expressions.add(edgeTool.getPreconditionExpression());
-            if (edgeTool instanceof LabelEditTool labelEditTool) {
-                expressions.add(labelEditTool.getInitialDirectEditLabelExpression());
-            }
-            for (Operation bodyOperation : edgeTool.getBody()) {
-                EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
-                        .forEach(changeContext -> expressions.add(changeContext.getExpression()));
-                EMFUtils.allContainedObjectOfType(bodyOperation, CreateView.class)
-                        .forEach(changeContext -> expressions.add(changeContext.getParentViewExpression()));
-            }
-        }
-        return expressions;
-    }
-
 }
