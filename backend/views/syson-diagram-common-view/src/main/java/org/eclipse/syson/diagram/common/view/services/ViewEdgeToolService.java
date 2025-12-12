@@ -297,9 +297,26 @@ public class ViewEdgeToolService {
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build());
 
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.infoMessage('A feature typing already exists between these elements.')")
+                .build();
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression("aql:not hasExistingFeatureTyping")
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression("aql:hasExistingFeatureTyping")
+                .children(feedback);
+
+        var letExistingFeatureTyping = this.viewBuilderHelper.newLet()
+                .variableName("hasExistingFeatureTyping")
+                .valueExpression("aql:self.eContents(sysml::FeatureTyping).general->includes(semanticEdgeTarget)")
+                .children(createIfPossible.build(), informOtherwise.build());
+
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
-                .children(createInstance.build());
+                .children(letExistingFeatureTyping.build());
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))

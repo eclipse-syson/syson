@@ -14,9 +14,13 @@ package org.eclipse.syson.diagram.services.aql;
 
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
 import org.eclipse.syson.sysml.Comment;
@@ -39,9 +43,17 @@ public class DiagramQueryAQLService {
 
     private final DiagramQueryLabelService diagramQueryLabelService;
 
-    public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService, IFeedbackMessageService feedbackMessageService) {
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.diagramQueryLabelService = Objects.requireNonNull(diagramQueryLabelService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+    }
+
+    public EObject infoMessage(EObject self, String message) {
+        this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.INFO));
+        return self;
     }
 
     /**
