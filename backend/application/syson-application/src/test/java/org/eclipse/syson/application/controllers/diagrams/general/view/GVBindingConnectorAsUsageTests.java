@@ -151,7 +151,10 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
     @Test
     public void bindingNestedLevel1() {
 
-        AtomicReference<String> newEdge = this.createEdge("i0", "i1", GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID, GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID);
+        AtomicReference<String> newEdge = this.createEdge(GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID);
 
         // I0 -> I1
         this.createChecker()
@@ -171,7 +174,10 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
     @Test
     public void bindingNestedLevel1Reversed() {
 
-        AtomicReference<String> newEdge = this.createEdge("i1", "i0", GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID, GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID);
+        AtomicReference<String> newEdge = this.createEdge(GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID);
 
         // I1 -> I0
         this.createChecker()
@@ -191,7 +197,10 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
     @Test
     public void bindingNestedLevel2() {
 
-        AtomicReference<String> newEdge = this.createEdge("i0", "i11", GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID, GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID);
+        AtomicReference<String> newEdge = this.createEdge(GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID);
         // I0 -> I11
         this.createChecker()
                 .setExpectedSourceSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
@@ -210,7 +219,10 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
     @Test
     public void bindingSameLevel() {
 
-        AtomicReference<String> newEdge = this.createEdge("i11", "i11Test", GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID, GeneralViewBindingConnectorProjectData.GraphicalIds.I11TEST_ID);
+        AtomicReference<String> newEdge = this.createEdge(GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I11TEST_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID,
+                GeneralViewBindingConnectorProjectData.GraphicalIds.I11TEST_ID);
 
         // I11 -> I11Test
         this.createChecker()
@@ -277,14 +289,14 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
         return result;
     }
 
-    private AtomicReference<String> createEdge(String sourceName, String targetName, String expectedSourceGraplicalId, String expectedTargetGraplicalId) {
+    private AtomicReference<String> createEdge(String sourceNodeId, String targetNodeId, String expectedSourceGraphicalId, String expectedTargetGraphicalId) {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()),
                 "New Binding Connector As Usage (bind)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewBindingConnectorProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewBindingConnectorProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                sourceName,
-                targetName,
+                sourceNodeId,
+                targetNodeId,
                 creationToolId));
 
         var result = new AtomicReference<String>();
@@ -296,8 +308,8 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
             assertThat(newEdges).hasSize(1).first(EDGE)
-                    .hasSourceId(expectedSourceGraplicalId)
-                    .hasTargetId(expectedTargetGraplicalId)
+                    .hasSourceId(expectedSourceGraphicalId)
+                    .hasTargetId(expectedTargetGraphicalId)
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);

@@ -13,11 +13,10 @@
 package org.eclipse.syson.application.controllers.details.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -73,26 +72,22 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     public void givenAPartUsageWhenWeSubscribeToItsPropertiesEventThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
         var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var flux = this.detailsEventSubscriptionRunner.run(input).filter(FormRefreshedEventPayload.class::isInstance);
 
-        Consumer<Object> formContentConsumer = object -> Optional.of(object)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresentOrElse(form -> {
-                    assertThat(form.getPages())
-                            .hasSize(2)
-                            .satisfiesExactly(page1 -> assertThat(page1.getLabel()).isEqualTo("Core"),
-                                    page2 -> assertThat(page2.getLabel()).isEqualTo("Advanced"));
-                    var coreGroupNavigator = new FormNavigator(form).page("Core").group("Part Properties");
-                    var declaredNameTextfield = coreGroupNavigator.findWidget("Declared Name", Textfield.class);
-                    assertThat(declaredNameTextfield.getValue()).isEqualTo("p");
-                    var qualifiedNameLabel = coreGroupNavigator.findWidget("Qualified Name", LabelWidget.class);
-                    assertThat(qualifiedNameLabel.getValue()).isEqualTo("Package1::p");
-                    var advancedGroupNavigator = new FormNavigator(form).page("Advanced").group("Part Properties");
-                    var nameLabel = advancedGroupNavigator.findWidget("Name", LabelWidget.class);
-                    assertThat(nameLabel.getValue()).isEqualTo("p");
-                }, () -> fail("Missing form"));
+        Consumer<Object> formContentConsumer = assertRefreshedFormThat(form -> {
+            assertThat(form.getPages())
+                    .hasSize(2)
+                    .satisfiesExactly(page1 -> assertThat(page1.getLabel()).isEqualTo("Core"),
+                            page2 -> assertThat(page2.getLabel()).isEqualTo("Advanced"));
+            var coreGroupNavigator = new FormNavigator(form).page("Core").group("Part Properties");
+            var declaredNameTextfield = coreGroupNavigator.findWidget("Declared Name", Textfield.class);
+            assertThat(declaredNameTextfield.getValue()).isEqualTo("p");
+            var qualifiedNameLabel = coreGroupNavigator.findWidget("Qualified Name", LabelWidget.class);
+            assertThat(qualifiedNameLabel.getValue()).isEqualTo("Package1::p");
+            var advancedGroupNavigator = new FormNavigator(form).page("Advanced").group("Part Properties");
+            var nameLabel = advancedGroupNavigator.findWidget("Name", LabelWidget.class);
+            assertThat(nameLabel.getValue()).isEqualTo("p");
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(formContentConsumer)

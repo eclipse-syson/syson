@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
+import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.ProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
@@ -126,7 +127,8 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         UUID randomUUID = UUID.randomUUID();
-        IPayload project = this.projectCreationService.createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), List.of(), List.of()));
+        IPayload project = this.projectCreationService
+                .createProject(new CreateProjectInput(randomUUID, "ImportExport-" + randomUUID.toString(), BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of()));
         assertThat(project instanceof CreateProjectSuccessPayload);
 
         TestTransaction.flagForCommit();

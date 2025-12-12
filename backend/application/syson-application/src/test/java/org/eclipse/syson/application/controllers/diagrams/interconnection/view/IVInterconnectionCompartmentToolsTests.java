@@ -12,7 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.interconnection.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
@@ -22,8 +33,6 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.InterconnectionViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
-import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,18 +41,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Tests the palette query and execution of tools of {@link org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider}.
@@ -65,8 +65,6 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
-
-    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -104,7 +102,7 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             Map<String, Object> variables = Map.of(
                     "editingContextId", InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                     "representationId", diagramId.get(),
-                    "diagramElementId", interconnectionCompartmentNodeId.get()
+                    "diagramElementIds", List.of(interconnectionCompartmentNodeId.get())
             );
             var result = this.paletteQueryRunner.run(variables);
 
@@ -122,10 +120,10 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
         };
 
         Runnable createPartTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                        diagramId.get(), interconnectionCompartmentNodeId.get() , newPartToolId.get(), 0, 0, List.of())
+                diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newPartToolId.get(), 0, 0, List.of())
                 .isSuccess();
         Runnable createActionTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                        diagramId.get(), interconnectionCompartmentNodeId.get() , newActionToolId.get(), 0, 0, List.of())
+                diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newActionToolId.get(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> afterCreatePartToolConsumer = assertRefreshedDiagramThat(diagram -> {
