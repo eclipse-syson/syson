@@ -397,7 +397,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
             Map<String, Object> variables = Map.of(
                     "editingContextId", GeneralViewInheritedPortTestProjectData.EDITING_CONTEXT_ID,
                     "representationId", diagramId.get(),
-                    "diagramElementId", inheritedPortId.get()
+                    "diagramElementIds", List.of(inheritedPortId.get())
             );
             var result = this.paletteQueryRunner.run(variables);
             List<String> quickAccessToolIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");

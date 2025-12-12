@@ -56,6 +56,7 @@ const toViewFrameNode = (
     pinned,
     style,
     labelEditable,
+    deletable,
     customizedStyleProperties,
   } = gqlNode;
 
@@ -96,6 +97,7 @@ const toViewFrameNode = (
     borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     connectionHandles,
     labelEditable,
+    deletable,
     isNew,
     resizedByUser,
     movedByUser,
