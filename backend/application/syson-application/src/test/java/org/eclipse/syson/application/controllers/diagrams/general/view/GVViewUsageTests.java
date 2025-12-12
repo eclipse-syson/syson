@@ -197,7 +197,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
 
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
-        this.defaultFilters = this.sysonTreeFilterProvider.get(null, null, null).stream()
+        this.defaultFilters = this.sysonTreeFilterProvider.get(null, null).stream()
                 .filter(TreeFilter::defaultState)
                 .map(TreeFilter::id)
                 .toList();

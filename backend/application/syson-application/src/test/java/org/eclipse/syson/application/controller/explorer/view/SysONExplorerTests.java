@@ -127,7 +127,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void beforeEach() {
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
         this.givenInitialServerState.initialize();
-        this.defaultFilters = this.sysonTreeFilterProvider.get(null, null, null).stream()
+        this.defaultFilters = this.sysonTreeFilterProvider.get(null, null).stream()
                 .filter(TreeFilter::defaultState)
                 .map(TreeFilter::id)
                 .toList();

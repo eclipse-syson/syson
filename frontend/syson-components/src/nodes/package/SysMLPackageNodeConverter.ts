@@ -59,6 +59,7 @@ const toPackageNode = (
     pinned,
     style,
     labelEditable,
+    deletable,
     customizedStyleProperties,
   } = gqlNode;
 
@@ -98,6 +99,7 @@ const toPackageNode = (
     borderNodePosition: convertBorderNodePosition(gqlNode.initialBorderNodePosition),
     connectionHandles,
     labelEditable,
+    deletable,
     isNew,
     resizedByUser,
     movedByUser,

@@ -89,7 +89,7 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
     }
 
     @Override
-    public boolean canHandle(IDiagramInput diagramInput) {
+    public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         if (diagramInput instanceof HideDiagramElementInput hideInput) {
             var optDiagram = new UUIDParser().parse(hideInput.representationId())
                     .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(representationId));

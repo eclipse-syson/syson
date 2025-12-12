@@ -24,7 +24,8 @@ export class Diagram {
   }
 
   public arrangeAll() {
-    cy.getByTestId('arrange-all').click();
+    cy.getByTestId('arrange-all-menu').click();
+    cy.getByTestId('arrange-all-elk-layered').should('exist').click();
   }
 
   public getDiagramBackground(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {

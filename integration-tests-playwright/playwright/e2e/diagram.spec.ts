@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
 import { PlaywrightNode } from '../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../helpers/PlaywrightProject';
 
 test.describe('diagram - interconnection view', () => {
   let projectId;
@@ -24,8 +24,8 @@ test.describe('diagram - interconnection view', () => {
     });
     const project = await new PlaywrightProject(request).createSysMLV2Project('interconnection');
     projectId = project.projectId;
-
     await page.goto(`/projects/${projectId}/edit`);
+
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.uploadDocument('SysMLv2WithInterconnectionView.sysml');
     await playwrightExplorer.expand('SysMLv2WithInterconnectionView.sysml');

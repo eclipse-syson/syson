@@ -39,6 +39,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.data.ActionFlowCompartmentTestProjectData;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -405,7 +406,8 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createSuccessionFromStart() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
+                "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,
@@ -433,13 +435,14 @@ public class ActionFlowTests extends AbstractIntegrationTests {
         });
     }
 
-    @DisplayName("GIVEN a start action and ActionUsage, WHEN using the 'New Succession' tool between them, THEN a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
+    @DisplayName("GIVEN a start action and a done action, WHEN using the 'New Succession' tool between them, THEN a SuccessionAsUsage is created between the 'start' membership to the 'done' membership")
     @Sql(scripts = { ActionFlowCompartmentTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createSuccessionFromStartToDone() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
+                "New Succession");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,

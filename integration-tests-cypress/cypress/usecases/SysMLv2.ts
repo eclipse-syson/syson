@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
 import { CreatedProjectData } from './SysMLv2.types';
 
 export class SysMLv2 {
   public createSysMLv2Project(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('SysMLv2', 'sysmlv2-template', []).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('SysMLv2', 'sysmlv2-template').then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);

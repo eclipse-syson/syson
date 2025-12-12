@@ -30,6 +30,7 @@ public class InterconnectionViewWithTopNodesTestProjectData {
 
         public static final String DIAGRAM_ID = "e940992c-8d3c-44c3-a389-75f33be0cc89";
 
+        public static final String PART_1_ID = "f0c715c8-50fe-3928-bf28-9803b9ac7467";
     }
 
     /**

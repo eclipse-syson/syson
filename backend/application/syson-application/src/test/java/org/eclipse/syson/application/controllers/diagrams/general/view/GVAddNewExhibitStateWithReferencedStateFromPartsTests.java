@@ -175,8 +175,8 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
         String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State with referenced State");
         assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartDefinition").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
-                "part",
+                this.diagram.get().getId(),
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID,
                 creationToolId,
                 List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID , ToolVariableType.OBJECT_ID))));
 

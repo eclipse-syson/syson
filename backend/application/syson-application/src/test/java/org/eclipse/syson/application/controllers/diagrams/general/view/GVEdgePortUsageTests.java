@@ -139,10 +139,10 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     public void givenSysMLProjectWithPortsWhenFlowUsageEdgeToolCreationIsRequestedThenNewFlowUsageEdgeIsCreated() {
         String creationToolId = this.diagramDescriptionIdProvider
                 .getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()), "New Flow (flow)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                "port1",
-                "port2",
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
                 creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
@@ -175,10 +175,10 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Binding Connector As Usage (bind)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                "port1",
-                "port2",
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
                 creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
@@ -211,10 +211,10 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Interface (connect)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdge(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
-                "port1",
-                "port2",
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
+                GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
                 creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {

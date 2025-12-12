@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
@@ -219,7 +218,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildRequirementsSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -234,7 +233,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildStructureSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -249,7 +248,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildBehaviorSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -264,7 +263,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildAnalysisSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -279,7 +278,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildExtensionSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -294,7 +293,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection}.
+     * @return the {@link NodeToolSection}.
      */
     public NodeToolSection buildViewAsSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -309,7 +308,7 @@ public class ToolDescriptionService {
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection} grouping all editions of elements.
+     * @return the {@link NodeToolSection} grouping all editions of elements.
      */
     public NodeToolSection buildEditSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()

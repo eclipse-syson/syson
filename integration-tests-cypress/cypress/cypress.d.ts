@@ -13,9 +13,8 @@
 
 import { CreateDocumentData } from './support/server/createDocumentCommand.types';
 import { CreateProjectData } from './support/server/createProjectCommand.types';
-import { CreateProjectFromTemplateData } from './support/server/createProjectFromTemplateCommand.types';
 import { DeleteProjectData } from './support/server/deleteProjectCommand.types';
-import { GetCurrentEditingContextIdtData } from './support/server/getCurrentEditingContextId.types';
+import { GetCurrentEditingContextIdData } from './support/server/getCurrentEditingContextId.types';
 import { MutationResponse, QueryResponse } from './support/server/graphql.types';
 
 export {};
@@ -24,13 +23,19 @@ declare global {
   namespace Cypress {
     interface Chainable {
       getByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
+
       findByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
 
       getCurrentEditingContextId: (
         projectId: string
-      ) => Chainable<Response<QueryResponse<GetCurrentEditingContextIdtData>>>;
-      createProject: (name: string) => Chainable<Response<MutationResponse<CreateProjectData>>>;
-      createProjectFromTemplate: (name: string) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
+      ) => Chainable<Response<QueryResponse<GetCurrentEditingContextIdData>>>;
+
+      createProject: (
+        name: string,
+        templateId: string,
+        libraryIds: string[]
+      ) => Chainable<Response<MutationResponse<CreateProjectData>>>;
+
       deleteProject: (projectId: string) => Chainable<Response<MutationResponse<DeleteProjectData>>>;
 
       createDocument: (
@@ -38,6 +43,12 @@ declare global {
         stereotypeId: string,
         name: string
       ) => Chainable<Response<MutationResponse<CreateDocumentData>>>;
+
+      getLibraryId: (
+        namespace: string,
+        name: string,
+        version: string
+      ) => Chainable<Response<QueryResponse<GetLibraryIdData>>>;
     }
   }
 }

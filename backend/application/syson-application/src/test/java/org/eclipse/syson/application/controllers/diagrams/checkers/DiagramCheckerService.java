@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.checkers;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -111,4 +111,13 @@ public class DiagramCheckerService {
         verifier.consumeNextWith(diagramConsumer);
     }
 
+    public Consumer<Object> checkDiagram(IDiagramChecker diagramChecker, AtomicReference<Diagram> previousDiagram) {
+        return object -> Optional.of(object)
+                .filter(DiagramRefreshedEventPayload.class::isInstance)
+                .map(DiagramRefreshedEventPayload.class::cast)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(newDiagram -> {
+                    diagramChecker.check(previousDiagram.get(), newDiagram);
+                }, () -> fail("Missing diagram"));
+    }
 }
