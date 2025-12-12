@@ -37,6 +37,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1653[#1653] [services] Improve service for creating root objects in a document so that it delegates non-SysML scenarios to the default service implementation.
 - https://github.com/eclipse-syson/syson/issues/1735[#1735] [diagrams] Improve the performances of the visibility menu actions
 - https://github.com/eclipse-syson/syson/issues/1702[#1702] [libraries] Provide a SysON version of the impact analysis tree.
+- https://github.com/eclipse-syson/syson/issues/1746[#1746] [diagrams] When attempting to create a redundant feature typing between elements which already have one, an informative message is displayed instead.
 
 === New features
 

@@ -56,6 +56,10 @@ This dialog provides an overview of the impacts the operation will have on the m
 
 image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysis with change tree, width=65%,height=65%]
 
+- In diagrams, when attempting to create a redundant feature typing between `Elements` which already have one, an informative message is displayed instead:
+
+image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing]
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

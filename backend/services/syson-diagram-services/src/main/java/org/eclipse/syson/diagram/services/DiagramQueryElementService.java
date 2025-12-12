@@ -18,10 +18,13 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.sysml.Element;
@@ -44,10 +47,14 @@ public class DiagramQueryElementService {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    public DiagramQueryElementService(IObjectSearchService objectSearchService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public DiagramQueryElementService(IObjectSearchService objectSearchService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider,
+            IFeedbackMessageService feedbackMessageService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     /**
@@ -207,5 +214,19 @@ public class DiagramQueryElementService {
                     .findFirst();
         }
         return Optional.empty();
+    }
+
+    /**
+     * Registers an information-level message to be displayed to the end-user after the tool has executed.
+     *
+     * @param self
+     *            any object, it is not used by the service.
+     * @param message
+     *            the message to display to the end-user.
+     * @return self.
+     */
+    public Object infoMessage(Object self, String message) {
+        this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.INFO));
+        return self;
     }
 }
