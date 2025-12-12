@@ -62,6 +62,8 @@ This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassific
 image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing]
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
+- In diagrams, many new tools now automatically select the `Elements` they create or expose on a diagram.
+This makes it easy to start editing newly created elements to give them proper names by starting to type directly when the new element appears.
 
 == Technical details
 
