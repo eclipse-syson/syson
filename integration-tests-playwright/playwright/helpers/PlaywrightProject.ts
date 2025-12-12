@@ -12,24 +12,21 @@
  *******************************************************************************/
 import { APIRequestContext, expect, type Page } from '@playwright/test';
 
-const createProjectFromTemplateQuery = `
-  mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
-    createProjectFromTemplate(input: $input) {
-      __typename
-      ... on CreateProjectFromTemplateSuccessPayload {
-        project {
-          id
-        }
-        representationToOpen {
-          id
-        }
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
+const createProjectQuery = `
+mutation createProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    __typename    
+    ... on CreateProjectSuccessPayload {
+      project {
+        id        
+      }      
+    }    
+    ... on ErrorPayload {
+      message     
+    }  
   }
-  `;
+}
+`;
 
 const deleteProjectQuery = `
     mutation deleteProject($input: DeleteProjectInput!) {
@@ -46,18 +43,18 @@ export class PlaywrightProject {
     this.request = request;
   }
 
-  async createSysMLV2Project(name: string): Promise<{ projectId: string; representationId: string }> {
+  async createSysMLV2Project(name: string): Promise<{ projectId: string }> {
     const variables = {
       input: {
         id: crypto.randomUUID(),
         name,
         templateId: 'sysmlv2-template',
-        natures: [],
+        libraryIds: [],
       },
     };
     const response = await this.request.post('http://localhost:8080/api/graphql', {
       data: {
-        query: createProjectFromTemplateQuery,
+        query: createProjectQuery,
         variables,
       },
     });
@@ -65,10 +62,9 @@ export class PlaywrightProject {
     expect(response.ok()).toBeTruthy();
     const jsonResponse = await response.json();
 
-    const payload = jsonResponse.data.createProjectFromTemplate;
+    const payload = jsonResponse.data.createProject;
     const projectId = payload.project.id;
-    const representationToOpenId = payload.representationToOpen?.id;
-    return { projectId, representationId: representationToOpenId };
+    return { projectId };
   }
 
   async deleteProject(projectId: string) {

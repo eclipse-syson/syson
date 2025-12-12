@@ -8,6 +8,7 @@
 
 === Breaking changes
 
+- [sirius-web] SysON is based on Sirius Web, so please also read https://github.com/eclipse-sirius/sirius-web/blob/master/CHANGELOG.adoc[the breaking changes of Sirius Web].
 - [services] move the following methods from `DescriptionNameGenerator` to default methods in `IDescriptionNameGenerator`:
 * `String getName(String prefix, String descType, String suffix)`
 * `String getNodeName(String prefix, String suffix)`
@@ -19,6 +20,9 @@
 * `String getEdgeName(String prefix, String suffix)`
 
 === Dependency update
+
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.1]
+- [releng] Update to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
 
 === Bug fixes
 

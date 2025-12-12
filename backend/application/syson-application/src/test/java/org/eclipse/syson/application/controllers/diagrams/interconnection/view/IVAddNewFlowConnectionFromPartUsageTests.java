@@ -13,14 +13,18 @@
 package org.eclipse.syson.application.controllers.diagrams.interconnection.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -32,12 +36,11 @@ import org.eclipse.syson.application.data.InterconnectionViewWithTopNodesTestPro
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,8 +50,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifier.Step;
 
 /**
  * Tests the invocation of the "new Flow Connection" tool from a Part Usage in the Interconnection View diagram.
@@ -65,9 +68,6 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenDiagramReference givenDiagram;
-
-    @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
 
     @Autowired
@@ -77,42 +77,24 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private ToolTester nodeCreationTester;
+    private ToolTester toolTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
 
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private DiagramCheckerService diagramCheckerService;
-
-    private Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
     private final SDVDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
-    @BeforeEach
-    public void setUp() {
-        this.givenInitialServerState.initialize();
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 InterconnectionViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
-        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
+        return flux;
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN New Flow tool of first level element is requested on a PartUsage, THEN a new PartUsage and a Flow edge are created")
@@ -121,12 +103,29 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewFlowConnectionToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
+
+        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
-                "part1",
-                creationToolId));
+
+        var diagram = new AtomicReference<Diagram>();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagram.set(diag);
+            diagramId.set(diag.getId());
+        });
+
+        Runnable newFlowConnectionTool = () -> this.toolTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(),
+                InterconnectionViewWithTopNodesTestProjectData.GraphicalIds.PART_1_ID, creationToolId,
+                List.of());
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -141,7 +140,12 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
                     .check(initialDiagram, newDiagram);
         };
 
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newFlowConnectionTool)
+                .consumeNextWith(diagramCheckerService.checkDiagram(diagramChecker, diagram))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN New Flow tool of nested element is requested on a PartUsage, THEN a new PartUsage and a Flow edge are created")
@@ -150,23 +154,55 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewFlowConnectionToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
-        String creationPartToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
-        assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.then(() -> this.nodeCreationTester.renameNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.diagram, "part1", "firstLevelPart"));
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
+        var diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
 
-        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
+        String newPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
+        assertThat(newPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
 
-        var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
+        String newFlowConnectionId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
+        assertThat(newFlowConnectionId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
 
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow");
-        assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                diagramAfterNestedPartUsageCreation,
-                "part1",
-                creationToolId));
+        var diagram = new AtomicReference<Diagram>();
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagram.set(diag);
+            diagramId.set(diag.getId());
+        });
+
+        Runnable renamedNode = () -> this.toolTester.renameNode(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "part1", "firstLevelPart");
+
+        var diagramAfterRenaming = new AtomicReference<Diagram>();
+
+        Consumer<Object> diagramAfterRenamingConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramAfterRenaming.set(diag);
+        });
+
+        Runnable newPart = () -> this.toolTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterRenaming.get().getId(),
+                InterconnectionViewWithTopNodesTestProjectData.GraphicalIds.PART_1_ID, newPartToolId, List.of());
+
+        var diagramAfterNestedPartUsageCreation = new AtomicReference<Diagram>();
+
+        var nestedPartNodeId = new AtomicReference<String>();
+
+        Consumer<Object> diagramAfterNestedPartUsageCreationConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramAfterNestedPartUsageCreation.set(diag);
+            var nestedPartNode = new DiagramNavigator(diag).nodeWithId(InterconnectionViewWithTopNodesTestProjectData.GraphicalIds.PART_1_ID)
+                    .childNodeWithLabel("interconnection")
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1")
+                    .getNode();
+            assertThat(nestedPartNode).isNotNull();
+            nestedPartNodeId.set(nestedPartNode.getId());
+        });
+
+        Runnable newFlowConnection = () -> this.toolTester.invokeTool(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramAfterNestedPartUsageCreation.get().getId(),
+                nestedPartNodeId.get(), newFlowConnectionId, List.of());
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -181,6 +217,15 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
                     .check(initialDiagram, newDiagram);
         };
 
-        this.diagramCheckerService.checkDiagram(diagramChecker, diagramAfterNestedPartUsageCreation, this.verifier);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(renamedNode)
+                .consumeNextWith(diagramAfterRenamingConsumer)
+                .then(newPart)
+                .consumeNextWith(diagramAfterNestedPartUsageCreationConsumer)
+                .then(newFlowConnection)
+                .consumeNextWith(diagramCheckerService.checkDiagram(diagramChecker, diagramAfterNestedPartUsageCreation))
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }

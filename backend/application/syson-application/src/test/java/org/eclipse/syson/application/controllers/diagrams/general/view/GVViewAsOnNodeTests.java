@@ -178,12 +178,12 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         // the explorer view has a new ViewUsage with a diagram
         var sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
-        var defaultFilters = this.sysonTreeFilterProvider.get(null, null, null).stream()
+        var defaultFilters = this.sysonTreeFilterProvider.get(null, null).stream()
                 .filter(TreeFilter::defaultState)
                 .map(TreeFilter::id)
                 .toList();
 
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(sysONExplorerTreeDescriptionId, expandedIds, defaultFilters);
+        String explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(sysONExplorerTreeDescriptionId, expandedIds, defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var explorerFlux = this.explorerEventSubscriptionRunner.run(input);
         this.givenCommittedTransaction.commit();

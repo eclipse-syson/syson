@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -80,7 +81,7 @@ public class ToolTester {
                 UUID.randomUUID(),
                 editingContextId,
                 diagramId,
-                diagramElementId,
+                List.of(diagramElementId),
                 toolId,
                 0,
                 0,
@@ -104,7 +105,7 @@ public class ToolTester {
                 UUID.randomUUID(),
                 editingContextId,
                 diagram.get().getId(),
-                diagramElementId,
+                List.of(diagramElementId),
                 toolId,
                 0,
                 0,
@@ -137,7 +138,7 @@ public class ToolTester {
                 nodes.addAll(subNode.getChildNodes());
             }
         }
-        Optional<Node> optionalNode = nodes.stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
+        Optional<Node> optionalNode = nodes.stream().filter(n -> n.getTargetObjectLabel().equals(nodeName) && n.getState().equals(ViewModifier.Normal)).findFirst();
 
         assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
 

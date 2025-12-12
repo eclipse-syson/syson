@@ -25,11 +25,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
-import org.eclipse.sirius.web.tests.graphql.CreateProjectFromTemplateMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
@@ -61,7 +61,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private CreateProjectFromTemplateMutationRunner createProjectFromTemplateMutationRunner;
+    private CreateProjectMutationRunner createProjectMutationRunner;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -83,13 +83,13 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID, List.of());
-        var result = this.createProjectFromTemplateMutationRunner.run(input);
+        var input = new CreateProjectInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID, List.of());
+        var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
-        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
@@ -118,13 +118,13 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID, List.of());
-        var result = this.createProjectFromTemplateMutationRunner.run(input);
+        var input = new CreateProjectInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID, List.of());
+        var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
-        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
@@ -153,14 +153,14 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID, SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID,
+        var input = new CreateProjectInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID, SysMLv2ProjectTemplatesProvider.SYSMLV2_LIBRARY_TEMPLATE_ID,
                 List.of());
-        var result = this.createProjectFromTemplateMutationRunner.run(input);
+        var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
-        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

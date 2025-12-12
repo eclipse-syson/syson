@@ -42,7 +42,7 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
     public static final String HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID = UUID.nameUUIDFromBytes("SysONTreeExposeElementsFilter".getBytes()).toString();
 
     @Override
-    public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription, String representationId) {
+    public List<TreeFilter> get(String editingContextId, TreeDescription treeDescription) {
         List<TreeFilter> filters = new ArrayList<>();
         filters.add(new TreeFilter(HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, "Hide Memberships", true));
         filters.add(new TreeFilter(HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID, "Hide KerML Standard Libraries", false));

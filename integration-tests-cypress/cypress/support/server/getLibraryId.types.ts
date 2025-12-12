@@ -10,18 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface GetCurrentEditingContextIdVariables {
-  projectId: string;
+export interface GetLibraryIdVariables {
+  namespace: string;
+  name: string;
+  version: string;
 }
-export interface GetCurrentEditingContextIdData {
+
+export interface GetLibraryIdData {
   viewer: Viewer;
 }
+
 export interface Viewer {
-  project: Project;
+  library: Library;
 }
-export interface Project {
-  currentEditingContext: EditingContext;
-}
-export interface EditingContext {
+
+export interface Library {
   id: string;
 }

@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
 import { CreatedProjectData } from './Batmobile.types';
 
 export class Batmobile {
   public createBatmobileProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProjectFromTemplate('Batmobile', 'batmobile-template', []).then((res) => {
-      const payload = res.body.data.createProjectFromTemplate;
-      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+    return cy.createProject('Batmobile', 'batmobile-template').then((res) => {
+      const payload = res.body.data.createProject;
+      if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
         const data: CreatedProjectData = { projectId };
         return cy.wrap(data);
