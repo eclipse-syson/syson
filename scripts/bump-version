@@ -1,6 +1,13 @@
 #!/bin/sh
 
 VERSION="$1"
-mvn versions:set -DnewVersion="$VERSION" -DprocessAllModules
-npm --no-git-tag-version version "$VERSION" --workspaces --include-workspace-root
-cd integration-tests && npm version "$VERSION" && cd ..
+mvn versions:set -DgroupId=org.eclipse.syson -DartifactId="*" -DoldVersion="*" -DnewVersion="$VERSION"
+
+npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=true --include-workspace-root=true --workspaces-update=false
+npm i
+
+for app in integration-tests-cypress integration-tests-playwright; do
+  ( cd $app && \
+    npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=false --include-workspace-root=false --workspaces-update=false && \
+    npm install )
+done

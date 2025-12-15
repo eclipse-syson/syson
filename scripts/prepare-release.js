@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ const bumpVersionCommand = `sh ${scriptPath} ${version}`;
 console.log(bumpVersionCommand);
 childProcess.execSync(bumpVersionCommand, { stdio: "inherit" });
 
-const gitAddCommand = `git add backend frontend integration-tests doc package.json package-lock.json pom.xml`;
+const gitAddCommand = `git add backend frontend integration-tests-cypress integration-tests-playwright doc package.json package-lock.json pom.xml`;
 console.log(gitAddCommand);
 childProcess.execSync(gitAddCommand, { stdio: "inherit" });
 
