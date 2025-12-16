@@ -159,9 +159,28 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
         boolean isDirectNestedNode = false;
         if (this.parentElement instanceof Namespace elt && elt.getOwnedMember().contains(object)) {
             isDirectNestedNode = true;
-        } else if (this.parentElement instanceof Package) {
+        } else if (this.parentElement instanceof Package pkg && !this.subPackageContainsElement(pkg, object)) {
             isDirectNestedNode = true;
         }
         return isDirectNestedNode;
+    }
+
+    /**
+     * Check if a sub Package of the given Package contains the given object.
+     *
+     * @param pkg
+     *            the given Package
+     * @param object
+     *            the given object.
+     * @return <code>true</code> if a sub Package of the given Package contains the given object, <code>false</code>
+     *         otherwise.
+     */
+    private boolean subPackageContainsElement(Package pkg, EObject object) {
+        return pkg.getOwnedElement().stream()
+                .filter(Package.class::isInstance)
+                .map(Package.class::cast)
+                .anyMatch(subPkg -> {
+                    return EMFUtils.allContainedObjectOfType(subPkg, object.getClass()).count() > 0;
+                });
     }
 }

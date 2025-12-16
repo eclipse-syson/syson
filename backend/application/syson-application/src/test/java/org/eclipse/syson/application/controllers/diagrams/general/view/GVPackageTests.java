@@ -212,6 +212,79 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a diagram with a Package node, WHEN a sub-Package node and a sub-element in the sub-Package are created, THEN the sub-Package node is only visible inside the Package and the sub-Element node is only visible inside the sub-Package")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testCreateElementInPackageInPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newPackageToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Package");
+        assertThat(newPackageToolId).as("The tool 'New Package' should exist on the Package").isNotNull();
+
+        var newPartDefToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part Definition");
+        assertThat(newPackageToolId).as("The tool 'New Part Definition' should exist on the Package").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+        var subPackageNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            packageNodeId.set(packageNode.getId());
+
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newPackageTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newPackageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPkg = assertRefreshedDiagramThat(diag -> {
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+
+            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1").getNode();
+            assertThat(subPackageNode).isNotNull();
+            assertThat(packageNode.getChildNodes()).hasSize(1);
+            assertThat(packageNode.getChildNodes().get(0)).isEqualTo(subPackageNode);
+
+            subPackageNodeId.set(subPackageNode.getId());
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newPartDefTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), subPackageNodeId.get(), newPartDefToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPartDef = assertRefreshedDiagramThat(diag -> {
+            var subPackageNodeNavigator = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1");
+            var subPackageNode = subPackageNodeNavigator.getNode();
+            var partDefNode = subPackageNodeNavigator.childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "PartDefinition1").getNode();
+            assertThat(partDefNode).isNotNull();
+
+            assertThat(subPackageNode.getChildNodes()).hasSize(1);
+            assertThat(subPackageNode.getChildNodes().get(0)).isEqualTo(partDefNode);
+
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newPackageTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPkg)
+                .then(newPartDefTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPartDef)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a diagram with a Package node, WHEN a Documentation node is created, THEN the Documentation node is only visible beside the Package")
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
