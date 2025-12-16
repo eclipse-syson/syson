@@ -56,7 +56,8 @@ This dialog provides an overview of the impacts the operation will have on the m
 
 image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysis with change tree, width=65%,height=65%]
 
-- In diagrams, when attempting to create a redundant `FeatureTyping` between `Elements` which already have one, an informative message is displayed instead:
+- In diagrams, when attempting to create some graphical edges between `Elements` which already have one of the same type, an informative message is displayed instead.
+This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassification`.
 
 image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing]
 
