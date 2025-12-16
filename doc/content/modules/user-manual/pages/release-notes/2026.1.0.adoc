@@ -22,6 +22,7 @@ image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
 These models are now correctly displayed under the _User libraries_ directory.
+- Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
 
 == Improvements
 
