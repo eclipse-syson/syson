@@ -84,7 +84,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
 
         var setClient = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -130,7 +130,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
 
         var setSubclassifier = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
@@ -158,9 +158,28 @@ public class ViewEdgeToolService {
                 .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
+        String hasExistingSubclassification = "hasExistingSubclassification";
+
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A subclassification already exists between these elements.")))
+                .build();
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingSubclassification)
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + hasExistingSubclassification)
+                .children(feedback);
+
+        var letExistingSubsetting = this.viewBuilderHelper.newLet()
+                .variableName(hasExistingSubclassification)
+                .valueExpression(AQLConstants.AQL_SELF + ".eContents(sysml::Subclassification).superclassifier->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
+                .children(createIfPossible.build(), informOtherwise.build());
+
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
-                .children(createInstance.build());
+                .children(letExistingSubsetting.build());
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubclassification()))
@@ -174,7 +193,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
 
         var setRedefiningFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
@@ -212,9 +231,28 @@ public class ViewEdgeToolService {
                 .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
+        String hasExistingRedefinition = "hasExistingRedefinition";
+
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A redefinition already exists between these elements.")))
+                .build();
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingRedefinition)
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + hasExistingRedefinition)
+                .children(feedback);
+
+        var letExistingSubsetting = this.viewBuilderHelper.newLet()
+                .variableName(hasExistingRedefinition)
+                .valueExpression(AQLConstants.AQL_SELF + ".eContents(sysml::Redefinition).redefinedFeature->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
+                .children(createIfPossible.build(), informOtherwise.build());
+
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
-                .children(createInstance.build());
+                .children(letExistingSubsetting.build());
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getRedefinition()))
@@ -228,7 +266,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
 
         var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
@@ -257,9 +295,28 @@ public class ViewEdgeToolService {
                 .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
+        String hasExistingSubsetting = "hasExistingSubsetting";
+
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A subsetting already exists between these elements.")))
+                .build();
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingSubsetting)
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + hasExistingSubsetting)
+                .children(feedback);
+
+        var letExistingSubsetting = this.viewBuilderHelper.newLet()
+                .variableName(hasExistingSubsetting)
+                .valueExpression(AQLConstants.AQL_SELF + ".eContents(sysml::Subsetting).subsettedFeature->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
+                .children(createIfPossible.build(), informOtherwise.build());
+
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
-                .children(createInstance.build());
+                .children(letExistingSubsetting.build());
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubsetting()))
@@ -273,7 +330,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".elementInitializer()");
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
 
         var setTypedFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
@@ -302,7 +359,7 @@ public class ViewEdgeToolService {
                 .children(changeContextNewInstance.build());
 
         var feedback = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf("'A feature typing already exists between these elements.'"))
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A feature typing already exists between these elements.")))
                 .build();
 
         String hasExistingFeatureTyping = "hasExistingFeatureTyping";
@@ -336,7 +393,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET + ".becomeNestedUsage(" + EdgeDescription.SEMANTIC_EDGE_SOURCE + ")");
+                .expression(ServiceMethod.of1(ViewToolService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.SEMANTIC_EDGE_SOURCE));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Add as nested ", SysMLMetamodelHelper.toEClass(targetElementDescription.getDomainType())))
@@ -350,7 +407,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeNestedUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(ServiceMethod.of1(ViewToolService::becomeNestedUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Become nested ", eClass))
@@ -364,7 +421,7 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeObjectiveRequirement(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(ServiceMethod.of1(ViewToolService::becomeObjectiveRequirement).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName("Become objective", SysmlPackage.eINSTANCE.getRequirementUsage()))
@@ -378,8 +435,8 @@ public class ViewEdgeToolService {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createTransitionUsage", List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
-                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, IEditingContext.EDITING_CONTEXT)));
+                .expression(ServiceMethod.of5(ViewCreateService::createTransitionUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                        EdgeDescription.EDGE_TARGET, IDiagramService.DIAGRAM_SERVICES, IEditingContext.EDITING_CONTEXT));
 
         return builder
                 .name(this.nameGenerator.getCreationToolName(eClass))
@@ -395,9 +452,8 @@ public class ViewEdgeToolService {
                 .filter(nd -> useCaseUsageNodeName.equals(nd.getName()))
                 .findFirst().get();
 
-        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createIncludeUseCaseUsage", params));
+                .expression(ServiceMethod.of1(ViewCreateService::createIncludeUseCaseUsage).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getIncludeUseCaseUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getIncludeUseCaseUsage().getName() + SVG)
@@ -412,9 +468,9 @@ public class ViewEdgeToolService {
                 .filter(nd -> nd.getName().endsWith("Usage"))
                 .toArray(NodeDescription[]::new);
 
-        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createAllocateEdge", params));
+                .expression(ServiceMethod.of4(ViewCreateService::createAllocateEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                        IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAllocationUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
@@ -425,9 +481,9 @@ public class ViewEdgeToolService {
 
     public EdgeTool createSuccessionEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
-        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
+                .expression(ServiceMethod.of5(ViewCreateService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                        EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSuccession().getName() + SVG)
