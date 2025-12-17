@@ -16,7 +16,6 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -33,10 +32,8 @@ public class PerformActionsCompartmentItemNodeDescriptionProvider extends Compar
     }
 
     @Override
-    public NodeDescription create() {
-        var nodeDescription = super.create();
-        nodeDescription.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME);
-        return nodeDescription;
+    protected String getName() {
+        return super.getName() + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME;
     }
 
     @Override

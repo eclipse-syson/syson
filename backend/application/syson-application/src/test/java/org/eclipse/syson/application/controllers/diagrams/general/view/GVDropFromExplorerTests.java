@@ -168,14 +168,14 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     new CheckDiagramElementCount(this.diagramComparator)
                             .hasNewEdgeCount(0)
-                            // 1 node for the PartUsage, 10 for its compartments, 1 for the list-item for part2 in its
+                            // 1 node for the PartUsage, 11 for its compartments, 1 for the list-item for part2 in its
                             // "parts" compartment
-                            .hasNewNodeCount(12)
+                            .hasNewNodeCount(13)
                             .check(this.diagram.get(), newDiagram);
                     new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
                             .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                             .hasTargetObjectLabel("part1")
-                            .hasCompartmentCount(10)
+                            .hasCompartmentCount(11)
                             .check(this.diagram.get(), newDiagram);
                 }, () -> fail("Missing diagram"));
 
@@ -273,14 +273,14 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .ifPresentOrElse(newDiagram -> {
                     new CheckDiagramElementCount(this.diagramComparator)
                             .hasNewEdgeCount(0)
-                            // 1 node for the PartUsage, 10 for its compartments, 1 for the list-item for part2 in its
+                            // 1 node for the PartUsage, 11 for its compartments, 1 for the list-item for part2 in its
                             // "parts" compartment
-                            .hasNewNodeCount(12)
+                            .hasNewNodeCount(13)
                             .check(this.diagram.get(), newDiagram);
                     new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
                             .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                             .hasTargetObjectLabel("part1")
-                            .hasCompartmentCount(10)
+                            .hasCompartmentCount(11)
                             .check(this.diagram.get(), newDiagram);
                 }, () -> fail("Missing diagram"));
 

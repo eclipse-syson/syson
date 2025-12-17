@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
@@ -167,17 +168,17 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()) + PerformActionsCompartmentNodeDescriptionProvider.PERFORM_ACTIONS_COMPARTMENT_NAME)
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getFreeFormCompartmentName(InterconnectionCompartmentNodeDescriptionProvider.COMPARTMENT_NAME)).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())
+                + SatisfyRequirementCompartmentNodeDescription.COMPARTMENT_NAME)
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement())
+                + SatisfyRequirementCompartmentNodeDescription.COMPARTMENT_NAME)
+                .ifPresent(childrenNodes::add);
     }
 
     private void addReusableBorderedNode(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {

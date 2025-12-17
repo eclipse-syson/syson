@@ -40,7 +40,8 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1746[#1746] [diagrams] When attempting to create a redundant `FeatureTyping` between elements which already have one, an informative message is displayed instead.
 - https://github.com/eclipse-syson/syson/issues/1766[#1766] [diagrams] Also prevent the creation of redundant `Subsetting`, `Redefinition` and `Subclassifications`
 - https://github.com/eclipse-syson/syson/issues/1765[#1765] [diagrams] Allow to create a `SatisfyRequirement` on `PartDefinition` or `PartUsage`.
-- https://github.com/eclipse-syson/syson/issues/1762[#1762] [diagrams] Adjust the default size of nodes.
+A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
+- https://github.com/eclipse-syson/syson/issues/1762[#1762] [diagrams] Increase the default size of nodes.
 
 === New features
 

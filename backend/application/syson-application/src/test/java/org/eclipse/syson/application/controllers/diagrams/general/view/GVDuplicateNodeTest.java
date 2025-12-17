@@ -163,7 +163,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                     .matches(nodes -> nodes.stream().anyMatch(n -> "x3".equals(n.getTargetObjectLabel())));
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 2 more nodes the port container and the port border node
-                    .hasNewNodeCount(15) // 1 main node // 11 compartments // 3 attribute // 1 part p1_1
+                    .hasNewNodeCount(16) // 1 main node // 12 compartments // 3 attribute // 1 part p1_1
                     .hasNewBorderNodeCount(0)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);

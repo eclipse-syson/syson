@@ -62,15 +62,23 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodeDescription()
                 .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(this.getEReference().getEType()))
+                .domainType(this.getDomainType())
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()))
+                .name(this.getName())
                 .semanticCandidatesExpression(this.getSemanticCandidateExpression())
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
                 .palette(this.createCompartmentItemNodePalette())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
+    }
+
+    protected String getDomainType() {
+        return SysMLMetamodelHelper.buildQualifiedName(this.getEReference().getEType());
+    }
+
+    protected String getName() {
+        return this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference());
     }
 
     protected String getSemanticCandidateExpression() {

@@ -22,7 +22,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Used to create an Action item node description for a part.
+ * Used to create an Action compartment item node description for a part.
  * <p>
  * Action items in part have a particular semantic candidate expression to ensure their content is not duplicated from
  * other compartments (like the "states" one).

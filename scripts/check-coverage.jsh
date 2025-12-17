@@ -29,12 +29,12 @@ double checkCoverage(String module) {
 }
 
 record ModuleCoverage(String moduleName, double expectedCoverage) {}
-double expectedGlobalCoverage = 67.0;
+double expectedGlobalCoverage = 68.0;
 var moduleCoverageData = List.of(
   new ModuleCoverage("syson-application", 37.0),
-  new ModuleCoverage("syson-application-configuration", 71.0),
+  new ModuleCoverage("syson-application-configuration", 72.0),
   new ModuleCoverage("syson-common-view", 100.0),
-  new ModuleCoverage("syson-diagram-common-view", 88.0),
+  new ModuleCoverage("syson-diagram-common-view", 89.0),
   new ModuleCoverage("syson-diagram-services", 80.0),
   new ModuleCoverage("syson-direct-edit-grammar", 67.0),
   new ModuleCoverage("syson-form-services", 100.0),
