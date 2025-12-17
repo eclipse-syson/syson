@@ -347,10 +347,21 @@ public class DiagramMutationExposeService {
 
     private void hideNodeIfVisibleCompartmentCouldHostTheFutureNode(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        // If the creation tool was executed from a compartment, we're looking for sibling from the parent node of the compartment
+        // We're comparing the targetObjectId of the selected node and its parent in order to know if we're on the same semantic element
+        var referenceParent = selectedNode;
+        var selectedNodeTargetObjectId = selectedNode.getTargetObjectId();
+        var nullableParentNode = new NodeFinder(diagramContext.diagram()).getParent(selectedNode);
+        if (nullableParentNode instanceof Node parentNode) {
+            var parentTargetObjectId = parentNode.getTargetObjectId();
+            if (parentTargetObjectId.equals(selectedNodeTargetObjectId)) {
+                referenceParent = parentNode;
+            }
+        }
         // 1- get visible compartments of selected node
         // 2- get visible compartments that could host the future node
         // 3- if a visible compartment could host the future node, then hide the tree node
-        List<Node> visibleCompartments = selectedNode.getChildNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList();
+        List<Node> visibleCompartments = referenceParent.getChildNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList();
         boolean visibleCompartmentsThatCouldHostTheFutureNode = false;
         for (Node visibleCompartment : visibleCompartments) {
             Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, visibleCompartment,
@@ -361,7 +372,7 @@ public class DiagramMutationExposeService {
             }
         }
         if (visibleCompartmentsThatCouldHostTheFutureNode) {
-            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+            var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, referenceParent);
             var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
             if (parentId != null && descriptionId.isPresent()) {
                 var nodeId = new NodeIdProvider().getNodeId(parentId,
