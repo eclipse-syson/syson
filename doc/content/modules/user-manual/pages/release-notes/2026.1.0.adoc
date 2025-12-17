@@ -63,6 +63,8 @@ image::release-notes-redundant-feature-typing-message.png[Message displayed when
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
 
+- In standard view diagrams, when creating an item node inside a compartment, the associated node connected with a composition will be hidden by default.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

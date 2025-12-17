@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public record SiriusWebCoreServices(IObjectSearchService objectSearchService, IIdentityService identityService, IFeedbackMessageService feedbackMessageService,
-        IEditingContextSearchService editingContextSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+                                    IEditingContextSearchService editingContextSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IURLParser urlParser) {
 
     public SiriusWebCoreServices {
         Objects.requireNonNull(objectSearchService);
@@ -36,5 +37,6 @@ public record SiriusWebCoreServices(IObjectSearchService objectSearchService, II
         Objects.requireNonNull(feedbackMessageService);
         Objects.requireNonNull(editingContextSearchService);
         Objects.requireNonNull(representationDescriptionSearchService);
+        Objects.requireNonNull(urlParser);
     }
 }
