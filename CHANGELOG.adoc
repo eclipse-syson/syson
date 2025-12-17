@@ -43,6 +43,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1765[#1765] [diagrams] Allow to create a `SatisfyRequirement` on `PartDefinition` or `PartUsage`.
 A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
 - https://github.com/eclipse-syson/syson/issues/1762[#1762] [diagrams] Increase the default size of nodes.
+- https://github.com/eclipse-syson/syson/issues/1752[#1752] [diagrams] In diagrams, hide the node displayed on the top of the diagram if the candidate compartment is not hidden.
 
 === New features
 
