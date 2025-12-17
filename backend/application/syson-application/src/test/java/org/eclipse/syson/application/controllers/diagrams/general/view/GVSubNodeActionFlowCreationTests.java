@@ -152,7 +152,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 10))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11))
                 .map(TestNameGenerator::namedArguments);
     }
 

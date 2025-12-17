@@ -62,7 +62,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegrationTests {
 
-    private static final int PART_USAGE_COMPARTMENT_COUNT = 13;
+    private static final int PART_USAGE_COMPARTMENT_COUNT = 14;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;

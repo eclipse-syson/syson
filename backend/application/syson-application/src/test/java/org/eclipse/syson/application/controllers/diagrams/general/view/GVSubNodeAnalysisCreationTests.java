@@ -134,7 +134,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> caseUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 10))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -160,7 +160,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> useCaseUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 10))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -310,7 +310,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("useCaseUsageChildNodeParameters")
-    public void us(EClass childEClass, String compartmentName, EReference containmentReference) {
+    public void createUseCaseUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
         String parentLabel = "useCase";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);

@@ -52,6 +52,8 @@ import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeD
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
@@ -342,6 +344,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         this.linkPartPerformActionsCompartment(cache);
         this.linkActionPerformActionsCompartment(cache);
         this.linkInterconnectionCompartment(cache);
+        this.linkSatisfyRequirementsCompartment(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -433,6 +436,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         // Compartment "interconnection" (many usages and defintions) is defined for:
         // PartUsage, PartDefinition
         compartmentNodeDescriptionProviders.addAll(this.createInterconnectionCompartment(colorProvider));
+
+        // Compartment "satisfy requirements" (many usages and defintions) is defined for:
+        // PartUsage, PartDefinition
+        compartmentNodeDescriptionProviders.addAll(this.createSatisfyRequirementsCompartments(colorProvider));
 
         // Compartment "state transition" (OwnedState) is defined for:
         // PartDefinition
@@ -561,6 +568,20 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders
                 .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), colorProvider,
                         this.getDescriptionNameGenerator()));
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createSatisfyRequirementsCompartments(IColorProvider colorProvider) {
+        final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentNodeDescription(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders
+                .add(new SatisfyRequirementCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
+                colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
@@ -1114,6 +1135,22 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                             if (nd.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription listLayout) {
                                 listLayout.getGrowableNodes().add(compartmentNodeDescription);
                             }
+                        }));
+    }
+
+    private void linkSatisfyRequirementsCompartment(IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
+                .ifPresent(nd -> cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement())
+                        + SatisfyRequirementCompartmentNodeDescription.COMPARTMENT_NAME)
+                        .ifPresent(compartmentNodeDescription -> {
+                            nd.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
+                        }));
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()))
+                .ifPresent(nd -> cache
+                        .getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())
+                                + SatisfyRequirementCompartmentNodeDescription.COMPARTMENT_NAME)
+                        .ifPresent(compartmentNodeDescription -> {
+                            nd.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
                         }));
     }
 

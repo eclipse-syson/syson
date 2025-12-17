@@ -39,6 +39,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -158,7 +159,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> itemUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 10),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getElement_OwnedElement(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -202,8 +203,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 10),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 10),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 8),
@@ -226,9 +227,15 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 10),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), 8))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem()),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> partDefinitionSiblingAndChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), "satisfy requirements", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), 10, 1,
+                        SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -241,14 +248,15 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 8))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> partUsageSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "parts", SysmlPackage.eINSTANCE.getUsage_NestedPart(), 12, 1))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "parts", SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13, 1, ""),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), "satisfy requirements", SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 10, 1,
+                        SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -537,12 +545,46 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partDefinitionSiblingNodeParameters")
-    public void createPartDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+    public void createPartDefinitionSiblingNodes(EClass childEClass, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount),
-                this.diagram, this.verifier);
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("partDefinitionSiblingAndChildNodeParameters")
+    public void createPartDefinitionSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int expectedNumberOfNewNodes,
+            int expectedNumberOfNewEdges, String compartmentNodeDecriptionNameSuffix) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
+        String parentLabel = "PartDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(expectedNumberOfNewNodes)
+                    .hasNewEdgeCount(expectedNumberOfNewEdges)
+                    .check(initialDiagram, newDiagram);
+            String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDecriptionNameSuffix;
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(compartmentItemNodeDescriptionName)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
@@ -593,7 +635,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @ParameterizedTest
     @MethodSource("partUsageSiblingAndChildNodeParameters")
     public void createPartUsageSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int expectedNumberOfNewNodes,
-            int expectedNumberOfNewEdges) {
+            int expectedNumberOfNewEdges, String compartmentNodeDecriptionNameSuffix) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String parentLabel = "part";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
@@ -602,11 +644,11 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                     .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
                     .check(initialDiagram, newDiagram);
-            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDecriptionNameSuffix;
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasNodeDescriptionName(compartmentItemNodeDescriptionName)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         };

@@ -81,7 +81,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
-                .name(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference))
+                .name(this.getCompartmentName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
@@ -91,7 +91,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.getCompartmentName()).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
             cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference))
@@ -109,6 +109,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
      */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
+
+    protected String getCompartmentName() {
+        return this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference);
+    }
 
     /**
      * Returns the Compartment Node tool providers used to create a new item inside this compartment. In most cases,

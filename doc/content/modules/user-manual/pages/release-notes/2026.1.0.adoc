@@ -62,6 +62,7 @@ This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassific
 image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing]
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
+A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
 
 - In diagrams, the default graphical node size has been adjusted to avoid word breaks in label names.
 +
