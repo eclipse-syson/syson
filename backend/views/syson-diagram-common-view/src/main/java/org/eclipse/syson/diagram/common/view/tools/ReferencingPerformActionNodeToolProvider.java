@@ -112,14 +112,14 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Action to perform:");
 
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+        var createMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of0(ModelMutationAQLService::createMembership).aqlSelf())
                 .children(createEClassInstance.build());
 
         return builder
                 .name(this.getLabel())
                 .iconURLsExpression(this.getIconPath())
-                .body(changeContexMembership.build())
+                .body(createMembership.build())
                 .dialogDescription(selectExistingStateUsage.build())
                 .preconditionExpression(this.getPreconditionServiceCallExpression())
                 .build();
