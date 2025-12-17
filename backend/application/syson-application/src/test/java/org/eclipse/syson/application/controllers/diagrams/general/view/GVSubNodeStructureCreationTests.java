@@ -227,7 +227,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> partDefinitionSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 10))
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 10),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), 8))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -240,7 +241,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> partUsageSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 8))
                 .map(TestNameGenerator::namedArguments);
     }
 

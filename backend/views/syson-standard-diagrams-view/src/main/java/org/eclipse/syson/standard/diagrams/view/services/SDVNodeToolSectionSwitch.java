@@ -47,6 +47,7 @@ import org.eclipse.syson.diagram.common.view.tools.PartUsageInterfaceNodeToolPro
 import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SatisfyRequirementNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
@@ -517,7 +518,9 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getPartDefinition(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+
         this.createToolsForCompartmentItems(object, sections, this.cache);
+
         this.toolDescriptionService.getNodeToolSection(sections, ToolConstants.BEHAVIOR).ifPresent(nts -> {
             // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
             nts.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));
@@ -531,6 +534,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, new SatisfyRequirementNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
@@ -605,6 +609,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, bindingConnectorAsUsageTool);
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, flowConnectionTool);
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, interfaceTool);
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, new SatisfyRequirementNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));

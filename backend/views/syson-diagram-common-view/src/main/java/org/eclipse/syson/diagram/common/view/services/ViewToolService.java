@@ -38,7 +38,6 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
@@ -82,15 +81,12 @@ public class ViewToolService extends ToolService {
 
     protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    protected final ElementInitializerSwitch elementInitializerSwitch;
-
     protected final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
 
     public ViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
             IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
         super(identityService, objectSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
-        this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
     /**
