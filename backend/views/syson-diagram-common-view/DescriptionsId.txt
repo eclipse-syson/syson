@@ -409,7 +409,7 @@ GV BorderNode PortUsage nestedPort => siriusComponents://nodeDescription?sourceK
 GV BorderNode PortUsage ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=c86ab75a-b52a-3e59-ae85-1327f3ed8d7a
 GV InheritedBorderNode PortUsage nestedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=3d72b0da-22b5-352e-9699-a2da5588d4ca
 GV InheritedBorderNode PortUsage ownedPort => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=25c4e278-af76-3ab0-afcf-4d58466f6dde
-GV BorderNode ItemUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=af106b58-1a88-3b79-8aa0-18d14ef52a64
+GV BorderNode ItemUsage parameter => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dabea151-493e-3bf8-a83b-fd934b2d976c
 GV BorderNode ReferenceUsage => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=46dd0ebb-0a2c-3163-8b61-66c49510227a
 GV Node EmptyDiagram => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=024ab54f-ab81-3d02-8abd-f65af641e6c6
 GV Node Actor => siriusComponents://nodeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=dd6423cb-73ab-3dfa-89bb-75b7be57c1b6

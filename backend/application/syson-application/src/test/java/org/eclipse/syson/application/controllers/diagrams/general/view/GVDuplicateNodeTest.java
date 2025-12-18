@@ -185,7 +185,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void checkBorderedNodeUsageNodeDuplication() {
-        var duplicateToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()), "Duplicate Element");
+        var duplicateToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()), "Duplicate Element");
         this.verifier.then(() -> this.toolTester.invokeTool(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 this.diagram.get().getId(),
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_3_BORDERED_NODE_ID,
@@ -236,7 +236,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void checkCompartmentItemUsageNodeDuplication() {
-        var duplicateToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()), "Duplicate Element");
+        var duplicateToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()), "Duplicate Element");
         this.verifier.then(() -> this.toolTester.invokeTool(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 this.diagram.get().getId(),
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_1_BORDERED_NODE_ID,

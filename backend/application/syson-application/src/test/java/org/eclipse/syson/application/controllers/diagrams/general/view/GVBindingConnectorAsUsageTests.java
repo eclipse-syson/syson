@@ -291,7 +291,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
 
     private AtomicReference<String> createEdge(String sourceNodeId, String targetNodeId, String expectedSourceGraphicalId, String expectedTargetGraphicalId) {
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
-                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
                 "New Binding Connector As Usage (bind)");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewBindingConnectorProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

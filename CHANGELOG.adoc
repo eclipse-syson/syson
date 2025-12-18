@@ -47,7 +47,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1565[#1565] Provide a way to duplicate semantic element in the _Explorer_ view.
 - https://github.com/eclipse-syson/syson/issues/1737[#1737] [diagrams] Add creation tools to InterconnectionCompartmentNode
 - https://github.com/eclipse-syson/syson/issues/1395[#1395] Provide a way to duplicate a semantic element ans its representation node in the _General View_ diagram.
-- https://github.com/eclipse-syson/syson/issues/1740[#1740] [diagrams] Add __items__ compartment and graphical border node on `PortDefinition` graphical nodes in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1740[#1740] [diagrams] Add _items_ compartment and graphical border node on `PortDefinition` graphical nodes in the _General View_ diagram.
 
 == v2025.12.0
 

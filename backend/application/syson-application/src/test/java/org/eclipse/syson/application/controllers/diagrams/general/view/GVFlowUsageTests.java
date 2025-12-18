@@ -155,7 +155,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
     public void checkFlowConnectionCreation() {
         this.givenCommittedTransaction.commit();
 
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()),
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
                 "New Flow (flow)");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -195,7 +195,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
     public void checkItemUsageBindingConnectorAsUsage() {
         this.givenCommittedTransaction.commit();
 
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()),
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
                 "New Binding Connector As Usage (bind)");
         this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

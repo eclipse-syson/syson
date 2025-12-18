@@ -35,7 +35,7 @@ public class PortDefinitionOwnedItemBorderNodeDescriptionProvider extends Abstra
 
     @Override
     protected String getName() {
-        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), this.eReference);
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem());
     }
 
     // We filter so elements that extends Item like Parts are not returned
@@ -48,7 +48,7 @@ public class PortDefinitionOwnedItemBorderNodeDescriptionProvider extends Abstra
     protected List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache) {
         var nodeDescriptions = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.getName()).ifPresent(nodeDescriptions::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodeDescriptions::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodeDescriptions::add);
         return nodeDescriptions;
     }
 
@@ -58,7 +58,7 @@ public class PortDefinitionOwnedItemBorderNodeDescriptionProvider extends Abstra
         cache.getNodeDescription(this.getName()).ifPresent(nodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).ifPresent(nodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodes::add);
         return nodes;
     }
 

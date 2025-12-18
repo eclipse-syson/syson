@@ -18,9 +18,6 @@ image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,h
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
 
-- An __items__ compartment was added on `PortDefinition` graphical nodes in the _General View_ diagram to display `ItemUsage`.
-- An `ItemUsage` graphical border node was added on `PortDefinition` graphical nodes in the _General View_ diagram.
-
 == Bug fixes
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
@@ -77,6 +74,10 @@ a|image::release-notes-enumeration-definition-before.png[Enumeration definition 
 a|image::release-notes-enumeration-definition-after.png[Enumeration definition node after, align="center" width=50%,height=50%]
 |===
 +
+
+- In diagrams, an _items_ compartment is now available on `PortDefinition` graphical nodes to display `ItemUsage`.
+- In diagrams, an `ItemUsage` graphical border node is now available on `PortDefinition` graphical nodes.
+
 
 == Technical details
 

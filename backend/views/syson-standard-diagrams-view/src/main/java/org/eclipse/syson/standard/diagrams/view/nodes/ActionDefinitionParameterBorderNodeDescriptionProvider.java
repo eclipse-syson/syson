@@ -35,7 +35,7 @@ public class ActionDefinitionParameterBorderNodeDescriptionProvider extends Abst
 
     @Override
     protected String getName() {
-        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage());
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter());
     }
 
     @Override
