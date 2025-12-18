@@ -55,7 +55,11 @@ public class EdgeCreationTester {
     }
 
     public void createEdgeUsingNodeId(String projectId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId) {
-        this.createEdgeUsingNodeId(projectId, diagram, sourceNodeId, targetNodeId, toolId, Optional.empty());
+        this.createEdgeUsingNodeId(projectId, diagram.get().getId(), sourceNodeId, targetNodeId, toolId, Optional.empty());
+    }
+
+    public void createEdgeUsingNodeId(String projectId, String diagramId, String sourceNodeId, String targetNodeId, String toolId) {
+        this.createEdgeUsingNodeId(projectId, diagramId, sourceNodeId, targetNodeId, toolId, Optional.empty());
     }
 
     /**
@@ -75,14 +79,14 @@ public class EdgeCreationTester {
      *            a list of expected messages shown to the user
      */
     public void runSingleClickOnTwoDiagramElementsTool(String editingContextId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId, List<String> expectedMessages) {
-        this.createEdgeUsingNodeId(editingContextId, diagram, sourceNodeId, targetNodeId, toolId, Optional.of(expectedMessages));
+        this.createEdgeUsingNodeId(editingContextId, diagram.get().getId(), sourceNodeId, targetNodeId, toolId, Optional.of(expectedMessages));
     }
 
-    private void createEdgeUsingNodeId(String editingContextId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId, Optional<List<String>> expectedMessages) {
+    private void createEdgeUsingNodeId(String editingContextId, String diagramId, String sourceNodeId, String targetNodeId, String toolId, Optional<List<String>> expectedMessages) {
         var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                 UUID.randomUUID(),
                 editingContextId,
-                diagram.get().getId(),
+                diagramId,
                 sourceNodeId,
                 targetNodeId,
                 0,

@@ -315,4 +315,11 @@ public interface IDescriptionNameGenerator {
      * @return a string used to name a {@link NodeDescription} or a {@link EdgeDescription}.
      */
     String getDiagramPrefix();
+
+    /**
+     * Checks if the given description name match the compartment pattern name of a Node description.
+     *
+     * @return {@code true} if matches the name of a compartment description
+     */
+    boolean isCompartmentNodeDescriptionName(String name);
 }

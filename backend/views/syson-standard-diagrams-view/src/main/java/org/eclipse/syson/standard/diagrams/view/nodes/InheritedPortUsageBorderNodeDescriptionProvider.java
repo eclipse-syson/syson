@@ -99,6 +99,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
             edgeTools.add(this.createInterfaceUsageToPortUsageEdgeTool(List.of(nestedPort, ownedPort)));
             edgeTools.add(this.createFlowUsageEdgeToPortUsageTool(List.of(nestedPort, ownedPort)));
         }
+        edgeTools.add(this.createConnectionUsageEdgeTool(cache));
         return edgeTools;
     }
 

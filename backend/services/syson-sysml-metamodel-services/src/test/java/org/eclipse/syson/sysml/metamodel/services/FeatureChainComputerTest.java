@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.syson.services.data.ItemsModelTest;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.metamodel.services.data.ItemsModelTest;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

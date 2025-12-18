@@ -295,4 +295,12 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     public String getDiagramPrefix() {
         return this.diagramPrefix;
     }
+
+    @Override
+    public boolean isCompartmentNodeDescriptionName(String name) {
+        if (name != null) {
+            return Pattern.compile(".+Compartment.*").matcher(name).matches();
+        }
+        return false;
+    }
 }
