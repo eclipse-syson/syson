@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +25,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -34,17 +38,35 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.model.services.ModelElementServices;
 import org.eclipse.syson.model.services.ModelMutationElementService;
-import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.SiriusWebCoreServices;
+import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.springframework.stereotype.Service;
 
@@ -72,22 +94,35 @@ public class DiagramMutationElementService {
 
     private final ModelMutationElementService modelMutationElementService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
+    private final MetamodelElementQueryService metamodelElementQueryService;
+
+    private final ModelQueryElementService modelQueryElementService;
+
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
     private final MetamodelMutationElementService metamodelMutationElementService;
 
     private final UtilService utilService;
 
     private final NodeDescriptionService nodeDescriptionService;
 
-    public DiagramMutationElementService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+    public DiagramMutationElementService(SiriusWebCoreServices coreServices,
             IDiagramDescriptionService diagramDescriptionService, IDiagramQueryService diagramQueryService, DiagramQueryElementService diagramQueryElementService,
-            ModelMutationElementService modelMutationElementService) {
-        this.identityService = Objects.requireNonNull(identityService);
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+            ModelElementServices modelElementServices,
+            IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+        this.identityService = Objects.requireNonNull(coreServices.identityService());
+        this.objectSearchService = Objects.requireNonNull(coreServices.objectSearchService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(coreServices.representationDescriptionSearchService());
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
-        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
+        this.modelMutationElementService = Objects.requireNonNull(modelElementServices.modelMutationElementService());
+        this.feedbackMessageService = Objects.requireNonNull(coreServices.feedbackMessageService());
+        this.metamodelElementQueryService = new MetamodelElementQueryService();
+        this.modelQueryElementService = Objects.requireNonNull(modelElementServices.modelQueryElementService());
+        this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.utilService = new UtilService();
         this.nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
@@ -440,5 +475,164 @@ public class DiagramMutationElementService {
         diagramContext.diagramEvents().add(new HideDiagramElementEvent(linkedNodesIds, true));
 
         return element;
+    }
+
+    /**
+     * Set a new source {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the {@link ConnectorAsUsage} to a new container to match creation rules.
+     *
+     * @param connectorAsUsage
+     *         the given {@link ConnectorAsUsage}.
+     * @param newSource
+     *         the new target {@link Element}.
+     * @param sourceNode
+     *         new source node of the edge
+     * @param targetNode
+     *         target node of the edge
+     * @param editingContext
+     *         the editing context
+     * @param diagram
+     *         the context diagram
+     * @return the given {@link ConnectorAsUsage}.
+     */
+    public ConnectorAsUsage reconnectSource(ConnectorAsUsage connectorAsUsage, Feature newSource, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram) {
+        Optional<Feature> optOldTarget = this.metamodelElementQueryService.getTarget(connectorAsUsage).stream().findFirst();
+        if (optOldTarget.isEmpty()) {
+            // Invalid model for reconnection
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid connector : Missing target", MessageLevel.WARNING));
+            return connectorAsUsage;
+        }
+
+        // Recompute the best container
+        this.getConnectorAsUsageContainer(sourceNode, targetNode, newSource, optOldTarget.get(), editingContext, diagram).ifPresent(newContainer -> {
+            if (newContainer != connectorAsUsage.getOwner()) {
+                // Move to the new container and notify the user
+                newContainer.getOwnedRelationship().add(connectorAsUsage.getOwningRelationship());
+                if (connectorAsUsage instanceof PartUsage) {
+                    connectorAsUsage.setIsComposite(newContainer instanceof Type);
+                }
+                this.feedbackMessageService.addFeedbackMessage(new Message("The connection has been moved to a new owner " + newContainer.getQualifiedName(), MessageLevel.INFO));
+            }
+        });
+
+        // Recompute both target and source chain
+        List<EndFeatureMembership> endFeatureMemberships = connectorAsUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        connectorAsUsage.getOwnedRelationship().removeAll(endFeatureMemberships);
+
+        this.metamodelMutationElementService.setConnectorEnds(connectorAsUsage, newSource, optOldTarget.get(), connectorAsUsage.getOwner());
+        return connectorAsUsage;
+    }
+
+    /**
+     * Set a new target {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the {@link ConnectorAsUsage} to a new container to match creation rules.
+     *
+     * @param connectorAsUsage
+     *         the given {@link ConnectorAsUsage}.
+     * @param newTarget
+     *         the new target {@link Element}.
+     * @param sourceNode
+     *         source node of the edge
+     * @param targetNode
+     *         new target node of the edge
+     * @param editingContext
+     *         the editing context
+     * @param diagram
+     *         the context diagram
+     * @return the given {@link ConnectorAsUsage}.
+     */
+    public ConnectorAsUsage reconnectTarget(ConnectorAsUsage connectorAsUsage, Feature newTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram) {
+        Feature source = this.metamodelElementQueryService.getSource(connectorAsUsage);
+        if (source == null) {
+            // Invalid model for reconnection
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid connector : Missing source", MessageLevel.WARNING));
+            return connectorAsUsage;
+        }
+
+        // Recompute the best container
+        this.getConnectorAsUsageContainer(sourceNode, targetNode, source, newTarget, editingContext, diagram).ifPresent(newContainer -> {
+            if (newContainer != connectorAsUsage.getOwner()) {
+                // Move to the new container  and notify the user
+                newContainer.getOwnedRelationship().add(connectorAsUsage.getOwningRelationship());
+                if (connectorAsUsage instanceof PartUsage) {
+                    connectorAsUsage.setIsComposite(newContainer instanceof Type);
+                }
+                this.feedbackMessageService.addFeedbackMessage(new Message("The connection has been moved to a new owner " + newContainer.getQualifiedName(), MessageLevel.INFO));
+            }
+        });
+
+        // Recompute both target and source chain
+        List<EndFeatureMembership> endFeatureMemberships = connectorAsUsage.getOwnedFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        connectorAsUsage.getOwnedRelationship().removeAll(endFeatureMemberships);
+
+        this.metamodelMutationElementService.setConnectorEnds(connectorAsUsage, source, newTarget, connectorAsUsage.getOwner());
+        return connectorAsUsage;
+    }
+
+    public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getConnectorAsUsageContainer(sourceNode, targetNode, source, target, editingContext, diagramContext.diagram())
+                .map(container -> this.metamodelMutationElementService.createBindingConnectorAsUsage(source, target, container)).orElseGet(() -> {
+                    this.feedbackMessageService.addFeedbackMessage(
+                            new Message(
+                                    MessageFormat.format("Unable to find a suitable owner for this BindingConnector in {0} containment tree.", source.getQualifiedName()),
+                                    MessageLevel.WARNING));
+                    return null;
+                });
+    }
+
+    public FlowUsage createFlowUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getConnectorAsUsageContainer(sourceNode, targetNode, source, target, editingContext, diagramContext.diagram())
+                .map(flowContainer -> this.metamodelMutationElementService.createFlowUsage(source, target, flowContainer)).orElseGet(() -> {
+                    this.feedbackMessageService.addFeedbackMessage(
+                            new Message(
+                                    MessageFormat.format("Unable to find a suitable owner for this FlowUsage in {0} containment tree.", source.getQualifiedName()),
+                                    MessageLevel.WARNING));
+                    return null;
+                });
+    }
+
+    public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort, Node sourceNode, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getConnectorAsUsageContainer(sourceNode, targetNode, sourcePort, targetPort, editingContext, diagramContext.diagram())
+                .map(interfaceContainer -> this.metamodelMutationElementService.createInterfaceUsage(sourcePort, targetPort, interfaceContainer)).orElseGet(() -> {
+                    this.feedbackMessageService.addFeedbackMessage(
+                            new Message(
+                                    MessageFormat.format("Unable to find a suitable owner for this InterfaceUsage in {0} containment tree.", sourcePort.getQualifiedName()),
+                                    MessageLevel.WARNING));
+                    return null;
+                });
+    }
+
+    public ConnectionUsage createConnectionUsage(Usage connectionSource, Usage connectionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getConnectorAsUsageContainer(sourceNode, targetNode, connectionSource, connectionTarget, editingContext, diagramContext.diagram())
+                .map(container -> this.metamodelMutationElementService.createConnectionUsage(connectionSource, connectionTarget, container)).orElseGet(() -> {
+                    this.feedbackMessageService.addFeedbackMessage(
+                            new Message(
+                                    "Unable to find a suitable owner for this ConnectionUsage in " + connectionSource.getQualifiedName(),
+                                    MessageLevel.WARNING));
+                    return null;
+                });
+    }
+
+    private Optional<Namespace> getConnectorAsUsageContainer(Node sourceNode, Node targetNode, Element source, Element target, IEditingContext editingContext,
+            Diagram contextDiagram) {
+        Optional<Namespace> namespaceOwner = Optional.empty();
+        if (sourceNode != null && targetNode != null) {
+            // First use the graphical node to be able to handle inherited elements that would not be displayed in their owner
+            Element sourceParentGraphicalElement = this.diagramQueryElementService.getGraphicalSemanticParent(sourceNode, editingContext, contextDiagram)
+                    .filter(e -> !(e instanceof ViewUsage))
+                    .orElse(source); // If not found the node is located at the root of the diagram, use the semantic element alone
+            Element targetParentGraphicalElement = this.diagramQueryElementService.getGraphicalSemanticParent(targetNode, editingContext, contextDiagram)
+                    .filter(e -> !(e instanceof ViewUsage))
+                    .orElse(target); // If not found the node is located at the root of the diagram, use the semantic element alone
+            if (sourceParentGraphicalElement != null && targetParentGraphicalElement != null) {
+                namespaceOwner = this.modelQueryElementService.getCommonOwnerAncestor(sourceParentGraphicalElement, targetParentGraphicalElement, Namespace.class,
+                        owner -> !this.readOnlyObjectPredicate.test(owner));
+            }
+        }
+        return namespaceOwner;
     }
 }
