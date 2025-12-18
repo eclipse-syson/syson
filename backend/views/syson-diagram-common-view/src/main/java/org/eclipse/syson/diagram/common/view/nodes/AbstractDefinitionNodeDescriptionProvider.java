@@ -42,7 +42,9 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.NodeDefaultSizeExpressionSwitch;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.common.view.services.dto.NodeDefaultSizeExpression;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.UtilService;
@@ -138,10 +140,11 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
+        NodeDefaultSizeExpression defaultSizeExpression = new NodeDefaultSizeExpressionSwitch().doSwitch(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(defaultSizeExpression.defaultHeightExpression())
+                .defaultWidthExpression(defaultSizeExpression.defaultWidthExpression())
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getDescriptionNameGenerator().getNodeName(this.eClass))

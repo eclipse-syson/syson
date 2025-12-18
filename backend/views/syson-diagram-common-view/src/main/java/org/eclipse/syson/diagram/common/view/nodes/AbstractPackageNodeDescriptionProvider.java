@@ -129,8 +129,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .defaultHeightExpression("101")
-                .defaultWidthExpression("200")
+                .defaultHeightExpression(ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))

@@ -76,6 +76,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.eclipse.syson.util.ViewConstants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -155,42 +156,42 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> topNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 3, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 1, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 5, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
                 // A package doesn't have a compartment: it is handled as a custom node
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 10),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0)
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT, ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 9, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 10, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 4, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0, ViewConstants.DEFAULT_VIEW_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_VIEW_USAGE_NODE_WIDTH)
         ).map(TestNameGenerator::namedArguments);
     }
 
@@ -220,7 +221,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("topNodeParameters")
-    public void createTopNode(EClass eClass, int compartmentCount) {
+    public void createTopNode(EClass eClass, int compartmentCount, int expectedDefaultHeight, int expectedDefaultWidth) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
         this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
@@ -242,6 +243,10 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                             .hasNodeDescriptionName(newNodeDescriptionName)
                             .hasCompartmentCount(compartmentCount)
                             .check(this.diagram.get(), newDiagram);
+
+                    var parentNode = newDiagram.getNodes().get(0);
+                    assertThat(parentNode.getDefaultHeight()).isEqualTo(expectedDefaultHeight);
+                    assertThat(parentNode.getDefaultWidth()).isEqualTo(expectedDefaultWidth);
                 }, () -> fail("Missing diagram"));
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
