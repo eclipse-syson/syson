@@ -18,6 +18,18 @@ image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,h
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
 
+- In diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.
+
+image::gv-connection-usage-edge.png[{gv} ConnectionUsage Edge,width=60%,height=60%]
+
+[WARNING]
+====
+For the moment, only binary `ConnectionUsage` are implemented.
+
+The following structure is not yet handled `connection bus : C connect (d1, d2, d3, d4);`.
+====
+
+
 == Bug fixes
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.

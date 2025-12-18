@@ -476,12 +476,13 @@ Make sure to follow the contribution guidelines described in the pull request pa
 
 Since version 2025.10.2, {product} services are organized into several modules to improve maintainability and scalability.
 
-- Services that query/mutate the model are located in the module `syson-sysml-metamodel-services`.
+- Services that query/mutate the model in an atomic way are located in the module `syson-sysml-metamodel-services`.
 * this module will depend on `syson-sysml-metamodel`.
 * all services in this module won't depend on Spring, Sirius-Web or any diagram/table related code.
 - Services that query/mutate the model through Sirius-Web services are located in the module `syson-model-services`.
 * all services in this module are allowed to depend on Sirius-Web
 * for example, services that query the model through `IObjectSearchService`.
+* this module also contains services that combine atomic SysML operations. For example, creating a connection together with its required ports. Such methods can be described as “accelerators”
 - Services that query/mutate a diagram are located in the module `syson-diagram-services`.
 * all services in this module are allowed to depend on Sirius-Web.
 - Services that query/mutate a table are located in the module `syson-table-services`.

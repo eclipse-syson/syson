@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.syson.diagram.services.DiagramMutationDiagramService;
@@ -29,8 +30,17 @@ import org.eclipse.syson.diagram.services.DiagramMutationElementService;
 import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
 import org.eclipse.syson.model.services.ModelMutationElementService;
+import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Entry point for all diagram-related services doing mutations in diagrams and called by AQL expressions in diagram
@@ -50,13 +60,17 @@ public class DiagramMutationAQLService {
 
     private final DiagramMutationDiagramService diagramMutationDiagramService;
 
+    private final ModelMutationElementService modelMutationElementService;
+
     public DiagramMutationAQLService(DiagramMutationDndService diagramMutationDndService, DiagramMutationElementService diagramMutationElementService,
-            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService) {
+            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService,
+            ModelMutationElementService modelMutationElementService) {
         this.diagramMutationDndService = Objects.requireNonNull(diagramMutationDndService);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.diagramMutationLabelService = Objects.requireNonNull(diagramMutationLabelService);
         this.diagramMutationDiagramService = Objects.requireNonNull(diagramMutationDiagramService);
+        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
     }
 
     /**
@@ -218,4 +232,75 @@ public class DiagramMutationAQLService {
     public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
         return this.diagramMutationElementService.viewNodeAs(element, newViewDefinition, editingContext, diagramContext, selectedNode);
     }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectTarget(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     */
+    public ConnectorAsUsage reconnectTarget(ConnectorAsUsage bind, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
+            Diagram diagram) {
+        return this.diagramMutationElementService.reconnectTarget(bind, newTarget, sourceNode, newTargetNode, editingContext, diagram);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectSource(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     */
+    public ConnectorAsUsage reconnectSource(ConnectorAsUsage bind, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
+            Diagram diagram) {
+        return this.diagramMutationElementService.reconnectSource(bind, newSource, newSourceNode, targetNode, editingContext, diagram);
+    }
+
+
+    /**
+     * {@link DiagramMutationElementService#createConnectionUsage(Usage, Usage, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public ConnectionUsage createConnectionUsage(Usage connectionSource, Usage connectionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createConnectionUsage(connectionSource, connectionTarget, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createInterfaceUsage(PortUsage, PortUsage, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createInterfaceUsage(sourcePort, targetPort, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createFlowUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public FlowUsage createFlowUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createFlowUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createBindingConnectorAsUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndInterface(PartUsage)}.
+     */
+    public Element createPartUsageAndInterface(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndInterface(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndBindingConnectorAsUsage(PartUsage)}.
+     */
+    public Element createPartUsageAndBindingConnectorAsUsage(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndBindingConnectorAsUsage(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndFlowConnection(PartUsage)}.
+     */
+    public Element createPartUsageAndFlowConnection(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndFlowConnection(self);
+    }
+
 }

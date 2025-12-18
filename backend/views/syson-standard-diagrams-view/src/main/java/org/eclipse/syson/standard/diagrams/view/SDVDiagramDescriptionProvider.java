@@ -67,6 +67,7 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.ConnectionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DependencyEdgeDescriptionProvider;
@@ -82,6 +83,7 @@ import org.eclipse.syson.standard.diagrams.view.edges.SubsettingEdgeDescriptionP
 import org.eclipse.syson.standard.diagrams.view.edges.SuccessionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.UsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameterBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionUsageParametersCompartmentNodeDescriptionProvider;
@@ -98,7 +100,6 @@ import org.eclipse.syson.standard.diagrams.view.nodes.CompartmentNodeDescription
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameterBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemBorderNodeDescriptionProvider;
@@ -734,6 +735,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new FeatureValueEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new ConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return edgeDescriptionProviders;
     }

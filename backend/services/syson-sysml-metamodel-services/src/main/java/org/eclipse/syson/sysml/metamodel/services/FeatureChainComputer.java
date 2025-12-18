@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,14 +31,12 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.springframework.stereotype.Service;
 
 /**
  * Object in charge of computing a chain of feature to access a {@link Feature} from one {@link Type}.
  *
  * @author Arthur Daussy
  */
-@Service
 public class FeatureChainComputer {
 
     /**

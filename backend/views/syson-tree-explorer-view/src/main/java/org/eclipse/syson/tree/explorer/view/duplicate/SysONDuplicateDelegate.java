@@ -14,7 +14,6 @@ package org.eclipse.syson.tree.explorer.view.duplicate;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
@@ -29,11 +28,11 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.views.explorer.services.api.DuplicationSettings;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicator;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicatorDelegate;
-import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,11 +44,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysONDuplicateDelegate implements IObjectDuplicatorDelegate {
 
-    private final ModelMutationElementService modelMutationElementService;
-
-    public SysONDuplicateDelegate(ModelMutationElementService modelMutationElementService) {
-        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
-    }
+    private final MetamodelMutationElementService metamodelMutationElementService = new MetamodelMutationElementService();
 
     @Override
     public boolean canHandle(IEditingContext editingContext, EObject objectToDuplicate, EObject containerEObject, String containmentFeature, DuplicationSettings settings) {
@@ -68,7 +63,7 @@ public class SysONDuplicateDelegate implements IObjectDuplicatorDelegate {
                     // An ongoing discussion should decide either to :
                     // * provide a Sirius Web extension to be able to disable this option in downstream projects
                     // * or provide a custom SysML duplication to handle all those case.
-                    Optional<Element> duplicateElement = this.modelMutationElementService.duplicateElement((Element) objectToDuplicate, settings.duplicateContent(), settings.copyOutgoingReferences());
+                    Optional<Element> duplicateElement = this.metamodelMutationElementService.duplicateElement((Element) objectToDuplicate, settings.duplicateContent(), settings.copyOutgoingReferences());
                     if (duplicateElement.isPresent()) {
                         owningMembership.getOwnedRelatedElement().add(duplicateElement.get());
                         final List<Message> messages = this.getMessages(settings);

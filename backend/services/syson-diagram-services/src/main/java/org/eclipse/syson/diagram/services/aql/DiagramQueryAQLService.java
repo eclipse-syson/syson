@@ -12,20 +12,26 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services.aql;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
 
 /**
  * Entry point for all diagram-related services doing queries in diagrams and called by AQL expressions in diagram
@@ -39,9 +45,12 @@ public class DiagramQueryAQLService {
 
     private final DiagramQueryLabelService diagramQueryLabelService;
 
+    private final MetamodelElementQueryService metamodelElementQueryService;
+
     public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService) {
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.diagramQueryLabelService = Objects.requireNonNull(diagramQueryLabelService);
+        this.metamodelElementQueryService = new MetamodelElementQueryService();
     }
 
     /**
@@ -147,5 +156,28 @@ public class DiagramQueryAQLService {
      */
     public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
         return this.diagramQueryElementService.isDiagramEmpty(editingContext, diagramContext, previousDiagram, exposedElements);
+    }
+
+    /**
+     * {@link MetamodelElementQueryService#getTarget(ConnectorAsUsage)}.
+     */
+    public List<Feature> getTarget(ConnectorAsUsage connector) {
+        return this.metamodelElementQueryService.getTarget(connector);
+    }
+
+    /**
+     * {@link MetamodelElementQueryService#getSource(ConnectorAsUsage)}.
+     */
+    public Feature getSource(ConnectorAsUsage connectorAsUsage) {
+        return this.metamodelElementQueryService.getSource(connectorAsUsage);
+    }
+
+    /**
+     *
+     * {@link DiagramQueryElementService#shouldRenderConnectionUsageEdge(ConnectionUsage, org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache, IEditingContext)}.
+     */
+    public boolean shouldRenderConnectionUsageEdge(ConnectionUsage connectionUsage, org.eclipse.sirius.components.representations.Element sourceNode,
+            org.eclipse.sirius.components.representations.Element targetNode, DiagramRenderingCache cache, IEditingContext editingContext) {
+        return this.diagramQueryElementService.shouldRenderConnectionUsageEdge(connectionUsage, sourceNode, targetNode, cache, editingContext);
     }
 }

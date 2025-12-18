@@ -12,8 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.metamodel.services;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
 
 /**
@@ -35,5 +40,34 @@ public class MetamodelElementQueryService {
      */
     public boolean isActor(Element element) {
         return element instanceof PartUsage && element.getOwningMembership() instanceof ActorMembership;
+    }
+
+    /**
+     * Gets the target of a {@link ConnectorAsUsage}.
+     *
+     * @param connector
+     *         a {@link ConnectorAsUsage}
+     * @return a list of targets
+     */
+    public List<Feature> getTarget(ConnectorAsUsage connector) {
+        return connector.getTargetFeature().stream()
+                .filter(Objects::nonNull)
+                .map(Feature::getFeatureTarget)
+                .toList();
+    }
+
+    /**
+     * Gets the source of a {@link ConnectorAsUsage}.
+     *
+     * @param connectorAsUsage
+     *         a {@link ConnectorAsUsage}
+     * @return the source feature
+     */
+    public Feature getSource(ConnectorAsUsage connectorAsUsage) {
+        Feature sourceFeature = connectorAsUsage.getSourceFeature();
+        if (sourceFeature != null) {
+            return sourceFeature.getFeatureTarget();
+        }
+        return null;
     }
 }

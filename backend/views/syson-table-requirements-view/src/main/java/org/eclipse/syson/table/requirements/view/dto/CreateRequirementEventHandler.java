@@ -32,11 +32,11 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.springframework.stereotype.Service;
 
