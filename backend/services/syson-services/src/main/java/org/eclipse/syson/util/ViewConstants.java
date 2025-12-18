@@ -27,8 +27,6 @@ public class ViewConstants {
 
     public static final String DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT = "15";
 
-    public static final String DEFAULT_CONTAINER_NODE_HEIGHT = "60";
-
     public static final String DEFAULT_BACKGROUND_COLOR = "white";
 
     public static final String DEFAULT_COMPARTMENT_BACKGROUND_COLOR = "transparent";
@@ -42,4 +40,20 @@ public class ViewConstants {
     public static final String DEFAULT_NOTE_WIDTH = "200";
 
     public static final String DEFAULT_NOTE_HEIGHT = "70";
+
+    public static final String DEFAULT_USAGE_NODE_HEIGHT = "60";
+
+    public static final String DEFAULT_USAGE_NODE_WIDTH = "194";
+
+    public static final String DEFAULT_DEFINITION_NODE_HEIGHT = "70";
+
+    public static final String DEFAULT_DEFINITION_NODE_WIDTH = "208";
+
+    public static final String DEFAULT_PACKAGE_NODE_HEIGHT = "101";
+
+    public static final String DEFAULT_PACKAGE_NODE_WIDTH = "200";
+
+    public static final String DEFAULT_VIEW_USAGE_NODE_HEIGHT = "101";
+
+    public static final String DEFAULT_VIEW_USAGE_NODE_WIDTH = "200";
 }
