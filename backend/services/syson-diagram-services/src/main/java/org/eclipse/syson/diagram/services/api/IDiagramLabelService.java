@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,16 @@ public interface IDiagramLabelService {
      * @return the label of the subsetting of the given {@link Element} if there is one, an empty string otherwise.
      */
     String getSubsettingLabel(Element element);
+
+    /**
+     * Return the label of the reference subsetting of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the reference subsetting of the given {@link Element} if there is one, an empty string
+     *         otherwise.
+     */
+    String getReferenceSubsettingLabel(Element element);
 
     /**
      * Get the SysML textual representation of the given element.

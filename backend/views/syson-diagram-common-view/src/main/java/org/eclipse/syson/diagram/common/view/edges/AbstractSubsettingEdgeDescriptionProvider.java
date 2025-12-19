@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,21 +14,17 @@ package org.eclipse.syson.diagram.common.view.edges;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
-import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Used to create the {@link Subsetting} edge description.
@@ -37,8 +33,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractSubsettingEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public AbstractSubsettingEdgeDescriptionProvider(IColorProvider colorProvider) {
+    private final EClass eClass;
+
+    public AbstractSubsettingEdgeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(colorProvider);
+        this.eClass = eClass;
     }
 
     /**
@@ -47,6 +46,24 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
      * @return the name of the edge description
      */
     protected abstract String getName();
+
+    /**
+     * Implementers should provide the source expression of this {@link EdgeDescription}.
+     *
+     * @param cache
+     *            the cache used to retrieve node descriptions.
+     * @return the source expression of this {@link EdgeDescription}.s
+     */
+    protected abstract String getSourceExpression();
+
+    /**
+     * Implementers should provide the target expression of this {@link EdgeDescription}.
+     *
+     * @param cache
+     *            the cache used to retrieve node descriptions.
+     * @return the target expression of this {@link EdgeDescription}.s
+     */
+    protected abstract String getTargetExpression();
 
     /**
      * Implementers should provide the list of {@link NodeDescription} that can be a source of this
@@ -68,98 +85,38 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
      */
     protected abstract List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache);
 
+    /**
+     * Create the {@link EdgeStyle} for this {@link EdgeDescription}.
+     *
+     * @return a new {@link EdgeStyle}.
+     */
+    protected abstract EdgeStyle createEdgeStyle();
+
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubsetting());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("")
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
+                .preconditionExpression("aql:self.oclIsTypeOf(" + domainType + ")")
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .sourceExpression(this.getSourceExpression())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
+                .targetExpression(this.getTargetExpression())
                 .build();
     }
+
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(this.getName());
-        EdgeDescription edgeDescription = optEdgeDescription.get();
-        diagramDescription.getEdgeDescriptions().add(edgeDescription);
-
-        edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
-        edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
-
-        edgeDescription.setPalette(this.createEdgePalette(cache));
-    }
-
-    private EdgeStyle createEdgeStyle() {
-        return this.diagramBuilderHelper.newEdgeStyle()
-                .borderSize(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
-                .edgeWidth(1)
-                .lineStyle(LineStyle.SOLID)
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
-                .build();
-    }
-
-    @Override
-    protected ChangeContextBuilder getSourceReconnectToolBody() {
-        var unsetOldSubsettingFeature = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewSubsettingFeature = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
-        var unsetOldSpecific = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSpecialization_Specific().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewSpecific = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSpecialization_Specific().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
-        var setNewContainer = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT);
-
-        var changeContextNewContainer = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET)
-                .children(setNewContainer.build());
-
-        return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSubsettingFeature.build(), unsetOldSpecific.build(), setNewSubsettingFeature.build(),
-                        setNewSpecific.build(), changeContextNewContainer.build());
-    }
-
-    @Override
-    protected ChangeContextBuilder getTargetReconnectToolBody() {
-        var unsetOldSubsettedFeature = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewSubsettedFeature = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
-        var unsetOldGeneral = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewGeneral = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
-        return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSubsettedFeature.build(), unsetOldGeneral.build(), setNewSubsettedFeature.build(),
-                        setNewGeneral.build());
+        cache.getEdgeDescription(this.getName()).ifPresent(edgeDescription -> {
+            diagramDescription.getEdgeDescriptions().add(edgeDescription);
+            edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
+            edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
+            edgeDescription.setPalette(this.createEdgePalette(cache));
+        });
     }
 }

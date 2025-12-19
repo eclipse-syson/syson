@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,6 +111,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object))
                 .append(LabelConstants.CR)
@@ -147,6 +148,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -180,6 +182,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -212,6 +215,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -259,6 +263,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -315,6 +320,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -348,6 +354,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -437,6 +444,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -470,6 +478,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -519,6 +528,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -568,6 +578,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -612,6 +623,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -663,6 +675,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -687,6 +700,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -720,6 +734,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -739,6 +754,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -772,6 +788,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();
@@ -807,6 +824,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
         return label.toString();

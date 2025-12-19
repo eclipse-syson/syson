@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -268,6 +269,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(targetDescriptions));
         edgeTools.add(this.edgeToolService.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.edgeToolService.createSubsettingEdgeTool(List.of(this.nodeDescription)));
+        edgeTools.add(this.edgeToolService.createReferenceSubsettingEdgeTool(targetDescriptions.stream().filter(this::isFeatureNodeDescription).toList()));
         edgeTools.add(this.edgeToolService.createAllocateEdgeTool(targetDescriptions));
         var definitionNodeDescription = this.edgeToolService.getNodeDescription(this.edgeToolService.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
@@ -316,5 +318,13 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         result = result || this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
         result = result || this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
         return result;
+    }
+
+    private boolean isFeatureNodeDescription(NodeDescription nodeDesc) {
+        var domainType = SysMLMetamodelHelper.toEClass(nodeDesc.getDomainType());
+        if (domainType != null) {
+            return domainType.getEAllSuperTypes().contains(SysmlPackage.eINSTANCE.getFeature());
+        }
+        return false;
     }
 }

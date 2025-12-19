@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,39 +25,39 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractSubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
-import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the {@link Subsetting} edge description in the standard diagrams.
+ * Used to create the {@link ReferenceSubsetting} edge description in the standard diagrams.
  *
  * @author arichard
  */
-public class SubsettingEdgeDescriptionProvider extends AbstractSubsettingEdgeDescriptionProvider {
+public class ReferenceSubsettingEdgeDescriptionProvider extends AbstractSubsettingEdgeDescriptionProvider {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public SubsettingEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(SysmlPackage.eINSTANCE.getSubsetting(), colorProvider);
+    public ReferenceSubsettingEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(SysmlPackage.eINSTANCE.getReferenceSubsetting(), colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
     protected String getName() {
-        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSubsetting());
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getReferenceSubsetting());
     }
 
     @Override
     protected String getSourceExpression() {
-        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName();
+        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencingFeature().getName();
     }
 
     @Override
     protected String getTargetExpression() {
-        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName();
+        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName();
     }
 
     @Override
@@ -104,6 +104,14 @@ public class SubsettingEdgeDescriptionProvider extends AbstractSubsettingEdgeDes
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
+        var unsetOldReferencedFeature = this.viewBuilderHelper.newUnsetValue()
+                .featureName(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName())
+                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
+
+        var setNewReferencedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName())
+                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
+
         var unsetOldSubsettedFeature = this.viewBuilderHelper.newUnsetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
@@ -122,7 +130,7 @@ public class SubsettingEdgeDescriptionProvider extends AbstractSubsettingEdgeDes
 
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSubsettedFeature.build(), unsetOldGeneral.build(), setNewSubsettedFeature.build(),
+                .children(unsetOldReferencedFeature.build(), unsetOldSubsettedFeature.build(), unsetOldGeneral.build(), setNewReferencedFeature.build(), setNewSubsettedFeature.build(),
                         setNewGeneral.build());
     }
 
@@ -134,7 +142,7 @@ public class SubsettingEdgeDescriptionProvider extends AbstractSubsettingEdgeDes
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
+                .targetArrowStyle(ArrowStyle.CLOSED_ARROW_WITH_DOTS)
                 .build();
     }
 

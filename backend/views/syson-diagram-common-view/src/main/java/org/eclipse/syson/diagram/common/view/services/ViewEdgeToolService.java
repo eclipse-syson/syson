@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -295,22 +295,22 @@ public class ViewEdgeToolService {
                 .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
-        String hasExistingSubsetting = "hasExistingSubsetting";
+        String hasExistingReferenceSubsetting = "hasExistingSubsetting";
 
         var feedback = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A subsetting already exists between these elements.")))
                 .build();
 
         var createIfPossible = this.viewBuilderHelper.newIf()
-                .conditionExpression(AQLConstants.AQL + "not " + hasExistingSubsetting)
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingReferenceSubsetting)
                 .children(createInstance.build());
 
         var informOtherwise = this.viewBuilderHelper.newIf()
-                .conditionExpression(AQLConstants.AQL + hasExistingSubsetting)
+                .conditionExpression(AQLConstants.AQL + hasExistingReferenceSubsetting)
                 .children(feedback);
 
         var letExistingSubsetting = this.viewBuilderHelper.newLet()
-                .variableName(hasExistingSubsetting)
+                .variableName(hasExistingReferenceSubsetting)
                 .valueExpression(AQLConstants.AQL_SELF + ".eContents(sysml::Subsetting).subsettedFeature->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
                 .children(createIfPossible.build(), informOtherwise.build());
 
@@ -321,6 +321,74 @@ public class ViewEdgeToolService {
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubsetting()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubsetting().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createReferenceSubsettingEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aqlSelf());
+
+        var setReferencedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setSubsettedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var setSpecific = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_Specific().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setGeneral = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + NEW_INSTANCE)
+                .children(callElementInitializerService.build(), setSubsettingFeature.build(), setReferencedFeature.build(), setSubsettedFeature.build(),
+                        setSpecific.build(), setGeneral.build());
+
+        var createInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getReferenceSubsetting()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName(NEW_INSTANCE)
+                .children(changeContextNewInstance.build());
+
+        String hasExistingReferenceSubsetting = "hasExistingReferenceSubsetting";
+
+        var feedback = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(DiagramQueryAQLService::infoMessage).aqlSelf(AQLUtils.aqlString("A reference subsetting already exists between these elements.")))
+                .build();
+
+        var createIfPossible = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + "not " + hasExistingReferenceSubsetting)
+                .children(createInstance.build());
+
+        var informOtherwise = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + hasExistingReferenceSubsetting)
+                .children(feedback);
+
+        var letExistingSubsetting = this.viewBuilderHelper.newLet()
+                .variableName(hasExistingReferenceSubsetting)
+                .valueExpression(AQLConstants.AQL_SELF + ".eContents(sysml::ReferenceSubsetting).referencedFeature->includes(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")")
+                .children(createIfPossible.build(), informOtherwise.build());
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
+                .children(letExistingSubsetting.build());
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getReferenceSubsetting()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getReferenceSubsetting().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

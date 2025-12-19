@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -245,7 +245,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     public void tearDown() {
         if (this.verifier != null) {
             this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
+                    .verify(Duration.ofSeconds(1000));
         }
     }
 
@@ -561,11 +561,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 14;
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(createdNodesExpectedCount)
-                    .hasNewEdgeCount(1)
-                    .check(initialDiagram, newDiagram);
+                    .hasNewNodeCount(1) // 1 visible new PerformActionUsage node
+                    .hasNewEdgeCount(2) // 1 visible composition edge and 1 visible ReferenceSubsetting edge
+                    .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)

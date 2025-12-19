@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,8 +36,8 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
+import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.services.UtilService;
@@ -669,6 +669,8 @@ public class DetailsViewService {
     private void handleImplied(Element element, EStructuralFeature eStructuralFeature) {
         if (element instanceof Relationship relationship) {
             if (SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().equals(eStructuralFeature)) {
                 relationship.setIsImplied(false);
             } else if (SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().equals(eStructuralFeature)) {
                 relationship.setIsImplied(false);
