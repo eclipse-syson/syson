@@ -40,6 +40,7 @@ import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Subclassification;
@@ -99,6 +100,28 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     }
 
     @Override
+    public String getReferenceSubsettingLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var optReferenceSubsetting = element.getOwnedRelationship().stream()
+                .filter(ReferenceSubsetting.class::isInstance)
+                .map(ReferenceSubsetting.class::cast)
+                .findFirst();
+        if (optReferenceSubsetting.isPresent()) {
+            ReferenceSubsetting referenceSubsetting = optReferenceSubsetting.get();
+            if (!referenceSubsetting.isIsImplied()) {
+                var referencedFeature = referenceSubsetting.getReferencedFeature();
+                if (referencedFeature != null) {
+                    label.append(LabelConstants.SPACE);
+                    label.append(LabelConstants.REFERENCES);
+                    label.append(LabelConstants.SPACE);
+                    label.append(this.getDeclaredNameLabel(referencedFeature));
+                }
+            }
+        }
+        return label.toString();
+    }
+
+    @Override
     public String getRedefinitionLabel(Element element) {
         StringBuilder label = new StringBuilder();
         var optRedefinition = element.getOwnedRelationship().stream()
@@ -146,7 +169,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     public String getSubsettingLabel(Element element) {
         StringBuilder label = new StringBuilder();
         var optSubsetting = element.getOwnedRelationship().stream()
-                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition) && !(r instanceof ReferenceSubsetting))
                 .map(Subsetting.class::cast)
                 .findFirst();
         if (optSubsetting.isPresent()) {

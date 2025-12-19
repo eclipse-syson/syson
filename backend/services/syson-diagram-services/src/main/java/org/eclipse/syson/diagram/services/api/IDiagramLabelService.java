@@ -63,6 +63,16 @@ public interface IDiagramLabelService {
     String getSubsettingLabel(Element element);
 
     /**
+     * Return the label of the reference subsetting of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the reference subsetting of the given {@link Element} if there is one, an empty string
+     *         otherwise.
+     */
+    String getReferenceSubsettingLabel(Element element);
+
+    /**
      * Get the SysML textual representation of the given element.
      *
      * @param element
