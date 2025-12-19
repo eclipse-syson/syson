@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -750,7 +750,7 @@ public class UtilService {
      */
     public Usage setSubsetting(Usage subsettingUsage, Feature feature) {
         var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
-                .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition) && !(r instanceof ReferenceSubsetting))
                 .map(Subsetting.class::cast)
                 .findFirst();
         if (optSubsetting.isPresent()) {

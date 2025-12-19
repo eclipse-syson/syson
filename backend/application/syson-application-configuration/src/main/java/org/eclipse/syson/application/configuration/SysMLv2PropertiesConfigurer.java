@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,6 +82,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
     private static final String CORE_PROPERTIES = "Core Properties";
 
     private static final String ADVANCED_PROPERTIES = "Advanced Properties";
+
+    private static final String REFERENCE_SUBSETTING_PROPERTIES = "Reference Subsetting Properties";
 
     private static final String REDEFINITION_PROPERTIES = "Redefinition Properties";
 
@@ -176,6 +178,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.setLabelExpression("Core");
         pageCore.getGroups().add(this.createCorePropertiesGroup());
         pageCore.getGroups().add(this.createVisibilityPropertyGroup());
+        pageCore.getGroups().add(this.createExtraReferenceSubsettingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRedefinitionPropertiesGroup());
         pageCore.getGroups().add(this.createExtraStatesubactionMembershipKindPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubclassificationPropertiesGroup());
@@ -265,6 +268,31 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
+                + LabelConstants.CLOSE_PARENTHESIS);
+        refWidget.getBody().add(setRefWidget);
+
+        group.getChildren().add(refWidget);
+
+        return group;
+    }
+
+    // should handle multiple ReferenceSubsetting
+    private GroupDescription createExtraReferenceSubsettingPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(REFERENCE_SUBSETTING_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression("aql:self.ownedRelationship->filter(sysml::ReferenceSubsetting)");
+
+        ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
+        refWidget.setName("ExtraReferenceWidget");
+        refWidget.setLabelExpression("References");
+        refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName());
+        refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
+        refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
+        setRefWidget
+                .setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
                 + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);
 

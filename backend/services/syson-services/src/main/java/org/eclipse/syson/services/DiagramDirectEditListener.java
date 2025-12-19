@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,6 +94,7 @@ import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -1151,7 +1152,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage && featureExpressions != null
                 && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
             var subsetting = this.element.getOwnedRelationship().stream()
-                    .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
+                    .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition) && !(r instanceof ReferenceSubsetting))
                     .map(Subsetting.class::cast)
                     .findFirst();
             if (subsetting.isPresent()) {

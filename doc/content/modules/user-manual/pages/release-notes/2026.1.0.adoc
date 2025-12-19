@@ -111,6 +111,7 @@ a|image::release-notes-enumeration-definition-after.png[Enumeration definition n
 - In diagrams, an `ItemUsage` graphical border node is now available on `PortDefinition` graphical nodes.
 - In diagrams, when creating an element from a compartment, it will not be displayed by default on the diagram, but only in the compartment.
 - In the _Advanced_ tab of the _Details_ view, _isComposite_ and _isReference_ properties (checkbox widgets) now have a help text.
+- In diagrams, a new tool named `Reference Subsetting` is available in the palette to create `ReferenceSubsetting` relationships between `Usage` elements.
 
 
 == Technical details

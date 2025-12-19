@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,6 +119,9 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
                     relatedElements.add(tu);
                 }
             }
+        }
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature())) {
+            relatedElements.add(object);
         }
         return relatedElements;
     }

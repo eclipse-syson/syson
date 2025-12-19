@@ -2,13 +2,17 @@
 
 ## Developer testing environment
 
-SysON contains tests that can be executed out of the box. The instructions below detail how to configure your development environment to contribute/modify tests and their baseline models.
+SysON contains tests that can be executed out of the box.
+The instructions below detail how to configure your development environment to contribute/modify tests and their baseline models.
 
 ### Prerequisites
 
-The scripts used in the instructions below rely on the `pg_dump` and `psql` executables. We recommand to install [pgAdmin](https://www.pgadmin.org/download/) to get them as well as additional tools to manipulate Postgres databases.
+The scripts used in the instructions below rely on the `pg_dump` and `psql` executables.
+We recommand to install [pgAdmin](https://www.pgadmin.org/download/) to get them as well as additional tools to manipulate Postgres databases.
 
-The scripts below have been tested with Git Bash on Windows. They rely on `winpty` to communicate with Windows console programs. Please adapt the scripts if you are using a different shell/operating system.
+The scripts below must be adapted when using Git Bash on Windows.
+In this case they rely on `winpty` to communicate with Windows console programs.
+Please adapt the scripts if you are using Git Bash on Windows (just comment/uncomment appropriate line in the scripts).
 
 ### Setup the testing environment
 
@@ -33,7 +37,8 @@ docker run -p 5433:5432 --name syson-test-postgres \
 
 2. Start SysON backend & frontend
 
-This creates the database tables required by the tests. The SysON frontend can be used later to update the test models.
+This creates the database tables required by the tests.
+The SysON frontend can be used later to update the test models.
 
 3. Run the initialization script
 

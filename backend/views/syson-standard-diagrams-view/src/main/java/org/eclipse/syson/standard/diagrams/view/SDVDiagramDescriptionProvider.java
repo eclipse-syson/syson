@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,11 +77,13 @@ import org.eclipse.syson.standard.diagrams.view.edges.IncludeUseCaseDescriptionP
 import org.eclipse.syson.standard.diagrams.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.NestedActorEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.RedefinitionEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.ReferenceSubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SuccessionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.UsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameterBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParametersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActionUsageParametersCompartmentNodeDescriptionProvider;
@@ -98,7 +100,6 @@ import org.eclipse.syson.standard.diagrams.view.nodes.CompartmentNodeDescription
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.ActionDefinitionParameterBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemBorderNodeDescriptionProvider;
@@ -724,7 +725,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
-        edgeDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
+        edgeDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new ReferenceSubsettingEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
         edgeDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
