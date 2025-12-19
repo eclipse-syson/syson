@@ -242,6 +242,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureTyping());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubsetting());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getRedefinition());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceSubsetting());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralBoolean());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralInfinity());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralInteger());

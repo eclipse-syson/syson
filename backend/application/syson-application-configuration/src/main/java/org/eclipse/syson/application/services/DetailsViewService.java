@@ -659,6 +659,8 @@ public class DetailsViewService {
         if (element instanceof Relationship relationship) {
             if (SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().equals(eStructuralFeature)) {
                 relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
             } else if (SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().equals(eStructuralFeature)) {
                 relationship.setIsImplied(false);
             } else if (SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().equals(eStructuralFeature)) {

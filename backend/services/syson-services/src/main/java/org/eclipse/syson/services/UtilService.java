@@ -750,7 +750,7 @@ public class UtilService {
      */
     public Usage setSubsetting(Usage subsettingUsage, Feature feature) {
         var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
-                .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition) && !(r instanceof ReferenceSubsetting))
                 .map(Subsetting.class::cast)
                 .findFirst();
         if (optSubsetting.isPresent()) {
