@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.edges;
+package org.eclipse.syson.standard.diagrams.view.edges;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -28,71 +27,38 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.DescriptionFinder;
+import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the {@link BindingConnectorAsUsage} edge description.
+ * Used to describe an {@link org.eclipse.syson.sysml.ConnectionUsage} edge between two {@link org.eclipse.syson.sysml.Usage}.
  *
- * @author frouene
+ * @author Arthur Daussy
  */
-public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    public AbstractBindingConnectorAsUsageEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public ConnectionUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
-    /**
-     * Implementers should provide the actual name of this {@link EdgeDescription}.
-     *
-     * @return the name of the edge description
-     */
-    protected abstract String getName();
+    private List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
+        return new DescriptionFinder(this.descriptionNameGenerator).getMainNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage());
+    }
 
-    /**
-     * Implementers should provide the list of {@link NodeDescription} that can be a source of this
-     * {@link EdgeDescription}.
-     *
-     * @param cache
-     *         the cache used to retrieve node descriptions.
-     * @return the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
-     */
-    protected abstract List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache);
-
-    /**
-     * Implementers should provide the list of {@link NodeDescription} that can be a target of this
-     * {@link EdgeDescription}.
-     *
-     * @param cache
-     *         the cache used to retrieve node descriptions.
-     * @return the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
-     */
-    protected abstract List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache);
-
-    @Override
-    public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
-        return this.diagramBuilderHelper.newEdgeDescription()
-                .domainType(domainType)
-                .isDomainBasedEdge(true)
-                .centerLabelExpression("=")
-                .name(this.getName())
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression("aql:self.getSource()")
-                .style(this.createEdgeStyle())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTarget()")
-                .build();
+    protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
+        return new DescriptionFinder(this.descriptionNameGenerator).getMainNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage());
     }
 
     @Override
@@ -102,8 +68,12 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
             EdgeDescription edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
 
-            edgeDescription.getSourceDescriptions().addAll(this.getSourceNodes(cache));
-            edgeDescription.getTargetDescriptions().addAll(this.getTargetNodes(cache));
+            List<NodeDescription> sourceNodes = this.getSourceNodes(cache);
+            List<NodeDescription> targetNodes = this.getTargetNodes(cache);
+
+            edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+
+            edgeDescription.getTargetDescriptions().addAll(targetNodes);
 
             edgeDescription.setPalette(this.createEdgePalette(cache));
         }
@@ -133,18 +103,44 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
                 .build();
     }
 
+    @Override
+    public EdgeDescription create() {
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getConnectionUsage());
+        return this.diagramBuilderHelper.newEdgeDescription()
+                .domainType(domainType)
+                .isDomainBasedEdge(true)
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
+                .name(this.getName())
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .sourceExpression("aql:self.getSource()")
+                .style(this.createEdgeStyle())
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .targetExpression("aql:self.getTarget()")
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectionUsageEdge)
+                        .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
+                                IEditingContext.EDITING_CONTEXT)
+                        // Needs this to avoid instantiation on inheriting concept
+                        + "and self.oclIsTypeOf(sysml::ConnectionUsage)")
+                .build();
+    }
+
+    private String getName() {
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getConnectionUsage());
+    }
 
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectSource).aql(
-                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
-                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
-                        AQLConstants.RECONNECTION_TARGET_VIEW,
-                        AQLConstants.OTHER_END,
-                        IEditingContext.EDITING_CONTEXT,
-                        AQLConstants.DIAGRAM
-                ));
+                                AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                                AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                                AQLConstants.RECONNECTION_TARGET_VIEW,
+                                AQLConstants.OTHER_END,
+                                IEditingContext.EDITING_CONTEXT,
+                                AQLConstants.DIAGRAM
+                        ));
     }
 
     @Override
@@ -153,8 +149,8 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectTarget).aql(
                         AQLConstants.EDGE_SEMANTIC_ELEMENT,
                         AQLConstants.SEMANTIC_RECONNECTION_TARGET,
-                        AQLConstants.RECONNECTION_TARGET_VIEW,
                         AQLConstants.OTHER_END,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
                         IEditingContext.EDITING_CONTEXT,
                         AQLConstants.DIAGRAM
                 ));

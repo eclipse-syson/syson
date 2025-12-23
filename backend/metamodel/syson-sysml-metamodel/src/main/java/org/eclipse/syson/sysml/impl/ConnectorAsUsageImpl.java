@@ -32,8 +32,8 @@ import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -289,10 +289,11 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
      */
     @Override
     public EList<Feature> getConnectorEnd() {
-        List<Element> endFeatures = this.getOwnedRelationship().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        List<Feature> endFeatures = this.getOwnedRelationship().stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(Feature::isIsEnd)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), endFeatures.size(), endFeatures.toArray());
     }
