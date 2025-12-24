@@ -49,7 +49,7 @@ public class DetailsViewServiceTest {
         // SysON for the moment.
         List<Descriptor> composedAdapterFactoryDescriptors = List.of();
         this.detailsViewService = new DetailsViewService(composedAdapterFactoryDescriptors, new IFeedbackMessageService.NoOp(),
-                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()));
+                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()), List.of());
     }
 
     @Test
