@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.syson.application.services.DetailsViewService;
+import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
 import org.eclipse.syson.form.services.aql.FormMutationAQLService;
 import org.eclipse.syson.form.services.aql.FormQueryAQLService;
 import org.eclipse.syson.model.services.ModelMutationElementService;
@@ -75,6 +76,8 @@ import org.springframework.context.annotation.Configuration;
 public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     private static final String GET_DETAILS_VIEW_LABEL_SERVICE = "getDetailsViewLabel";
+
+    private static final String GET_DETAILS_VIEW_HELP_TEXT_SERVICE = "getDetailsViewHelpText";
 
     private static final String CORE_PROPERTIES = "Core Properties";
 
@@ -118,13 +121,16 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
+    private final List<IDetailsViewHelpTextProvider> detailViewHelpTextProviders;
+
     public SysMLv2PropertiesConfigurer(List<Descriptor> composedAdapterFactoryDescriptors, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            ILabelService labelService, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+            ILabelService labelService, List<IDetailsViewHelpTextProvider> detailViewHelpTextProviders, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
         this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.detailViewHelpTextProviders = Objects.requireNonNull(detailViewHelpTextProviders);
         this.utilService = new UtilService();
     }
 
@@ -147,7 +153,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactoryDescriptors, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService,
+                List.of(new DetailsViewService(this.composedAdapterFactoryDescriptors, this.feedbackMessageService, this.readOnlyObjectPredicate, this.detailViewHelpTextProviders), this.labelService, this.utilService,
                         new ModelMutationAQLService(new ModelMutationElementService()), new ModelQueryAQLService(), new FormMutationAQLService(), new FormQueryAQLService()),
                 List.of(SysmlPackage.eINSTANCE));
         ViewConverterResult converterResult = this.converter.convert(viewFormDescription, List.of(), interpreter);
@@ -548,6 +554,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         LabelDescription label = FormFactory.eINSTANCE.createLabelDescription();
         label.setName("LabelWidget");
         label.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
+        label.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         label.setValueExpression(AQLUtils.getSelfServiceCallExpression("eGet", E_STRUCTURAL_FEATURE));
         return label;
     }
@@ -556,6 +563,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextAreaDescription textArea = FormFactory.eINSTANCE.createTextAreaDescription();
         textArea.setName("TextAreaWidget");
         textArea.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
+        textArea.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         textArea.setValueExpression(AQLUtils.getSelfServiceCallExpression("eGet", E_STRUCTURAL_FEATURE));
         textArea.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
@@ -568,6 +576,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
         textfield.setName("TextfieldWidget");
         textfield.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
+        textfield.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         textfield.setValueExpression(AQLUtils.getSelfServiceCallExpression("eGet", E_STRUCTURAL_FEATURE));
         textfield.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
@@ -581,6 +590,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         checkbox.setName("CheckboxWidget");
         checkbox.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
         checkbox.setValueExpression(AQLUtils.getSelfServiceCallExpression("eGet", E_STRUCTURAL_FEATURE));
+        checkbox.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         checkbox.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setNewValue", List.of(E_STRUCTURAL_FEATURE, ViewFormDescriptionConverter.NEW_VALUE)));
@@ -592,6 +602,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("RadioWidget");
         radio.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
+        radio.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         radio.setCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getEnumCandidates", E_STRUCTURAL_FEATURE));
         radio.setCandidateLabelExpression("aql:candidate.name");
         radio.setValueExpression(AQLUtils.getSelfServiceCallExpression("getEnumValue", E_STRUCTURAL_FEATURE));
@@ -606,6 +617,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ReferenceWidget");
         refWidget.setLabelExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_LABEL_SERVICE, E_STRUCTURAL_FEATURE));
+        refWidget.setHelpExpression(AQLUtils.getSelfServiceCallExpression(GET_DETAILS_VIEW_HELP_TEXT_SERVICE, E_STRUCTURAL_FEATURE));
         refWidget.setReferenceNameExpression(AQLConstants.AQL + E_STRUCTURAL_FEATURE + ".name");
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);

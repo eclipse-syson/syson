@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.form.services.api.IDetailsViewHelpTextProvider;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
@@ -83,20 +84,23 @@ public class DetailsViewService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    private final List<IDetailsViewHelpTextProvider> detailsViewHelpTextProviders;
+
     private final ImportService importService;
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
     private final EEnumLiteral unsetEnumLiteral;
 
-    private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
-
     private final UtilService utilService;
 
-    public DetailsViewService(List<Descriptor> composedAdapterFactoryDescriptors, IFeedbackMessageService feedbackMessageService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+    public DetailsViewService(List<Descriptor> composedAdapterFactoryDescriptors, IFeedbackMessageService feedbackMessageService, IReadOnlyObjectPredicate readOnlyObjectPredicate, List<IDetailsViewHelpTextProvider> detailsViewHelpTextProviders) {
         this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.detailsViewHelpTextProviders = Objects.requireNonNull(detailsViewHelpTextProviders);
         this.importService = new ImportService();
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
@@ -107,6 +111,14 @@ public class DetailsViewService {
 
     public String getDetailsViewLabel(Element element, EStructuralFeature eStructuralFeature) {
         return this.getLabelProvider().apply(element, eStructuralFeature);
+    }
+
+    public String getDetailsViewHelpText(Element element, EStructuralFeature eStructuralFeature) {
+        return this.detailsViewHelpTextProviders.stream()
+                .filter(provider -> provider.canHandle(element, eStructuralFeature))
+                .findFirst()
+                .map(provider -> provider.getHelpText(element, eStructuralFeature))
+                .orElse("");
     }
 
     public List<EStructuralFeature> getAdvancedFeatures(Element element) {
