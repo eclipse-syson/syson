@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.representations.Message;
@@ -79,7 +79,7 @@ import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
  */
 public class DetailsViewService {
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
     private final IFeedbackMessageService feedbackMessageService;
 
@@ -93,9 +93,8 @@ public class DetailsViewService {
 
     private final UtilService utilService;
 
-    public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService,
-            final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public DetailsViewService(List<Descriptor> composedAdapterFactoryDescriptors, IFeedbackMessageService feedbackMessageService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.importService = new ImportService();
@@ -652,7 +651,7 @@ public class DetailsViewService {
     }
 
     private BiFunction<Element, EStructuralFeature, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(this.composedAdapterFactoryDescriptors);
     }
 
     private void handleImplied(Element element, EStructuralFeature eStructuralFeature) {

@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -106,7 +106,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String CLOSING_QUOTE_CLOSING_PARENTHESIS = "')";
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
     private final ViewFormDescriptionConverter converter;
 
@@ -118,9 +118,9 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
-    public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
+    public SysMLv2PropertiesConfigurer(List<Descriptor> composedAdapterFactoryDescriptors, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
             ILabelService labelService, final IReadOnlyObjectPredicate readOnlyObjectPredicate) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -147,7 +147,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService,
+                List.of(new DetailsViewService(this.composedAdapterFactoryDescriptors, this.feedbackMessageService, this.readOnlyObjectPredicate), this.labelService, this.utilService,
                         new ModelMutationAQLService(new ModelMutationElementService()), new ModelQueryAQLService(), new FormMutationAQLService(), new FormQueryAQLService()),
                 List.of(SysmlPackage.eINSTANCE));
         ViewConverterResult converterResult = this.converter.convert(viewFormDescription, List.of(), interpreter);

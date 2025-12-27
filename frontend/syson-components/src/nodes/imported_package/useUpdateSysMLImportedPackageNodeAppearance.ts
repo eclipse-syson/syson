@@ -53,7 +53,7 @@ export const useUpdateSysMLImportedPackageNodeAppearance = (): UseUpdateSysMLImp
   const updateSysMLImportedPackageNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLImportedPackageNodeAppearanceInput>
   ) =>
     editSysMLImportedPackageNodeAppearance({
@@ -62,7 +62,7 @@ export const useUpdateSysMLImportedPackageNodeAppearance = (): UseUpdateSysMLImp
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },

@@ -36,16 +36,16 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const SysMLNoteNodePart = ({ nodeId, style, customizedStyleProperties }: SysMLNoteNodePartProps) => {
+export const SysMLNoteNodePart = ({ nodeIds, style, customizedStyleProperties }: SysMLNoteNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateSysMLNoteNodeAppearance } = useUpdateSysMLNoteNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLSysMLNoteNodeAppearanceInput>) =>
-    updateSysMLNoteNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateSysMLNoteNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

@@ -87,7 +87,7 @@ public class DiagramMutationDiagramService {
                         String label = diagramDescription.getLabelProvider().apply(variableManager);
                         List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
 
-                        Diagram diagram = this.diagramCreationService.create(viewUsage, diagramDescription, editingContext);
+                        Diagram diagram = this.diagramCreationService.create(editingContext, diagramDescription, viewUsage);
                         var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                                 .kind(diagram.getKind())
                                 .label(label)
@@ -123,7 +123,7 @@ public class DiagramMutationDiagramService {
             OwningMembership copiedMembership = (OwningMembership) new SiriusEMFCopier().copyWithoutContent(owningMembership);
             var optDuplicate = this.modelMutationElementService.duplicateElement(owningMembership.getMemberElement(), true, true);
             if (optDuplicate.isPresent()) {
-                result = (Element) optDuplicate.get();
+                result = optDuplicate.get();
                 copiedMembership.getOwnedRelatedElement().add(result);
                 if (owningMembership.eContainer() instanceof Element owner) {
                     owner.getOwnedRelationship().add(copiedMembership);

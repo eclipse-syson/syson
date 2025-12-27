@@ -16,7 +16,7 @@ export interface UseUpdateSysMLPackageNodeAppearanceValue {
   updateSysMLPackageNodeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLPackageNodeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditSysMLPackageNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   appearance: Partial<GQLSysMLPackageNodeAppearanceInput>;
 }
 

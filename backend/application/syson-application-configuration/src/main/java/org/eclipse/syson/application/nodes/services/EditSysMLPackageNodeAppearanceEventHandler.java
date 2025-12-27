@@ -81,22 +81,28 @@ public class EditSysMLPackageNodeAppearanceEventHandler implements IDiagramEvent
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof EditSysMLPackageNodeAppearanceInput editAppearanceInput) {
-            String nodeId = editAppearanceInput.nodeId();
-            Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), nodeId);
-            if (optionalNode.isPresent()) {
-                List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<String> nodeIds = editAppearanceInput.nodeIds();
+            List<IAppearanceChange> appearanceChanges = new ArrayList<>();
+            List<String> elementNotFoundIds = new ArrayList<>();
 
-                Optional.ofNullable(editAppearanceInput.appearance().background()).ifPresent(background -> appearanceChanges.add(new NodeBackgroundAppearanceChange(nodeId, background)));
-                Optional.ofNullable(editAppearanceInput.appearance().borderColor()).ifPresent(borderColor -> appearanceChanges.add(new NodeBorderColorAppearanceChange(nodeId, borderColor)));
-                Optional.ofNullable(editAppearanceInput.appearance().borderSize()).ifPresent(borderSize -> appearanceChanges.add(new NodeBorderSizeAppearanceChange(nodeId, borderSize)));
-                Optional.ofNullable(editAppearanceInput.appearance().borderStyle()).ifPresent(borderStyle -> appearanceChanges.add(new NodeBorderStyleAppearanceChange(nodeId, borderStyle)));
-
+            for (String nodeId : nodeIds) {
+                Optional<Node> optionalNode = this.diagramQueryService.findNodeById(diagramContext.diagram(), nodeId);
+                if (optionalNode.isPresent()) {
+                    Optional.ofNullable(editAppearanceInput.appearance().background()).ifPresent(background -> appearanceChanges.add(new NodeBackgroundAppearanceChange(nodeId, background)));
+                    Optional.ofNullable(editAppearanceInput.appearance().borderColor()).ifPresent(borderColor -> appearanceChanges.add(new NodeBorderColorAppearanceChange(nodeId, borderColor)));
+                    Optional.ofNullable(editAppearanceInput.appearance().borderSize()).ifPresent(borderSize -> appearanceChanges.add(new NodeBorderSizeAppearanceChange(nodeId, borderSize)));
+                    Optional.ofNullable(editAppearanceInput.appearance().borderStyle()).ifPresent(borderStyle -> appearanceChanges.add(new NodeBorderStyleAppearanceChange(nodeId, borderStyle)));
+                } else {
+                    elementNotFoundIds.add(nodeId);
+                }
+            }
+            if (!elementNotFoundIds.isEmpty()) {
+                String nodeNotFoundMessage = this.messageService.nodeNotFound(String.join(" - ", elementNotFoundIds));
+                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
+            } else {
                 diagramContext.diagramEvents().add(new EditAppearanceEvent(appearanceChanges));
                 payload = new SuccessPayload(diagramInput.id());
                 changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE, diagramInput.representationId(), diagramInput);
-            } else {
-                String nodeNotFoundMessage = this.messageService.nodeNotFound(nodeId);
-                payload = new ErrorPayload(diagramInput.id(), nodeNotFoundMessage);
             }
         }
 

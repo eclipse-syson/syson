@@ -36,16 +36,16 @@ const LINE_STYLE_OPTIONS = [
   { value: 'Dash_Dot', label: 'Dash Dot' },
 ];
 
-export const SysMLViewFrameNodePart = ({ nodeId, style, customizedStyleProperties }: SysMLViewFrameNodePartProps) => {
+export const SysMLViewFrameNodePart = ({ nodeIds, style, customizedStyleProperties }: SysMLViewFrameNodePartProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { updateSysMLViewFrameNodeAppearance } = useUpdateSysMLViewFrameNodeAppearance();
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLSysMLViewFrameNodeAppearanceInput>) =>
-    updateSysMLViewFrameNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateSysMLViewFrameNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

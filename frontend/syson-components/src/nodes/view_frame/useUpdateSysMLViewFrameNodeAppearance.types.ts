@@ -16,7 +16,7 @@ export interface UseUpdateSysMLViewFrameNodeAppearanceValue {
   updateSysMLViewFrameNodeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLViewFrameNodeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditSysMLViewFrameNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   appearance: Partial<GQLSysMLViewFrameNodeAppearanceInput>;
 }
 

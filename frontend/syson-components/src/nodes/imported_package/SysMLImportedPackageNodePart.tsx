@@ -37,7 +37,7 @@ const LINE_STYLE_OPTIONS = [
 ];
 
 export const SysMLImportedPackageNodePart = ({
-  nodeId,
+  nodeIds,
   style,
   customizedStyleProperties,
 }: SysMLImportedPackageNodePartProps) => {
@@ -46,10 +46,10 @@ export const SysMLImportedPackageNodePart = ({
   const { resetNodeStyleProperties } = useResetNodeAppearance();
 
   const handleResetProperty = (customizedStyleProperty: string) =>
-    resetNodeStyleProperties(editingContextId, diagramId, nodeId, [customizedStyleProperty]);
+    resetNodeStyleProperties(editingContextId, diagramId, nodeIds, [customizedStyleProperty]);
 
   const handleEditProperty = (newValue: Partial<GQLSysMLImportedPackageNodeAppearanceInput>) =>
-    updateSysMLImportedPackageNodeAppearance(editingContextId, diagramId, nodeId, newValue);
+    updateSysMLImportedPackageNodeAppearance(editingContextId, diagramId, nodeIds, newValue);
 
   const isDisabled = (property: string) => !customizedStyleProperties.includes(property);
 

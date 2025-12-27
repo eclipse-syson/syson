@@ -53,7 +53,7 @@ export const useUpdateSysMLNoteNodeAppearance = (): UseUpdateSysMLNoteNodeAppear
   const updateSysMLNoteNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLNoteNodeAppearanceInput>
   ) =>
     editSysMLNoteNodeAppearance({
@@ -62,7 +62,7 @@ export const useUpdateSysMLNoteNodeAppearance = (): UseUpdateSysMLNoteNodeAppear
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },

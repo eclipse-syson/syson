@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.application.configuration;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.provider.SysmlItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SysMLv2EMFConfiguration {
     @Bean
-    AdapterFactory sysmlAdapterFactory() {
-        return new SysmlItemProviderAdapterFactory();
+    ComposedAdapterFactory.Descriptor sysmlAdapterFactory() {
+        return SysmlItemProviderAdapterFactory::new;
     }
 
     @Bean

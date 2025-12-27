@@ -35,12 +35,12 @@ export class Explorer {
     return this.getExplorerView().find('[data-treeitemid][data-testid="selected"]');
   }
 
-  public select(treeItemLabel: string, multiSelection: boolean = false): void {
+  public select(treeItemLabel: string, multiSelection: boolean = false, rangeSelection: boolean = false): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist');
     if (!multiSelection) {
       this.getTreeItemByLabel(treeItemLabel).first().click();
     } else {
-      this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: true });
+      this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection, shiftKey: rangeSelection });
     }
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-testid', 'selected');
   }

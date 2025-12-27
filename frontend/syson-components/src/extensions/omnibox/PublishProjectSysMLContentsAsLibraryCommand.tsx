@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { OmniboxCommandComponentProps } from '@eclipse-sirius/sirius-components-omnibox';
 import { PublishLibraryDialog } from '@eclipse-sirius/sirius-web-application';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -34,9 +33,7 @@ export const PublishProjectSysMLContentsAsLibraryCommand = ({
   return (
     <>
       <ListItemButton key={command.id} data-testid={command.label} onClick={handleClick} onKeyDown={onKeyDown}>
-        <ListItemIcon>
-          <IconOverlay iconURLs={command.iconURLs} alt={command.label} />
-        </ListItemIcon>
+        <ListItemIcon>{command.icon}</ListItemIcon>
         <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
       </ListItemButton>
       {state.open ? (

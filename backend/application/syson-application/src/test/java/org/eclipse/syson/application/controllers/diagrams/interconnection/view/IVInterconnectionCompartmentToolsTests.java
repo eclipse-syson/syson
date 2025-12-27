@@ -107,7 +107,8 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             var result = this.paletteQueryRunner.run(variables);
 
             List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
-            assertThat(quickToolsLabels).hasSize(0);
+            assertThat(quickToolsLabels).hasSize(4);
+            assertThat(quickToolsLabels).containsSequence("Pin", "Adjust size", "Fade", "Hide");
             List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(4);
             assertThat(paletteEntriesLabels).containsSequence("Structure", "Show/Hide", "Related Elements", "Edit");

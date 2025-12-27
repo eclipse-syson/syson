@@ -19,14 +19,36 @@ export class Project {
       },
     });
   }
-  public disableDeletionConfirmationDialog(): void {
+
+  public disableDeletionConfirmationDialog(projectId: string): void {
     cy.window().then((win) => {
-      win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(true));
+      const disabledIds = this.getDisabledProjectIds(win);
+      if(!disabledIds.includes(projectId)) {
+        win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify([projectId, ...disabledIds]));
+      }
     });
   }
-  public enableDeletionConfirmationDialog(): void {
+
+  public enableDeletionConfirmationDialog(projectId: string): void {
     cy.window().then((win) => {
-      win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(false));
+      const disabledIds = this.getDisabledProjectIds(win);
+      if(disabledIds.includes(projectId)) {
+        win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(disabledIds.filter((id: string) => id !== projectId)));
+      }
     });
+  }
+
+  public isDeletionConfirmationDialogDisabled(projectId: string): Cypress.Chainable<boolean> {
+    return cy.window().then((win) => {
+     return this.getDisabledProjectIds(win).includes(projectId);
+    });
+  }
+  
+  private getDisabledProjectIds(win: Cypress.AUTWindow): string[] {
+    const value = win.localStorage.getItem('sirius-confirmation-dialog-disabled');
+    if (value) {
+      return JSON.parse(value);
+    }
+    return [];
   }
 }

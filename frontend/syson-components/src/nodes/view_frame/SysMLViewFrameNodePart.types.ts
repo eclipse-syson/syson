@@ -21,7 +21,7 @@ export interface GQLSysMLViewFrameNodeStyle extends GQLNodeStyle {
 }
 
 export interface SysMLViewFrameNodePartProps {
-  nodeId: string;
+  nodeIds: string[];
   style: GQLSysMLViewFrameNodeStyle;
   customizedStyleProperties: string[];
 }

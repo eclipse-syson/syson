@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
@@ -39,11 +41,11 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
 
     private final IDefaultLabelService defaultLabelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
-    public SysMLv2LabelService(IDefaultLabelService defaultObjectService, ComposedAdapterFactory composedAdapterFactory) {
+    public SysMLv2LabelService(IDefaultLabelService defaultObjectService, List<Descriptor> composedAdapterFactoryDescriptors) {
         this.defaultLabelService = Objects.requireNonNull(defaultObjectService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
     }
 
     @Override
@@ -55,16 +57,26 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
     public StyledString getStyledLabel(Object object) {
         StyledString styledLabel = null;
         if (object instanceof Import imprt) {
-            Adapter adapter = this.composedAdapterFactory.adapt(imprt, IItemLabelProvider.class);
+            List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
+                    .map(Descriptor::createAdapterFactory)
+                    .toList();
+            var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+            Adapter adapter = composedAdapterFactory.adapt(imprt, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
                 styledLabel = StyledString.of(labelProvider.getText(object));
             }
+            composedAdapterFactory.dispose();
         } else if (object instanceof EClass eClass && SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(eClass)) {
             EObject dummyElement = EcoreUtil.create(eClass);
-            Adapter adapter = this.composedAdapterFactory.adapt(dummyElement, IItemLabelProvider.class);
+            List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
+                    .map(Descriptor::createAdapterFactory)
+                    .toList();
+            var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+            Adapter adapter = composedAdapterFactory.adapt(dummyElement, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
                 styledLabel = StyledString.of(labelProvider.getText(dummyElement));
             }
+            composedAdapterFactory.dispose();
         } else {
             styledLabel = this.defaultLabelService.getStyledLabel(object);
         }
