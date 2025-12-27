@@ -20,7 +20,7 @@ export interface GQLSysMLPackageNodeStyle extends GQLNodeStyle {
 }
 
 export interface SysMLPackageNodePartProps {
-  nodeId: string;
+  nodeIds: string[];
   style: GQLSysMLPackageNodeStyle;
   customizedStyleProperties: string[];
 }

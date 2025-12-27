@@ -18,33 +18,41 @@
 
 /* Set the position of react-flow__edgeupdater inside the node */
 .target_handle_bottom ~ .react-flow__edgeupdater-target {
-  transform: translate(0px, -20px);
+  transform: translate(0px, -12px);
+  r: 4px;
 }
 
 .target_handle_top ~ .react-flow__edgeupdater-target {
-  transform: translate(0px, 20px);
+  transform: translate(0px, 12px);
+  r: 4px;
 }
 
 .target_handle_right ~ .react-flow__edgeupdater-target {
-  transform: translate(-20px, 0px);
+  transform: translate(-12px, 0px);
+  r: 4px;
 }
 
 .target_handle_left ~ .react-flow__edgeupdater-target {
-  transform: translate(20px, 0px);
+  transform: translate(12px, 0px);
+  r: 4px;
 }
 
 .source_handle_bottom ~ .react-flow__edgeupdater-source {
-  transform: translate(0px, -20px);
+  transform: translate(0px, -12px);
+  r: 4px;
 }
 
 .source_handle_top ~ .react-flow__edgeupdater-source {
-  transform: translate(0px, 20px);
+  transform: translate(0px, 12px);
+  r: 4px;
 }
 
 .source_handle_right ~ .react-flow__edgeupdater-source {
-  transform: translate(-20px, 0px);
+  transform: translate(-12px, 0px);
+  r: 4px;
 }
 
 .source_handle_left ~ .react-flow__edgeupdater-source {
-  transform: translate(20px, 0px);
+  transform: translate(12px, 0px);
+  r: 4px;
 }

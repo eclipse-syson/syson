@@ -33,7 +33,7 @@ export class PlaywrightNode {
 
   async resetNodeLabelPosition() {
     this.openPalette();
-    await this.page.locator(`[data-testid="reset-label-position"]`).first().click();
+    await this.page.locator(`[data-testid="Reset outside labels positions - Tool"]`).first().click();
   }
 
   async getDOMXYPosition() {

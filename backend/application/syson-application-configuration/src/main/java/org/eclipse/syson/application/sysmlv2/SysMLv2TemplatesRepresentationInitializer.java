@@ -86,7 +86,7 @@ public class SysMLv2TemplatesRepresentationInitializer {
                     var viewUsage = optViewUsage.get();
                     variableManager.put(VariableManager.SELF, viewUsage);
                     variableManager.put(DiagramDescription.LABEL, viewUsage.getDeclaredName());
-                    var diagram = this.diagramCreationService.create(viewUsage, generalViewDiagram, editingContext);
+                    var diagram = this.diagramCreationService.create(editingContext, generalViewDiagram, viewUsage);
                     var label = generalViewDiagram.getLabelProvider().apply(variableManager);
                     var iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 

@@ -14,13 +14,15 @@ import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   diagramPanelActionExtensionPoint,
   EdgeAppearanceSection,
+  EdgeData,
   ImageNodeAppearanceSection,
+  NodeData,
   PaletteAppearanceSectionContributionProps,
   paletteAppearanceSectionExtensionPoint,
   RectangularNodeAppearanceSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  GQLOmniboxCommand,
+  OmniboxCommand,
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
@@ -37,6 +39,7 @@ import {
   navigationBarMenuIconExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { SysMLImportedPackageNodePaletteAppearanceSection } from '../../nodes/imported_package/SysMLImportedPackageNodePaletteAppearanceSection';
 import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNoteNodePaletteAppearanceSection';
 import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/SysMLPackageNodePaletteAppearanceSection';
@@ -53,13 +56,13 @@ const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
 
 const omniboxCommandOverrides: OmniboxCommandOverrideContribution[] = [
   {
-    canHandle: (action: GQLOmniboxCommand) => {
+    canHandle: (action: OmniboxCommand) => {
       return action.id === 'publishProjectSysMLContentsAsLibrary';
     },
     component: PublishProjectSysMLContentsAsLibraryCommand,
   },
   {
-    canHandle: (action: GQLOmniboxCommand) => {
+    canHandle: (action: OmniboxCommand) => {
       return action.id === 'importPublishedLibrary';
     },
     component: ImportLibraryCommand,
@@ -132,45 +135,69 @@ sysONExtensionRegistry.putData<TreeItemContextMenuOverrideContribution[]>(
 const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionContributionProps[] = [
   // standard nodes and edges from Sirius Web
   {
-    canHandle: (node, _edge) => {
-      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'RectangularNodeStyle';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      const canHandle = diagramElementIds.every(
+        (elementId) =>
+          store.getState().nodeLookup.get(elementId)?.data.nodeAppearanceData?.gqlStyle.__typename ===
+          'RectangularNodeStyle'
+      );
+
+      return canHandle;
     },
     component: RectangularNodeAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) =>
+          store.getState().nodeLookup.get(elementId)?.data.nodeAppearanceData?.gqlStyle.__typename === 'ImageNodeStyle'
+      );
     },
     component: ImageNodeAppearanceSection,
   },
   {
-    canHandle: (_node, edge) => {
-      return !!edge;
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every((elementId) => !!store.getState().edgeLookup.get(elementId));
     },
     component: EdgeAppearanceSection,
   },
   // custom nodes from SysON
   {
-    canHandle: (node, _edge) => {
-      return node?.type === 'sysMLPackageNode';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) => store.getState().nodeLookup.get(elementId)?.type === 'sysMLPackageNode'
+      );
     },
     component: SysMLPackageNodePaletteAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.type === 'sysMLImportedPackageNode';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) => store.getState().nodeLookup.get(elementId)?.type === 'sysMLImportedPackageNode'
+      );
     },
     component: SysMLImportedPackageNodePaletteAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.type === 'sysMLNoteNode';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) => store.getState().nodeLookup.get(elementId)?.type === 'sysMLNoteNode'
+      );
     },
     component: SysMLNoteNodePaletteAppearanceSection,
   },
   {
-    canHandle: (node, _edge) => {
-      return node?.type === 'sysMLViewFrameNode';
+    canHandle: (diagramElementIds) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return diagramElementIds.every(
+        (elementId) => store.getState().nodeLookup.get(elementId)?.type === 'sysMLNoteNode'
+      );
     },
     component: SysMLViewFrameNodePaletteAppearanceSection,
   },

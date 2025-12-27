@@ -16,7 +16,7 @@ export interface UseUpdateSysMLNoteNodeAppearanceValue {
   updateSysMLNoteNodeAppearance: (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLNoteNodeAppearanceInput>
   ) => void;
 }
@@ -35,7 +35,7 @@ export interface GQLEditSysMLNoteNodeAppearanceInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  nodeId: string;
+  nodeIds: string[];
   appearance: Partial<GQLSysMLNoteNodeAppearanceInput>;
 }
 

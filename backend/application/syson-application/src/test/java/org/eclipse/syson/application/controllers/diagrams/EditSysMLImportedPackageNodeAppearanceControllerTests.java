@@ -114,7 +114,7 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     UUID.randomUUID(),
                     AllCustomNodesProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput);
 
             this.editSysMLImportedPackageNodeAppearanceMutationRunner.run(input);
@@ -137,7 +137,7 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     UUID.randomUUID(),
                     AllCustomNodesProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     List.of("BACKGROUND", "BORDER_COLOR", "BORDER_SIZE", "BORDER_STYLE"));
 
             this.resetNodeAppearanceMutationRunner.run(input);
@@ -196,7 +196,7 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     UUID.randomUUID(),
                     AllCustomNodesProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     appearanceInput);
 
             this.editSysMLImportedPackageNodeAppearanceMutationRunner.run(input);
@@ -217,7 +217,7 @@ public class EditSysMLImportedPackageNodeAppearanceControllerTests extends Abstr
                     UUID.randomUUID(),
                     AllCustomNodesProjectData.EDITING_CONTEXT_ID.toString(),
                     diagramId.get(),
-                    siriusWebApplicationNodeId.get(),
+                    List.of(siriusWebApplicationNodeId.get()),
                     List.of("BORDER_SIZE"));
 
             this.resetNodeAppearanceMutationRunner.run(input);

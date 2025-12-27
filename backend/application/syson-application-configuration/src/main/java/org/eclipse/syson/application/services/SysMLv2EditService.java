@@ -309,7 +309,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                     String label = diagramDescription.getLabelProvider().apply(variableManager);
                     List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
 
-                    Diagram diagram = this.diagramCreationService.create(viewUsage, diagramDescription, editingContext);
+                    Diagram diagram = this.diagramCreationService.create(editingContext, diagramDescription, viewUsage);
                     var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                             .kind(diagram.getKind())
                             .label(label)

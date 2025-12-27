@@ -46,7 +46,7 @@ input EditSysMLPackageNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: SysMLPackageNodeAppearanceInput!
 }
 
@@ -63,7 +63,7 @@ input EditSysMLImportedPackageNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: SysMLImportedPackageNodeAppearanceInput!
 }
 
@@ -80,7 +80,7 @@ input EditSysMLNoteNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: SysMLNoteNodeAppearanceInput!
 }
 
@@ -98,7 +98,7 @@ input EditSysMLViewFrameNodeAppearanceInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  nodeId: ID!
+  nodeIds: [ID!]!
   appearance: SysMLViewFrameNodeAppearanceInput!
 }
 

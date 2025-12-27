@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.services.ComposedReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -45,8 +45,10 @@ public class DetailsViewServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Use a dummy CompsedAdapterFactory, we don't test methods that require the one used by SysON for the moment.
-        this.detailsViewService = new DetailsViewService(new ComposedAdapterFactory(), new IFeedbackMessageService.NoOp(),
+        // Use a dummy list of CompsedAdapterFactory.Descriptor, we don't test methods that require the one used by
+        // SysON for the moment.
+        List<Descriptor> composedAdapterFactoryDescriptors = List.of();
+        this.detailsViewService = new DetailsViewService(composedAdapterFactoryDescriptors, new IFeedbackMessageService.NoOp(),
                 new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()));
     }
 

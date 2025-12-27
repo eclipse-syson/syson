@@ -37,7 +37,7 @@ import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerServices;
@@ -136,11 +136,10 @@ public class SysONDefaultExplorerServicesTest {
      */
     private ISysONDefaultExplorerService createMockDefaultExplorerService(final ISysONResourceService sysONResourceService) {
         IIdentityService identityService = new IIdentityService.NoOp();
+        IObjectSearchService objectSearchService = new IObjectSearchService.NoOp();
         IContentService contentService = new IContentService.NoOp();
-        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchServiceNoOp();
-
-        IObjectService objectService = new IObjectService.NoOp();
         ILabelService labelService = new ILabelService.NoOp();
+        IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchServiceNoOp();
         IReadOnlyObjectPredicate readOnlyObjectPredicate = new IReadOnlyObjectPredicate() {
 
             @Override
@@ -150,7 +149,8 @@ public class SysONDefaultExplorerServicesTest {
         };
         IDefaultObjectSearchService defaultObjectSearchService = new IDefaultObjectSearchService.NoOp();
 
-        IExplorerServices explorerServices = new ExplorerServices(objectService, labelService, List.of(), representationMetadataSearchService, readOnlyObjectPredicate, defaultObjectSearchService);
+        IExplorerServices explorerServices = new ExplorerServices(identityService, objectSearchService, labelService, contentService, representationMetadataSearchService,
+                readOnlyObjectPredicate, defaultObjectSearchService);
 
         ISysONExplorerFilterService filterService = new SysONExplorerFilterService(sysONResourceService);
 

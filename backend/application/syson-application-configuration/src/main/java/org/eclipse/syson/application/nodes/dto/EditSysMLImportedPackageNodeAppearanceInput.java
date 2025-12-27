@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.nodes.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
@@ -21,6 +22,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author arichard
  */
-public record EditSysMLImportedPackageNodeAppearanceInput(UUID id, String editingContextId, String representationId, String nodeId, SysMLImportedPackageNodeAppearanceInput appearance)
+public record EditSysMLImportedPackageNodeAppearanceInput(UUID id, String editingContextId, String representationId, List<String> nodeIds, SysMLImportedPackageNodeAppearanceInput appearance)
         implements IDiagramInput {
 }

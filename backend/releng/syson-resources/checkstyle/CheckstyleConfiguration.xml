@@ -279,18 +279,18 @@
       <property name="severity" value="error"/>
     </module>
     <module name="ClassDataAbstractionCoupling">
-      <property name="severity" value="info"/>
+      <property name="severity" value="warning"/>
       <property name="max" value="12"/>
     </module>
     <module name="ClassFanOutComplexity">
-      <property name="severity" value="info"/>
+      <property name="severity" value="warning"/>
       <property name="max" value="30"/>
     </module>
     <module name="CyclomaticComplexity">
-      <property name="severity" value="info"/>
+      <property name="severity" value="warning"/>
     </module>
     <module name="NPathComplexity">
-      <property name="severity" value="info"/>
+      <property name="severity" value="warning"/>
     </module>
     <module name="ArrayTypeStyle">
       <property name="severity" value="error"/>

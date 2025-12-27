@@ -53,7 +53,7 @@ export const useUpdateSysMLViewFrameNodeAppearance = (): UseUpdateSysMLViewFrame
   const updateSysMLViewFrameNodeAppearance = (
     editingContextId: string,
     representationId: string,
-    nodeId: string,
+    nodeIds: string[],
     appearance: Partial<GQLSysMLViewFrameNodeAppearanceInput>
   ) =>
     editSysMLViewFrameNodeAppearance({
@@ -62,7 +62,7 @@ export const useUpdateSysMLViewFrameNodeAppearance = (): UseUpdateSysMLViewFrame
           id: crypto.randomUUID(),
           editingContextId,
           representationId,
-          nodeId,
+          nodeIds,
           appearance,
         },
       },
