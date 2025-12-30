@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 
@@ -71,13 +71,13 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
 
     @Override
     public boolean hasChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
-        boolean result = !activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)
-                || !activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        boolean result = !activeFilterIds.contains(SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)
+                || !activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         if (!result) {
             // Check if the user libraries directory contains children, we don't want to display the libraries directory
             // if it only contains empty directories.
             UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User Libraries", this, this.filterService);
-            result = !activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)
+            result = !activeFilterIds.contains(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID)
                     && userLibrariesDirectory.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds);
         }
         return result;
@@ -86,13 +86,13 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
     @Override
     public List<Object> getChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
-        if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (!activeFilterIds.contains(SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             result.add(new KerMLStandardLibraryDirectory(this, this.filterService));
         }
-        if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (!activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             result.add(new SysMLStandardLibraryDirectory(this, this.filterService));
         }
-        if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
+        if (!activeFilterIds.contains(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
             UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User libraries", this, this.filterService);
             if (userLibrariesDirectory.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds)) {
                 // Add the user libraries directory only if it contains children.

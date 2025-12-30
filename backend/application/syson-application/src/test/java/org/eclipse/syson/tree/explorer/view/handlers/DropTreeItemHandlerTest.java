@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuil
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,7 +93,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                 SimpleProjectElementsTestProjectData.DOCUMENT_ID.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
-                List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
+                List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
@@ -161,7 +161,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                 SimpleProjectElementsTestProjectData.DOCUMENT_ID.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
-                List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
+                List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,11 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
@@ -43,7 +46,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.view.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -97,6 +100,12 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
     @Autowired
     private SysONTreeFilterProvider sysonTreeFilterProvider;
+
+    @Autowired
+    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -178,10 +187,11 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         // the explorer view has a new ViewUsage with a diagram
         var sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
-        var defaultFilters = this.sysonTreeFilterProvider.get(null, null).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+        var optionalEditingContext = this.editingContextSearchService.findById(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID);
+        TreeDescription treeDescription = optionalEditingContext.flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, sysONExplorerTreeDescriptionId))
+                .filter(TreeDescription.class::isInstance).map(TreeDescription.class::cast).orElse(null);
+        var defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
+                .filter(TreeFilter::defaultState).map(TreeFilter::id).toList();
 
         String explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(sysONExplorerTreeDescriptionId, expandedIds, defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ import org.eclipse.sirius.web.application.impactanalysis.services.FeatureDeletio
 import org.eclipse.sirius.web.application.impactanalysis.services.FeatureModification;
 import org.eclipse.sirius.web.application.impactanalysis.services.api.IChangeDescriptionDataTreeProviderDelegate;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +54,7 @@ import org.springframework.stereotype.Service;
  * Provides a data tree representing a change description in SysON.
  * <p>
  * The returned data tree contains resource and object changes, but do not display intermediate elements (like Memberships). The filtered elements correspond to the default filters of the SysON
- * explorer (see {@link SysONTreeFilterProvider}).
+ * explorer.
  * </p>
  *
  * @author gdaniel
@@ -476,11 +476,11 @@ public class SysONChangeDescriptionDataTreeProvider implements IChangeDescriptio
     }
 
     private List<String> getDefaultFilters() {
-        return List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID,
-                SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID,
-                SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
-                SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID,
-                SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+        return List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID,
+                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
     }
 
     private List<?> getFeatureAsList(EObject eObject, EStructuralFeature eStructuralFeature) {
