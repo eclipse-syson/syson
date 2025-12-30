@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQue
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
+import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
@@ -42,7 +43,8 @@ import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuil
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -126,6 +128,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @Autowired
     private SysONTreeViewDescriptionProvider sysONTreeViewDescriptionProvider;
 
+    @Autowired
+    private TreeFiltersQueryRunner treeFiltersQueryRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -174,7 +179,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @Test
     public void testDirectEditOnViewUsage() {
         var expandedIds = this.getAllTreeItemIds();
-        var activatedFilters = List.of(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
@@ -204,7 +209,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @Test
     public void testDirectEditOnElementWithShortName() {
         var expandedIds = this.getAllTreeItemIds();
-        var activatedFilters = List.of(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
@@ -229,7 +234,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @Test
     public void testHideExposeElementFilter() {
         var expandedIds = this.getAllTreeItemIds();
-        var activatedFilters = List.of(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
@@ -241,6 +246,64 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .consumeNextWith(hasNoExposeElement)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer View, WHEN hide user libraries filter is active, THEN no user libraries are return as tree item")
+    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testHideUserLibrariesFilter() {
+        var expandedIds = List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString());
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+
+        var hasNoExposeElement = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).allSatisfy(this::assertNoUserLibraryChildren));
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasNoExposeElement)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer View, WHEN querying the filters, THEN the syson filters are returned")
+    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testSysONFiltersOnSysONExplorer() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+                "representationDescriptionId", this.sysONTreeViewDescriptionProvider.getDescriptionId()
+        );
+        var result = this.treeFiltersQueryRunner.run(variables);
+
+        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        assertThat(treeFilterIds).containsExactlyInAnyOrder(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID,
+                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+    }
+
+    @DisplayName("GIVEN the Sirius Explorer View, WHEN querying the filters, THEN no syson filters are returned")
+    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testSysONFiltersOnSiriusExplorer() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+                "representationDescriptionId", "explorer_tree_description"
+        );
+        var result = this.treeFiltersQueryRunner.run(variables);
+
+        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        assertThat(treeFilterIds).isEmpty();
     }
 
     private List<String> getAllTreeItemIds() {
@@ -290,6 +353,19 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         if (children != null) {
             for (TreeItem child : children) {
                 this.assertNoExposeChildren(child);
+            }
+        }
+    }
+
+    private void assertNoUserLibraryChildren(TreeItem item) {
+        if (item == null) {
+            return;
+        }
+        assertThat(item.getLabel().toString()).isNotEqualTo("User libraries");
+        List<TreeItem> children = item.getChildren();
+        if (children != null) {
+            for (TreeItem child : children) {
+                this.assertNoUserLibraryChildren(child);
             }
         }
     }

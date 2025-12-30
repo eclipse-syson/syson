@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ public class HideSysMLStandardLibrariesTreeAlteredContentProvider implements IEx
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override

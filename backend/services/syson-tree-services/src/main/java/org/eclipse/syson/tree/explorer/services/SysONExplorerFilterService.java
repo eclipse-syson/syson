@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
@@ -129,22 +129,22 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     @Override
     public List<Object> applyFilters(IEditingContext editingContext, List<?> elements, List<String> activeFilterIds) {
         List<Object> alteredElements = new ArrayList<>(elements);
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
             alteredElements = this.hideMemberships(alteredElements);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements = this.hideKerMLStandardLibraries(alteredElements);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements = this.hideSysMLStandardLibraries(alteredElements);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements = this.hideUserLibraries(editingContext, alteredElements);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements = this.hideRootNamespace(alteredElements);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
             alteredElements = this.hideExposeElements(alteredElements);
         }
         return alteredElements;

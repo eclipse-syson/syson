@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
@@ -136,22 +136,22 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
 
     private List<Object> applyFilters(IEditingContext editingContext, List<Object> elements, List<String> activeFilterIds) {
         var alteredElements = new ArrayList<>(elements);
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
             alteredElements.removeIf(Membership.class::isInstance);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements.removeIf(this.filterService::isKerMLStandardLibrary);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements.removeIf(this.filterService::isSysMLStandardLibrary);
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements.removeIf(element -> this.filterService.isUserLibrary(editingContext, element));
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements.removeIf(e -> e instanceof Namespace ns && this.utilService.isRootNamespace(ns));
         }
-        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
             alteredElements.removeIf(Expose.class::isInstance);
         }
         return alteredElements;
