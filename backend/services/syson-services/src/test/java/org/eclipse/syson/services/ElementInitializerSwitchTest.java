@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,6 +97,22 @@ public class ElementInitializerSwitchTest {
         this.addInParent(ed2, root);
         var initializedED2 = this.elementInitializerSwitch.doSwitch(ed2);
         assertThat(initializedED2.getDeclaredName()).isEqualTo("EnumerationDefinition2");
+    }
+
+    @DisplayName("GIVEN an Expose, WHEN it is initialized, THEN it's visibility is protected and isImportAll is true")
+    @Test
+    public void testExposeVisibility() {
+        var root = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(root);
+        root.setDeclaredName(ROOT);
+        var vu1 = SysmlFactory.eINSTANCE.createViewUsage();
+        this.addInParent(vu1, root);
+        var e1 = SysmlFactory.eINSTANCE.createMembershipExpose();
+        this.addInParent(e1, root);
+        this.elementInitializerSwitch.doSwitch(e1);
+        assertThat(e1.getVisibility()).isEqualTo(VisibilityKind.PROTECTED);
+        assertThat(e1.isIsImportAll()).isTrue();
+
     }
 
     @DisplayName("GIVEN a Package, WHEN it is initialized, THEN it's name contains the count of the same kind of elements")

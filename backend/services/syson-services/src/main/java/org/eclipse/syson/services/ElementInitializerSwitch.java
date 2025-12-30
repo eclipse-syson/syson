@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowUsage;
@@ -56,6 +57,7 @@ import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 import org.eclipse.syson.util.StandardDiagramsConstants;
@@ -153,6 +155,13 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseFlowUsage(FlowUsage object) {
+        return object;
+    }
+
+    @Override
+    public Element caseExpose(Expose object) {
+        object.setVisibility(VisibilityKind.PROTECTED);
+        object.setIsImportAll(true);
         return object;
     }
 

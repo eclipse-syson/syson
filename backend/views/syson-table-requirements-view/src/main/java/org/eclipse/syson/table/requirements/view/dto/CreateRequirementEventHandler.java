@@ -130,11 +130,13 @@ public class CreateRequirementEventHandler implements IEditingContextEventHandle
         if (optMembershipEClass.isPresent()) {
             var newMembership = SysmlFactory.eINSTANCE.create(optMembershipEClass.get());
             if (newMembership instanceof Membership membership) {
+                var elementInitializerSwitch = new ElementInitializerSwitch();
                 owningNamespace.getOwnedRelationship().add(membership);
                 membership.getOwnedRelatedElement().add(newRequirementUsage);
-                new ElementInitializerSwitch().caseRequirementUsage(newRequirementUsage);
+                elementInitializerSwitch.doSwitch(newRequirementUsage);
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 viewUsage.getOwnedRelationship().add(membershipExpose);
+                elementInitializerSwitch.doSwitch(membership);
                 membershipExpose.setImportedMembership(membership);
                 return true;
             }

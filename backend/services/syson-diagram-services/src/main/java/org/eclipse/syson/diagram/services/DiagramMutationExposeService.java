@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.SiriusWebCoreServices;
@@ -132,6 +133,7 @@ public class DiagramMutationExposeService {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(element.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
+                new ElementInitializerSwitch().doSwitch(membershipExpose);
                 // if it is the General View, we want to hide tree elements if a compartment containing the same
                 // element is displayed or it is displayed as border node
                 if (selectedNode != null && ViewDefinitionKind.isGeneralView(this.utilService.getViewDefinitionKind(element, List.of(), editingContext))) {
@@ -180,6 +182,7 @@ public class DiagramMutationExposeService {
                     var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                     membershipExpose.setImportedMembership(childElement.getOwningMembership());
                     viewUsage.getOwnedRelationship().add(membershipExpose);
+                    new ElementInitializerSwitch().doSwitch(membershipExpose);
                     if (recursive) {
                         membershipExpose.setIsRecursive(true);
                     }
