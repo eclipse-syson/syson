@@ -217,6 +217,73 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with RequirementConstraintMembership, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one using the full notation.")
+    public void checkRequirementConstraintMembershipFullNotation() throws IOException {
+        var input = """
+                private import SI::kilogram;
+                private import ScalarValues::*;
+                part def P1 {
+                    attribute x : Real;
+                }
+                requirement r1 {
+                    subject sub : P1;
+                    attribute actualMass :> ISQBase::mass;
+                    attribute maxMass :> ISQBase::mass;
+                    assume constraint NamedRequirementConstraint {
+                        actualMass <= maxMass
+                    }
+                    assume constraint {
+                        sub.x <= 500
+                    }
+                    require constraint {
+                        actualMass >= 500 [kg]
+                    }
+                }
+                constraint def C;
+                constraint c : C;
+                requirement def R1 {
+                    require constraint c1 :>> c;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with RequirementConstraintMembership having ReferenceSubsetting, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one"
+            + "using the shorthand notation when possible.")
+    public void checkRequirementConstraintMembershipShorthandNotation() throws IOException {
+        var input = """
+                requirement r1;
+                requirement r3 {
+                    requirement r4 {
+                        requirement r5;
+                    }
+                    require r1;
+                    require r4.r5;
+                    require r4 {
+                        doc /* Some doc */
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with RequirementConstraintMembership having MetadataUsage, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
+    public void checkRequirementConstraintMembershipWithMetadataUsage() throws IOException {
+        var input = """
+                private import Metaobjects::SemanticMetadata;
+                requirement def Goal;
+                requirement goals : Goal;
+                metadata def goal :> SemanticMetadata {
+                    :>> baseType = goals meta SysML::Systems::RequirementUsage;
+                }
+                #goal requirement r2 {
+                    assume #goal constraint c1;
+                    require #goal constraint c2;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with ForkNode, WHEN importing/exporting the file, THEN the exported text file should be the same as the imported one.")
     public void checkForkNode() throws IOException {
         var input = """

@@ -121,6 +121,7 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingUsage;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
@@ -922,6 +923,24 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.append("render");
         this.appendOwnedReferenceSubsetting(builder, rendering.getOwnedReferenceSubsetting());
         this.appendChildrenContent(builder, rendering, rendering.getOwnedRelationship());
+        return builder.toString();
+    }
+
+    @Override
+    public String caseRequirementConstraintMembership(RequirementConstraintMembership requirementConstraintMembership) {
+        var builder = this.newAppender();
+        this.appendMembershipPrefix(requirementConstraintMembership, builder);
+        String kind = switch (requirementConstraintMembership.getKind()) {
+            case REQUIREMENT -> "require";
+            case ASSUMPTION -> "assume";
+        };
+        builder.appendWithSpaceIfNeeded(kind);
+        requirementConstraintMembership.getOwnedRelatedElement().stream()
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .forEach(constraintUsage -> this.appendRequirementConstraintUsage(builder, constraintUsage));
+
+
         return builder.toString();
     }
 
@@ -2461,15 +2480,29 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 owningMember.getOwnedRelatedElement().stream()
                         .filter(MetadataUsage.class::isInstance)
                         .map(MetadataUsage.class::cast)
-                        .map(MetadataUsage::getMetadataDefinition)
-                        .filter(Objects::nonNull)
-                        .forEach(mDef -> this.appendPrefixMetadataMember(builder, mDef, type));
+                        .forEach(metadataUsage -> this.appendPrefixMetadataMember(builder, metadataUsage, type));
             }
         }
     }
 
-    private void appendPrefixMetadataMember(Appender builder, Metaclass def, Type type) {
-        builder.appendSpaceIfNeeded().append("#").append(this.getDeresolvableName(def, type));
+    private void appendPrefixMetadataMember(Appender builder, MetadataUsage metadataUsage, Type type) {
+        Metaclass def = metadataUsage.getMetadataDefinition();
+        if (def != null) {
+            builder.appendSpaceIfNeeded().append("#").append(this.getDeresolvableName(def, type));
+            this.childrenMembershipToSkip.add(metadataUsage.getOwningMembership());
+        }
+
+    }
+    
+    private void appendRequirementConstraintUsage(Appender builder, ConstraintUsage constraintUsage) {
+        if (this.useRequirementConstraintUsageShortHandNotation(constraintUsage)) {
+            this.appendRequirementConstraintUsageShorthandNotation(builder, constraintUsage);
+        } else {
+            // Only use the full form :
+            // UsageExtensionKeyword* 'constraint' ConstraintUsageDeclaration CalculationBody
+            builder.appendWithSpaceIfNeeded(this.caseConstraintUsage(constraintUsage));
+        }
+
     }
 
     private void appendSimpleName(Appender appender, Element e) {
@@ -2705,5 +2738,44 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendFeatureChain(builder, feature);
         }
         return builder.toString();
+    }
+
+    private void appendRequirementConstraintUsageShorthandNotation(Appender builder, ConstraintUsage constraintUsage) {
+        ReferenceSubsetting ownedReferenceSubsetting = constraintUsage.getOwnedReferenceSubsetting();
+        if (ownedReferenceSubsetting != null) {
+            this.appendOwnedReferenceSubsetting(builder, ownedReferenceSubsetting);
+        }
+        Appender metadataUsageBuilder = this.newAppender();
+        this.appendExtensionKeyword(metadataUsageBuilder, constraintUsage);
+        List<Specialization> ownedSpecialization = constraintUsage.getOwnedSpecialization().stream()
+                // The owned reference subsetting is already handled previously
+                .filter(specialization -> specialization != ownedReferenceSubsetting)
+                .toList();
+        this.appendFeatureSpecializationPart(builder, constraintUsage, ownedSpecialization, false);
+        this.appendChildrenContent(builder, constraintUsage, constraintUsage.getOwnedMembership());
+    }
+
+    /**
+     * Checks if the shorthand notation for a {@link ConstraintUsage} stored in a {@link RequirementConstraintMembership} can be used.
+     * Shorthand format :"ownedRelationship += OwnedReferenceSubsetting FeatureSpecializationPart? RequirementBody"
+     * <p>
+     * Use this form when :
+     *  <ul>
+     *      <li>has one referenceSubsetting</li>
+     *      <li>has no declared name</li>
+     *      <li>has no declared shortName</li>
+     *      <li>has no MetadataUsage</li>
+     *  </ul>
+     * </p>
+     *
+     * @param constraintUsage
+     *         the constraint to test
+     * @return {@code true} if the shorthand notation can be used
+     */
+    private boolean useRequirementConstraintUsageShortHandNotation(ConstraintUsage constraintUsage) {
+        return constraintUsage.getDeclaredName() == null
+                && constraintUsage.getDeclaredShortName() == null
+                && constraintUsage.getOwnedReferenceSubsetting() != null
+                && constraintUsage.getNestedMetadata().isEmpty();
     }
 }
