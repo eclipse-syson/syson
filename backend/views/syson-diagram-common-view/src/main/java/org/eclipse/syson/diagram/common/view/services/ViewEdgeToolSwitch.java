@@ -268,6 +268,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(targetDescriptions));
         edgeTools.add(this.edgeToolService.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.edgeToolService.createSubsettingEdgeTool(List.of(this.nodeDescription)));
+        edgeTools.add(this.edgeToolService.createReferenceSubsettingEdgeTool(targetDescriptions));
         edgeTools.add(this.edgeToolService.createAllocateEdgeTool(targetDescriptions));
         var definitionNodeDescription = this.edgeToolService.getNodeDescription(this.edgeToolService.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {

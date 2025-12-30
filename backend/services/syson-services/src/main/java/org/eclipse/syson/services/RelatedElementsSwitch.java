@@ -120,6 +120,9 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
                 }
             }
         }
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature())) {
+            relatedElements.add(object);
+        }
         return relatedElements;
     }
 

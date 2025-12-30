@@ -78,7 +78,7 @@ a|image::release-notes-enumeration-definition-after.png[Enumeration definition n
 
 - In diagrams, an _items_ compartment is now available on `PortDefinition` graphical nodes to display `ItemUsage`.
 - In diagrams, an `ItemUsage` graphical border node is now available on `PortDefinition` graphical nodes.
-
+- In diagrams, a new tool named `Reference Subsetting` is available in the palette to create `ReferenceSubsetting` relationships between `Usage` elements.
 
 == Technical details
 
