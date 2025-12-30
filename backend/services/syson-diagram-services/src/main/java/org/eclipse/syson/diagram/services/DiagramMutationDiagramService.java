@@ -29,10 +29,10 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.util.NodeFinder;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
@@ -52,17 +52,19 @@ public class DiagramMutationDiagramService {
     private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
 
     private final IRepresentationPersistenceService representationPersistenceService;
-    private final ModelMutationElementService modelMutationElementService;
+
+    private final MetamodelMutationElementService metamodelMutationElementService;
+
     private final DiagramMutationExposeService diagramMutationExposeService;
 
     public DiagramMutationDiagramService(IDiagramCreationService diagramCreationService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
-            ModelMutationElementService modelMutationElementService, DiagramMutationExposeService diagramMutationExposeService) {
+            DiagramMutationExposeService diagramMutationExposeService) {
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
-        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
+        this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
     }
 
@@ -121,7 +123,7 @@ public class DiagramMutationDiagramService {
         Element result = null;
         if (owningMembership != null) {
             OwningMembership copiedMembership = (OwningMembership) new SiriusEMFCopier().copyWithoutContent(owningMembership);
-            var optDuplicate = this.modelMutationElementService.duplicateElement(owningMembership.getMemberElement(), true, true);
+            var optDuplicate = this.metamodelMutationElementService.duplicateElement(owningMembership.getMemberElement(), true, true);
             if (optDuplicate.isPresent()) {
                 result = optDuplicate.get();
                 copiedMembership.getOwnedRelatedElement().add(result);

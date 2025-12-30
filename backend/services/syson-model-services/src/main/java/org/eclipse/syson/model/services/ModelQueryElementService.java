@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.model.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -69,5 +74,38 @@ public class ModelQueryElementService {
         }
         String sName = element.getShortName();
         return sName != null && !sName.isBlank();
+    }
+
+    /**
+     * Gets the closest common owner for both given {@link Element}.
+     *
+     * @param e1
+     *         an Element
+     * @param e2
+     *         another Element
+     * @return an optional common owning ancestor with the expected type
+     */
+    public <T extends Element> Optional<T> getCommonOwnerAncestor(Element e1, Element e2, Class<T> expectedType, Predicate<T> test) {
+
+        // Collect all owners of e1;
+        List<T> e1Owners = new ArrayList<>();
+        Element currentE1Owner = e1;
+        while (currentE1Owner != null) {
+            if (expectedType.isInstance(currentE1Owner) && (test == null || test.test(expectedType.cast(currentE1Owner)))) {
+                e1Owners.add((T) currentE1Owner);
+            }
+            currentE1Owner = currentE1Owner.getOwner();
+        }
+
+        // Navigate on e2 owners
+        Element currentE2Owner = e2;
+        while (currentE2Owner != null) {
+            if (e1Owners.contains(currentE2Owner)) {
+                return Optional.of(expectedType.cast(currentE2Owner));
+            }
+            currentE2Owner = currentE2Owner.getOwner();
+        }
+
+        return Optional.empty();
     }
 }

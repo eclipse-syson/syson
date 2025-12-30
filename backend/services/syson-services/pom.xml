@@ -113,6 +113,12 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-metamodel-services</artifactId>
+			<version>2025.12.1</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

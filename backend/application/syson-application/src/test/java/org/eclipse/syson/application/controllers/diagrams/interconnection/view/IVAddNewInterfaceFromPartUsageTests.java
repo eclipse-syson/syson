@@ -132,9 +132,9 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
                     // We should have:
                     // - 1 more node for the new PartUsage, with all its compartments
                     // - 2 more nodes for ports on each part usage
-                    // - 1 more node (list item) in the parent's "parts" compartment for the new part
+                    // - 2 more node (list item) in the parent's "parts" compartment for the new part and the new InterfaceUsage
                     // - 1 more edge (the new interface edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 2)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
@@ -209,9 +209,9 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
                     // We should have:
                     // - 1 more node for the new PartUsage, with all its compartments
                     // - 2 more nodes for ports on each part usage
-                    // - 1 more node (list item) in the parent's "parts" compartment for the new part
+                    // - 2 more node (list item) in the parent's "parts" compartment for the new part and the new InterfaceUsage
                     // - 1 more edge (the new interface edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 2)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
