@@ -51,6 +51,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1737[#1737] [diagrams] Add creation tools to InterconnectionCompartmentNode
 - https://github.com/eclipse-syson/syson/issues/1395[#1395] Provide a way to duplicate a semantic element ans its representation node in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1740[#1740] [diagrams] Add _items_ compartment and graphical border node on `PortDefinition` graphical nodes in the _General View_ diagram.
+- https://github.com/eclipse-syson/syson/issues/1786[#1786] [export] Implement textual export of `RequirementConstraintMembership`.
 
 == v2025.12.0
 

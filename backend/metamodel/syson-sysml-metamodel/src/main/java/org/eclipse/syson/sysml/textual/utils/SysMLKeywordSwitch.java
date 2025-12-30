@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
@@ -127,6 +128,11 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     @Override
     public String caseActionUsage(ActionUsage object) {
         return ACTION;
+    }
+
+    @Override
+    public String caseConstraintDefinition(ConstraintDefinition object) {
+        return CONSTRAINT_KEYWORD;
     }
 
     @Override

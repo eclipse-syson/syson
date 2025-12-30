@@ -18,6 +18,36 @@ image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,h
 
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
 
+- `RequirementConstraintMembership` are now properly exported in the textual format such as in:
+
+```
+private import SI::kilogram;
+private import ScalarValues::*;
+part def P1 {
+    attribute x : Real;
+}
+requirement r1 {
+    subject sub : P1;
+    attribute actualMass :> ISQBase::mass;
+    attribute maxMass :> ISQBase::mass;
+    assume constraint NamedRequirementConstraint { //Here
+        actualMass <= maxMass
+    }
+    assume constraint { // And here
+        sub.x <= 500
+    }
+    require constraint { // And here
+        actualMass >= 500 [kg]
+    }
+}
+constraint def C;
+constraint c : C;
+requirement def R1 {
+    require constraint c1 :>> c; // And here
+}
+```
+
+
 == Bug fixes
 
 - Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
