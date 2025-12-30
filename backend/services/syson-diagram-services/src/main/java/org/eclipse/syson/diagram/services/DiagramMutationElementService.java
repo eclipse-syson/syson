@@ -124,7 +124,8 @@ public class DiagramMutationElementService {
             var newViewUsage = SysmlFactory.eINSTANCE.createViewUsage();
             var newViewUsageMembership = this.metamodelMutationElementService.createMembership(viewUsageContainer);
             newViewUsageMembership.getOwnedRelatedElement().add(newViewUsage);
-            new ElementInitializerSwitch().doSwitch(newViewUsage);
+            var elementInitializerSwitch = new ElementInitializerSwitch();
+            elementInitializerSwitch.doSwitch(newViewUsage);
             this.modelMutationElementService.setAsView(newViewUsage, newViewDefinition);
 
             // 2 - move the element and its children from the existingViewUsage to new newViewUsage
@@ -139,12 +140,14 @@ public class DiagramMutationElementService {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(newViewUsage.getOwningMembership());
                 existingViewUsage.getOwnedRelationship().add(membershipExpose);
+                elementInitializerSwitch.doSwitch(membershipExpose);
             }
             // 4 - expose the element and its sub elements previously exposed in the existingViewUsage in the
             // newViewUsage
             var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
             membershipExpose.setImportedMembership(element.getOwningMembership());
             newViewUsage.getOwnedRelationship().add(membershipExpose);
+            elementInitializerSwitch.doSwitch(membershipExpose);
 
             return newViewUsage;
         }

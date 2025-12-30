@@ -31,6 +31,7 @@
 This fix ensure that imported models containing, for example, a top-level `LibraryPackage` and a top-level `Comment` is correctly displayed under the _User libraries_ directory.
 - https://github.com/eclipse-syson/syson/issues/1751[#1751] [diagrams] Make `Interconnection` compartment growable.
 - https://github.com/eclipse-syson/syson/issues/1763[#1763] [diagrams] Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
+- https://github.com/eclipse-syson/syson/issues/1788[#1788] [services] New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification, chapter `8.3.26.2 Expose`.
 
 === Improvements
 

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.tables.Table;
+import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -123,6 +124,7 @@ public class ExposeRequirementsEventHandler implements IEditingContextEventHandl
                     if (!viewUsage.getExposedElement().contains(req)) {
                         var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                         viewUsage.getOwnedRelationship().add(membershipExpose);
+                        new ElementInitializerSwitch().doSwitch(membershipExpose);
                         membershipExpose.setImportedMembership(req.getOwningMembership());
                     }
                 });
