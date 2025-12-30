@@ -36,7 +36,7 @@ public class HideRootNamespaceTreeItemAlteredContentProvider implements IExplore
 
     @Override
     public boolean canHandle(Object object, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
     }
 
     @Override

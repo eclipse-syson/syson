@@ -36,7 +36,7 @@ public class HideMembershipsTreeItemAlteredContentProvider implements IExplorerT
 
     @Override
     public boolean canHandle(Object object, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
     }
 
     @Override

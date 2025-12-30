@@ -29,12 +29,15 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
@@ -56,7 +59,8 @@ import org.eclipse.syson.application.data.SysonStudioTestProjectData;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
+import org.eclipse.syson.tree.explorer.view.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.menu.context.SysONExplorerTreeItemContextMenuEntryProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,6 +123,12 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Autowired
     private SysONTreeFilterProvider sysonTreeFilterProvider;
 
+    @Autowired
+    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
+
     private List<String> defaultFilters;
 
     private String sysONExplorerTreeDescriptionId;
@@ -127,7 +137,13 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void beforeEach() {
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
         this.givenInitialServerState.initialize();
-        this.defaultFilters = this.sysonTreeFilterProvider.get(null, null).stream()
+        var optionalEditingContext = this.editingContextSearchService.findById(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
+        TreeDescription treeDescription = optionalEditingContext
+                        .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
+                        .filter(TreeDescription.class::isInstance)
+                        .map(TreeDescription.class::cast)
+                        .orElse(null);
+        this.defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
                 .filter(TreeFilter::defaultState)
                 .map(TreeFilter::id)
                 .toList();
@@ -298,7 +314,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -389,7 +405,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void treePathQueryApplyExplorerFilters() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
@@ -438,7 +454,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void treePathQueryInSiriusWebDefaultExplorerDoesNotApplyExplorerFilters() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
 
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
@@ -509,7 +525,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithImportedLibraryContainingOnePackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -538,7 +554,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithImportedLibraryContainingPackageAndLibraryPackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
@@ -567,7 +583,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithImportedLibraryContainingLibraryPackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
@@ -621,7 +637,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentWithImportedLibraryContainingCommentAndLibraryPackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
@@ -675,7 +691,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentOnLibrarySemanticDataWithLibraryPackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
@@ -703,7 +719,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getExplorerContentOnLibrarySemanticDataWithPackage() {
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
@@ -736,7 +752,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
                 GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID);
 
-        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, filters);
 
