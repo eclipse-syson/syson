@@ -18,6 +18,7 @@
 * `String getCompartmentItemName(String prefix, String suffix)`
 * `String getInheritedCompartmentItemName(String prefix, String suffix)`
 * `String getEdgeName(String prefix, String suffix)`
+- [services] `MetamodelElementQueryService` has been renamed to `MetamodelQueryElementService`.
 
 === Dependency update
 
