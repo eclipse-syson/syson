@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
 import org.eclipse.syson.util.StandardDiagramsConstants;
@@ -71,7 +71,7 @@ public class ViewNodeService {
 
     private final IObjectSearchService objectSearchService;
 
-    private final MetamodelElementQueryService elementQueryService;
+    private final MetamodelQueryElementService queryElementService;
 
     private final UtilService utilService;
 
@@ -79,7 +79,7 @@ public class ViewNodeService {
 
     public ViewNodeService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.elementQueryService = new MetamodelElementQueryService();
+        this.queryElementService = new MetamodelQueryElementService();
         this.utilService = new UtilService();
         this.elementUtil = new ElementUtil();
     }
@@ -401,7 +401,7 @@ public class ViewNodeService {
         return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
-                .filter(this.elementQueryService::isActor)
+                .filter(this.queryElementService::isActor)
                 .toList();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.syson.sysml.PartUsage;
  *
  * @author arichard
  */
-public class MetamodelElementQueryService {
+public class MetamodelQueryElementService {
 
     /**
      * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.

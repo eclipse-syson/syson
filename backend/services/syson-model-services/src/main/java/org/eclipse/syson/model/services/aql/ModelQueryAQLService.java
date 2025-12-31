@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.syson.model.services.aql;
 
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 
 /**
  * Entry point for all model-related services doing queries in models and called by AQL expressions in representation
@@ -23,16 +23,16 @@ import org.eclipse.syson.sysml.metamodel.services.MetamodelElementQueryService;
  */
 public class ModelQueryAQLService {
 
-    private final MetamodelElementQueryService elementQueryService;
+    private final MetamodelQueryElementService queryElementService;
 
     public ModelQueryAQLService() {
-        this.elementQueryService = new MetamodelElementQueryService();
+        this.queryElementService = new MetamodelQueryElementService();
     }
 
     /**
-     * {@link MetamodelElementQueryService#isActor(Element)}.
+     * {@link MetamodelQueryElementService#isActor(Element)}.
      */
     public boolean isActor(Element element) {
-        return this.elementQueryService.isActor(element);
+        return this.queryElementService.isActor(element);
     }
 }
