@@ -37,7 +37,7 @@ public class HideSysMLStandardLibrariesTreeAlteredContentProvider implements IEx
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override

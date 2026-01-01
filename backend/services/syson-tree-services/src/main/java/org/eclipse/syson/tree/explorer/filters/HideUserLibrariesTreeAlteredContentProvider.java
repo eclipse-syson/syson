@@ -42,7 +42,7 @@ public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTre
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override

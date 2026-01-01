@@ -37,7 +37,7 @@ public class HideExposeElementsTreeItemAlteredContentProvider implements IExplor
 
     @Override
     public boolean canHandle(Object object, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
     }
 
     @Override
