@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.DescriptionFinder;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -141,5 +143,14 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
                         .style(this.createImageNodeStyleDescription("images/feature_inout.svg", borderColor, true))
                         .build()
         );
+    }
+
+    protected EdgeTool createConnectionUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache)
+                .createConnectionUsageEdgeTool(new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
+    }
+
+    protected ViewEdgeToolService getViewEdgeToolService(IViewDiagramElementFinder cache) {
+        return new ViewEdgeToolService(this.viewBuilderHelper, this.diagramBuilderHelper, cache.getNodeDescriptions(), this.descriptionNameGenerator);
     }
 }

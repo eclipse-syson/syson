@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 
@@ -49,5 +50,26 @@ public class ModelMutationAQLService {
      */
     public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
         return this.modelMutationElementService.setAsView(viewUsage, newViewDefinition);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndInterface(PartUsage)}.
+     */
+    public Element createPartUsageAndInterface(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndInterface(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndBindingConnectorAsUsage(PartUsage)}.
+     */
+    public Element createPartUsageAndBindingConnectorAsUsage(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndBindingConnectorAsUsage(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndFlowConnection(PartUsage)}.
+     */
+    public Element createPartUsageAndFlowConnection(PartUsage self) {
+        return this.modelMutationElementService.createPartUsageAndFlowConnection(self);
     }
 }

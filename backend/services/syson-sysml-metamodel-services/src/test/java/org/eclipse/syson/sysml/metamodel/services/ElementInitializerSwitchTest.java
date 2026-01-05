@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -31,7 +30,6 @@ import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +56,7 @@ public class ElementInitializerSwitchTest {
         this.rSet = new ResourceSetImpl();
         // Make sure the resources we manipulate use a CrossReferenceAdapter.
         this.rSet.eAdapters().add(new ECrossReferenceAdapter());
-        this.resource = new JsonResourceFactoryImpl().createResource(URI.createURI("ElementInitializerSwitchTest"));
+        this.resource = new XMIResourceImpl();
         this.rSet.getResources().add(this.resource);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.elementUtil = new ElementUtil();
@@ -191,7 +189,7 @@ public class ElementInitializerSwitchTest {
         this.addInParent(view1, root);
         var initializedView1 = this.elementInitializerSwitch.doSwitch(view1);
         assertThat(initializedView1).isInstanceOf(ViewUsage.class);
-        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
         assertThat(((ViewUsage) initializedView1).getType()).contains(generalViewViewDef);
 
     }

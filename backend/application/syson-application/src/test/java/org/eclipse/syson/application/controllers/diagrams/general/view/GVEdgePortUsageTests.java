@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramIns
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE_STYLE;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +45,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.BindingConnector;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -181,6 +183,7 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
                 creationToolId));
 
+        List<String> bindingConnectorIds = new ArrayList<>();
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(0)
@@ -193,14 +196,14 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);
+            bindingConnectorIds.addAll(newEdges.stream().map(Edge::getTargetObjectId).toList());
         };
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
-        ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("part1", SysmlPackage.eINSTANCE.getType_Feature(),
-                SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
-
-        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+        this.semanticCheckerService.checkElement(this.verifier, BindingConnector.class, () -> bindingConnectorIds.get(0), bindingConnector -> {
+            assertThat(bindingConnector.getOwner().getName()).isEqualTo("Package 1");
+        });
     }
 
     @DisplayName("GIVEN a SysML Project with ports, WHEN interface edge tool creation is request between two ports, THEN a new interface edge is created")

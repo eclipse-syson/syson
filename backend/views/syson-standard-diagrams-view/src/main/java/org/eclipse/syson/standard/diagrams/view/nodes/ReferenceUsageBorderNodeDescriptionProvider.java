@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -173,7 +175,12 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createBindingConnectorAsUsage)
+                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET,
+                                IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
 
         return builder
                 .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
@@ -187,7 +194,11 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createFlowUsage)
+                        .aqlSelf(EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
 
         return builder
                 .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")

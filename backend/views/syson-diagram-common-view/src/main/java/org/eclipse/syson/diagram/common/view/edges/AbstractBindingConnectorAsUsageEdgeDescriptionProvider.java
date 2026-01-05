@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.edges;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -136,12 +137,26 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectSource(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectSource).aql(
+                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
+                        AQLConstants.OTHER_END,
+                        IEditingContext.EDITING_CONTEXT,
+                        AQLConstants.DIAGRAM
+                ));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectTarget).aql(
+                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
+                        AQLConstants.OTHER_END,
+                        IEditingContext.EDITING_CONTEXT,
+                        AQLConstants.DIAGRAM
+                ));
     }
 }

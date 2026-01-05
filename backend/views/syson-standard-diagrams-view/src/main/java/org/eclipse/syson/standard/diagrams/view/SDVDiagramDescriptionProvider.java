@@ -67,6 +67,7 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.ConnectionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DependencyEdgeDescriptionProvider;
@@ -736,6 +737,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new FeatureValueEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new ConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return edgeDescriptionProviders;
     }

@@ -158,9 +158,13 @@ image::gv-allocation-edge.png[{gv} Allocation Edge]
 
 image::gv-containment-edge.png[{gv} Containment Edge]
 
-* Succession.
+* Succession,
 
 image::gv-succession-edge.png[{gv} Succession Edge, width=60%,height=60%]
+
+* Connection Usage.
+
+image::gv-connection-usage-edge.png[{gv} ConnectionUsage Edge, width=60%,height=60%]
 
 include::user-manual:partial$manage-elements-diagram.adoc[]
 

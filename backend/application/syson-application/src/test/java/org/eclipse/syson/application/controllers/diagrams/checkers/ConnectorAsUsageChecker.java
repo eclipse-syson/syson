@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,19 +19,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.FeatureChaining;
 
 import reactor.test.StepVerifier.Step;
 
 /**
- * Checker that verify semantic of a {@link BindingConnectorAsUsage}.
+ * Checker that verify semantic of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}.
  *
+ * @param <T> Type of {@link ConnectorAsUsage} to check.
  * @author Arthur Daussy
  */
-public class BindingConnectorAsUsageChecker {
+public class ConnectorAsUsageChecker<T extends  ConnectorAsUsage> {
 
     private String expectedSourceSemanticId;
 
@@ -51,74 +51,77 @@ public class BindingConnectorAsUsageChecker {
 
     private final SemanticCheckerService semanticCheckerService;
 
-    public BindingConnectorAsUsageChecker(
+    private final Class<T> expectedType;
+
+    public ConnectorAsUsageChecker(
             IIdentityService identityService,
-            SemanticCheckerService semanticCheckerService) {
+            SemanticCheckerService semanticCheckerService,
+            Class<T> expectedType) {
         this.identityService = identityService;
         this.semanticCheckerService = semanticCheckerService;
+        this.expectedType = expectedType;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedSemanticContainer(String anExpectedSemanticContainer) {
+    public ConnectorAsUsageChecker<T> setExpectedSemanticContainer(String anExpectedSemanticContainer) {
         this.expectedSemanticContainer = anExpectedSemanticContainer;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedSourceFeatureChain(List<String> anExpectedSourceFeatureChain) {
+    public ConnectorAsUsageChecker<T> setExpectedSourceFeatureChain(List<String> anExpectedSourceFeatureChain) {
         this.expectedSourceFeatureChain = anExpectedSourceFeatureChain;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedSourceReference(String anExpectedSourceReference) {
+    public ConnectorAsUsageChecker<T> setExpectedSourceReference(String anExpectedSourceReference) {
         this.expectedSourceReference = anExpectedSourceReference;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedSourceSemanticId(String anExpectedSourceSemanticId) {
+    public ConnectorAsUsageChecker<T> setExpectedSourceSemanticId(String anExpectedSourceSemanticId) {
         this.expectedSourceSemanticId = anExpectedSourceSemanticId;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedTargetSemanticId(String anExpectedTargetSemanticId) {
+    public ConnectorAsUsageChecker<T> setExpectedTargetSemanticId(String anExpectedTargetSemanticId) {
         this.expectedTargetSemanticId = anExpectedTargetSemanticId;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedTargetFeatureChain(List<String> anExpectedTargetFeatureChain) {
+    public ConnectorAsUsageChecker<T> setExpectedTargetFeatureChain(List<String> anExpectedTargetFeatureChain) {
         this.expectedTargetFeatureChain = anExpectedTargetFeatureChain;
         return this;
     }
 
-    public BindingConnectorAsUsageChecker setExpectedTargetReference(String anExpectedTargetReference) {
+    public ConnectorAsUsageChecker<T> setExpectedTargetReference(String anExpectedTargetReference) {
         this.expectedTargetReference = anExpectedTargetReference;
         return this;
     }
 
-    public void run(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, AtomicReference<String> bindingIdProvider) {
+    public <T extends ConnectorAsUsage> void run(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<String> edgeIdProvider) {
 
-        this.semanticCheckerService.checkElement(verifier, BindingConnectorAsUsage.class, () -> bindingIdProvider.get(),
-                binding -> {
-                    assertThat(this.identityService.getId(binding.getSourceFeature().getFeatureTarget()))
+        this.semanticCheckerService.checkElement(verifier, this.expectedType, edgeIdProvider::get,
+                connectorAsUsage -> {
+                    assertThat(this.identityService.getId(connectorAsUsage.getSourceFeature().getFeatureTarget()))
                             .isEqualTo(this.expectedSourceSemanticId);
-                    assertThat(this.identityService.getId(binding.getTargetFeature().get(0).getFeatureTarget()))
+                    assertThat(this.identityService.getId(connectorAsUsage.getTargetFeature().get(0).getFeatureTarget()))
                             .isEqualTo(this.expectedTargetSemanticId);
-                    assertThat(this.identityService.getId(binding.getOwningType())).isEqualTo(this.expectedSemanticContainer);
+                    assertThat(this.identityService.getId(connectorAsUsage.getOwner())).isEqualTo(this.expectedSemanticContainer);
 
                     if (this.expectedSourceReference != null) {
-                        assertThat(this.identityService.getId(binding.getSourceFeature()))
+                        assertThat(this.identityService.getId(connectorAsUsage.getSourceFeature()))
                                 .isEqualTo(this.expectedSourceReference);
                     } else if (this.expectedSourceFeatureChain != null) {
-                        assertThat(binding.getSourceFeature().getOwnedFeatureChaining().stream()
+                        assertThat(connectorAsUsage.getSourceFeature().getOwnedFeatureChaining().stream()
                                 .map(FeatureChaining::getChainingFeature)
                                 .map(fc -> this.identityService.getId(fc))
                                 .toList())
                                         .isEqualTo(this.expectedSourceFeatureChain);
                     }
-
                     if (this.expectedTargetReference != null) {
-                        assertThat(this.identityService.getId(binding.getTargetFeature().get(0)))
+                        assertThat(this.identityService.getId(connectorAsUsage.getTargetFeature().get(0)))
                                 .isEqualTo(this.expectedTargetReference);
                     } else if (this.expectedTargetFeatureChain != null) {
-                        assertThat(binding.getTargetFeature().get(0).getOwnedFeatureChaining().stream()
+                        assertThat(connectorAsUsage.getTargetFeature().get(0).getOwnedFeatureChaining().stream()
                                 .map(FeatureChaining::getChainingFeature)
                                 .map(fc -> this.identityService.getId(fc))
                                 .toList())

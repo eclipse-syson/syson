@@ -47,6 +47,16 @@ requirement def R1 {
 }
 ```
 
+- In diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.
+
+image::gv-connection-usage-edge.png[{gv} ConnectionUsage Edge,width=60%,height=60%]
+
+[WARNING]
+====
+For the moment, only binary `ConnectionUsage` are implemented.
+
+The following structure is not yet handled `connection bus : C connect (d1, d2, d3, d4);`.
+====
 
 == Bug fixes
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,6 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.services.DeleteService;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
@@ -53,6 +52,7 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.util.SysMLMetamodelHelper;

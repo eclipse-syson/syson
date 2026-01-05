@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.services.DeleteService;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.services.api.SiriusWebCoreServices;
@@ -55,6 +54,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 

@@ -107,6 +107,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.util.NamedProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

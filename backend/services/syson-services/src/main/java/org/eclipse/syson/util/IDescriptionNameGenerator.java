@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -315,4 +315,18 @@ public interface IDescriptionNameGenerator {
      * @return a string used to name a {@link NodeDescription} or a {@link EdgeDescription}.
      */
     String getDiagramPrefix();
+
+    /**
+     * Checks if the given description name match the compartment pattern name of a Node description.
+     *
+     * @return {@code true} if matches the name of a compartment description
+     */
+    boolean isCompartmentNodeDescriptionName(String name);
+
+    /**
+     * Checks if the given description name match the compartment item pattern name of a Node description.
+     *
+     * @return {@code true} if matches the name of a compartment description
+     */
+    boolean isCompartmentItemNodeDescriptionName(String name);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,10 +30,10 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.tables.Table;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
