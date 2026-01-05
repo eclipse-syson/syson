@@ -106,6 +106,7 @@ import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentN
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortDefinitionOwnedItemCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.PortUsageNestedItemBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ReferenceUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider;
@@ -371,6 +372,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ActionDefinitionParameterBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PortDefinitionOwnedItemBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new PortUsageNestedItemBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.add(new ReferenceUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
