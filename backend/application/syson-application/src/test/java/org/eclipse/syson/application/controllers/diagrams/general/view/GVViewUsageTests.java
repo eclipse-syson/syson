@@ -180,7 +180,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 10),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5),

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -206,7 +206,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 10),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 5),

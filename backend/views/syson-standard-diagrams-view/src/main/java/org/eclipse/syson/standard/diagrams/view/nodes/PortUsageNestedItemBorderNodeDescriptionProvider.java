@@ -12,15 +12,17 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Used to create the border node description for PortUsage getUsage_NestedItem.
@@ -41,7 +43,9 @@ public class PortUsageNestedItemBorderNodeDescriptionProvider extends AbstractIt
     // We filter so elements that extends Item like Parts are not returned
     @Override
     protected String getSemanticCandidatesExpression() {
-        return "aql:self.nestedItem->select(e | e.oclIsTypeOf(sysml::ItemUsage))";
+        var itemUsage = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage());
+        return AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedItem().getName() + "->select(e | e.oclIsTypeOf(" + itemUsage + "))";
+
     }
 
     @Override
