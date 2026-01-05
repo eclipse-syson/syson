@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -23,11 +24,15 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
@@ -194,6 +199,64 @@ public class DiagramQueryElementService {
     }
 
     /**
+     * Get the semantic element of the graphical parent of the given node. If located at the root of the diagram, return the semantic element of the diagram (most likely the {@link ViewUsage)}.
+     *
+     * @param node
+     *         the node for which we want to find the semantic element corresponding to its graphical parent node
+     * @param editingContext
+     *         the editing context
+     * @param contextDiagram
+     *         the diagram
+     * @return an optional element
+     */
+    public Optional<Element> getGraphicalSemanticParent(Node node, IEditingContext editingContext, Diagram contextDiagram) {
+        var parent = new NodeFinder(contextDiagram).getParent(node);
+        Optional<Object> result = Optional.empty();
+        if (parent instanceof Node parentNode) {
+            result = this.objectSearchService.getObject(editingContext, parentNode.getTargetObjectId());
+        } else if (parent instanceof Diagram diagram) {
+            result = this.objectSearchService.getObject(editingContext, diagram.getTargetObjectId());
+        }
+        return result.filter(Element.class::isInstance).map(Element.class::cast);
+    }
+
+    /**
+     * Check if a {@link ConnectionUsage} edge should be displayed between the given source and target.
+     *
+     * <p>If the {@link ConnectionUsage} use feature chain to reference inherited elements, a special computation should check that the edge only connected inherited feature and not "real" objects. To
+     * do that, it will only select elements displayed "inside" the expected parent.</p>
+     *
+     * <p>For example, for the feature chain "part1.port1" where "port1" is not directly owned by "part1", this method will only select target/source node displayed nested a "part1" node or at its
+     * border.
+     * </p>
+     *
+     * @param self
+     *         the connection usage
+     * @param sourceNode
+     *         the graphical source element
+     * @param targetNode
+     *         the graphical target element
+     * @param cacheRendering
+     *         the current DiagramRenderingCache
+     * @param editingContext
+     *         the editing context
+     * @return {@code true} if the edge should be rendered
+     */
+    public boolean shouldRenderConnectionUsageEdge(ConnectionUsage self, org.eclipse.sirius.components.representations.Element sourceNode,
+            org.eclipse.sirius.components.representations.Element targetNode, DiagramRenderingCache cacheRendering, IEditingContext editingContext) {
+        Feature sourceFeature = self.getSourceFeature();
+        if (this.isValidConnectionEnd(sourceFeature, sourceNode, cacheRendering, editingContext)) {
+            // Handle binary connection for now
+            EList<Feature> targetFeature = self.getTargetFeature();
+            if (!targetFeature.isEmpty()) {
+                return this.isValidConnectionEnd(targetFeature.get(0), targetNode, cacheRendering, editingContext);
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Generate the NodeDescription Id of the given {@link Element} in the context of the given {@link Diagram}.
      *
      * @param element
@@ -228,5 +291,53 @@ public class DiagramQueryElementService {
     public Object infoMessage(Object self, String message) {
         this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.INFO));
         return self;
+    }
+
+    /**
+     * Checks if the given node represents the given feature. This especially handle can of feature chain that target inherited member. In such case, the two last segments of the chain should be used
+     * to find the suitable node.
+     *
+     * @param endFeature
+     *         the end feature of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}
+     * @param nodeToTest
+     *         the node to test
+     * @param cacheRendering
+     *         the current cache rendering
+     * @param editingContext
+     *         the editing context
+     * @return true if the given node is valid source/target for the given node
+     */
+    private boolean isValidConnectionEnd(Feature endFeature, org.eclipse.sirius.components.representations.Element nodeToTest, DiagramRenderingCache cacheRendering,
+            IEditingContext editingContext) {
+        boolean isValidSource = false;
+        if (endFeature != null && endFeature.getChainingFeature().size() > 1) {
+            EList<Feature> chainingFeatures = endFeature.getChainingFeature();
+            // Gets the previous chain of the last segment and check if the target node is displayed in it.
+            Feature lastChain = chainingFeatures.get(chainingFeatures.size() - 1);
+            Feature beforeLastChain = chainingFeatures.get(chainingFeatures.size() - 2);
+            // If the target is owned by the previous chaining feature it means it is not an inherited feature, this is the only case where the connection can be displayed between root diagram element
+            // Otherwise, the graphical parent should match the previous chaining feature
+            boolean allowRootElement = beforeLastChain.getOwnedFeature().contains(lastChain);
+            isValidSource = this.isDisplayIn(beforeLastChain, nodeToTest, cacheRendering, editingContext, allowRootElement);
+
+        } else if (nodeToTest.getProps() instanceof NodeElementProps nodeElementProps) {
+            isValidSource = this.objectSearchService.getObject(editingContext, nodeElementProps.getTargetObjectId()).map(sourceElement -> sourceElement == endFeature).orElse(false);
+        }
+        return isValidSource;
+    }
+
+
+    private boolean isDisplayIn(Feature expectedSemanticParent, org.eclipse.sirius.components.representations.Element node, DiagramRenderingCache cacheRendering, IEditingContext editingContext, boolean allowRootElement) {
+        if (node.getProps() instanceof NodeElementProps sourceNodeProps) {
+            return cacheRendering.getParent(sourceNodeProps.getId())
+                    .map(org.eclipse.sirius.components.representations.Element::getProps)
+                    .filter(NodeElementProps.class::isInstance)
+                    .map(NodeElementProps.class::cast)
+                    .map(NodeElementProps::getTargetObjectId)
+                    .flatMap(id -> this.objectSearchService.getObject(editingContext, id))
+                    .map(semanticParent -> semanticParent == expectedSemanticParent)
+                    .orElse(allowRootElement);
+        }
+        return false;
     }
 }

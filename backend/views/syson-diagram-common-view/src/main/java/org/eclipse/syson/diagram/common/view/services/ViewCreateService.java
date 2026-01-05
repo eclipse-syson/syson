@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -31,7 +32,6 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.DeleteService;
-import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -82,6 +82,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.NodeFinder;
@@ -962,6 +963,15 @@ public class ViewCreateService {
         return self;
     }
 
+    /**
+     * Deprecated. Prefer the use of :
+     *
+     * <li>
+     *     <ul>{@link org.eclipse.syson.diagram.services.DiagramMutationElementService#createInterfaceUsage(PortUsage, PortUsage, Node, Node, IEditingContext, DiagramContext)}</ul>
+     *      <ul>{@link MetamodelMutationElementService#createInterfaceUsage(PortUsage, PortUsage, Namespace)}</ul>
+     * </li>
+     */
+    @Deprecated
     public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort) {
         Namespace interfaceContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
         if (interfaceContainer == null) {
@@ -969,7 +979,7 @@ public class ViewCreateService {
         }
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
-        this.addChildInParent(interfaceContainer, interfaceUsage);
+        this.metamodelElementMutationService.addChildInParent(interfaceContainer, interfaceUsage);
         this.elementInitializer(interfaceUsage);
         // Edges should have an empty default name. This is not the case when using the initializer, because
         // InterfaceUsage can be a node, which requires a default name.
@@ -1000,6 +1010,15 @@ public class ViewCreateService {
         return interfaceUsage;
     }
 
+    /**
+     * Deprecated. Prefer the use of :
+     *
+     * <li>
+     *     <ul>{@link org.eclipse.syson.diagram.services.DiagramMutationElementService#createFlowUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}</ul>
+     *      <ul>{@link MetamodelMutationElementService#createFlowUsage(Feature, Feature, Namespace)}</ul>
+     * </li>
+     */
+    @Deprecated
     public FlowUsage createFlowUsage(Feature source, Feature target) {
         Namespace flowContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
         if (flowContainer == null) {
@@ -1009,15 +1028,24 @@ public class ViewCreateService {
         flowContainer.getOwnedRelationship().add(featureMembership);
 
         FlowUsage flowUsage = SysmlFactory.eINSTANCE.createFlowUsage();
-        this.addChildInParent(flowContainer, flowUsage);
+        this.metamodelElementMutationService.addChildInParent(flowContainer, flowUsage);
         this.elementInitializer(flowUsage);
 
-        flowUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(source));
-        flowUsage.getOwnedRelationship().add(this.utilService.createFlowConnectionEnd(target));
+        // Once this method is removed, set MetamodelMutationElementService.createFlowConnectionEnd private
+        flowUsage.getOwnedRelationship().add(this.metamodelElementMutationService.createFlowConnectionEnd(source));
+        flowUsage.getOwnedRelationship().add(this.metamodelElementMutationService.createFlowConnectionEnd(target));
 
         return flowUsage;
     }
 
+    /**
+     * Deprecated. Prefer the use of :
+     *
+     * <li>
+     *     <ul>{@link org.eclipse.syson.diagram.services.DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}</ul>
+     *      <ul>{@link MetamodelMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Namespace)}</ul>
+     * </li>
+     */
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {
 
         Type container = this.utilService.getConnectorContainer(source, target);
@@ -1027,10 +1055,10 @@ public class ViewCreateService {
         }
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
-        this.addChildInParent(container, bindingConnectorAsUsage);
+        this.metamodelElementMutationService.addChildInParent(container, bindingConnectorAsUsage);
         this.elementInitializer(bindingConnectorAsUsage);
 
-        this.utilService.setConnectorEnds(bindingConnectorAsUsage, source, target, container);
+        this.metamodelElementMutationService.setConnectorEnds(bindingConnectorAsUsage, source, target, container);
 
         return bindingConnectorAsUsage;
     }
@@ -1128,71 +1156,6 @@ public class ViewCreateService {
         return sourceUsage;
     }
 
-    public Element createPartUsageAndBindingConnectorAsUsage(PartUsage self) {
-        var parent = self.getOwner();
-        if (parent != null) {
-            // create a new port on given part usage
-            var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(self, newSelfPort);
-            this.elementInitializer(newSelfPort);
-            // create a new part usage as a self sibling
-            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.addChildInParent(parent, newPartUsage);
-            this.elementInitializer(newPartUsage);
-            // create a new port on the new part usage
-            var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(newPartUsage, newPartUsagePort);
-            this.elementInitializer(newPartUsagePort);
-            // create binding connector as usage edge between both new ports
-            this.createBindingConnectorAsUsage(newSelfPort, newPartUsagePort);
-            return newPartUsage;
-        }
-        return self;
-    }
-
-    public Element createPartUsageAndFlowConnection(PartUsage self) {
-        var parent = self.getOwner();
-        if (parent != null) {
-            // create a new port on given part usage
-            var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(self, newSelfPort);
-            this.elementInitializer(newSelfPort);
-            // create a new part usage as a self sibling
-            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.addChildInParent(parent, newPartUsage);
-            this.elementInitializer(newPartUsage);
-            // create a new port on the new part usage
-            var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(newPartUsage, newPartUsagePort);
-            this.elementInitializer(newPartUsagePort);
-            // create flow connection edge between both new ports
-            this.createFlowUsage(newSelfPort, newPartUsagePort);
-            return newPartUsage;
-        }
-        return self;
-    }
-
-    public Element createPartUsageAndInterface(PartUsage self) {
-        var parent = self.getOwner();
-        if (parent != null) {
-            // create a new port on given part usage
-            var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(self, newSelfPort);
-            this.elementInitializer(newSelfPort);
-            // create a new part usage as a self sibling
-            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.addChildInParent(parent, newPartUsage);
-            this.elementInitializer(newPartUsage);
-            // create a new port on the new part usage
-            var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.addChildInParent(newPartUsage, newPartUsagePort);
-            this.elementInitializer(newPartUsagePort);
-            // create interface edge between both new ports
-            this.createInterfaceUsage(newSelfPort, newPartUsagePort);
-            return newPartUsage;
-        }
-        return self;
-    }
 
     private Element getEdgeSemanticContainer(Node source, Node target, Diagram diagram, IEditingContext editingContext) {
         final Element semanticContainer;
@@ -1263,14 +1226,5 @@ public class ViewCreateService {
         return (Namespace) owner;
     }
 
-    private void addChildInParent(Element parent, Element child) {
-        // Parent could be a Package where children are stored
-        // in OwingMembership and not in FeatureMembership.
-        Membership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        if (parent instanceof Package) {
-            membership = SysmlFactory.eINSTANCE.createOwningMembership();
-        }
-        membership.getOwnedRelatedElement().add(child);
-        parent.getOwnedRelationship().add(membership);
-    }
+
 }

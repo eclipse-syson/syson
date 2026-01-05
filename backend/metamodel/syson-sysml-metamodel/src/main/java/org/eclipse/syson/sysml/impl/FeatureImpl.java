@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.CrossSubsetting;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -557,10 +558,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public boolean isIsEnd() {
+        // Force validation of constraint validateEndFeatureMembershipIsEnd
+        if (this.getOwningMembership() instanceof EndFeatureMembership) {
+            return true;
+        }
         return this.isEnd;
     }
 

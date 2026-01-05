@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
@@ -60,7 +60,6 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
-import org.eclipse.syson.util.StandardDiagramsConstants;
 
 /**
  * Switch called when a new element is created. Allows to set various attributes/references.
@@ -301,7 +300,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         this.caseUsage(object);
         var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
         object.getOwnedRelationship().add(featureTyping);
-        var generalViewViewDef = this.elementUtil.findByNameAndType(object, StandardDiagramsConstants.GV_QN, ViewDefinition.class);
+        var generalViewViewDef = this.elementUtil.findByNameAndType(object, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
         featureTyping.setType(generalViewViewDef);
         featureTyping.setTypedFeature(object);
         return object;
@@ -312,9 +311,9 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
      * the given Element.
      *
      * @param element
-     *            the given {@link Element}.
+     *         the given {@link Element}.
      * @return the number of existing elements having the same type than the given Element inside the owning Namespace
-     *         of the given Element.
+     * of the given Element.
      */
     public long existingElementsCount(Element element) {
         Namespace owningNamespace = element.getOwningNamespace();

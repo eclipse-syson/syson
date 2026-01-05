@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,8 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.checkers.BindingConnectorAsUsageChecker;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorAsUsageChecker;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
@@ -163,7 +163,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A0_ID)
                 .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID))
-                .run(this.verifier, this.diagram, newEdge);
+                .run(this.verifier, newEdge);
 
     }
 
@@ -186,7 +186,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A0_ID)
                 .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedSourceFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID))
-                .run(this.verifier, this.diagram, newEdge);
+                .run(this.verifier, newEdge);
 
     }
 
@@ -209,7 +209,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.A11_ID,
                         GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID))
-                .run(this.verifier, this.diagram, newEdge);
+                .run(this.verifier, newEdge);
     }
 
     @DisplayName("GIVEN a ActionUsage owning sibling items, WHEN creating a BindingConnectorAsUsage, THEN the binding should be created the common container (A11) and feature should be directly referenced")
@@ -231,7 +231,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A11_ID)
                 .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID)
                 .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I11TEST_ID)
-                .run(this.verifier, this.diagram, newEdge);
+                .run(this.verifier, newEdge);
     }
 
     @DisplayName("GIVEN a ActionUsage with existing binding, WHEN reconnecting target, THEN binding should be moved to new the common container (A1) and the source/target should be recomputed")
@@ -251,11 +251,11 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID)
                 // No more feature chain required
                 .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I2_ID)
-                .run(this.verifier, this.diagram, newEdge);
+                .run(this.verifier, newEdge);
     }
 
-    private BindingConnectorAsUsageChecker createChecker() {
-        return new BindingConnectorAsUsageChecker(this.identityService, this.semanticCheckerService);
+    private ConnectorAsUsageChecker<BindingConnectorAsUsage> createChecker() {
+        return new ConnectorAsUsageChecker<>(this.identityService, this.semanticCheckerService, BindingConnectorAsUsage.class);
     }
 
     private AtomicReference<String> reconnect(String edgeId, String newTarget, ReconnectEdgeKind reconnectionKind, String expectedSourceGraplicalId, String expectedTargetGraplicalId) {

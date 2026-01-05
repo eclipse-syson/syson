@@ -19,6 +19,19 @@
 * `String getInheritedCompartmentItemName(String prefix, String suffix)`
 * `String getEdgeName(String prefix, String suffix)`
 - [services] `MetamodelElementQueryService` has been renamed to `MetamodelQueryElementService`.
+- [services] In order to match the new service architecture the following methods has been moved:
+* `ViewCreateService.createPartUsageAndBindingConnectorAsUsage(PartUsage self)` to `ModelMutationElementService.createPartUsageAndBindingConnectorAsUsage(PartUsage self)`
+* `ViewCreateService.createPartUsageAndFlowConnection(PartUsage self)` to `ModelMutationElementService.createPartUsageAndFlowConnection(PartUsage self)`
+* `ViewCreateService.createPartUsageAndInterface(PartUsage self)` to `ModelMutationElementService.createPartUsageAndInterface(PartUsage self)`
+* `ViewEdgeService.getTarget(ConnectorAsUsage connector)` to `MetamodelElementQueryService.getTarget(ConnectorAsUsage connector)`
+* `ViewEdgeService.getSource(ConnectorAsUsage connector)` to `MetamodelElementQueryService.getSource(ConnectorAsUsage connector)`
+* `ViewEdgeService.reconnectSource(ConnectorAsUsage bind, Feature newSource)` to `DiagramMutationElementService.reconnectSource(ConnectorAsUsage connectorAsUsage, Feature newSource, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram)`
+* `ViewEdgeService.reconnectTarget(ConnectorAsUsage bind, Feature newTarget)` to `DiagramMutationElementService.reconnectTarget(ConnectorAsUsage connectorAsUsage, Feature newTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram)`
+* `UtilService.createFlowConnectionEnd(Feature targetedFeature)` to `MetamodelMutationElementService.createFlowConnectionEnd(Feature targetedFeature)`
+* `UtilService.setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Type connectorContainer)` to `MetamodelMutationElementService.setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Element connectorContainer)`
+
+NOTE: The signature of the _reconnectSource_ and _reconnect_Target_ now takes graphical nodes as inputs.
+It helps handling inherited elements that are not displayed in their semantic owner.
 
 === Dependency update
 
@@ -57,6 +70,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1740[#1740] [diagrams] Add _items_ compartment and graphical border node on `PortDefinition` graphical nodes in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1786[#1786] [export] Implement textual export of `RequirementConstraintMembership`.
 - https://github.com/eclipse-syson/syson/issues/1771[#1740] [services] Add `IDetailViewHelpTextProvider` service in order to add help text to properties widgets
+- https://github.com/eclipse-syson/syson/issues/1738[#1738] [diagrams] Add `ConnectionUsage` as edges in _General View_  diagram.
 
 == v2025.12.0
 

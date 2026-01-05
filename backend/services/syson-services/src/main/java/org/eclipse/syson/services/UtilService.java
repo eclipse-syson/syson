@@ -39,17 +39,13 @@ import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.FlowEnd;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LibraryPackage;
@@ -86,6 +82,7 @@ import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
+import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -565,40 +562,7 @@ public class UtilService {
         return childState;
     }
 
-    /**
-     * Create a new EndFeatureMembership to be used as {@link FlowUsage} end.
-     *
-     * @param targetedFeature
-     *            the targeted feature (either the source or target of the flow)
-     * @return the new EndFeatureMembership
-     */
-    public EndFeatureMembership createFlowConnectionEnd(Feature targetedFeature) {
-        EndFeatureMembership featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
 
-        FlowEnd flowEnd = SysmlFactory.eINSTANCE.createFlowEnd();
-        featureMembership.getOwnedRelatedElement().add(flowEnd);
-
-        Type owningType = targetedFeature.getOwningType();
-        if (owningType instanceof Feature owningFeature) {
-            var referenceSubSetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-            flowEnd.getOwnedRelationship().add(referenceSubSetting);
-            referenceSubSetting.setReferencedFeature(owningFeature);
-        }
-
-        EndFeatureMembership target = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        flowEnd.getOwnedRelationship().add(target);
-
-        ReferenceUsage referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-        target.getOwnedRelatedElement().add(referenceUsage);
-
-        Redefinition redefinition = SysmlFactory.eINSTANCE.createRedefinition();
-        redefinition.setRedefinedFeature(targetedFeature);
-        redefinition.setRedefiningFeature(referenceUsage);
-
-        referenceUsage.getOwnedRelationship().add(redefinition);
-
-        return featureMembership;
-    }
 
     /**
      * Checks whether {@code element} is a Parallel state. This method allows an {@link Element} as a parameter but is
@@ -927,12 +891,17 @@ public class UtilService {
      * Gets the closest common container for both given {@link Feature}. If none is found prefer the source owning type
      * as a container. In last resort use the target owning type.
      *
+     *
+     * <p>Deprecation prefer the use of DiagramMutationElementService.getConnectorAsUsageContainer.
+     * This method does not work well for targeting inherited features.</p>
+     *
      * @param f1
      *            the first feature
      * @param f2
      *            the second feature
      * @return the common type or <code>null</code>
      */
+    @Deprecated
     public Type getConnectorContainer(Feature f1, Feature f2) {
         Type sourceType = f1.getOwningType();
         Type targetType = f2.getOwningType();
@@ -961,24 +930,6 @@ public class UtilService {
                 .map(FeatureValue.class::cast)
                 .findFirst()
                 .orElse(null);
-    }
-
-    /**
-     * Sets the connector ends of a {@link ConnectorAsUsage}.
-     *
-     * @param connectorAsUsage
-     *            The connector to configure
-     * @param source
-     *            the source of the connector
-     * @param target
-     *            the target of the connector
-     * @param connectorContainer
-     *            the container of the connector. Use to compute the path from the feature path from the connector and
-     *            its ends
-     */
-    public void setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Type connectorContainer) {
-        this.addConnectorEnd(connectorAsUsage, source, connectorContainer);
-        this.addConnectorEnd(connectorAsUsage, target, connectorContainer);
     }
 
     /**
@@ -1081,33 +1032,5 @@ public class UtilService {
         return isUnsynchronized;
     }
 
-    private ReferenceUsage addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Type connectorContainer) {
-        FeatureChainComputer cmp = new FeatureChainComputer();
-        List<Feature> sourceFeaturePath = cmp.computeShortestPath(connectorContainer, end).orElse(List.of());
-        EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
-        connectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
-        ReferenceUsage sourceFeature = SysmlFactory.eINSTANCE.createReferenceUsage();
-        sourceFeature.setIsEnd(true);
-        sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
-        this.elementInitializerSwitch.doSwitch(sourceFeature);
-        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
-        this.elementInitializerSwitch.doSwitch(sourceReferenceSubsetting);
-        if (sourceFeaturePath.isEmpty() || sourceFeaturePath.size() == 1) {
-            // If no path found create a direct reference. The model will not be valid but keep track of the desire
-            // target
-            sourceReferenceSubsetting.setReferencedFeature(end);
-        } else {
-            // We need to create a feature chain here
-            Feature sourceFeatureChain = SysmlFactory.eINSTANCE.createFeature();
-            for (Feature chainedFeature : sourceFeaturePath) {
-                FeatureChaining featureChaining = SysmlFactory.eINSTANCE.createFeatureChaining();
-                sourceFeatureChain.getOwnedRelationship().add(featureChaining);
-                featureChaining.setChainingFeature(chainedFeature);
-            }
-            sourceReferenceSubsetting.setReferencedFeature(sourceFeatureChain);
-            sourceReferenceSubsetting.getOwnedRelatedElement().add(sourceFeatureChain);
-        }
-        return sourceFeature;
-    }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,14 +30,12 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.springframework.stereotype.Service;
 
 /**
  * Object in charge of computing a chain of feature to access a {@link Feature} from one {@link Type}.
  *
  * @author Arthur Daussy
  */
-@Service
 public class FeatureChainComputer {
 
     /**
@@ -139,11 +136,8 @@ public class FeatureChainComputer {
     }
 
     private void collectFeatureFromType(Type owningType, List<Feature> accessFeatures) {
-        // If the owning type is Feature then it a valid candidate
-        if (owningType instanceof Feature owningFeature) {
-            accessFeatures.add(owningFeature);
-        } else if (owningType != null) {
-            // Otherwise check for all features typing this type of one its inherited type
+        if (owningType != null) {
+            // Get all specialization of this type
             this.collectTypingFeatures(accessFeatures, owningType);
         }
     }
@@ -152,14 +146,10 @@ public class FeatureChainComputer {
         List<Type> typeToSearch = new ArrayList<>();
         typeToSearch.add(owningType);
         this.collectAllSubTypes(owningType, typeToSearch);
-        for (Type t : typeToSearch) {
-            List<Feature> features = EMFUtils.getInverse(t, SysmlPackage.eINSTANCE.getFeatureTyping_Type()).stream()
-                    .map(Setting::getEObject)
-                    .map(FeatureTyping.class::cast)
-                    .filter(Objects::nonNull)
-                    .map(FeatureTyping::getOwningFeature)
-                    .toList();
-            accessFeatures.addAll(features);
+        for (Type type : typeToSearch) {
+            if (type instanceof Feature feature) {
+                accessFeatures.add(feature);
+            }
 
         }
     }
@@ -176,8 +166,9 @@ public class FeatureChainComputer {
     }
 
     private List<Type> computeSpecific(Type superType) {
-        return EMFUtils.getInverse(superType, SysmlPackage.eINSTANCE.getSubclassification_Superclassifier())
+        return EMFUtils.getInverse(superType)
                 .stream()
+                .filter(s -> s.getEObject() instanceof Specialization)
                 .map(s -> ((Specialization) s.getEObject()).getSpecific())
                 .toList();
     }

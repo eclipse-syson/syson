@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,11 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -147,5 +149,14 @@ public class DiagramQueryAQLService {
      */
     public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
         return this.diagramQueryElementService.isDiagramEmpty(editingContext, diagramContext, previousDiagram, exposedElements);
+    }
+
+    /**
+     *
+     * {@link DiagramQueryElementService#shouldRenderConnectionUsageEdge(ConnectionUsage, org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache, IEditingContext)}.
+     */
+    public boolean shouldRenderConnectionUsageEdge(ConnectionUsage connectionUsage, org.eclipse.sirius.components.representations.Element sourceNode,
+            org.eclipse.sirius.components.representations.Element targetNode, DiagramRenderingCache cache, IEditingContext editingContext) {
+        return this.diagramQueryElementService.shouldRenderConnectionUsageEdge(connectionUsage, sourceNode, targetNode, cache, editingContext);
     }
 }

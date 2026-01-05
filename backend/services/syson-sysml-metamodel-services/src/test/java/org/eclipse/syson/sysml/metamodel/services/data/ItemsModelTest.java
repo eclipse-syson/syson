@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services.data;
+package org.eclipse.syson.sysml.metamodel.services.data;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -73,7 +72,7 @@ public class ItemsModelTest {
 
     private ResourceSetImpl resourceSet;
 
-    private JsonResource resource;
+    private XMIResource resource;
 
     private Namespace rootNamespace;
 
@@ -119,7 +118,7 @@ public class ItemsModelTest {
 
     private void build() {
         this.resourceSet = new ResourceSetImpl();
-        this.resource = new JSONResourceFactory().createResource(URI.createURI("fakeURI://testModel"));
+        this.resource = new XMIResourceImpl();
         this.resourceSet.getResources().add(this.resource);
         this.rootNamespace = this.builder.createRootNamespace();
         this.resource.getContents().add(this.rootNamespace);
@@ -174,7 +173,7 @@ public class ItemsModelTest {
         return this.resourceSet;
     }
 
-    public JsonResource getResource() {
+    public XMIResource getResource() {
         return this.resource;
     }
 

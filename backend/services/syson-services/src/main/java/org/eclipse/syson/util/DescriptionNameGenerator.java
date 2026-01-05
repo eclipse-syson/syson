@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -294,5 +294,21 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     @Override
     public String getDiagramPrefix() {
         return this.diagramPrefix;
+    }
+
+    @Override
+    public boolean isCompartmentNodeDescriptionName(String name) {
+        if (name != null) {
+            return Pattern.compile(".+Compartment(?!Item).*").matcher(name).matches();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isCompartmentItemNodeDescriptionName(String name) {
+        if (name != null) {
+            return Pattern.compile(".+CompartmentItem.*").matcher(name).matches();
+        }
+        return false;
     }
 }

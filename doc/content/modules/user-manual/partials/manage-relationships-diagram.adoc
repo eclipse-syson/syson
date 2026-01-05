@@ -24,11 +24,15 @@ It is not possible for now to create a graphical edge between two graphical edge
 
 NOTE: In some cases, if {product} detects that the relationship you try to create already exists and creating a duplicate is not valid, it will tell you with a feedback message instead of creating a redundant relationship.
 
+For edges representing a structural element such as `ConnectionUsage`, the created semantic element is owned by the most specific common context of both the source and the target.
+
 === Reconnect relationship
 
 Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element.
 
 If the new source or the new target isn't allowed for reconnection, these one will be faded.
+
+For edges representing a structural element such as `ConnectionUsage`, reconnecting the source or target may move the semantic element to a new owner, following the rule described in the previous chapter.
 
 === Delete relationship
 

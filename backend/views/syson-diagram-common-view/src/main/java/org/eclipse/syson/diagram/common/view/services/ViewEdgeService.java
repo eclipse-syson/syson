@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
@@ -50,9 +49,9 @@ import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -66,7 +65,10 @@ public class ViewEdgeService {
 
     private final UtilService utilService;
 
+    private final MetamodelMutationElementService metamodelMutationElementService;
+
     public ViewEdgeService(IFeedbackMessageService feedbackMessageService) {
+        this.metamodelMutationElementService = new MetamodelMutationElementService();
         this.utilService = new UtilService();
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
@@ -417,35 +419,6 @@ public class ViewEdgeService {
     }
 
     /**
-     * Gets the target of a {@link ConnectorAsUsage}.
-     *
-     * @param connector
-     *            a {@link ConnectorAsUsage}
-     * @return a list of targets
-     */
-    public List<Feature> getTarget(ConnectorAsUsage connector) {
-        return connector.getTargetFeature().stream()
-                .filter(Objects::nonNull)
-                .map(Feature::getFeatureTarget)
-                .toList();
-    }
-
-    /**
-     * Gets the source of a {@link ConnectorAsUsage}.
-     *
-     * @param connector
-     *            a {@link ConnectorAsUsage}
-     * @return the source feature
-     */
-    public Feature getSource(ConnectorAsUsage connectorAsUsage) {
-        Feature sourceFeature = connectorAsUsage.getSourceFeature();
-        if (sourceFeature != null) {
-            return sourceFeature.getFeatureTarget();
-        }
-        return null;
-    }
-
-    /**
      * Reconnects the source of a {@link FlowUsage}.
      *
      * @param flow
@@ -454,13 +427,14 @@ public class ViewEdgeService {
      *            the new source
      * @return the flow itself
      */
+    // @technical-debt At some point this implementation should be aligned with org.eclipse.syson.diagram.services.DiagramMutationElementService.reconnectSource
     public FlowUsage reconnectSource(FlowUsage flow, Feature newSource) {
         EList<FeatureMembership> featureMemberships = flow.getFeatureMembership();
         if (!featureMemberships.isEmpty()) {
             FeatureMembership toDelete = featureMemberships.get(0);
             int index = flow.getOwnedRelationship().indexOf(toDelete);
             flow.getOwnedRelationship().remove(index);
-            flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newSource));
+            flow.getOwnedRelationship().add(index, this.metamodelMutationElementService.createFlowConnectionEnd(newSource));
         }
         return flow;
     }
@@ -474,85 +448,16 @@ public class ViewEdgeService {
      *            the new target
      * @return the flow itself
      */
+    // @technical-debt At some point this implementation should be aligned with org.eclipse.syson.diagram.services.DiagramMutationElementService.reconnectTarget
     public FlowUsage reconnectTarget(FlowUsage flow, Feature newTarget) {
         EList<FeatureMembership> featureMemberships = flow.getFeatureMembership();
         if (featureMemberships.size() >= 2) {
             FeatureMembership toDelete = featureMemberships.get(1);
             int index = flow.getOwnedRelationship().indexOf(toDelete);
             flow.getOwnedRelationship().remove(index);
-            flow.getOwnedRelationship().add(index, this.utilService.createFlowConnectionEnd(newTarget));
+            flow.getOwnedRelationship().add(index, this.metamodelMutationElementService.createFlowConnectionEnd(newTarget));
         }
         return flow;
-    }
-
-    /**
-     * Set a new source {@link Element} for the given {@link ConnectorAsUsage}. Also move the given connector into the
-     * parent (i.e. should be a PartUsage) of the new source.
-     *
-     * @param bind
-     *            the given {@link ConnectorAsUsage}.
-     * @param newSource
-     *            the new target {@link Element}.
-     * @return the given {@link ConnectorAsUsage}.
-     */
-    public ConnectorAsUsage reconnectSource(ConnectorAsUsage bind, Feature newSource) {
-        Optional<Feature> optOldTarget = this.getTarget(bind).stream().findFirst();
-        if (optOldTarget.isEmpty()) {
-            // Invalid model for reconnection
-            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid connector : Missing target", MessageLevel.WARNING));
-            return bind;
-        }
-        Type newContainer = this.utilService.getConnectorContainer(optOldTarget.get(), newSource);
-
-        if (bind.getOwningType() != newContainer && newContainer != null) {
-            // Move to the new container
-            newContainer.getOwnedRelationship().add(bind.getOwningRelationship());
-        }
-
-        // Recompute both target and source chain
-        List<EndFeatureMembership> endFeatureMemberships = bind.getOwnedFeatureMembership().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .toList();
-        bind.getOwnedRelationship().removeAll(endFeatureMemberships);
-
-        this.utilService.setConnectorEnds(bind, newSource, optOldTarget.get(), newContainer);
-        return bind;
-    }
-
-    /**
-     * Set a new target {@link Element} for the given {@link ConnectorAsUsage}.
-     *
-     * @param bind
-     *            the given {@link ConnectorAsUsage}.
-     * @param newTarget
-     *            the new target {@link Element}.
-     * @return the given {@link ConnectorAsUsage}.
-     */
-    public ConnectorAsUsage reconnectTarget(ConnectorAsUsage bind, Feature newTarget) {
-        Feature source = this.getSource(bind);
-        if (source == null) {
-            // Invalid model for reconnection
-            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid connector : Missing source", MessageLevel.WARNING));
-            return bind;
-        }
-        Type newContainer = this.utilService.getConnectorContainer(source, newTarget);
-
-        if (bind.getOwningType() != newContainer && newContainer != null) {
-            // Move to the new container
-            newContainer.getOwnedRelationship().add(bind.getOwningRelationship());
-        }
-
-        // Recompute both target and source chain
-
-        List<EndFeatureMembership> endFeatureMemberships = bind.getOwnedFeatureMembership().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .toList();
-        bind.getOwnedRelationship().removeAll(endFeatureMemberships);
-
-        this.utilService.setConnectorEnds(bind, source, newTarget, newContainer);
-        return bind;
     }
 
     private Optional<ActionUsage> getAction(Element element) {

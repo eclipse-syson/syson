@@ -18,13 +18,16 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -391,6 +394,24 @@ public class ViewEdgeToolService {
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getReferenceSubsetting().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createConnectionUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createConnectionUsage)
+                        .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectionUsage()))
+                .iconURLsExpression("/icons/full/obj16/ConnectionUsage.svg")
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(DiagramElementDescription[]::new))
                 .build();
     }
 

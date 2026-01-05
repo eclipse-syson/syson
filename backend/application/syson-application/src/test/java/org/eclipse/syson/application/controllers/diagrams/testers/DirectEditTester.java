@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -106,6 +107,33 @@ public class DirectEditTester {
     }
 
     /**
+     * Runs a direct edit and checks the resulting label for an edge centered label.
+     *
+     * @param verifier
+     *         the verifier
+     * @param diagram
+     *         the diagram
+     * @param edgeId
+     *         the id of the edge holding the centered label
+     * @param inputLabel
+     *         the input label to be used for the direct edit
+     * @param expectedCenteredLabel
+     *         the expected centered label
+     */
+    public void checkDirectEditCenteredEdgeLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String edgeId, String inputLabel,
+            String expectedCenteredLabel) {
+        Consumer<DiagramRefreshedEventPayload> checker = payload -> Optional.of(payload)
+                .map(DiagramRefreshedEventPayload::diagram)
+                .ifPresentOrElse(newDiagram -> {
+                    DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+
+                    Label newLabel = diagramNavigator.edgeWithId(edgeId).getEdge().getCenterLabel();
+                    assertThat(newLabel.text()).isEqualTo(expectedCenteredLabel);
+                }, () -> fail("Missing diagram"));
+        this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getCenteredLabelId(edgeId, d), checker);
+    }
+
+    /**
      * Run a direct edit and check the resulting label for an {@link InsideLabel} (only check the first one available).
      * 
      * @param verifier
@@ -168,6 +196,11 @@ public class DirectEditTester {
     private String getOutsideLabelid(String mainNodeId, Diagram d) {
         DiagramNavigator diagramNavigator = new DiagramNavigator(d);
         return diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0).id();
+    }
+
+    private String getCenteredLabelId(String edgeId, Diagram d) {
+        DiagramNavigator diagramNavigator = new DiagramNavigator(d);
+        return diagramNavigator.edgeWithId(edgeId).getEdge().getCenterLabel().id();
     }
 
 }
