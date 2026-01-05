@@ -72,6 +72,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1771[#1740] [services] Add `IDetailViewHelpTextProvider` service in order to add help text to properties widgets
 - https://github.com/eclipse-syson/syson/issues/1738[#1738] [diagrams] Add `ConnectionUsage` as edges in _General View_  diagram.
 - https://github.com/eclipse-syson/syson/issues/1747[#1747] [diagrams] Most new elements created by invoking a tool on a diagram are now automatically selected
+- https://github.com/eclipse-syson/syson/issues/1773[#1773] [diagrams] Add _items_ graphical border node on `PortUsage` graphical nodes in the _General View_ diagram.
 
 == v2025.12.0
 

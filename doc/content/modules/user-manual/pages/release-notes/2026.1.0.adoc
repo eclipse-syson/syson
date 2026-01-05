@@ -124,6 +124,7 @@ a|image::release-notes-enumeration-definition-after.png[Enumeration definition n
 - In diagrams, a new tool named `Reference Subsetting` is available in the palette to create `ReferenceSubsetting` relationships between `Usage` elements.
 - In diagrams, many new tools now automatically select the `Elements` they create or expose on a diagram.
 This makes it easy to start editing newly created elements to give them proper names by starting to type directly when the new element appears.
+- In diagrams, an `ItemUsage` graphical border node is now available on `PortUsage` graphical nodes.
 
 
 == Technical details
