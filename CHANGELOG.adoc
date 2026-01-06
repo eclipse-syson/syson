@@ -47,6 +47,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1751[#1751] [diagrams] Make `Interconnection` compartment growable.
 - https://github.com/eclipse-syson/syson/issues/1763[#1763] [diagrams] Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
 - https://github.com/eclipse-syson/syson/issues/1788[#1788] [services] New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification, chapter `8.3.26.2 Expose`.
+- https://github.com/eclipse-syson/syson/issues/1799[#1799] During export, `Element` with a name that conflicts with SysML Keyword should be escaped.
 
 === Improvements
 

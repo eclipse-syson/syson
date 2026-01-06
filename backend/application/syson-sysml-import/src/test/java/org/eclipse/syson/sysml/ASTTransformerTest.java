@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -239,7 +239,7 @@ public class ASTTransformerTest {
         assertInstanceOf(Package.class, packageObject);
 
         assertEquals("package", ((Package) packageObject).getDeclaredName());
-        assertEquals("package", ((Package) packageObject).getQualifiedName());
+        assertEquals("'package'", ((Package) packageObject).getQualifiedName());
     }
 
     @DisplayName("Test that an error is raised when a proxy failed to resolve")
@@ -289,7 +289,7 @@ public class ASTTransformerTest {
         assertInstanceOf(AttributeDefinition.class, attributeDefinition);
         AttributeDefinition typedAttributeDefinition = (AttributeDefinition) attributeDefinition;
         assertEquals("attributeDefinition", typedAttributeDefinition.getDeclaredName());
-        assertEquals("package::attributeDefinition", typedAttributeDefinition.getQualifiedName());
+        assertEquals("'package'::attributeDefinition", typedAttributeDefinition.getQualifiedName());
 
         EObject portDefinition = packageObject.getMember().get(1);
         assertInstanceOf(PortDefinition.class, portDefinition);

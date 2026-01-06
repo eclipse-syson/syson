@@ -8,18 +8,24 @@
 
 - A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
 Note this action is not available for `Relationships`.
++
+[cols="1,1"]
+|===
+|Menu
+|Dialog
 
-image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
-
-image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=25%,height=25%]
+a|image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
+a|image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=30%,height=30%]
+|===
++
 
 - A new tool section `Structure` is available on the palette of an interconnection node, it contains creation tools for `Part` and `Action`.
 - A new tool is available in the _General View_ palette to duplicate a node and its semantic `Element`.
 
-image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram]
+image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=75%,height=75%]
 
 - `RequirementConstraintMembership` are now properly exported in the textual format such as in:
-
++
 ```
 private import SI::kilogram;
 private import ScalarValues::*;
@@ -64,6 +70,20 @@ The following structure is not yet handled `connection bus : C connect (d1, d2, 
 These models are now correctly displayed under the _User libraries_ directory.
 - Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
 - New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification.
+- Fix the textual export of `Elements` with name that conflicts with a SysML keyword.
++
+For example, an `AttributeUsage` named "comment" is now properly exported to:
++
+```
+package Package1 {
+	view view1 : StandardViewDefinitions::GeneralView {
+		expose part1::'comment';
+	}
+	part part1 {
+		attribute 'comment';
+	}
+}
+```
 
 == Improvements
 
@@ -100,7 +120,7 @@ image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysi
 - In diagrams, when attempting to create some graphical edges between `Elements` which already have one of the same type, an informative message is displayed instead.
 This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassification`.
 
-image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing, width=65%,height=65%]
+image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing, width=50%,height=50%]
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
 A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.

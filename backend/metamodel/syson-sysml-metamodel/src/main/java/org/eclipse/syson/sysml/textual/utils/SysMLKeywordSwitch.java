@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,39 +53,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SysMLKeywordSwitch extends SysmlSwitch<String> {
 
-    private static final String CONCERN_KEYWORD = "concern";
-
-    private static final String PERFORM = "perform";
-
-    private static final String ACTION = "action";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SysMLKeywordSwitch.class);
-
-    private static final String PART_KEYWORD = "part";
-
-    private static final String PORT_KEYWORD = "port";
-
-    private static final String INTERFACE_KEYWORD = "interface";
-
-    private static final String ITEM_KEYWORD = "item";
-
-    private static final String OCCURRENCE_KEYWORD = "occurrence";
-
-    private static final String ENUM_KEYWORD = "enum";
-
-    private static final String ATTRIBUTE_KEYWORD = "attribute";
-
-    private static final String ACTOR_KEYWORD = "actor";
-
-    private static final String SUBJECT_KEYWORD = "subject";
-
-    private static final String ASSERT_KEYWORD = "assert";
-
-    private static final String NOT_KEYWORD = "not";
-
-    private static final String CONSTRAINT_KEYWORD = "constraint";
-
-    private static final String REQUIREMENT_KEYWORD = "requirement";
 
     @Override
     public String defaultCase(EObject object) {
@@ -97,42 +66,42 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
 
     @Override
     public String caseConcernDefinition(ConcernDefinition object) {
-        return CONCERN_KEYWORD;
+        return SysMLv2Keywords.CONCERN;
     }
 
     @Override
     public String caseRequirementDefinition(RequirementDefinition object) {
-        return REQUIREMENT_KEYWORD;
+        return SysMLv2Keywords.REQUIREMENT;
     }
 
     @Override
     public String caseConcernUsage(ConcernUsage object) {
-        return CONCERN_KEYWORD;
+        return SysMLv2Keywords.CONCERN;
     }
 
     @Override
     public String caseAttributeDefinition(AttributeDefinition object) {
-        return ATTRIBUTE_KEYWORD;
+        return SysMLv2Keywords.ATTRIBUTE;
     }
 
     @Override
     public String caseAttributeUsage(AttributeUsage object) {
-        return ATTRIBUTE_KEYWORD;
+        return SysMLv2Keywords.ATTRIBUTE;
     }
 
     @Override
     public String caseActionDefinition(ActionDefinition object) {
-        return ACTION;
+        return SysMLv2Keywords.ACTION;
     }
 
     @Override
     public String caseActionUsage(ActionUsage object) {
-        return ACTION;
+        return SysMLv2Keywords.ACTION;
     }
 
     @Override
     public String caseConstraintDefinition(ConstraintDefinition object) {
-        return CONSTRAINT_KEYWORD;
+        return SysMLv2Keywords.CONSTRAINT;
     }
 
     @Override
@@ -141,76 +110,76 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
             // Inside a enumeration definition the keyword enum is optional
             return "";
         }
-        return ENUM_KEYWORD;
+        return SysMLv2Keywords.ENUM;
     }
 
     @Override
     public String casePerformActionUsage(PerformActionUsage object) {
-        return PERFORM + " " + ACTION;
+        return SysMLv2Keywords.PERFORM + " " + SysMLv2Keywords.ACTION;
     }
 
     @Override
     public String caseEnumerationDefinition(EnumerationDefinition object) {
-        return ENUM_KEYWORD;
+        return SysMLv2Keywords.ENUM;
     }
 
     @Override
     public String caseItemDefinition(ItemDefinition object) {
-        return ITEM_KEYWORD;
+        return SysMLv2Keywords.ITEM;
     }
 
     @Override
     public String caseItemUsage(ItemUsage object) {
-        return ITEM_KEYWORD;
+        return SysMLv2Keywords.ITEM;
     }
 
     @Override
     public String caseOccurrenceDefinition(OccurrenceDefinition object) {
-        return OCCURRENCE_KEYWORD;
+        return SysMLv2Keywords.OCCURRENCE;
     }
 
     @Override
     public String caseOccurrenceUsage(OccurrenceUsage object) {
-        return OCCURRENCE_KEYWORD;
+        return SysMLv2Keywords.OCCURRENCE;
     }
 
     @Override
     public String caseInterfaceDefinition(InterfaceDefinition object) {
-        return INTERFACE_KEYWORD;
+        return SysMLv2Keywords.INTERFACE;
     }
 
     @Override
     public String caseInterfaceUsage(InterfaceUsage object) {
-        return INTERFACE_KEYWORD;
+        return SysMLv2Keywords.INTERFACE;
     }
 
     @Override
     public String casePortUsage(PortUsage object) {
-        return PORT_KEYWORD;
+        return SysMLv2Keywords.PORT;
     }
 
     @Override
     public String casePortDefinition(PortDefinition object) {
-        return PORT_KEYWORD;
+        return SysMLv2Keywords.PORT;
     }
 
     @Override
     public String casePartDefinition(PartDefinition object) {
-        return PART_KEYWORD;
+        return SysMLv2Keywords.PART;
     }
 
     @Override
     public String casePartUsage(PartUsage object) {
         if (object.getOwningMembership() instanceof ActorMembership) {
-            return ACTOR_KEYWORD;
+            return SysMLv2Keywords.ACTOR;
         }
-        return PART_KEYWORD;
+        return SysMLv2Keywords.PART;
     }
 
     @Override
     public String caseReferenceUsage(ReferenceUsage object) {
         if (object.getOwningMembership() instanceof SubjectMembership) {
-            return SUBJECT_KEYWORD;
+            return SysMLv2Keywords.SUBJECT;
         }
         return "";
     }
@@ -218,19 +187,19 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     @Override
     public String caseAssertConstraintUsage(AssertConstraintUsage object) {
         if (object.isIsNegated()) {
-            return ASSERT_KEYWORD + " " + NOT_KEYWORD;
+            return SysMLv2Keywords.ASSERT + " " + SysMLv2Keywords.NOT;
         }
-        return ASSERT_KEYWORD;
+        return SysMLv2Keywords.ASSERT;
     }
 
     @Override
     public String caseConstraintUsage(ConstraintUsage object) {
-        return CONSTRAINT_KEYWORD;
+        return SysMLv2Keywords.CONSTRAINT;
     }
 
     @Override
     public String caseRequirementUsage(RequirementUsage object) {
-        return REQUIREMENT_KEYWORD;
+        return SysMLv2Keywords.REQUIREMENT;
     }
 
     private boolean isNullOrEmpty(String target) {

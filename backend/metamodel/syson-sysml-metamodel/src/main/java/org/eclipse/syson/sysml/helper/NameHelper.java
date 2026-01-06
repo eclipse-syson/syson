@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,24 +17,25 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
 
 /**
- * Set of static method to helm to manipulate / escape name / qualified name of sysml elements
+ * Set of static methods to help to manipulate/escape name/qualified name of sysml elements.
  *
  * @author Guillaume Escande
  */
-public class NameHelper {
+public final class NameHelper {
 
-    private static java.util.regex.Pattern VALID_CHARS = Pattern.compile("[^a-zA-Z0-9_]");
+    private static final java.util.regex.Pattern VALID_CHARS = Pattern.compile("[^a-zA-Z0-9_]");
 
     /**
-     * Constructor
+     * Constructor.
      */
     private NameHelper() {
     }
 
     /**
-     * Parse a qualified name to extract list of sections
+     * Parse a qualified name to extract list of sections.
      *
      * @param qualifiedName
      *            qualified name to split
@@ -45,7 +46,7 @@ public class NameHelper {
     }
 
     /**
-     * Escape a string
+     * Escape a string.
      *
      * @param str
      *            string to escape
@@ -56,7 +57,7 @@ public class NameHelper {
     }
 
     /**
-     * Unescape a string
+     * Unescape a string.
      *
      * @param str
      *            string to unescape
@@ -70,7 +71,7 @@ public class NameHelper {
     }
 
     /**
-     * Set a String printable for SysMLv2 name
+     * Set a String printable for SysMLv2 name.
      *
      * @param initialName
      *            string to set printable
@@ -81,7 +82,7 @@ public class NameHelper {
     }
 
     /**
-     * Set a String printable for SysMLv2 name
+     * Set a String printable for SysMLv2 name.
      *
      * @param initialName
      *            string to set printable
@@ -93,7 +94,7 @@ public class NameHelper {
         String name;
         if (initialName == null || initialName.isEmpty()) {
             name = "";
-        } else if (VALID_CHARS.matcher(initialName).find() || !isLetterOrUnderscore(initialName.charAt(0))) {
+        } else if (VALID_CHARS.matcher(initialName).find() || !isLetterOrUnderscore(initialName.charAt(0)) || SysMLv2Keywords.KEYWORDS.contains(initialName.trim())) {
             if (escapeSingleQuotes) {
                 name = '\'' + initialName.replaceAll("'", "\\\\'") + '\'';
             } else {
