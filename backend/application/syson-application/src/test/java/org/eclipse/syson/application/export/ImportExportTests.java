@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,6 +111,22 @@ public class ImportExportTests extends AbstractIntegrationTests {
         var input = """
                 private import ScalarValues::*;
                 package p1;""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a model with Element named with a SysML keyword, WHEN importing/exporting the file, THEN in the exported file the name should be escaped")
+    public void checkEscapedKeywordName() throws IOException {
+        var input = """
+                package Package1 {
+                    view view1 : StandardViewDefinitions::GeneralView {
+                        expose part1;
+                        expose part1::'comment';
+                    }
+                    part part1 {
+                        attribute 'comment';
+                    }
+                }""";
         this.checker.check(input, input);
     }
 

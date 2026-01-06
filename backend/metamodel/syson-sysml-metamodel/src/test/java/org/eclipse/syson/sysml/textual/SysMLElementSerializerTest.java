@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -147,6 +147,22 @@ public class SysMLElementSerializerTest {
     public void emptyPackage() {
         String content = this.convertToText(this.fact.createPackage());
         assertEquals("package ;", content);
+    }
+
+    @Test
+    public void escapedKeywordName() {
+        Package redneringPackage = this.fact.createPackage();
+        redneringPackage.setDeclaredName(SysMLv2Keywords.RENDERING);
+        String content = this.convertToText(redneringPackage);
+        assertEquals("package 'rendering';", content);
+    }
+
+    @Test
+    public void escapedKeywordShortName() {
+        Package redneringPackage = this.fact.createPackage();
+        redneringPackage.setDeclaredShortName(SysMLv2Keywords.IN);
+        String content = this.convertToText(redneringPackage);
+        assertEquals("package <'in'>;", content);
     }
 
     @Test
