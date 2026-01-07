@@ -62,6 +62,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1752[#1752] [diagrams] In diagrams, hide the node displayed on the top of the diagram if the candidate compartment is not hidden.
 - https://github.com/eclipse-syson/syson/issues/1778[#1778] [diagrams] Add new `ReferenceSubsetting` tool to create `ReferenceSubsetting` relationships between `Usage` elements in diagrams.
 - https://github.com/eclipse-syson/syson/issues/1790[#1790] [explorer] Add a condition to apply filters only to the SysON explorer.
+- https://github.com/eclipse-syson/syson/issues/1806[#1806] [diagrams] On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
 
 === New features
 

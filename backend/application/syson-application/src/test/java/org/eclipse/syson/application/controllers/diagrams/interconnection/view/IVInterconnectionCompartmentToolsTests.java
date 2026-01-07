@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,6 +90,7 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
         var interconnectionCompartmentNodeId = new AtomicReference<String>();
         var newPartToolId = new AtomicReference<String>();
         var newActionToolId = new AtomicReference<String>();
+        var newSatisfyRequirementToolId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
@@ -110,14 +111,21 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             assertThat(quickToolsLabels).hasSize(4);
             assertThat(quickToolsLabels).containsSequence("Pin", "Adjust size", "Fade", "Hide");
             List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
-            assertThat(paletteEntriesLabels).hasSize(4);
-            assertThat(paletteEntriesLabels).containsSequence("Structure", "Show/Hide", "Related Elements", "Edit");
-            List<String> paletteStructureSectionToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].label");
+            assertThat(paletteEntriesLabels).hasSize(5);
+            assertThat(paletteEntriesLabels).containsSequence("Requirements", "Structure", "Show/Hide", "Related Elements", "Edit");
+
+            List<String> paletteRequirementsSectionToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].label");
+            assertThat(paletteRequirementsSectionToolsLabels).hasSize(1);
+            assertThat(paletteRequirementsSectionToolsLabels).containsSequence("New Satisfy Requirement");
+            List<String> paletteRequirementsSectionToolsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].id");
+            newSatisfyRequirementToolId.set(paletteRequirementsSectionToolsIds.get(0));
+
+            List<String> paletteStructureSectionToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].label");
             assertThat(paletteStructureSectionToolsLabels).hasSize(2);
             assertThat(paletteStructureSectionToolsLabels).containsSequence("New Part", "New Action");
-            List<String> paletteStructureSectionToolsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].id");
+            List<String> paletteStructureSectionToolsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].id");
             newPartToolId.set(paletteStructureSectionToolsIds.get(0));
-            newActionToolId.set(paletteStructureSectionToolsIds.get(0));
+            newActionToolId.set(paletteStructureSectionToolsIds.get(1));
         };
 
         Runnable createPartTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -125,6 +133,9 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
                 .isSuccess();
         Runnable createActionTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newActionToolId.get(), 0, 0, List.of())
+                .isSuccess();
+        Runnable createSatisfyRequirementTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newSatisfyRequirementToolId.get(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> afterCreatePartToolConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -137,6 +148,11 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             assertThat(interconnectionCompartmentNode.getChildNodes()).hasSize(4);
         });
 
+        Consumer<Object> afterCreateSatisfyRequirementToolConsumer = assertRefreshedDiagramThat(diagram -> {
+            var interconnectionCompartmentNode = new DiagramNavigator(diagram).nodeWithLabel("interconnection").getNode();
+            assertThat(interconnectionCompartmentNode.getChildNodes()).hasSize(5);
+        });
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(requestPalette)
@@ -144,6 +160,8 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
                 .consumeNextWith(afterCreatePartToolConsumer)
                 .then(createActionTool)
                 .consumeNextWith(afterCreateActionToolConsumer)
+                .then(createSatisfyRequirementTool)
+                .consumeNextWith(afterCreateSatisfyRequirementToolConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -104,7 +104,6 @@ image::release-notes-redundant-feature-typing-message.png[Message displayed when
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
 A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
-
 - In diagrams, the default graphical node size has been adjusted to avoid word breaks in label names.
 +
 [cols="1,1"]
@@ -126,7 +125,7 @@ a|image::release-notes-enumeration-definition-after.png[Enumeration definition n
 This makes it easy to start editing newly created elements to give them proper names by starting to type directly when the new element appears.
 - In diagrams, an `ItemUsage` graphical border node is now available on `PortUsage` graphical nodes.
 - In diagrams, an `ItemUsage` compartment is now available on `PortUsage` graphical nodes to display `ItemUsage`.
-
+- On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
 
 == Technical details
 
