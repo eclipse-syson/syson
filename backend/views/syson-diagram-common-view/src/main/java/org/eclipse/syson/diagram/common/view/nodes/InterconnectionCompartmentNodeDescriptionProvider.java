@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -68,7 +69,8 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .name(this.compartmentName)
                 .preconditionExpression(
                         AQLUtils.getSelfServiceCallExpression("isView",
-                                List.of("'StandardViewDefinitions::InterconnectionView'", org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
+                                List.of(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
+                                        IEditingContext.EDITING_CONTEXT,
                                         DiagramContext.DIAGRAM_CONTEXT)))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
@@ -82,6 +84,8 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
         cache.getNodeDescription(this.compartmentName).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()))
+                    .ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -100,6 +104,8 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                     this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()));
             this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.STRUCTURE,
                     this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage()));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.REQUIREMENTS,
+                    this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()));
         });
 
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
@@ -113,6 +119,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
