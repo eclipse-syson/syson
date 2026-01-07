@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.direct.edit.grammars.DirectEditLexer;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser;
+import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
 import org.eclipse.syson.services.data.ItemAndAttributesModelTest;
 import org.eclipse.syson.services.data.SmallFlashlightExample;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -780,7 +781,7 @@ public class DiagramDirectEditListenerTest {
 
     private void doDirectEdit(Element element, ParseTree tree) {
         ParseTreeWalker walker = new ParseTreeWalker();
-        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());
+        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp(), new IDirectEditNamespaceProvider.NoOp());
         walker.walk(listener, tree);
         List<NamedProxy> unresolvedProxies = listener.resolveProxies();
         if (!unresolvedProxies.isEmpty()) {

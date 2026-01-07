@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.GeneralViewDirectEditTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.PartUsage;
@@ -348,6 +349,50 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .then(editLabel)
                 .consumeNextWith(updatedDiagramContentMatcher)
                 .then(exposedElementsChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with an attribute, WHEN we direct edit with an operation using an unimported namespace, THEN the attribute is correctly set")
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void directEditOperationUsingUnImportedNameSpaceName() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel("x1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabel = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 = 1[g]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 = 1 [g]");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabel)
+                .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

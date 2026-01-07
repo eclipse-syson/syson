@@ -150,6 +150,10 @@ This makes it easy to start editing newly created elements to give them proper n
 
 image::release-notes-objective-compartment-documentation.png[Documentation inside objective compartment, width=65%,height=65%]
 
+- In diagrams, when using _direct edit_ tool on an `AttributeUsage` value, you can more easily use symbols from the `SI` library.
+For example you had to import the _SI_ library to use _N_ and _m_ symbols like this `attribute t1 = 10.0 [N*m]` or prefix the symbols if the library was not imported like this `t1 = 10.0 [SI::N*SI::m]`.
+We are know auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
