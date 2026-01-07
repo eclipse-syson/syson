@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.syson.direct.edit.grammars.DirectEditLexer;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser;
 import org.eclipse.syson.services.DiagramDirectEditListener;
 import org.eclipse.syson.services.LabelService;
+import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -41,8 +42,11 @@ public class DiagramMutationLabelService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public DiagramMutationLabelService(IFeedbackMessageService feedbackMessageService) {
+    private final IDirectEditNamespaceProvider directEditNamespaceProvider;
+
+    public DiagramMutationLabelService(IFeedbackMessageService feedbackMessageService, IDirectEditNamespaceProvider directEditNamespaceProvider) {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.directEditNamespaceProvider = Objects.requireNonNull(directEditNamespaceProvider);
     }
 
     /**
@@ -102,7 +106,7 @@ public class DiagramMutationLabelService {
             tree = parser.nodeExpression();
         }
         ParseTreeWalker walker = new ParseTreeWalker();
-        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.feedbackMessageService, options);
+        DiagramDirectEditListener listener = new DiagramDirectEditListener(element, this.feedbackMessageService, this.directEditNamespaceProvider, options);
         walker.walk(listener, tree);
         listener.resolveProxies().forEach(proxy -> {
             this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to resolve \u2035{0}\u2035", proxy.nameToResolve()), MessageLevel.WARNING));

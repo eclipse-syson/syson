@@ -66,6 +66,7 @@ import org.eclipse.syson.direct.edit.grammars.DirectEditParser.TriggerExpression
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.VariationPrefixExpressionContext;
+import org.eclipse.syson.services.api.IDirectEditNamespaceProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -132,6 +133,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final IDirectEditNamespaceProvider directEditNamespaceProvider;
+
     private final UtilService utilService;
 
     private final ImportService importService;
@@ -149,9 +152,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private List<String> options;
 
-    public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, String... options) {
+    public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, IDirectEditNamespaceProvider directEditNamespaceProvider, String... options) {
         this.element = Objects.requireNonNull(element);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.directEditNamespaceProvider = Objects.requireNonNull(directEditNamespaceProvider);
         this.options = List.of();
         if (options != null) {
             this.options = Arrays.asList(options);
@@ -1378,9 +1382,11 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             deresolvingNamespaces = new DeresolvingNamespaceProvider().getDeresolvingNamespaces(context);
         }
         for (Namespace deresolvingNamespace : deresolvingNamespaces) {
-            Membership candidate = deresolvingNamespace.resolve(proxy.nameToResolve());
-            if (candidate != null) {
-                Element candidateMember = candidate.getMemberElement();
+            Optional<Membership> candidate = Optional.ofNullable(deresolvingNamespace.resolve(proxy.nameToResolve()))
+                .or(() -> this.directEditNamespaceProvider.getMembership(proxy));
+
+            if (candidate.isPresent()) {
+                Element candidateMember = candidate.get().getMemberElement();
                 EClassifier eType = proxy.ref().getEType();
                 if (eType != null && eType.isInstance(candidateMember)) {
                     this.eSetReference(context, proxy.ref(), candidateMember);
