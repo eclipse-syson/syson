@@ -63,13 +63,14 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     private boolean containsOnlyLibraryPackages(Resource resource) {
-        return resource.getContents().stream()
+        var namespaces = resource.getContents().stream()
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .filter(this.utilService::isRootNamespace)
                 .flatMap(namespace -> namespace.getOwnedElement().stream()
                         .filter(Namespace.class::isInstance))
-                .allMatch(LibraryPackage.class::isInstance);
+                .toList();
+        return !namespaces.isEmpty() && namespaces.stream().allMatch(LibraryPackage.class::isInstance);
     }
 
     @Override

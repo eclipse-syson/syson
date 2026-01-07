@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -77,6 +78,17 @@ public class SysONExplorerFilterServiceTest {
     public void isSysMLStandardLibrarySysMLResource() {
         Resource resource = this.createSysMLResource();
         assertThat(this.filterService.isSysMLStandardLibrary(resource)).isTrue();
+    }
+
+    @Test
+    public void isEmptyImportedDocumentNotConsideredUserLlibrary() {
+        Resource resource = this.createSysMLResource();
+        var namespace = SysmlFactory.eINSTANCE.createNamespace();
+        var importedAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
+        importedAnnotation.setSource("org.eclipse.syson.sysml.imported");
+        namespace.getEAnnotations().add(importedAnnotation);
+        resource.getContents().add(namespace);
+        assertThat(this.filterService.isUserLibrary(new IEditingContext.NoOp(), resource)).isFalse();
     }
 
     @Test
