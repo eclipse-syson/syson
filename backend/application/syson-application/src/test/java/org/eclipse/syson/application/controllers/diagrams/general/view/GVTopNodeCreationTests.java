@@ -164,6 +164,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
+                Arguments.of(SysmlPackage.eINSTANCE.getComment(), 0, ViewConstants.DEFAULT_NOTE_HEIGHT, ViewConstants.DEFAULT_NOTE_WIDTH),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, ViewConstants.DEFAULT_DEFINITION_NODE_HEIGHT, ViewConstants.DEFAULT_DEFINITION_NODE_WIDTH),
