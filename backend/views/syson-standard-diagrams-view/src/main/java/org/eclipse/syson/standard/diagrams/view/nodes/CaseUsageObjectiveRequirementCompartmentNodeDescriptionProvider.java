@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.ObjectiveDocumentationNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -47,6 +49,18 @@ public class CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider ext
     }
 
     @Override
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.getCompartmentName()).ifPresent(nodeDescription -> {
+            // objective documentation compartment item
+            cache.getNodeDescription(
+                    this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement())
+                            + ObjectiveDocumentationCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME)
+                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
+        });
+        super.link(diagramDescription, cache);
+    }
+
+    @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
@@ -67,6 +81,7 @@ public class CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider ext
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
         creationToolProviders.add(new ObjectiveRequirementCompartmentNodeToolProvider());
         creationToolProviders.add(new ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider());
+        creationToolProviders.add(new ObjectiveDocumentationNodeToolProvider(SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()));
         return creationToolProviders;
     }
 }

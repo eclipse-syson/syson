@@ -100,7 +100,7 @@ image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysi
 - In diagrams, when attempting to create some graphical edges between `Elements` which already have one of the same type, an informative message is displayed instead.
 This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassification`.
 
-image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing]
+image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing, width=65%,height=65%]
 
 - In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
 A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
@@ -126,6 +126,9 @@ This makes it easy to start editing newly created elements to give them proper n
 - In diagrams, an `ItemUsage` graphical border node is now available on `PortUsage` graphical nodes.
 - In diagrams, an `ItemUsage` compartment is now available on `PortUsage` graphical nodes to display `ItemUsage`.
 - On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
+- In diagrams, it is now possible to create, edit and see `Documentation` in the _objective_ compartment of `CaseUsage`, `CaseDefinition`, `UseCaseUsage` and `UseCaseDefinition` graphical nodes.
+
+image::release-notes-objective-compartment-documentation.png[Documentation inside objective compartment, width=65%,height=65%]
 
 == Technical details
 

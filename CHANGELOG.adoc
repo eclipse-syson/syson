@@ -64,6 +64,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1790[#1790] [explorer] Add a condition to apply filters only to the SysON explorer.
 - https://github.com/eclipse-syson/syson/issues/1806[#1806] [diagrams] On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
 - https://github.com/eclipse-syson/syson/issues/1796[#1796] [services] Remove duplicated code for diagram and `ViewUsage` creation.
+- https://github.com/eclipse-syson/syson/issues/1809[#1809] [diagrams] In diagrams, it is now possible to create, edit and see `Documentation` in the _objective_ compartment of `CaseUsage`, `CaseDefinition`, `UseCaseUsage` and `UseCaseDefinition` graphical nodes.
 
 === New features
 

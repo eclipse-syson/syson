@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,7 +82,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.getCompartmentName())
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
+                .semanticCandidatesExpression(this.getSemanticCandidatesExpression())
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -112,6 +112,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected String getCompartmentName() {
         return this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference);
+    }
+
+    protected String getSemanticCandidatesExpression() {
+        return AQLConstants.AQL_SELF;
     }
 
     /**

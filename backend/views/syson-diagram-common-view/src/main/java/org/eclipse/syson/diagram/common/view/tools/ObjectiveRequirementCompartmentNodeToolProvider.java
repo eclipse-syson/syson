@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for objective compartment in the element that need such compartment.
@@ -26,7 +28,7 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createRequirementUsageAsObjectiveRequirement(null)";
+        return ServiceMethod.of1(ViewCreateService::createRequirementUsageAsObjectiveRequirement).aqlSelf("null");
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
 
     @Override
     protected String getPreconditionExpression() {
-        return "aql:self.isEmptyObjectiveRequirementCompartment()";
+        return ServiceMethod.of0(ViewCreateService::isEmptyObjectiveRequirementCompartment).aqlSelf();
     }
 
     @Override
