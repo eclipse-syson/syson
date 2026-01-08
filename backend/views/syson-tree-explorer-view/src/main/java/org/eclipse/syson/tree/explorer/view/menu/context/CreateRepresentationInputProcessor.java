@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.syson.tree.explorer.view.menu.context;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
@@ -25,13 +24,12 @@ import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
@@ -49,12 +47,16 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
 
     private final IObjectSearchService objectSearchService;
 
+    private final ModelMutationElementService modelMutationElementService;
+
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final ElementUtil elementUtil;
 
-    public CreateRepresentationInputProcessor(IObjectSearchService objectSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
+    public CreateRepresentationInputProcessor(IObjectSearchService objectSearchService, ModelMutationElementService modelMutationElementService,
+            IEditingContextPersistenceService editingContextPersistenceService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.elementUtil = new ElementUtil();
     }
@@ -131,20 +133,9 @@ public class CreateRepresentationInputProcessor implements IInputPreProcessor, I
     }
 
     private ViewUsage createViewUsage(IInput input, Element containerElement, String viewUsageName) {
-        var getIntermediateContainerCreationSwitch = new GetIntermediateContainerCreationSwitch(containerElement);
-        var intermediateContainerClass = getIntermediateContainerCreationSwitch.doSwitch(containerElement.eClass());
-        if (intermediateContainerClass.isPresent()) {
-            EObject intermediateContainerEObject = SysmlFactory.eINSTANCE.create(intermediateContainerClass.get());
-            if (intermediateContainerEObject instanceof Relationship intermediateContainer) {
-                var viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
-                viewUsage.setDeclaredName(viewUsageName);
-                containerElement.getOwnedRelationship().add(intermediateContainer);
-                intermediateContainer.getOwnedRelatedElement().add(viewUsage);
-                this.setViewDefinition(containerElement, viewUsage, input);
-                return viewUsage;
-            }
-        }
-        return null;
+        Optional<ViewUsage> optionalViewUsage = this.modelMutationElementService.createViewUsage(containerElement, viewUsageName);
+        optionalViewUsage.ifPresent(view -> this.setViewDefinition(containerElement, view, input));
+        return optionalViewUsage.orElse(null);
     }
 
     private void setViewDefinition(Element containerElement, ViewUsage viewUsage, IInput input) {
