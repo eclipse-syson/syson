@@ -13,19 +13,24 @@
 package org.eclipse.syson.application.controllers.omnibox;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.omnibox.WorkbenchOmniboxSearchCommandProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.graphql.tests.WorkbenchOmniboxCommandsQueryRunner;
 import org.eclipse.sirius.web.application.studio.services.StudioImportLibraryCommandProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioPublicationCommandProvider;
+import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
+import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxSearchQueryRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
@@ -40,6 +45,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+
 /**
  * Integration tests of the omnibox controllers.
  *
@@ -51,6 +58,15 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private WorkbenchOmniboxCommandsQueryRunner omniboxCommandsQueryRunner;
+
+    @Autowired
+    private ProjectsOmniboxSearchQueryRunner projectsOmniboxSearchQueryRunner;
+
+    @Autowired
+    private IIndexUpdateService indexUpdateService;
+
+    @Autowired
+    private Optional<ElasticsearchClient> optionalElasticSearchClient;
 
     @MockitoSpyBean
     private IEditingContextSearchService editingContextSearchService;
@@ -95,5 +111,50 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                         // publish SysML libraries in non-SysML projects.
                         SysONOmniboxCommandProvider.IMPORT_PUBLISHED_LIBRARY_COMMAND_ID);
         verify(this.editingContextSearchService, never()).findById(SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID);
+    }
+
+    @Test
+    @DisplayName("GIVEN a query, WHEN the objects are searched in the projects omnibox, THEN the objects are returned")
+    @Sql(scripts = { SimpleProjectElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenQueryWhenObjectsAreSearchedInProjectsOmniboxThenObjectsAreReturned() {
+        // TODO more complex queries
+
+        assertThat(this.optionalElasticSearchClient.isPresent());
+        this.editingContextSearchService.findById(SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID).ifPresent(this.indexUpdateService::updateIndex);
+        // Wait for Elasticsearch's refresh to ensure the indexed documents can be queried.
+        this.optionalElasticSearchClient.ifPresent(elasticSearchClient -> {
+            try {
+                elasticSearchClient.indices().refresh();
+            } catch (IOException exception) {
+                fail(exception);
+            }
+        });
+
+        Map<String, Object> emptyQueryVariables = Map.of(
+                "query", ""
+        );
+
+        var emptyQueryResult = this.projectsOmniboxSearchQueryRunner.run(emptyQueryVariables);
+        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(emptyQueryObjectLabels).isEmpty();
+
+        Map<String, Object> filterQueryVariables = Map.of(
+                "query", "Pack*"
+        );
+
+        var filterQueryResult = this.projectsOmniboxSearchQueryRunner.run(filterQueryVariables);
+        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(filterQueryObjectLabels).contains("Package1");
+
+        Map<String, Object> complexQueryVariables = Map.of(
+                "query", "@type:Part"
+        );
+
+        var complexQueryResult = this.projectsOmniboxSearchQueryRunner.run(complexQueryVariables);
+        List<String> complexQueryObjectLabels = JsonPath.read(complexQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(complexQueryObjectLabels).isNotEmpty()
+                .anyMatch(label -> label.contains("p"));
     }
 }

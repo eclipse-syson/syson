@@ -18,6 +18,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 /**
  * Superclass of all the integration tests used to setup the test environment.
@@ -28,9 +29,17 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public abstract class AbstractIntegrationTests {
     public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
 
+    public static final ElasticsearchContainer ELASTICSEARCH_CONTAINER;
+
+
     static {
         POSTGRESQL_CONTAINER = new PostgreSQLContainer<>("postgres:latest").withReuse(true);
         POSTGRESQL_CONTAINER.start();
+        ELASTICSEARCH_CONTAINER = new ElasticsearchContainer("elasticsearch:9.2.1")
+                .withEnv("xpack.security.transport.ssl.enabled", "false")
+                .withEnv("xpack.security.http.ssl.enabled", "false")
+                .withReuse(true);
+        ELASTICSEARCH_CONTAINER.start();
     }
 
     @DynamicPropertySource
@@ -38,5 +47,8 @@ public abstract class AbstractIntegrationTests {
         registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+        registry.add("spring.elasticsearch.uris", ELASTICSEARCH_CONTAINER::getHttpHostAddress);
+        registry.add("spring.elasticsearch.username", () -> "elastic");
+        registry.add("spring.elasticsearch.password", () -> ElasticsearchContainer.ELASTICSEARCH_DEFAULT_PASSWORD);
     }
 }
