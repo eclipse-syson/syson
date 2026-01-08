@@ -14,9 +14,12 @@ package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
@@ -32,6 +35,7 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Type;
 
@@ -82,8 +86,8 @@ public class MetamodelMutationElementService {
      */
     public void setConnectorEnds(ConnectorAsUsage connectorAsUsage, Feature source, Feature target, Element connectorContainer) {
         if (connectorAsUsage instanceof FlowUsage flowUsage) {
-            connectorAsUsage.getOwnedRelationship().add(this.createFlowConnectionEnd(source));
-            connectorAsUsage.getOwnedRelationship().add(this.createFlowConnectionEnd(target));
+            flowUsage.getOwnedRelationship().add(this.createFlowConnectionEnd(source));
+            flowUsage.getOwnedRelationship().add(this.createFlowConnectionEnd(target));
         } else {
             this.addConnectorEnd(connectorAsUsage, source, connectorContainer);
             this.addConnectorEnd(connectorAsUsage, target, connectorContainer);
@@ -259,6 +263,41 @@ public class MetamodelMutationElementService {
         }
         membership.getOwnedRelatedElement().add(child);
         parent.getOwnedRelationship().add(membership);
+    }
+
+    /**
+     * Create a {@link Documentation} element inside the element referenced by the given {@link EReference}. If the
+     * referenced element (i.e. a RequirementUsage inside an ObjectiveMembership) doesn't exists yet, it is also
+     * created. This method only works for an Objective Documentation.
+     *
+     * @param element
+     *            the given {@link Element}
+     * @param reference
+     *            the given {@link EReference}.
+     * @return the newly created {@link Documentation}.
+     */
+    public Documentation createObjectiveDocumentation(Element element, String referenceName) {
+        RequirementUsage objective = null;
+        EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(referenceName);
+        if (eStructuralFeature != null) {
+            var existingObjective = element.eGet(eStructuralFeature);
+            if (existingObjective instanceof RequirementUsage reqUsage) {
+                objective = reqUsage;
+            } else {
+                var newObjectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+                element.getOwnedRelationship().add(newObjectiveMembership);
+                var newObjective = SysmlFactory.eINSTANCE.createRequirementUsage();
+                newObjectiveMembership.getOwnedRelatedElement().add(newObjective);
+                objective = newObjective;
+            }
+            var documentation = SysmlFactory.eINSTANCE.createDocumentation();
+            documentation.setBody("add objective doc here");
+            var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            objective.getOwnedRelationship().add(owningMembership);
+            owningMembership.getOwnedRelatedElement().add(documentation);
+            return documentation;
+        }
+        return null;
     }
 
     private Feature addConnectorEnd(ConnectorAsUsage connectorAsUsage, Feature end, Element connectorContainer) {

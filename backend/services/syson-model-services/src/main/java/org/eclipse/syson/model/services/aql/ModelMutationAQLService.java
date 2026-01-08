@@ -15,6 +15,7 @@ package org.eclipse.syson.model.services.aql;
 import java.util.Objects;
 
 import org.eclipse.syson.model.services.ModelMutationElementService;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -39,17 +40,17 @@ public class ModelMutationAQLService {
     }
 
     /**
+     * {@link MetamodelMutationElementService#createObjectiveDocumentation(Element, String)}.
+     */
+    public Documentation createObjectiveDocumentation(Element element, String referenceName) {
+        return this.metamodelElementMutationService.createObjectiveDocumentation(element, referenceName);
+    }
+
+    /**
      * {@link MetamodelMutationElementService#createMembership(Element)}.
      */
     public Membership createMembership(Element element) {
         return this.metamodelElementMutationService.createMembership(element);
-    }
-
-    /**
-     * {@link ModelMutationElementService#setAsView(ViewUsage, String)}.
-     */
-    public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
-        return this.modelMutationElementService.setAsView(viewUsage, newViewDefinition);
     }
 
     /**
@@ -71,5 +72,12 @@ public class ModelMutationAQLService {
      */
     public Element createPartUsageAndFlowConnection(PartUsage self) {
         return this.modelMutationElementService.createPartUsageAndFlowConnection(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#setAsView(ViewUsage, String)}.
+     */
+    public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
+        return this.modelMutationElementService.setAsView(viewUsage, newViewDefinition);
     }
 }

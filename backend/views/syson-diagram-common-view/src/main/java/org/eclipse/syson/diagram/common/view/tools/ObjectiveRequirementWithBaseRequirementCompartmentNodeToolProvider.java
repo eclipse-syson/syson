@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for objective compartment in the element that need such compartment.
@@ -28,19 +30,15 @@ import org.eclipse.syson.util.AQLUtils;
  */
 public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    public ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider() {
-        super();
-    }
-
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createRequirementUsageAsObjectiveRequirement(selectedObject)";
+        return ServiceMethod.of1(ViewCreateService::createRequirementUsageAsObjectiveRequirement).aqlSelf("selectedObject");
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableRequirements"))
+                .elementsExpression(ServiceMethod.of0(ViewNodeService::getAllReachableRequirements).aqlSelf())
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
@@ -60,7 +58,7 @@ public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider 
 
     @Override
     protected String getPreconditionExpression() {
-        return "aql:self.isEmptyObjectiveRequirementCompartment()";
+        return ServiceMethod.of0(ViewCreateService::isEmptyObjectiveRequirementCompartment).aqlSelf();
     }
 
     @Override
