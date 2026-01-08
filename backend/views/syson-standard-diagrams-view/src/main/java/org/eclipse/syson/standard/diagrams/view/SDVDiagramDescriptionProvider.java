@@ -1180,9 +1180,20 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
+        List<NodeTool> nodeTools = new ArrayList<>();
+
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getComment()))
+                .ifPresent(commentNodeDescription -> {
+                    var createCommentNodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(commentNodeDescription, SysmlPackage.eINSTANCE.getComment());
+                    if (createCommentNodeTool != null) {
+                        nodeTools.add(createCommentNodeTool);
+                    }
+                });
+
         return this.diagramBuilderHelper.newDiagramPalette()
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .dropTool(this.toolDescriptionService.createDropFromExplorerTool())
+                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .toolSections(this.createToolSections(cache))
                 .build();
     }

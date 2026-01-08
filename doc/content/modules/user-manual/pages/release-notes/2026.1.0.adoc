@@ -159,6 +159,8 @@ When a `Usage` is selected, the new subject created (i.e. a `ReferenceUsage`) wi
 - In diagrams, the _New Actor_ tool now allows to select `PartDefinition` in addition to `PartUsage`.
 When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) will be typed by the selected `PartDefinition`.
 When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
+We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
+- In _General View_ diagrams, it is now possible to create `Comment` graphical nodes from the diagram background.
 
 == Technical details
 
