@@ -34,7 +34,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.NodeFinder;
-import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;
 
 /**
@@ -75,11 +74,13 @@ public class DiagramMutationDiagramService {
      *            the current context of the service.
      * @param editingContext
      *            the given {@link IEditingContext} in which this service has been called.
+     * @param representationDescriptionId
+     *            the identifier of the representation description of the diagram to be created.
      * @return create a General View diagram on the given {@link Element} if it is a ViewUsage, do nothing otherwise.
      */
-    public Element createDiagram(Element element, IEditingContext editingContext) {
+    public Element createDiagram(Element element, IEditingContext editingContext, String representationDescriptionId) {
         if (element instanceof ViewUsage viewUsage) {
-            this.representationDescriptionSearchService.findById(editingContext, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID)
+            this.representationDescriptionSearchService.findById(editingContext, representationDescriptionId)
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast)
                     .ifPresent(diagramDescription -> {

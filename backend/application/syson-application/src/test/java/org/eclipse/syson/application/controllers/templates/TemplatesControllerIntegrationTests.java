@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.templates;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +31,7 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -37,6 +40,8 @@ import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.application.sysmlv2.SysMLv2ProjectTemplatesProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,6 +73,9 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
 
     @Autowired
     private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    @Autowired
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -127,11 +135,16 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         String projectId = JsonPath.read(result, "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
-        var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
-                .map(ProjectSemanticData::getSemanticData)
+        var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData);
+        var optionalEditingContext = optionalSemanticData
                 .map(AggregateReference::getId)
                 .map(UUID::toString)
                 .flatMap(this.editingContextSearchService::findById);
+        var representationMetadatas = optionalSemanticData.map(
+                        semanticData -> this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(semanticData))
+                .orElse(EMPTY_LIST);
+
 
         assertThat(optionalEditingContext).isPresent();
 
@@ -142,6 +155,16 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         var rootObject = this.getRooObject(emfEditingContext);
         assertNotNull(rootObject);
         assertEquals("Package1", rootObject.getDeclaredName());
+
+        assertThat(rootObject instanceof Package);
+        Optional<ViewUsage> optionalViewUsage = rootObject.getOwnedElement()
+                .stream()
+                .filter(ViewUsage.class::isInstance)
+                .findFirst()
+                .map(ViewUsage.class::cast);
+        assertThat(optionalViewUsage).isNotEmpty();
+
+        assertThat(representationMetadatas).isNotEmpty();
     }
 
     @DisplayName("GIVEN the SysMLv2-Library project template, WHEN the mutation is performed, THEN the project is created")

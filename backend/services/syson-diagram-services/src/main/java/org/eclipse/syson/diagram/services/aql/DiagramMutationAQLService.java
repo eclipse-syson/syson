@@ -35,6 +35,7 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 
 /**
  * Entry point for all diagram-related services doing mutations in diagrams and called by AQL expressions in diagram
@@ -79,10 +80,10 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationDiagramService#createDiagram(Element, IEditingContext)}.
+     * {@link DiagramMutationDiagramService#createDiagram(Element, IEditingContext, String)}.
      */
     public Element createDiagram(Element element, IEditingContext editingContext) {
-        return this.diagramMutationDiagramService.createDiagram(element, editingContext);
+        return this.diagramMutationDiagramService.createDiagram(element, editingContext, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
     }
 
     /**

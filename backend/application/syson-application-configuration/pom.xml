@@ -93,6 +93,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-diagram-services</artifactId>
+			<version>2025.12.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
 			<version>2025.12.2</version>
 		</dependency>

@@ -14,6 +14,7 @@ package org.eclipse.syson.model.services;
 
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
@@ -28,6 +29,7 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.springframework.stereotype.Service;
 
 /**
@@ -164,6 +166,49 @@ public class ModelMutationElementService {
             return newPartUsage;
         }
         return self;
+    }
+
+    /**
+     * Creates a {@link ViewUsage}.
+     *
+     * @param owningElement
+     *         the element owning the {@link ViewUsage} to be created
+     * @param viewName
+     *         the name of the view to be created
+     * @return an {@link Optional} of the newly created {@link ViewUsage} if the creation was successful, an empty {@link Optional} otherwise.
+     */
+    public Optional<ViewUsage> createViewUsage(Element owningElement, String viewName) {
+        Optional<ViewUsage> viewUsageOpt = Optional.empty();
+
+        Optional<EClass> membershipClassOpt = new GetIntermediateContainerCreationSwitch(owningElement).doSwitch(owningElement.eClass());
+        if (membershipClassOpt.isPresent()) {
+            EObject viewUsageMembership = SysmlFactory.eINSTANCE.create(membershipClassOpt.get());
+            if (viewUsageMembership instanceof Relationship viewUsageRelationship) {
+                ViewUsage viewUsage = SysmlFactory.eINSTANCE.createViewUsage();
+                owningElement.getOwnedRelationship().add(viewUsageRelationship);
+                viewUsageRelationship.getOwnedRelatedElement().add(viewUsage);
+                viewUsage.setDeclaredName(viewName);
+                viewUsageOpt = Optional.of(viewUsage);
+            }
+        }
+
+        return viewUsageOpt;
+    }
+
+    /**
+     * Feature types of {@link ViewUsage} with the {@link ViewDefinition} associated with the  standard diagram.
+     *
+     * @param viewUsage
+     *         the view to feature type
+     * @param diagramName
+     *         the name of the {@link ViewDefinition} of the standard diagram
+     */
+    public void featureTypeViewUsage(ViewUsage viewUsage, String diagramName) {
+        FeatureTyping featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+        viewUsage.getOwnedRelationship().add(featureTyping);
+        var viewDefinition = this.elementUtil.findByNameAndType(viewUsage, diagramName, ViewDefinition.class);
+        featureTyping.setType(viewDefinition);
+        featureTyping.setTypedFeature(viewUsage);
     }
 
     /**
