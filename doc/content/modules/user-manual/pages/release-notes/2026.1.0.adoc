@@ -85,6 +85,8 @@ package Package1 {
 }
 ```
 
+- Fix the textual export of `LiteralRational`, values were wrongly rounded during textual export.
+
 == Improvements
 
 - The textual export now properly exports `SatisfyRequirementUsage` such as in the following model:
