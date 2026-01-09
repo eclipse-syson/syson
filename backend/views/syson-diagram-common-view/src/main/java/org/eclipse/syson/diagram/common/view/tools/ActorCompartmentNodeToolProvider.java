@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,12 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Node tool provider for Actor compartment in the element that need such compartment.
@@ -25,15 +30,18 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createPartUsageAsActor(selectedObject)";
+        return ServiceMethod.of1(ViewCreateService::createPartUsageAsActor).aqlSelf("selectedObject");
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        String partUsageType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
+        String partDefType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartDefinition());
+
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression(IEditingContext.EDITING_CONTEXT, "getActorSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getActorSelectionDialogChildren"))
-                .isSelectableExpression("aql:self.oclIsKindOf(sysml::PartUsage)")
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getActorSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of0(ViewToolService::getActorSelectionDialogChildren).aqlSelf())
+                .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + partUsageType + ") or self.oclIsKindOf(" + partDefType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)

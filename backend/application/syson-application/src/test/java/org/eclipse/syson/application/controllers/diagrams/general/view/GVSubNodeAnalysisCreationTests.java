@@ -56,6 +56,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -86,6 +87,10 @@ import reactor.test.StepVerifier.Step;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
+
+    private static final String CASE = "case";
+
+    private static final String USE_CASE = "useCase";
 
     private static final String DOC_COMPARTMENT = "doc";
 
@@ -216,7 +221,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("caseUsageSiblingNodeParameters")
     public void createCaseUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = "case";
+        String parentLabel = CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
                 this.verifier);
@@ -229,7 +234,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("caseUsageChildNodeParameters")
     public void createCaseUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = "case";
+        String parentLabel = CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -255,7 +260,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("caseUsageBorderAndChildNodeParameters")
     public void createCaseUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = "case";
+        String parentLabel = CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -300,7 +305,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("useCaseUsageSiblingNodeParameters")
     public void createUseCaseUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = "useCase";
+        String parentLabel = USE_CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
                 this.verifier);
@@ -313,7 +318,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("useCaseUsageChildNodeParameters")
     public void createUseCaseUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = "useCase";
+        String parentLabel = USE_CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -339,7 +344,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @MethodSource("useCaseUsageBorderAndChildNodeParameters")
     public void createUseCaseUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = "useCase";
+        String parentLabel = USE_CASE;
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -382,31 +387,59 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createNewUsageSubjectInCaseUsage() {
-        this.createNewUsageSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
+        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
     }
 
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createNewUsageSubjectInUseCaseUsage() {
-        this.createNewUsageSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
+        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
     }
 
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createNewDefinitionSubjectInCaseUsage() {
-        this.createNewDefinitionSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
+        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
     }
 
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void createNewDefinitionSubjectInUseCaseUsage() {
-        this.createNewDefinitionSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
+        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
     }
 
-    private void createNewUsageSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewActorWithSubsettingInCaseUsage() {
+        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewActorWithSubsettingInUseCaseUsage() {
+        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewActorWithFeatureTypingInCaseUsage() {
+        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewActorWithFeatureTypingInUseCaseUsage() {
+        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+    }
+
+    private void createSubjectWithSubsettingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
         EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
         String creationToolName = "New Subject";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
@@ -447,7 +480,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
-    private void createNewDefinitionSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
+    private void createSubjectWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
         EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
         String creationToolName = "New Subject";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
@@ -481,6 +514,76 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
             assertThat(optParentElement).isPresent();
             var referenceUsage = optParentElement.get();
             EList<Type> types = referenceUsage.getType();
+            assertFalse(types.isEmpty());
+            assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
+        };
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+    }
+
+    private void createActorWithSubsettingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+        EClass childEClass = SysmlPackage.eINSTANCE.getPartUsage();
+        String creationToolName = "New Actor";
+        EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter();
+        List<ToolVariable> variables = new ArrayList<>();
+        String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
+        variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
+
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
+            assertThat(semanticRootObject).isInstanceOf(Element.class);
+            Element semanticRootElement = (Element) semanticRootObject;
+            Optional<PartUsage> optActor = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
+                    .filter(element -> Objects.equals(element.getName(), "actor1"))
+                    .findFirst();
+            assertThat(optActor).isPresent();
+            var actor = optActor.get();
+            EList<Subsetting> subjectSubsets = actor.getOwnedSubsetting();
+            assertFalse(subjectSubsets.isEmpty());
+            assertThat(subjectSubsets.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+        };
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+    }
+
+    private void createActorWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+        EClass childEClass = SysmlPackage.eINSTANCE.getPartUsage();
+        String creationToolName = "New Actor";
+        EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter();
+        List<ToolVariable> variables = new ArrayList<>();
+        String existingPartDefId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
+        variables.add(new ToolVariable("selectedObject", existingPartDefId, ToolVariableType.OBJECT_ID));
+
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
+            assertThat(semanticRootObject).isInstanceOf(Element.class);
+            Element semanticRootElement = (Element) semanticRootObject;
+            Optional<PartUsage> optActor = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
+                    .filter(element -> Objects.equals(element.getName(), "actor1"))
+                    .findFirst();
+            assertThat(optActor).isPresent();
+            var actor = optActor.get();
+            EList<Type> types = actor.getType();
             assertFalse(types.isEmpty());
             assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
         };

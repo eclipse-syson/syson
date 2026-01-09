@@ -153,9 +153,12 @@ image::release-notes-objective-compartment-documentation.png[Documentation insid
 - In diagrams, when using _direct edit_ tool on an `AttributeUsage` value, you can more easily use symbols from the `SI` library.
 For example you had to import the _SI_ library to use _N_ and _m_ symbols like this `attribute t1 = 10.0 [N*m]` or prefix the symbols if the library was not imported like this `t1 = 10.0 [SI::N*SI::m]`.
 We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
-- In diagrams, the _New subject_ tool now allows to select `Definition` in addition to `Usage`.
+- In diagrams, the _New Subject_ tool now allows to select `Definition` in addition to `Usage`.
 When a `Definition` is selected, the new subject created (i.e. a `ReferenceUsage`) will be typed by the selected `Definition`.
 When a `Usage` is selected, the new subject created (i.e. a `ReferenceUsage`) will subset the selected `Usage`.
+- In diagrams, the _New Actor_ tool now allows to select `PartDefinition` in addition to `PartUsage`.
+When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) will be typed by the selected `PartDefinition`.
+When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
 
 == Technical details
 
