@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,15 +18,12 @@ import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_I
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_MEMBERSHIP;
 import static org.eclipse.syson.sysml.textual.utils.SysMLRelationPredicates.IS_METADATA_USAGE;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -164,10 +161,6 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author Arthur Daussy
  */
 public class SysMLElementSerializer extends SysmlSwitch<String> {
-
-    private static final DecimalFormat SIMPLE_LITERAL_RATIONAL_FORMAT = new DecimalFormat("0.0#", new DecimalFormatSymbols(Locale.US));
-
-    private static final DecimalFormat SCIENTIFIC_LITERAL_RATIONAL_FORMAT = new DecimalFormat("0.0#####E0", new DecimalFormatSymbols(Locale.US));
 
     private final String lineSeparator;
 
@@ -661,11 +654,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String toPreciseReal(double value) {
-        if (Math.abs(value) >= 1e-3 && Math.abs(value) < 1e6) {
-            return SIMPLE_LITERAL_RATIONAL_FORMAT.format(value);
-        } else {
-            return SCIENTIFIC_LITERAL_RATIONAL_FORMAT.format(value);
+        String stringValue = Double.toString(value);
+        // We want to force the display of at least one decimal because for the SysML V2 parser a number without the decimal part will be considered as LiteralInteger
+        if (!stringValue.contains(".") && !stringValue.contains("e") && !stringValue.contains("E")) {
+            stringValue = stringValue + ".0";
         }
+        return stringValue;
     }
 
     @Override
