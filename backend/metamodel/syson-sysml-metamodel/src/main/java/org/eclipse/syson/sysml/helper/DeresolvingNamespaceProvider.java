@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,9 +112,12 @@ public class DeresolvingNamespaceProvider {
             // FeatureReferenceExpression
             // InvocationExpression
             // ownedFeature of an InvocationExpression
-            ns = EMFUtils.getAncestors(Namespace.class, ns, e -> !this.isLocalNamespaceForFeatureReferenceExpression(e)).stream()
+            ns = EMFUtils.getAncestors(Namespace.class, ns, e -> this.isLocalNamespaceForFeatureReferenceExpression(e)).stream()
                     .findFirst()
                     .orElse(null);
+            if (ns != null) {
+                ns = ns.getOwningNamespace();
+            }
         } else if (ns instanceof FeatureChainExpression featureChainExpression) {
             // If the membershipOwningNamespace is a FeatureChainExpression see 8.3.4.8.3, then the local
             // Namespace is the result parameter of the argument Expression of the FeatureChainExpression.

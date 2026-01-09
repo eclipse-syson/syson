@@ -84,6 +84,19 @@ package Package1 {
 	}
 }
 ```
+- Fix the textual export of `FeatureValue` using enumeration value such as in:
+
+```
+package root {
+    enum def Enum1 {
+        e1;
+        e2;
+    }
+	part p2 {
+		attribute z1 : Enum1 = Enum1::e1; // Previously was attribute z1 : Enum1 = e1;
+	}
+}
+```
 
 - Fix the textual export of `LiteralRational`, values were wrongly rounded during textual export.
 

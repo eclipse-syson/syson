@@ -115,6 +115,21 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    public void checkEnumUsageNames() throws IOException {
+        var input = """
+                package root {
+                    enum def Enum1 {
+                        e1;
+                        e2;
+                    }
+                    part p2 {
+                        attribute z1 : Enum1 = Enum1::e1;
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with Element named with a SysML keyword, WHEN importing/exporting the file, THEN in the exported file the name should be escaped")
     public void checkEscapedKeywordName() throws IOException {
         var input = """
@@ -762,7 +777,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute b : Integer default = 1;
                         attribute c : Integer = 1;
                         attribute d : Integer := 3;
-                        attribute e : MyEnum default = enum1;
+                        attribute e : MyEnum default = MyEnum::enum1;
                         attribute f : Real = 1.0;
                         attribute g = 3.14;
                         attribute h = 2.5E-10;
@@ -782,7 +797,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute b : Integer default = 1;
                         attribute c : Integer = 1;
                         attribute d : Integer := 3;
-                        attribute e : MyEnum default = enum1;
+                        attribute e : MyEnum default = MyEnum::enum1;
                         attribute f : Real = 1.0;
                         attribute g = 3.14;
                         attribute h = 2.5E-10;
@@ -980,8 +995,8 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }
                 part part1 {
                     attribute attribute1 : Enum1 = Enum1::enumeration1;
-                    attribute attribute2 : Enum1 = enumeration1;
-                    attribute attribute3 : Enum1 = e1;
+                    attribute attribute2 : Enum1 = Enum1::enumeration1;
+                    attribute attribute3 : Enum1 = Enum1::e1;
                     attribute attribute4 : Enum1 = Enum1::enumeration2;
                     attribute attribute5 = Enum1::enumeration1;
                 }""";
@@ -994,10 +1009,10 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     enumeration2;
                 }
                 part part1 {
-                    attribute attribute1 : Enum1 = e1;
-                    attribute attribute2 : Enum1 = e1;
-                    attribute attribute3 : Enum1 = e1;
-                    attribute attribute4 : Enum1 = enumeration2;
+                    attribute attribute1 : Enum1 = Enum1::enumeration1;
+                    attribute attribute2 : Enum1 = Enum1::enumeration1;
+                    attribute attribute3 : Enum1 = Enum1::enumeration1;
+                    attribute attribute4 : Enum1 = Enum1::enumeration2;
                     attribute attribute5 = Enum1::enumeration1;
                 }""";
         this.checker.check(input, expected);
