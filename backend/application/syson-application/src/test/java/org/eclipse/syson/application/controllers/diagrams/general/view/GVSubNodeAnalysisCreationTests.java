@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -380,18 +381,32 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void createNewSubjectInCaseUsage() {
-        this.createNewSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
+    public void createNewUsageSubjectInCaseUsage() {
+        this.createNewUsageSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
     }
 
     @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void createNewSubjectInUseCaseUsage() {
-        this.createNewSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
+    public void createNewUsageSubjectInUseCaseUsage() {
+        this.createNewUsageSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
     }
 
-    private void createNewSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewDefinitionSubjectInCaseUsage() {
+        this.createNewDefinitionSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
+    }
+
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewDefinitionSubjectInUseCaseUsage() {
+        this.createNewDefinitionSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
+    }
+
+    private void createNewUsageSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
         EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
         String creationToolName = "New Subject";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
@@ -432,4 +447,44 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
+    private void createNewDefinitionSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
+        EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
+        String creationToolName = "New Subject";
+        EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
+        List<ToolVariable> variables = new ArrayList<>();
+        String existingPartDefId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
+        variables.add(new ToolVariable("selectedObject", existingPartDefId, ToolVariableType.OBJECT_ID));
+
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .check(initialDiagram, newDiagram);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName("subject")
+                    .hasNodeDescriptionName(listNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
+            assertThat(semanticRootObject).isInstanceOf(Element.class);
+            Element semanticRootElement = (Element) semanticRootObject;
+            Optional<ReferenceUsage> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, ReferenceUsage.class)
+                    .filter(element -> Objects.equals(element.getName(), "subject"))
+                    .findFirst();
+            assertThat(optParentElement).isPresent();
+            var referenceUsage = optParentElement.get();
+            EList<Type> types = referenceUsage.getType();
+            assertFalse(types.isEmpty());
+            assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
+        };
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+    }
 }

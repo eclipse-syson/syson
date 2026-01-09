@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -407,7 +407,7 @@ public class ViewToolService extends ToolService {
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link Type}.
      */
     public List<Resource> getSubjectSelectionDialogElements(IEditingContext editingContext) {
-        return this.getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getUsage());
+        return this.getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getType());
     }
 
     /**
@@ -419,7 +419,7 @@ public class ViewToolService extends ToolService {
      *         {@link Usage}.
      */
     public List<? extends Object> getSubjectSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getUsage());
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getType());
     }
 
     /**

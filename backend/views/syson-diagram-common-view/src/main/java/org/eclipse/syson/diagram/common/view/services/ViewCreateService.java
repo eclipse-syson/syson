@@ -248,7 +248,6 @@ public class ViewCreateService {
                 || self instanceof RequirementUsage
                 || self instanceof RequirementDefinition) {
             ReferenceUsage newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-            result = newReferenceUsage;
             var subjectMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getSubjectMembership());
             subjectMembership.getOwnedRelatedElement().add(newReferenceUsage);
             this.elementInitializerSwitch.doSwitch(newReferenceUsage);
@@ -257,6 +256,7 @@ public class ViewCreateService {
             } else if (selectedObject instanceof Definition definition) {
                 this.utilService.setFeatureTyping(newReferenceUsage, definition);
             }
+            result = newReferenceUsage;
         }
         return result;
     }
@@ -268,7 +268,6 @@ public class ViewCreateService {
                 || self instanceof RequirementUsage
                 || self instanceof RequirementDefinition) {
             PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            result = newPartUsage;
             var actorMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getActorMembership());
             actorMembership.getOwnedRelatedElement().add(newPartUsage);
             this.elementInitializerSwitch.doSwitch(newPartUsage);
@@ -277,6 +276,7 @@ public class ViewCreateService {
             } else if (selectedObject instanceof ItemDefinition definition) {
                 this.utilService.setFeatureTyping(newPartUsage, definition);
             }
+            result = newPartUsage;
         }
         return result;
     }
@@ -330,14 +330,15 @@ public class ViewCreateService {
      * Service to check whether the given element has a subject defined or not.
      *
      * @param self
-     *         a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a {@link UseCaseDefinition}
+     *            a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link CaseUsage} or a
+     *            {@link CaseDefinition}
      * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptySubjectCompartment(Element self) {
         if (self instanceof RequirementUsage
                 || self instanceof RequirementDefinition
-                || self instanceof UseCaseUsage
-                || self instanceof UseCaseDefinition) {
+                || self instanceof CaseUsage
+                || self instanceof CaseDefinition) {
             return self.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
