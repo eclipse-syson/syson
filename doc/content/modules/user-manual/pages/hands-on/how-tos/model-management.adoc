@@ -299,6 +299,7 @@ If _SomeTypeName_ doesn't exist, it's created as an appropriate type element (fo
 * Typing `[x]` on an element or a relationship sets its cardinality to _x_.
 * Typing `[1..x]` on an element or a relationship sets its cardinality to _1..x_.
 * Typing `[x..*]` on an element or a relationship sets its cardinality to _x..*_.
+* You can set the cardinality of an element after or before a _typing part_ (`:`), _subsetting part_ (`:>`) or _redefinition part_ (`:>>`) as such both expressions `part p2[4] :> p1` and `part p2 :> p1[4]` are valid and the first element of the expression will have its cardinality updated.
 * Typing `someElement:>otherElement` on a element sets _someElement_ as a `Subsetting` of the _otherElement_ if both element are of the same type.
 Otherwise, it creates a `specialization` relationship between _someElement_ and _otherElement_.
 * Typing `someElement:>>otherElement` on an element sets _someElement_ as a `redefinition` of _otherElement_.

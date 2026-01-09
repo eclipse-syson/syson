@@ -99,8 +99,9 @@ multiplicityExpressionMember :
 ;
 
 featureExpressions :
-	(subsettingExpression|redefinitionExpression)? (typingExpression)? (featureValueExpression)?
-	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (featureValueExpression)?
+	((redefinitionExpression|subsettingExpression) multiplicityExpression?)? (typingExpression multiplicityExpression?)? (featureValueExpression)?
+	| (typingExpression)? ((subsettingExpression|redefinitionExpression) multiplicityExpression?)? (featureValueExpression)? |
+	multiplicityExpression
 ;
 
 subsettingExpression :

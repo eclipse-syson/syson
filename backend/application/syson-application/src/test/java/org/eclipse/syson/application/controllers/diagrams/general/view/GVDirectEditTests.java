@@ -18,6 +18,7 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -382,6 +383,8 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
 
             String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
         };
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
@@ -397,4 +400,250 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and subsetting, THEN the part is correctly set")
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void directEditMultiplicityWithSubsetting() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel("p1_1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithMultiplicityBefore = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p2[4] :> p1");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Runnable editLabelWithMultiplicityAfter = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p2 :> p1[5]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityBefore = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p2 [4] :> p1");
+        });
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityAfter = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p2 [5] :> p1");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabelWithMultiplicityBefore)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityBefore)
+                .then(editLabelWithMultiplicityAfter)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityAfter)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit  with multiplicity and redefinition, THEN the part is correctly set")
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void directEditMultiplicityWithRedefinition() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel("p1_1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithMultiplicityBefore = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p6[1] :>> p1");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Runnable editLabelWithMultiplicityAfter = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p6 :>> p1[2]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityBefore = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p6 [1] :>> p1");
+        });
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityAfter = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p6 [2] :>> p1");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabelWithMultiplicityBefore)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityBefore)
+                .then(editLabelWithMultiplicityAfter)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityAfter)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and feature typing, THEN the part is correctly set")
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void directEditMultiplicityWithFeatureTyping() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel("p1_1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithMultiplicityBefore = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p8[1] : DefA");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Runnable editLabelWithMultiplicityAfter = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "part p8 : DefA[2]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityBefore = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p8 [1] : DefA");
+        });
+
+        Consumer<Object> updatedDiagramContentMatcherMultiplicityAfter = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("part p8 [2] : DefA");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabelWithMultiplicityBefore)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityBefore)
+                .then(editLabelWithMultiplicityAfter)
+                .consumeNextWith(updatedDiagramContentMatcherMultiplicityAfter)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and operation, THEN the part is correctly set only if the multiplicity is before the operation")
+    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void directEditMultiplicityWithOperation() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel("p1_1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithMultiplicityBefore = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 [4] = 1[g]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Runnable editLabelWithMultiplicityAfter = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 = 1[g] [4]");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(1);
+            assertThat(messages).containsExactly("Invalid expression provided during direct edit.");
+        };
+
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 [4] = 1 [g]");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabelWithMultiplicityBefore)
+                .consumeNextWith(updatedDiagramContentMatcher)
+                .then(editLabelWithMultiplicityAfter)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

@@ -187,6 +187,9 @@ a|image::release-notes-namespace-import-node-before.png[Namespace import node be
 a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=50%,height=50%]
 |===
 +
+- In diagrams, when using _direct edit_ tool, you can now set a _multiplicity range part_ [n..n] after or before a _typing part_, _subsetting part_ or _redefinition part_.
+Before, you could only do `part p1[4] :> p2`, `part p6[4] :>> p1` or `part p1[4] : DefA`
+Now you can also do `part p1 :> p2[4]`, `part p6 :>> p1[4]` or `part p1 : DefA[4]`
 
 - Improve performances of textual export on big SysMLv2 models.
 - On _Interconnection View_ diagrams, the top-level palette (on the diagram's background) no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
