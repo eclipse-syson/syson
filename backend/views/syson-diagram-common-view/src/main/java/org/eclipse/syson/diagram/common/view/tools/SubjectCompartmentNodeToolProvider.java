@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,12 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Node tool provider for Subject compartment in the element that need such compartment.
@@ -25,19 +30,20 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
 
     @Override
     protected String getServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createReferenceUsageAsSubject", "selectedObject");
+        return ServiceMethod.of1(ViewCreateService::createReferenceUsageAsSubject).aqlSelf("selectedObject");
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getType());
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression(IEditingContext.EDITING_CONTEXT, "getSubjectSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getSubjectSelectionDialogChildren"))
-                .isSelectableExpression("aql:self.oclIsKindOf(sysml::Usage)")
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getSubjectSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of0(ViewToolService::getSubjectSelectionDialogChildren).aqlSelf())
+                .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Usage as subject:")
+                .selectionMessage("Select an existing Type as subject:")
                 .build();
     }
 
@@ -53,7 +59,7 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
 
     @Override
     protected String getPreconditionExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isEmptySubjectCompartment");
+        return ServiceMethod.of0(ViewCreateService::isEmptySubjectCompartment).aqlSelf();
     }
 
     @Override
