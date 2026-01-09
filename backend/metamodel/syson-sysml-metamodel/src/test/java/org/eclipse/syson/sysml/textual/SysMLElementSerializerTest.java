@@ -166,6 +166,14 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
+    public void noScalarRounding() {
+        LiteralRational literalRat = SysmlFactory.eINSTANCE.createLiteralRational();
+        literalRat.setValue(0.376);
+        String content = this.convertToText(literalRat);
+        assertEquals("0.376", content);
+    }
+
+    @Test
     public void emptyPackageWithName() {
         this.assertTextualFormEquals("package Package1;", this.builder.createWithName(Package.class, PACKAGE1));
     }
