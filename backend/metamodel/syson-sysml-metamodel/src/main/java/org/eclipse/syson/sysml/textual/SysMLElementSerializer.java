@@ -1817,7 +1817,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendFeatureReferenceMember(Appender builder, Membership membership, Expression context) {
         if (membership.getMemberElement() instanceof Feature feature) {
-            builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature, context));
+            builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature, membership));
         }
     }
 

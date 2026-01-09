@@ -115,6 +115,21 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    public void checkEnumUsageNames() throws IOException {
+        var input = """
+                package root {
+                    enum def Enum1 {
+                        e1;
+                        e2;
+                    }
+                    part p2 {
+                        attribute z1 : Enum1 = Enum1::e1;
+                    }
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with Element named with a SysML keyword, WHEN importing/exporting the file, THEN in the exported file the name should be escaped")
     public void checkEscapedKeywordName() throws IOException {
         var input = """
