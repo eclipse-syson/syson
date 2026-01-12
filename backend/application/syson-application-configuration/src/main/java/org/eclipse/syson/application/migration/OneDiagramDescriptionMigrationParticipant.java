@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.editingcontext.services.EditingContextAdapter;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,15 +73,26 @@ public class OneDiagramDescriptionMigrationParticipant implements IMigrationPart
     @Transactional
     @Override
     public void postObjectLoading(JsonResource resource, EObject eObject, JsonObject jsonObject) {
-        if (eObject instanceof ViewUsage vu) {
-            var diagramsUUIDs = this.getDiagramsFromObjectId(this.identityService.getId(vu));
-            for (UUID diagramUUID : diagramsUUIDs) {
-                var optRepresentationMetadata = this.representationMetadataSearchService.findMetadataById(diagramUUID);
-                var optRepresentationContent = this.representationContentSearchService.findContentById(diagramUUID);
-                if (optRepresentationMetadata.isPresent() && optRepresentationContent.isPresent() && this.isSysONStandardDiagram(optRepresentationMetadata.get())) {
-                    var representationMetadata = optRepresentationMetadata.get();
-                    var representationContent = optRepresentationContent.get();
-                    vu.eAdapters().add(new OneDiagramDescriptionMigrationAdapter(representationMetadata, representationContent));
+        if (eObject instanceof ViewUsage vu && resource.getResourceSet() != null) {
+            var optEditingContextAdapter = resource.getResourceSet().eAdapters().stream()
+                    .filter(EditingContextAdapter.class::isInstance)
+                    .map(EditingContextAdapter.class::cast)
+                    .findFirst();
+            if (optEditingContextAdapter.isPresent()) {
+                var editingContextId = optEditingContextAdapter.get().getEditingContextId();
+                var diagramsUUIDs = this.getDiagramsFromObjectId(this.identityService.getId(vu));
+                for (UUID diagramUUID : diagramsUUIDs) {
+                    var semanticDataAggregate = AggregateReference.<SemanticData, UUID> to(UUID.fromString(editingContextId));
+                    var optRepresentationMetadata = this.representationMetadataSearchService.findMetadataById(semanticDataAggregate, diagramUUID);
+                    if (optRepresentationMetadata.isPresent()) {
+                        var representationMetadataAggregate = AggregateReference.<RepresentationMetadata, UUID> to(optRepresentationMetadata.get().getRepresentationMetadataId());
+                        var optRepresentationContent = this.representationContentSearchService.findContentById(semanticDataAggregate, representationMetadataAggregate);
+                        if (optRepresentationMetadata.isPresent() && optRepresentationContent.isPresent() && this.isSysONStandardDiagram(optRepresentationMetadata.get())) {
+                            var representationMetadata = optRepresentationMetadata.get();
+                            var representationContent = optRepresentationContent.get();
+                            vu.eAdapters().add(new OneDiagramDescriptionMigrationAdapter(representationMetadata, representationContent));
+                        }
+                    }
                 }
             }
         }
@@ -86,7 +100,7 @@ public class OneDiagramDescriptionMigrationParticipant implements IMigrationPart
 
     private List<UUID> getDiagramsFromObjectId(String elementId) {
         var sql = """
-                SELECT representationMetadata.id
+                SELECT representationMetadata.representation_metadata_id
                 FROM representation_metadata representationMetadata
                 WHERE representationMetadata.target_object_id = :targetObjectId
                 """;

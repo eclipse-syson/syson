@@ -101,9 +101,6 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
     }
 
     private Flux<Object> givenSubscriptionToExistingViewTableRepresentation() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         var tableEventInput = new TableEventInput(UUID.randomUUID(), RequirementsTableTestProjectData.EDITING_CONTEXT_ID, RequirementsTableTestProjectData.GraphicalIds.TABLE_ID);
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 

@@ -96,7 +96,7 @@ public class EdgeCreationTester {
                 toolId,
                 new ArrayList<>());
         var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
-        String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+        String typename = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
 
         // If some messages have been provided then checks them
@@ -104,7 +104,7 @@ public class EdgeCreationTester {
             List<String> expectedMsg = expectedMessages.get();
             for (int i = 0; i < expectedMsg.size(); i++) {
                 String expMg = expectedMsg.get(i);
-                String messageText = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.messages[" + i + "].body");
+                String messageText = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.messages[" + i + "].body");
                 assertThat(messageText).isEqualTo(expMg);
             }
 

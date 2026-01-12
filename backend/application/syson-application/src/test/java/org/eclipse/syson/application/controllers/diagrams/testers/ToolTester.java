@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class ToolTester {
                 0,
                 variables);
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
-        String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+        String typename = JsonPath.read(createElementResult.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
 
@@ -111,7 +111,7 @@ public class ToolTester {
                 0,
                 variables);
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
-        String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+        String typename = JsonPath.read(createElementResult.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
 
@@ -123,7 +123,7 @@ public class ToolTester {
         var input = new EditLabelInput(UUID.randomUUID(), editingContextId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
         var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
 
-        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
+        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult.data(), "$.data.editLabel.__typename");
         assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
     }
 
@@ -145,7 +145,7 @@ public class ToolTester {
         var input = new EditLabelInput(UUID.randomUUID(), editingContextId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
         var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
 
-        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
+        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult.data(), "$.data.editLabel.__typename");
         assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
     }
 }

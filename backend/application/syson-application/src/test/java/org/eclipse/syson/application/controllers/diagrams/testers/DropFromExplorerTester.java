@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class DropFromExplorerTester {
                 0,
                 0);
         var dropOnDiagramResult = this.dropOnDiagramMutationRunner.run(dropOnDiagramInput);
-        String typename = JsonPath.read(dropOnDiagramResult, "$.data.dropOnDiagram.__typename");
+        var typename = JsonPath.read(dropOnDiagramResult.data(), "$.data.dropOnDiagram.__typename");
         assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
     }
 }

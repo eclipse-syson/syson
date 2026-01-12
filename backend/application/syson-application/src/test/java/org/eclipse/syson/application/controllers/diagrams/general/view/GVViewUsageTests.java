@@ -393,8 +393,6 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedIds, this.defaultFilters);
         var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput).flux();
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
 
         var updatedExplorerContentConsumerAfterExpand = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

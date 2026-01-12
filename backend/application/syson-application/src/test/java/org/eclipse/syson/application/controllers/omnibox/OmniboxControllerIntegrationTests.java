@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var omniboxCommandsQueryResult = this.omniboxCommandsQueryRunner.run(omniboxCommandsQueryVariables);
-        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
+        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult.data(), "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
         assertThat(allCommandIds).hasSize(3).contains(WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID, SysONOmniboxCommandProvider.PUBLISH_SYSML_PROJECT_COMMAND_ID,
                 SysONOmniboxCommandProvider.IMPORT_PUBLISHED_LIBRARY_COMMAND_ID);
         // Ensure the test never requested the editing context from IEditingContextSearchService.
@@ -86,7 +86,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "selectedObjectIds", List.of(),
                 "query", "");
         var omniboxCommandsQueryResult = this.omniboxCommandsQueryRunner.run(omniboxCommandsQueryVariables);
-        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
+        List<String> allCommandIds = JsonPath.read(omniboxCommandsQueryResult.data(), "$.data.viewer.workbenchOmniboxCommands.edges[*].node.id");
         assertThat(allCommandIds).hasSize(4)
                 .contains(WorkbenchOmniboxSearchCommandProvider.SEARCH_COMMAND_ID,
                         StudioPublicationCommandProvider.PUBLISH_STUDIO_COMMAND_ID,

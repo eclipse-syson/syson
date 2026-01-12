@@ -98,8 +98,6 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                     ElementUtil.setIsImported(resource, true);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 }).run();
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
