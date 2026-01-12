@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -106,6 +107,27 @@ public class EMFUtils {
                     return List.of();
                 });
 
+    }
+
+    /**
+     * Gets the first adapter of a given type installed on a Notifier.
+     *
+     * @param notifier
+     *         notifier on which the adapter is installed
+     * @param adapterType
+     *         the type of the desired adapter
+     * @param <T>
+     *         the type of the desired adapter
+     * @return an optional {@link Notifier}
+     */
+    public static <T extends Adapter> Optional<T> getAdapter(Notifier notifier, Class<T> adapterType) {
+        if (notifier != null) {
+            return notifier.eAdapters().stream()
+                    .filter(adapterType::isInstance)
+                    .map(adapterType::cast)
+                    .findFirst();
+        }
+        return Optional.empty();
     }
 
     /**

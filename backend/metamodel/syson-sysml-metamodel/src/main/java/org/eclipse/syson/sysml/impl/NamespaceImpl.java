@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 import org.eclipse.syson.sysml.helper.NameHelper;
@@ -112,7 +113,14 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getMembership() {
-        return this.getMembership(new BasicEList<>());
+        return EMFUtils.getAdapter(this, MembershipCacheAdapter.class)
+                .map(membershipCacheAdapter -> membershipCacheAdapter.getMembership(this)
+                        .orElseGet(() -> {
+                            EList<Membership> computedMembership = this.getMembership(new BasicEList<>());
+                            membershipCacheAdapter.addToCache(this, computedMembership);
+                            return computedMembership;
+                        }))
+                .orElseGet(() -> this.getMembership(new BasicEList<>()));
     }
 
     /**
