@@ -128,6 +128,11 @@ public class ViewToolService extends ToolService {
         boolean toolShouldBeAvailable = false;
         if (element instanceof Package) {
             toolShouldBeAvailable = true;
+            if (SysmlPackage.eINSTANCE.getAttributeUsage().isSuperTypeOf(domainClass)) {
+                toolShouldBeAvailable = false;
+            } else if (SysmlPackage.eINSTANCE.getPortUsage().isSuperTypeOf(domainClass)) {
+                toolShouldBeAvailable = false;
+            }
         } else if (element instanceof Usage && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {
             toolShouldBeAvailable = true;
         } else if (element instanceof Definition && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {

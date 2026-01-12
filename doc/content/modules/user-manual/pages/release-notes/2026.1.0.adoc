@@ -189,6 +189,7 @@ a|image::release-notes-namespace-import-node-after.png[Namespace import node aft
 +
 
 - Improve performances of textual export on big SysMLv2 models.
+- On _Interconnection View_ diagrams, the top-level palette (on the diagram's background) no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
 
 == Technical details
 
