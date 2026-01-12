@@ -12,6 +12,11 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1694[#1694] [syson] Customize Elasticsearch indices to work with SysML.
+SysON now uses its own indexing logic instead of the default one provided by Sirius Web.
+This allows to limit the size of the indices, and ensure information stored in the indices are useful to perform cross-project search.
+You can find more information on how to setup Elasticsearch, how elements are mapped to index documents, and how to query them in the documentation.
+
 === New features
 
 
