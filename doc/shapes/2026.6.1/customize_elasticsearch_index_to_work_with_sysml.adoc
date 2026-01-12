@@ -31,6 +31,7 @@ All the `Element` instances are stored in the index.
 The `name`, `shortName`, and `qualifiedName` attributes can be used to find elements.
 
 The following references can be navigated as part of the query:
+
 - `Element#owner`
 - `Element#ownedElement`
 - `Type#ownedSpecialization`
@@ -40,6 +41,7 @@ Navigation has a maximum depth of 1: for example, it is possible to access the o
 This limitation is necessary to limit the number of fields stored in the index (by default the maximum number of fields is 1000), and to avoid false positive matches on unbounded queries (e.g. an indexed document can match a term if its n-th owner's name contains the term).
 
 In addition, Sirius Web provides the following attributes that can be used to find elements:
+
 - `@id`: the ID of the element
 - `@editingContextId`: the ID of the editing context containing the element (this is a technical field, it is usually not useful to write queries)
 - `@type`: the type of the element (by default its EClass)

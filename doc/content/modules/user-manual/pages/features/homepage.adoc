@@ -20,11 +20,17 @@ image::homepage.png[{homepage}]
 
 === Toolbar
 
-The toolbar consists of two groups: _Homepage_ and _Links_.
+The toolbar consists of three groups: _Homepage_, _Command Palette_, and _Links_.
 
 image::homepage-toolbar.png[{homepage} Toolbar]
 
 include::user-manual:partial$homepage-action.adoc[leveloffset=+3]
+
+[#command-palette]
+==== Command Palette
+
+The _Command Palette_ in the {homepage} offers commands to perform actions on projects.
+For example, it provides a command to create a _blank project_, or a xref:user-manual:features/cross-project-search.adoc[command to search elements across projects].
 
 include::user-manual:partial$projects-action.adoc[leveloffset=+3]
 

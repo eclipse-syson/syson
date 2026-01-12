@@ -1,0 +1,37 @@
+= Cross project search
+
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
+
+[IMPORTANT]
+====
+This feature requires {product} to be configured to xref:developer-guide:elasticsearch-integration.adoc[work with Elasticsearch].
+====
+
+The _cross project search_ is a feature accessible in the Projects browser's command palette that allows to search for elements in any {product} project.
+It is based on https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[Elasticsearch's query string], which allows to find elements by matching its indexed fields.
+
+image:cross-project-search.png[Cross project search dialog]
+
+{product} stores each element of a {sysml} model following a xref:developer-guide:elasticsearch-integration.adoc#data-structure[data structure].
+The fields defined in this data structure can be used to match elements in the cross project search, for example:
+
+----
+// Get all the elements with a name starting with "Batmo"
+name:Batmo*
+
+// Get all the Part elements with a name starting with "part" followed by a digit
+name:/part<0-9>/ AND @type:Part
+
+// Get all the elements owned by "Package1" 
+owner.name:Package1
+
+// Get all the elements typed by "PartDefinition1"
+ownedSpecialization.@type:FeatureTyping AND ownedSpecialization.general.name:PartDefinition1
+----
+
+Note that the data structure only allows to query nested fields on 2 levels for `Element` instances (e.g. `owner.name`), and 3 levels for `Specialization` instances (e.g. `ownedSpecialization.general.name`).
+
+[NOTE]
+====
+{sysml} and {kerml} standard libraries are not indexed at the moment for performance reasons.
+====
