@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -65,6 +66,11 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
     @Override
     public EList<UseCaseUsage> getIncludedUseCase() {
         List<Usage> data = new ArrayList<>();
+        this.getNestedUseCase().stream()
+                .filter(IncludeUseCaseUsage.class::isInstance)
+                .map(IncludeUseCaseUsage.class::cast)
+                .map(IncludeUseCaseUsage::getUseCaseIncluded)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUseCaseUsage_IncludedUseCase(), data.size(), data.toArray());
     }
 
@@ -82,13 +88,14 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public UseCaseDefinition basicGetUseCaseDefinition() {
-        // TODO: implement this method to return the 'Use Case Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getType().stream()
+                .filter(UseCaseDefinition.class::isInstance)
+                .map(UseCaseDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

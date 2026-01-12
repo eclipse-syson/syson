@@ -87,6 +87,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1772[#1772] [diagrams] Add _items_ compartment on `PortUsage` graphical nodes in the _General View_ diagram.
 - https://github.com/eclipse-syson/syson/issues/1770[#1770] [diagrams] Add `IDirectEditNameSpaceProvider` to provide default namespace provider, an implementation allows to look for symbols in the SI namespace.
 - https://github.com/eclipse-syson/syson/issues/1813[#1813] [diagrams] Add creation tool for `Comment` graphical nodes in the _General View_ diagram background.
+- https://github.com/eclipse-syson/syson/issues/1828[#1828] [metamodel] Implement missing derived references of `UseCaseUsage` and `UseCaseDefinition`.
 
 == v2025.12.0
 
