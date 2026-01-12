@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -57,6 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -73,9 +73,6 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
@@ -195,8 +192,9 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         String explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(sysONExplorerTreeDescriptionId, expandedIds, defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
-        var explorerFlux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var explorerFlux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

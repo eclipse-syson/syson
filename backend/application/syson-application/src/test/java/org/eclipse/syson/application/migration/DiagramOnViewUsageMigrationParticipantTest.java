@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.DiagramOnViewUsageMigrationParticipantTestProjectData;
 import org.eclipse.syson.sysml.Package;
@@ -50,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -63,9 +63,6 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrationTests {
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private EditingContextEventSubscriptionRunner editingContextEventSubscriptionRunner;
@@ -90,10 +87,12 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void migrationParticpantTest() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
-        this.givenCommittedTransaction.commit();
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         BiFunction<IEditingContext, IInput, IPayload> checkFunction = (editingContext, executeEditingContextFunctionInput) -> {
             assertThat(this.testIsMigrationSuccessful(editingContext));

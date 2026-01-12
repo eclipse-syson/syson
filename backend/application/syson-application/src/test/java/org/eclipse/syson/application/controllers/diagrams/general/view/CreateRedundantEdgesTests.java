@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -175,7 +176,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
 
         Runnable createInitialEdge = () -> {
             var result = this.createEdge(diagramId.get(), sourceNodeId.get(), targetNodeId.get(), newEdgeToolId);
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -188,9 +189,9 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
 
         Runnable createRedundantEdge = () -> {
             var result = this.createEdge(diagramId.get(), sourceNodeId.get(), targetNodeId.get(), newEdgeToolId);
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
-            List<String> messages = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.messages[*].body");
+            List<String> messages = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.messages[*].body");
             assertThat(messages).hasSameElementsAs(List.of(expectedInfoMessage));
         };
 
@@ -217,7 +218,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
         return new DiagramNavigator(diagram).nodeWithLabel(label).getNode();
     }
 
-    private String createEdge(String diagramId, String sourceNodeId, String targetNodeId, String toolId) {
+    private GraphQLResult createEdge(String diagramId, String sourceNodeId, String targetNodeId, String toolId) {
         var input = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                 UUID.randomUUID(),
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT,

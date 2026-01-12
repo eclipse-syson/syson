@@ -95,7 +95,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
@@ -119,7 +119,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                     SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID,
                     -1);
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
-            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
@@ -163,7 +163,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
                 .filter(TreeRefreshedEventPayload.class::isInstance)
@@ -187,7 +187,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
                     SimpleProjectElementsTestProjectData.SemanticIds.PART_ID,
                     -1);
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
-            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropTreeItem.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();

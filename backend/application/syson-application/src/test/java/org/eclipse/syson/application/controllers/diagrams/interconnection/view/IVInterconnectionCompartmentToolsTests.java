@@ -107,23 +107,23 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
+            List<String> quickToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
             assertThat(quickToolsLabels).hasSize(4);
             assertThat(quickToolsLabels).containsSequence("Pin", "Adjust size", "Fade", "Hide");
-            List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(5);
             assertThat(paletteEntriesLabels).containsSequence("Requirements", "Structure", "Show/Hide", "Related Elements", "Edit");
 
-            List<String> paletteRequirementsSectionToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].label");
+            List<String> paletteRequirementsSectionToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].label");
             assertThat(paletteRequirementsSectionToolsLabels).hasSize(1);
             assertThat(paletteRequirementsSectionToolsLabels).containsSequence("New Satisfy Requirement");
-            List<String> paletteRequirementsSectionToolsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].id");
+            List<String> paletteRequirementsSectionToolsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[0].tools[*].id");
             newSatisfyRequirementToolId.set(paletteRequirementsSectionToolsIds.get(0));
 
-            List<String> paletteStructureSectionToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].label");
+            List<String> paletteStructureSectionToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].label");
             assertThat(paletteStructureSectionToolsLabels).hasSize(2);
             assertThat(paletteStructureSectionToolsLabels).containsSequence("New Part", "New Action");
-            List<String> paletteStructureSectionToolsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].id");
+            List<String> paletteStructureSectionToolsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[1].tools[*].id");
             newPartToolId.set(paletteStructureSectionToolsIds.get(0));
             newActionToolId.set(paletteStructureSectionToolsIds.get(1));
         };

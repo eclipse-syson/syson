@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
@@ -60,6 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -78,9 +78,6 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenDiagramReference givenDiagram;
@@ -153,7 +150,8 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkFlowConnectionCreation() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
                 "New Flow (flow)");
@@ -193,7 +191,8 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void checkItemUsageBindingConnectorAsUsage() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
                 "New Binding Connector As Usage (bind)");
@@ -234,7 +233,8 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowUsageTarget() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -271,7 +271,8 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowUsageSource() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

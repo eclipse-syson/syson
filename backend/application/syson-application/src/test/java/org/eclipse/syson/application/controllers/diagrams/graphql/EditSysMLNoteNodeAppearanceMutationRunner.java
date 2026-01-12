@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.application.controllers.diagrams.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class EditSysMLNoteNodeAppearanceMutationRunner implements IMutationRunne
     }
 
     @Override
-    public String run(IInput input) {
+    public GraphQLResult run(IInput input) {
         return this.graphQLRequestor.execute(EDIT_SYSML_NOTE_NODE_APPEARANCE_MUTATION, input);
     }
 }

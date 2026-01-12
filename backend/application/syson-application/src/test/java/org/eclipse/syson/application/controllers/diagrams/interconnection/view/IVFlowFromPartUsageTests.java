@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
@@ -50,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -67,9 +67,6 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenDiagramReference givenDiagram;
@@ -127,7 +124,8 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowUsageTarget() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,
@@ -164,7 +162,8 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void reconnectFlowUsageSource() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram,

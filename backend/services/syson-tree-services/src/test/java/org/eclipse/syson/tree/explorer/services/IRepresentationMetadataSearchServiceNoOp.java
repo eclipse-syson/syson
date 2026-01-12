@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,21 +25,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Mock implementation of {@link IRepresentationMetadataSearchService}.
- * 
+ *
  * @author dvojtise
  * @author flatombe
  */
 public class IRepresentationMetadataSearchServiceNoOp implements IRepresentationMetadataSearchService {
-
-    @Override
-    public Optional<AggregateReference<SemanticData, UUID>> findSemanticDataByRepresentationId(UUID representationId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<RepresentationMetadata> findMetadataById(UUID id) {
-        return Optional.empty();
-    }
 
     @Override
     public List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
@@ -57,17 +47,22 @@ public class IRepresentationMetadataSearchServiceNoOp implements IRepresentation
     }
 
     @Override
-    public boolean existsByIdAndKind(UUID id, List<String> kinds) {
-        return false;
-    }
-
-    @Override
-    public boolean existsById(UUID id) {
-        return false;
-    }
-
-    @Override
     public boolean existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference<SemanticData, UUID> semanticData, String targetObjectId) {
+        return false;
+    }
+
+    @Override
+    public boolean existsBySemanticDataAndRepresentationMetadataId(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
+        return false;
+    }
+
+    @Override
+    public Optional<RepresentationMetadata> findMetadataById(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsByIdAndKind(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, List<String> kinds) {
         return false;
     }
 }

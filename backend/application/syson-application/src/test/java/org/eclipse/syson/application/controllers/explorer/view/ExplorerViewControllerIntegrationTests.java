@@ -152,22 +152,22 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
         assertThat(count).isEqualTo(5);
 
-        List<String> representationLabels = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.label");
+        List<String> representationLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.edges[*].node.label");
         assertThat(representationLabels).hasSize(5);
         assertThat(representationLabels).contains("General View", "Action Flow View", "Interconnection View", "Requirements Table View", "State Transition View");
     }
@@ -183,7 +183,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.view1GV, this.view2AFV, this.view3STV, this.view4IV, this.view1GVRepresentation));
 
@@ -213,7 +213,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.req1RU, this.req2RU));
 
@@ -238,7 +238,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasNoExposeElement = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).allSatisfy(this::assertNoExposeChildren));
 
@@ -259,7 +259,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasNoExposeElement = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).allSatisfy(this::assertNoUserLibraryChildren));
 
@@ -281,7 +281,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         );
         var result = this.treeFiltersQueryRunner.run(variables);
 
-        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        List<String> treeFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescription.filters[*].id");
         assertThat(treeFilterIds).containsExactlyInAnyOrder(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
@@ -302,7 +302,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         );
         var result = this.treeFiltersQueryRunner.run(variables);
 
-        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        List<String> treeFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescription.filters[*].id");
         assertThat(treeFilterIds).isEmpty();
     }
 
@@ -339,7 +339,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                     "treeItemId", treeItemId);
             var result = this.initialDirectEditTreeItemLabelQueryRunner.run(variables);
 
-            String initialDirectEditLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
+            String initialDirectEditLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
             assertThat(initialDirectEditLabel).isEqualTo(expectedLabel);
         };
     }

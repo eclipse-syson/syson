@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,8 @@ public class TreePathTester {
                 "editingContextId", editingContextId,
                 "treeId", treeId,
                 "selectionEntryIds", selectionEntryIds);
-        String result = this.treePathQueryRunner.run(getTreePathVariables);
-        List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
+        var result = this.treePathQueryRunner.run(getTreePathVariables);
+        List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
         assertThat(treeItemIdsToExpand).isNotEmpty();
         return treeItemIdsToExpand;
     }

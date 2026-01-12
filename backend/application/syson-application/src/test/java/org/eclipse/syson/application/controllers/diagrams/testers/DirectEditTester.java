@@ -180,7 +180,7 @@ public class DirectEditTester {
             EditLabelInput input = new EditLabelInput(UUID.randomUUID(), this.editingContextId, diagram.get().getId(), labelId, inputLabel);
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 

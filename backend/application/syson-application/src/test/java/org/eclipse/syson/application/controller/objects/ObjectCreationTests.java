@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.CreateRootObjectMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
@@ -51,6 +50,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -64,9 +64,6 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private CreateRootObjectMutationRunner createRootObjectMutationRunner;
@@ -101,7 +98,8 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                     ElementUtil.setIsImported(resource, true);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 }).run();
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
@@ -111,18 +109,19 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                 "SysMLv2EditService-Package");
 
         var result = this.createRootObjectMutationRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.createRootObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createRootObject.__typename");
         assertThat(typename).isEqualTo(CreateRootObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.createRootObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createRootObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.createRootObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createRootObject.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createRootObject.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createRootObject.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=sysml&entity=Package");
 
         this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
@@ -152,19 +151,20 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
                 GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
                 SysMLv2EditService.ID_PREFIX + "ViewUsage");
         var result = this.createChildMutationRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         // a ViewUsage already exists in the GeneralViewEmpty project, so the new one is the second one
         assertThat(objectLabel).isEqualTo("view2");
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=sysml&entity=ViewUsage");
 
         representationMetadatas = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(optionalSemanticData.get()));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,7 @@ public class DuplicateTargetBrowserTreeDescriptionTest extends AbstractIntegrati
                         + SimpleProjectElementsTestProjectData.SemanticIds.ROOT_NAMESPACE + ","
                         + SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID);
         var input = new ModelBrowserEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, representationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
 
         String[] treeId = new String[] { null };
@@ -132,9 +132,9 @@ public class DuplicateTargetBrowserTreeDescriptionTest extends AbstractIntegrati
                     "treeId", treeId[0],
                     "treeItemId", SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE2_ID
             );
-            
+
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).hasSize(2);
         };
 

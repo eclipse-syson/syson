@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,7 +111,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWhenLibraryIsPublishedThenLibraryExistsAndHasCorrectMetadatas() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result = this.publishLibrariesMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -170,7 +170,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWhenLibraryIsPublishedThenContentOfLibraryMatchesContentOfProject() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result = this.publishLibrariesMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -239,7 +239,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWithImportedResourceWhenLibraryIsPublishedThenLibraryDoesNotContainTheImportedFlag() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), IMPORTED_PROJECT, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -265,7 +265,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWithUsedDependencyToLibraryWhenLibraryIsPublishedThenItHasTheSameDependency() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -300,7 +300,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWithUnusedDependencyToLibraryWhenLibraryIsPublishedThenItHasNoDependency() {
         var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -122,7 +122,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     false);
             var result = this.showDiagramsInheritedMembersMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.showDiagramsInheritedMembers.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.showDiagramsInheritedMembers.__typename");
             assertThat(typename).isEqualTo(ShowDiagramsInheritedMembersSuccessPayload.class.getSimpleName());
         };
 
@@ -140,7 +140,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     true);
             var result = this.showDiagramsInheritedMembersMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.showDiagramsInheritedMembers.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.showDiagramsInheritedMembers.__typename");
             assertThat(typename).isEqualTo(ShowDiagramsInheritedMembersSuccessPayload.class.getSimpleName());
         };
 
@@ -400,12 +400,10 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "diagramElementIds", List.of(inheritedPortId.get())
             );
             var result = this.paletteQueryRunner.run(variables);
-            List<String> quickAccessToolIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
-            // To enable again with SiriusWeb 2025.12.3
-            // assertThat(quickAccessToolIds).doesNotContain("semantic-delete", "edit");
-            List<String> editToolSectionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.id=='edit-section')].tools[*].id");
-            // To enable again with SiriusWeb 2025.12.3
-            // assertThat(editToolSectionIds).doesNotContain("semantic-delete", "edit");
+            List<String> quickAccessToolIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+            assertThat(quickAccessToolIds).doesNotContain("semantic-delete", "edit");
+            List<String> editToolSectionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.id=='edit-section')].tools[*].id");
+            assertThat(editToolSectionIds).doesNotContain("semantic-delete", "edit");
         };
 
         StepVerifier.create(flux)

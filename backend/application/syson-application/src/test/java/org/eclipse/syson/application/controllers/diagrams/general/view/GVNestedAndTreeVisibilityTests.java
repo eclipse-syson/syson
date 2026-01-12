@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -128,7 +128,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
             var input = new HideDiagramElementInput(UUID.randomUUID(), GVSimpleNestedAndTreeElementsTestProjectData.EDITING_CONTEXT_ID, GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.DIAGRAM_ID,
                     Set.of(GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.ACTION_A_ACTION_FLOW_COMPARTMENT), false);
             var result = this.hideDiagramElementMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.hideDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.hideDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -196,7 +196,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
             var input = new HideDiagramElementInput(UUID.randomUUID(), GVSimpleNestedAndTreeElementsTestProjectData.EDITING_CONTEXT_ID, GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.DIAGRAM_ID,
                     Set.of(GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.ACTION_A_ACTIONS_COMPARTMENT), false);
             var result = this.hideDiagramElementMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.hideDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.hideDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -292,7 +292,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
             var input = new HideDiagramElementInput(UUID.randomUUID(), GVSimpleNestedAndTreeElementsTestProjectData.EDITING_CONTEXT_ID, GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.DIAGRAM_ID,
                     Set.of(GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.ACTION_A_ITEMS_COMPARTMENT), false);
             var result = this.hideDiagramElementMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.hideDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.hideDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

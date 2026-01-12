@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,14 +70,14 @@ public class ObjectDuplicationTests extends AbstractIntegrationTests {
                 SimpleProjectElementsTestProjectData.SemanticIds.PART_ID,
                 SimpleProjectElementsTestProjectData.SemanticIds.PACKAGE_1_ID,
                 "membership:OwningMembership", true, true, false);
-        String result = this.duplicateObjectMutationRunner.run(duplicateInput);
+        var result = this.duplicateObjectMutationRunner.run(duplicateInput);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateObject.object.id");
         assertThat(objectId).isNotBlank().isNotEqualTo(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID);
-        String label = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        String label = JsonPath.read(result.data(), "$.data.duplicateObject.object.label");
         assertThat(label).isEqualTo("p-copy");
 
         var queryResult = this.evaluateExpressionMutationRunner.run(

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,7 +111,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
                     0,
                     0);
             var result = this.dropNodesMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -135,7 +135,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
                     0,
                     0);
             var result = this.dropNodesMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

@@ -37,7 +37,6 @@ import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -71,6 +70,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -94,9 +94,6 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenDiagramReference givenDiagram;
@@ -235,7 +232,8 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
                 this.diagram.get().getId(),
@@ -275,7 +273,8 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
         var partNodeId = new AtomicReference<String>();
 
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         Runnable newPartOnViewUsage = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID,
                 GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
@@ -335,8 +334,9 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedIds, this.defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -392,8 +392,9 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedIds, this.defaultFilters);
         var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, updatedExplorerRepresentationId);
-        var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
-        this.givenCommittedTransaction.commit();
+        var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var updatedExplorerContentConsumerAfterExpand = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
