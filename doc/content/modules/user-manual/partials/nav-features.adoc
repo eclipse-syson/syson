@@ -8,6 +8,7 @@
 * Diagramming Tools
 ** Projects Management
 *** xref:user-manual:features/homepage.adoc[]
+*** xref:user-manual:features/cross-project-search.adoc[]
 ** Editor
 *** xref:user-manual:features/editor.adoc[]
 *** xref:user-manual:features/details.adoc[]
@@ -42,4 +43,5 @@
 ** xref:user-manual:features/scaling-limits.adoc[]
 ** xref:developer-guide:extend.adoc[]
 ** xref:user-manual:features/security.adoc[]
+** xref:developer-guide:elasticsearch-integration.adoc[]
 
