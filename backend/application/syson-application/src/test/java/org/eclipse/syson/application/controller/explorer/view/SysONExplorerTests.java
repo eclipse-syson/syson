@@ -144,7 +144,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         TestTransaction.flagForCommit();
         TestTransaction.end();
-        List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
         assertThat(explorerIds).contains(this.sysONExplorerTreeDescriptionId);
     }
@@ -160,7 +160,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", SysonStudioTestProjectData.EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
-        List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
         assertThat(explorerIds).contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
     }

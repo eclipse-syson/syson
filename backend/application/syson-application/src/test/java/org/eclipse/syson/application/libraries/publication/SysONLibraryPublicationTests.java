@@ -132,7 +132,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
     public void givenProjectWhenLibraryIsPublishedTwiceThenTheSecondPublicationFailsAndTheLibraryIsNotUpdated() {
         var input1 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result1 = this.publishLibrariesMutationRunner.run(input1);
-        String typename1 = JsonPath.read(result1, "$.data.publishLibraries.__typename");
+        String typename1 = JsonPath.read(result1.data(), "$.data.publishLibraries.__typename");
         assertThat(typename1).isEqualTo(SuccessPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -147,7 +147,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         // the description.
         var input2 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION + "_2");
         var result2 = this.publishLibrariesMutationRunner.run(input2);
-        String typename2 = JsonPath.read(result2, "$.data.publishLibraries.__typename");
+        String typename2 = JsonPath.read(result2.data(), "$.data.publishLibraries.__typename");
         assertThat(typename2).isEqualTo(ErrorPayload.class.getSimpleName());
         TestTransaction.flagForCommit();
         TestTransaction.end();

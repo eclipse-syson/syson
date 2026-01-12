@@ -194,7 +194,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", port1Id.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -211,7 +211,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     toolId,
                     new ArrayList<>());
             var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
-            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String typename = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -265,7 +265,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", inheritedPortId.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -282,7 +282,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     toolId,
                     new ArrayList<>());
             var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
-            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String typename = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -336,7 +336,8 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", inheritedPortV2Id.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult, String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Ports And %s')].id",
+            List<String> ids = JsonPath.read(connectorToolsResult.data(),
+                    String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Ports And %s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -353,7 +354,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     toolId,
                     new ArrayList<>());
             var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
-            String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String typename = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 

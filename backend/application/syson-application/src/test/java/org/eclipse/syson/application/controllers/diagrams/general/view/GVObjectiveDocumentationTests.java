@@ -152,6 +152,6 @@ public class GVObjectiveDocumentationTests extends AbstractIntegrationTests {
                 .then(newObjectiveDocumentationTool)
                 .consumeNextWith(updatedDiagramContentConsumer)
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 }

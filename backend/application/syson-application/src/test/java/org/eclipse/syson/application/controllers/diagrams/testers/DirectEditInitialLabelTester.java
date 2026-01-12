@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class DirectEditInitialLabelTester {
                     "labelId", labelId.get());
             var initialDirectEditElementLabelResult = this.initialDirectEditElementLabelQueryRunner.run(variables);
 
-            String initialDirectEditElementLabel = JsonPath.read(initialDirectEditElementLabelResult, "$.data.viewer.editingContext.representation.description.initialDirectEditElementLabel");
+            String initialDirectEditElementLabel = JsonPath.read(initialDirectEditElementLabelResult.data(), "$.data.viewer.editingContext.representation.description.initialDirectEditElementLabel");
             assertThat(initialDirectEditElementLabel).isEqualTo(expectedLabel);
         };
 

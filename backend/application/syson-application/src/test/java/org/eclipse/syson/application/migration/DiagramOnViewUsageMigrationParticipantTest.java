@@ -87,8 +87,6 @@ public class DiagramOnViewUsageMigrationParticipantTest extends AbstractIntegrat
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void migrationParticpantTest() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), DiagramOnViewUsageMigrationParticipantTestProjectData.EDITING_CONTEXT_ID.toString());
         var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
         TestTransaction.flagForCommit();

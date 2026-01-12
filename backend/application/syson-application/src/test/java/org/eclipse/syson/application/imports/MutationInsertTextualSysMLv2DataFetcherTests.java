@@ -58,7 +58,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -93,9 +92,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testCreationFromText() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, """
                 package importedPackage;
                 """);
@@ -110,9 +106,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package importing ScalarValues namespace, WHEN importing an attribute with type Real, THEN the Real type should be correctly resolved")
     @Test
     public void testCreateRealAttribute() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.PART1_ID, " attribute x : Real");
 
         this.checkElement(PartUsage.class,
@@ -137,9 +130,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package, WHEN importing a NamespaceImport, THEN NamespaceImport should be contained in the ownedRelationships of the Package")
     @Test
     public void testCreateNamespaceImport() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, "import ScalarValues::*;");
 
         this.checkElement(Package.class,
@@ -161,9 +151,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a model with two ActionUsages, WHEN creating a succession between those actions, THEN the successsion should be created")
     @Test
     public void testCreateSuccessionAsUsage() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "succession s1 first action1 then action2;");
 
         this.checkElement(ActionDefinition.class,
@@ -186,9 +173,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN model with two ItemUsages, WHEN creating a FlowUsage between those items, THEN the flow should be created")
     @Test
     public void testCreateFlow() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "flow action1.item1Out to action2.item1In;");
 
         this.checkElement(ActionDefinition.class,
@@ -213,9 +197,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package that do not import ScalarValues namespace, WHEN importing an attribute with type Real, THEN attribute should be added but a message should be displayed")
     @Test
     public void testCreateRealAttributeWithResolutionProblem() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         this.insertTextExpectMessages(NewObjectAsTextProjectData.SemanticIds.PART_DEFINITION_1_ID, " attribute x : Real",
                 List.of(new Message("Unable to resolve name 'Real' for reference 'type' on element '[FeatureTyping] Root::Definitions::PartDefinition1::x::<FeatureTyping>'",
                         MessageLevel.WARNING)));
@@ -233,17 +214,12 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                     }
                     return false;
                 });
-
     }
 
 
     private void insertTextExpectNoMessage(String parentElementId, String content) {
         var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), NewObjectAsTextProjectData.EDITING_CONTEXT_ID, parentElementId, content);
         var result = this.queryRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
 
         Map<String, Object> parsed = JsonPath.read(result.data(), "$.data.insertTextualSysMLv2");
 
@@ -254,10 +230,6 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     private void insertTextExpectMessages(String parentElementId, String content, List<Message> expectedMessages) {
         var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), NewObjectAsTextProjectData.EDITING_CONTEXT_ID, parentElementId, content);
         var result = this.queryRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
 
         Map<String, Object> parsed = JsonPath.read(result.data(), "$.data.insertTextualSysMLv2");
 

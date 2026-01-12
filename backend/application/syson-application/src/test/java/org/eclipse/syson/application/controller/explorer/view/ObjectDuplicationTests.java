@@ -85,7 +85,7 @@ public class ObjectDuplicationTests extends AbstractIntegrationTests {
                         SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID,
                         "aql:self.eContainer().eClass().name", List.of(objectId)));
 
-        String stringResult = JsonPath.read(queryResult, "$.data.evaluateExpression.result.stringValue");
+        String stringResult = JsonPath.read(queryResult.data(), "$.data.evaluateExpression.result.stringValue");
 
         assertThat(stringResult).isEqualTo("OwningMembership");
 
@@ -95,7 +95,7 @@ public class ObjectDuplicationTests extends AbstractIntegrationTests {
                         "aql:self.eContainer().eContainer().name",
                         List.of(objectId)));
 
-        stringResult = JsonPath.read(queryResult, "$.data.evaluateExpression.result.stringValue");
+        stringResult = JsonPath.read(queryResult.data(), "$.data.evaluateExpression.result.stringValue");
         assertThat(stringResult).isEqualTo("Package1");
     }
 }

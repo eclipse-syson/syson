@@ -86,7 +86,7 @@ public class SysONLibraryUpdateImpactAnalysisControllerIntegrationTests extends 
         assertThat(nbElementCreated).isEqualTo(0);
 
         Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-        DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
+        DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
 
         assertThat(dataTree.id()).isEqualTo("impact_tree");
         this.assertHasNode(dataTree, "LibraryResource1 (MyLibrary@v1)", null, ChangeKind.DELETION);
