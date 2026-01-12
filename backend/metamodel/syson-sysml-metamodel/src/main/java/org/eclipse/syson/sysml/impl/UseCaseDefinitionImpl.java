@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -63,6 +64,11 @@ public class UseCaseDefinitionImpl extends CaseDefinitionImpl implements UseCase
     @Override
     public EList<UseCaseUsage> getIncludedUseCase() {
         List<Usage> data = new ArrayList<>();
+        this.getOwnedUseCase().stream()
+                .filter(IncludeUseCaseUsage.class::isInstance)
+                .map(IncludeUseCaseUsage.class::cast)
+                .map(IncludeUseCaseUsage::getUseCaseIncluded)
+                .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUseCaseDefinition_IncludedUseCase(), data.size(), data.toArray());
     }
 
