@@ -73,6 +73,8 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1822[#1822] [services] Allow _New Actor_ tool to select `PartDefinition` in addition to `PartUsage`.
 - https://github.com/eclipse-syson/syson/issues/1835[#1835] [diagrams] Align the size of _NamespaceImport_ graphical node with the size of _Package_ graphical node.
 - https://github.com/eclipse-syson/syson/issues/1832[#1831] [export] Improve textual export performance by keeping a cache `Membership` computations.
+- https://github.com/eclipse-syson/syson/issues/1818[#1818] [diagrams] On _Interconnection View_ diagrams, the top-level palette no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
+The tools are still available in the palette of e.g. `Parts`.
 
 === New features
 
