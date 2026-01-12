@@ -111,7 +111,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), ": PartDefinition1");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -164,7 +164,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), ": PackageRoot::Package2::PartDefinition2");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -217,7 +217,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), ": PDef1");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -270,7 +270,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), ": PRoot::P2::PDef2");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -323,7 +323,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), ": PDef2");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -380,7 +380,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 = 1[g]");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 

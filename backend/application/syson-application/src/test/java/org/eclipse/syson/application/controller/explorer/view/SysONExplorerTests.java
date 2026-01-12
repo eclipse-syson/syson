@@ -42,7 +42,6 @@ import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -70,6 +69,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -86,9 +86,6 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
@@ -145,7 +142,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
         assertThat(explorerIds).contains(this.sysONExplorerTreeDescriptionId);
@@ -156,7 +154,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void getAvailableExplorersForStudioProject() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", SysonStudioTestProjectData.EDITING_CONTEXT_ID);
@@ -183,8 +182,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .toList();
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         AtomicReference<String> sysmlModelTreeItemId = new AtomicReference<>();
         AtomicReference<String> librariesDirectoryTreeItemId = new AtomicReference<>();
@@ -221,7 +221,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedTreeItemIds, defaultFilters);
         var updatedInput = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, updatedExplorerRepresentationId);
-        var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
+        var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput).flux();
 
         var updatedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -277,8 +277,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(librariesTreeItemId, sysmlLibrariesTreeItemId, kermlLibrariesTreeItemId), defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -325,8 +326,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -369,8 +371,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString()), defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         AtomicReference<String> sysmlModelTreeItemId = new AtomicReference<>();
         AtomicReference<String> librariesDirectoryTreeItemId = new AtomicReference<>();
@@ -427,8 +430,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         AtomicReference<String> treeId = new AtomicReference<>();
         AtomicReference<String> sysmlv2DocumentTreeItemId = new AtomicReference<>();
@@ -476,8 +480,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(GeneralViewEmptyTestProjectData.SemanticIds.MODEL_ID, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID), filters);
 
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         AtomicReference<String> treeId = new AtomicReference<>();
         AtomicReference<String> sysmlv2DocumentTreeItemId = new AtomicReference<>();
@@ -546,8 +551,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -575,8 +581,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         List<String> filters = List.of(SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -605,8 +612,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var treeId = new AtomicReference<String>();
         var userLibId = new AtomicReference<String>();
@@ -659,8 +667,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString(), UUID.nameUUIDFromBytes("SysON_User_Libraries_Directory".getBytes()).toString()), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var treeId = new AtomicReference<String>();
         var userLibId = new AtomicReference<String>();
@@ -713,8 +722,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -741,8 +751,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
                 List.of(), filters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData.LIBRARY_EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var initialExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -775,8 +786,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, filters);
 
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
-        this.givenCommittedTransaction.commit();
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var treeId = new AtomicReference<String>();
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.NewObjectAsTextProjectData;
@@ -74,9 +73,6 @@ import reactor.test.StepVerifier;
 public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegrationTests {
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
@@ -97,7 +93,9 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void testCreationFromText() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, """
                 package importedPackage;
                 """);
@@ -112,7 +110,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package importing ScalarValues namespace, WHEN importing an attribute with type Real, THEN the Real type should be correctly resolved")
     @Test
     public void testCreateRealAttribute() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.PART1_ID, " attribute x : Real");
 
@@ -138,7 +137,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package, WHEN importing a NamespaceImport, THEN NamespaceImport should be contained in the ownedRelationships of the Package")
     @Test
     public void testCreateNamespaceImport() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ROOT_ID, "import ScalarValues::*;");
 
@@ -161,7 +161,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a model with two ActionUsages, WHEN creating a succession between those actions, THEN the successsion should be created")
     @Test
     public void testCreateSuccessionAsUsage() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "succession s1 first action1 then action2;");
 
@@ -185,7 +186,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN model with two ItemUsages, WHEN creating a FlowUsage between those items, THEN the flow should be created")
     @Test
     public void testCreateFlow() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.insertTextExpectNoMessage(NewObjectAsTextProjectData.SemanticIds.ACTION_DEFINITION_1_ID, "flow action1.item1Out to action2.item1In;");
 
@@ -211,7 +213,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @DisplayName("GIVEN a package that do not import ScalarValues namespace, WHEN importing an attribute with type Real, THEN attribute should be added but a message should be displayed")
     @Test
     public void testCreateRealAttributeWithResolutionProblem() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         this.insertTextExpectMessages(NewObjectAsTextProjectData.SemanticIds.PART_DEFINITION_1_ID, " attribute x : Real",
                 List.of(new Message("Unable to resolve name 'Real' for reference 'type' on element '[FeatureTyping] Root::Definitions::PartDefinition1::x::<FeatureTyping>'",
@@ -242,7 +245,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         TestTransaction.end();
         TestTransaction.start();
 
-        Map<String, Object> parsed = JsonPath.read(result, "$.data.insertTextualSysMLv2");
+        Map<String, Object> parsed = JsonPath.read(result.data(), "$.data.insertTextualSysMLv2");
 
         assertThat(parsed.get("__typename")).isEqualTo(SuccessPayload.class.getSimpleName());
         assertThat((List<?>) parsed.get("messages")).isEmpty();
@@ -256,7 +259,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         TestTransaction.end();
         TestTransaction.start();
 
-        Map<String, Object> parsed = JsonPath.read(result, "$.data.insertTextualSysMLv2");
+        Map<String, Object> parsed = JsonPath.read(result.data(), "$.data.insertTextualSysMLv2");
 
         assertThat(parsed.get("__typename")).isEqualTo(SuccessPayload.class.getSimpleName());
 

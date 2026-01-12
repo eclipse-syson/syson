@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -39,12 +40,14 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks.Many;
@@ -91,10 +94,14 @@ public class SysONShowHideSDVElementEventHandler implements IDiagramEventHandler
     @Override
     public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
         if (diagramInput instanceof HideDiagramElementInput hideInput) {
-            var optDiagram = new UUIDParser().parse(hideInput.representationId())
-                    .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(representationId));
-            if (optDiagram.isPresent()) {
-                return SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(optDiagram.get().getDescriptionId());
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+            if (optionalSemanticDataId.isPresent()) {
+                var semanticData = AggregateReference.<SemanticData, UUID> to(optionalSemanticDataId.get());
+                var optDiagram = new UUIDParser().parse(hideInput.representationId())
+                        .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(semanticData, representationId));
+                if (optDiagram.isPresent()) {
+                    return SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(optDiagram.get().getDescriptionId());
+                }
             }
         }
         return false;

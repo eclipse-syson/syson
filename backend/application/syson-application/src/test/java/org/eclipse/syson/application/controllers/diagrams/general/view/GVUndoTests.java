@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,7 +136,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         Runnable invokeDeletePartUsageTool = () -> {
             var input = new DeleteFromDiagramInput(deletePartInputId, GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram.get().getId(), List.of(partNodeId.get()), List.of());
             var result = this.deleteFromDiagramRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.deleteFromDiagram.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
             assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
         };
 
@@ -150,7 +150,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         Runnable invokeUndoDeletePartUsage = () -> {
             var input = new UndoInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, deletePartInputId);
             var result = this.undoMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.undo.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.undo.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

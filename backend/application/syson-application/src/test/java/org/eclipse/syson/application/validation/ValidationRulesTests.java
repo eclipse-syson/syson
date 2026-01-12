@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationRefreshedEventPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -41,6 +40,7 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -66,9 +66,6 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
             """;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
     @Autowired
@@ -90,13 +87,15 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     public void givenASimpleProjectWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
         var input = new ValidationEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
+                .flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)
                 .filter(ValidationRefreshedEventPayload.class::isInstance)
                 .map(ValidationRefreshedEventPayload.class::cast);
 
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         Consumer<ValidationRefreshedEventPayload> validationContentConsumer = payload -> Optional.of(payload)
                 .map(ValidationRefreshedEventPayload::validation)
@@ -122,13 +121,15 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     public void givenAProjectWithManyElementsWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
         var input = new ValidationEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
+                .flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData)
                 .filter(ValidationRefreshedEventPayload.class::isInstance)
                 .map(ValidationRefreshedEventPayload.class::cast);
 
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         Consumer<ValidationRefreshedEventPayload> validationContentConsumer = payload -> Optional.of(payload)
                 .map(ValidationRefreshedEventPayload::validation)

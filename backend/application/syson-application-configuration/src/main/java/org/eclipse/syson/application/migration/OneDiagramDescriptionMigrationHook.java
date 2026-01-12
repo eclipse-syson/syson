@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -27,9 +28,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,7 +66,7 @@ public class OneDiagramDescriptionMigrationHook implements IEditingContextEventP
                         var migrationAdapter = adapter.get();
                         var representationMetadata = migrationAdapter.getRepresentationMetadata();
                         var representationContent = migrationAdapter.getRepresentationContent();
-                        this.updateDiagramDescription(representationMetadata, representationContent);
+                        this.updateDiagramDescription(editingContext, representationMetadata, representationContent);
                         element.eAdapters().remove(migrationAdapter);
                     }
                 }
@@ -100,8 +103,10 @@ public class OneDiagramDescriptionMigrationHook implements IEditingContextEventP
                 .findFirst();
     }
 
-    private void updateDiagramDescription(RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
-        this.representationMetadataUpdateService.updateDescriptionId(null, representationMetadata.getId(), SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+    private void updateDiagramDescription(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+        var semanticData = AggregateReference.<SemanticData, UUID> to(UUID.fromString(editingContext.getId()));
+        this.representationMetadataUpdateService.updateDescriptionId(null, semanticData, representationMetadata.getRepresentationMetadataId(),
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
 
         var newContent = this.updateRepresentationContent(representationContent);
         representationContent.updateContent(null, newContent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -39,6 +41,7 @@ import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +87,7 @@ public class DiagramOnViewUsageMigrationHook implements IEditingContextEventProc
                         var viewUsage = this.createViewUsage(element, diagramName, representationDescriptionId);
                         var idAdapter = new IDAdapter(ElementUtil.generateUUID(viewUsage));
                         viewUsage.eAdapters().add(idAdapter);
-                        this.updateDiagramTarget(this.identityService.getId(viewUsage), representationMetadata, representationContent);
+                        this.updateDiagramTarget(this.identityService.getId(viewUsage), editingContext, representationMetadata, representationContent);
                         element.eAdapters().remove(diagramOnViewUsageMigrationAdapter);
                     }
                 }
@@ -168,8 +171,9 @@ public class DiagramOnViewUsageMigrationHook implements IEditingContextEventProc
         return optViewDef;
     }
 
-    private void updateDiagramTarget(String targetObjectId, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
-        this.representationMetadataUpdateService.updateTargetObjectId(null, representationMetadata.getId(), targetObjectId);
+    private void updateDiagramTarget(String targetObjectId, IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+        var semanticData = AggregateReference.<SemanticData, UUID> to(UUID.fromString(editingContext.getId()));
+        this.representationMetadataUpdateService.updateTargetObjectId(null, semanticData, representationMetadata.getRepresentationMetadataId(), targetObjectId);
 
         var newContent = this.updateRepresentationContent(representationContent, targetObjectId);
         representationContent.updateContent(null, newContent);

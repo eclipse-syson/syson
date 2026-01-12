@@ -44,7 +44,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
-import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.EdgeConnectionUsageTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -94,9 +93,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
     @Autowired
     private IDiagramIdProvider diagramIdProvider;
-
-    @Autowired
-    private ToolTester nodeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -408,7 +404,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
     }
 
     private ConnectorAsUsageChecker<ConnectionUsage> createChecker() {
-        return new ConnectorAsUsageChecker<ConnectionUsage>(this.identityService, this.semanticCheckerService, ConnectionUsage.class);
+        return new ConnectorAsUsageChecker<>(this.identityService, this.semanticCheckerService, ConnectionUsage.class);
     }
 
     private AtomicReference<String> reconnect(String edgeId, String newTarget, ReconnectEdgeKind reconnectionKind, String expectedSourceGraplicalId, String expectedTargetGraplicalId) {

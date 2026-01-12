@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Annotation;
@@ -28,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,13 +46,10 @@ public class AnnotationMigrationParticipantTest extends AbstractIntegrationTests
     private static final String EDITING_CONTEXT_ID = "45343945-1cb8-456b-b396-b02df4ca6da1";
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Test
     @DisplayName("GIVEN a project with an old SysML model, WHEN the model is loaded, AnnotationAnnotatingElementMigrationParticipant migrates the model correctly meaning it does not deserialize source feature")
@@ -60,15 +57,16 @@ public class AnnotationMigrationParticipantTest extends AbstractIntegrationTests
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void annotationSourceMigrationParticpantTest() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
         var optionalEditingContext = this.editingContextSearchService.findById(EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
         this.testIsMigrationSuccessful(optionalEditingContext.get());
     }
 
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
-        Annotation annotation = (Annotation) this.objectService.getObject(editingContext, ANNOTATION_ID).get();
-        AnnotatingElement annotatingElement = (AnnotatingElement) this.objectService.getObject(editingContext, ANNOTATING_ELEMENT_ID).get();
+        Annotation annotation = (Annotation) this.objectSearchService.getObject(editingContext, ANNOTATION_ID).get();
+        AnnotatingElement annotatingElement = (AnnotatingElement) this.objectSearchService.getObject(editingContext, ANNOTATING_ELEMENT_ID).get();
 
         AnnotatingElement annotationAnnotatingElement = annotation.getAnnotatingElement();
         EList<Annotation> annotatingElementAnnotation = annotatingElement.getAnnotation();

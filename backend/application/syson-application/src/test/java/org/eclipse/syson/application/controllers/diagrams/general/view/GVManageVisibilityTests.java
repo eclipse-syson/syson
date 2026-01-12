@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -110,8 +110,8 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
                     "diagramElementId", nodeId.get()
             );
             var result = this.getActionsQueryRunner.run(variables);
-            List<String> actionsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].id");
-            List<String> actionsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].label");
+            List<String> actionsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].id");
+            List<String> actionsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].label");
 
             assertThat(actionsIds)
                     .isNotEmpty()
@@ -129,7 +129,7 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
         Runnable invokeRevealValuedContentAction = () -> {
             var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), GeneralViewManageVisibilityTestsProjectData.EDITING_CONTEXT_ID, GeneralViewManageVisibilityTestsProjectData.GraphicalIds.DIAGRAM_ID, nodeId.get(), ManageVisibilityRevealValuedContentAction.ACTION_ID);
             var result = this.invokeActionMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.invokeManageVisibilityAction.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeManageVisibilityAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

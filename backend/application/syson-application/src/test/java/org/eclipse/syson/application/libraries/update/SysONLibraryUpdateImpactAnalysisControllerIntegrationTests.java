@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,11 +78,11 @@ public class SysONLibraryUpdateImpactAnalysisControllerIntegrationTests extends 
 
         Map<String, Object> input = Map.of("editingContextId", ProjectWithLibraryDependencyTestProjectData.EDITING_CONTEXT, "libraryId", optionalLibrary.get().getId());
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
-        int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
+        int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
-        int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
+        int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
         assertThat(nbElementModified).isEqualTo(3);
-        int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
+        int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
         assertThat(nbElementCreated).isEqualTo(0);
 
         Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));

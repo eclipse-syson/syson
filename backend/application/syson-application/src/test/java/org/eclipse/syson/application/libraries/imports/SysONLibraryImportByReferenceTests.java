@@ -163,7 +163,7 @@ public class SysONLibraryImportByReferenceTests extends SysONLibraryImportTests 
     @SysONLibraryImportTestServer
     public void testValidationAfterImport() {
         ValidationEventInput validationEventInput = new ValidationEventInput(UUID.randomUUID(), this.projectEditingContext.getId(), "validation://");
-        var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput);
+        var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput).flux();
 
         AtomicReference<Integer> diagnosticCount = new AtomicReference<>(0);
 

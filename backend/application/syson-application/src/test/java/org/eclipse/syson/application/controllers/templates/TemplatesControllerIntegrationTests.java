@@ -94,10 +94,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         var input = new CreateProjectInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
@@ -129,10 +129,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
         var input = new CreateProjectInput(UUID.randomUUID(), SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_NAME, SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
@@ -180,10 +180,10 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
                 List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

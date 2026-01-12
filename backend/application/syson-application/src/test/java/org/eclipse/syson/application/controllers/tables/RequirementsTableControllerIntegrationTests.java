@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -50,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -66,9 +66,6 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenCreatedTableSubscription givenCreatedTableSubscription;
@@ -100,16 +97,18 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                 SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID,
                 RequirementsTableTestProjectData.SemanticIds.VIEW_1_ELEMENT_ID,
                 "NewRequirementsTableView");
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     private Flux<Object> givenSubscriptionToExistingViewTableRepresentation() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), RequirementsTableTestProjectData.EDITING_CONTEXT_ID, RequirementsTableTestProjectData.GraphicalIds.TABLE_ID);
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
         return flux;
     }
@@ -192,7 +191,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     tableId.get());
 
             var result = this.createRequirementMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result, "$.data.createRequirement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.createRequirement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -232,7 +231,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     tableId.get());
 
             var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result, "$.data.exposeRequirements.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -279,7 +278,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     tableId.get());
 
             var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result, "$.data.exposeRequirements.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -300,12 +299,12 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     "rowId", rowId.get().toString());
 
             var result = this.rowContextMenuQueryRunner.run(variables);
-            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
             assertThat(actionLabels).isNotEmpty().hasSize(2);
             assertThat(actionLabels.get(0)).isEqualTo("Delete from model");
             assertThat(actionLabels.get(1)).isEqualTo("Delete from table");
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
             actionId.set(actionIds.get(1));
         };
 
@@ -319,7 +318,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     actionId.get());
 
             var result = this.invokeRowContextMenuEntryMutationRunner.run(invokeRowContextMenuEntryInput);
-            String typename = JsonPath.read(result, "$.data.invokeRowContextMenuEntry.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeRowContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -364,7 +363,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     tableId.get());
 
             var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result, "$.data.exposeRequirements.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -385,11 +384,11 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     "rowId", rowId.get().toString());
 
             var result = this.rowContextMenuQueryRunner.run(variables);
-            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
             assertThat(actionLabels).isNotEmpty().hasSize(2);
             assertThat(actionLabels.get(0)).isEqualTo("Delete from model");
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
             actionId.set(actionIds.get(0));
         };
 
@@ -403,7 +402,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
                     actionId.get());
 
             var result = this.invokeRowContextMenuEntryMutationRunner.run(invokeRowContextMenuEntryInput);
-            String typename = JsonPath.read(result, "$.data.invokeRowContextMenuEntry.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeRowContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

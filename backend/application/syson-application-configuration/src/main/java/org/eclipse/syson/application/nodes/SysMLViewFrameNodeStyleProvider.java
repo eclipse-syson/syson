@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import java.util.Optional;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.diagram.INodeStyleProvider;
@@ -42,7 +44,7 @@ public class SysMLViewFrameNodeStyleProvider implements INodeStyleProvider {
     }
 
     @Override
-    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId, ILayoutStrategy childrenLayoutStrategy) {
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, ILayoutStrategy childrenLayoutStrategy, AQLInterpreter interpreter, VariableManager variableManager) {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {

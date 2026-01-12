@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
@@ -42,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
@@ -65,9 +65,6 @@ public class StandardLibrariesIdsMigrationParticipantTest extends AbstractIntegr
     private static final String SCALAR_VALUES_STRING_ELEMENT_ID = "76028d3d-69a4-5e12-9002-ce403e0244bd";
 
     private static final String ATTRIBUTE_A1_FEATURE_TYPING_ELEMENT_ID = "b2850b04-3f1f-4799-8b44-f0706f22628b";
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -111,7 +108,8 @@ public class StandardLibrariesIdsMigrationParticipantTest extends AbstractIntegr
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void diagramMigrationParticpantTest() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
         var optionalEditingContext = this.editingContextSearchService.findById(EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 
@@ -137,7 +135,8 @@ public class StandardLibrariesIdsMigrationParticipantTest extends AbstractIntegr
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void semanticDataMigrationParticpantTest() {
-        this.givenCommittedTransaction.commit();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
         var optionalEditingContext = this.editingContextSearchService.findById(EDITING_CONTEXT_ID.toString());
         assertThat(optionalEditingContext).isPresent();
 

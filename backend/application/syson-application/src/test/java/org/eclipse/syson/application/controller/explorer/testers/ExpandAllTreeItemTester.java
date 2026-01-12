@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,8 @@ public class ExpandAllTreeItemTester {
                 "editingContextId", editingContextId,
                 "treeId", treeId,
                 "treeItemId", treeItemId);
-        String result = this.expandAllTreePathQueryRunner.run(expandVariables);
-        List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+        var result = this.expandAllTreePathQueryRunner.run(expandVariables);
+        List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
         assertThat(treeItemIdsToExpand).isNotEmpty();
         return treeItemIdsToExpand;
     }

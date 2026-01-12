@@ -333,7 +333,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                     List.of());
             var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, representationId);
-            var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+            var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
             var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {
                 // 95 is the number of standard libraries

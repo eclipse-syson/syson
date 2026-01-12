@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,7 +81,9 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     public void givenAPartUsageWhenWeSubscribeToItsPropertiesEventThenTheFormIsSent() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
         var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input).filter(FormRefreshedEventPayload.class::isInstance);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentConsumer = assertRefreshedFormThat(form -> {
             assertThat(form.getPages())
@@ -113,7 +115,9 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     public void givenAPartUsageWhenWeRequestHelpTextThenHelpTextIsSend() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(SimpleProjectElementsTestProjectData.SemanticIds.PART_ID));
         var input = new DetailsEventInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input).filter(FormRefreshedEventPayload.class::isInstance);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var isCompositeWidgetId = new AtomicReference<String>();
         var isReferenceWidgetId = new AtomicReference<String>();
@@ -137,7 +141,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.helpTextQueryRunner.run(variables);
 
-            String helpText = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.helpText");
+            String helpText = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.helpText");
             assertThat(helpText).isEqualTo("Opposite value of isReference");
         };
 
@@ -149,7 +153,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.helpTextQueryRunner.run(variables);
 
-            String helpText = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.helpText");
+            String helpText = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.helpText");
             assertThat(helpText).isEqualTo("Opposite value of isComposite (cannot be edited, edit isComposite instead)");
         };
         Runnable requestIsPortionHelpText = () -> {
@@ -160,7 +164,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.helpTextQueryRunner.run(variables);
 
-            String helpText = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.helpText");
+            String helpText = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.helpText");
             assertThat(helpText).isEmpty();
         };
 
