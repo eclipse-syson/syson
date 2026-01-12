@@ -4,6 +4,15 @@
 
 == New features
 
+- SysON can now be connected with Elasticsearch to support cross-project search.
+The Elasticsearch integration uses its own indexing logic instead of the default one provided by Sirius Web.
+This allows to keep indices compact, and ensures information stored in the indices are useful to perform cross-project search.
+You can find more information on how to setup Elasticsearch, how elements are mapped to index documents, and how to query them in the documentation.
+
+This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It's not recommended for production use.
+
 == Bug fixes
 
 == Improvements
