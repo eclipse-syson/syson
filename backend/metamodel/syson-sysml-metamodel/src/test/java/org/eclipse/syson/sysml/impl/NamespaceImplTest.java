@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
@@ -197,14 +198,14 @@ public class NamespaceImplTest {
     @Test
     public void membership() {
         var testModel = new TestModel();
-        assertContentEquals(testModel.p1.getMembership(), testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
+        this.assertMembership(testModel.p1, testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
 
-        assertContentEquals(testModel.def1.getMembership());
+        this.assertMembership(testModel.def1);
 
         /* Also include private membership */
-        assertContentEquals(testModel.p1x1.getMembership(), testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.privatedef1x1.getOwningMembership());
+        this.assertMembership(testModel.p1x1, testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.privatedef1x1.getOwningMembership());
 
-        assertContentEquals(testModel.p2.getMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
+        this.assertMembership(testModel.p2, testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
     }
 
     @DisplayName("Check imported memberships when no import is used")
@@ -212,12 +213,12 @@ public class NamespaceImplTest {
     public void importedMembershipEmpty() {
         var testModel = new TestModel();
 
-        assertContentEquals(testModel.p1.getImportedMembership());
+        this.assertImportedMembership(testModel.p1);
 
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
-        assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
+        this.assertImportedMembership(testModel.p1, testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
     }
 
     @DisplayName("Check imported membership with Membership import")
@@ -228,7 +229,7 @@ public class NamespaceImplTest {
         MembershipImport nsImport = testModel.getBuilder().createIn(MembershipImport.class, testModel.p1);
         nsImport.setImportedMembership(testModel.p2x1.getOwningMembership());
 
-        assertContentEquals(testModel.p1.getImportedMembership(), testModel.p2x1.getOwningMembership());
+        this.assertImportedMembership(testModel.p1, testModel.p2x1.getOwningMembership());
     }
 
     @DisplayName("Check imported memberships with a simple NamespaceImport")
@@ -239,7 +240,7 @@ public class NamespaceImplTest {
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
-        assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
+        this.assertImportedMembership(testModel.p1, testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
     }
 
     @DisplayName("Check imported memberships with a simple recursive NamespaceImport")
@@ -258,7 +259,7 @@ public class NamespaceImplTest {
         nmImport.setIsRecursive(true);
         nmImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p1.getImportedMembership(),
+        this.assertImportedMembership(testModel.p1,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
@@ -280,7 +281,7 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p3.getImportedMembership(),
+        this.assertImportedMembership(testModel.p3,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
                 // All P1 content by transition
@@ -302,7 +303,7 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p3.getMembership(),
+        this.assertMembership(testModel.p3,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
                 // All P1 content by transition
@@ -333,12 +334,12 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p3.getImportedMembership(),
+        this.assertImportedMembership(testModel.p3,
                 // All P2 content except def2
                 testModel.p2x1.getOwningMembership(),
                 // All P1 content by transition except def1
                 testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
-        assertContentEquals(testModel.p3.getMembership(),
+        this.assertMembership(testModel.p3,
                 // All P2 content except def2
                 testModel.p2x1.getOwningMembership(),
                 // All P1 content by transition except def1
@@ -362,7 +363,7 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PRIVATE);
 
-        assertContentEquals(testModel.p3.getMembership(),
+        this.assertMembership(testModel.p3,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
                 // P3 direct content
@@ -380,7 +381,7 @@ public class NamespaceImplTest {
         nmImport.setIsRecursive(true);
         nmImport.setIsImportAll(true);
 
-        assertContentEquals(testModel.p1.getImportedMembership(),
+        this.assertImportedMembership(testModel.p1,
                 // All P3 content with private
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership(), testModel.privateDef3.getOwningMembership(),
                 testModel.privateDef3x1.getOwningMembership());
@@ -407,13 +408,13 @@ public class NamespaceImplTest {
         namespaceImport.setIsRecursive(true);
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p1.getImportedMembership(),
+        this.assertImportedMembership(testModel.p1,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
 
-        assertContentEquals(testModel.p1.getMembership(),
+        this.assertMembership(testModel.p1,
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
@@ -433,7 +434,7 @@ public class NamespaceImplTest {
         nmImport.setIsRecursive(true);
 
         // Can import its own member since it could cause name conflict
-        assertContentEquals(testModel.p1.getImportedMembership());
+        this.assertImportedMembership(testModel.p1);
     }
 
     @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop one of its parent")
@@ -446,7 +447,7 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 
-        assertContentEquals(testModel.p1x1x1.getImportedMembership(),
+        this.assertImportedMembership(testModel.p1x1x1,
                 testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
                 testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(),
                 testModel.def1x2.getOwningMembership());
@@ -617,6 +618,25 @@ public class NamespaceImplTest {
         assertNull(testModel.p1.qualificationOf("test1::"));
         assertEquals("test1", testModel.p1.qualificationOf("test1::test2"));
         assertEquals("test1::test2", testModel.p1.qualificationOf("test1::test2::test3"));
+    }
+
+    private void assertImportedMembership(Namespace namespace, Membership... expected) {
+        assertContentEquals(namespace.getImportedMembership(), expected);
+        MembershipCacheAdapter cacheAdapter = new MembershipCacheAdapter();
+        namespace.eAdapters().add(cacheAdapter);
+        assertContentEquals(namespace.getImportedMembership(), expected);
+        namespace.eAdapters().remove(cacheAdapter);
+        assertContentEquals(namespace.getImportedMembership(), expected);
+    }
+
+    private void assertMembership(Namespace namespace, Membership... expected) {
+        assertContentEquals(namespace.getMembership(), expected);
+        MembershipCacheAdapter cacheAdapter = new MembershipCacheAdapter();
+        namespace.eAdapters().add(cacheAdapter);
+        assertContentEquals(namespace.getMembership(), expected);
+        namespace.eAdapters().remove(cacheAdapter);
+        assertContentEquals(namespace.getMembership(), expected);
+
     }
 
 }

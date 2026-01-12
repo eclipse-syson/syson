@@ -188,6 +188,8 @@ a|image::release-notes-namespace-import-node-after.png[Namespace import node aft
 |===
 +
 
+- Improve performances of textual export on big SysMLv2 models.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

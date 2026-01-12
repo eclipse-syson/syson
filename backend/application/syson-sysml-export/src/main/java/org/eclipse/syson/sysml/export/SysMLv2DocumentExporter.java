@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentExporter;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.impl.MembershipCacheAdapter;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
@@ -49,18 +51,42 @@ public class SysMLv2DocumentExporter implements IDocumentExporter {
     @Override
     public Optional<byte[]> getBytes(Resource resource, String mediaType) {
         if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Element element) {
+            MembershipCacheAdapter membershipCacheAdapter = new MembershipCacheAdapter();
 
-            List<Status> status = new ArrayList<>();
-            String textualForm = new SysMLElementSerializer(System.lineSeparator(), "\t", new FileNameDeresolver(), status::add).doSwitch(element);
-            if (textualForm == null) {
-                textualForm = "";
+            this.installCacheAdapter(resource, membershipCacheAdapter);
+            try {
+                List<Status> status = new ArrayList<>();
+                String textualForm = new SysMLElementSerializer(System.lineSeparator(), "\t", new FileNameDeresolver(), status::add).doSwitch(element);
+                if (textualForm == null) {
+                    textualForm = "";
+                }
+                for (Status s : status) {
+                    s.log(LOGGER);
+                }
+                return Optional.of(textualForm.getBytes());
+            } finally {
+                this.removeCacheAdapter(resource, membershipCacheAdapter);
             }
-            for (Status s : status) {
-                s.log(LOGGER);
-            }
-
-            return Optional.of(textualForm.getBytes());
         }
         return Optional.empty();
+    }
+
+    private void removeCacheAdapter(Resource resource, MembershipCacheAdapter membershipCacheAdapter) {
+        ResourceSet resourceSet = resource.getResourceSet();
+        if (resourceSet != null) {
+            resourceSet.eAdapters().remove(membershipCacheAdapter);
+        } else {
+            resource.eAdapters().remove(membershipCacheAdapter);
+        }
+    }
+
+    private ResourceSet installCacheAdapter(Resource resource, MembershipCacheAdapter membershipCacheAdapter) {
+        ResourceSet resourceSet = resource.getResourceSet();
+        if (resourceSet != null) {
+            resourceSet.eAdapters().add(membershipCacheAdapter);
+        } else {
+            resource.eAdapters().add(membershipCacheAdapter);
+        }
+        return resourceSet;
     }
 }
