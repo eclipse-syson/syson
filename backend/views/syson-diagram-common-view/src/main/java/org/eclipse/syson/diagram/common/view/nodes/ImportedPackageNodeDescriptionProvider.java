@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,9 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.NodeDefaultSizeExpressionSwitch;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.services.dto.NodeDefaultSizeExpression;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
@@ -61,10 +63,11 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespaceImport());
+        NodeDefaultSizeExpression defaultSizeExpression = new NodeDefaultSizeExpressionSwitch().doSwitch(SysmlPackage.eINSTANCE.getNamespaceImport());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
-                .defaultHeightExpression("100")
-                .defaultWidthExpression("300")
+                .defaultHeightExpression(defaultSizeExpression.defaultHeightExpression())
+                .defaultWidthExpression(defaultSizeExpression.defaultWidthExpression())
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport()))

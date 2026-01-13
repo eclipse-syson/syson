@@ -161,6 +161,17 @@ When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) 
 When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
 We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
 - In _General View_ diagrams, it is now possible to create `Comment` graphical nodes from the diagram background.
+- In diagrams, the default size of a _NamespaceImport_ graphical node is now the same as the one for a _Package_.
++
+[cols="1,1"]
+|===
+|Before
+|After
+
+a|image::release-notes-namespace-import-node-before.png[Namespace import node before, align="center" width=50%,height=50%]
+a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=50%,height=50%]
+|===
++
 
 == Technical details
 
