@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,5 +32,10 @@ public class NodeDefaultSizeExpressionSwitch extends SysmlEClassSwitch<NodeDefau
     @Override
     public NodeDefaultSizeExpression caseUsage(org.eclipse.syson.sysml.Usage object) {
         return new NodeDefaultSizeExpression(ViewConstants.DEFAULT_USAGE_NODE_HEIGHT, ViewConstants.DEFAULT_USAGE_NODE_WIDTH);
+    }
+
+    @Override
+    public NodeDefaultSizeExpression caseNamespaceImport(org.eclipse.syson.sysml.NamespaceImport object) {
+        return new NodeDefaultSizeExpression(ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT, ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH);
     }
 }

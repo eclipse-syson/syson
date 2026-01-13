@@ -68,6 +68,7 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1809[#1809] [diagrams] In diagrams, it is now possible to create, edit and see `Documentation` in the _objective_ compartment of `CaseUsage`, `CaseDefinition`, `UseCaseUsage` and `UseCaseDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1820[#1820] [services] Allow _New Subject_ tool to select a `Type` instead of a `Usage`.
 - https://github.com/eclipse-syson/syson/issues/1822[#1822] [services] Allow _New Actor_ tool to select `PartDefinition` in addition to `PartUsage`.
+- https://github.com/eclipse-syson/syson/issues/1835[#1835] [diagrams] Align the size of _NamespaceImport_ graphical node with the size of _Package_ graphical node.
 
 === New features
 

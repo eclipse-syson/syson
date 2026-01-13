@@ -307,6 +307,10 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                     .hasNodeDescriptionName(newNodeDescriptionName)
                     .hasCompartmentCount(0)
                     .check(this.diagram.get(), newDiagram);
+
+            var parentNode = newDiagram.getNodes().get(0);
+            assertThat(parentNode.getDefaultHeight()).isEqualTo(Integer.parseInt(ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT));
+            assertThat(parentNode.getDefaultWidth()).isEqualTo(Integer.parseInt(ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH));
         });
 
         this.verifier
