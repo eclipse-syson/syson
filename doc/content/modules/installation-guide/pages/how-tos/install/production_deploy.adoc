@@ -20,7 +20,7 @@ For more details see xref:user-manual:cycle.adoc[].
 Pay attention to deploying enterprise-grade version of the prerequisites, including the database service.
 Before manually deploying the database, it's recommend to use a managed database instance, either provided by the organization's IT service or through cloud services.
 
-[INFO]
+[NOTE]
 ====
 Before you proceed with the installation, confirm you have  following the xref:requirements.adoc[prerequisites]
 ====

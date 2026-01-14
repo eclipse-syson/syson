@@ -10,7 +10,7 @@ It is also available from the palette to duplicate a graphical node and its sema
 
 - A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
 
-[INFO]
+[NOTE]
 ====
 This action is not available on `Relationships`.
 ====
