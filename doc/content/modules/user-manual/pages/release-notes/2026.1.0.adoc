@@ -2,13 +2,18 @@
 
 == Key highlights
 
-== Breaking changes
+- *Duplicate object*: a duplicate action is now available in the _Explorer_ view to duplicate semantic `Elements`.
+It is also available from the palette to duplicate a graphical node and its semantic `Element`.
+- *Connection usages*: in diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.
 
 == New features
 
 - A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
-Note this action is not available for `Relationships`.
-+
+[NOTE]
+====
+This action is not available on `Relationships`.
+====
+
 [cols="1,1"]
 |===
 |Menu
@@ -17,41 +22,11 @@ Note this action is not available for `Relationships`.
 a|image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
 a|image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=30%,height=30%]
 |===
-+
 
-- A new tool section `Structure` is available on the palette of an interconnection node, it contains creation tools for `Part` and `Action`.
-- A new tool is available in the _General View_ palette to duplicate a node and its semantic `Element`.
 
-image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=75%,height=75%]
+- A new tool is available in the palette of diagram graphical nodes to duplicate the graphical node and its semantic `Element`.
 
-- `RequirementConstraintMembership` are now properly exported in the textual format such as in:
-+
-```
-private import SI::kilogram;
-private import ScalarValues::*;
-part def P1 {
-    attribute x : Real;
-}
-requirement r1 {
-    subject sub : P1;
-    attribute actualMass :> ISQBase::mass;
-    attribute maxMass :> ISQBase::mass;
-    assume constraint NamedRequirementConstraint { //Here
-        actualMass <= maxMass
-    }
-    assume constraint { // And here
-        sub.x <= 500
-    }
-    require constraint { // And here
-        actualMass >= 500 [kg]
-    }
-}
-constraint def C;
-constraint c : C;
-requirement def R1 {
-    require constraint c1 :>> c; // And here
-}
-```
+image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=50%,height=50%]
 
 - In diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.
 
@@ -66,11 +41,18 @@ The following structure is not yet handled `connection bus : C connect (d1, d2, 
 
 == Bug fixes
 
-- Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
+* In diagrams:
+
+** Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
+
+* In _Explorer_ view:
+
+** Fix an issue that displayed imported libraries at the root of the project if they contained `LibraryPackage` elements and non-`Namespace` elements.
 These models are now correctly displayed under the _User libraries_ directory.
-- Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
-- New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification.
-- Fix the textual export of `Elements` with name that conflicts with a SysML keyword.
+
+* In textual import/export:
+
+** Fix the textual export of `Elements` with name that conflicts with a SysML keyword.
 +
 For example, an `AttributeUsage` named "comment" is now properly exported to:
 +
@@ -84,8 +66,9 @@ package Package1 {
 	}
 }
 ```
-- Fix the textual export of `FeatureValue` using enumeration value such as in:
 
+** Fix the textual export of `FeatureValue` using enumeration value such as in:
++
 ```
 package root {
     enum def Enum1 {
@@ -98,11 +81,129 @@ package root {
 }
 ```
 
-- Fix the textual export of `LiteralRational`, values were wrongly rounded during textual export.
+** Fix the textual export of `LiteralRational`, where such values were wrongly rounded during textual export.
+
+* Miscellaneous:
+
+** New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification.
+
 
 == Improvements
 
-- The textual export now properly exports `SatisfyRequirementUsage` such as in the following model:
+* In diagrams:
+
+** A new compartment named _parts_ can be enabled on a `PartUsages` to show nested `PartUsages` as a list:
++
+image::gv-parts-compartment.png[Parts compartment, width=50%]
+
+** The performances of the _Visibility_ menu action for showing/hiding specific compartments has been improved.
+It should particularly be visible on large projects.
+
+** When attempting to create some graphical edges between `Elements` which already have one of the same type, an informative message is displayed instead.
+This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassification`.
++
+image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing, width=50%,height=50%]
+
+** It is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
+A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
+
+** The default graphical node size has been adjusted to avoid word breaks in label names.
++
+[cols="1,1"]
+|===
+|Before
+|After
+
+a|image::release-notes-enumeration-definition-before.png[Enumeration definition node before, align="center" width=50%,height=50%]
+a|image::release-notes-enumeration-definition-after.png[Enumeration definition node after, align="center" width=50%,height=50%]
+|===
++
+
+** An _items_ compartment is now available on `PortDefinition` graphical nodes to display `ItemUsage`.
+** An `ItemUsage` graphical border node is now available on `PortDefinition` graphical nodes.
+** When creating an `Element` from a compartment, it will not be displayed by default on the diagram, but only in the compartment.
+** A new tool named `Reference Subsetting` is available in the palette to create `ReferenceSubsetting` relationships between `Usage` elements.
+** Many new tools now automatically select the `Elements` they create or expose on a diagram.
+This makes it easy to start editing newly created elements to give them proper names by starting to type directly when the new element appears.
+** An `ItemUsage` graphical border node is now available on `PortUsage` graphical nodes.
+** An `ItemUsage` compartment is now available on `PortUsage` graphical nodes to display `ItemUsage`.
+** It is now possible to create, edit and see `Documentation` in the _objective_ compartment of `CaseUsage`, `CaseDefinition`, `UseCaseUsage` and `UseCaseDefinition` graphical nodes.
++
+image::release-notes-objective-compartment-documentation.png[Documentation inside objective compartment, width=65%,height=65%]
+
+** When using _direct edit_ tool on an `AttributeUsage` value, you can more easily use symbols from the `SI` library.
++
+For example you had to import the _SI_ library to use _N_ and _m_ symbols like this `attribute t1 = 10.0 [N*m]` or prefix the symbols if the library was not imported like this `t1 = 10.0 [SI::N*SI::m]`.
++
+We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
+** The _New Subject_ tool now allows to select `Definition` in addition to `Usage`.
++
+When a `Definition` is selected, the new subject created (i.e. a `ReferenceUsage`) will be typed by the selected `Definition`.
++
+When a `Usage` is selected, the new subject created (i.e. a `ReferenceUsage`) will subset the selected `Usage`.
+** The _New Actor_ tool now allows to select `PartDefinition` in addition to `PartUsage`.
++
+When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) will be typed by the selected `PartDefinition`.
++
+When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
++
+We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
+** The default size of a _NamespaceImport_ graphical node is now the same as the one for a _Package_.
++
+[cols="1,1"]
+|===
+|Before
+|After
+
+a|image::release-notes-namespace-import-node-before.png[Namespace import node before, align="center" width=50%,height=50%]
+a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=50%,height=50%]
+|===
++
+
+** In diagrams, when using _direct edit_ tool, you can now set a _multiplicity range_ part (for example [n..n] or [n]) after a _typing_ part, _subsetting_ part or _redefinition_ part, not just before
++
+Before, you could only do `part p1[4] :> p2`, `part p6[4] :>> p1` or `part p1[4] : DefA`
++
+Now you can also do `part p1 :> p2[4]`, `part p6 :>> p1[4]` or `part p1 : DefA[4]`
+
+** On _General View_ diagrams, it is now possible to create `Comment` graphical nodes from the diagram background.
+** On _Interconnection View_ diagrams, the top-level palette (on the diagram's background) no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
+** On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
+** On _Interconnection View_ diagrams, a new tool section `Structure` is available on the palette of _interconnection_ compartment, it contains creation tools for all `Elements` that can be created from this compartment, such as `PartUsages` or `ActionUsages`.
+
+* In textual import/export:
+
+** Improve performances of textual export on big SysMLv2 models.
+** `ConstraintUsages` are now properly exported in the textual format such as in:
++
+```
+private import SI::kilogram;
+private import ScalarValues::*;
+part def P1 {
+    attribute x : Real;
+}
+requirement r1 {
+    subject sub : P1;
+    attribute actualMass :> ISQBase::mass;
+    attribute maxMass :> ISQBase::mass;
+    assume constraint NamedRequirementConstraint {    //Here
+        actualMass <= maxMass
+    }
+    assume constraint {        // And here
+        sub.x <= 500
+    }
+    require constraint {       // And here
+        actualMass >= 500 [kg]
+    }
+}
+constraint def C;
+constraint c : C;
+requirement def R1 {
+    require constraint c1 :>> c;   // And here
+}
+```
+
+** The textual export now properly exports `SatisfyRequirementUsage` such as in the following model:
 +
 ```
 package Requirements {
@@ -121,78 +222,14 @@ package ReqSatisfactions {
 }
 ```
 
-- In diagrams, a new compartment named _parts_ can be enabled on a `PartUsages` to show nested `PartUsages` as a list:
+* Miscellaneous:
 
-image::gv-parts-compartment.png[Parts compartment, width=50%]
-
-- The performances of the Visibility menu actions when showing/hiding specific compartments has been improved.
-It should particularly be visible on large projects.
-- The impact analysis dialog now displays changes in a tree.
+** The impact analysis dialog now displays changes in a tree.
 This dialog provides an overview of the impacts the operation will have on the model (number of elements created, deleted, modified), as well as a tree showing the impacted elements.
-
++
 image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysis with change tree, width=65%,height=65%]
 
-- In diagrams, when attempting to create some graphical edges between `Elements` which already have one of the same type, an informative message is displayed instead.
-This applies to: `FeatureTyping`, `Subsetting`, `Redefinition` and `Subclassification`.
-
-image::release-notes-redundant-feature-typing-message.png[Message displayed when attempting to create a redundant feature typing, width=50%,height=50%]
-
-- In diagrams, it is now possible to create a `SatisfyRequirement` from a `PartDefinition` or `PartUsage` graphical node.
-A new compartment named _satisfy requirements_ has also been added to `PartDefinition` and `PartUsage` graphical nodes in diagrams.
-- In diagrams, the default graphical node size has been adjusted to avoid word breaks in label names.
-+
-[cols="1,1"]
-|===
-|Before
-|After
-
-a|image::release-notes-enumeration-definition-before.png[Enumeration definition node before, align="center" width=50%,height=50%]
-a|image::release-notes-enumeration-definition-after.png[Enumeration definition node after, align="center" width=50%,height=50%]
-|===
-+
-
-- In diagrams, an _items_ compartment is now available on `PortDefinition` graphical nodes to display `ItemUsage`.
-- In diagrams, an `ItemUsage` graphical border node is now available on `PortDefinition` graphical nodes.
-- In diagrams, when creating an element from a compartment, it will not be displayed by default on the diagram, but only in the compartment.
-- In the _Advanced_ tab of the _Details_ view, _isComposite_ and _isReference_ properties (checkbox widgets) now have a help text.
-- In diagrams, a new tool named `Reference Subsetting` is available in the palette to create `ReferenceSubsetting` relationships between `Usage` elements.
-- In diagrams, many new tools now automatically select the `Elements` they create or expose on a diagram.
-This makes it easy to start editing newly created elements to give them proper names by starting to type directly when the new element appears.
-- In diagrams, an `ItemUsage` graphical border node is now available on `PortUsage` graphical nodes.
-- In diagrams, an `ItemUsage` compartment is now available on `PortUsage` graphical nodes to display `ItemUsage`.
-- On _Interconnection View_ diagrams, it is now possible to create and see `SatisfyRequirementUsage` graphical nodes in the _interconnection_ compartment.
-- In diagrams, it is now possible to create, edit and see `Documentation` in the _objective_ compartment of `CaseUsage`, `CaseDefinition`, `UseCaseUsage` and `UseCaseDefinition` graphical nodes.
-
-image::release-notes-objective-compartment-documentation.png[Documentation inside objective compartment, width=65%,height=65%]
-
-- In diagrams, when using _direct edit_ tool on an `AttributeUsage` value, you can more easily use symbols from the `SI` library.
-For example you had to import the _SI_ library to use _N_ and _m_ symbols like this `attribute t1 = 10.0 [N*m]` or prefix the symbols if the library was not imported like this `t1 = 10.0 [SI::N*SI::m]`.
-We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
-- In diagrams, the _New Subject_ tool now allows to select `Definition` in addition to `Usage`.
-When a `Definition` is selected, the new subject created (i.e. a `ReferenceUsage`) will be typed by the selected `Definition`.
-When a `Usage` is selected, the new subject created (i.e. a `ReferenceUsage`) will subset the selected `Usage`.
-- In diagrams, the _New Actor_ tool now allows to select `PartDefinition` in addition to `PartUsage`.
-When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) will be typed by the selected `PartDefinition`.
-When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
-We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
-- In _General View_ diagrams, it is now possible to create `Comment` graphical nodes from the diagram background.
-- In diagrams, the default size of a _NamespaceImport_ graphical node is now the same as the one for a _Package_.
-+
-[cols="1,1"]
-|===
-|Before
-|After
-
-a|image::release-notes-namespace-import-node-before.png[Namespace import node before, align="center" width=50%,height=50%]
-a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=50%,height=50%]
-|===
-+
-- In diagrams, when using _direct edit_ tool, you can now set a _multiplicity range part_ [n..n] after or before a _typing part_, _subsetting part_ or _redefinition part_.
-Before, you could only do `part p1[4] :> p2`, `part p6[4] :>> p1` or `part p1[4] : DefA`
-Now you can also do `part p1 :> p2[4]`, `part p6 :>> p1[4]` or `part p1 : DefA[4]`
-
-- Improve performances of textual export on big SysMLv2 models.
-- On _Interconnection View_ diagrams, the top-level palette (on the diagram's background) no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
+** In the _Advanced_ tab of the _Details_ view, _isComposite_ and _isReference_ properties (checkbox widgets) now have a help text.
 
 == Technical details
 

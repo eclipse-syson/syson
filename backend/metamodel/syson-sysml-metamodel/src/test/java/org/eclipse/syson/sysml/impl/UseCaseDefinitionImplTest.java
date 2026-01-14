@@ -21,7 +21,7 @@ import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.Test;
 
 /**
- * {@link UseCaseDefinitionImpl} related tests
+ * {@link UseCaseDefinitionImpl} related tests.
  *
  * @author gcoutable
  */
