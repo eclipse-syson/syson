@@ -92,7 +92,7 @@ The tools are still available in the palette of e.g. `Parts`.
 - https://github.com/eclipse-syson/syson/issues/1770[#1770] [diagrams] Add `IDirectEditNameSpaceProvider` to provide default namespace provider, an implementation allows to look for symbols in the SI namespace.
 - https://github.com/eclipse-syson/syson/issues/1813[#1813] [diagrams] Add creation tool for `Comment` graphical nodes in the _General View_ diagram background.
 - https://github.com/eclipse-syson/syson/issues/1828[#1828] [metamodel] Implement missing derived references of `UseCaseUsage` and `UseCaseDefinition`.
-- https://github.com/eclipse-syson/syson/issues/1819[#1819] [diagrams] Add `DiagramDirectEditErrorListener` in order to send syntax error thrown by Antlr to the direct edit mutation.
+- https://github.com/eclipse-syson/syson/issues/1819[#1819] [diagrams] Add `DiagramDirectEditErrorListener` in order to send syntax error thrown by ANTLR to the direct edit mutation.
 
 == v2025.12.0
 
@@ -707,7 +707,7 @@ Importing a "do" `TransitionFeatureMembership` now explicitly sets its kind to `
 Importing a "require" `RequirementConstraintMembership` now correctly sets its kind to `requirement`.
 Importing an "assume" `RequirementConstraintMembership` now explicitly sets its kind to `assumption`.
 - https://github.com/eclipse-syson/syson/issues/1154[#1154] [import] Fix import of `TextualRepresentation`.
-- https://github.com/eclipse-syson/syson/issues/1169[#1169] [syson] Add a new navigation bar menu icon on the top right corner of the appliation.
+- https://github.com/eclipse-syson/syson/issues/1169[#1169] [syson] Add a new navigation bar menu icon on the top right corner of the application.
 - https://github.com/eclipse-syson/syson/issues/1172[#1172] [import] Uniformize the import of `LiteralString` value.
 The `value` field of imported `LiteralString` elements does not contain double quotes anymore.
 This behavior is aligned with how SysON handles quotes in `declaredName` fields.
@@ -881,7 +881,7 @@ Imported models that do not contain libraries can be modified as regular models 
 
 === Improvements
 
-- https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsag#portionKind` is now unsettable and its default value is `null`.
+- https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsage#portionKind` is now unsettable and its default value is `null`.
 - https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in import module, by making it more generic
 - https://github.com/eclipse-syson/syson/issues/818[#818] [export] Add partial support of `OccurrenceDefinition` and 'OccurrenceUsage` in export from model to textual SysMLv2.
 - https://github.com/eclipse-syson/syson/issues/875[#875] [explorer] Improve the support of libraries in the explorer.
@@ -1276,7 +1276,7 @@ A reset of the database is needed.
 By default, end users don't have to copy _syside-cli.js_ near the _syson-application_ jar anymore.
 The embedded _syside-cli.js_ is copied in a system temp folder and executed from there (with node).
 But, if you encounter execution rights problem, you can still copy _syside-cli.js_ in a place where you have the appropriate rights and use the _org.eclipse.syson.syside.path_ application option.
-- https://github.com/eclipse-syson/syson/issues/433[#433] [tests] Add scripts to setup and udpate the integration testing environment
+- https://github.com/eclipse-syson/syson/issues/433[#433] [tests] Add scripts to setup and update the integration testing environment
 - https://github.com/eclipse-syson/syson/issues/445[#445] [diagrams] Improve the way node descriptions are retrieved for a given semantic element
 - https://github.com/eclipse-syson/syson/issues/439[#439] [diagrams] Handle Perform action concept in diagrams
 - https://github.com/eclipse-syson/syson/issues/460[#460] [details] Extra property "Typed by" is now always visible in the details view for _Feature_ elements, even if the _Feature_ doesn't have a type yet.
