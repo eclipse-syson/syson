@@ -9,7 +9,8 @@ It is also available from the palette to duplicate a graphical node and its sema
 == New features
 
 - A new action _Duplicate object_ is available in the _Explorer_ view to duplicate a semantic `Element`.
-[NOTE]
+
+[INFO]
 ====
 This action is not available on `Relationships`.
 ====
@@ -19,14 +20,14 @@ This action is not available on `Relationships`.
 |Menu
 |Dialog
 
-a|image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=25%,height=25%]
-a|image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=30%,height=30%]
+a|image::explorer-duplicate-object-menu.png[Duplicate Object contextual menu, width=40%,height=40%]
+a|image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=40%,height=40%]
 |===
 
 
 - A new tool is available in the palette of diagram graphical nodes to duplicate the graphical node and its semantic `Element`.
 
-image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=50%,height=50%]
+image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=40%,height=40%]
 
 - In diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.
 
@@ -155,8 +156,8 @@ We are now auto importing the library automatically if we detect the use of a sy
 |Before
 |After
 
-a|image::release-notes-namespace-import-node-before.png[Namespace import node before, align="center" width=50%,height=50%]
-a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=50%,height=50%]
+a|image::release-notes-namespace-import-node-before.png[Namespace import node before, align="center" width=75%,height=75%]
+a|image::release-notes-namespace-import-node-after.png[Namespace import node after, align="center" width=75%,height=75%]
 |===
 +
 
