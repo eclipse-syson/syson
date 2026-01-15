@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.NamespaceImport;
@@ -207,9 +208,9 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                     if (p.getOwnedFeature().size() == 1) {
                         Feature f1 = p.getOwnedFeature().get(0);
                         if (f1 instanceof AttributeUsage xAttr) {
-                            EList<Type> types = xAttr.getType();
+                            EList<FeatureTyping> typing = xAttr.getOwnedTyping();
                             // The FeatureTyping is created but the type is unresolved
-                            return types.size() == 1 && types.get(0) == null && "x".equals(f1.getDeclaredName());
+                            return typing.size() == 1 && typing.get(0).getType() == null && "x".equals(f1.getDeclaredName());
                         }
                     }
                     return false;

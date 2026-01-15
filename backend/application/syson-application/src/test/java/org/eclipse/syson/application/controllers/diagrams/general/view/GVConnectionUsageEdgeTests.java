@@ -361,7 +361,8 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
         this.directEditTester.checkDirectEditCenteredEdgeLabel(this.verifier, this.diagram, EdgeConnectionUsageTestProjectData.GraphicalIds.CONNECTION_0_ID, "connection0 : ConnectionDefinition1", "connection0 : ConnectionDefinition1");
 
         this.semanticCheckerService.checkElement(this.verifier, ConnectionUsage.class, () -> EdgeConnectionUsageTestProjectData.SemanticIds.CONNECTION_0_ID, connectionUsage -> {
-            assertThat(connectionUsage.getType()).hasSize(1).allMatch(type -> "ConnectionDefinition1".equals(type.getName()));
+            assertThat(connectionUsage.getType()).hasSize(2)
+                    .allMatch(type -> "ConnectionDefinition1".equals(type.getName()) || "BinaryLinkObject".equals(type.getName()));
         });
 
     }
