@@ -87,6 +87,7 @@ package root {
 * Miscellaneous:
 
 ** New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification.
+** Correct the computation of a `Feature`'s types to properly account for subsetted features.
 
 
 == Improvements

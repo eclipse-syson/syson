@@ -13,10 +13,16 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
@@ -868,14 +874,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Type> getType() {
-        List<Type> types = new ArrayList<>();
-        this.getOwnedSpecialization().stream()
-                .filter(FeatureTyping.class::isInstance)
-                .map(FeatureTyping.class::cast)
-                .map(typing -> typing.getType())
-                .forEach(types::add);
-
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), types.size(), types.toArray());
+        Collection<Feature> allTypingFeatures = this.collectTypingFeatures();
+        List<Type> types = this.collectTypes(allTypingFeatures);
+        List<Type> filtered = this.reduceToMostSpecializeTypes(types);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), filtered.size(), filtered.toArray());
     }
 
     /**
@@ -1130,8 +1132,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
         if (!this.isIsConjugated()) {
             var subsettedFeatures = this.getOwnedSubsetting().stream()
                     .filter(s -> !(s instanceof CrossSubsetting))
-                    .map(Subsetting::getSubsettedFeature)
-                    .toList();
+                    .map(Subsetting::getSubsettedFeature).collect(Collectors.toList());
             var chainingFeature = this.getChainingFeature();
             if (chainingFeature.isEmpty() || subsettedFeatures.contains(chainingFeature.get(chainingFeature.size() - 1))) {
                 typingFeatures.addAll(subsettedFeatures);
@@ -1496,4 +1497,46 @@ public class FeatureImpl extends TypeImpl implements Feature {
         return result.toString();
     }
 
+    /**
+     * @generated NOT
+     */
+    private List<Type> reduceToMostSpecializeTypes(List<Type> types) {
+        return types.stream()
+                .filter(t1 -> types.stream().noneMatch(t2 -> t2 != t1 && t2.specializes(t1)))
+                .toList();
+    }
+
+    /**
+     * @generated NOT
+     */
+    private List<Type> collectTypes(Collection<Feature> features) {
+        return features.stream()
+                .flatMap(feature -> feature.getOwnedTyping().stream()
+                        .map(FeatureTyping::getType)
+                        .filter(Objects::nonNull))
+                .distinct()
+                .toList();
+    }
+
+    /**
+     * @generated NOT
+     */
+    private Collection<Feature> collectTypingFeatures() {
+        Deque<Feature> typingFeatureQueue = new ArrayDeque<>();
+        typingFeatureQueue.push(this);
+        Set<Feature> featureCollector = new LinkedHashSet<>();
+        featureCollector.add(this);
+
+        // Collect all features providing a type for this feature
+        while (!typingFeatureQueue.isEmpty()) {
+            Feature current = typingFeatureQueue.pop();
+            // Collect all features providing typing
+            for (Feature next : current.typingFeatures()) {
+                if (next != null && featureCollector.add(next)) {
+                    typingFeatureQueue.addLast(next);
+                }
+            }
+        }
+        return featureCollector;
+    }
 } // FeatureImpl

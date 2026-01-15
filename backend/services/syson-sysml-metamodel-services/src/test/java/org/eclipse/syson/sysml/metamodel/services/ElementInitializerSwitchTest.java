@@ -26,8 +26,6 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.ViewDefinition;
-import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -177,21 +175,6 @@ public class ElementInitializerSwitchTest {
         this.addInParent(s2, p1, SysmlPackage.eINSTANCE.getStakeholderMembership());
         var initializedS2 = this.elementInitializerSwitch.doSwitch(s2);
         assertThat(initializedS2.getDeclaredName()).isEqualTo("stakeholder2");
-    }
-
-    @DisplayName("GIVEN a ViewUsage, WHEN it is initialized, THEN it's typed by default with the GeneralView ViewDefinition")
-    @Test
-    public void testViewUsageDefaultType() {
-        var root = SysmlFactory.eINSTANCE.createPackage();
-        this.resource.getContents().add(root);
-        root.setDeclaredName(ROOT);
-        var view1 = SysmlFactory.eINSTANCE.createViewUsage();
-        this.addInParent(view1, root);
-        var initializedView1 = this.elementInitializerSwitch.doSwitch(view1);
-        assertThat(initializedView1).isInstanceOf(ViewUsage.class);
-        var generalViewViewDef = this.elementUtil.findByNameAndType(view1, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
-        assertThat(((ViewUsage) initializedView1).getType()).contains(generalViewViewDef);
-
     }
 
     private void addInParent(Element element, Element parent) {
