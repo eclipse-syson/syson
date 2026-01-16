@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -51,7 +52,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .defaultWidthExpression("36")
                 .defaultHeightExpression("36")
                 .name(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("retrieveStandardDoneAction"))
+                .semanticCandidatesExpression(ServiceMethod.of0(UtilService::retrieveStandardDoneAction).aqlSelf())
                 .style(this.createImageNodeStyleDescription("images/done_action.svg"))
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

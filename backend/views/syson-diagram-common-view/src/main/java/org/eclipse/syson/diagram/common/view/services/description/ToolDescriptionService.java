@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -191,7 +192,7 @@ public class ToolDescriptionService {
                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(addToExposedElements.build());
 
         String title = "Add existing elements";

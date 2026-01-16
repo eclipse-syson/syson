@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,9 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -56,7 +56,7 @@ public class PartUsageInterfaceNodeToolProvider implements INodeToolProvider {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var creationBindingConnectorAsUsageServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createPartUsageAndInterface"))
+                .expression(ServiceMethod.of0(ModelMutationAQLService::createPartUsageAndInterface).aqlSelf())
                 .children(updateExposedElements.build())
                 .build();
 
@@ -66,7 +66,7 @@ public class PartUsageInterfaceNodeToolProvider implements INodeToolProvider {
                 .build();
 
         return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
-                .iconURLsExpression("/icons/full/obj16/InterfaceUsage.svg")
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage() + ".svg")
                 .body(rootChangContext)
                 .build();
     }

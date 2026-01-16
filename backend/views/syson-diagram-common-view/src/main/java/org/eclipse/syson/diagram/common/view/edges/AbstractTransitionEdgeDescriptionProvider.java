@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,11 +34,14 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -66,15 +69,16 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
         return this.getDiagramBuilderHelper().newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getTransitionLabel"))
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getTransitionLabel).aqlSelf())
                 .name(this.getEdgeDescriptionName())
-                .preconditionExpression("aql:graphicalEdgeSource.isInSameGraphicalContainer(graphicalEdgeTarget,cache)")
+                .preconditionExpression(ServiceMethod.of2(ViewEdgeService::isInSameGraphicalContainer).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
+                        org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET, org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
-                .sourceExpression(AQLConstants.AQL_SELF + ".source")
+                .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getTransitionUsage_Source().getName())
                 .style(this.createDefaultEdgeStyle())
                 .conditionalStyles(this.createStateConditionalStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(AQLConstants.AQL_SELF + ".target")
+                .targetExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getTransitionUsage_Target().getName())
                 .build();
     }
 
@@ -91,18 +95,18 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.getViewBuilderHelper().newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectSourceTransitionEdge", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
+                .expression(ServiceMethod.of1(ViewEdgeService::reconnectSourceTransitionEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.getViewBuilderHelper().newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTargetTransitionEdge", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
+                .expression(ServiceMethod.of1(ViewEdgeService::reconnectTargetTransitionEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
     protected String getSourceReconnectToolPreconditionExpression() {
-        return AQLUtils.getServiceCallExpression(AQLConstants.SEMANTIC_OTHER_END, "checkTransitionEdgeTarget", AQLConstants.SEMANTIC_RECONNECTION_TARGET);
+        return ServiceMethod.of1(ViewEdgeService::checkTransitionEdgeTarget).aql(AQLConstants.SEMANTIC_OTHER_END, AQLConstants.SEMANTIC_RECONNECTION_TARGET);
     }
 
     @Override
@@ -165,7 +169,7 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_ARROW)
-                .condition(AQLUtils.getSelfServiceCallExpression("isTransitionUsageForState"))
+                .condition(ServiceMethod.of0(ViewEdgeService::isTransitionUsageForState).aqlSelf())
                 .build();
     }
 

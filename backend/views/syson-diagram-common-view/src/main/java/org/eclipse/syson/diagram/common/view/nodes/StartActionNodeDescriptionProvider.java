@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,9 +27,11 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -57,7 +59,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .defaultWidthExpression("28")
                 .defaultHeightExpression("28")
                 .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("retrieveStandardStartAction"))
+                .semanticCandidatesExpression(ServiceMethod.of0(UtilService::retrieveStandardStartAction).aqlSelf())
                 .style(this.createImageNodeStyleDescription("images/start_action.svg"))
                 .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -87,14 +89,13 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
     private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
         var targetElementDescriptions = this.getStartTargetDescriptions(cache);
 
-        var builder = this.diagramBuilderHelper.newEdgeTool();
-        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
-        var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
-
-        var createStartEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
+        var createStartEdgeTool = this.diagramBuilderHelper.newEdgeTool().name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression("/icons/full/obj16/Succession.svg")
-                .body(body.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(
+                                ServiceMethod.of5(ViewCreateService::createSuccessionEdge).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                                        EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES))
+                        .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
 

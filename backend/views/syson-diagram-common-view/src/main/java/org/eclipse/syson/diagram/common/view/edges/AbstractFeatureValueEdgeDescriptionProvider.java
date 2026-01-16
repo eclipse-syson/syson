@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,12 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -78,10 +81,10 @@ public abstract class AbstractFeatureValueEdgeDescriptionProvider extends Abstra
                 .centerLabelExpression("=")
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
-                .sourceExpression("aql:self.featureWithValue")
+                .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureValue_FeatureWithValue().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(AQLUtils.getSelfServiceCallExpression("getFeatureValueTarget"))
+                .targetExpression(ServiceMethod.of0(ViewEdgeService::getFeatureValueTarget).aqlSelf())
                 .build();
     }
 

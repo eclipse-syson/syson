@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -23,11 +24,15 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Used to create a {@link NamespaceImport}.
@@ -60,11 +65,11 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
                 .semanticElementExpression(AQLConstants.AQL_SELF);
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createNamespaceImport", "selectedObject"))
+                .expression(ServiceMethod.of1(ViewCreateService::createNamespaceImport).aqlSelf("selectedObject"))
                 .children(createView.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(changeContextNewInstance.build());
 
         return this.diagramBuilderHelper.newNodeTool()
@@ -76,10 +81,12 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
     }
 
     private SelectionDialogDescription getSelectionDialogDescription() {
+        var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
+
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getNamespaceImportSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getNamespaceImportSelectionDialogChildren"))
-                .isSelectableExpression("aql:self.oclIsKindOf(sysml::Package)")
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getNamespaceImportSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of0(ViewToolService::getNamespaceImportSelectionDialogChildren).aqlSelf())
+                .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
