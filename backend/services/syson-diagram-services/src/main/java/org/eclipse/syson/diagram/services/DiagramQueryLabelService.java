@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.services;
 import static java.util.stream.Collectors.joining;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 import org.eclipse.emf.common.util.EList;
@@ -38,6 +39,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -50,6 +52,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.textual.utils.Appender;
@@ -202,11 +205,35 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                     label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.COLON);
                     label.append(LabelConstants.SPACE);
-                    label.append(this.getDeclaredNameLabel(type));
+                    label.append(this.buildImportContextRelativeQualifiedName(type, element));
                 }
             }
         }
         return label.toString();
+    }
+
+    private String buildImportContextRelativeQualifiedName(Element element, Element from) {
+        String qualifiedName = Optional.ofNullable(element.getQualifiedName()).orElse("");
+        Element commonAncestor = EMFUtils.getLeastCommonContainer(Element.class, element, from);
+        if (commonAncestor != null) {
+            String prefix = commonAncestor.getQualifiedName() + "::";
+            if (qualifiedName.startsWith(prefix)) {
+                qualifiedName = qualifiedName.substring(prefix.length());
+            }
+        }
+        var namespaces = EMFUtils.getAncestors(Namespace.class, from, null);
+        if (namespaces.stream().anyMatch(ns -> this.nsImports(ns, element))) {
+            qualifiedName = Optional.ofNullable(element.getDeclaredName()).orElse("");
+        }
+        return qualifiedName;
+    }
+
+    private boolean nsImports(Namespace ns, Element element) {
+        return ns.getImportedMembership().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .map(OwningMembership::getMemberElement)
+                .anyMatch(importedMemeber -> importedMemeber == element);
     }
 
     @Override
