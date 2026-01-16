@@ -27,6 +27,11 @@ a|image::explorer-duplicate-object-dialog.png[Duplicate Object dialog, width=40%
 
 - A new tool is available in the palette of diagram graphical nodes to duplicate the graphical node and its semantic `Element`.
 
+[NOTE]
+====
+This action is not available on `Relationships`.
+====
+
 image::manage-elements-duplicate-from-diagram.png[Duplicate element from Diagram, width=40%,height=40%]
 
 - In diagrams, a new graphical edge tool is available to create binary `ConnectionUsage` between `Usages`.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.StandardDiagramsConstants;
@@ -96,6 +97,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Element")
                 .iconURLsExpression("/images/content_copy.svg")
+                .preconditionExpression(AQLConstants.AQL + "self.oclIsKindOf(sysml::Element) and not self.oclIsKindOf(sysml::Relationship)")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
                                 ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
