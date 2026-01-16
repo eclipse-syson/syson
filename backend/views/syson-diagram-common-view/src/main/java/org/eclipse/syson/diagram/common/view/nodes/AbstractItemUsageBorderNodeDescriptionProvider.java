@@ -34,7 +34,10 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -110,7 +113,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .fontSize(12)
                 .italic(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:false")
+                .showIconExpression(AQLConstants.AQL_FALSE)
                 .strikeThrough(false)
                 .underline(false)
                 .build();
@@ -120,15 +123,15 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("/images/feature_in.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("/images/feature_out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("/images/feature_inout.svg", borderColor, true))
                         .build());
     }
@@ -143,7 +146,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")

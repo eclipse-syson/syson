@@ -214,7 +214,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName("Value");
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getFeatureValue"));
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getFeatureValue).aqlSelf());
 
         TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
         expressionWidget.setName("ValueExpression");
@@ -429,7 +429,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(MEMBERSHIP_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityPropertyOwner"));
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getVisibilityPropertyOwner).aqlSelf());
 
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioVisibilityWidget");
@@ -452,7 +452,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(ACCEPT_ACTION_USAGE_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsage"));
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getAcceptActionUsage).aqlSelf());
 
         ReferenceWidgetDescription payloadRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         payloadRefWidget.setName("ExtraPayloadWidget");
@@ -485,7 +485,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TRANSITION_SOURCETARGET_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getTransitionUsage"));
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getTransitionUsage).aqlSelf());
 
         ReferenceWidgetDescription sourceRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         sourceRefWidget.setName("ExtraSourceWidget");

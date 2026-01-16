@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,14 +42,17 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -168,7 +171,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .borderSize(0)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
+                .showIconExpression(ServiceMethod.of0(ViewLabelService::showIcon).aqlSelf())
                 .withHeader(false)
                 .build();
     }
@@ -299,11 +302,11 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .children(changeContexMembership.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(createMembership.build());
 
         var changeContextRoot = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self")
+                .expression(AQLConstants.AQL_SELF)
                 .children(changeContextViewUsageOwner.build());
 
         return this.diagramBuilderHelper.newNodeTool()

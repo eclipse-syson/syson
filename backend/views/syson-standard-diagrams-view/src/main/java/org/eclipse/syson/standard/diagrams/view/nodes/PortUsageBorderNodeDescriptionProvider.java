@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -55,7 +56,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
     @Override
     protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodeUsageLabel"))
+                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBorderNodeUsageLabel).aqlSelf())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -69,7 +70,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractPortUsageBor
     @Override
     protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")

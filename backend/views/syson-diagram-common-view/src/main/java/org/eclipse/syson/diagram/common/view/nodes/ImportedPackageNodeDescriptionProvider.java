@@ -31,9 +31,11 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.NodeDefaultSizeExpressionSwitch;
+import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.services.dto.NodeDefaultSizeExpression;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.util.AQLUtils;
@@ -105,7 +107,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
                 .borderSize(0)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
+                .showIconExpression(ServiceMethod.of0(ViewLabelService::showIcon).aqlSelf())
                 .withHeader(false)
                 .build();
     }
@@ -120,7 +122,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")

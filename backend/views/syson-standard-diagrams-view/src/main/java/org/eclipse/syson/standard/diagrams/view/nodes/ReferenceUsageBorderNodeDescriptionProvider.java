@@ -35,6 +35,8 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -81,7 +83,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
 
     protected OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodeUsageLabel"))
+                .labelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBorderNodeUsageLabel).aqlSelf())
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -110,7 +112,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
 
     protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
@@ -145,15 +147,15 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_in.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_inout.svg", borderColor, true))
                         .build());
     }
