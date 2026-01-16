@@ -986,6 +986,17 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN an abstract OccurrenceUsage, WHEN importing and exporting the model, THEN the abstract keyword should be correctly exported")
+    public void checkAbstractOccurrenceUsage() throws IOException {
+        var input = """
+                package root {
+                    abstract occurrence test;
+                    abstract occurrence def Test;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
     @DisplayName("GIVEN a model with a references to elements, WHEN importing and exporting the model, THEN the references should privileged short name over declared name when possible")
     public void checkReferencingIdentifiers() throws IOException {
         var input = """

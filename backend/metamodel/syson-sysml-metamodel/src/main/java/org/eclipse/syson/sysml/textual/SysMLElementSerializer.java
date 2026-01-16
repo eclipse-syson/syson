@@ -748,7 +748,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsagePrefix(builder, occurrenceUsage);
         this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
         if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
             builder.appendWithSpaceIfNeeded("snapshot");
@@ -2487,7 +2486,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
     }
-    
+
     private void appendRequirementConstraintUsage(Appender builder, ConstraintUsage constraintUsage) {
         if (this.useRequirementConstraintUsageShortHandNotation(constraintUsage)) {
             this.appendRequirementConstraintUsageShorthandNotation(builder, constraintUsage);
@@ -2566,6 +2565,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (usage.isIsEnd()) {
             builder.appendSpaceIfNeeded();
             builder.append("end");
+        }
+
+        if (usage.isIsReference() && !this.isImplicitlyReferential(usage)) {
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.REF);
         }
     }
 
