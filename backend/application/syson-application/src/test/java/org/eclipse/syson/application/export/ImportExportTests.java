@@ -901,6 +901,33 @@ public class ImportExportTests extends AbstractIntegrationTests {
         this.checker.check(input, input);
     }
 
+    @Test
+    @DisplayName("GIVEN of a model with implicit referential usages, WHEN exporting that model, THEN the implicit referential element should no use the ref keyword")
+    // See org.eclipse.syson.application.imports.ImportSysMLModelTest.testReferentialUsages for test importing the same model
+    public void checkImplicitReferentialUsages() throws IOException {
+        var input = """
+                package root {
+                    part part1 {
+                        part part11;
+                        attribute attr;
+                        in part part22;
+                        ref part part13;
+                    }
+                    action a1 {
+                        action a11;
+                        action a12;
+                        succession suc1 first a11 then a12;
+                    }
+                    use case def ucd_1 {
+                        objective c;
+                        subject subject_1;
+                        actor partU_1;
+                    }
+                }""";
+        this.checker.check(input, input);
+
+    }
+
     /**
      * Test import/export on test file OccurrenceTest.sysml.
      *
@@ -981,6 +1008,17 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 }
                 part p2 :> p1 {
                     attribute :>> attr1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    @Test
+    @DisplayName("GIVEN an abstract OccurrenceUsage, WHEN importing and exporting the model, THEN the abstract keyword should be correctly exported")
+    public void checkAbstractOccurrenceUsage() throws IOException {
+        var input = """
+                package root {
+                    abstract occurrence test;
+                    abstract occurrence def Test;
                 }""";
         this.checker.check(input, input);
     }

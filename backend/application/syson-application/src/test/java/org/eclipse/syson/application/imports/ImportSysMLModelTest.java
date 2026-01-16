@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -81,6 +82,7 @@ import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;
@@ -154,7 +156,71 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
-    @DisplayName("Given of model with redefinition depending on inherited memberships computation, WHEN importing the model, THEN redefined feature should resolve properly using inherited memberships")
+    @DisplayName("GIVEN a set of Usages, WHEN checking if the usage is referential, THEN the computation should be correct whether or not the ref keyword is present.")
+    public void testReferentialUsages() throws IOException {
+        var input = """
+                package root {
+                    // Referential because contained in package
+                    part part1 {
+                        part part11; // Composite because no "ref" keyword
+                        attribute attr; // ReReferential because AttributeUsage
+                        in part part22; // Referential because "directed" feature
+                        ref part part13; // Referential since using "ref" keyword
+                    }
+                    // Referential because contained in package
+                    action a1 {
+                        action a11; // Composite because no "ref" keyword
+                        action a12; // Composite because no "ref" keyword
+                        succession suc1 first a11 then a12; // Referential because is a Connector
+                    }
+                
+                    use case def ucd_1 {
+                        objective c; // Composite because no "ref" keyword
+                        subject subject_1; // Ref because ReferenceUsage
+                        actor partU_1; // Ref because in actor
+                    }
+                }
+                """;
+        this.checker.checkImportedModel(resource -> {
+            assertThat(this.getByName(PartUsage.class, resource, "part1"))
+                    .as("part1 should be referential since contained in a package")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(PartUsage.class, resource, "part11"))
+                    .as("part11 should be composite since contained in another type and not prefixed with ref")
+                    .doesNotMatch(Usage::isIsReference);
+            assertThat(this.getByName(AttributeUsage.class, resource, "attr"))
+                    .as("attr should be referential since it is a AttributeUsage")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(PartUsage.class, resource, "part22"))
+                    .as("part22 should be referential since it is a directed feature")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(PartUsage.class, resource, "part13"))
+                    .as("part13 should be referential using ref keyword")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(ActionUsage.class, resource, "a1"))
+                    .as("a1 should be referential since contained in a package")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(ActionUsage.class, resource, "a11"))
+                    .as("a11 should be composite since contained in another type and not prefixed with ref")
+                    .doesNotMatch(Usage::isIsReference);
+            assertThat(this.getByName(ActionUsage.class, resource, "a12"))
+                    .as("a12 should be composite since contained in another type and not prefixed with ref")
+                    .doesNotMatch(Usage::isIsReference);
+            assertThat(this.getByName(SuccessionAsUsage.class, resource, "suc1"))
+                    .as("suc1 should be referential since is a connector")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(ReferenceUsage.class, resource, "subject_1"))
+                    .as("subject_1 should be referential since ReferenceUsage")
+                    .matches(Usage::isIsReference);
+            assertThat(this.getByName(PartUsage.class, resource, "partU_1"))
+                    .as("partU_1 should be referential since stored in an ActorMembership")
+                    .matches(Usage::isIsReference);
+        });
+    }
+
+    @Test
+    @DisplayName("GIVEN of model with redefinition depending on inherited memberships computation, WHEN importing the model, THEN redefined feature should resolve properly using inherited " +
+            "memberships")
     public void checkRedefinedFeatureToInheritedFields() throws IOException {
         var input = """
                 private import ISQBase::mass;
@@ -285,7 +351,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pa1 {
                     part pa1;
                     part pa2;
-
+                
                     connect pa1 to pa2;
                 }
                 """;
@@ -311,7 +377,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute y : ScalarValues::String;
                         :> annotatedElement : SysML::PartUsage;
                     }
-
+                
                     #MD1 part p1;
                     part p2 {
                         @MD1 {
@@ -322,7 +388,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     metadata MD1 about p3;
                     part p4;
                     metadata m1 : MD1 about p4;
-
+                
                     #MD2 part p5;
                 }""";
         this.checker.checkImportedModel(resource -> {
@@ -375,17 +441,17 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkSemanticMetadataDefinition() throws IOException {
         var input = """
                 private import Metaobjects::SemanticMetadata;
-
+                
                 part def Functions {
                     attribute x : ScalarValues::String;
                 }
-
+                
                 part functions : Functions [*] nonunique;
-
+                
                 metadata def Function :> SemanticMetadata {
                     :>> baseType = functions meta SysML::ActionUsage;
                 }
-
+                
                 #Function action a0;
                 action a1;
                 metadata Function about a1;
@@ -472,7 +538,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pk1 {
                     action a1 {
                         in item i1;
-
+                
                         action a11 {
                             in item i11;
                         }
@@ -537,11 +603,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkFeatureChainExpressionNameResolution() throws IOException {
         var input = """
                 action def P1 {
-
+                
                     action def A2 {
                         out pr2 : ScalarValues::Boolean;
                     }
-
+                
                     action a2 : A2 {
                          out pr2;
                     }
@@ -593,11 +659,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part def P1 {
                         isValid : ScalarValues::Boolean;
                     }
-
+                
                     action def A2 {
                         out prA2 : P1;
                     }
-
+                
                     action a2 : A2 {
                         out pra2;
                     }
@@ -898,7 +964,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-
+                
                 state myState {
                     state off;
                     accept StartSignal then on;
@@ -910,9 +976,9 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             TransitionUsage transitionUsage = transitionUsages.get(0);
             assertThat(transitionUsage.getTriggerAction()).hasSize(1);
             Optional<TransitionFeatureMembership> optionalTransitionFeatureMembership = transitionUsage.getOwnedRelationship().stream()
-                .filter(TransitionFeatureMembership.class::isInstance)
-                .map(TransitionFeatureMembership.class::cast)
-                .findFirst();
+                    .filter(TransitionFeatureMembership.class::isInstance)
+                    .map(TransitionFeatureMembership.class::cast)
+                    .findFirst();
             assertThat(optionalTransitionFeatureMembership).isPresent();
             assertThat(optionalTransitionFeatureMembership.get().getKind()).isEqualTo(TransitionFeatureKind.TRIGGER);
         }).check(input);
@@ -923,7 +989,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageAndSendSignalActionTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-
+                
                 state myState {
                     state off;
                     accept StartSignal
@@ -1028,7 +1094,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute upper:ScalarValues::Integer = 2;
                     }
                 }
-
+                
                 part myPart[bounds::lower..bounds::upperBounds::upper];
                 """;
         this.checker.checkImportedModel(resource -> {
@@ -1119,6 +1185,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     .findFirst();
             assertThat(matchingFeature).get().satisfies(f -> this.assertStringValue(f, entry.getValue()));
         }
+    }
+
+    private <T extends Element> T getByName(Class<T> type, Notifier root, String name) {
+        return EMFUtils.allContainedObjectOfType(root, type).filter(e -> name.equals(e.getDeclaredName())).findFirst().orElseThrow();
     }
 
     private void assertStringValue(Feature f, String expectedValue) {

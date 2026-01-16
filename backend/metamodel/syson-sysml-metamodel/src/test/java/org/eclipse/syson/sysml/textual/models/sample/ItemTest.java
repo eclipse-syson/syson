@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,6 +101,7 @@ public class ItemTest {
         this.builder.setType(this.f, this.aDef);
 
         this.b = this.builder.createInWithName(ItemUsage.class, this.aDef, "b");
+        this.b.setIsComposite(true);
 
         this.c = this.builder.createInWithName(PartUsage.class, this.aDef, "c");
         this.c.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
