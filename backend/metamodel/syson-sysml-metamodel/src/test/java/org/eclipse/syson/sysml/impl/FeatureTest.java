@@ -171,7 +171,7 @@ public class FeatureTest {
         private ItemUsage item3;
         private ItemUsage item4;
 
-        public FeatureTypeTestModel() {
+        FeatureTypeTestModel() {
             this.build();
         }
 

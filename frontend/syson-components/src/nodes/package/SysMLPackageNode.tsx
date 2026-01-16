@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
-  DiagramContext,
-  DiagramContextValue,
   Label,
+  Resizer,
   useConnectionLineNodeStyle,
   useConnectorNodeStyle,
   useDrop,
@@ -28,8 +27,8 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
-import { Node, NodeProps, NodeResizer } from '@xyflow/react';
-import React, { memo, useContext } from 'react';
+import { Node, NodeProps } from '@xyflow/react';
+import React, { memo } from 'react';
 
 import { NodeComponentsMap, SysMLPackageNodeData } from './SysMLPackageNode.types';
 
@@ -114,21 +113,8 @@ const packageContainerStyle = (
   return packageNodeStyle;
 };
 
-const resizeLineStyle = (theme: Theme): React.CSSProperties => {
-  return { borderWidth: theme.spacing(0.15) };
-};
-
-const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
-  return {
-    width: theme.spacing(1),
-    height: theme.spacing(1),
-    borderRadius: '100%',
-  };
-};
-
 export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
   ({ data, id, selected, dragging }: NodeProps<Node<SysMLPackageNodeData>>) => {
-    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme: Theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
@@ -155,18 +141,7 @@ export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
 
     return (
       <>
-        {data.nodeDescription?.userResizable && !readOnly ? (
-          <NodeResizer
-            handleStyle={{ ...resizeHandleStyle(theme) }}
-            lineStyle={{ ...resizeLineStyle(theme) }}
-            color={theme.palette.selected}
-            isVisible={!!selected}
-            shouldResize={() => !data.isBorderNode}
-            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-            minWidth={data.minComputedWidth ?? undefined}
-            minHeight={data.minComputedHeight ?? undefined}
-          />
-        ) : null}
+        <Resizer data={data} selected={!!selected} />
         <div
           style={{
             ...sysMLPackageNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),

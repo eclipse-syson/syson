@@ -142,7 +142,7 @@ public class ReferenceSubsettingEdgeDescriptionProvider extends AbstractSubsetti
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.CLOSED_ARROW_WITH_DOTS)
+                .targetArrowStyle(ArrowStyle.CLOSED_ARROW_WITH4_DOTS)
                 .build();
     }
 

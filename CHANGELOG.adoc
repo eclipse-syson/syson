@@ -35,7 +35,7 @@ It helps handling inherited elements that are not displayed in their semantic ow
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.4]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.5]
 - [releng] Update to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.9[Spring Boot 3.5.9]
 
@@ -47,9 +47,9 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1751[#1751] [diagrams] Make `Interconnection` compartment growable.
 - https://github.com/eclipse-syson/syson/issues/1763[#1763] [diagrams] Fix an issue where, in the diagrams, the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
 - https://github.com/eclipse-syson/syson/issues/1788[#1788] [services] New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification, chapter `8.3.26.2 Expose`.
-- https://github.com/eclipse-syson/syson/issues/1799[#1799] During export, `Element` with a name that conflicts with SysML Keyword should be escaped.
-- https://github.com/eclipse-syson/syson/issues/1825[#1825] `LiteralRational` value wrongly rounded during textual export.
-- https://github.com/eclipse-syson/syson/issues/1784[#1784] Error while exporting `FeatureValue` using enumeration literals.
+- https://github.com/eclipse-syson/syson/issues/1799[#1799] [export] During export, `Element` with a name that conflicts with SysML Keyword should be escaped.
+- https://github.com/eclipse-syson/syson/issues/1825[#1825] [export] `LiteralRational` value wrongly rounded during textual export.
+- https://github.com/eclipse-syson/syson/issues/1784[#1784] [export] Error while exporting `FeatureValue` using enumeration literals.
 - https://github.com/eclipse-syson/syson/issues/1838[#1838] [metamodel] Invalid computation of `Usage.getType`: The subsetted features should be taken into account.
 
 === Improvements

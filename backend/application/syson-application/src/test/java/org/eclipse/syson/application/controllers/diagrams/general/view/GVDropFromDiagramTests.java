@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodesMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -108,8 +109,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     List.of(partNodeId.get()),
                     packageNodeId.get(),
-                    0,
-                    0);
+                    List.of(new Position(0, 0)));
             var result = this.dropNodesMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -132,8 +132,7 @@ public class GVDropFromDiagramTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     List.of(partNodeId.get()),
                     diagramId.get(),
-                    0,
-                    0);
+                    List.of(new Position(0, 0)));
             var result = this.dropNodesMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
