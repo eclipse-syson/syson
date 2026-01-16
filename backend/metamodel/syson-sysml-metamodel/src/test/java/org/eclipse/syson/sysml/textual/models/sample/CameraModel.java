@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,6 +112,7 @@ public class CameraModel {
         this.builder.addSubsetting(this.takePicture, this.pictureTakingModel.getTakePicture());
 
         this.focusingSubsystem = this.builder.createInWithName(PartUsage.class, this.camera, "focusingSubsystem");
+        this.focusingSubsystem.setIsComposite(true);
 
         this.focusingSubsystemPerformAction = this.builder.createIn(PerformActionUsage.class, this.focusingSubsystem);
 
@@ -120,6 +121,7 @@ public class CameraModel {
         this.builder.addReferenceSubsetting(this.focusingSubsystemPerformAction, focusFeatureChain);
 
         this.imagingSubsystem = this.builder.createInWithName(PartUsage.class, this.camera, "imagingSubsystem");
+        this.imagingSubsystem.setIsComposite(true);
 
         this.imagingSubsystemPerformAction = this.builder.createIn(PerformActionUsage.class, this.imagingSubsystem);
 

@@ -346,7 +346,7 @@ public class SysMLElementSerializerTest {
 
         this.builder.createIn(Comment.class, partUsage).setBody(BODY);
         this.assertTextualFormEquals("""
-                ref part PartUsage1 : 'Part Def1' {
+                part PartUsage1 : 'Part Def1' {
                     /* A body */
                 }""", partUsage);
     }
@@ -1402,7 +1402,9 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("action a;", actionUsage);
 
         ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        subAction1.setIsComposite(true);
         ActionUsage subAction2 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+        subAction2.setIsComposite(true);
 
         this.assertTextualFormEquals("""
                 action a {
@@ -1457,6 +1459,7 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("action a : A;", actionUsage);
 
         ActionUsage subAction2 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+        subAction2.setIsComposite(true);
         this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
 
         this.assertTextualFormEquals("""
@@ -1492,11 +1495,15 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("action a;", actionUsage);
 
         ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        subAction1.setIsComposite(true);
+        this.builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
         ActionUsage unamedAction = this.builder.createIn(ActionUsage.class, actionUsage);
+        unamedAction.setIsComposite(true);
 
         this.assertTextualFormEquals("""
                 action a {
                     action a_1;
+                    ref action a_2;
                     action;
                 }""", actionUsage);
 
@@ -1506,6 +1513,7 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("""
                 action a {
                     action a_1;
+                    ref action a_2;
                     action {
                         /* This is an action with no name */
                     }
@@ -1516,6 +1524,7 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("""
                 action a {
                     action a_1;
+                    ref action a_2;
                     action {
                         /* This is an action with no name */
                     }
@@ -1566,10 +1575,10 @@ public class SysMLElementSerializerTest {
                 part def Camera {
                     private import PictureTaking::*;
                     perform action takePicture :> PictureTaking::takePicture [0..*];
-                    ref part focusingSubsystem {
+                    part focusingSubsystem {
                         perform takePicture.focus;
                     }
-                    ref part imagingSubsystem {
+                    part imagingSubsystem {
                         perform takePicture.shoot;
                     }
                 }""", cameraModel.getCamera());
@@ -1646,6 +1655,7 @@ public class SysMLElementSerializerTest {
 
         PortUsage subPortUsage = this.builder.createInWithName(PortUsage.class, portUsage, "subPortUsage 1");
         this.builder.setType(subPortUsage, portDefinition);
+        subPortUsage.setIsComposite(true);
 
         this.assertTextualFormEquals("""
                 package pack1 {
@@ -1669,7 +1679,7 @@ public class SysMLElementSerializerTest {
 
         this.builder.createIn(Documentation.class, partUsage).setBody("A comment");
         this.assertTextualFormEquals("""
-                ref part PartUsage1 : 'Part Def1' {
+                part PartUsage1 : 'Part Def1' {
                     doc /* A comment */
                 }""", partUsage);
     }
@@ -1687,7 +1697,7 @@ public class SysMLElementSerializerTest {
         partUsage.getDocumentation().get(0).setDeclaredName(ANNOTATING1);
 
         this.assertTextualFormEquals("""
-                ref part PartUsage1 : 'Part Def1' {
+                part PartUsage1 : 'Part Def1' {
                     doc Annotating1 /* A body */
                 }""", partUsage);
     }
