@@ -19,19 +19,25 @@ import java.util.List;
 
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Dependency;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
@@ -424,6 +430,51 @@ public class DiagramQueryLabelServiceTest {
         interfaceUsage.setDeclaredName("interface");
 
         assertThat(this.labelService.getEdgeLabel(interfaceUsage)).isEqualTo(SHORT_NAME_LABEL + " interface");
+    }
+
+    @DisplayName("GIVEN a namespace imported, WHEN the label of an attribute whose type is from the imported namespace, THEN the attribute's type should be shortened in its label")
+    @Test
+    public void testAttributeTypeShortenedIfNamespaceImported() {
+        String customTypeName = "CustomType";
+
+        Package parentPackage = SysmlFactory.eINSTANCE.createPackage();
+        parentPackage.setDeclaredName("Parent");
+
+        Package definition = SysmlFactory.eINSTANCE.createPackage();
+        definition.setDeclaredName("TypeDefinition");
+        this.addOwnedMember(parentPackage, definition);
+
+        DataType customDataType = SysmlFactory.eINSTANCE.createDataType();
+        customDataType.setDeclaredName(customTypeName);
+        this.addOwnedMember(definition, customDataType);
+
+        Package usage = SysmlFactory.eINSTANCE.createPackage();
+        usage.setDeclaredName("TypeUsage");
+        this.addOwnedMember(parentPackage, usage);
+
+        NamespaceImport nsImport = SysmlFactory.eINSTANCE.createNamespaceImport();
+        nsImport.setImportedNamespace(definition);
+        this.addOwnedMember(usage, nsImport);
+
+        PartDefinition partDef = SysmlFactory.eINSTANCE.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+        this.addOwnedMember(usage, partDef);
+
+        AttributeUsage attribute = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attribute.setDeclaredName("x1");
+        this.addOwnedMember(partDef, attribute);
+
+        FeatureTyping typing = SysmlFactory.eINSTANCE.createFeatureTyping();
+        typing.setType(customDataType);
+        attribute.getOwnedRelationship().add(typing);
+
+        assertThat(this.labelService.getCompartmentItemLabel(attribute)).isEqualTo("x1 : CustomType");
+    }
+
+    private void addOwnedMember(Element parent, Element child) {
+        OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owningMembership.getOwnedRelatedElement().add(child);
+        parent.getOwnedRelationship().add(owningMembership);
     }
 
     /**
