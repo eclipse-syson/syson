@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,11 @@ import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescr
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -170,7 +172,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .labelExpression("Delete from model")
                 .iconURLExpression("/images/semanticDelete.svg")
                 .body(this.viewBuilders.newChangeContext()
-                        .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"))
+                        .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf())
                         .build())
                 .build();
 

@@ -463,7 +463,7 @@ public class ToolDescriptionService {
                 .children(createEClassInstance.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(changeContextMembership.build());
 
         var changeContextRoot = this.viewBuilderHelper.newChangeContext()
@@ -554,7 +554,7 @@ public class ToolDescriptionService {
                 .children(changeContextMembership.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(createMembership.build());
 
         var changeContextRoot = this.viewBuilderHelper.newChangeContext()

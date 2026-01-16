@@ -30,10 +30,11 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.DescriptionFinder;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -131,15 +132,15 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_in.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutFeature"))
+                        .condition(ServiceMethod.of0(UtilService::isInOutFeature).aqlSelf())
                         .style(this.createImageNodeStyleDescription("images/feature_inout.svg", borderColor, true))
                         .build()
         );

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
@@ -49,6 +50,8 @@ import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
@@ -133,14 +136,14 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .borderSize(0)
                 .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
+                .showIconExpression(ServiceMethod.of0(ViewLabelService::showIcon).aqlSelf())
                 .withHeader(false)
                 .build();
     }
 
     protected NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+                .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf());
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
@@ -255,7 +258,7 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .children(changeContextMembership.build());
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("getViewUsageOwner"))
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
                 .children(createMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
