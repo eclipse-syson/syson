@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.DecisionNode;
@@ -59,6 +60,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -182,9 +184,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * Simple constructor.
      *
      * @param lineSeparator
-     *            the string used to separate line
+     *         the string used to separate line
      * @param indentation
-     *            the string used to indent the file
+     *         the string used to indent the file
      */
     public SysMLElementSerializer(String lineSeparator, String indentation, INameDeresolver nameDeresolver, Consumer<Status> reportConsumer) {
         super();
@@ -748,7 +750,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsagePrefix(builder, occurrenceUsage);
         this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
         if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
             builder.appendWithSpaceIfNeeded("snapshot");
@@ -858,7 +859,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String casePartUsage(PartUsage partUsage) {
-        return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
+        return this.appendDefaultUsage(this.newAppender(), partUsage);
     }
 
     @Override
@@ -1267,7 +1268,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * Get a String representation of the "AcceptParameterPart" BNF rule to be used on {@link AcceptActionUsage}.
      *
      * @param acceptActionUsage
-     *            a non null {@link AcceptActionUsage}
+     *         a non null {@link AcceptActionUsage}
      * @return a String representation of the "AcceptParameterPart"
      */
     public String getAcceptParameterPart(AcceptActionUsage acceptActionUsage) {
@@ -1412,7 +1413,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
      *
      * @param endFeatureMembership
-     *            the element to test
+     *         the element to test
      * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
      */
     private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
@@ -2139,11 +2140,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * candidates {@link FeatureMembership} are filtered using a given predicate
      *
      * @param expectedFeature
-     *            the expected feature
+     *         the expected feature
      * @param sourceElement
-     *            the source feature from which the previous elements will be searched
+     *         the source feature from which the previous elements will be searched
      * @param candidatePredicate
-     *            an optional predicate to filter among the previous elements
+     *         an optional predicate to filter among the previous elements
      * @return <code>true</code> if the previous feature is the expected one
      */
     private boolean isPreviousFeatureEqualsTo(Feature expectedFeature, Feature sourceElement, Predicate<Membership> candidatePredicate) {
@@ -2175,16 +2176,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * Returns true if the comment describes its <b>direct</b> owning namespace
      *
      * @param comment
-     *            a comment
+     *         a comment
      * @return true if described is direct owning namespace
      */
     private boolean isSelfNamespaceDescribingComment(Comment comment) {
         EList<Element> annotatedElements = comment.getAnnotatedElement();
         if (!annotatedElements.isEmpty()) {
             Element annotatedElement = annotatedElements.get(0);
-            if (annotatedElement instanceof Namespace owningNamespace && (owningNamespace == this.getDirectContainer(comment, Namespace.class))) {
-                return true;
-            }
+            return annotatedElement instanceof Namespace owningNamespace && (owningNamespace == this.getDirectContainer(comment, Namespace.class));
         }
         return false;
     }
@@ -2201,9 +2200,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * {@link EObject#eContainer()} or the container of the {@link OwningMembership}
      *
      * @param element
-     *            an element
+     *         an element
      * @param expected
-     *            the expected type
+     *         the expected type
      * @return the expected type or <code>null</code> if no direct container of the expected type
      */
     private <T> T getDirectContainer(EObject element, Class<T> expected) {
@@ -2231,7 +2230,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendControlNodePrefix(Appender builder, ControlNode controlNode) {
         final String isRef;
-        if (controlNode.isIsReference() && !this.isImplicitlyReferential(controlNode)) {
+        if (controlNode.isIsReference() && this.requireReferentialKeyword(controlNode)) {
             isRef = "ref";
         } else {
             isRef = "";
@@ -2274,7 +2273,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             if (sourceFeature != null
                     // Skip this part for Transition with implicit source and no declared name
                     && (!this.isPreviousFeatureEqualsTo(sourceFeature, transitionUsage, m -> this.isNotSuccessionWithSameSource(m, sourceFeature))
-                            || !declarionAppender.isEmpty())) {
+                    || !declarionAppender.isEmpty())) {
                 builder.appendWithSpaceIfNeeded("first ").append(this.getDeresolvableName(sourceFeature, transitionUsage));
             }
 
@@ -2351,9 +2350,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * Get a deresolvable name for a given element in a given context
      *
      * @param toDeresolve
-     *            the object to deresolve
+     *         the object to deresolve
      * @param context
-     *            a context
+     *         a context
      * @return a name
      */
     private String getDeresolvableName(Element toDeresolve, Element context) {
@@ -2436,15 +2435,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendUsagePrefix(Appender builder, Usage usage) {
         this.appendBasicUsagePrefix(builder, usage);
 
-        final String isRef;
-        if (usage.isIsReference() && !this.isImplicitlyReferential(usage)) {
-            isRef = "ref";
-        } else {
-            isRef = "";
-        }
-
-        builder.appendSpaceIfNeeded().append(isRef);
-
         this.appendExtensionKeyword(builder, usage);
     }
 
@@ -2462,10 +2452,48 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendExtensionKeyword(builder, occUsage);
     }
 
-    private boolean isImplicitlyReferential(Usage usage) {
-        return usage.getOwningMembership() instanceof ActorMembership
-                || usage instanceof AttributeUsage
-                || usage instanceof ReferenceUsage;
+    /**
+     * Check if the given referential {@link Usage} needs to explicitly add the "ref" keyword in the textual format.
+     *
+     * <p><b>Note that this method should only be called if {@link Usage#isIsReference()} is true</b></p>
+     *
+     * @param usage
+     *         a non null usage
+     * @return {@code true} if the "ref" keyword can be omitted
+     */
+    private boolean requireReferentialKeyword(Usage usage) {
+        // In some case the ref keyword can be omitted if the referential nature of the usage is implicit
+        return !this.isReferentialByNature(usage) && !this.isReferentialByFeature(usage) && !this.isReferentialByConstruct(usage);
+    }
+
+    private boolean isReferentialByNature(Usage usage) {
+        // If is an AttributeUsage see SysML V2 specification :
+        // "AttributeUsages are also syntactically restricted by the validateAttributeUsageIsReference to be referential (non-composite)"
+        return usage instanceof AttributeUsage
+                // Is a ReferenceUsage see SysML V2 specification 7.6.4 Reference Usages:
+                // " However, a reference usage is always, by definition, referential. A reference usage is otherwise declared like any other usage, as given above."
+                || usage instanceof ReferenceUsage
+                // Is an EventOccurrenceUsage see cf SysML V2 8.4.5.3 Event Occurrence Usages :
+                // "An EventOccurrenceUsage is a kind of OccurrenceUsage that is required to always be referential"
+                || usage instanceof EventOccurrenceUsage
+                // Is a connector
+                || usage instanceof Connector;
+    }
+
+    private boolean isReferentialByConstruct(Usage usage) {
+        // Feature not contained in type
+        // See https://groups.google.com/g/sysml-v2-release/c/BTwBJLCyozM/m/aNILfQylAQAJ
+        return !(usage.getOwningMembership() instanceof FeatureMembership && usage.getOwner() instanceof Type)
+                || usage.getOwningMembership() instanceof ActorMembership;
+    }
+
+    private boolean isReferentialByFeature(Usage usage) {
+        // If is a directed feature see SysML v2 Section 7.6.3 Usages (Snippet 5) :
+        // "Note also that a directed usage is always referential, whether or not the keyword ref is also given explicitly in its declaration."
+        return usage.getDirection() != null
+                // Is end feature see SysML V2 specification 7.13.2 Connection Definitions and Usages
+                //  "End features are always considered referential (non-composite), whether or not their declaration explicitly includes the ref keyword"
+                || usage.isIsEnd();
     }
 
     private void appendExtensionKeyword(Appender builder, Type type) {
@@ -2487,7 +2515,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
     }
-    
+
     private void appendRequirementConstraintUsage(Appender builder, ConstraintUsage constraintUsage) {
         if (this.useRequirementConstraintUsageShortHandNotation(constraintUsage)) {
             this.appendRequirementConstraintUsageShorthandNotation(builder, constraintUsage);
@@ -2566,6 +2594,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (usage.isIsEnd()) {
             builder.appendSpaceIfNeeded();
             builder.append("end");
+        }
+        if (usage.isIsReference() && this.requireReferentialKeyword(usage)) {
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.REF);
         }
     }
 

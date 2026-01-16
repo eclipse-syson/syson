@@ -88,7 +88,6 @@ package root {
 
 ** New `Expose` elements now have `visibility` set to _protected_ and have `isImportAll` set to _true_, as required by the SysMLv2 specification.
 
-
 == Improvements
 
 * In diagrams:
