@@ -87,7 +87,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
         edgeTools.addAll(this.caseUsage(object));
-        // since AcceptActionDefintion does not exist, this.caseUsage did not manage the FeatureTyping edge, we need to add it manually.
+        // since AcceptActionDefinition does not exist, this.caseUsage did not manage the FeatureTyping edge, we need to add it manually.
         this.addFeatureTypingEdgeToolForActionUsageSubType(edgeTools);
         return edgeTools;
     }

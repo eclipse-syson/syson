@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,9 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.services.ActionFlowViewCreateService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IViewDescriptio
                         .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                         .autoLayout(false)
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace()))
-                        .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
+                        .preconditionExpression(ServiceMethod.of0(ActionFlowViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
                         .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
                         .build();

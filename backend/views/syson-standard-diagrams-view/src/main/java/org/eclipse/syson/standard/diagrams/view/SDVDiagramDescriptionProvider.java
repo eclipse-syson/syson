@@ -58,6 +58,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
@@ -312,7 +313,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                 .autoLayout(false)
                 .domainType(domainType)
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
+                .preconditionExpression(ServiceMethod.of0(ViewCreateService::canCreateDiagram).aqlSelf())
                 .name(DESCRIPTION_NAME)
                 .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()");
 

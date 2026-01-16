@@ -64,6 +64,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.springframework.context.annotation.Configuration;
 
@@ -516,7 +517,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         FormElementFor forElt = FormFactory.eINSTANCE.createFormElementFor();
         forElt.setName("Widgets for Core Group");
         forElt.setIterator(E_STRUCTURAL_FEATURE);
-        forElt.setIterableExpression(AQLUtils.getSelfServiceCallExpression("getCoreFeatures"));
+        forElt.setIterableExpression(ServiceMethod.of0(DetailsViewService::getCoreFeatures).aqlSelf());
         forElt.getChildren().addAll(this.createWidgets());
         return forElt;
     }
@@ -525,7 +526,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         FormElementFor forElt = FormFactory.eINSTANCE.createFormElementFor();
         forElt.setName("Widgets for Advanced Group");
         forElt.setIterator(E_STRUCTURAL_FEATURE);
-        forElt.setIterableExpression(AQLUtils.getSelfServiceCallExpression("getAdvancedFeatures"));
+        forElt.setIterableExpression(ServiceMethod.of0(DetailsViewService::getAdvancedFeatures).aqlSelf());
         forElt.getChildren().addAll(this.createWidgets());
         return forElt;
     }
@@ -659,7 +660,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
         textarea.setName("DocumentationWidget");
         textarea.setLabelExpression("Documentation");
-        textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getDocumentation"));
+        textarea.setValueExpression(ServiceMethod.of0(DetailsViewService::getDocumentation).aqlSelf());
         textarea.setHelpExpression("Use 'shift + enter' to add new lines");
         textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
@@ -676,7 +677,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
         textarea.setName("CommentWidget");
         textarea.setLabelExpression("Comment");
-        textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getCommentBody"));
+        textarea.setValueExpression(ServiceMethod.of0(DetailsViewService::getCommentBody).aqlSelf());
         textarea.setHelpExpression("Use 'shift + enter' to add new lines");
         textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();

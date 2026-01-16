@@ -352,7 +352,7 @@ public class ViewEdgeService {
      *            The target of the transition
      * @return
      */
-    private boolean checkTransitionEdgeTarget(Element source, Element target) {
+    public boolean checkTransitionEdgeTarget(Element source, Element target) {
         boolean sameParent = false;
         if (source instanceof ActionUsage sourceAction && target instanceof ActionUsage targetAction) {
             Element sourceParentElement = sourceAction.getOwner();
