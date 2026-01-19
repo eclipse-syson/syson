@@ -14,14 +14,10 @@ package org.eclipse.syson.application.publication;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,37 +32,26 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 public class SysONLibraryPublicationListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SysONLibraryPublicationListener.class);
-
-    private final IProjectEditingContextService projectEditingContextService;
-
     private final ILibraryCreationService libraryCreationService;
 
-    public SysONLibraryPublicationListener(final IProjectEditingContextService projectEditingContextService, final ILibraryCreationService libraryCreationService) {
-        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
+    public SysONLibraryPublicationListener(final ILibraryCreationService libraryCreationService) {
         this.libraryCreationService = Objects.requireNonNull(libraryCreationService);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onSemanticDataCreatedEvent(final SemanticDataCreatedEvent semanticDataCreatedEvent) {
-        if (semanticDataCreatedEvent.causedBy() instanceof SysONPublishedLibrarySemanticDataCreationRequested request
-                && request.causedBy() instanceof PublishLibrariesInput publishLibrariesInput) {
-            var createdSemanticData = semanticDataCreatedEvent.semanticData();
-            var editingContextId = publishLibrariesInput.editingContextId();
-            var optProjectId = this.projectEditingContextService.getProjectId(editingContextId);
-            if (optProjectId.isPresent()) {
-                Library createdLibrary = Library.newLibrary()
-                        .namespace(optProjectId.get())
-                        .name(request.libraryName())
-                        .semanticData(AggregateReference.to(createdSemanticData.getId()))
-                        .version(publishLibrariesInput.version())
-                        .description(publishLibrariesInput.description())
-                        .build(semanticDataCreatedEvent);
-                this.libraryCreationService.createLibrary(createdLibrary);
-            } else {
-                LOGGER.warn("Cannot create library from the editingContextId {}", editingContextId);
-            }
+        if (semanticDataCreatedEvent.causedBy() instanceof SysONPublishedLibrarySemanticDataCreationRequested request) {
+            final SemanticData createdSemanticData = semanticDataCreatedEvent.semanticData();
+
+            final Library createdLibrary = Library.newLibrary()
+                    .namespace(request.libraryNamespace())
+                    .name(request.libraryName())
+                    .version(request.libraryVersion())
+                    .description(request.libraryDescription())
+                    .semanticData(AggregateReference.to(createdSemanticData.getId()))
+                    .build(semanticDataCreatedEvent);
+            this.libraryCreationService.createLibrary(createdLibrary);
         }
     }
 }
