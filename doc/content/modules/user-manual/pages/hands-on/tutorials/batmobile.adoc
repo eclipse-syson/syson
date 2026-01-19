@@ -33,11 +33,11 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 
 . Select the `Batmobile` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
 . Rename the new part usage to `wheels`.
+. Select the `wheels` part usage, type "F2" and rename it `wheels[4] : Wheel`. `Wheel` does not exist yet so it will automatically be created.
 
 === Using Drag and Drop
 
-. Select the `wheels` part usage, type "F2" and rename it `wheels[4] : Wheel`.
-. A new `Wheel` part definition is created in the model.
+. At the end of the previous section, a new `Wheel` part definition has been created in the model.
 . Drag and drop the `Wheel` element from the {explorer} onto the diagram background.
 . The `Wheel` part definition appears on the diagram within the `Typed By` relationship between the `Wheel` and the `wheels` part usage.
 
