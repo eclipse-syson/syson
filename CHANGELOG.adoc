@@ -6,6 +6,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/1861[#1861] [publication] Split `SysONLibraryPublicationHandler` in two distinct classes so the publishing logic can be extended or re-used through the `ISysMLLibraryPublisher` API.
+
 === Dependency update
 
 === Bug fixes
@@ -18,6 +20,7 @@
 SysON now uses its own indexing logic instead of the default one provided by Sirius Web.
 This allows to limit the size of the indices, and ensure information stored in the indices are useful to perform cross-project search.
 You can find more information on how to setup Elasticsearch, how elements are mapped to index documents, and how to query them in the documentation.
+- https://github.com/eclipse-syson/syson/issues/1861[#1861] [publication] Split `SysONLibraryPublicationHandler` in two distinct classes so the publishing logic can be extended or re-used through the `ISysMLLibraryPublisher` API.
 
 === New features
 

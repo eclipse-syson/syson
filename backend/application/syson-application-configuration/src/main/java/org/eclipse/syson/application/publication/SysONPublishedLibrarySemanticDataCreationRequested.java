@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,16 +27,23 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 public record SysONPublishedLibrarySemanticDataCreationRequested(
         UUID id,
         ICause causedBy,
-        String libraryName) implements ICause {
+        String libraryNamespace,
+        String libraryName,
+        String libraryVersion,
+        String libraryDescription) implements ICause {
 
-    public SysONPublishedLibrarySemanticDataCreationRequested(final ICause cause, final String libraryName) {
-        this(UUID.randomUUID(), cause, libraryName);
+    public SysONPublishedLibrarySemanticDataCreationRequested(final ICause cause, final String libraryNamespace, final String libraryName, final String libraryVersion,
+            final String libraryDescription) {
+        this(UUID.randomUUID(), cause, libraryNamespace, libraryName, libraryVersion, libraryDescription);
     }
 
     public SysONPublishedLibrarySemanticDataCreationRequested {
         Objects.requireNonNull(id);
         Objects.requireNonNull(causedBy);
+        Objects.requireNonNull(libraryNamespace);
         Objects.requireNonNull(libraryName);
+        Objects.requireNonNull(libraryVersion);
+        Objects.requireNonNull(libraryDescription);
     }
 
 }
