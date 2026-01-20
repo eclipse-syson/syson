@@ -151,9 +151,9 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Rename it `cmdPort`.
 . Create a new binding between the `cmdPort` of `flashlight` and the `cmdPort` of the `switch`.
 . Right-click on `switch`, then select the `Structure` -> `New Port In`.
-. Rename it `in inPort`.
+. A new port (a graphical border node) has been created, rename it `inPort`.
 . Right-click on `switch`, then select the `Structure` -> `New Port Out`.
-. Rename it `out outPort`.
+. A new port (a graphical border node) has been created, rename it `outPort`.
 . Right-click on `flashlight`, then select the `Structure` -> `New Part` to create a nested part.
 . Rename it `battery`.
 . In the `Details` view, select the `Advanced` tab and uncheck the `Is Composite` property, to declare that this is a reference.
