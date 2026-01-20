@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { Locator, Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightExplorer {
   readonly page: Page;
@@ -84,5 +84,29 @@ export class PlaywrightExplorer {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
     await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
+  }
+
+  async insertTextualSysMLv2(treeItemLabel: string, textualContent: string) {
+    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+
+    const menu = 'insert-textual-sysmlv2-menu';
+    const textarea = 'insert-textual-sysmlv2-modal-textarea';
+    const submitButton = 'insert-textual-sysmlv2-submit';
+    const closeButton = 'new-object-from-text-close';
+
+    await this.page.getByTestId(menu).click({ force: true });
+    await expect(this.page.getByTestId(textarea)).toBeAttached();
+    await expect(this.page.getByTestId(submitButton)).toBeAttached();
+    await expect(this.page.getByTestId(submitButton)).toBeDisabled();
+
+    await this.page.getByTestId(textarea).click({ force: true });
+    await this.page.getByTestId(textarea).type(textualContent);
+    await expect(this.page.getByTestId(submitButton)).toBeEnabled();
+    await this.page.getByTestId(submitButton).click();
+
+    await expect(this.page.getByTestId(submitButton)).toBeDisabled();
+
+    await this.page.getByTestId(closeButton).click();
   }
 }

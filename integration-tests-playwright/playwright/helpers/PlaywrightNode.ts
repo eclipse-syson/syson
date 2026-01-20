@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,7 +127,7 @@ export class PlaywrightNode {
   }
 
   async revealElement(name: string) {
-    await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await this.nodeLocator.hover({ position: { x: 10, y: 10 }, timeout: 3000 });
     await this.page
       .getByTestId('manage-visibility')
       .locator('> svg')
