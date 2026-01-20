@@ -38,6 +38,7 @@ image::flashlight-model-organization.png[Flashlight Model Organization]
 . Rename the new requirement to `userInterface`.
 . In the `Explorer` view, select `flashlightSpecification`, click the "more" menu, and choose `New objects from text`.
 . In the modal input box, paste the following content:
++
 [source, sysml]
 ----
 requirement illumination{
@@ -60,8 +61,6 @@ requirement cost;
 ----
 . Select the newly created elements (`illumination`, `physical`, `reliability`, `cost`, `portability`, `size`, `weight`, `fieldOfView`, `lightPower`) in the `Explorer` view (Ctrl + Click), and drag-and-drop them into the diagram.
 . Use the `Arrange all elements` tool from the diagram toolbar to auto layout the diagram.
-. Right-click on the `size` requirement and select `Show/Hide -> Show valued content` to display the documentation in the diagram.
-. Repeat the operation for the children of `illumination`: `fieldOfView` and `lightPower`.
 . Right-click on the `weight` requirement and select the `New Documentation` tool.
 . In the newly created `doc` element, enter the text:  `The weight shall be less than 0.25 kg.`
 . Right-click on the `weight` requirement again and choose `Structure -> New Attribute`.
@@ -97,6 +96,7 @@ image::flashlight-requirements-tree.png[Flashlight Requirements Tree]
 . Rename the item to `outdcPwr`.
 . In the `Explorer` view, select the `produceDirectedLight` action, click the "more" menu, and choose `New objects from text`.
 . In the model input box, paste the following content:
++
 [source,sysml]
 ----
 in item onOffCmd;
@@ -117,7 +117,7 @@ action directLight{
 ----
 . In the `action flow` compartment of `produceDirectLight` use the tool `Related Elements -> Add existing element`.
 . Create a new transition between `fork1` and `connectDCPwr`.
-. Set the value of `connectDCPwr::onOffCmd` by renaming the item `in onOffCmd` of `connectDCPwr` to `in onOffCmd = produceDirectedLight.onOffCmd`.
+. Set the value of `connectDCPwr::onOffCmd` by editing the item `in onOffCmd` of `connectDCPwr` to `in onOffCmd = produceDirectedLight.onOffCmd`. Do that in the _items_ compartment of the `connectDCPwr` action in the diagram.
 . Create a `Flow Connection (flow)` from `dcPwrOut` of `connectDCPwr` to  `dcPwrIn` of `generateLight`.
 . Create a `Flow Connection (flow)` between `light` of `generateLight` to `lightIn` of `directLight`.
 . Create a `Flow Connection (flow)` between `outdcPwr` of `provideDCPwr` to `dcPwrIn` of `connectDCPwr`.
@@ -163,6 +163,7 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Select `dcPwrOutPort`, create a flow between `dcPwrOutPort` and `inPort`.
 . In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New objects from text`.
 . In the model input box, paste the following content:
++
 [source,sysml]
 ----
 port lightOutPort;
@@ -193,7 +194,7 @@ part structure{
 . Create a new binding between the `handPort` of `flashlight` and the `handPort` of the `structure`.
 . Select `outPort`, create a flow between `outPort` and `dcPwrInPort`.
 . Select `lightOutPort`, create a flow between `lightOutPort` and `lightInPort`.
-
++
 image::flashlight-interconnection.png[Flashlight Interconnection]
 
 == Step 6: Flashlight States
