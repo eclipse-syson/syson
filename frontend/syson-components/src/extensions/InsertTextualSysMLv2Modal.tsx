@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 import { InsertTextualSysMLv2ModalProps, InsertTextualSysMLv2ModalState } from './InsertTextualSysMLv2Modal.types';
-import { useInsertTextualSysMLv2 } from './useInsertTextualSysMLv2';
 import { NewObjectAsTextReport } from './NewObjectAsTextDocumentReport';
+import { useInsertTextualSysMLv2 } from './useInsertTextualSysMLv2';
 
 const useInsertTextualSysMLv2ModalStyles = makeStyles()((theme: Theme) => ({
   form: {
@@ -77,7 +77,8 @@ export const InsertTextualSysMLv2Modal = ({ editingContextId, item, onClose }: I
         aria-labelledby="dialog-title"
         maxWidth="md"
         fullWidth
-        data-testid={'insert-textual-sysmlv2-modal'}>
+        data-testid={'insert-textual-sysmlv2-modal'}
+        onKeyDown={(e) => e.stopPropagation()}>
         <DialogTitle id="dialog-title">Enter or paste SysMLv2 text to create new objects in the model</DialogTitle>
         <DialogContent>
           <div className={classes.form}>

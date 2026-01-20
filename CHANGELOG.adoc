@@ -53,6 +53,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1838[#1838] [metamodel] Invalid computation of `Usage.getType`: The subsetted features should be taken into account.
 - https://github.com/eclipse-syson/syson/issues/1852[#1852] [diagrams] Do not propose the _Duplicate Element_ node action on elements which do not support it.
 - https://github.com/eclipse-syson/syson/issues/1857[#1857] [diagrams] Fix an issue where existing graphical node could disappear when new graphical node was created.
+- https://github.com/eclipse-syson/syson/issues/1865[#1865] [explorer] Fix focus loss on some characters in the _New object from text_ modal.
 
 === Improvements
 
