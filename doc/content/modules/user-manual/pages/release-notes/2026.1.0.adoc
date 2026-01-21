@@ -53,6 +53,7 @@ The following structure is not yet handled `connection bus : C connect (d1, d2, 
 ** Fix an issue where the creation of an `Element` inside a `sub-Package` could hide unrelated graphical nodes.
 ** Fix an issue where a new graphical node could be located inside the wrong graphical container.
 ** Fix an issue where the creation of an `ItemUsage` from an `ActionUsage` or an `ActionDefinition` graphical node was not revealing it.
+** Fix an issue where the creation of a `PerformAction` inside a `StateUsage` did not reveal the corresponding compartments in the `StateUsage` graphical node.
 
 * In _Explorer_ view:
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -45,6 +46,11 @@ public class RevealCompartmentSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean defaultCase(EObject object) {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean casePerformActionUsage(PerformActionUsage object) {
         return Boolean.TRUE;
     }
 
