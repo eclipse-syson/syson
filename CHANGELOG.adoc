@@ -51,7 +51,8 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1825[#1825] [export] `LiteralRational` value wrongly rounded during textual export.
 - https://github.com/eclipse-syson/syson/issues/1784[#1784] [export] Error while exporting `FeatureValue` using enumeration literals.
 - https://github.com/eclipse-syson/syson/issues/1838[#1838] [metamodel] Invalid computation of `Usage.getType`: The subsetted features should be taken into account.
-- https://github.com/eclipse-syson/syson/issues/1852[#1852] [diagrams] Do not propose the _Duplicate Element_ node action on elements which do not support it
+- https://github.com/eclipse-syson/syson/issues/1852[#1852] [diagrams] Do not propose the _Duplicate Element_ node action on elements which do not support it.
+- https://github.com/eclipse-syson/syson/issues/1857[#1857] [diagrams] Fix an issue where existing graphical node could disappear when new graphical node was created.
 
 === Improvements
 

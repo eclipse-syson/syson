@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -59,6 +60,8 @@ import reactor.test.StepVerifier;
 public class GVPackageTests extends AbstractIntegrationTests {
 
     private static final String PACKAGE = "Package";
+
+    private static final String PACKAGE1 = "Package1";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -196,7 +199,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
             var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
 
-            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1").getNode();
+            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1).getNode();
 
             assertThat(packageNode.getChildNodes()).hasSize(1);
             assertThat(packageNode.getChildNodes().get(0)).isEqualTo(subPackageNode);
@@ -228,7 +231,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
         assertThat(newPackageToolId).as("The tool 'New Package' should exist on the Package").isNotNull();
 
         var newPartDefToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part Definition");
-        assertThat(newPackageToolId).as("The tool 'New Part Definition' should exist on the Package").isNotNull();
+        assertThat(newPartDefToolId).as("The tool 'New Part Definition' should exist on the Package").isNotNull();
 
         var diagramId = new AtomicReference<String>();
         var packageNodeId = new AtomicReference<String>();
@@ -251,7 +254,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterNewPkg = assertRefreshedDiagramThat(diag -> {
             var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
 
-            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1").getNode();
+            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1).getNode();
             assertThat(subPackageNode).isNotNull();
             assertThat(packageNode.getChildNodes()).hasSize(1);
             assertThat(packageNode.getChildNodes().get(0)).isEqualTo(subPackageNode);
@@ -265,7 +268,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterNewPartDef = assertRefreshedDiagramThat(diag -> {
-            var subPackageNodeNavigator = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel("Package1");
+            var subPackageNodeNavigator = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1);
             var subPackageNode = subPackageNodeNavigator.getNode();
             var partDefNode = subPackageNodeNavigator.childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "PartDefinition1").getNode();
             assertThat(partDefNode).isNotNull();
@@ -331,6 +334,111 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(newDocumentationTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterNewPart)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a Package with an ItemDefinition IDA with an Item itemA, a SubPackage with an ItemDefinition IDB, WHEN an Item itemB node is created from IDB, THEN itemA node is still visible inside the Package")
+    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void testCreateItemInSubPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newPackageToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Package");
+        assertThat(newPackageToolId).as("The tool 'New Package' should exist on the Package").isNotNull();
+
+        var newItemDefToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Item Definition");
+        assertThat(newItemDefToolId).as("The tool 'New Item Definition' should exist on the Package").isNotNull();
+
+        var newItemUsageToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()), "New Item");
+        assertThat(newItemUsageToolId).as("The tool 'New Item' should exist on the ItemDefinition").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+        var subPackageNodeId = new AtomicReference<String>();
+        var itemDefANodeId = new AtomicReference<String>();
+        var itemDefBNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            packageNodeId.set(packageNode.getId());
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newPackageTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newPackageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPkg = assertRefreshedDiagramThat(diag -> {
+            var subPackageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1).getNode();
+            assertThat(subPackageNode).isNotNull();
+            subPackageNodeId.set(subPackageNode.getId());
+        });
+
+        Runnable newItemDefATool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newItemDefToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewItemDefA = assertRefreshedDiagramThat(diag -> {
+            var itemDefANode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE)
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "item def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "ItemDefinition1").getNode();
+            assertThat(itemDefANode).isNotNull();
+            itemDefANodeId.set(itemDefANode.getId());
+        });
+
+        Runnable newItemATool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), itemDefANodeId.get(), newItemUsageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewItemA = assertRefreshedDiagramThat(diag -> {
+            var itemANode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE)
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "item" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "item1").getNode();
+            assertThat(itemANode).isNotNull();
+            assertThat(itemANode.getState()).isEqualTo(ViewModifier.Normal);
+        });
+
+        Runnable newItemDefBTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), subPackageNodeId.get(), newItemDefToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewItemDefB = assertRefreshedDiagramThat(diag -> {
+            var itemDefBNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1)
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "item def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "ItemDefinition1").getNode();
+            assertThat(itemDefBNode).isNotNull();
+            itemDefBNodeId.set(itemDefBNode.getId());
+        });
+
+        Runnable newItemBTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), itemDefBNodeId.get(), newItemUsageToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewItemB = assertRefreshedDiagramThat(diag -> {
+            var itemBNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).childNodeWithLabel(PACKAGE1)
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "item" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "item1").getNode();
+            assertThat(itemBNode).isNotNull();
+            assertThat(itemBNode.getState()).isEqualTo(ViewModifier.Normal);
+
+            var itemANode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE)
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "item" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "item1").getNode();
+            assertThat(itemANode).isNotNull();
+            assertThat(itemANode.getState()).isEqualTo(ViewModifier.Normal);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newPackageTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPkg)
+                .then(newItemDefATool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewItemDefA)
+                .then(newItemATool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewItemA)
+                .then(newItemDefBTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewItemDefB)
+                .then(newItemBTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewItemB)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,7 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean defaultCase(EObject object) {
         Boolean displayAsTreeNode = Boolean.FALSE;
         if (ViewDefinitionKind.isGeneralView(this.kind)) {
-            displayAsTreeNode = this.parentElement == null || (this.isDirectNestedNode(object));
+            displayAsTreeNode = this.parentElement == null || this.isDirectNestedNode(object);
         } else if (ViewDefinitionKind.isActionFlowView(this.kind)) {
             displayAsTreeNode = object instanceof ActionUsage || object instanceof ActionDefinition;
         } else if (ViewDefinitionKind.isStateTransitionView(this.kind)) {
@@ -180,7 +180,7 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
                 .filter(Package.class::isInstance)
                 .map(Package.class::cast)
                 .anyMatch(subPkg -> {
-                    return EMFUtils.allContainedObjectOfType(subPkg, object.getClass()).count() > 0;
+                    return EMFUtils.isAncestor(subPkg, object);
                 });
     }
 }
