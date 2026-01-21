@@ -628,21 +628,24 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
 
             String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
-            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
-            assertThat(messages).hasSize(1);
-            assertThat(messages).containsExactly("Invalid expression provided during direct edit.");
         };
 
-        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+        Consumer<Object> updatedDiagramContentMatcherBefore = assertRefreshedDiagramThat(diagram -> {
             var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 [4] = 1 [g]");
+        });
+
+        Consumer<Object> updatedDiagramContentMatcherAfter = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 [4]");
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(editLabelWithMultiplicityBefore)
-                .consumeNextWith(updatedDiagramContentMatcher)
+                .consumeNextWith(updatedDiagramContentMatcherBefore)
                 .then(editLabelWithMultiplicityAfter)
+                .consumeNextWith(updatedDiagramContentMatcherAfter)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
