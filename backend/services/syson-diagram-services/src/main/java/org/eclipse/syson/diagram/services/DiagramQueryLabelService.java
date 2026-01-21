@@ -89,7 +89,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     public String getIdentificationLabel(Element element) {
         StringBuilder label = new StringBuilder();
         if (element instanceof ActionUsage && element.eContainer() instanceof StateSubactionMembership ssm) {
-            label.append(ssm.getKind());
+            label.append(ssm.getKind()).append(LabelConstants.SPACE);
         }
         label.append(this.getShortNameLabel(element));
         String declaredName = element.getDeclaredName();
@@ -483,6 +483,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
             label.append(this.getTypingLabel(usage));
             label.append(this.getRedefinitionLabel(usage));
             label.append(this.getSubsettingLabel(usage));
+            label.append(this.getReferenceSubsettingLabel(usage));
             label.append(this.getValueStringRepresentation(usage, directEditInput));
         }
         return label.toString();

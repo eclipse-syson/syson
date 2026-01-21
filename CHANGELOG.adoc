@@ -57,6 +57,7 @@ This fix ensure that imported models containing, for example, a top-level `Libra
 - https://github.com/eclipse-syson/syson/issues/1876[#1876] [explorer] Fix potential NPE when trying to delete elements with associated `EAnnotations` from the _Explorer_.
 - https://github.com/eclipse-syson/syson/issues/1858[#1858] [diagrams] Fix an issue where a new graphical node could be located inside the wrong graphical container.
 - https://github.com/eclipse-syson/syson/issues/1859[#1859] [diagrams] Fix an issue where the creation of an `ItemUsage` from an `ActionUsage` or an `ActionDefinition` graphical node was not revealing it.
+- https://github.com/eclipse-syson/syson/issues/1869[#1869] [diagrams] When creating a _Do action with referenced action_ on a `StateUsage`, ensure the corresponding compartements are revealed.
 
 === Improvements
 

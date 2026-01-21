@@ -562,8 +562,11 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1) // 1 visible new PerformActionUsage node
-                    .hasNewEdgeCount(2) // 1 visible composition edge and 1 visible ReferenceSubsetting edge
+                    .hasNewNodeCount(4) // 1 visible new PerformActionUsage node + 2 list items (in 'actions' and
+                                        // 'perform actions' compartments, now visible) + 1 node in 'action flow'
+                                        // compartment
+                    .hasNewEdgeCount(3) // 1 visible composition edge and 2 visible ReferenceSubsetting edge (one for
+                                        // the top-level node, one for the node in "action flow" compartment
                     .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
