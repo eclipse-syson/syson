@@ -41,7 +41,7 @@ test.describe('diagram - general view', () => {
     await page.getByTestId('tool-New Part Definition').click();
     diagram.expectNumberOfTopNodes(1);
     // Create Port
-    const partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
+    let partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
     await expect(partDefinitionNode.nodeLocator).toBeAttached();
     await partDefinitionNode.openPalette();
     await page.getByTestId('toolSection-Structure').click();
@@ -56,6 +56,8 @@ test.describe('diagram - general view', () => {
     await expect(portNode.nodeLocator).toBeAttached();
     diagram.expectNumberOfTopNodes(3);
     // The port can be displayed as a list item
+    partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
+    await expect(partDefinitionNode.nodeLocator).toBeAttached();
     await partDefinitionNode.click();
     await partDefinitionNode.revealElement('ports');
     const portsListNode = new PlaywrightNode(page, 'ports', 'List');
