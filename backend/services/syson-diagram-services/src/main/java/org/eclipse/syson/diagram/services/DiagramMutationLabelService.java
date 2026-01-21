@@ -96,7 +96,7 @@ public class DiagramMutationLabelService {
         DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
-        parser.addErrorListener(new DiagramDirectEditErrorListener(this.feedbackMessageService));
+        parser.addErrorListener(new DiagramDirectEditErrorListener());
         ParseTree tree;
         if (element instanceof ConstraintUsage && element.getOwningMembership() instanceof RequirementConstraintMembership && isCompartmentItem) {
             // Use the constraint expression parser only if the element is a constraint owned by a requirement, other

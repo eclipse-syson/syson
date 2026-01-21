@@ -94,6 +94,7 @@ The tools are still available in the palette of e.g. `Parts`.
 - https://github.com/eclipse-syson/syson/issues/1813[#1813] [diagrams] Add creation tool for `Comment` graphical nodes in the _General View_ diagram background.
 - https://github.com/eclipse-syson/syson/issues/1828[#1828] [metamodel] Implement missing derived references of `UseCaseUsage` and `UseCaseDefinition`.
 - https://github.com/eclipse-syson/syson/issues/1819[#1819] [diagrams] Add `DiagramDirectEditErrorListener` in order to send syntax error thrown by ANTLR to the direct edit mutation.
+- https://github.com/eclipse-syson/syson/issues/1864[#1864] [diagrams] The `DiagramDirectEditErrorListener` no longer send the syntax error to the user but log it instead.
 
 == v2025.12.0
 
