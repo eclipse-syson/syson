@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,12 @@ package org.eclipse.syson.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -97,5 +100,22 @@ public class DeleteServiceTest {
         assertThat(pkg1.getMember()).hasSize(1).contains(view1);
         assertThat(view1.getExposedElement()).isEmpty();
 
+    }
+
+    @DisplayName("GIVEN a SysML element with and EMF EAnnotation, WHEN it is deleted, THEN the deletion completes without error")
+    @Test
+    void testDeleteSysMLElementWithEAnnotation() {
+        var pkg1 = SysmlFactory.eINSTANCE.createPackage();
+        pkg1.setDeclaredName("Pkg1");
+        this.resource.getContents().add(pkg1);
+
+        EAnnotation annotation = EcoreFactory.eINSTANCE.createEAnnotation();
+        pkg1.getEAnnotations().add(annotation);
+
+        this.resource.getResourceSet().eAdapters().add(new ECrossReferenceAdapter());
+
+        assertThat(this.resource.getContents()).hasSize(1).contains(pkg1);
+        this.deleteService.deleteFromModel(pkg1);
+        assertThat(this.resource.getContents()).isEmpty();
     }
 }

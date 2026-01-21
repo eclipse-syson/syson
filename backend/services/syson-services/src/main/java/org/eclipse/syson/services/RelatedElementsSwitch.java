@@ -58,6 +58,11 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     }
 
     @Override
+    public Set<EObject> defaultCase(EObject object) {
+        return Set.of();
+    }
+
+    @Override
     public Set<EObject> caseAnnotation(Annotation object) {
         Set<EObject> relatedElements = new HashSet<>();
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement())) {
