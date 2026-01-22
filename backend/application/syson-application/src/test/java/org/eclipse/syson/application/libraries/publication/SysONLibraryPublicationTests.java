@@ -37,6 +37,8 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
@@ -96,6 +98,9 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
 
     @Autowired
     private ILibrarySearchService librarySearchService;
+
+    @Autowired
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @Autowired
     private PublishLibrariesMutationRunner publishLibrariesMutationRunner;
@@ -178,12 +183,16 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        final Optional<IEditingContext> maybeLibraryEditingContext = this.librarySearchService
+        final Optional<AggregateReference<SemanticData, UUID>> maybeSemanticDataId = this.librarySearchService
                 .findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION)
-                .map(Library::getSemanticData)
-                .map(AggregateReference::getId)
-                .map(UUID::toString)
-                .flatMap(this.editingContextSearchService::findById);
+                .map(Library::getSemanticData);
+        assertThat(maybeSemanticDataId).isPresent();
+
+        // Check that there is no representation associated to the library's semantic data
+        List<RepresentationMetadata> libraryRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(maybeSemanticDataId.get());
+        assertThat(libraryRepresentationMetadata).isEmpty();
+
+        final Optional<IEditingContext> maybeLibraryEditingContext = this.editingContextSearchService.findById(maybeSemanticDataId.get().getId().toString());
         assertThat(maybeLibraryEditingContext).isPresent().get().isInstanceOf(IEMFEditingContext.class);
         final ResourceSet libraryResourceSet = ((IEMFEditingContext) maybeLibraryEditingContext.get()).getDomain().getResourceSet();
 
@@ -253,6 +262,11 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
                     .flatMap(this.semanticDataSearchService::findById);
 
         assertThat(semanticData).isPresent();
+
+        // Check that there is no representation associated to the library's semantic data
+        List<RepresentationMetadata> libraryRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticData.get().getId()));
+        assertThat(libraryRepresentationMetadata).isEmpty();
+
         Set<Document> documents = semanticData.get().getDocuments();
         assertThat(documents)
                 .hasSize(1)
@@ -287,6 +301,12 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         assertThat(dependencyLibrary).isPresent();
         assertThat(dependencyLibrary.get().getName()).isEqualTo("Batmobile");
 
+        // Check that a representation is associated to the library's semantic data
+        List<RepresentationMetadata> libraryRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(projectLibrarySemanticData.get().getId()));
+        assertThat(libraryRepresentationMetadata).hasSize(1)
+                .anySatisfy(representationMetadata -> assertThat(representationMetadata.getLabel()).isEqualTo("General View"));
+
+
         // Check that the library contains a single document (its proper content).
         Set<Document> documents = projectLibrarySemanticData.get().getDocuments();
         assertThat(documents)
@@ -318,6 +338,10 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         assertThat(projectLibrarySemanticData).isPresent();
         // Check that there is no dependency in the published library.
         assertThat(projectLibrarySemanticData.get().getDependencies()).isEmpty();
+        // Check that a representation is associated to the library's semantic data
+        List<RepresentationMetadata> libraryRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(projectLibrarySemanticData.get().getId()));
+        assertThat(libraryRepresentationMetadata).hasSize(1)
+                .anySatisfy(representationMetadata -> assertThat(representationMetadata.getLabel()).isEqualTo("General View"));
 
         // Check that the library contains a single document (its proper content).
         Set<Document> documents = projectLibrarySemanticData.get().getDocuments();
