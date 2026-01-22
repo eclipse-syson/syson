@@ -30,7 +30,7 @@ package Package1 {
     state state1 {
         state s2;
         state s3;
-        transition T1 
+        transition T1
               first s2
               accept s : Sig via p
               do send s to p // s failed to resolve here before
@@ -72,6 +72,9 @@ package root {
     }
 }
 ```
+* Add support for publishing representations with libraries.
+Publishing a project that contains representations now produces libraries that also contain the representations.
+Users can navigate to `/libraries/<library identifier>` to open a library and see its representations.
 
 == Technical details
 
