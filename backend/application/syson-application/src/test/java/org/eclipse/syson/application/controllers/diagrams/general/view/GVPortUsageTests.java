@@ -177,6 +177,6 @@ public class GVPortUsageTests extends AbstractIntegrationTests {
                 .then(newPortUsageTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterNewPortUsage)
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 }

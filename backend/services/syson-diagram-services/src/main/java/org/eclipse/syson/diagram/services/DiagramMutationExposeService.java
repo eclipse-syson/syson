@@ -414,7 +414,7 @@ public class DiagramMutationExposeService {
 
     private void hideNodeIfNestedIsDefault(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (element instanceof AttributeUsage || element instanceof PortUsage || Objects.equals(SysmlPackage.eINSTANCE.getItemUsage(), element.eClass())) {
+        if (element instanceof AttributeUsage || element instanceof PortUsage || this.isItemNotContainedByAction(element)) {
             boolean compartmentOrBorderThatCouldHostTheFutureNode = false;
             for (Node childNode : selectedNode.getChildNodes()) {
                 Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, childNode,
@@ -436,5 +436,18 @@ public class DiagramMutationExposeService {
                 }
             }
         }
+    }
+
+    private boolean isItemNotContainedByAction(Element element) {
+        boolean isItemNotContainedByAction = false;
+        if (Objects.equals(SysmlPackage.eINSTANCE.getItemUsage(), element.eClass())) {
+            var owner = element.getOwner();
+            if (owner instanceof ActionUsage || owner instanceof ActionDefinition) {
+                isItemNotContainedByAction = false;
+            } else {
+                isItemNotContainedByAction = true;
+            }
+        }
+        return isItemNotContainedByAction;
     }
 }
