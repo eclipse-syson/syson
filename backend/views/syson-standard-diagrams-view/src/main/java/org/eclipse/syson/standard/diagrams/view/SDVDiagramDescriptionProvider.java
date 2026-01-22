@@ -69,7 +69,6 @@ import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.ConnectionUsageEdgeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.FeatureTypingEdgeDescriptionProvider;
@@ -371,7 +370,6 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new GeneralViewEmptyDiagramNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));
@@ -502,6 +500,13 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
                     compartmentNodeDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), false));
+                } else if ((SysmlPackage.eINSTANCE.getStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedAction().equals(eReference))
+                        || (SysmlPackage.eINSTANCE.getStateDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedAction().equals(eReference))) {
+                    compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+                    compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    compartmentNodeDescriptionProviders.add(new PerformActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 } else if ((SysmlPackage.eINSTANCE.getPartUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedAction().equals(eReference))
                         || (SysmlPackage.eINSTANCE.getPartDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedAction().equals(eReference))) {
                     compartmentNodeDescriptionProviders.add(new ActionItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
@@ -764,6 +769,12 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private List<IDiagramElementDescriptionProvider<?>> createAllDefinitionOwnedUsageEdgeDescriptionProviders(IColorProvider colorProvider) {
         final var definitionOwnedUsageEdgeDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
 
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(),
                         colorProvider, this.getDescriptionNameGenerator()));

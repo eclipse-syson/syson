@@ -163,7 +163,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> interfaceDefinitionSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), 7, 1))
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), 6, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 

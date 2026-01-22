@@ -133,9 +133,8 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
                     // - 1 more node for the new PartUsage, with all its compartments
                     // - 2 more nodes for ports on each part usage
                     // - 1 more node (list item) in the parent's "parts" compartment for the new part
-                    // - 1 more node (list item) in the parent's "action" compartment for the new FlowUsage
                     // - 1 more edge (the new interface edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 2)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);
@@ -211,9 +210,8 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
                     // - 1 more node for the new PartUsage, with all its compartments
                     // - 2 more nodes for ports on each part usage
                     // - 1 more node (list item) in the parent's "parts" compartment for the new part
-                    // - 1 more node (list item) in the parent's "actions" compartment for the new FlowUsage
                     // - 1 more edge (the new interface edge)
-                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 2)
+                    .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2 + 1)
                     .hasNewEdgeCount(1)
                     .hasNewBorderNodeCount(2)
                     .check(initialDiagram, newDiagram);

@@ -16,6 +16,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -30,6 +31,13 @@ public class PerformActionsCompartmentItemNodeDescriptionProvider extends Compar
 
     public PerformActionsCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(eClass, eReference, colorProvider, descriptionNameGenerator);
+    }
+
+    @Override
+    public NodeDescription create() {
+        NodeDescription nodeDescription = super.create();
+        nodeDescription.setPreconditionExpression("true");
+        return nodeDescription;
     }
 
     @Override

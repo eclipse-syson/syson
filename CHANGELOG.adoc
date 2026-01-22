@@ -34,6 +34,8 @@ The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that r
 - https://github.com/eclipse-syson/syson/issues/1887[#1887] [export] Export fails to escape some names when using qualified name.
 - https://github.com/eclipse-syson/syson/issues/1953[#1953] [import] Fix an issue where `TransitionUsage` with `SendActionUsage` were not properly resolved.
 - https://github.com/eclipse-syson/syson/issues/1973[#1973] [import] Fix an error during textual import when resolving the name of an unnamed redefined `Feature`.
+- https://github.com/eclipse-syson/syson/issues/1860[#1860] [diagrams] Add a precondition for compartment item node descriptions in order to filter out unwanted types.
+For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 
 === Improvements
 

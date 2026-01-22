@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,17 +89,19 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
         var optEdgeDescription = cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()));
         var optUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.eClass));
 
-        var sourceNodes = new ArrayList<NodeDescription>();
-        this.getEdgeSources().forEach(definition -> {
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
-        });
+        if (optEdgeDescription.isPresent() && optUsageNodeDescription.isPresent()) {
+            var sourceNodes = new ArrayList<NodeDescription>();
+            this.getEdgeSources().forEach(definition -> {
+                cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
+            });
 
-        EdgeDescription edgeDescription = optEdgeDescription.get();
-        diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceDescriptions().addAll(sourceNodes);
-        edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
+            EdgeDescription edgeDescription = optEdgeDescription.get();
+            diagramDescription.getEdgeDescriptions().add(edgeDescription);
+            edgeDescription.getSourceDescriptions().addAll(sourceNodes);
+            edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
 
-        edgeDescription.setPalette(this.createEdgePalette(cache));
+            edgeDescription.setPalette(this.createEdgePalette(cache));
+        }
     }
 
     @Override
