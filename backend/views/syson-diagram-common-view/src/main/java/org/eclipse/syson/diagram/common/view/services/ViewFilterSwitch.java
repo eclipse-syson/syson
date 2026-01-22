@@ -25,7 +25,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
@@ -105,12 +104,6 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean casePackage(Package object) {
         // For Packages we don't want nested Nodes, no matter the type of ViewDefinition.
         return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
-    }
-
-    @Override
-    public Boolean casePortUsage(PortUsage object) {
-        // For PortUsages we don't want tree Nodes on InterconnectionView, ActionFlow View or StateTransition View.
-        return ViewDefinitionKind.isGeneralView(this.kind);
     }
 
     @Override
