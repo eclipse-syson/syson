@@ -239,6 +239,8 @@ image::release-notes-library-update-impact-analysis-with-tree.png[Impact analysi
 
 ** In the _Advanced_ tab of the _Details_ view, _isComposite_ and _isReference_ properties (checkbox widgets) now have a help text.
 
+** When dropping `Element` from the explorer to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _interconnection diagram_.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
