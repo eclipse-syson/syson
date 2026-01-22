@@ -128,10 +128,8 @@ export class PlaywrightNode {
 
   async revealElement(name: string) {
     await this.nodeLocator.hover({ position: { x: 10, y: 10 }, timeout: 3000 });
-    await this.page
-      .getByTestId('manage-visibility')
-      .locator('> svg')
-      .click({ position: { x: 1, y: 1 } });
+    await this.page.getByTestId('manage-visibility').isVisible();
+    await this.page.getByTestId('manage-visibility').click();
     await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click();
   }
 }

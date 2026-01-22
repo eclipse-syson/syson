@@ -51,6 +51,7 @@ The following structure is not yet handled `connection bus : C connect (d1, d2, 
 
 ** Fix an issue where the creation of an `Element` inside a `sub-Package` created two graphical nodes instead of one.
 ** Fix an issue where the creation of an `Element` inside a `sub-Package` could hide unrelated graphical nodes.
+** Fix an issue where a new graphical node could be located inside the wrong graphical container.
 
 * In _Explorer_ view:
 
