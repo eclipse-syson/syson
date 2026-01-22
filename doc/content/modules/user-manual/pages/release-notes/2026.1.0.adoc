@@ -157,8 +157,6 @@ When a `Usage` is selected, the new subject created (i.e. a `ReferenceUsage`) wi
 When a `PartDefinition` is selected, the new actor created (i.e. a `PartUsage`) will be typed by the selected `PartDefinition`.
 +
 When a `PartUsage` is selected, the new actor created (i.e. a `PartUsage`) will subset the selected `PartUsage`.
-+
-We are now auto importing the library automatically if we detect the use of a symbol from the _SI_ library.
 ** The default size of a _NamespaceImport_ graphical node is now the same as the one for a _Package_.
 +
 [cols="1,1"]

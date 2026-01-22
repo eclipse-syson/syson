@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.diagram.services.utils.CompartmentItemPreconditionSwitch;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -66,6 +67,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .domainType(this.getDomainType())
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
+                .preconditionExpression(new CompartmentItemPreconditionSwitch(this.eReference).doSwitch(this.eClass))
                 .semanticCandidatesExpression(this.getSemanticCandidateExpression())
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)

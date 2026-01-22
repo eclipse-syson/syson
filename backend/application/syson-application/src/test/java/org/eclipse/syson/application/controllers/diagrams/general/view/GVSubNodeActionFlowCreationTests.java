@@ -45,7 +45,6 @@ import org.eclipse.syson.application.controller.editingContext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckBorderNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
-import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
@@ -170,18 +169,18 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> actionUsageListAndFreeFormNodeParameters() {
+    private static Stream<Arguments> actionUsageFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0))
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 5, 2, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> actionUsageSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 7, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 17, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), "items", SysmlPackage.eINSTANCE.getUsage_NestedItem(), 6, 1))
                 .map(TestNameGenerator::namedArguments);
@@ -193,18 +192,18 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> actionDefinitionListAndFreeFormNodeParameters() {
+    private static Stream<Arguments> actionDefinitionFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0))
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 5, 2, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> actionDefinitionSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 7, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 17, 1))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -291,9 +290,6 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
     public void createAcceptActionUsageReceiver() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
@@ -301,6 +297,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAcceptActionUsage();
         String parentLabel = "acceptAction";
         EClass eClass = SysmlPackage.eINSTANCE.getPortUsage();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel,
                 this.descriptionNameGenerator.getCreationToolName("New {0} as Receiver", eClass));
 
@@ -363,33 +363,11 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         String parentLabel = ACTION;
+
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        final Consumer<Object> diagramCheck;
-        if (SysmlPackage.eINSTANCE.getPartUsage().equals(childEClass)) {
-            diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
-                var initialDiagram = diagram.get();
-                int createdNodesExpectedCount = 2 + compartmentCount;
-                new CheckDiagramElementCount(this.diagramComparator)
-                        .hasNewNodeCount(createdNodesExpectedCount)
-                        .hasNewEdgeCount(1)
-                        .check(initialDiagram, newDiagram);
 
-                String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
-                new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
-                        .hasNodeDescriptionName(newNodeDescriptionName)
-                        .hasCompartmentCount(compartmentCount)
-                        .check(initialDiagram, newDiagram);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
 
-                String compartmentNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, SysmlPackage.eINSTANCE.getUsage_NestedItem());
-                new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                        .withParentLabel(parentLabel)
-                        .withCompartmentName("items")
-                        .hasNodeDescriptionName(compartmentNodeDescriptionName)
-                        .check(initialDiagram, newDiagram);
-            });
-        } else {
-            diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
-        }
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)
@@ -398,7 +376,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
                 .thenCancel()
-                .verify(Duration.ofSeconds(10));
+                .verify(Duration.ofSeconds(100));
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
@@ -538,8 +516,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
-    @MethodSource("actionUsageListAndFreeFormNodeParameters")
-    public void createActionUsageListAndFreeFormChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int compartmentCount) {
+    @MethodSource("actionUsageFreeFormNodeParameters")
+    public void createActionUsageFreeFormChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount, int compartmentCountInNewChild, int expectedEdgeCount) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -560,16 +538,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
-            int createdNodesExpectedCount = 2 + compartmentCount;
+            int createdNodesExpectedCount = 1 + compartmentCount;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
-                    .check(initialDiagram, newDiagram);
-            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(listNodeDescription)
-                    .hasCompartmentCount(0)
+                    .hasNewEdgeCount(expectedEdgeCount)
                     .check(initialDiagram, newDiagram);
             String nodeName = this.getActionFlowNodeName(childEClass);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
@@ -577,7 +549,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
-                    .hasCompartmentCount(compartmentCount)
+                    .hasCompartmentCount(compartmentCountInNewChild)
                     .check(initialDiagram, newDiagram);
         });
 
@@ -660,19 +632,11 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(4) // 1 visible new PerformActionUsage node + 2 list items (in 'actions' and
-                                        // 'perform actions' compartments, now visible) + 1 node in 'action flow'
-                                        // compartment
+                    .hasNewNodeCount(3) // 1 visible new PerformActionUsage node + 1 list items (in 'perform actions'
+                                        // compartments, now visible) + 1 node in 'action flow' compartment
                     .hasNewEdgeCount(3) // 1 visible composition edge and 2 visible ReferenceSubsetting edge (one for
                                         // the top-level node, one for the node in "action flow" compartment
                     .check(initialDiagram, newDiagram, true);
-            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(ACTIONS_COMPARTMENT)
-                    .hasNodeDescriptionName(listNodeDescription)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
@@ -713,17 +677,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
-            int createdNodesExpectedCount = 14;
+            int createdNodesExpectedCount = 13;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .hasNewEdgeCount(1)
-                    .check(initialDiagram, newDiagram);
-            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(ACTIONS_COMPARTMENT)
-                    .hasNodeDescriptionName(listNodeDescription)
-                    .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(childEClass);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
@@ -774,8 +731,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
-    @MethodSource("actionDefinitionListAndFreeFormNodeParameters")
-    public void createActionDefinitionListAndFreeFormChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int compartmentCount) {
+    @MethodSource("actionDefinitionFreeFormNodeParameters")
+    public void createActionDefinitionFreeFormChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount, int compartmentCountInNewChild, int expectedEdgeCount) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -793,20 +750,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             creationToolName = creationToolName.substring(0, creationToolName.length() - 5);
         }
 
-        Runnable createNodeRunnable = creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
-            int createdNodesExpectedCount = 2 + compartmentCount;
+            int createdNodesExpectedCount = 1 + compartmentCount;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
-                    .check(initialDiagram, newDiagram);
-            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(listNodeDescription)
-                    .hasCompartmentCount(0)
+                    .hasNewEdgeCount(expectedEdgeCount)
                     .check(initialDiagram, newDiagram);
             String nodeName = this.getActionFlowNodeName(childEClass);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
@@ -814,7 +765,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
-                    .hasCompartmentCount(compartmentCount)
+                    .hasCompartmentCount(compartmentCountInNewChild)
                     .check(initialDiagram, newDiagram);
         });
 

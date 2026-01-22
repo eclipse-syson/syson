@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.services.utils.CompartmentItemPreconditionSwitch;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -65,6 +66,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(this.eReference.getEType()))
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
+                .preconditionExpression(new CompartmentItemPreconditionSwitch(this.eReference).doSwitch(this.eClass))
                 .semanticCandidatesExpression(ServiceMethod.of1(ViewCreateService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName())))
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)

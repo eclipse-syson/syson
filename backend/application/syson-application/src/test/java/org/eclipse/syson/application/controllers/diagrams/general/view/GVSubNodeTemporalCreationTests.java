@@ -239,10 +239,10 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
 
         final Consumer<Object> diagramCheck;
         if (SysmlPackage.eINSTANCE.getPartUsage().equals(childEClass)) {
-            // A PartUsage appears both as a sibling and in the "occurrences" compartment.
+            // A PartUsage appears as a sibling.
             diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
                 var initialDiagram = diagram.get();
-                int createdNodesExpectedCount = 2 + compartmentCount;
+                int createdNodesExpectedCount = 1 + compartmentCount;
                 new CheckDiagramElementCount(this.diagramComparator)
                         .hasNewNodeCount(createdNodesExpectedCount)
                         .hasNewEdgeCount(1)
@@ -252,13 +252,6 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
                 new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                         .hasNodeDescriptionName(newNodeDescriptionName)
                         .hasCompartmentCount(compartmentCount)
-                        .check(initialDiagram, newDiagram);
-
-                String compartmentNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence());
-                new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                        .withParentLabel(parentLabel)
-                        .withCompartmentName("occurrences")
-                        .hasNodeDescriptionName(compartmentNodeDescriptionName)
                         .check(initialDiagram, newDiagram);
             });
         } else {

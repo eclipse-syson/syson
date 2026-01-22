@@ -15,6 +15,10 @@ It's not recommended for production use.
 
 == Bug fixes
 
+* In diagrams:
+
+** Fix an issue where some type of `Elements` could appear in the wrong compartment if they shared a common type with said compartment, for example `ViewUsage` elements could appear in the _parts_ compartment since they extends `PartUsage`.
+
 * In textual import/export:
 
 ** Fix the textual export of `OccurrenceUsage` to avoid duplication of the _abstract_ keyword.

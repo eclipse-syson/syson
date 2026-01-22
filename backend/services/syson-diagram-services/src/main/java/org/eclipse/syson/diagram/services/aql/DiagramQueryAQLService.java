@@ -48,14 +48,6 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryElementService#infoMessage(Object, String)}.
-     */
-    public Object infoMessage(Object self, String message) {
-        this.diagramQueryElementService.infoMessage(self, message);
-        return self;
-    }
-
-    /**
      * {@link DiagramQueryLabelService#getBorderNodeUsageLabel(Usage)}.
      */
     public String getBorderNodeUsageLabel(Usage usage) {
@@ -150,6 +142,14 @@ public class DiagramQueryAQLService {
      */
     public String getSatisfyLabel(SatisfyRequirementUsage satisfyRequirementUsage) {
         return this.diagramQueryLabelService.getSatisfyLabel(satisfyRequirementUsage);
+    }
+
+    /**
+     * {@link DiagramQueryElementService#infoMessage(Object, String)}.
+     */
+    public Object infoMessage(Object self, String message) {
+        this.diagramQueryElementService.infoMessage(self, message);
+        return self;
     }
 
     /**

@@ -167,10 +167,9 @@ public class GVIncludeUseCaseUsageTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @Test
     @DisplayName("GIVEN an IncludeUseCaseUsage, WHEN reconnecting the target, THEN the new target of the IncludeUseCaseUsage is correct")
     @GivenSysONServer({ IncludeUseCaseUsageProjectData.SCRIPT_PATH })
-
+    @Test
     public void reconnectIncludeUsaceCaseUsageTarget() {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -210,9 +209,9 @@ public class GVIncludeUseCaseUsageTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @Test
     @DisplayName("GIVEN an IncludeUseCaseUsage, WHEN reconnecting the source, THEN the new source of the IncludeUseCaseUsage is correct")
     @GivenSysONServer({ IncludeUseCaseUsageProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectIncludeUseCaseUsageSource() {
         var flux = this.givenSubscriptionToDiagram();
 

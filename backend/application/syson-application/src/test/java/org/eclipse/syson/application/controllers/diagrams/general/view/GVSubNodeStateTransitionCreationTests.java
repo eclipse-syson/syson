@@ -133,24 +133,24 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                          * 8 new nodes = 1 compartment item node for new exhibit state + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit State", 9, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit State", 8, 1),
                         /*
                          * 8 new nodes = 1 compartment item node for new exhibit state + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit Parallel State", 9, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit Parallel State", 8, 1),
                         /*
                          * 15 new nodes = 1 compartment item node for new state + 1 rectangular node in the
                          * "state transition compartment" and its 6 compartments + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New State", 16, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New State", 15, 1),
                         /*
                          * 15 new nodes = 1 compartment item node for new state + 1 rectangular node in the
                          * "state transition compartment" and its 6 compartments + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Parallel State", 16, 1))
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Parallel State", 15, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -161,24 +161,24 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                          * 8 new nodes = 1 compartment item node for new exhibit state + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit State", 9, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit State", 8, 1),
                         /*
                          * 8 new nodes = 1 compartment item node for new exhibit state + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit Parallel State", 9, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit Parallel State", 8, 1),
                         /*
                          * 15 new nodes = 1 compartment item node for new state + 1 rectangular node in the
                          * "state transition compartment" and its 6 compartments + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New State", 16, 1),
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New State", 15, 1),
                         /*
                          * 15 new nodes = 1 compartment item node for new state + 1 rectangular node in the
                          * "state transition compartment" and its 6 compartments + 1 rectangular child node and its 6
                          * compartments
                          */
-                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Parallel State", 16, 1))
+                        Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Parallel State", 15, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -249,8 +249,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    // the new subaction is created in two compartments (actions and perform actions)
-                    .hasNewNodeCount(2)
+                    // the new subaction is created in one compartment (actions or perform actions)
+                    .hasNewNodeCount(1)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             var node = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);
@@ -292,8 +292,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    // the new subaction is created in two compartments (actions and perform actions)
-                    .hasNewNodeCount(2)
+                    // the new subaction is created in one compartment (perform actions)
+                    .hasNewNodeCount(1)
                     .hasNewEdgeCount(0)
                     .check(initialDiagram, newDiagram);
             var node = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);

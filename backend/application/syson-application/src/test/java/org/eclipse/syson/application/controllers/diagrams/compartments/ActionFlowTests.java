@@ -126,14 +126,15 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createSuccesionBetweenNestedActions() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.ROOT_ACTION_USAGE,
@@ -167,14 +168,15 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createTransitionBetweenNestedActions() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.runSingleClickOnTwoDiagramElementsTool(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.ROOT_ACTION_USAGE,
@@ -208,34 +210,36 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createTransitionUsageBetweenSubActions() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId);
 
-        String[] newTransitionUsageId = new String[1];
+        AtomicReference<String> newTransitionUsageId = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1) // The TransitionUsage is displayed in the Action compartment
+                    .hasNewNodeCount(0)
                     .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
-            newTransitionUsageId[0] = newEdge.getTargetObjectId();
+            newTransitionUsageId.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
             assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(TransitionUsage.class, () -> newTransitionUsageId[0], transitionUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(TransitionUsage.class, () -> newTransitionUsageId.get(), transitionUsage -> {
             assertThat(this.identityService.getId(transitionUsage.getSource())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
             assertThat(this.identityService.getId(transitionUsage.getTarget())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID);
         });
@@ -375,33 +379,34 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createSuccessionBetweenSubActions() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Succession");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId);
 
-        String[] newSuccessionId = new String[1];
+        AtomicReference<String> newSuccessionId = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
-            newSuccessionId[0] = newEdge.getTargetObjectId();
+            newSuccessionId.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
             assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId[0], successionAsUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId.get(), successionAsUsage -> {
             assertThat(this.identityService.getId(successionAsUsage.getSourceFeature())).isEqualTo(ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION1_ID);
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
@@ -464,34 +469,35 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createSuccessionFromStart() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
                 "New Succession");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID,
                 creationToolId);
 
-        String[] newSuccessionId = new String[1];
+        AtomicReference<String> newSuccessionId = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
-            newSuccessionId[0] = newEdge.getTargetObjectId();
+            newSuccessionId.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID);
             assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION2_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId[0], successionAsUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId.get(), successionAsUsage -> {
             assertThat(successionAsUsage.getSourceFeature()).matches(sourceFeature -> new UtilService().isStandardStartAction(sourceFeature));
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> ActionFlowCompartmentTestProjectData.SemanticIds.SUB_ACTION2_ID.equals(this.identityService.getId(targetFeature)));
@@ -512,34 +518,35 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createSuccessionFromStartToDone() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME),
                 "New Succession");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID,
                 creationToolId);
 
-        String[] newSuccessionId = new String[1];
+        AtomicReference<String> newSuccessionId = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
-            newSuccessionId[0] = newEdge.getTargetObjectId();
+            newSuccessionId.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.START_ID);
             assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId[0], successionAsUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SuccessionAsUsage.class, () -> newSuccessionId.get(), successionAsUsage -> {
             assertThat(successionAsUsage.getSourceFeature()).matches(sourceFeature -> new UtilService().isStandardStartAction(sourceFeature));
             assertThat(successionAsUsage.getTargetFeature()).hasSize(1)
                     .allMatch(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
@@ -563,34 +570,35 @@ public class ActionFlowTests extends AbstractIntegrationTests {
     public void createTransitionUsageToDone() {
         var flux = this.givenSubscriptionToDiagram();
 
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+        var creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Transition");
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(ActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID,
                 ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID,
                 creationToolId);
 
-        String[] newTransitionId = new String[1];
+        AtomicReference<String> newTransitionId = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1) // TransitionUsage are also added to the previous compartment as node
+                    .hasNewNodeCount(0)
                     .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
-            newTransitionId[0] = newEdge.getTargetObjectId();
+            newTransitionId.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(ActionFlowCompartmentTestProjectData.GraphicalIds.SUB_ACTION1_ID);
             assertThat(newEdge).hasTargetId(ActionFlowCompartmentTestProjectData.GraphicalIds.DONE_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(TransitionUsage.class, () -> newTransitionId[0], transitionUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(TransitionUsage.class, () -> newTransitionId.get(), transitionUsage -> {
             assertThat(transitionUsage.getSource().getName()).isEqualTo("subAction1");
             assertThat(transitionUsage.getTarget()).matches(targetFeature -> new UtilService().isStandardDoneAction(targetFeature));
             assertThat(transitionUsage.getOwningType().getName()).matches("RootAction"::equals);

@@ -39,6 +39,7 @@ public class StatesCompartmentItemNodeDescriptionProvider extends CompartmentIte
     public NodeDescription create() {
         NodeDescription nd = super.create();
         if (this.showsExhibitOnly) {
+            nd.setPreconditionExpression("true");
             nd.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME);
         } else {
             nd.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME);

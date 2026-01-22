@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -35,6 +36,13 @@ public class SatisfyRequirementCompartmentItemNodeDescription extends Compartmen
 
     public SatisfyRequirementCompartmentItemNodeDescription(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(eClass, eReference, colorProvider, nameGenerator);
+    }
+
+    @Override
+    public NodeDescription create() {
+        NodeDescription nodeDescription = super.create();
+        nodeDescription.setPreconditionExpression("true");
+        return nodeDescription;
     }
 
     @Override

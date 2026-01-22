@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -48,8 +49,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -94,11 +93,9 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
         this.givenInitialServerState.initialize();
     }
 
-    @Test
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a General View with a state and action, WHEN invoking do action with referenced action, THEN the PerformActionUsage is visible in the state")
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
+    @Test
     public void checkPerformActionRevealInState() {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -160,9 +157,8 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                     assertThat(diagram.getEdges()).isEmpty();
                     DiagramNavigator navigator = new DiagramNavigator(diagram);
                     Collection<Node> visibleNodes = navigator.findAllNodes().stream().filter(node -> node.getState() == ViewModifier.Normal).toList();
-                    assertThat(visibleNodes.stream().filter(node -> node.getInsideLabel().getText().equals("actions"))).hasSize(1).allMatch(node -> node.getChildNodes().size() == 1);
                     assertThat(visibleNodes.stream().filter(node -> node.getInsideLabel().getText().equals("perform actions"))).hasSize(1).allMatch(node -> node.getChildNodes().size() == 1);
-                    assertThat(visibleNodes.stream().filter(node -> node.getInsideLabel().getText().equals("ref do ::> action1"))).hasSize(2);
+                    assertThat(visibleNodes.stream().filter(node -> node.getInsideLabel().getText().equals("ref do ::> action1"))).hasSize(1);
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
