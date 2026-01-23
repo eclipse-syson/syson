@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -34,7 +36,9 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectEditingCo
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.export.checker.SysmlImportExportChecker;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -111,7 +115,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
         var input = """
                 private import ScalarValues::*;
                 package p1;""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -126,7 +132,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute z1 : Enum1 = Enum1::e1;
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -142,7 +150,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         attribute 'comment';
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -165,7 +175,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     flow from p2.po1.item1 to p3.item2;
                     flow f1 from p2.po1.item1 to p3.item2;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -244,7 +256,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         flow of Fuel from eng.engineFuelPort.fuelReturn to tankAssy.fuelTankPort.fuelReturn;
                     }
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -275,7 +289,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 requirement def R1 {
                     require constraint c1 :>> c;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -294,7 +310,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         doc /* Some doc */
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -311,7 +329,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     assume #goal constraint c1;
                     require #goal constraint c2;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -336,7 +356,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     then a2;
                     first start then fork1;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -376,7 +398,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first a2 then join1;
                     first join1 then done;
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -394,7 +418,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first a1 then merge1;
                     first a2 then merge1;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -407,7 +433,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     rep l2 language "naturalLanguage2"
                         /* some comment 3 */
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -425,7 +453,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         doc /* Some documentation on that succession */
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -447,7 +477,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         render asTreeDiagram;
                     }
                 } """;
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -474,7 +506,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         accept when b.f;
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -507,7 +541,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     succession sd2 first d1 if x == 0 then a2;
                     succession sd3 first d1 then a3;
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -524,7 +560,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     if x >= 1.1 and x < 2.1 then a2;
                     else a3;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -544,7 +582,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -557,7 +597,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     succession s1 first a1 then a2;
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -572,7 +614,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     then a0;
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -602,7 +646,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     action a2;
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -628,7 +674,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first start then a2;
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -643,7 +691,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     first a1 then a2;
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -657,7 +707,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     action 'a 2' : 'p 2'::'A 1';
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     /**
@@ -742,7 +794,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     /**
@@ -758,7 +812,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 part part1 {
                     port port1 : Port1;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     /**
@@ -808,7 +864,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         enum1;
                     }
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     /**
@@ -863,7 +921,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     /**
@@ -898,7 +958,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -924,7 +986,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         actor partU_1;
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
 
     }
 
@@ -996,7 +1060,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -1009,7 +1075,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 part p2 :> p1 {
                     attribute :>> attr1;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1020,7 +1088,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     abstract occurrence test;
                     abstract occurrence def Test;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1053,7 +1123,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute attribute4 : Enum1 = Enum1::enumeration2;
                     attribute attribute5 = Enum1::enumeration1;
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
 
@@ -1070,7 +1142,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     }
                 }""";
 
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1092,7 +1166,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute :>> a;
                 }""";
 
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
 
@@ -1101,7 +1177,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
     public void checkLiteralString() throws IOException {
         var input = """
                 attribute myAttribute = "value";""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1109,7 +1187,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
     public void checkMultiplicityRangeWithLiteralIntegerBounds() throws IOException {
         var input = """
                 part myPart [1..2];""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1141,7 +1221,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 metadata def MD2 :> SemanticMetadata {
                     :>> baseType default = p meta SysML::Systems::PartUsage;
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -1155,7 +1237,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     attribute c : Integer = +1;
                     attribute d : Boolean = not true;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1194,7 +1278,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     assert satisfy Req1 by Context1;
                     assert satisfy requirement Req2 : REQ2 by Context1.'System 1';
                 }""";
-        this.checker.check(input, expected);
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
     }
 
     @Test
@@ -1220,7 +1306,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     connect (p1, p2, Parts::part3);
                     connect p1.po1 to p2.po2;
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
 
     @Test
@@ -1242,6 +1330,65 @@ public class ImportExportTests extends AbstractIntegrationTests {
                         end #derive ::> Sre1;
                     }
                 }""";
-        this.checker.check(input, input);
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
     }
+
+    @Test
+    @DisplayName("GIVEN with conflicting names used in refence, WHEN importing and exporting the model, THEN the names used in the qualified name should be properly escaped.")
+    public void checkNameConflictResolutionWithQn() throws IOException {
+        var input = """
+                package 'root && root' {
+                    package 'AA & BB' {
+                        item def ItemDef0;
+                        requirement def RecDef1 {
+                            requirementsSpecification : ItemDef0;
+                        }
+                        package 'JJ & GG' {
+                            item requirements : ItemDef0;
+                            item requirements2 : ItemDef0;
+                        }
+                    }
+                    package 'CC & DD' {
+                        private import 'AA & BB'::'JJ & GG'::*;
+                        requirement rec0 : 'AA & BB'::RecDef1 {
+                            requirementsSpecification :> 'AA & BB'::RecDef1::requirementsSpecification = 'root && root'::'AA & BB'::'JJ & GG'::requirements2;
+                        }
+                    }
+                }""";
+        // Modify the model to generate a name conflict between "'root && root'::'AA & BB'::'JJ & GG'::requirements" and "'root && root'::'AA & BB'::'JJ & GG'::requirements2"
+        // This will cause an issue the value of "'root && root'::'CC & DD'::rec0::requirementsSpecification"
+        Consumer<Resource> createNameConflicts = resource -> {
+            EMFUtils.allContainedObjectOfType(resource, ItemUsage.class)
+                    .filter(item -> "requirements2".equals(item.getName()))
+                    .findFirst()
+                    .orElseThrow()
+                    .setDeclaredName("requirements");
+        };
+        var expected = """
+                package 'root && root' {
+                    package 'AA & BB' {
+                        item def ItemDef0;
+                        requirement def RecDef1 {
+                            requirementsSpecification : ItemDef0;
+                        }
+                        package 'JJ & GG' {
+                            item requirements : ItemDef0;
+                            item requirements : ItemDef0;
+                        }
+                    }
+                    package 'CC & DD' {
+                        private import 'AA & BB'::'JJ & GG'::*;
+                        requirement rec0 : 'AA & BB'::RecDef1 {
+                            requirementsSpecification :> 'AA & BB'::RecDef1::requirementsSpecification = 'root && root'::'AA & BB'::'JJ & GG'::requirements;
+                        }
+                    }
+                }""";
+        this.checker.textToImport(input)
+                .modifyLoadedModel(createNameConflicts)
+                .expectedResult(expected)
+                .check();
+    }
+
 }
