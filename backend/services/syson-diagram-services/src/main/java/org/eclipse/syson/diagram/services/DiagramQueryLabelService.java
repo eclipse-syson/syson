@@ -111,7 +111,6 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
             if (!referenceSubsetting.isIsImplied()) {
                 var referencedFeature = referenceSubsetting.getReferencedFeature();
                 if (referencedFeature != null) {
-                    label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.REFERENCES);
                     label.append(LabelConstants.SPACE);
                     label.append(this.getDeclaredNameLabel(referencedFeature));
