@@ -75,6 +75,8 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
 
     private static final String IMPORTED_PROJECT = "afffb8f5-3db6-4b47-b295-55a36984db2e";
 
+    private static final String IMPORTED_PROJECT_EDITING_CONTEXT = "4246b4f9-665c-48fe-be8b-41f735a940c4";
+
     private static final String IMPORTED_PROJECT_NAME = "SysMLv2-ImportedProject";
 
     private static final String PUBLICATION_KIND = "Project_SysML_AllProperContents";
@@ -109,7 +111,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedThenLibraryExistsAndHasCorrectMetadatas() {
-        var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result = this.publishLibrariesMutationRunner.run(input);
         String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -130,7 +132,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedTwiceThenTheSecondPublicationFailsAndTheLibraryIsNotUpdated() {
-        var input1 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var input1 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result1 = this.publishLibrariesMutationRunner.run(input1);
         String typename1 = JsonPath.read(result1.data(), "$.data.publishLibraries.__typename");
         assertThat(typename1).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -145,7 +147,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
 
         // The uniqueness of a library is ensured based on its namespace (project ID), name and version so we may tweak
         // the description.
-        var input2 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION + "_2");
+        var input2 = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION + "_2");
         var result2 = this.publishLibrariesMutationRunner.run(input2);
         String typename2 = JsonPath.read(result2.data(), "$.data.publishLibraries.__typename");
         assertThat(typename2).isEqualTo(ErrorPayload.class.getSimpleName());
@@ -168,7 +170,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenLibraryIsPublishedThenContentOfLibraryMatchesContentOfProject() {
-        var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.PROJECT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
+        var input = new PublishLibrariesInput(UUID.randomUUID(), SimpleProjectElementsTestProjectData.EDITING_CONTEXT_ID, PUBLICATION_KIND, LIBRARY_VERSION, LIBRARY_DESCRIPTION);
         var result = this.publishLibrariesMutationRunner.run(input);
         String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -237,7 +239,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithImportedResourceWhenLibraryIsPublishedThenLibraryDoesNotContainTheImportedFlag() {
-        var input = new PublishLibrariesInput(UUID.randomUUID(), IMPORTED_PROJECT, PUBLICATION_KIND, "1.0.0", "");
+        var input = new PublishLibrariesInput(UUID.randomUUID(), IMPORTED_PROJECT_EDITING_CONTEXT, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
         String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -263,7 +265,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithUsedDependencyToLibraryWhenLibraryIsPublishedThenItHasTheSameDependency() {
-        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
+        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUsedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
         String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
@@ -298,7 +300,7 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
             config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWithUnusedDependencyToLibraryWhenLibraryIsPublishedThenItHasNoDependency() {
-        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.PROJECT_ID, PUBLICATION_KIND, "1.0.0", "");
+        var input = new PublishLibrariesInput(UUID.randomUUID(), ProjectWithUnusedBatmobileLibraryDependencyTestProjectData.EDITING_CONTEXT, PUBLICATION_KIND, "1.0.0", "");
         var result = this.publishLibrariesMutationRunner.run(input);
         String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());

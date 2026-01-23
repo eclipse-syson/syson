@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,12 @@ import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceT
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
@@ -66,15 +66,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysONLibraryPublicationHandler implements ILibraryPublicationHandler {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SysONLibraryPublicationHandler.class);
 
     private final IEditingContextSearchService editingContextSearchService;
 
+    private final IProjectEditingContextService projectEditingContextService;
+
     private final ISemanticDataCreationService semanticDataCreationService;
 
     private final IResourceToDocumentService resourceToDocumentService;
-
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     private final IProjectSearchService projectSearchService;
 
@@ -83,16 +84,17 @@ public class SysONLibraryPublicationHandler implements ILibraryPublicationHandle
     private final ISysONLibraryDependencyCollector sysonLibraryDependencyCollector;
 
     public SysONLibraryPublicationHandler(final IEditingContextSearchService editingContextSearchService,
+            final IProjectEditingContextService projectEditingContextService,
             final ISemanticDataCreationService semanticDataCreationService,
             final IResourceToDocumentService resourceToDocumentService,
-            final IProjectSemanticDataSearchService projectSemanticDataSearchService, final IProjectSearchService projectSearchService,
+            final IProjectSearchService projectSearchService,
             final ILibrarySearchService librarySearchService,
             final ISysONLibraryDependencyCollector sysonLibraryDependencyCollector) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.sysonLibraryDependencyCollector = Objects.requireNonNull(sysonLibraryDependencyCollector);
     }
@@ -104,15 +106,25 @@ public class SysONLibraryPublicationHandler implements ILibraryPublicationHandle
 
     @Override
     public IPayload handle(final PublishLibrariesInput input) {
-        return this.projectSearchService.findById(input.projectId())
-                .map(project -> this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(input.projectId()))
-                        .flatMap(projectSemanticData -> this.editingContextSearchService.findById(projectSemanticData.getSemanticData().getId().toString()))
-                        .filter(IEMFEditingContext.class::isInstance)
-                        .map(IEMFEditingContext.class::cast)
-                        .map(editingContext -> this.handle(input, project, editingContext.getDomain().getResourceSet()))
-                        .orElseGet(() -> new ErrorPayload(input.id(),
-                                List.of(new Message("Could not find the editing context of project '%s'.".formatted(project.getName()), MessageLevel.ERROR)))))
-                .orElseGet(() -> new ErrorPayload(input.id(), List.of(new Message("Could not find project with ID '%s'.".formatted(input.projectId()), MessageLevel.ERROR))));
+        IPayload payload = null;
+        var editingContextId = input.editingContextId();
+        var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
+        if (optionalProjectId.isPresent()) {
+            var projectId = optionalProjectId.get();
+            var optionalProject = this.projectSearchService.findById(projectId);
+            var optionalEditingContext = this.editingContextSearchService.findById(editingContextId)
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast);
+
+            if (optionalProject.isPresent() && optionalEditingContext.isPresent()) {
+                payload = this.handle(input, optionalProject.get(), optionalEditingContext.get().getDomain().getResourceSet());
+            } else {
+                payload = new ErrorPayload(input.id(), List.of(new Message("Could not find project with following editingContextId '%s'.".formatted(editingContextId), MessageLevel.ERROR)));
+            }
+        } else {
+            payload = new ErrorPayload(input.id(), List.of(new Message("Could not find project with following editingContextId '%s'.".formatted(editingContextId), MessageLevel.ERROR)));
+        }
+        return payload;
     }
 
     protected IPayload handle(final PublishLibrariesInput input, final Project project, final ResourceSet resourceSet) {
