@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -170,7 +170,7 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         // Here the direct edit input need to explicitly give the qualified name of x3 since the default x3 is the one
         // located in p1_1 whereas we are targeting RootPackage::p1::x3
         this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(this.verifier, this.diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = p1::x3 / p1::x3 * 10");
+                "x1 = RootPackage::p1::x3 / RootPackage::p1::x3 * 10");
 
     }
 
