@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Identifiers for the "ProjectWithBatmobileLibraryDependency" project.
+ * Identifiers for the "ProjectWithUnusedBatmobileLibraryDependency" project.
  *
  * @author gdaniel
  */
@@ -24,5 +24,7 @@ public class ProjectWithUnusedBatmobileLibraryDependencyTestProjectData {
     public static final String PROJECT_NAME = "SysMLv2-ProjectWithUnusedBatmobileLibraryDependency";
 
     public static final String PROJECT_ID = "7c4245ac-4fac-4592-80eb-f6c67e3fd98a";
+
+    public static final String EDITING_CONTEXT = "050c3eea-4633-4ad9-a7ba-378b6ff9a3ff";
 
 }

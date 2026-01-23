@@ -35,7 +35,7 @@ It helps handling inherited elements that are not displayed in their semantic ow
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.5]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.12.6]
 - [releng] Update to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.9[Spring Boot 3.5.9]
 
