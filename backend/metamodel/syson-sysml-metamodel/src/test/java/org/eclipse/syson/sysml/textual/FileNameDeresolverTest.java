@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class FileNameDeresolverTest {
          *       ref attribute mass; // Needs qualified name since the attribute p3::mass hides the imported element
          *       package p3x1 {
          *           ref attribute mass2 :> Lib2::mass; // Needs qualified name since the attribute p3::mass hides the imported element
-         *           part Part1 : p3::Part1; // We need relative qualified name because Part1 usage conflict with Part1 definition
+         *           part Part1 : p3::Part1; // We need qualified name because Part1 usage conflict with Part1 definition
          *   }
          *       }
          * }
@@ -143,8 +143,8 @@ public class FileNameDeresolverTest {
         assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p3Mass));
         // Needs qualified name since the attribute p3::mass hides the imported element
         assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p3x1Mass));
-        // Need relative qualified name
-        assertEquals("p3::Part1", this.getDeresolvedName(part1Def, part1Usage));
+        // Need qualified name cause name conflict
+        assertEquals("Root::p3::Part1", this.getDeresolvedName(part1Def, part1Usage));
     }
 
     @Test
