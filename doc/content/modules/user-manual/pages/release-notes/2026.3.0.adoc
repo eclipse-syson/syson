@@ -16,6 +16,7 @@ It's not recommended for production use.
 == Bug fixes
 
 * Fix the textual export of `OccurrenceUsage` to avoid duplication of the _abstract_ keyword.
+* Fix the textual export to properly escape names used in qualified names in some references.
 
 == Improvements
 

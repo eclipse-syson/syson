@@ -13,6 +13,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/1847[#1847] [export] Textual export duplicates "abstract" keyword for `OccurrenceUsage`.
+- https://github.com/eclipse-syson/syson/issues/1887[#1887] [export] Export fails to escape some names when using qualified name.
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -229,13 +229,7 @@ public class FileNameDeresolver implements INameDeresolver {
         // conflict.
         // In that case keep we need a more detailed qualified name
         if (resolvedElement != null && !this.match(element, resolvedElement)) {
-            // Last try if the element is in the containment tree find the shortest qualified name
-            String qualifiedName = this.getQualifiedName(owningNamespace);
-            if (!qualifiedName.isBlank() && elementQn.startsWith(qualifiedName)) {
-                relativeQualifiedName = owningNamespace.getName() + "::" + elementQn.substring(qualifiedName.length() + 2);
-            } else {
-                relativeQualifiedName = elementQn;
-            }
+            relativeQualifiedName = elementQn;
         }
 
         return relativeQualifiedName;
