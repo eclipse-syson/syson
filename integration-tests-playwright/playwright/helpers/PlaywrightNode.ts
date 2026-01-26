@@ -128,8 +128,12 @@ export class PlaywrightNode {
 
   async revealElement(name: string) {
     await this.nodeLocator.hover({ position: { x: 10, y: 10 }, timeout: 3000 });
-    await this.page.getByTestId('manage-visibility').isVisible();
-    await this.page.getByTestId('manage-visibility').click();
+    const manageVisibilityButtonLocator = await this.page.getByTestId('manage-visibility');
+    await manageVisibilityButtonLocator.waitFor({
+      state: 'visible',
+      timeout: 1000, // 500ms timeout + extra 500ms
+    });
+    await manageVisibilityButtonLocator.click({ force: true });
     await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click();
   }
 }
