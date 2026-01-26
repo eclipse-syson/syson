@@ -20,6 +20,8 @@ It's not recommended for production use.
 
 == Improvements
 
+* Implement the textual export for `StateUsage` and `StateDefinition`.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
