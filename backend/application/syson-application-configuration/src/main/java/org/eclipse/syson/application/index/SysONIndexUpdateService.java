@@ -119,11 +119,6 @@ public class SysONIndexUpdateService implements IIndexUpdateServiceDelegate {
     }
 
     private void clearIndex(IEditingContext editingContext) {
-        /*
-         * In some cases (particularly when a new project is created), this line may throw an exception indicating that the index does not exist. This exception doesn't crash the application, it just
-         * prevents an update of the index, which is not critical (it will be updated later when the semantic data gets updated).
-         * This issue is linked to https://github.com/eclipse-sirius/sirius-web/issues/6044, and will disappear once it is fixed in Sirius Web.
-         */
         this.indexDeletionService.deleteIndex(editingContext.getId());
         this.indexCreationService.createIndex(editingContext.getId());
     }
