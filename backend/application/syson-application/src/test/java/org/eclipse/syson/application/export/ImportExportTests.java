@@ -1335,6 +1335,64 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 .check();
     }
 
+    /**
+     * Test import/export on test file StateTest.sysml. The content of StateTest.sysml that have been copied below
+     * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the
+     * LICENSE-LGPL file.
+     *
+     * <p><b>NOTE:</b> The TransitionUsage has been remove from the original model for this test.</p>
+     *
+     * @see <a href=
+     * "https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/StateTest.sysml">StateTest.sysml</a>
+     */
+    @Test
+    @DisplayName("GIVEN a model with StateUsage and StateDefinition, WHEN importing and exporting the model, THEN the states are properly exported")
+    public void checkStates() throws IOException {
+        var input = """
+                package StateTest {
+                    attribute def Sig {
+                        x;
+                    }
+                    attribute def Exit;
+                    part p;
+                    action act;
+                    state def S {
+                        do action A;
+                        entry ;
+                        state S1;
+                        state S2 {
+                            state S3;
+                        }
+                        exit act;
+                        state S3 {
+                            state S3a;
+                        }
+                    }
+                    state s0 {
+                        state s1 {
+                            state s2;
+                        }
+                        state s3 {
+                            state s4;
+                        }
+                    }
+                    state s parallel {
+                        state s1;
+                        state s2;
+                    }
+                    state s4 {
+                        do action a;
+                        action c;
+                    }
+                    state s5 :> s4 {
+                        do action b :>> c;
+                    }
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
+    }
+
     @Test
     @DisplayName("GIVEN with conflicting names used in refence, WHEN importing and exporting the model, THEN the names used in the qualified name should be properly escaped.")
     public void checkNameConflictResolutionWithQn() throws IOException {
