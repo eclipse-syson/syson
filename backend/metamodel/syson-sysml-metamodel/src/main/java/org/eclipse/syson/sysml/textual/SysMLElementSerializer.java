@@ -128,6 +128,8 @@ import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.StakeholderMembership;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -228,11 +230,22 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseActionUsage(ActionUsage actionUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
-        this.appendOccurrenceUsagePrefix(builder, actionUsage);
-        builder.appendWithSpaceIfNeeded("action");
-        this.appendActionUsageDeclaration(builder, actionUsage);
+        if (!this.isEmptyActionAsStateSubAction(actionUsage)) {
+            // Normal rule "ActionUsage"
+            this.appendOccurrenceUsagePrefix(builder, actionUsage);
+            builder.appendWithSpaceIfNeeded("action");
+            this.appendActionUsageDeclaration(builder, actionUsage);
+
+        } // Rule "EmptyActionUsage" when store in StateSubactionMembership => Do nothing
+
         this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
+
         return builder.toString();
+    }
+
+    private boolean isEmptyActionAsStateSubAction(ActionUsage actionUsage) {
+        return actionUsage.getOwningMembership() instanceof StateSubactionMembership && actionUsage.getOwnedRelationship()
+                .isEmpty() && actionUsage.getDeclaredName() == null && actionUsage.getShortName() == null;
     }
 
     @Override
@@ -863,29 +876,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String casePerformActionUsage(PerformActionUsage perfomActionUsage) {
+    public String casePerformActionUsage(PerformActionUsage performActionUsage) {
 
         Appender builder = new Appender(this.lineSeparator, this.indentation);
+        if (!(performActionUsage.getOwningMembership() instanceof StateSubactionMembership)) {
+            // Rule simple "PerformActionUsage" from BehaviorUsageElement
+            this.appendOccurrenceUsagePrefix(builder, performActionUsage);
 
-        this.appendOccurrenceUsagePrefix(builder, perfomActionUsage);
+            builder.appendWithSpaceIfNeeded("perform");
+        } // Else do nothing using rule PerformActionUsageDeclaration
 
-        builder.appendWithSpaceIfNeeded("perform");
+        this.appendPerformActionUsageDeclaration(performActionUsage, builder);
 
-        Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
-        this.appendNameWithShortName(nameAppender, perfomActionUsage);
+        this.appendValuePart(builder, performActionUsage);
 
-        if (nameAppender.isEmpty() && perfomActionUsage.getOwnedReferenceSubsetting() != null) {
-            // Use simple form : perfom <nameOfReferenceSubSetting>
-            this.appendOwnedReferenceSubsetting(builder, perfomActionUsage.getOwnedReferenceSubsetting());
-        } else {
-            // Use complete form
-            builder.appendWithSpaceIfNeeded("action");
-            this.appendUsageDeclaration(builder, perfomActionUsage);
-        }
-
-        this.appendValuePart(builder, perfomActionUsage);
-
-        this.appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
+        this.appendChildrenContent(builder, performActionUsage, performActionUsage.getOwnedMembership());
 
         return builder.toString();
     }
@@ -1066,9 +1071,55 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseStateDefinition(StateDefinition stateDefinition) {
+        Appender builder = this.newAppender();
+        this.appendDefinitionPrefix(builder, stateDefinition);
+        builder.appendSpaceIfNeeded().append(SysMLv2Keywords.STATE + " " + SysMLv2Keywords.DEF);
+        this.appendDefinitionDeclaration(builder, stateDefinition);
+
+        if (stateDefinition.isIsParallel()) {
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.PARALLEL);
+        }
+
+        this.appendChildrenContent(builder, stateDefinition, stateDefinition.getOwnedMembership());
+        return builder.toString();
+    }
+
+    @Override
+    public String caseStateSubactionMembership(StateSubactionMembership stateSubactionMembership) {
+        Appender builder = this.newAppender();
+
+        this.appendMembershipPrefix(stateSubactionMembership, builder);
+
+        String stateKind = switch (stateSubactionMembership.getKind()) {
+            case DO -> SysMLv2Keywords.DO;
+            case ENTRY -> SysMLv2Keywords.ENTRY;
+            case EXIT -> SysMLv2Keywords.EXIT;
+        };
+
+        builder.appendWithSpaceIfNeeded(stateKind);
+
+        String content = stateSubactionMembership.getOwnedRelatedElement().stream()
+                .map(this::doSwitch).filter(Objects::nonNull).collect(joining(builder.getNewLine()));
+        builder.appendSpaceIfNeeded().append(content);
+
+        return builder.toString();
+    }
+
+    @Override
     public String caseStateUsage(StateUsage stateUsage) {
-        this.reportUnhandledType(stateUsage);
-        return "";
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, stateUsage);
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.STATE);
+        this.appendActionUsageDeclaration(builder, stateUsage);
+
+        if (stateUsage.isIsParallel()) {
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.PARALLEL);
+        }
+
+        this.appendChildrenContent(builder, stateUsage, stateUsage.getOwnedMembership());
+        return builder.toString();
     }
 
     @Override
@@ -2802,5 +2853,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 && constraintUsage.getDeclaredShortName() == null
                 && constraintUsage.getOwnedReferenceSubsetting() != null
                 && constraintUsage.getNestedMetadata().isEmpty();
+    }
+
+    private void appendPerformActionUsageDeclaration(PerformActionUsage performActionUsage, Appender builder) {
+        Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
+        this.appendNameWithShortName(nameAppender, performActionUsage);
+
+        if (nameAppender.isEmpty() && performActionUsage.getOwnedReferenceSubsetting() != null) {
+            // Use simple form : perfom <nameOfReferenceSubSetting>
+            this.appendOwnedReferenceSubsetting(builder, performActionUsage.getOwnedReferenceSubsetting());
+        } else {
+            // Use complete form
+            builder.appendWithSpaceIfNeeded("action");
+            this.appendUsageDeclaration(builder, performActionUsage);
+        }
     }
 }
