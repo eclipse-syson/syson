@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -43,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -94,9 +93,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a Package node, WHEN a Part node and a Sub-Part node are created, THEN the Part node and the Sub-Part node are visible inside the Package, on the same level, with an edge between them")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateSubPartInPackage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -165,9 +162,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a Package node, WHEN a sub-Package node is created, THEN the sub-Package node is only visible inside the Package")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreatePackageInPackage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -216,9 +211,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a Package node, WHEN a sub-Package node and a sub-element in the sub-Package are created, THEN the sub-Package node is only visible inside the Package and the sub-Element node is only visible inside the sub-Package")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateElementInPackageInPackage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -289,9 +282,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a Package node, WHEN a Documentation node is created, THEN the Documentation node is only visible beside the Package")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateDocumentationInPackage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -339,9 +330,7 @@ public class GVPackageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a Package with an ItemDefinition IDA with an Item itemA, a SubPackage with an ItemDefinition IDB, WHEN an Item itemB node is created from IDB, THEN itemA node is still visible inside the Package")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateItemInSubPackage() {
         var flux = this.givenSubscriptionToDiagram();
