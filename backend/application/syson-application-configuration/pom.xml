@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.web.version>2025.12.6</sirius.web.version>
+		<sirius.web.version>2026.1.0</sirius.web.version>
 	</properties>
 	
 	<repositories>
