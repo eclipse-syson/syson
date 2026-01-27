@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightNode {
   readonly page: Page;
@@ -127,8 +127,9 @@ export class PlaywrightNode {
   }
 
   async revealElement(name: string) {
-    const box = await this.getDOMBoundingBox();
-    await this.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await this.nodeLocator.focus();
+    await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await expect(this.nodeLocator.getByTestId('manage-visibility')).toBeVisible();
     await this.nodeLocator.getByTestId('manage-visibility').click();
     await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click();
   }
