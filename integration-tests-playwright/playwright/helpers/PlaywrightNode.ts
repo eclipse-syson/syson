@@ -127,9 +127,8 @@ export class PlaywrightNode {
   }
 
   async revealElement(name: string) {
-    await this.nodeLocator.focus();
-    await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
-    await expect(this.nodeLocator.getByTestId('manage-visibility')).toBeVisible();
+	await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
+	await expect(this.nodeLocator.getByTestId('manage-visibility')).toBeVisible();
     await this.nodeLocator.getByTestId('manage-visibility').click();
     await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click();
   }

@@ -39,9 +39,9 @@ test.describe('diagram - general view', () => {
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('toolSection-Structure').click();
     await page.getByTestId('tool-New Part Definition').click();
-    diagram.expectNumberOfTopNodes(1);
+    await diagram.expectNumberOfTopNodes(1);
     // Create Port
-    let partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
+    const partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
     await expect(partDefinitionNode.nodeLocator).toBeAttached();
     await partDefinitionNode.openPalette();
     await page.getByTestId('toolSection-Structure').click();
@@ -49,15 +49,8 @@ test.describe('diagram - general view', () => {
     // The port is only displayed as a border node of the parent
     const portBorderNode = new PlaywrightNode(page, 'port1Inout');
     await expect(portBorderNode.nodeLocator).toBeAttached();
-    diagram.expectNumberOfTopNodes(2);
-    // The port can be displayed as a top node
-    await diagram.revealElement('port1Inout');
-    const portNode = new PlaywrightNode(page, 'port1Inout', 'List');
-    await expect(portNode.nodeLocator).toBeAttached();
-    diagram.expectNumberOfTopNodes(3);
+    await diagram.expectNumberOfTopNodes(2);
     // The port can be displayed as a list item
-    partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
-    await expect(partDefinitionNode.nodeLocator).toBeAttached();
     await partDefinitionNode.click();
     await partDefinitionNode.revealElement('ports');
     const portsListNode = new PlaywrightNode(page, 'ports', 'List');
@@ -65,6 +58,11 @@ test.describe('diagram - general view', () => {
     const portListItemNode = new PlaywrightNode(page, 'inout port1Inout', 'IconLabel');
     await expect(portListItemNode.nodeLocator).toBeAttached();
     await diagram.expectNumberOfTopNodes(4);
+    // The port can be displayed as a top node
+    await diagram.revealElement('port1Inout');
+    const portNode = new PlaywrightNode(page, 'port1Inout', 'List');
+    await expect(portNode.nodeLocator).toBeAttached();
+    await diagram.expectNumberOfTopNodes(5);
   });
 
   test('when creating a port on a port compartment of a part definition, then the port top node is hidden', async ({
@@ -76,7 +74,7 @@ test.describe('diagram - general view', () => {
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('toolSection-Structure').click();
     await page.getByTestId('tool-New Part Definition').click();
-    diagram.expectNumberOfTopNodes(1);
+    await diagram.expectNumberOfTopNodes(1);
     const partDefinitionNode = new PlaywrightNode(page, 'PartDefinition1', 'List');
     await expect(partDefinitionNode.nodeLocator).toBeAttached();
     // Show the port compartment
@@ -94,6 +92,6 @@ test.describe('diagram - general view', () => {
     // The port is  displayed as a border node of the parent
     const portBorderNode = new PlaywrightNode(page, 'port1Inout');
     await expect(portBorderNode.nodeLocator).toBeAttached();
-    diagram.expectNumberOfTopNodes(4);
+    await diagram.expectNumberOfTopNodes(4);
   });
 });
