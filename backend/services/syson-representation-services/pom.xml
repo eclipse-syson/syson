@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-representation-services</artifactId>
-	<version>2025.12.6</version>
+	<version>2026.1.0</version>
 	<name>syson-representation-services</name>
 	<description>SysON Representation Services</description>
 
@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 		</dependency>
 		<!-- Tests -->
 		<dependency>
@@ -76,14 +76,14 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tests</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
