@@ -36,8 +36,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
-import org.eclipse.sirius.web.application.project.services.ProjectApplicationService;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectCreationApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectDeletionApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -113,10 +113,10 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     private IEditingContextSearchService editingContextSearchService;
 
     @Autowired
-    private IProjectApplicationService projectDeletionService;
+    private IProjectDeletionApplicationService projectDeletionService;
 
     @Autowired
-    private ProjectApplicationService projectCreationService;
+    private IProjectCreationApplicationService projectCreationService;
 
     @Autowired
     private IProjectEditingContextService projectToEditingContext;
@@ -173,7 +173,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         action a12; // Composite because no "ref" keyword
                         succession suc1 first a11 then a12; // Referential because is a Connector
                     }
-                
+
                     use case def ucd_1 {
                         objective c; // Composite because no "ref" keyword
                         subject subject_1; // Ref because ReferenceUsage
@@ -351,7 +351,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pa1 {
                     part pa1;
                     part pa2;
-                
+
                     connect pa1 to pa2;
                 }
                 """;
@@ -377,7 +377,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute y : ScalarValues::String;
                         :> annotatedElement : SysML::PartUsage;
                     }
-                
+
                     #MD1 part p1;
                     part p2 {
                         @MD1 {
@@ -388,7 +388,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     metadata MD1 about p3;
                     part p4;
                     metadata m1 : MD1 about p4;
-                
+
                     #MD2 part p5;
                 }""";
         this.checker.checkImportedModel(resource -> {
@@ -441,17 +441,17 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkSemanticMetadataDefinition() throws IOException {
         var input = """
                 private import Metaobjects::SemanticMetadata;
-                
+
                 part def Functions {
                     attribute x : ScalarValues::String;
                 }
-                
+
                 part functions : Functions [*] nonunique;
-                
+
                 metadata def Function :> SemanticMetadata {
                     :>> baseType = functions meta SysML::ActionUsage;
                 }
-                
+
                 #Function action a0;
                 action a1;
                 metadata Function about a1;
@@ -538,7 +538,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pk1 {
                     action a1 {
                         in item i1;
-                
+
                         action a11 {
                             in item i11;
                         }
@@ -603,11 +603,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkFeatureChainExpressionNameResolution() throws IOException {
         var input = """
                 action def P1 {
-                
+
                     action def A2 {
                         out pr2 : ScalarValues::Boolean;
                     }
-                
+
                     action a2 : A2 {
                          out pr2;
                     }
@@ -659,11 +659,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part def P1 {
                         isValid : ScalarValues::Boolean;
                     }
-                
+
                     action def A2 {
                         out prA2 : P1;
                     }
-                
+
                     action a2 : A2 {
                         out pra2;
                     }
@@ -964,7 +964,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-                
+
                 state myState {
                     state off;
                     accept StartSignal then on;
@@ -989,7 +989,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageAndSendSignalActionTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-                
+
                 state myState {
                     state off;
                     accept StartSignal
@@ -1094,7 +1094,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute upper:ScalarValues::Integer = 2;
                     }
                 }
-                
+
                 part myPart[bounds::lower..bounds::upperBounds::upper];
                 """;
         this.checker.checkImportedModel(resource -> {

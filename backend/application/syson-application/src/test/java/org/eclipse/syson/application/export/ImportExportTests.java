@@ -30,8 +30,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
-import org.eclipse.sirius.web.application.project.services.ProjectApplicationService;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectCreationApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectDeletionApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -71,13 +71,13 @@ public class ImportExportTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private ProjectApplicationService projectCreationService;
+    private IProjectCreationApplicationService projectCreationService;
 
     @Autowired
     private IProjectEditingContextService projectToEditingContext;
 
     @Autowired
-    private IProjectApplicationService projectDeletionService;
+    private IProjectDeletionApplicationService projectDeletionService;
 
     private SysmlImportExportChecker checker;
 
