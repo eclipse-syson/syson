@@ -18,7 +18,6 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -30,12 +29,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.SysONTestsProperties;
+import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
@@ -95,6 +94,8 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
 
+    private SemanticCheckerService semanticCheckerService;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
@@ -105,6 +106,8 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN New Exhibit State with referenced State tool is requested on a PartUsage, THEN a new ExhibitStateUsage node is created")
@@ -137,16 +140,9 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
             newExhibitStateId[0] = node.getTargetObjectId();
         });
 
-        Runnable semanticCheckerRunnable = this.semanticRunnableFactory.createRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                (editingContext, executeEditingContextFunctionInput) -> {
-                    Optional<Object> optElement = this.objectSearchService.getObject(editingContext, newExhibitStateId[0]);
-                    assertThat(optElement).isPresent();
-                    Object element = optElement.get();
-                    assertThat(element).isInstanceOf(ExhibitStateUsage.class);
-                    ExhibitStateUsage castedElement = (ExhibitStateUsage) element;
-                    assertThat(this.identityService.getId(castedElement.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
-                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                });
+        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, () -> newExhibitStateId[0], exhibitStateUsage -> {
+            assertThat(this.identityService.getId(exhibitStateUsage.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -187,16 +183,9 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
             newExhibitStateId[0] = node.getTargetObjectId();
         });
 
-        Runnable semanticCheckerRunnable = this.semanticRunnableFactory.createRunnable(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                (editingContext, executeEditingContextFunctionInput) -> {
-                    Optional<Object> optElement = this.objectSearchService.getObject(editingContext, newExhibitStateId[0]);
-                    assertThat(optElement).isPresent();
-                    Object element = optElement.get();
-                    assertThat(element).isInstanceOf(ExhibitStateUsage.class);
-                    ExhibitStateUsage exhibitStateUsage = (ExhibitStateUsage) element;
-                    assertThat(this.identityService.getId(exhibitStateUsage.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
-                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                });
+        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, () -> newExhibitStateId[0], exhibitStateUsage -> {
+            assertThat(this.identityService.getId(exhibitStateUsage.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
+        });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
