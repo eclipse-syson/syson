@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * {@link ExhibitStateUsage} compartment item Node description.
@@ -48,9 +49,9 @@ public class StatesCompartmentItemNodeDescriptionProvider extends CompartmentIte
     @Override
     protected String getSemanticCandidateExpression() {
         if (this.showsExhibitOnly) {
-            return AQLUtils.getSelfServiceCallExpression("getAllExhibitedStates");
+            return ServiceMethod.of0(UtilService::getAllExhibitedStates).aqlSelf();
         } else {
-            return AQLUtils.getSelfServiceCallExpression("getAllNonExhibitStates");
+            return ServiceMethod.of0(UtilService::getAllNonExhibitStates).aqlSelf();
         }
     }
 

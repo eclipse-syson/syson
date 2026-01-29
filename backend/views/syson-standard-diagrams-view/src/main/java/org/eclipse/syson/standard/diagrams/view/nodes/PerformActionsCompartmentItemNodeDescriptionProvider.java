@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Used to create an item node description of the perform actions compartment of Parts for general view diagram.
@@ -38,6 +39,6 @@ public class PerformActionsCompartmentItemNodeDescriptionProvider extends Compar
 
     @Override
     protected String getSemanticCandidateExpression() {
-        return AQLUtils.getSelfServiceCallExpression("getAllPerformActions");
+        return ServiceMethod.of0(UtilService::getAllPerformActions).aqlSelf();
     }
 }

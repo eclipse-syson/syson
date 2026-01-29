@@ -39,7 +39,6 @@ import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -107,7 +106,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
     }
 
     protected String getSemanticCandidatesExpression() {
-        return AQLUtils.getSelfServiceCallExpression("getReferenceUsagesParameters");
+        return ServiceMethod.of0(UtilService::getReferenceUsagesParameters).aqlSelf();
     }
 
     protected NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {

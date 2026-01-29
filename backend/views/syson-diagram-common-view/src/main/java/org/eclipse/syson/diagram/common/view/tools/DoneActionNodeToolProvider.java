@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,9 @@ package org.eclipse.syson.diagram.common.view.tools;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Used to add the standard done action in actions body for all diagrams.
@@ -36,7 +37,7 @@ public class DoneActionNodeToolProvider extends AbstractFreeFormCompartmentNodeT
 
     @Override
     protected String getCreationServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("addDoneAction");
+        return ServiceMethod.of0(ViewCreateService::addDoneAction).aqlSelf();
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Common pieces of edge descriptions shared by {@link IEdgeDescriptionProvider} in all view.
@@ -128,12 +129,11 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
      * @return the delete tool to use for the edge
      */
     protected DeleteTool getEdgeDeleteTool() {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
-
         return this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
-                .body(changeContext.build())
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf())
+                        .build())
                 .build();
     }
 

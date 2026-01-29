@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,6 @@
 
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -28,8 +25,13 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.sysml.StateSubactionKind;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node Tool of StateUsage and StateDefinition to create StateSubaction child elements.
@@ -58,7 +60,7 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
                 .name(this.getNodeToolLabel())
                 .iconURLsExpression("/icons/full/obj16/PerformActionUsage.svg")
                 .body(this.getCreateSubactionOperation())
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("isEmptyOfActionKindCompartment", AQLUtils.aqlString(this.kind.getLiteral())));
+                .preconditionExpression(ServiceMethod.of1(ViewCreateService::isEmptyOfActionKindCompartment).aqlSelf(AQLUtils.aqlString(this.kind.getLiteral())));
 
         if (this.isReferencing) {
             tool.dialogDescription(this.getExistingActionSelectionDialog());
@@ -77,26 +79,23 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
 
     private ChangeContext getCreateSubactionOperation() {
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                        List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(ViewNodeService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
-        var params = new ArrayList<String>();
-        if (this.isReferencing) {
-            params.add("selectedObject");
-        } else {
-            params.add("null");
+        var performedAction = "selectedObject";
+        if (!this.isReferencing) {
+            performedAction = "null";
         }
-        params.add(AQLUtils.aqlString(this.kind.getLiteral()));
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createStateSubaction", params))
+                .expression(ServiceMethod.of2(ViewCreateService::createStateSubaction).aqlSelf(performedAction, AQLUtils.aqlString(this.kind.getLiteral())))
                 .children(revealOperation.build())
                 .build();
     }
 
     private DialogDescription getExistingActionSelectionDialog() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActionReferenceSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getActionReferenceSelectionDialogChildren"))
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getActionReferenceSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of0(ViewToolService::getActionReferenceSelectionDialogChildren).aqlSelf())
                 .build();
 
         var selectExistingActionUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
