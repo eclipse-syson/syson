@@ -17,21 +17,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.FeatureChaining;
 
-import reactor.test.StepVerifier.Step;
-
 /**
- * Checker that verify semantic of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}.
+ * Builder for a checker that verify semantic of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}.
  *
  * @param <T> Type of {@link ConnectorAsUsage} to check.
  * @author Arthur Daussy
  */
-public class ConnectorAsUsageChecker<T extends  ConnectorAsUsage> {
+public class ConnectorAsUsageCheckerBuilder<T extends  ConnectorAsUsage> {
 
     private String expectedSourceSemanticId;
 
@@ -49,57 +46,56 @@ public class ConnectorAsUsageChecker<T extends  ConnectorAsUsage> {
 
     private final IIdentityService identityService;
 
-    private final SemanticCheckerService semanticCheckerService;
-
     private final Class<T> expectedType;
 
-    public ConnectorAsUsageChecker(
+    private final SemanticCheckerService semanticCheckerService;
+
+    public ConnectorAsUsageCheckerBuilder(
             IIdentityService identityService,
-            SemanticCheckerService semanticCheckerService,
-            Class<T> expectedType) {
+            Class<T> expectedType,
+            SemanticCheckerService semanticCheckerService) {
         this.identityService = identityService;
-        this.semanticCheckerService = semanticCheckerService;
         this.expectedType = expectedType;
+        this.semanticCheckerService = semanticCheckerService;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedSemanticContainer(String anExpectedSemanticContainer) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedSemanticContainer(String anExpectedSemanticContainer) {
         this.expectedSemanticContainer = anExpectedSemanticContainer;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedSourceFeatureChain(List<String> anExpectedSourceFeatureChain) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedSourceFeatureChain(List<String> anExpectedSourceFeatureChain) {
         this.expectedSourceFeatureChain = anExpectedSourceFeatureChain;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedSourceReference(String anExpectedSourceReference) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedSourceReference(String anExpectedSourceReference) {
         this.expectedSourceReference = anExpectedSourceReference;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedSourceSemanticId(String anExpectedSourceSemanticId) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedSourceSemanticId(String anExpectedSourceSemanticId) {
         this.expectedSourceSemanticId = anExpectedSourceSemanticId;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedTargetSemanticId(String anExpectedTargetSemanticId) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedTargetSemanticId(String anExpectedTargetSemanticId) {
         this.expectedTargetSemanticId = anExpectedTargetSemanticId;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedTargetFeatureChain(List<String> anExpectedTargetFeatureChain) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedTargetFeatureChain(List<String> anExpectedTargetFeatureChain) {
         this.expectedTargetFeatureChain = anExpectedTargetFeatureChain;
         return this;
     }
 
-    public ConnectorAsUsageChecker<T> setExpectedTargetReference(String anExpectedTargetReference) {
+    public ConnectorAsUsageCheckerBuilder<T> setExpectedTargetReference(String anExpectedTargetReference) {
         this.expectedTargetReference = anExpectedTargetReference;
         return this;
     }
 
-    public <T extends ConnectorAsUsage> void run(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<String> edgeIdProvider) {
-
-        this.semanticCheckerService.checkElement(verifier, this.expectedType, edgeIdProvider::get,
+    public Runnable build(AtomicReference<String> edgeIdProvider) {
+        return this.semanticCheckerService.checkElement(this.expectedType, edgeIdProvider::get,
                 connectorAsUsage -> {
                     assertThat(this.identityService.getId(connectorAsUsage.getSourceFeature().getFeatureTarget()))
                             .isEqualTo(this.expectedSourceSemanticId);
@@ -113,9 +109,9 @@ public class ConnectorAsUsageChecker<T extends  ConnectorAsUsage> {
                     } else if (this.expectedSourceFeatureChain != null) {
                         assertThat(connectorAsUsage.getSourceFeature().getOwnedFeatureChaining().stream()
                                 .map(FeatureChaining::getChainingFeature)
-                                .map(fc -> this.identityService.getId(fc))
+                                .map(this.identityService::getId)
                                 .toList())
-                                        .isEqualTo(this.expectedSourceFeatureChain);
+                                .isEqualTo(this.expectedSourceFeatureChain);
                     }
                     if (this.expectedTargetReference != null) {
                         assertThat(this.identityService.getId(connectorAsUsage.getTargetFeature().get(0)))
@@ -123,9 +119,9 @@ public class ConnectorAsUsageChecker<T extends  ConnectorAsUsage> {
                     } else if (this.expectedTargetFeatureChain != null) {
                         assertThat(connectorAsUsage.getTargetFeature().get(0).getOwnedFeatureChaining().stream()
                                 .map(FeatureChaining::getChainingFeature)
-                                .map(fc -> this.identityService.getId(fc))
+                                .map(this.identityService::getId)
                                 .toList())
-                                        .isEqualTo(this.expectedTargetFeatureChain);
+                                .isEqualTo(this.expectedTargetFeatureChain);
                     }
                 });
     }
