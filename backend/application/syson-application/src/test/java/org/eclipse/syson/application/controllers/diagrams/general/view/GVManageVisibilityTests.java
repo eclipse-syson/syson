@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisi
 import org.eclipse.sirius.web.application.nodeaction.managevisibility.ManageVisibilityRevealAllAction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.GeneralViewManageVisibilityTestsProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.services.nodeactions.managevisibility.ManageVisibilityRevealValuedContentAction;
@@ -43,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -84,9 +83,7 @@ public class GVManageVisibilityTests extends AbstractIntegrationTests {
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
-    @Sql(scripts = { GeneralViewManageVisibilityTestsProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewManageVisibilityTestsProjectData.SCRIPT_PATH })
     @DisplayName("GIVEN a graphical node with some children hidden and some revealed, WHEN invoking the show valued content only, THEN only the children that have children are visible")
     @Test
     public void invokeShowOnlyValuedContent() {

@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GVSimpleNestedAndTreeElementsTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -48,8 +49,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -90,8 +89,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GVSimpleNestedAndTreeElementsTestProjectData.EDITING_CONTEXT_ID,
                 GVSimpleNestedAndTreeElementsTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
@@ -100,9 +98,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with actionA and actionB linked by a composition edge, WHEN the action flow compartment is revelead on actionA, THEN actionB is hidden on the diagram background")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testDisplayActionFlowCompartmentOnActionAShouldHideActionB() {
         var flux = this.givenSubscriptionToDiagram();
@@ -158,9 +154,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with actionA and actionB linked by a composition edge, WHEN the actions compartment is revelead on actionA, THEN actionB is hidden on the diagram background")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testDisplayActionsCompartmentOnActionAShouldHideActionB() {
         var flux = this.givenSubscriptionToDiagram();
@@ -264,9 +258,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with actionA and actionB linked by a composition edge, WHEN the items compartment is revelead on actionA, THEN actionB is still visible on the diagram background")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testDisplayItemsCompartmentOnActionAShouldDoNothingOnActionB() {
         var flux = this.givenSubscriptionToDiagram();
@@ -322,9 +314,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with actionA and actionB linked by a composition edge, WHEN the Show content as Nested tool is executed, THEN actionB is hidden and all actionA compartments containing actionB are revealed")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testShowContentAsNested() {
         var flux = this.givenSubscriptionToDiagram();
@@ -410,9 +400,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartDefinition, WHEN an attribute is created on the PartDefinition, THEN the attribute is only visible in its attributes compartment")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateAttributeOnPartDef() {
         var flux = this.givenSubscriptionToDiagram();
@@ -464,9 +452,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartDefinition, WHEN an item is created on the PartDefinition, THEN the item is visible on the diagram background")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateItemOnPartDef() {
         var flux = this.givenSubscriptionToDiagram();
@@ -512,9 +498,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartDefinition, WHEN a port is created on the PartDefinition, THEN the port is only visible as border node on the PartDefinition")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreatePortOnPartDef() {
         var flux = this.givenSubscriptionToDiagram();
@@ -576,9 +560,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartUsage, WHEN an attribute is created on the PartUsage, THEN the attribute is only visible in its attributes compartment")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateAttributeOnPart() {
         var flux = this.givenSubscriptionToDiagram();
@@ -630,9 +612,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartUsage, WHEN an item is created on the PartUsage, THEN the item is visible on the diagram background")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateItemOnPart() {
         var flux = this.givenSubscriptionToDiagram();
@@ -678,9 +658,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a PartUsage, WHEN a port is created on the PartUsage, THEN the port is only visible as border node on the PartUsage")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreatePortOnPart() {
         var flux = this.givenSubscriptionToDiagram();
@@ -742,9 +720,7 @@ public class GVNestedAndTreeVisibilityTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with a ActionUsage, WHEN an attribute is created on the ActionUsage, THEN the attribute is only visible in its attributes compartment")
-    @Sql(scripts = { GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GVSimpleNestedAndTreeElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateAttributeOnAction() {
         var flux = this.givenSubscriptionToDiagram();
