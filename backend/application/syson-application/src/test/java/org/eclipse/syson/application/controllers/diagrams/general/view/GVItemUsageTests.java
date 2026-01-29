@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -43,8 +44,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -58,10 +57,6 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVItemUsageTests extends AbstractIntegrationTests {
-
-    private static final String PACKAGE = "Package";
-
-    private static final String PACKAGE1 = "Package1";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -84,8 +79,7 @@ public class GVItemUsageTests extends AbstractIntegrationTests {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
@@ -94,9 +88,7 @@ public class GVItemUsageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with an ActionUsage node, WHEN an ItemUsage is created from this node, THEN the new ItemUsage is visible as sibling node")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateItemOnActionUsage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -139,9 +131,7 @@ public class GVItemUsageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with an ActionDefinition node, WHEN an ItemUsage is created from this node, THEN the new ItemUsage is visible as sibling node")
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateItemOnActionDefinition() {
         var flux = this.givenSubscriptionToDiagram();
