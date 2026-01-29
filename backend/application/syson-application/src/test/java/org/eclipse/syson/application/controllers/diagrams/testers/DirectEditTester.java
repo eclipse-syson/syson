@@ -54,7 +54,7 @@ public class DirectEditTester {
 
     /**
      * Run a direct edit and check the resulting label for an {@link InsideLabel}.
-     * 
+     *
      * @param verifier
      *            the verifier
      * @param diagram
@@ -65,7 +65,9 @@ public class DirectEditTester {
      *            the input label to be used for the direct edit
      * @param expectedInsideLabel
      *            the expected inside label
+     * @deprecated use {@link #directEditInsideLabel(AtomicReference, String, String)} instead.
      */
+    @Deprecated
     public void checkDirectEditInsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String expectedInsideLabel) {
         Consumer<DiagramRefreshedEventPayload> checker = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -81,7 +83,7 @@ public class DirectEditTester {
 
     /**
      * Run a direct edit and check the resulting label for an {@link OutsideLabel} (only check the first one available).
-     * 
+     *
      * @param verifier
      *            the verifier
      * @param diagram
@@ -92,7 +94,9 @@ public class DirectEditTester {
      *            the input label to be used for the direct edit
      * @param expectedOutsideLabel
      *            the expected outside label
+     * @deprecated use {@link #directEditOutsideLabel(AtomicReference, String, String)} instead.
      */
+    @Deprecated
     public void checkDirectEditOutsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel, String expectedOutsideLabel) {
         Consumer<DiagramRefreshedEventPayload> checker = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -103,23 +107,25 @@ public class DirectEditTester {
                     assertThat(newLabel.text()).isEqualTo(expectedOutsideLabel);
                 }, () -> fail("Missing diagram"));
 
-        this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getOutsideLabelid(mainNodeId, d), checker);
+        this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getOutsideLabelId(mainNodeId, d), checker);
     }
 
     /**
      * Runs a direct edit and checks the resulting label for an edge centered label.
      *
      * @param verifier
-     *         the verifier
+     *            the verifier
      * @param diagram
-     *         the diagram
+     *            the diagram
      * @param edgeId
-     *         the id of the edge holding the centered label
+     *            the id of the edge holding the centered label
      * @param inputLabel
-     *         the input label to be used for the direct edit
+     *            the input label to be used for the direct edit
      * @param expectedCenteredLabel
-     *         the expected centered label
+     *            the expected centered label
+     * @deprecated use {@link #directEditCenteredEdgeLabel(AtomicReference, String, String)} instead.
      */
+    @Deprecated
     public void checkDirectEditCenteredEdgeLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String edgeId, String inputLabel,
             String expectedCenteredLabel) {
         Consumer<DiagramRefreshedEventPayload> checker = payload -> Optional.of(payload)
@@ -135,7 +141,7 @@ public class DirectEditTester {
 
     /**
      * Run a direct edit and check the resulting label for an {@link InsideLabel} (only check the first one available).
-     * 
+     *
      * @param verifier
      *            the verifier
      * @param diagram
@@ -146,7 +152,9 @@ public class DirectEditTester {
      *            the input label to be used for the direct edit
      * @param checker
      *            a check to be done after the diagram re-render
+     * @deprecated use {@link #directEditInsideLabel(AtomicReference, String, String)} instead.
      */
+    @Deprecated
     public void checkDirectEditInsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel,
             Consumer<DiagramRefreshedEventPayload> checker) {
         this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getInsideLabelId(mainNodeId, d), checker);
@@ -154,7 +162,7 @@ public class DirectEditTester {
 
     /**
      * Run a direct edit and check the resulting label for an {@link OutsideLabel} (only check the first one available).
-     * 
+     *
      * @param verifier
      *            the verifier
      * @param diagram
@@ -165,12 +173,85 @@ public class DirectEditTester {
      *            the input label to be used for the direct edit
      * @param checker
      *            a check to be done after the diagram re-render
+     * @deprecated use {@link #directEditOutsideLabel(AtomicReference, String, String)} instead.
      */
+    @Deprecated
     public void checkDirectEditOutsideLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel,
             Consumer<DiagramRefreshedEventPayload> checker) {
-        this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getOutsideLabelid(mainNodeId, d), checker);
+        this.checkDirectEdit(verifier, diagram, inputLabel, d -> this.getOutsideLabelId(mainNodeId, d), checker);
     }
 
+    /**
+     * Creates a runnable that executes a direct edit on an {@link InsideLabel}.
+     *
+     * @param diagram
+     *            the diagram reference
+     * @param mainNodeId
+     *            the id of the node holding the inside label
+     * @param inputLabel
+     *            the input label to be used for the direct edit
+     * @return a runnable that performs the direct edit mutation
+     */
+    public Runnable directEditInsideLabel(AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel) {
+        return this.createDirectEditRunnable(diagram, inputLabel, d -> this.getInsideLabelId(mainNodeId, d));
+    }
+
+    /**
+     * Creates a runnable that executes a direct edit on an {@link OutsideLabel}.
+     *
+     * @param diagram
+     *            the diagram reference
+     * @param mainNodeId
+     *            the id of the node holding the outside label
+     * @param inputLabel
+     *            the input label to be used for the direct edit
+     * @return a runnable that performs the direct edit mutation
+     */
+    public Runnable directEditOutsideLabel(AtomicReference<Diagram> diagram, String mainNodeId, String inputLabel) {
+        return this.createDirectEditRunnable(diagram, inputLabel, d -> this.getOutsideLabelId(mainNodeId, d));
+    }
+
+    /**
+     * Creates a runnable that executes a direct edit on an edge centered label.
+     *
+     * @param diagram
+     *            the diagram reference
+     * @param edgeId
+     *            the id of the edge holding the centered label
+     * @param inputLabel
+     *            the input label to be used for the direct edit
+     * @return a runnable that performs the direct edit mutation
+     */
+    public Runnable directEditCenteredEdgeLabel(AtomicReference<Diagram> diagram, String edgeId, String inputLabel) {
+        return this.createDirectEditRunnable(diagram, inputLabel, d -> this.getCenteredLabelId(edgeId, d));
+    }
+
+    private Runnable createDirectEditRunnable(AtomicReference<Diagram> diagram, String inputLabel, Function<Diagram, String> labelIdProvider) {
+        return () -> {
+            final String labelId = labelIdProvider.apply(diagram.get());
+            EditLabelInput input = new EditLabelInput(UUID.randomUUID(), this.editingContextId, diagram.get().getId(), labelId, inputLabel);
+            var result = this.editLabelMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+    }
+
+    /**
+     * Executes a direct edit mutation and chains the result verification to the provided verifier.
+     *
+     * @param verifier
+     *            the {@link Step} verifier to chain the direct edit execution to
+     * @param diagram
+     *            the diagram reference containing the label to edit
+     * @param inputLabel
+     *            the new label value to set via direct edit
+     * @param labelIdProvider
+     *            a function that retrieves the label ID from the diagram
+     * @param diagramConsumer
+     *            a consumer to verify the diagram after the direct edit completes
+     * @deprecated use {@link #createDirectEditRunnable(AtomicReference, String, Function)} instead.
+     */
+    @Deprecated
     private void checkDirectEdit(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String inputLabel, Function<Diagram, String> labelIdProvider,
             Consumer<DiagramRefreshedEventPayload> diagramConsumer) {
         Runnable requestDirectEdit = () -> {
@@ -193,7 +274,7 @@ public class DirectEditTester {
         return diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel().getId();
     }
 
-    private String getOutsideLabelid(String mainNodeId, Diagram d) {
+    private String getOutsideLabelId(String mainNodeId, Diagram d) {
         DiagramNavigator diagramNavigator = new DiagramNavigator(d);
         return diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0).id();
     }
