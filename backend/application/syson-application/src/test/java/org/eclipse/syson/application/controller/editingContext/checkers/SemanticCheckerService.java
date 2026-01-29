@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,8 @@ public class SemanticCheckerService {
      *            a supplier that returns the id of the semantic object
      * @param semanticChecker
      *            the checks that needs to be run
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link SemanticCheckerService#checkElement(Class type, Supplier idSupplier, Consumer semanticChecker)} instead.
      */
     public <T extends Element> void checkElement(Step<?> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
         ISemanticChecker checker = editingContext -> {
@@ -82,6 +84,41 @@ public class SemanticCheckerService {
         this.checkEditingContext(checker, verifier);
     }
 
+    /**
+     * Provide a runnable that do some checks on the element identified by the given id.
+     *
+     * @param <T>
+     *            the type element under test
+     * @param type
+     *            the type of the element under test
+     * @param idSupplier
+     *            a supplier that returns the id of the semantic object
+     * @param semanticChecker
+     *            the checks that needs to be run
+     */
+    public <T extends Element> Runnable checkElement(Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
+        ISemanticChecker checker = editingContext -> {
+            Optional<Object> optElement = this.objectSearchService.getObject(editingContext, idSupplier.get());
+            assertThat(optElement).isPresent();
+            Object element = optElement.get();
+            assertThat(element).isInstanceOf(type);
+            T castedElement = type.cast(element);
+            semanticChecker.accept(castedElement);
+        };
+        return this.checkEditingContext(checker);
+    }
+
+    /**
+     * Runs semantic checks on the editing context and chains them to the provided verifier.
+     *
+     * @param semanticChecker
+     *            the checker containing the semantic assertions to run
+     * @param verifier
+     *            the {@link Step} verifier to chain the check execution to
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link SemanticCheckerService#checkEditingContext(ISemanticChecker semanticChecker)} instead.
+     */
+    @Deprecated
     public void checkEditingContext(ISemanticChecker semanticChecker, Step<?> verifier) {
         Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(this.editingContextId,
                 (editingContext, executeEditingContextFunctionInput) -> {
@@ -90,6 +127,20 @@ public class SemanticCheckerService {
                 });
 
         verifier.then(runnableChecker);
+    }
+
+    /**
+     * Provide a runnable that run semantic checks on the editing context and chains them to the provided verifier.
+     *
+     * @param semanticChecker
+     *            the checker containing the semantic assertions to run
+     */
+    public Runnable checkEditingContext(ISemanticChecker semanticChecker) {
+        return this.semanticRunnableFactory.createRunnable(this.editingContextId,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    semanticChecker.check(editingContext);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
     }
 
 }
