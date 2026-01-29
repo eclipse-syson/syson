@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.graphql.ShowDiagramsInheritedMembersMutationRunner;
 import org.eclipse.syson.application.data.GeneralViewInheritedPortTestProjectData;
 import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersInput;
@@ -48,8 +49,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -96,9 +95,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with some inherited port, WHEN show inherited members filter is uncheck, THEN inherited ports are not displayed")
-    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @Test
     public void checkInheritedPortsVisibility() {
         var flux = this.givenSubscriptionToDiagram();
@@ -162,9 +159,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from inherited port, THEN inherited port is redefined")
-    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
     public void checkInheritedPortSourceRedefinition(String parameterizedValue) {
@@ -233,9 +228,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke targeting an inherited port, THEN inherited port is redefined")
-    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
     public void checkInheritedPortTargetRedefinition(String parameterizedValue) {
@@ -304,9 +297,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoked from an inherited port and targeting an inherited port, THEN both inherited ports are redefined")
-    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
     public void checkInheritedPortAsSourceAndTargetRedefinition(String parameterizedValue) {
@@ -377,9 +368,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with some inherited port, WHEN palette is retrieved, THEN delete and rename tools should not be available")
-    @Sql(scripts = { GeneralViewInheritedPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @Test
     public void checkInheritedPortPalette() {
         var flux = this.givenSubscriptionToDiagram();
