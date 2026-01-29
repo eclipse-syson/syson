@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
@@ -54,8 +55,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -123,13 +122,11 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN an edge tool is requested on a pair of node that already have the corresponding relation, THEN no redundant edge is created but an informative message is returned to the end user")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("redundantEdgesArguments")
     public void testAttemptToCreateRedundantFeatureTyping(EClass sourceNodeClass, String sourceNodeLabel, EClass targetNodeClass, String targetNodeLabel, EClass edgeType, String expectedInfoMessage) {
