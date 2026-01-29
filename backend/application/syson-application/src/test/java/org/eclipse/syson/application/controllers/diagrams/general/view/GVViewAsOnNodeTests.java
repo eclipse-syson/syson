@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ViewAsOnNodeTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -54,8 +55,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -110,8 +109,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID,
                 ViewAsOnNodeTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
@@ -120,8 +118,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram with 3 PartUsages (linked by composition, partA, partB, partC), WHEN the 'View as > Interconnection View' tool is applied on partB, THEN a new ViewUsage (typed with IV) is created and visible in the GV and contain partB and partC.")
-    @Sql(scripts = { ViewAsOnNodeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewAsOnNodeTestProjectData.SCRIPT_PATH })
     @Test
     public void testViewAsIVOnPartUsage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -223,8 +220,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a GV diagram, WHEN the 'View as > Interconnection View' tool is applied on a Package, THEN a new ViewUsage (typed with IV) is created and visible in the GV and contain the Package.")
-    @Sql(scripts = { ViewAsOnNodeTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewAsOnNodeTestProjectData.SCRIPT_PATH })
     @Test
     public void testViewAsIVOnPackage() {
         var flux = this.givenSubscriptionToDiagram();
@@ -241,7 +237,6 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var packageNodeId = new AtomicReference<String>();
-        var view2Id = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             diagramId.set(diag.getId());
@@ -271,7 +266,6 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
                     .nodeWithLabel(LabelConstants.OPEN_QUOTE + "view" + LabelConstants.CLOSE_QUOTE + " view2 : StandardViewDefinitions::GeneralView");
             var newViewUsageNode = view2NodeNavigator.getNode();
             assertThat(newViewUsageNode).isNotNull();
-            view2Id.set(newViewUsageNode.getTargetObjectId());
 
             var packageNode = view2NodeNavigator.childNodeWithLabel("Package1").getNode();
             assertThat(packageNode).isNotNull();

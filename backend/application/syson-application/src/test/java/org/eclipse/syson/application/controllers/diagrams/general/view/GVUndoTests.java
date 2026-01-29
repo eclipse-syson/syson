@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.undoredo.UndoMutationRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolRunner;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
@@ -49,8 +50,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -90,8 +89,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
@@ -100,9 +98,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a node, WHEN a the node is deleted, THEN the undo restore the node")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void testUndoAfterDelete() {
         var flux = this.givenSubscriptionToEmptyDiagram();
@@ -120,9 +116,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
         var diagram = new AtomicReference<Diagram>();
         var partNodeId = new AtomicReference<String>();
 
-        Consumer<Object> initialDiagram = assertRefreshedDiagramThat(diag -> {
-            diagram.set(diag);
-        });
+        Consumer<Object> initialDiagram = assertRefreshedDiagramThat(diagram::set);
 
         Runnable newPartUsageTool = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, newPartToolId);
 
