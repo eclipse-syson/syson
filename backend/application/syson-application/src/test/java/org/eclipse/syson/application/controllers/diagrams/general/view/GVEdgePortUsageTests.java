@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE_STYLE;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -31,34 +33,30 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.GeneralViewPortTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.BindingConnector;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -74,9 +72,6 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
@@ -99,55 +94,43 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
 
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private DiagramCheckerService diagramCheckerService;
-
-    private StepVerifier.Step<DiagramRefreshedEventPayload> verifier;
-
     private SemanticCheckerService semanticCheckerService;
 
-    private AtomicReference<Diagram> diagram;
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewPortTestProjectData.EDITING_CONTEXT_ID, GeneralViewPortTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
-                GeneralViewPortTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
-        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
         this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewPortTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
-    }
-
     @DisplayName("GIVEN a SysML Project with Ports, WHEN Flow edge tool creation is request between two ports, THEN a new Flow edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewPortTestProjectData.SCRIPT_PATH })
     @Test
     public void givenSysMLProjectWithPortsWhenFlowUsageEdgeToolCreationIsRequestedThenNewFlowUsageEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider
                 .getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()), "New Flow (flow)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
-                creationToolId));
+                creationToolId);
 
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(0)
                     .hasNewEdgeCount(1)
@@ -159,32 +142,48 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.InputFillClosedArrow);
-        };
-
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        });
 
         ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("Package 1", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
                 SysmlPackage.eINSTANCE.getFlowUsage());
 
-        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
     }
 
     @DisplayName("GIVEN a SysML Project with ports, WHEN binding connector as usage edge tool creation is request between two ports, THEN a new binding connector edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewPortTestProjectData.SCRIPT_PATH })
     @Test
     public void givenSysMLProjectWithPortsWhenBindingConnectorAsUsageEdgeToolCreationIsRequestedThenNewBindingConnectorEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Binding Connector As Usage (bind)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
-                creationToolId));
+                creationToolId);
 
         List<String> bindingConnectorIds = new ArrayList<>();
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(0)
                     .hasNewEdgeCount(1)
@@ -197,30 +196,45 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);
             bindingConnectorIds.addAll(newEdges.stream().map(Edge::getTargetObjectId).toList());
-        };
+        });
 
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-
-        this.semanticCheckerService.checkElement(this.verifier, BindingConnector.class, () -> bindingConnectorIds.get(0), bindingConnector -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(BindingConnector.class, () -> bindingConnectorIds.get(0), bindingConnector -> {
             assertThat(bindingConnector.getOwner().getName()).isEqualTo("Package 1");
         });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a SysML Project with ports, WHEN interface edge tool creation is request between two ports, THEN a new interface edge is created")
-    @Sql(scripts = { GeneralViewPortTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewPortTestProjectData.SCRIPT_PATH })
     @Test
     public void givenSysMLProjectWithPortsWhenInterfaceEdgeToolCreationIsRequestedThenNewInterfaceEdgeIsCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
                 "New Interface (connect)");
-        this.verifier.then(() -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewPortTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_1_BORDER_NODE_ID,
                 GeneralViewPortTestProjectData.GraphicalIds.PORT_2_BORDER_NODE_ID,
-                creationToolId));
+                creationToolId);
 
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(0)
                     .hasNewEdgeCount(1)
@@ -232,14 +246,20 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);
-        };
-
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        });
 
         ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("Package 1", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
                 SysmlPackage.eINSTANCE.getInterfaceUsage());
 
-        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
 }
