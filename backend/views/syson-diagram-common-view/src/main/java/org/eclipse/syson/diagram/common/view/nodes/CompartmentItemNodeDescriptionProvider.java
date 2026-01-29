@@ -60,12 +60,14 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
 
     @Override
     public NodeDescription create() {
+        var qualifiedName = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
                 .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(this.getDomainType())
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
+                .preconditionExpression("aql:self.oclIsTypeOf(" + qualifiedName + ")")
                 .semanticCandidatesExpression(this.getSemanticCandidateExpression())
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
