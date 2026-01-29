@@ -115,6 +115,8 @@ A new compartment named _satisfy requirements_ has also been added to `PartDefin
 - https://github.com/eclipse-syson/syson/issues/1818[#1818] [diagrams] On _Interconnection View_ diagrams, the top-level palette no longer proposes to create `Attributes` and `Ports`, which can not actually be displayed on the diagram's background.
 The tools are still available in the palette of e.g. `Parts`.
 - https://github.com/eclipse-syson/syson/issues/1819[#1819] [diagrams] In diagrams, when using _direct edit_ tool, you can now set a _multiplicity range part_ [n..n] after or before a _typing part_, _subsetting part_ or _redefinition part_.
+- https://github.com/eclipse-syson/syson/issues/1860[#1860] [diagrams] Add a precondition for item node descriptions in order to filter out inherited types.
+For example `Element` of type `ViewUsage` are no longer rendered in _part_ compartments despite inheriting from `PartUsage`.
 
 === New features
 
