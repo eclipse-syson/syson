@@ -219,8 +219,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
         expressionWidget.setName("ValueExpression");
         expressionWidget.setLabelExpression("Value");
-        expressionWidget.setValueExpression(AQLUtils.getSelfServiceCallExpression("getValueExpressionTextualRepresentation"));
-        expressionWidget.setIsEnabledExpression("aql:false");
+        expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getValueExpressionTextualRepresentation).aqlSelf());
+        expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
 
         group.getChildren().add(expressionWidget);
 
@@ -434,9 +434,9 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioVisibilityWidget");
         radio.setLabelExpression("Visibility");
-        radio.setCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityEnumLiterals"));
+        radio.setCandidatesExpression(ServiceMethod.of0(DetailsViewService::getVisibilityEnumLiterals).aqlSelf());
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityValue"));
+        radio.setValueExpression(ServiceMethod.of0(DetailsViewService::getVisibilityValue).aqlSelf());
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setVisibilityValue", "newValue.instance"));
@@ -458,7 +458,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         payloadRefWidget.setName("ExtraPayloadWidget");
         payloadRefWidget.setLabelExpression("Payload");
         payloadRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
-        payloadRefWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsagePayloadFeatureTyping"));
+        payloadRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(DetailsViewService::getAcceptActionUsagePayloadFeatureTyping).aqlSelf());
         payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setPayloadRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("setAcceptActionUsagePayloadParameter", ViewFormDescriptionConverter.NEW_VALUE));
@@ -468,7 +468,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         receiverRefWidget.setName("ExtraReceiverWidget");
         receiverRefWidget.setLabelExpression("Receiver");
         receiverRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getMembership_MemberElement().getName());
-        receiverRefWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsageReceiverMembership"));
+        receiverRefWidget.setReferenceOwnerExpression(ServiceMethod.of0(DetailsViewService::getAcceptActionUsageReceiverMembership).aqlSelf());
         receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setReceiverRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("setAcceptActionUsageReceiverArgument", ViewFormDescriptionConverter.NEW_VALUE));

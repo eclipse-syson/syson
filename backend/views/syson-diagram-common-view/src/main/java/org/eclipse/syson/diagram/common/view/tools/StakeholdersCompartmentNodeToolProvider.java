@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * {@link ActorCompartmentNodeToolProvider} specialization for {@link RequirementDefinition#getStakeholderParameter()}
@@ -27,15 +33,16 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createPartUsageAsStakeholder(selectedObject)";
+        return ServiceMethod.of1(ViewCreateService::createPartUsageAsStakeholder).aqlSelf("selectedObject");
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        var domainName = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getStakeholderSelectionDialogElements"))
-                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getStakeholderSelectionDialogChildren"))
-                .isSelectableExpression("aql:self.oclIsKindOf(sysml::PartUsage)")
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getStakeholderSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of0(ViewToolService::getStakeholderSelectionDialogChildren).aqlSelf())
+                .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainName + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
