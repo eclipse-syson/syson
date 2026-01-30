@@ -14,7 +14,6 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Duration;
 import java.util.List;
@@ -49,7 +48,6 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.trees.Tree;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -58,6 +56,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventSubscriptionRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
@@ -67,7 +66,6 @@ import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
@@ -77,7 +75,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.util.ViewConstants;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,12 +83,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifier.Step;
 
 /**
  * Tests the creation of top nodes in the General View diagram.
@@ -106,9 +101,6 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
@@ -145,14 +137,6 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
-
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
-    private DiagramDescription diagramDescription;
 
     private static Stream<Arguments> topNodeParameters() {
         return Stream.of(
@@ -196,63 +180,54 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         ).map(TestNameGenerator::namedArguments);
     }
 
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
+
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
-    }
-
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("topNodeParameters")
     public void createTopNode(EClass eClass, int compartmentCount, int expectedDefaultHeight, int expectedDefaultWidth) {
-        String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.then(() -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                this.diagram,
-                creationToolId));
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
-                .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(newDiagram -> {
-                    int createdNodesExpectedCount = 1 + compartmentCount;
-                    new CheckDiagramElementCount(this.diagramComparator)
-                            .hasNewEdgeCount(0)
-                            .hasNewNodeCount(createdNodesExpectedCount)
-                            .check(this.diagram.get(), newDiagram);
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-                    String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(eClass);
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-                    new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
-                            .hasNodeDescriptionName(newNodeDescriptionName)
-                            .hasCompartmentCount(compartmentCount)
-                            .check(this.diagram.get(), newDiagram);
+        Runnable createNodeRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, creationToolId);
 
-                    var parentNode = newDiagram.getNodes().get(0);
-                    assertThat(parentNode.getDefaultHeight()).isEqualTo(expectedDefaultHeight);
-                    assertThat(parentNode.getDefaultWidth()).isEqualTo(expectedDefaultWidth);
-                }, () -> fail("Missing diagram"));
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            int createdNodesExpectedCount = 1 + compartmentCount;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(0)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .check(initialDiagram, newDiagram);
 
-        this.verifier.consumeNextWith(updatedDiagramConsumer);
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(eClass);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(compartmentCount)
+                    .check(initialDiagram, newDiagram);
+
+            var parentNode = newDiagram.getNodes().get(0);
+            assertThat(parentNode.getDefaultHeight()).isEqualTo(expectedDefaultHeight);
+            assertThat(parentNode.getDefaultWidth()).isEqualTo(expectedDefaultWidth);
+        });
+
+        Runnable semanticCheck = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
@@ -263,17 +238,31 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        this.verifier.then(semanticChecker);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN an empty SysML Project, WHEN New Namespace Import tool on diagram is requested, THEN a new NamespaceImport is created")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void createTopNamespaceImportNode() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
         AtomicReference<String> libId = new AtomicReference<>();
 
-        String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
 
         BiFunction<IEditingContext, IInput, IPayload> initiateContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             libId.set(this.getISQAcousticsLibraryId(editingContext));
@@ -286,51 +275,65 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             assertThat(payload).isInstanceOf(SuccessPayload.class);
         };
 
-        Runnable invoketool = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
-                this.diagram,
+        Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                diagram,
                 null,
                 creationToolId,
                 List.of(new ToolVariable("selectedObject", libId.get(), ToolVariableType.OBJECT_ID)));
 
-        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             assertThat(libId.get()).isNotEmpty();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(0)
                     .hasNewNodeCount(1)
-                    .check(this.diagram.get(), newDiagram);
+                    .check(initialDiagram, newDiagram);
             // the "Add your first element" empty diagram image node is not present anymore
             assertThat(newDiagram.getNodes()).hasSize(1);
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport());
 
-            new CheckNodeOnDiagram(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                     .hasNodeDescriptionName(newNodeDescriptionName)
                     .hasCompartmentCount(0)
-                    .check(this.diagram.get(), newDiagram);
+                    .check(initialDiagram, newDiagram);
 
             var parentNode = newDiagram.getNodes().get(0);
             assertThat(parentNode.getDefaultHeight()).isEqualTo(Integer.parseInt(ViewConstants.DEFAULT_PACKAGE_NODE_HEIGHT));
             assertThat(parentNode.getDefaultWidth()).isEqualTo(Integer.parseInt(ViewConstants.DEFAULT_PACKAGE_NODE_WIDTH));
         });
 
-        this.verifier
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
                 .then(initiate)
-                .then(invoketool)
-                .consumeNextWith(updatedDiagramConsumer);
+                .then(invokeTool)
+                .consumeNextWith(diagramCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
     @DisplayName("GIVEN an empty SysML Project, WHEN we subscribe to the selection dialog tree of the NamespaceImport tool, THEN the tree is sent")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     public void givenAnEmptySysMLProjectWhenWeSubscribeToTheSelectionDialogTreeOfTheNamespaceImportToolThenTheTreeIsSent() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
 
-        this.verifier.then(this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+        Runnable getSelectionDialogId = this.semanticRunnableFactory.createRunnable(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 (editingContext, executeEditingContextFunctionInput) -> {
-                    selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext));
+                    selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext, diagram.get()));
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                })).thenCancel().verify();
+                });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(getSelectionDialogId)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
 
         assertThat(selectionDialogDescriptionId.get()).isNotEmpty();
 
@@ -338,13 +341,13 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                     List.of());
             var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, representationId);
-            var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
+            var treeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
             var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {
                 // 95 is the number of standard libraries
                 assertThat(tree.getChildren()).isNotEmpty().hasSize(95);
             });
-            StepVerifier.create(flux)
+            StepVerifier.create(treeFlux)
                     .consumeNextWith(hasResourceRootContent)
                     .thenCancel()
                     .verify(Duration.ofSeconds(10));
@@ -387,9 +390,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 .findFirst();
     }
 
-    private Optional<String> getSelectionDialogDescriptionId(IEditingContext editingContext) {
+    private Optional<String> getSelectionDialogDescriptionId(IEditingContext editingContext, Diagram diagram) {
         Optional<String> result = Optional.empty();
-        var optionalDiagramViewDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, this.diagram.get().getDescriptionId());
+        var optionalDiagramViewDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
         if (optionalDiagramViewDescription.isPresent()) {
             var diagramViewDescription = optionalDiagramViewDescription.get();
             Optional<SelectionDialogDescription> selectionDialogDescription = diagramViewDescription.getPalette().getToolSections().stream()
