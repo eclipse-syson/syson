@@ -84,8 +84,6 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONEContentAdapter;
 
 /**
@@ -234,28 +232,17 @@ public class UtilService {
     }
 
     /**
-     * Get the AQL service expression getting all reachable elements based on the provided {@code domainType} type.
-     *
-     * @param domainType
-     *            A type to be converted as an EClass name
-     * @return An AQL expression calling {@code self.getAllReachable(domainType)}
-     */
-    public String getAllReachableExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType);
-    }
-
-    /**
-     * Get all reachable elements of a type in the {@link ResourceSet} of given {@link EObject}.
+     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given type
+     * (represented by its qualified name).
      *
      * @param eObject
      *            the {@link EObject} stored in a {@link ResourceSet}
      * @param type
-     *            the search typed (either simple or qualified named of the EClass ("Package" vs "sysml::Package")
+     *            the searched type, represented by its qualified name
      * @return a list of reachable object
      */
-    public List<EObject> getAllReachable(EObject eObject, String type) {
-        EClass eClass = SysMLMetamodelHelper.toEClass(type);
-        return this.getAllReachable(eObject, eClass);
+    public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
+        return this.getAllReachableType(eObject, eClass);
     }
 
     /**
@@ -268,7 +255,7 @@ public class UtilService {
      *            the searched {@link EClass}
      * @return a list of reachable object
      */
-    public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
+    public List<EObject> getAllReachableType(EObject eObject, EClass eClass) {
         List<EObject> allReachable = new ArrayList<>();
         Adapter adapter = EcoreUtil.getAdapter(eObject.eAdapters(), SysONEContentAdapter.class);
         if (adapter instanceof SysONEContentAdapter cacheAdapter) {
@@ -292,10 +279,10 @@ public class UtilService {
      *            include standard libraries elements into list result
      * @return a list of reachable object
      */
-    public List<EObject> getAllReachable(EObject eObject, EClass eClass, boolean withStandardLibs) {
+    public List<EObject> getAllReachableType(EObject eObject, EClass eClass, boolean withStandardLibs) {
         List<EObject> allReachable = new ArrayList<>();
         if (withStandardLibs) {
-            return this.getAllReachable(eObject, eClass);
+            return this.getAllReachableType(eObject, eClass);
         }
         var userResources = eObject.eResource().getResourceSet().getResources().stream()
                 .filter(r -> r.getURI().toString().startsWith(IEMFEditingContext.RESOURCE_SCHEME))
@@ -325,12 +312,12 @@ public class UtilService {
      */
     public List<StateUsage> getAllReachableStatesWithoutReferentialExhibit(Element eObject) {
         List<StateUsage> result = new ArrayList<>();
-        this.getAllReachable(eObject, SysmlPackage.eINSTANCE.getExhibitStateUsage()).stream().forEach(su -> {
+        this.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getExhibitStateUsage()).stream().forEach(su -> {
             if (((ExhibitStateUsage) su).getExhibitedState() == null) {
                 result.add((StateUsage) su);
             }
         });
-        this.getAllReachable(eObject, SysmlPackage.eINSTANCE.getStateUsage()).stream().forEach(su -> {
+        this.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getStateUsage()).stream().forEach(su -> {
             result.add((StateUsage) su);
         });
         return result;

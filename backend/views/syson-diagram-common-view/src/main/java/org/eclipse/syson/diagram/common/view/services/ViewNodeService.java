@@ -407,8 +407,8 @@ public class ViewNodeService {
     }
 
     public List<Element> getAllReachableRequirements(EObject eObject) {
-        List<EObject> allRequirementUsages = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getRequirementUsage(), false);
-        List<EObject> allRequirementDefinitions = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getRequirementDefinition(), false);
+        List<EObject> allRequirementUsages = this.utilService.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getRequirementUsage(), false);
+        List<EObject> allRequirementDefinitions = this.utilService.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getRequirementDefinition(), false);
         return Stream.concat(allRequirementUsages.stream(), allRequirementDefinitions.stream())
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)

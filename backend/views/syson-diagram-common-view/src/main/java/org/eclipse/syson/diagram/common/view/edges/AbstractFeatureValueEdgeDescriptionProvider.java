@@ -26,10 +26,10 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -80,7 +80,7 @@ public abstract class AbstractFeatureValueEdgeDescriptionProvider extends Abstra
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("=")
                 .name(this.getName())
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureValue_FeatureWithValue().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

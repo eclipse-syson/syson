@@ -22,8 +22,9 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -101,7 +102,7 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
                 .centerLabelExpression("")
                 .name(this.getName())
                 .preconditionExpression("aql:self.oclIsTypeOf(" + domainType + ")")
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression(this.getSourceExpression())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

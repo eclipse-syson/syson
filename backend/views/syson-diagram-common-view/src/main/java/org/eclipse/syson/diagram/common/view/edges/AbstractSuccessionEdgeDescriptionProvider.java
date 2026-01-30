@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -78,7 +79,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
                 .isDomainBasedEdge(true)
                 .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .name(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .sourceExpression("aql:self.getSource()")

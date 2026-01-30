@@ -36,9 +36,9 @@ import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptio
 import org.eclipse.syson.diagram.common.view.services.dto.NodeDefaultSizeExpression;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -73,7 +73,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport()))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .style(this.createImportedPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

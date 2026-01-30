@@ -29,12 +29,12 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -117,8 +117,8 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getExposedActors",
-                List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT));
+        return ServiceMethod.of4(ViewNodeService::getExposedActors).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
+                DiagramContext.DIAGRAM_CONTEXT);
     }
 
     @Override

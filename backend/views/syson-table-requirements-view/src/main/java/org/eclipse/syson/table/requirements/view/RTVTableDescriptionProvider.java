@@ -27,8 +27,8 @@ import org.eclipse.sirius.components.view.table.ColumnDescription;
 import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.table.requirements.view.services.RTVMutationServices;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -143,7 +143,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .valueExpression("aql:self.getDocumentationBody()")
                 .cellWidgetDescription(this.tableBuilders.newCellTextareaWidgetDescription()
                         .body(this.viewBuilders.newChangeContext()
-                                .expression(AQLUtils.getSelfServiceCallExpression("editDocumentation", "newValue"))
+                                .expression(ServiceMethod.of1(RTVMutationServices::editDocumentation).aqlSelf("newValue"))
                                 .build())
                         .build())
                 .build();
@@ -163,7 +163,7 @@ public class RTVTableDescriptionProvider implements IRepresentationDescriptionPr
                 .labelExpression("Delete from table")
                 .iconURLExpression("/images/graphicalDelete.svg")
                 .body(this.viewBuilders.newChangeContext()
-                        .expression(AQLUtils.getSelfServiceCallExpression("removeFromExposedElements", List.of(IEditingContext.EDITING_CONTEXT, TableDescription.TABLE)))
+                        .expression(ServiceMethod.of2(RTVMutationServices::removeFromExposedElements).aqlSelf(IEditingContext.EDITING_CONTEXT, TableDescription.TABLE))
                         .build())
                 .build();
 

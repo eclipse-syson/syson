@@ -907,7 +907,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
      */
     private Optional<AttributeUsage> getMeasurementAttribute(Element context, String measurementName) {
         AttributeDefinition tensorMeasurementReference = this.utilService.findByNameAndType(context, "MeasurementReferences::TensorMeasurementReference", AttributeDefinition.class);
-        List<EObject> attributes = this.utilService.getAllReachable(context, SysmlPackage.eINSTANCE.getAttributeUsage());
+        List<EObject> attributes = this.utilService.getAllReachableType(context, SysmlPackage.eINSTANCE.getAttributeUsage());
         Optional<AttributeUsage> optUnitAttribute = attributes.stream()
                 .map(AttributeUsage.class::cast)
                 // The short name or the regular name can be use to set units

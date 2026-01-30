@@ -31,7 +31,6 @@ import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -104,7 +103,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .elementsExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .build();
 
         var selectExistingStateUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
