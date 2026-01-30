@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,20 +41,17 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ViewUsageExposedElementsTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
@@ -65,18 +62,15 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifier.Step;
 
 /**
  * Tests the synchronization between the diagram nodes and the ViewUsage#exposedElements reference.
@@ -91,9 +85,6 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
@@ -122,53 +113,33 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
     @Autowired
     private LayoutDiagramMutationRunner layoutDiagramMutationRunner;
 
-    private Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
-    private DiagramDescription diagramDescription;
-
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private DiagramCheckerService diagramCheckerService;
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, ViewUsageExposedElementsTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
-                ViewUsageExposedElementsTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
     }
 
     @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN New Part tool is executed, THEN a the ViewUsage#exposedElements is updated with the new Part")
-    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewUsageExposedElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void newPartToolShouldUpdateExposedElements() {
-        String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
         assertThat(creationToolId).as("The tool 'New Part' should exist on the diagram").isNotNull();
 
-        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
-                creationToolId));
-
-        this.verifier.consumeNextWith(payload -> Optional.of(payload));
+        Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
         Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
@@ -183,22 +154,31 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        this.verifier.then(semanticChecker);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(invokeToolCheck)
+                .consumeNextWith(payload -> { })
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) tool is executed, THEN the ViewUsage#exposedElements is updated with partA")
-    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewUsageExposedElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void addExistingElementsToolShouldUpdateExposedElements() {
-        String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
-        assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
-                creationToolId));
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.consumeNextWith(payload -> Optional.of(payload));
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
+        Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
         Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
@@ -213,22 +193,31 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        this.verifier.then(semanticChecker);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(invokeToolCheck)
+                .consumeNextWith(payload -> { })
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN Add existing element(s) (recursive) tool is executed, THEN the ViewUsage#exposedElements is updated with partA and partB")
-    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewUsageExposedElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void addExistingElementsRecursivelyToolShouldUpdateExposedElements() {
-        String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
-        assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
-                creationToolId));
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.consumeNextWith(payload -> Optional.of(payload));
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
+        assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
+        Runnable invokeToolCheck = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
 
         Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
@@ -245,15 +234,23 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
-        this.verifier.then(semanticChecker);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(invokeToolCheck)
+                .consumeNextWith(payload -> { })
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN the ViewUsage#exposedElements is updated with partA, THEN the GV diagram is updated with a new partA node.")
-    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewUsageExposedElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void updateExposedElementsShouldUpdateTheDiagram() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             Object viewUsageObject = this.objectSearchService.getObject(editingContext, ViewUsageExposedElementsTestProjectData.SemanticIds.VIEW_USAGE_GV_ELEMENT_ID).orElse(null);
@@ -276,7 +273,6 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                     .block();
             assertThat(modifyExposedElementsPayload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
         };
-        this.verifier.then(modifyExposedElements);
 
         var currentRevisionId = new AtomicReference<UUID>();
         Consumer<Object> updatedDiagramContentConsumer = payload -> Optional.of(payload)
@@ -286,39 +282,52 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                     currentRevisionId.set(diagramPayload.id());
                     return diagramPayload.diagram();
                 });
-        this.verifier.consumeNextWith(updatedDiagramContentConsumer);
 
         Runnable newDiagramLayout = () -> {
             var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of());
-            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram.get().getId(),
+            var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
                     DiagramRefreshedEventPayload.CAUSE_REFRESH, layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
-        this.verifier.then(newDiagramLayout);
 
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(13) // One node and 12 compartments
                     .check(initialDiagram, newDiagram);
             Node newNode = this.diagramComparator.newNodes(initialDiagram, newDiagram).get(0);
             assertEquals(ViewUsageExposedElementsTestProjectData.SemanticIds.PART_A_SIRIUS_ID, newNode.getTargetObjectId());
-        };
+        });
 
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(modifyExposedElements)
+                .consumeNextWith(updatedDiagramContentConsumer)
+                .then(newDiagramLayout)
+                .consumeNextWith(diagramCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a GV diagram on a ViewUsage, WHEN an element is created inside a Package, THEN the element should only be visible inside the Package")
-    @Sql(scripts = { ViewUsageExposedElementsTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ViewUsageExposedElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void exposePackageChildShouldDisplayChildOnlyinPAckage() {
-        var newPackageToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("New Package");
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newPackageToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("New Package");
         assertThat(newPackageToolId).as("The tool 'New Package' should exist on the diagram").isNotNull();
-        var newInterfaceToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Interface");
+        var newInterfaceToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Interface");
         assertThat(newInterfaceToolId).as("The tool 'New Interface' should exist on the Package").isNotNull();
 
-        Runnable newPackageTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram, newPackageToolId);
+        Runnable newPackageTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram, newPackageToolId);
 
         var packageNodeId = new AtomicReference<String>();
 
@@ -331,7 +340,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
             packageNodeId.set(packageNode.getId());
         });
 
-        Runnable newInterfaceTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, this.diagram.get().getId(), packageNodeId.get(), newInterfaceToolId,
+        Runnable newInterfaceTool = () -> this.toolTester.invokeTool(ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), packageNodeId.get(), newInterfaceToolId,
                 List.of());
 
         Consumer<Object> updatedDiagramWithInterface = assertRefreshedDiagramThat(diag -> {
@@ -344,10 +353,13 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
             assertThat(interfaceNode).isNotNull();
         });
 
-        this.verifier
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
                 .then(newPackageTool)
                 .consumeNextWith(updatedDiagramWithPackage)
                 .then(newInterfaceTool)
-                .consumeNextWith(updatedDiagramWithInterface);
+                .consumeNextWith(updatedDiagramWithInterface)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }
