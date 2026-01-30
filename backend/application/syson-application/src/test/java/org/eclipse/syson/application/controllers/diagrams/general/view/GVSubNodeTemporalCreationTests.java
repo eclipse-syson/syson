@@ -165,7 +165,8 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getOccurrenceUsage();
         String parentLabel = "occurrence";
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)
@@ -233,6 +234,9 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getOccurrenceDefinition();
         String parentLabel = "OccurrenceDefinition";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
         final Consumer<Object> diagramCheck;
         if (SysmlPackage.eINSTANCE.getPartUsage().equals(childEClass)) {
             // A PartUsage appears both as a sibling and in the "occurrences" compartment.
@@ -260,7 +264,7 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         } else {
             diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
         }
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)
