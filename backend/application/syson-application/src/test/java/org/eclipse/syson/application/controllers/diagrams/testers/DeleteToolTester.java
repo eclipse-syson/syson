@@ -19,13 +19,9 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-
-import reactor.test.StepVerifier.Step;
 
 /**
  * Execute a "Delete" tool (either delete from model or delete from diagram).
@@ -46,9 +42,8 @@ public class DeleteToolTester {
         this.representationId = Objects.requireNonNull(representationId);
     }
 
-    public void checkDeleteTool(Step<DiagramRefreshedEventPayload> verifier, List<String> nodeIds, List<String> edgeIds,
-            Consumer<DiagramRefreshedEventPayload> diagramConsumer) {
-        Runnable requestRemoveFromDiagram = () -> {
+    public Runnable checkDeleteTool(List<String> nodeIds, List<String> edgeIds) {
+        return () -> {
 
             DeleteFromDiagramInput input = new DeleteFromDiagramInput(UUID.randomUUID(), this.editingContextId, this.representationId, nodeIds, edgeIds);
             var result = this.runner.run(input);
@@ -56,8 +51,6 @@ public class DeleteToolTester {
             String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
             assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
         };
-        verifier.then(requestRemoveFromDiagram);
-        verifier.consumeNextWith(diagramConsumer);
     }
 
 }
