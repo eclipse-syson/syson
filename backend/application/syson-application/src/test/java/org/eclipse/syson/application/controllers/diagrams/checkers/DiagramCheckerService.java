@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.checkers;
 
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,6 +23,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -44,6 +46,24 @@ public class DiagramCheckerService {
         this.descriptionNameGenerator = descriptionNameGenerator;
     }
 
+    /**
+     * Returns a checker that verifies a child node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param parentLabel
+     *            the label of the parent node
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @return the diagram checker
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link #childNodeGraphicalChecker(AtomicReference, DiagramDescriptionIdProvider, String, EClass, int)} instead.
+     */
+    @Deprecated
     public IDiagramChecker getChildNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel, EClass childEClass,
             int compartmentCount) {
         return (initialDiagram, newDiagram) -> {
@@ -62,6 +82,59 @@ public class DiagramCheckerService {
         };
     }
 
+    /**
+     * Returns a consumer that checks a child node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param parentLabel
+     *            the label of the parent node
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @return a consumer that performs the graphical check
+     */
+    public Consumer<Object> childNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel, EClass childEClass,
+            int compartmentCount) {
+        return assertRefreshedDiagramThat(newDiagram -> {
+            int createdNodesExpectedCount = 1 + compartmentCount;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(0)
+                    .check(previousDiagram.get(), newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
+            new CheckChildNode(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(compartmentCount)
+                    .check(previousDiagram.get(), newDiagram);
+        });
+    }
+
+    /**
+     * Returns a checker that verifies a node was created in a compartment.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param parentLabel
+     *            the label of the parent node
+     * @param parentEClass
+     *            the EClass of the parent node
+     * @param containmentReference
+     *            the containment reference for the compartment item
+     * @param compartmentName
+     *            the name of the compartment
+     * @return the diagram checker
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link #compartmentNodeGraphicalChecker(AtomicReference, DiagramDescriptionIdProvider, String, EClass, EReference, String)} instead.
+     */
+    @Deprecated
     public IDiagramChecker getCompartmentNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel,
             EClass parentEClass, EReference containmentReference, String compartmentName) {
         return (initialDiagram, newDiagram) -> {
@@ -80,11 +153,80 @@ public class DiagramCheckerService {
         };
     }
 
+    /**
+     * Returns a consumer that checks a node was created in a compartment.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param parentLabel
+     *            the label of the parent node
+     * @param parentEClass
+     *            the EClass of the parent node
+     * @param containmentReference
+     *            the containment reference for the compartment item
+     * @param compartmentName
+     *            the name of the compartment
+     * @return a consumer that performs the graphical check
+     */
+    public Consumer<Object> compartmentNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel,
+            EClass parentEClass, EReference containmentReference, String compartmentName) {
+        return assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(previousDiagram.get(), newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(0)
+                    .check(previousDiagram.get(), newDiagram);
+        });
+    }
+
+    /**
+     * Returns a checker that verifies a sibling node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @return the diagram checker
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link #siblingNodeGraphicalChecker(AtomicReference previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass, int compartmentCount)} instead.
+     */
+    @Deprecated
     public IDiagramChecker getSiblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,
             int compartmentCount) {
         return this.getSiblingNodeGraphicalChecker(previousDiagram, diagramDescriptionIdProvider, childEClass, compartmentCount, 1);
     }
 
+    /**
+     * Returns a checker that verifies a sibling node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @param newNodesCount
+     *            the expected number of new nodes
+     * @return the diagram checker
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, use {@link #siblingNodeGraphicalChecker(AtomicReference previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass, int compartmentCount, int newNodesCount)} instead.
+     */
+    @Deprecated
     public IDiagramChecker getSiblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,
             int compartmentCount, int newNodesCount) {
         return (initialDiagram, newDiagram) -> {
@@ -102,6 +244,69 @@ public class DiagramCheckerService {
         };
     }
 
+    /**
+     * Returns a consumer that checks a sibling node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @return a consumer that performs the graphical check
+     */
+    public Consumer<Object> siblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,
+            int compartmentCount) {
+        return this.siblingNodeGraphicalChecker(previousDiagram, diagramDescriptionIdProvider, childEClass, compartmentCount, 1);
+    }
+
+    /**
+     * Returns a consumer that checks a sibling node was created on the diagram.
+     *
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param diagramDescriptionIdProvider
+     *            the provider for diagram description IDs
+     * @param childEClass
+     *            the EClass of the expected child node
+     * @param compartmentCount
+     *            the expected number of compartments
+     * @param newNodesCount
+     *            the expected number of new nodes
+     * @return a consumer that performs the graphical check
+     */
+    public Consumer<Object> siblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,
+            int compartmentCount, int newNodesCount) {
+        return assertRefreshedDiagramThat(newDiagram -> {
+            int createdNodesExpectedCount = newNodesCount + compartmentCount;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(previousDiagram.get(), newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(compartmentCount)
+                    .check(previousDiagram.get(), newDiagram);
+        });
+    }
+
+    /**
+     * Runs the given diagram checker on the refreshed diagram using a StepVerifier.
+     *
+     * @param diagramChecker
+     *            the checker to run on the diagram
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @param verifier
+     *            the StepVerifier step to consume the result
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, directly use {@link DiagramEventPayloadConsumer#assertRefreshedDiagramThat}.
+     */
+    @Deprecated
     public void checkDiagram(IDiagramChecker diagramChecker, AtomicReference<Diagram> previousDiagram, Step<DiagramRefreshedEventPayload> verifier) {
         Consumer<DiagramRefreshedEventPayload> diagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -111,6 +316,17 @@ public class DiagramCheckerService {
         verifier.consumeNextWith(diagramConsumer);
     }
 
+    /**
+     * Returns a consumer that runs the given diagram checker on the refreshed diagram.
+     *
+     * @param diagramChecker
+     *            the checker to run on the diagram
+     * @param previousDiagram
+     *            the reference to the previous diagram state
+     * @return a consumer that performs the diagram check
+     * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
+     * Please, directly use the consumer returned by the other functions of this class into your {@link reactor.test.StepVerifier} instead.
+     */
     public Consumer<Object> checkDiagram(IDiagramChecker diagramChecker, AtomicReference<Diagram> previousDiagram) {
         return object -> Optional.of(object)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)
