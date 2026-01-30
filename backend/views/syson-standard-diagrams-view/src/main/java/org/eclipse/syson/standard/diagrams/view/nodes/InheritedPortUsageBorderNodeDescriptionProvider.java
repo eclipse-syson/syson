@@ -27,10 +27,13 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Used to create the inherited port usage border node description.
@@ -51,7 +54,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
 
     @Override
     protected String getSemanticCandidatesExpression() {
-        return AQLUtils.getSelfServiceCallExpression("getInheritedCompartmentItems", "'" + this.eReference.getName() + "'");
+        return ServiceMethod.of1(ViewCreateService::getInheritedCompartmentItems).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
     }
 
     @Override
@@ -111,7 +114,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                         .children(this.viewBuilderHelper.newChangeContext()
-                                .expression(AQLUtils.getSelfServiceCallExpression("createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET))
+                                .expression(ServiceMethod.of1(ViewCreateService::createBindingConnectorAsUsage).aqlSelf(EdgeDescription.SEMANTIC_EDGE_TARGET))
                                 .build())
                         .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -126,7 +129,8 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                         .children(this.viewBuilderHelper.newChangeContext()
-                                .expression(AQLUtils.getSelfServiceCallExpression("createInterfaceUsage", EdgeDescription.SEMANTIC_EDGE_TARGET))
+                                .expression(ServiceMethod.of5(DiagramMutationAQLService::createInterfaceUsage).aqlSelf(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE,
+                                        EdgeDescription.EDGE_TARGET, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                                 .build())
                         .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -141,7 +145,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                         .children(this.viewBuilderHelper.newChangeContext()
-                                .expression(AQLUtils.getSelfServiceCallExpression("createFlowUsage", EdgeDescription.SEMANTIC_EDGE_TARGET))
+                                .expression(ServiceMethod.of1(ViewCreateService::createFlowUsage).aqlSelf(EdgeDescription.SEMANTIC_EDGE_TARGET))
                                 .build())
                         .build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -162,7 +166,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                                         .children(this.viewBuilderHelper.newChangeContext()
-                                                .expression(AQLUtils.getSelfServiceCallExpression("createBindingConnectorAsUsage", REDEFINED_TARGET))
+                                                .expression(ServiceMethod.of1(ViewCreateService::createBindingConnectorAsUsage).aqlSelf(REDEFINED_TARGET))
                                                 .build())
                                         .build())
                                 .build())
@@ -186,7 +190,8 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                                         .children(this.viewBuilderHelper.newChangeContext()
-                                                .expression(AQLUtils.getSelfServiceCallExpression("createInterfaceUsage", REDEFINED_TARGET))
+                                                .expression(ServiceMethod.of5(DiagramMutationAQLService::createInterfaceUsage).aqlSelf(REDEFINED_TARGET, EdgeDescription.EDGE_SOURCE,
+                                                        EdgeDescription.EDGE_TARGET, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                                                 .build())
                                         .build())
                                 .build())
@@ -209,7 +214,7 @@ public class InheritedPortUsageBorderNodeDescriptionProvider extends AbstractPor
                                         .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, REDEFINE_INHERITED_PORT_SERVICE, List.of(
                                                 EdgeDescription.EDGE_SOURCE, EditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
                                         .children(this.viewBuilderHelper.newChangeContext()
-                                                .expression(AQLUtils.getSelfServiceCallExpression("createFlowUsage", REDEFINED_TARGET))
+                                                .expression(ServiceMethod.of1(ViewCreateService::createFlowUsage).aqlSelf(REDEFINED_TARGET))
                                                 .build())
                                         .build())
                                 .build())

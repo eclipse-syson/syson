@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -48,10 +48,10 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
     @Override
     protected String getServiceCallExpression() {
         if (this.featureDirectionKind != null) {
-            List<String> params = List.of(AQLUtils.aqlString(this.eReference.getName()), AQLUtils.aqlString(this.featureDirectionKind.getLiteral()));
-            return AQLUtils.getSelfServiceCallExpression("createCompartmentItemWithDirection", params);
+            return ServiceMethod.of2(ViewCreateService::createCompartmentItemWithDirection).aqlSelf(AQLUtils.aqlString(this.eReference.getName()),
+                    AQLUtils.aqlString(this.featureDirectionKind.getLiteral()));
         } else {
-            return AQLUtils.getSelfServiceCallExpression("createCompartmentItem", AQLUtils.aqlString(this.eReference.getName()));
+            return ServiceMethod.of1(ViewCreateService::createCompartmentItem).aqlSelf(AQLUtils.aqlString(this.eReference.getName()));
         }
     }
 

@@ -52,7 +52,6 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Edge-related Java services used by several diagrams.
@@ -81,8 +80,7 @@ public class ViewEdgeService {
      * @return a list of allocate edge objects
      */
     public List<AllocationUsage> getAllReachableAllocateEdges(EObject eObject) {
-        String type = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAllocationUsage());
-        var allAllocationUsages = this.utilService.getAllReachable(eObject, type);
+        var allAllocationUsages = this.utilService.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getAllocationUsage());
         return allAllocationUsages.stream()
                 .filter(AllocationUsage.class::isInstance)
                 .map(AllocationUsage.class::cast)

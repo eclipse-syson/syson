@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,10 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.Objects;
 
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.ServiceMethod;
 
 /**
  * Node tool provider for Parameters compartment in the element that need such compartment.
@@ -32,7 +34,7 @@ public class ParameterCompartmentNodeToolProvider extends AbstractCompartmentNod
 
     @Override
     protected String getServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createActionParameter", AQLUtils.aqlString(this.direction.getName()));
+        return ServiceMethod.of1(ViewCreateService::createActionParameter).aqlSelf(AQLUtils.aqlString(this.direction.getName()));
     }
 
     @Override

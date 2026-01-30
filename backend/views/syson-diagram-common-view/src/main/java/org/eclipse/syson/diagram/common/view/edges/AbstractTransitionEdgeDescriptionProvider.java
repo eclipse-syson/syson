@@ -36,10 +36,10 @@ import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -73,7 +73,7 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
                 .name(this.getEdgeDescriptionName())
                 .preconditionExpression(ServiceMethod.of2(ViewEdgeService::isInSameGraphicalContainer).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
                         org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET, org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getTransitionUsage_Source().getName())
                 .style(this.createDefaultEdgeStyle())
                 .conditionalStyles(this.createStateConditionalStyle())

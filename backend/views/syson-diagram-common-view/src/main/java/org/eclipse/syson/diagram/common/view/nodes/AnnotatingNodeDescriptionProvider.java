@@ -36,13 +36,13 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -58,20 +58,18 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     private final EClass eClass;
 
-    private final UtilService utilServices;
-
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AnnotatingNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-        this.utilServices = new UtilService();
     }
 
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
+
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_NOTE_HEIGHT)
@@ -83,7 +81,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .style(this.createNoteNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("showAnnotatingNode", List.of(DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT)))
+                .preconditionExpression(ServiceMethod.of2(ViewNodeService::showAnnotatingNode).aqlSelf(DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT))
                 .build();
     }
 
@@ -148,7 +146,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
      * @return the AQL expression to retrieve all semantic candidates for this node.
      */
     private String getSemanticCandidatesExpression(String domainType) {
-        return this.utilServices.getAllReachableExpression(domainType);
+        return ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType);
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
