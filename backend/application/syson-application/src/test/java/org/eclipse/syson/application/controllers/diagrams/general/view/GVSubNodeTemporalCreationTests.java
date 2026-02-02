@@ -166,7 +166,7 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         String parentLabel = "occurrence";
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
         Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
-                compartmentName);
+                compartmentName, false);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)

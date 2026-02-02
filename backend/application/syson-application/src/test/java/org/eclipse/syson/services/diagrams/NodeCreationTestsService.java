@@ -17,13 +17,11 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
-import reactor.test.StepVerifier.Step;
 
 /**
  * Service class for CreationTests classes.
@@ -42,160 +40,6 @@ public class NodeCreationTestsService {
         this.editingContextId = Objects.requireNonNull(editingContextId);
         this.toolTester = Objects.requireNonNull(nodeCreationTester);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-    }
-
-    /**
-     * Creates a node using a creation tool.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
-     * @param childEClass
-     *            the EClass of the child node to create
-     * @deprecated use {@link #createNode(DiagramDescriptionIdProvider, AtomicReference, EClass, String, EClass)} instead.
-     */
-    @Deprecated
-    public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, EClass childEClass) {
-        this.createNode(verifier, diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass, List.of());
-    }
-
-    /**
-     * Creates a node using a creation tool with variables.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
-     * @param childEClass
-     *            the EClass of the child node to create
-     * @param variables
-     *            the tool variables
-     * @deprecated use {@link #createNode(DiagramDescriptionIdProvider, AtomicReference, EClass, String, EClass, List)} instead.
-     */
-    @Deprecated
-    public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, EClass childEClass, List<ToolVariable> variables) {
-        this.createNode(verifier, diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, this.descriptionNameGenerator.getCreationToolName(childEClass), variables);
-    }
-
-    /**
-     * Creates a node using a named tool.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
-     * @param toolName
-     *            the name of the creation tool
-     * @deprecated use {@link #createNode(DiagramDescriptionIdProvider, AtomicReference, EClass, String, String)} instead.
-     */
-    @Deprecated
-    public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName) {
-        this.createNode(verifier, diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName, List.of());
-    }
-
-    /**
-     * Creates a node using a named tool with variables.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
-     * @param toolName
-     *            the name of the creation tool
-     * @param variables
-     *            the tool variables
-     * @deprecated use {@link #createNode(DiagramDescriptionIdProvider, AtomicReference, EClass, String, String, List)} instead.
-     */
-    @Deprecated
-    public void createNode(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName, List<ToolVariable> variables) {
-        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(parentEClass), toolName);
-        verifier.then(() -> this.toolTester.invokeTool(this.editingContextId,
-                diagram,
-                parentLabel,
-                creationToolId,
-                variables));
-    }
-
-    /**
-     * Creates a node on an edge using a named tool.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent edge
-     * @param parentLabel
-     *            the label of the parent edge
-     * @param toolName
-     *            the name of the creation tool
-     * @deprecated use {@link #createNodeOnEdge(DiagramDescriptionIdProvider, AtomicReference, EClass, String, String)} instead.
-     */
-    @Deprecated
-    public void createNodeOnEdge(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName) {
-        this.createNodeOnEdge(verifier, diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName, List.of());
-    }
-
-    /**
-     * Creates a node on an edge using a named tool with variables.
-     *
-     * @param verifier
-     *            the verifier to chain the node creation to
-     * @param diagramDescriptionIdProvider
-     *            the diagram description ID provider
-     * @param diagram
-     *            the diagram reference
-     * @param parentEClass
-     *            the EClass of the parent edge
-     * @param parentLabel
-     *            the label of the parent edge
-     * @param toolName
-     *            the name of the creation tool
-     * @param variables
-     *            the tool variables
-     * @deprecated use {@link #createNodeOnEdge(DiagramDescriptionIdProvider, AtomicReference, EClass, String, String, List)} instead.
-     */
-    @Deprecated
-    public void createNodeOnEdge(Step<DiagramRefreshedEventPayload> verifier, DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName, List<ToolVariable> variables) {
-        String creationToolId = diagramDescriptionIdProvider.getNodeCreationToolIdOnEdge(this.descriptionNameGenerator.getEdgeName(parentEClass), toolName);
-        verifier.then(() -> this.toolTester.createNodeOnEdge(this.editingContextId,
-                diagram,
-                parentLabel,
-                creationToolId,
-                variables));
     }
 
     /**

@@ -21,12 +21,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InitialDirectEditElementLabelQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
-
-import reactor.test.StepVerifier.Step;
 
 /**
  * Tester that checks the initial label used as input of the DirectEdit tool.
@@ -42,66 +39,6 @@ public class DirectEditInitialLabelTester {
     public DirectEditInitialLabelTester(InitialDirectEditElementLabelQueryRunner initialDirectEditElementLabelQueryRunner, String editingContextId) {
         this.initialDirectEditElementLabelQueryRunner = Objects.requireNonNull(initialDirectEditElementLabelQueryRunner);
         this.editingContextId = Objects.requireNonNull(editingContextId);
-    }
-
-    /**
-     * Checks the initial direct edit label on a bordered node's outside label.
-     *
-     * @param verifier
-     *            the verifier to chain the check to
-     * @param diagram
-     *            the diagram reference
-     * @param mainNodeId
-     *            the id of the node holding the outside label
-     * @param expectedLabel
-     *            the expected initial label
-     * @deprecated use {@link #checkDirectEditInitialLabelOnBorderedNode(AtomicReference, String, String)} instead.
-     */
-    @Deprecated
-    public void checkDirectEditInitialLabelOnBorderedNode(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String expectedLabel) {
-        this.checkDirectEditInitialLabel(verifier, diagram, () -> {
-            DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-            return diagramNavigator.nodeWithId(mainNodeId).getNode().getOutsideLabels().get(0).id();
-        }, expectedLabel);
-    }
-
-    /**
-     * Checks the initial direct edit label on a node's inside label.
-     *
-     * @param verifier
-     *            the verifier to chain the check to
-     * @param diagram
-     *            the diagram reference
-     * @param mainNodeId
-     *            the id of the node holding the inside label
-     * @param expectedLabel
-     *            the expected initial label
-     * @deprecated use {@link #checkDirectEditInitialLabelOnNode(AtomicReference, String, String)} instead.
-     */
-    @Deprecated
-    public void checkDirectEditInitialLabelOnNode(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, String mainNodeId, String expectedLabel) {
-        this.checkDirectEditInitialLabel(verifier, diagram, () -> {
-            DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-            return diagramNavigator.nodeWithId(mainNodeId).getNode().getInsideLabel().getId();
-        }, expectedLabel);
-    }
-
-    /**
-     * Checks the initial direct edit label using a custom label ID supplier.
-     *
-     * @param verifier
-     *            the verifier to chain the check to
-     * @param diagram
-     *            the diagram reference
-     * @param labelId
-     *            a supplier that provides the label ID
-     * @param expectedLabel
-     *            the expected initial label
-     * @deprecated use {@link #checkDirectEditInitialLabel(AtomicReference, Supplier, String)} instead.
-     */
-    @Deprecated
-    public void checkDirectEditInitialLabel(Step<DiagramRefreshedEventPayload> verifier, AtomicReference<Diagram> diagram, Supplier<String> labelId, String expectedLabel) {
-        verifier.then(this.createInitialLabelCheckRunnable(diagram, labelId, expectedLabel));
     }
 
     /**
