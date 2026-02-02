@@ -41,6 +41,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeItemTester;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckChildNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
@@ -161,7 +162,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8),
                 Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8),
-                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2),
@@ -223,11 +224,10 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
+    @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
@@ -262,8 +262,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a General View with ViewUsage node, WHEN sub-child nodes are created in the ViewUsage node, THEN nodes are added in the ViewUsage node")
-    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @Test
     public void checkViewUsageSubChildNodeCreation() {
         var partOnViewUsageToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
