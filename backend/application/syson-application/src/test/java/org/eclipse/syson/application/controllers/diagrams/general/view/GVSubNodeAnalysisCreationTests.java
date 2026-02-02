@@ -325,7 +325,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseDefinition();
         String parentLabel = "CaseDefinition";
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName, false);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)
@@ -471,7 +471,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseDefinition();
         String parentLabel = "UseCaseDefinition";
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName, false);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)

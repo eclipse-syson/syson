@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -26,16 +29,15 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckBorderNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
@@ -45,25 +47,21 @@ import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifier.Step;
 
 /**
  * Tests the creation of "Structure" sub nodes section in the General View diagram.
@@ -80,9 +78,6 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
@@ -105,17 +100,9 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @Autowired
     private DiagramComparator diagramComparator;
 
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
-    private DiagramDescription diagramDescription;
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private NodeCreationTestsService creationTestsService;
-
-    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private DiagramCheckerService diagramCheckerService;
 
@@ -269,422 +256,595 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    @BeforeEach
-    public void setUp() {
-        this.givenInitialServerState.initialize();
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
+
+    @BeforeEach
+    public void setUp() {
+        this.givenInitialServerState.initialize();
         this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
         this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
-    }
-
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("attributeDefinitionChildNodeParameters")
     public void createAttributeDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getAttributeDefinition();
         String parentLabel = "AttributeDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel,
-                childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass),
-                this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("attributeUsageChildNodeParameters")
     public void createAttributeUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getAttributeUsage();
         String parentLabel = "attribute";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel,
-                childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass),
-                this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("enumerationDefinitionChildNodeParameters")
     public void createEnumerationDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getEnumerationDefinition();
         String parentLabel = "EnumerationDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, false);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemDefinitionSiblingNodeParameters")
     public void createItemDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemDefinition();
         String parentLabel = "ItemDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount),
-                this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemDefinitionChildNodeParameters")
     public void createItemDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemDefinition();
         String parentLabel = "ItemDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemUsageSiblingNodeParameters")
     public void createItemUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
         String parentLabel = "item";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount),
-                this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemUsageChildNodeParameters")
     public void createItemUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
         String parentLabel = "item";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("itemUsageBorderAndChildNodeParameters")
     public void createItemUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
         String parentLabel = "item";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(1)
                     .hasNewBorderNodeCount(1)
                     .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
+                    .check(diagram.get(), newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
+                    .check(diagram.get(), newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
-            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("packageChildNodeParameters")
     public void createPackageChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPackage();
         String parentLabel = "Package";
         List<ToolVariable> variables = List.of();
         if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(childEClass)) {
             variables = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID, ToolVariableType.OBJECT_ID));
         }
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass, variables);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getChildNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, childEClass, compartmentCount), this.diagram,
-                this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+
+        List<ToolVariable> finalVariables = variables;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass, finalVariables);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.childNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, childEClass, compartmentCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partDefinitionChildNodeParameters")
     public void createPartDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partDefinitionSiblingNodeParameters")
     public void createPartDefinitionSiblingNodes(EClass childEClass, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
 
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             int createdNodesExpectedCount = 1;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .hasNewEdgeCount(1)
-                    .check(initialDiagram, newDiagram, true);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+                    .check(diagram.get(), newDiagram, true);
+        });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partDefinitionSiblingAndChildNodeParameters")
     public void createPartDefinitionSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int expectedNumberOfNewNodes,
             int expectedNumberOfNewEdges, String compartmentNodeDecriptionNameSuffix) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
-                    .check(initialDiagram, newDiagram);
+                    .check(diagram.get(), newDiagram);
             String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDecriptionNameSuffix;
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentItemNodeDescriptionName)
                     .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partUsageChildNodeParameters")
     public void createPartUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String parentLabel = "part";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
-                    .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
 
-            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
-                    .withCompartmentName(compartmentName)
-                    .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partUsageSiblingNodeParameters")
     public void createPartUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String parentLabel = "part";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount),
-                this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partUsageSiblingAndChildNodeParameters")
     public void createPartUsageSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int expectedNumberOfNewNodes,
             int expectedNumberOfNewEdges, String compartmentNodeDecriptionNameSuffix) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String parentLabel = "part";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
-                    .check(initialDiagram, newDiagram);
+                    .check(diagram.get(), newDiagram);
             String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDecriptionNameSuffix;
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentItemNodeDescriptionName)
                     .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("directedPortsInPartDefinitionChildNodeParameters")
     public void createDirectedPortsInPartDefinitionChildNodeParameters(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
-        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(1)
                     .hasNewBorderNodeCount(1)
                     .hasNewEdgeCount(0)
-                    .check(initialDiagram, newDiagram, true);
+                    .check(diagram.get(), newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
-            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
-                    .check(initialDiagram, newDiagram);
+                    .check(diagram.get(), newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(childEClass, containmentReference);
-            new CheckBorderNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
-                    .check(initialDiagram, newDiagram);
-        };
-        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }
