@@ -73,6 +73,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.SendActionUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Succession;
@@ -1141,6 +1142,29 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(multiplicityRangeUpperBound.getReferent())
                     .isInstanceOf(AttributeUsage.class)
                     .returns("upper", Feature::getName);
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("GIVEN a TransitionUsage with SendActionUsage effect, WHEN importing the model, THEN the payload parameter is properly resolved.")
+    public void checkDoSendPayloadParameterResolution() throws IOException {
+        var input = """
+                package Package1 {
+                    attribute def Sig ;
+                    part p;
+                
+                    state state1 {
+                        state s2;
+                        state s3;
+                        transition T1 first s2 accept s : Sig via p do send s to p then s3;
+                    }
+                }
+                """;
+        this.checker.checkImportedModel(resource -> {
+            SendActionUsage sendAction = EMFUtils.allContainedObjectOfType(resource, SendActionUsage.class).findFirst().get();
+            assertThat(sendAction.getPayloadArgument())
+                    .isInstanceOf(FeatureReferenceExpression.class)
+                    .matches(expression -> ((FeatureReferenceExpression) expression).getReferent().getName().equals("s"));
         }).check(input);
     }
 

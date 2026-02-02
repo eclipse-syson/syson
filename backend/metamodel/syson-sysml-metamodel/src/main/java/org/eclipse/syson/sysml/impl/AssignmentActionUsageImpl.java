@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -118,7 +118,7 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
      * @generated NOT
      */
     public Expression basicGetTargetArgument() {
-        return this.argument(0);
+        return this.argument(1);
     }
 
     /**
@@ -144,7 +144,7 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
      * @generated NOT
      */
     public Expression basicGetValueExpression() {
-        return this.argument(1);
+        return this.argument(2);
     }
 
     /**

@@ -19,6 +19,25 @@ It's not recommended for production use.
 
 ** Fix the textual export of `OccurrenceUsage` to avoid duplication of the _abstract_ keyword.
 ** Fix the textual export to properly escape names used in qualified names in some references.
+** Fix the textual import to properly resolve the _payload_ argument of a `SendActionUsage` used in a `TransitionUsage`.
+The following model is now properly imported:
++
+```
+package Package1 {
+    attribute def Sig ;
+    part p;
+
+    state state1 {
+        state s2;
+        state s3;
+        transition T1 
+              first s2
+              accept s : Sig via p
+              do send s to p // s failed to resolve here before
+              then s3;
+    }
+}
+```
 
 == Improvements
 
