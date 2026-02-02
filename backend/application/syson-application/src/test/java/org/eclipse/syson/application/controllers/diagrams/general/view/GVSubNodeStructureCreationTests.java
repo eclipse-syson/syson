@@ -130,6 +130,13 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
+    private static Stream<Arguments> connectionDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> itemDefinitionSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 4))
@@ -356,6 +363,38 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
         Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
                 compartmentName, false);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("connectionDefinitionChildNodeParameters")
+    public void createConnectionDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getConnectionDefinition();
+        String parentLabel = "ConnectionDefinition";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference,
+                compartmentName, true);
 
         Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 

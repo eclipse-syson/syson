@@ -39,6 +39,7 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 - https://github.com/eclipse-syson/syson/issues/1861[#1861] [publication] Split `SysONLibraryPublicationHandler` in two distinct classes so the publishing logic can be extended or re-used through the `ISysMLLibraryPublisher` API.
 - https://github.com/eclipse-syson/syson/issues/1895[#1895] [export] Implement textual export of `StateUsage` and `StateDefinition`.
 - https://github.com/eclipse-syson/syson/issues/1870[#1870] [diagrams] When dragging some `Element` into a diagram, hide its graphical node compartments unless it's an _interconnection_ compartment
+- https://github.com/eclipse-syson/syson/issues/1943[#1943] [diagrams] Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
 
 === New features
 
