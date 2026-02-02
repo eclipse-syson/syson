@@ -29,6 +29,7 @@ The following methods have been added:
 
 - https://github.com/eclipse-syson/syson/issues/1847[#1847] [export] Textual export duplicates "abstract" keyword for `OccurrenceUsage`.
 - https://github.com/eclipse-syson/syson/issues/1887[#1887] [export] Export fails to escape some names when using qualified name.
+- https://github.com/eclipse-syson/syson/issues/1953[#1953] [import] Fix an issue where `TransitionUsage` with `SendActionUsage` were not properly resolved.
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -75,7 +76,8 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
      * @generated NOT
      */
     public Expression basicGetPayloadArgument() {
-        return this.argument(0);
+        // See deriveAcceptActionUsagePayloadArgument
+        return this.argument(1);
     }
 
     /**
@@ -96,11 +98,16 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
      * @generated NOT
      */
     public ReferenceUsage basicGetPayloadParameter() {
-        var payloadParam = this.inputParameter(0);
-        if (payloadParam instanceof ReferenceUsage ru) {
-            return ru;
+        // See deriveAcceptActionUsagePayloadParameter
+        EList<Feature> parameters = this.getParameter();
+        ReferenceUsage payloadParam = null;
+        if (!parameters.isEmpty()) {
+            Feature first = parameters.get(0);
+            if (first instanceof ReferenceUsage firstRef) {
+                payloadParam = firstRef;
+            }
         }
-        return null;
+        return payloadParam;
     }
 
     /**
@@ -120,7 +127,8 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
      * @generated NOT
      */
     public Expression basicGetReceiverArgument() {
-        return this.argument(1);
+        // See deriveAcceptActionUsageReceiverArgument
+        return this.argument(2);
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -107,9 +107,9 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
      */
     @Override
     public Expression argument(int i) {
-        var features = this.inputParameters();
-        if (features.size() > i) {
-            return features.get(i).getOwnedRelationship().stream()
+        Feature inputParameter = this.inputParameter(i);
+        if (inputParameter != null) {
+            return inputParameter.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
                     .map(FeatureValue::getValue)
@@ -127,8 +127,10 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
     @Override
     public Feature inputParameter(int i) {
         var parameters = this.inputParameters();
-        if (parameters.size() > i) {
-            return parameters.get(i);
+        //Return the i-th owned input parameter of the ActionUsage. Return null if the ActionUsage has less than i owned input parameters.
+        // Here is not the index but the position
+        if (parameters.size() >= i) {
+            return parameters.get(i - 1);
         }
         return null;
     }

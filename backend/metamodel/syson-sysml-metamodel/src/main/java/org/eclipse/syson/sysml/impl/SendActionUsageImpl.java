@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -66,13 +66,11 @@ public class SendActionUsageImpl extends ActionUsageImpl implements SendActionUs
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetPayloadArgument() {
-        // TODO: implement this method to return the 'Payload Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        // See deriveSendActionUsagePayloadArgument
+        return this.argument(1);
     }
 
     /**
@@ -89,13 +87,11 @@ public class SendActionUsageImpl extends ActionUsageImpl implements SendActionUs
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetReceiverArgument() {
-        // TODO: implement this method to return the 'Receiver Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        // See deriveSendActionUsageReceiverArgument
+        return this.argument(3);
     }
 
     /**
@@ -112,13 +108,11 @@ public class SendActionUsageImpl extends ActionUsageImpl implements SendActionUs
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetSenderArgument() {
-        // TODO: implement this method to return the 'Sender Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        // See deriveSendActionUsageSenderArgument
+        return this.argument(2);
     }
 
     /**
