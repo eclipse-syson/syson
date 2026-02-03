@@ -112,9 +112,9 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
     private static Stream<Arguments> partUsageNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 10),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 5));
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 11),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 6));
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN the New Feature Typing tool is requested on a PartUsage, THEN a new PartDefinition node and a FeatureTyping edge are created")
