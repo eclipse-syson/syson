@@ -27,30 +27,30 @@ import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
  */
 public class ModelQueryAQLService {
 
-    private final MetamodelQueryElementService queryElementService;
+    private final MetamodelQueryElementService metamodelQueryElementService;
 
     public ModelQueryAQLService() {
-        this.queryElementService = new MetamodelQueryElementService();
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     /**
      * {@link MetamodelQueryElementService#isActor(Element)}.
      */
     public boolean isActor(Element element) {
-        return this.queryElementService.isActor(element);
+        return this.metamodelQueryElementService.isActor(element);
     }
 
     /**
      * {@link MetamodelQueryElementService#getTarget(ConnectorAsUsage)}.
      */
     public List<Feature> getTarget(ConnectorAsUsage connectorAsUsage) {
-        return this.queryElementService.getTarget(connectorAsUsage);
+        return this.metamodelQueryElementService.getTarget(connectorAsUsage);
     }
 
     /**
      * {@link MetamodelQueryElementService#getSource(ConnectorAsUsage)}.
      */
     public Feature getSource(ConnectorAsUsage connectorAsUsage) {
-        return this.queryElementService.getSource(connectorAsUsage);
+        return this.metamodelQueryElementService.getSource(connectorAsUsage);
     }
 }
