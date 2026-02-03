@@ -40,11 +40,12 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 - https://github.com/eclipse-syson/syson/issues/1861[#1861] [publication] Split `SysONLibraryPublicationHandler` in two distinct classes so the publishing logic can be extended or re-used through the `ISysMLLibraryPublisher` API.
 - https://github.com/eclipse-syson/syson/issues/1895[#1895] [export] Implement textual export of `StateUsage` and `StateDefinition`.
 - https://github.com/eclipse-syson/syson/issues/1870[#1870] [diagrams] When dragging some `Element` into a diagram, hide its graphical node compartments unless it's an _interconnection_ compartment
-- https://github.com/eclipse-syson/syson/issues/1943[#1943] [diagrams] Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/1943[#1943] [diagrams] Add _attributes_ and _doc_ compartments on `ConnectionDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1946[#1946] [diagrams] Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1947[#1947] [diagrams] Add _subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
 - https://github.com/eclipse-syson/syson/issues/1954[#1954] [export] Implement textual export of `TransitionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1966[#1966] [export] Implement textual export of `ExhibitStateUsage`.
+- https://github.com/eclipse-syson/syson/issues/1942[#1942] [diagrams] Add _parts_ compartment on `PartDefintion`, `ConnectionDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 
 === New features
 

@@ -76,6 +76,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
 
     private static final String DOC_COMPARTMENT = "doc";
 
+    private static final String PARTS_COMPARTMENT = "parts";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -137,6 +139,24 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
+    private static Stream<Arguments> connectionDefinitionSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> allocationDefinitionSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> interfaceDefinitionSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), PARTS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> itemDefinitionSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), 4))
@@ -177,7 +197,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2),
@@ -188,7 +208,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), ownedMember, 4),
@@ -197,7 +217,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 10),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 5),
@@ -397,6 +417,102 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 compartmentName, true);
 
         Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("connectionDefinitionSiblingNodeParameters")
+    public void createConnectionDefinitionSiblingNodes(EClass childEClass, String compartmentName, EReference containmentReference, int compartmentCount, int newNodesCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getConnectionDefinition();
+        String parentLabel = "ConnectionDefinition";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount, newNodesCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel,
+                containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("allocationDefinitionSiblingNodeParameters")
+    public void creatAllocationDefinitionSiblingNodes(EClass childEClass, String compartmentName, EReference containmentReference, int compartmentCount, int newNodesCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getAllocationDefinition();
+        String parentLabel = "AllocationDefinition";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount, newNodesCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel,
+                containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(semanticChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("interfaceDefinitionSiblingNodeParameters")
+    public void creatInterfaceDefinitionSiblingNodes(EClass childEClass, String compartmentName, EReference containmentReference, int compartmentCount, int newNodesCount) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceDefinition();
+        String parentLabel = "InterfaceDefinition";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+
+        Consumer<Object> diagramChecker = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount, newNodesCount);
+
+        Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel,
+                containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
