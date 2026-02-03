@@ -26,7 +26,7 @@ It's not recommended for production use.
 
 ** When dropping `Element` from the _Explorer_ view to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _Interconnection View_ diagram.
 ** Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
-
+** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 * In textual import/export:
 

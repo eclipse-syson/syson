@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.model.services.ModelQueryElementService;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -54,12 +56,15 @@ public class DiagramQueryElementService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final MetamodelQueryElementService metamodelQueryElementService;
+
     public DiagramQueryElementService(IObjectSearchService objectSearchService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider,
-            IFeedbackMessageService feedbackMessageService) {
+            IFeedbackMessageService feedbackMessageService, ModelQueryElementService modelQueryElementService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.feedbackMessageService = feedbackMessageService;
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     /**
@@ -269,14 +274,22 @@ public class DiagramQueryElementService {
      *         if it exists, an empty Optional otherwise.
      */
     public Optional<String> getNodeDescriptionId(Element element, Diagram diagram, IEditingContext editingContext) {
+        Optional<String> nodeDescriptionId = Optional.empty();
         var optViewDD = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
         if (optViewDD.isPresent()) {
-            return EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
-                    .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))
-                    .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
-                    .findFirst();
+            if (this.metamodelQueryElementService.isActor(element)) {
+                nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                        .filter(nodeDesc -> nodeDesc.getName().equals("GV Node Actor"))
+                        .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                        .findFirst();
+            } else {
+                nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                        .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))
+                        .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                        .findFirst();
+            }
         }
-        return Optional.empty();
+        return nodeDescriptionId;
     }
 
     /**

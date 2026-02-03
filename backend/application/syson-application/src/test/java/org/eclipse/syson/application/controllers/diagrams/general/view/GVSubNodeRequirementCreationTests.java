@@ -1074,6 +1074,18 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         this.createNewStakeholderIn(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirement");
     }
 
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorInRequirementUsage() {
+        this.createNewActorIn(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirement");
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorInRequirementDefinition() {
+        this.createNewActorIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), "RequirementDefinition");
+    }
+
     private void createNewStakeholderIn(EClass eClassWithStakeholderParameter, String parentNodeLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -1130,5 +1142,67 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .then(semanticCheck2)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    private void createNewActorIn(EClass eClassWithActorParameter, String parentNodeLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var actorParameterEReference = eClassWithActorParameter.getEAllReferences().stream()
+                .filter(eReference -> eReference.getName().equals("actorParameter") && eReference.getEType() == SysmlPackage.eINSTANCE.getPartUsage()).findFirst()
+                .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithActorParameter.getName())));
+
+        var actorCreationToolName = "New Actor";
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, eClassWithActorParameter, parentNodeLabel, actorCreationToolName,
+                Stream.of(new ToolVariable("selectedObject", /* PartUsage 'part' */ "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a", ToolVariableType.OBJECT_ID)).toList());
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentNodeLabel)
+                    .withCompartmentName("actors")
+                    .hasNodeDescriptionName(this.descriptionNameGenerator.getCompartmentItemName(eClassWithActorParameter, actorParameterEReference))
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            var semanticRootElement = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID)
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast).orElseGet(() -> Assertions.fail("Could not find the expected root semantic object."));
+            var allActorsPartUsages = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
+                    .filter(element -> Objects.equals(element.getName(), "actor1")).toList();
+            assertEquals(1, allActorsPartUsages.size());
+
+            var actorPartUsage = allActorsPartUsages.get(0);
+            var subsettings = actorPartUsage.getOwnedSubsetting();
+            assertEquals(1, subsettings.size());
+            assertThat(subsettings.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+        };
+
+        Runnable semanticCheck1 = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, actorParameterEReference, SysmlPackage.eINSTANCE.getPartUsage()));
+        Runnable semanticCheck2 = this.semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck1)
+                .then(semanticCheck2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(100));
     }
 }
