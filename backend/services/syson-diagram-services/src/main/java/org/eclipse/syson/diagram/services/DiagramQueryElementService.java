@@ -282,6 +282,11 @@ public class DiagramQueryElementService {
                         .filter(nodeDesc -> nodeDesc.getName().equals("GV Node Actor"))
                         .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
                         .findFirst();
+            } else if (this.metamodelQueryElementService.isSubject(element)) {
+                nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                        .filter(nodeDesc -> nodeDesc.getName().equals("GV Node Subject"))
+                        .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                        .findFirst();
             } else {
                 nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
                         .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))

@@ -55,6 +55,7 @@ import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.util.NodeFinder;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,8 @@ public class DiagramMutationExposeService {
 
     private final ModelQueryElementService modelQueryElementService;
 
+    private final MetamodelQueryElementService metamodelQueryElementService;
+
     private final DeleteService deleteService;
 
     private final UtilService utilService;
@@ -86,6 +89,7 @@ public class DiagramMutationExposeService {
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.modelQueryElementService = Objects.requireNonNull(modelQueryElementService);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
         this.nodeDescriptionService = new NodeDescriptionService(siriusWebCoreServices.objectSearchService());
@@ -414,7 +418,7 @@ public class DiagramMutationExposeService {
 
     private void hideNodeIfNestedIsDefault(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (element instanceof AttributeUsage || element instanceof PortUsage || this.isItemNotContainedByAction(element)) {
+        if (element instanceof AttributeUsage || element instanceof PortUsage || this.isItemNotContainedByAction(element) || this.metamodelQueryElementService.isSubject(element)) {
             boolean compartmentOrBorderThatCouldHostTheFutureNode = false;
             for (Node childNode : selectedNode.getChildNodes()) {
                 Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, childNode,

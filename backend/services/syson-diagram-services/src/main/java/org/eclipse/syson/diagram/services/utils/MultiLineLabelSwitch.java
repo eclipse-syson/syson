@@ -65,6 +65,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TriggerInvocationExpression;
 import org.eclipse.syson.sysml.Type;
@@ -683,17 +684,24 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
 
     @Override
     public String caseReferenceUsage(ReferenceUsage object) {
-        var defaultName = "reference";
+        var conceptName = "reference";
         var owner = object.getOwner();
+        var owningMembership = object.getOwningMembership();
         if (owner instanceof ActionUsage || owner instanceof ActionDefinition) {
-            defaultName = "parameter";
+            conceptName = "parameter";
+        } else if (owningMembership instanceof SubjectMembership) {
+            conceptName = "subject";
         }
         StringBuilder label = new StringBuilder();
+        if (!(owningMembership instanceof SubjectMembership)) {
+            // The label shouldn't contain abstract, ref, or part if the part represents an actor.
+            label
+                    .append(this.getBasicNamePrefix(object));
+        }
         label
-                .append(this.getBasicNamePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
-                .append(defaultName)
+                .append(conceptName)
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))

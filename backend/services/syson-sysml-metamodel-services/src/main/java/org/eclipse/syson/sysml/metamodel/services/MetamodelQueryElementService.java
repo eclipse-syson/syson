@@ -23,6 +23,8 @@ import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 
 /**
  * Element-related services doing queries. This class should not depend on sirius-web services or other spring services.
@@ -43,6 +45,20 @@ public class MetamodelQueryElementService {
      */
     public boolean isActor(Element element) {
         return element instanceof PartUsage && element.getOwningMembership() instanceof ActorMembership;
+    }
+
+    /**
+     * Returns {@code true} if the provided {@code element} is a subject, {@code false} otherwise.
+     * <p>
+     * A subject (typically of a UseCase or Requirement) is a kind of parameter stored in an {@link SubjectMembership}.
+     * </p>
+     *
+     * @param element
+     *            the element to check
+     * @return {@code true} if the provided {@code element} is a subject, {@code false} otherwise
+     */
+    public boolean isSubject(Element element) {
+        return element instanceof ReferenceUsage && element.getOwningMembership() instanceof SubjectMembership;
     }
 
     /**

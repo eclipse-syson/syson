@@ -48,6 +48,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
@@ -72,7 +73,7 @@ public class ViewNodeService {
 
     private final IObjectSearchService objectSearchService;
 
-    private final MetamodelQueryElementService queryElementService;
+    private final MetamodelQueryElementService metamodelQueryElementService;
 
     private final UtilService utilService;
 
@@ -80,7 +81,7 @@ public class ViewNodeService {
 
     public ViewNodeService(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.queryElementService = new MetamodelQueryElementService();
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.utilService = new UtilService();
         this.elementUtil = new ElementUtil();
     }
@@ -402,7 +403,31 @@ public class ViewNodeService {
         return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
                 .filter(PartUsage.class::isInstance)
                 .map(PartUsage.class::cast)
-                .filter(this.queryElementService::isActor)
+                .filter(this.metamodelQueryElementService::isActor)
+                .toList();
+    }
+
+    /**
+     * Get all Subjects ({@link ReferenceUsage}) in {@link ViewUsage}'s exposed elements.
+     *
+     * @param element
+     *            the {@link Element} for which we want the Actors.
+     * @param domainType
+     *            the domain type to the elements to retrieve
+     * @param ancestors
+     *            the given ancestors (semantic elements of the graphical nodes that are the ancestors) of the Node on
+     *            which this service has been called.
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link DiagramContext} in which this service has been called.
+     * @return the list of Subject {@link ReferenceUsage}s in {@link ViewUsage}'s exposed elements.
+     */
+    public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .filter(this.metamodelQueryElementService::isSubject)
                 .toList();
     }
 

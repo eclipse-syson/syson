@@ -552,10 +552,17 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
-            int createdNodesExpectedCount = 1;
+            int createdNodesExpectedCount = 2;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
+            // Only the node inside the compartment is visible
+            // The "sibling" node is hidden
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
@@ -612,10 +619,17 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
-            int createdNodesExpectedCount = 1;
+            int createdNodesExpectedCount = 2;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
+            // Only the node inside the compartment is visible
+            // The "sibling" node is hidden
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)

@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -66,10 +67,13 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
      */
     private final Element parentElement;
 
+    private final MetamodelQueryElementService metamodelQueryElementService;
+
     public ViewFilterSwitch(ViewDefinitionKind kind, List<Element> exposedElements, Element parentElement) {
         this.kind = kind;
         this.exposedElements = Objects.requireNonNull(exposedElements);
         this.parentElement = parentElement;
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     @Override
@@ -110,7 +114,8 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
     public Boolean caseReferenceUsage(ReferenceUsage object) {
         // For ReferenceUsage we don't want nested Nodes, no matter the type of ViewDefinition.
         // The sub ReferenceUsages are displayed in a compartment list called "references" and/or as border nodes.
-        return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
+        return this.metamodelQueryElementService.isSubject(object)
+                || (!this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind));
     }
 
     /**
