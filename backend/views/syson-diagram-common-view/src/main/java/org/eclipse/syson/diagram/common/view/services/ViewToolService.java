@@ -44,6 +44,8 @@ import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
@@ -62,6 +64,7 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -231,6 +234,40 @@ public class ViewToolService extends ToolService {
             }
         } else {
             String errorMessage = "Cannot reconnect an Actor to a non-UseCase, non-Requirement element";
+            this.logger.warn(errorMessage);
+            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+        }
+        return otherEnd;
+    }
+
+    /**
+     * Reconnects the source of a nested subject edge.
+     * <p>
+     * The source of this edge is either an UseCase or a Requirement, and can only be reconnected to UseCase or
+     * Requirements.
+     * </p>
+     *
+     * @param self
+     *            the current UseCase or Requirement
+     * @param newSource
+     *            the new UseCase or Requirement
+     * @param otherEnd
+     *            the Subject connected to the UseCase or Requirement
+     * @return the Subject
+     */
+    public Element reconnectSourceNestedSubjectEdge(Element self, Element newSource, Element otherEnd) {
+        if (newSource instanceof CaseUsage || newSource instanceof CaseDefinition
+                || newSource instanceof RequirementUsage || newSource instanceof RequirementDefinition) {
+            if (otherEnd.getOwningMembership() instanceof SubjectMembership subjectMembership) {
+                newSource.getOwnedRelationship().add(subjectMembership);
+            } else {
+                // This is an error, an Subject should always be contained in an ActorMembership.
+                String errorMessage = "Cannot reconnect the Subject, it is not owned by a " + SubjectMembership.class.getSimpleName();
+                this.logger.error(errorMessage);
+                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.ERROR));
+            }
+        } else {
+            String errorMessage = "Cannot reconnect a Subject to a non-UseCase, non-Requirement element";
             this.logger.warn(errorMessage);
             this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
         }

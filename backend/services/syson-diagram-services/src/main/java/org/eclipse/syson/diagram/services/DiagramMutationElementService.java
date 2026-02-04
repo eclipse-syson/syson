@@ -257,14 +257,14 @@ public class DiagramMutationElementService {
         List<NodeDescription> candidates = new ArrayList<>();
 
         if (parent instanceof Node node) {
-            NodeDescription parentNodeDescription = convertedNodes.values().stream()
+            var parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), node.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
             var parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
             candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes, editingContext, diagramContext);
         } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
-            NodeDescription parentNodeDescription = convertedNodes.values().stream()
+            var parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
                     .findFirst()
                     .orElse(null);

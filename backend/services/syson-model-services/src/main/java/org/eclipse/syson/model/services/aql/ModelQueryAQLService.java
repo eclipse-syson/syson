@@ -41,6 +41,13 @@ public class ModelQueryAQLService {
     }
 
     /**
+     * {@link MetamodelQueryElementService#isSubject(Element)}.
+     */
+    public boolean isSubject(Element element) {
+        return this.metamodelQueryElementService.isSubject(element);
+    }
+
+    /**
      * {@link MetamodelQueryElementService#getTarget(ConnectorAsUsage)}.
      */
     public List<Feature> getTarget(ConnectorAsUsage connectorAsUsage) {

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -41,6 +43,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,7 +127,16 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
                     .hasNewBorderNodeCount(0)
                     .hasNewNodeCount(1) // Only one subject in the UseCaseDefinition subjects compartment.
                     .hasNewEdgeCount(0)
-                    .check(diagram.get(), newDiagram);
+                    .check(diagram.get(), newDiagram, true);
+
+            var useCaseDefSubjectCompartment = new DiagramNavigator(newDiagram)
+                    .nodeWithLabel(LabelConstants.OPEN_QUOTE + "use case def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "UseCaseDefinition").childNodeWithLabel("subject").getNode();
+            assertThat(useCaseDefSubjectCompartment.getChildNodes()).hasSize(1);
+
+            var actionDefParametersCompartment = new DiagramNavigator(newDiagram)
+                    .nodeWithLabel(LabelConstants.OPEN_QUOTE + "action def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "ActionDefinition :> UseCaseDefinition").childNodeWithLabel("parameters")
+                    .getNode();
+            assertThat(actionDefParametersCompartment.getChildNodes()).hasSize(0);
         });
 
         StepVerifier.create(flux)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
-import org.eclipse.syson.standard.diagrams.view.nodes.ActorNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.SubjectNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -37,11 +37,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the edge description between elements and their nested actors in General View.
+ * Used to create the edge description between elements and their nested subject in General View.
  *
- * @author gdaniel
+ * @author arichard
  */
-public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class NestedSubjectEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
     private final IDescriptionNameGenerator nameGenerator;
 
@@ -51,12 +51,12 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
 
     private final String edgeName;
 
-    public NestedActorEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public NestedSubjectEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
-        this.edgeName = this.nameGenerator.getEdgeName("Nested Actor " + this.eClass.getName());
+        this.edgeName = this.nameGenerator.getEdgeName("Nested Subject " + this.eClass.getName());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.edgeName);
-        var optUsageNodeDescription = cache.getNodeDescription(ActorNodeDescriptionProvider.NAME);
+        var optUsageNodeDescription = cache.getNodeDescription(SubjectNodeDescriptionProvider.NAME);
         var sourceNodes = new ArrayList<NodeDescription>();
 
         if (optEdgeDescription.isPresent() && optUsageNodeDescription.isPresent()) {
@@ -87,7 +87,6 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
             edgeDescription.getSourceDescriptions().addAll(sourceNodes);
             edgeDescription.getTargetDescriptions().add(optUsageNodeDescription.get());
-
             edgeDescription.setPalette(this.createEdgePalette(cache));
         }
     }
@@ -105,7 +104,7 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
 
     @Override
     protected boolean isDeletable() {
-        // This edge cannot be deleted. This would mean that the existing actor is not contained in an
+        // This edge cannot be deleted. This would mean that the existing subject is not contained in an
         // UseCase/Requirement anymore, and should likely be represented as a regular part, which is not possible out of
         // the box.
         return false;
@@ -114,14 +113,14 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewToolService::reconnectSourceNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                .expression(ServiceMethod.of2(ViewToolService::reconnectSourceNestedSubjectEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
                         AQLConstants.SEMANTIC_OTHER_END));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
-        // It is not possible to reconnect the target (actor) of this edge. This would mean that the existing actor is
-        // not contained in a UseCase/Requirement anymore.
+        // It is not possible to reconnect the target (subject) of this edge. This would mean that the existing subject
+        // is not contained in a UseCase/Requirement anymore.
         return this.viewBuilderHelper.newChangeContext();
     }
 
