@@ -46,6 +46,8 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 - https://github.com/eclipse-syson/syson/issues/1954[#1954] [export] Implement textual export of `TransitionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1966[#1966] [export] Implement textual export of `ExhibitStateUsage`.
 - https://github.com/eclipse-syson/syson/issues/1942[#1942] [diagrams] Add _parts_ compartment on `PartDefintion`, `ConnectionDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/1962[#1962] [diagrams] Add graphical edge tools to add an `AttributeUsage` as a nested attribute of a `Usage` or a `Definition`.
+Also, add a graphical edge tool to all `Usage` and `Definition` to make an `AttributeUsage` nested.
 
 === New features
 
