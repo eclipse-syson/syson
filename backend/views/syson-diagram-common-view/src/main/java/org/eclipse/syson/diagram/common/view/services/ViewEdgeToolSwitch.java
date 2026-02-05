@@ -61,6 +61,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     private static final String USAGE = "usage";
 
+    private static final String DEFINITION = "definition";
+
     private final NodeDescription nodeDescription;
 
     private final List<NodeDescription> allNodeDescriptions;
@@ -115,12 +117,21 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseAttributeUsage(AttributeUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getMetadataDefinition())
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeDefinition())).toList();
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), targetNodes));
-        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
+        var attributeBecomeNestedOf = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                    || nodeDesc.getName().toLowerCase().endsWith(DEFINITION)
+                )
+                .toList();
+        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), attributeBecomeNestedOf));
+
+        var addElementAsNestedOfAttribute = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getMetadataDefinition())
+                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
+                    || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeDefinition()))
+                .filter(nodeDesc -> !this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()))
+                .toList();
+        addElementAsNestedOfAttribute.forEach(nestedNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nestedNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -149,6 +160,12 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseDefinition(Definition object) {
         var edgeTools = new ArrayList<EdgeTool>();
+        // Add an edge tool to the Definition to add the targeted AttributeUsage as a nested AttributeUsage.
+        var addAttributeAsNestedOfDefinition = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()))
+                .toList();
+        addAttributeAsNestedOfDefinition.forEach(nodeDesc -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nodeDesc)));
+
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(this.allNodeDescriptions));
         edgeTools.add(this.edgeToolService.createSubclassificationEdgeTool(List.of(this.nodeDescription)));
         return edgeTools;
@@ -272,6 +289,13 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.edgeToolService.createSubsettingEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.edgeToolService.createReferenceSubsettingEdgeTool(targetDescriptions.stream().filter(this::isFeatureNodeDescription).toList()));
         edgeTools.add(this.edgeToolService.createAllocateEdgeTool(targetDescriptions));
+
+        // Add an edge tool to the Usage to add the targeted AttributeUsage as a nested AttributeUsage.
+        var addAsNested = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()))
+                .toList();
+        addAsNested.forEach(nodeDesc -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(nodeDesc)));
+
         var definitionNodeDescription = this.edgeToolService.getNodeDescription(this.edgeToolService.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
             edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));

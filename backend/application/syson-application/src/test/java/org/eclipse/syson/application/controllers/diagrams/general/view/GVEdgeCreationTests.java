@@ -24,7 +24,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -55,6 +57,9 @@ import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,25 +102,157 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
-    private SemanticCheckerService semanticCheckerService;
+    private static Stream<Arguments> addAttributeUsageAsNestedOfEdgeSourceParameters() {
+        return Stream.of(
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, SysmlPackage.eINSTANCE.getItemDefinition(), "ItemDefinition", 1, ArrowStyle.FillDiamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, SysmlPackage.eINSTANCE.getPartDefinition(), "PartDefinition", 1, ArrowStyle.FillDiamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, SysmlPackage.eINSTANCE.getPartUsage(), "part", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, SysmlPackage.eINSTANCE.getActionUsage(), "action", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, SysmlPackage.eINSTANCE.getStateUsage(), "state", 0, ArrowStyle.Diamond)
+        );
+    }
 
-    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+    private static Stream<Arguments> makeAttributeUsageBecomingNestedOfEdgeTargetParameters() {
+        return Stream.of(
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, "ItemDefinition", 1, ArrowStyle.FillDiamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, "PartDefinition", 1, ArrowStyle.FillDiamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, "part", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID, "action", 1, ArrowStyle.Diamond),
+                Arguments.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.STATE_USAGE_ID, "state", 0, ArrowStyle.Diamond)
+        );
+    }
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram(String editingContextId, String diagramId) {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), editingContextId, diagramId);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+    }
+
+    @DisplayName("GIVEN a SysML Project, WHEN the edge tool 'Add as nested Attribute' is applied between a Definition/Usage graphical node and an AttributeUsage graphical node, THEN an edge is created between the Definition/Usage graphical node and an AttributeUsage graphical node")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("addAttributeUsageAsNestedOfEdgeSourceParameters")
+    public void addAttributeUsageAsNestedOfEdgeSource(String edgeSourceId, EClass parentClass, String parentLabel, int newNodeCount, ArrowStyle arrowStyle) {
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String edgeTargetId = GeneralViewWithTopNodesTestProjectData.GraphicalIds.ATTRIBUTE_USAGE_ID;
+
+        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(parentClass), "Add as nested Attribute");
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                edgeSourceId,
+                edgeTargetId,
+                creationToolId);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(newNodeCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+
+            List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
+            assertThat(newEdges)
+                    .hasSize(1)
+                    .first(EDGE)
+                    .hasSourceId(edgeSourceId)
+                    .hasTargetId(edgeTargetId)
+                    .extracting(Edge::getStyle, EDGE_STYLE)
+                    .hasSourceArrow(arrowStyle);
+        });
+
+        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(parentLabel, SysmlPackage.eINSTANCE.getElement_OwnedElement(),
+                SysmlPackage.eINSTANCE.getAttributeUsage());
+
+        Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(editingContextChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML Project, WHEN the edge tool 'Become nested Attribute' is applied between an AttributeUsage graphical node and a Definition/Usage graphical node, THEN an edge is created between the Definition/Usage graphical node and the AttributeUsage graphical node")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("makeAttributeUsageBecomingNestedOfEdgeTargetParameters")
+    public void makeAttributeUsageBecomingNestedOfEdgeTarget(String edgeTargetId, String parentLabel, int newNodeCount, ArrowStyle arrowStyle) {
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String edgeSourceId = GeneralViewWithTopNodesTestProjectData.GraphicalIds.ATTRIBUTE_USAGE_ID;
+
+        String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()), "Become nested Attribute");
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                edgeSourceId,
+                edgeTargetId,
+                creationToolId);
+
+        Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(newNodeCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+
+            List<Edge> newEdges = this.diagramComparator.newEdges(initialDiagram, newDiagram);
+            assertThat(newEdges)
+                    .hasSize(1)
+                    .first(EDGE)
+                    .hasSourceId(edgeTargetId)
+                    .hasTargetId(edgeSourceId)
+                    .extracting(Edge::getStyle, EDGE_STYLE)
+                    .hasSourceArrow(arrowStyle);
+        });
+
+        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(parentLabel, SysmlPackage.eINSTANCE.getElement_OwnedElement(),
+                SysmlPackage.eINSTANCE.getAttributeUsage());
+
+        Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramChecker)
+                .then(editingContextChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a General View with a PartUsage and an ActionUsage, WHEN linking the PartUsage and the Action with Add as nested Action edge tool, THEN the ActionUsage is now a child of the PartUsage and there is a composition edge between them.")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createAddAsNestedEdge() {
-        var flux = this.givenSubscriptionToDiagram();
+        SemanticCheckerService semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
@@ -163,10 +300,10 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                     .hasSourceArrow(ArrowStyle.FillDiamond);
         });
 
-        ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("part", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
+        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker("part", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
                 SysmlPackage.eINSTANCE.getActionUsage());
 
-        Runnable editingContextChecker = this.semanticCheckerService.checkEditingContext(semanticChecker);
+        Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
