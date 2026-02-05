@@ -130,7 +130,7 @@ public class SemanticCheckerService {
     }
 
     /**
-     * Provide a runnable that run semantic checks on the editing context and chains them to the provided verifier.
+     * Provide a runnable that run semantic checks on the editing context.
      *
      * @param semanticChecker
      *            the checker containing the semantic assertions to run
