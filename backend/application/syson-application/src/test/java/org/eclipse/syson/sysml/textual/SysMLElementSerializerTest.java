@@ -15,9 +15,13 @@ package org.eclipse.syson.sysml.textual;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.syson.data.ClasspathXmiModelLoader;
+import org.eclipse.syson.data.generator.SysMLResourceSetProvider;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -1423,6 +1427,101 @@ public class SysMLElementSerializerTest {
 
     }
 
+    @DisplayName("GIVEN a model with TransitionUsage between states, WHEN serializing this model, THEN the transition are properly serialized.")
+    @Test
+    public void simpleTransitionUsage() throws IOException {
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    state state1 {
+                        state state2;
+                        state state3;
+                        state state4 {
+                            state state41;
+                        }
+                        state state5 {
+                            state state51;
+                        }
+                        transition state2 then state3;
+                        transition state3 then state4;
+                        transition S1 first state3 then state4;
+                        transition S2 first state4.state41 then state5.state51;
+                    }
+                }""", this.loadModelFromFile("models/SimpleTransitionUsageModel.xmi"));
+
+    }
+
+    @DisplayName("GIVEN a model with TransitionUsage with accept part, WHEN serializing this model, THEN the transition are properly serialized.")
+    @Test
+    public void transitionUsageWithAccept() throws IOException {
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    attribute def Sig {
+                        x;
+                    }
+                    attribute def Exit;
+                    part p;
+                    state state1 {
+                        state state2;
+                        transition state2 accept Exit then state3;
+                        state state3;
+                        transition state3 then state5;
+                        transition state3 accept Exit then state4;
+                        state state4;
+                        transition state4 accept s : Sig do action D then state5;
+                        state state5 {
+                            state state51;
+                        }
+                        transition T first state5.state51 accept s : Sig via p then state6;
+                        state state6;
+                    }
+                }""", this.loadModelFromFile("models/TransitionUsageWithAccept.xmi"));
+
+    }
+
+    @DisplayName("GIVEN a model with TransitionUsage with SendActionUsage effect part, WHEN serializing this model, THEN the transition are properly serialized.")
+    @Test
+    public void transitionUsageWithDoSend() throws IOException {
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    attribute def Sig {
+                        x;
+                    }
+                    attribute def Exit;
+                    part p;
+                    state state1 {
+                        state s2;
+                        transition s2 accept s : Sig via p do send s via x then s3;
+                        state s3;
+                        ref port x;
+                        transition T1 first s2 accept s : Sig via p do send s to p then s3;
+                        transition T2 first s2 accept s : Sig via p do send s via x to p then s3;
+                        transition T3 first s2 accept s : Sig via p do send s to p then s3;
+                        transition T4 first s2 accept s : Sig via p do send s via x then s3;
+                    }
+                }""", this.loadModelFromFile("models/TransitionUsageWithDo.xmi"));
+
+    }
+
+    @DisplayName("GIVEN a model with TransitionUsage with AssignActionUsage, WHEN serializing this model, THEN the transition are properly serialized.")
+    @Test
+    public void transitionUsageWithDoAssign() throws IOException {
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    state state1 {
+                        attribute x : ScalarValues::Integer := 0;
+                        attribute y : ScalarValues::Integer := 5;
+                        part p1 {
+                            attribute x1 : ScalarValues::Integer := 0;
+                        }
+                        state s2;
+                        transition T1 first s2 do assign x := x + 1 then s3;
+                        state s3;
+                        transition s2 do assign p1.x1 := x * y then s4;
+                        state s4;
+                    }
+                }""", this.loadModelFromFile("models/TransitionUsageWithAssign.xmi"));
+
+    }
     @DisplayName("Check SuccessionAsUsage using FeatureChaining both as source and target")
     @Test
     public void successionUsageWithFeatureChaining() {
@@ -1791,5 +1890,11 @@ public class SysMLElementSerializerTest {
         occurrenceUsage.setPortionKind(PortionKind.TIMESLICE);
 
         this.assertTextualFormEquals("individual timeslice occurrence1;", occurrenceUsage);
+    }
+
+    private Namespace loadModelFromFile(String modelPath) throws IOException {
+        ClasspathXmiModelLoader loader = new ClasspathXmiModelLoader(new SysMLResourceSetProvider().createSysMLResourceSet(true));
+        Resource resource = loader.load(modelPath);
+        return (Namespace) resource.getContents().get(0);
     }
 }
