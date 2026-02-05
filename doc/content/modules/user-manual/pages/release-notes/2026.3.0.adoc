@@ -48,6 +48,8 @@ package Package1 {
 ** Add _parts_ compartments on `PartDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 ** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
+** The graphical edge tools _Become nested Attribute_ is now available on `AttributeUsage` graphical nodes when the targeted graphical node is a `Usage` or `Definition`.
+** The graphical edge tools _Add as nested Attribute_ is now available on all `Usage` and `Definition` graphical nodes that target an `AttributeUsage` graphical node.
 
 
 * In textual import/export:
