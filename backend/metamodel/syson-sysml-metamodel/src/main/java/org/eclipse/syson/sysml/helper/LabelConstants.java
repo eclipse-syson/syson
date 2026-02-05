@@ -75,6 +75,8 @@ public class LabelConstants {
 
     public static final String REFERENCES = SysMLv2Keywords.DOUBLE_COLON_SPECIALIZES;
 
+    public static final String SATISFY = SysMLv2Keywords.SATISFY;
+
     public static final String SPACE = " ";
 
     public static final String SUBCLASSIFICATION = SysMLv2Keywords.SPECIALIZES_OPERATOR;

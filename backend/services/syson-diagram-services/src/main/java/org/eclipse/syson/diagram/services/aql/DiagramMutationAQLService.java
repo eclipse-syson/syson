@@ -33,6 +33,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -225,6 +226,14 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationElementService#reconnectSource(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     */
+    public ConnectorAsUsage reconnectSource(ConnectorAsUsage bind, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
+            Diagram diagram) {
+        return this.diagramMutationElementService.reconnectSource(bind, newSource, newSourceNode, targetNode, editingContext, diagram);
+    }
+
+    /**
      * {@link DiagramMutationElementService#reconnectTarget(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
      */
     public ConnectorAsUsage reconnectTarget(ConnectorAsUsage bind, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
@@ -232,12 +241,19 @@ public class DiagramMutationAQLService {
         return this.diagramMutationElementService.reconnectTarget(bind, newTarget, sourceNode, newTargetNode, editingContext, diagram);
     }
 
+
     /**
-     * {@link DiagramMutationElementService#reconnectSource(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     * {@link DiagramMutationElementService#reconnectSatisfyRequirementSource(SatisfyRequirementUsage, Element)}.
      */
-    public ConnectorAsUsage reconnectSource(ConnectorAsUsage bind, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
-            Diagram diagram) {
-        return this.diagramMutationElementService.reconnectSource(bind, newSource, newSourceNode, targetNode, editingContext, diagram);
+    public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
+        return this.diagramMutationElementService.reconnectSatisfyRequirementSource(sru, newSource);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectSatisfyRequirementTarget(SatisfyRequirementUsage, Element)}.
+     */
+    public SatisfyRequirementUsage reconnectSatisfyRequirementTarget(SatisfyRequirementUsage sru, Element newTarget) {
+        return this.diagramMutationElementService.reconnectSatisfyRequirementTarget(sru, newTarget);
     }
 
     /**

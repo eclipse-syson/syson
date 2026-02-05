@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 
@@ -72,6 +73,13 @@ public class ModelMutationAQLService {
      */
     public Element createPartUsageAndFlowConnection(PartUsage self) {
         return this.modelMutationElementService.createPartUsageAndFlowConnection(self);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createPartUsageAndFlowConnection(PartUsage)}.
+     */
+    public Element createSatisfy(Element element, RequirementUsage existingRequirement) {
+        return this.modelMutationElementService.createSatisfy(element, existingRequirement);
     }
 
     /**

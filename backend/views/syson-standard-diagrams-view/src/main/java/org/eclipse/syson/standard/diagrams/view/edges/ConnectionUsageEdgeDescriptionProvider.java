@@ -57,14 +57,12 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
         if (optEdgeDescription.isPresent()) {
-            EdgeDescription edgeDescription = optEdgeDescription.get();
+            var edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
 
-            List<NodeDescription> sourceNodes = this.getSourceNodes(cache);
-            List<NodeDescription> targetNodes = this.getTargetNodes(cache);
-
+            var sourceNodes = this.getSourceNodes(cache);
+            var targetNodes = this.getTargetNodes(cache);
             edgeDescription.getSourceDescriptions().addAll(sourceNodes);
-
             edgeDescription.getTargetDescriptions().addAll(targetNodes);
 
             edgeDescription.setPalette(this.createEdgePalette(cache));

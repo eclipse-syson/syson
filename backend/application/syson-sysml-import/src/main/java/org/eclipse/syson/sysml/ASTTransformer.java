@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -285,9 +285,9 @@ public class ASTTransformer {
      *            a root element.
      */
     private void fixSuccessionUsageImplicitSource(EObject root) {
-        List<SuccessionAsUsage> succesionAsUsage = EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class).toList();
-        this.fixImplicitSourceFeature(succesionAsUsage);
-        this.fixImplicitTarget(succesionAsUsage);
+        List<SuccessionAsUsage> successionAsUsage = EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class).toList();
+        this.fixImplicitSourceFeature(successionAsUsage);
+        this.fixImplicitTarget(successionAsUsage);
     }
 
     /**
@@ -322,13 +322,13 @@ public class ASTTransformer {
      * @param root
      *            a root element.
      */
-    private void fixImplicitTarget(List<SuccessionAsUsage> succesionAsUsage) {
-        succesionAsUsage.stream().filter(this::hasImplicitTargetFeature)
+    private void fixImplicitTarget(List<SuccessionAsUsage> successionAsUsage) {
+        successionAsUsage.stream().filter(this::hasImplicitTargetFeature)
                 .forEach(suc -> {
                     Feature invalidFeature = suc.getConnectorEnd().get(1);
-                    FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
+                    FeatureMembership owningFeatureMembership = invalidFeature.getOwningFeatureMembership();
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-                    EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
+                    EList<Element> ownedRelatedElements = owningFeatureMembership.getOwnedRelatedElement();
 
                     int index = ownedRelatedElements.indexOf(invalidFeature);
                     ownedRelatedElements.remove(index);
@@ -336,13 +336,13 @@ public class ASTTransformer {
                 });
     }
 
-    private void fixImplicitSourceFeature(List<SuccessionAsUsage> succesionAsUsage) {
-        succesionAsUsage.stream().filter(this::hasImplicitSourceFeature)
+    private void fixImplicitSourceFeature(List<SuccessionAsUsage> successionAsUsage) {
+        successionAsUsage.stream().filter(this::hasImplicitSourceFeature)
                 .forEach(suc -> {
                     Feature invalidFeature = suc.getConnectorEnd().get(0);
-                    FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
+                    FeatureMembership owningFeatureMembership = invalidFeature.getOwningFeatureMembership();
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-                    EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
+                    EList<Element> ownedRelatedElements = owningFeatureMembership.getOwnedRelatedElement();
 
                     int index = ownedRelatedElements.indexOf(invalidFeature);
                     ownedRelatedElements.remove(index);

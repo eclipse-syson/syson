@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
@@ -142,6 +143,13 @@ public class DiagramQueryAQLService {
      */
     public String getTransitionLabel(TransitionUsage transition) {
         return this.diagramQueryLabelService.getTransitionLabel(transition);
+    }
+
+    /**
+     * {@link DiagramQueryLabelService#getSatisfyLabel(SatisfyRequirementUsage)}.
+     */
+    public String getSatisfyLabel(SatisfyRequirementUsage satisfyRequirementUsage) {
+        return this.diagramQueryLabelService.getSatisfyLabel(satisfyRequirementUsage);
     }
 
     /**

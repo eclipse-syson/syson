@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,6 +94,8 @@ public class SDVDiagramDescriptionTests {
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getTransitionUsage()).negate())
                 // No direct edit tool, this element is implicit
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFeatureValue()).negate())
+                // SatisfyRequirementUsage edge has a label (satisfy) but it is a constant and should not be modifiable
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

@@ -81,6 +81,7 @@ import org.eclipse.syson.standard.diagrams.view.edges.NestedActorEdgeDescription
 import org.eclipse.syson.standard.diagrams.view.edges.NestedSubjectEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.ReferenceSubsettingEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.SatisfyRequirementEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.SuccessionEdgeDescriptionProvider;
@@ -755,6 +756,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new FeatureValueEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new ConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new SatisfyRequirementEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return edgeDescriptionProviders;
     }

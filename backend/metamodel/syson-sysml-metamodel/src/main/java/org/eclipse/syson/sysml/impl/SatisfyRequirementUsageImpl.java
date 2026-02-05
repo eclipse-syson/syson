@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -12,16 +12,20 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
+import org.eclipse.syson.sysml.BindingConnector;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Invariant;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -125,7 +129,6 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
      */
     public ConstraintUsage basicGetAssertedConstraint() {
         return this.getSatisfiedRequirement();
-
     }
 
     /**
@@ -142,13 +145,17 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public RequirementUsage basicGetSatisfiedRequirement() {
-        // TODO: implement this method to return the 'Satisfied Requirement' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        RequirementUsage satisfiedRequirement = null;
+        var referencedFeatureTarget = this.referencedFeatureTarget();
+        if (referencedFeatureTarget == null) {
+            satisfiedRequirement = this;
+        } else if (referencedFeatureTarget instanceof RequirementUsage requirementUsage) {
+            satisfiedRequirement = requirementUsage;
+        }
+        return satisfiedRequirement;
     }
 
     /**
@@ -165,13 +172,41 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetSatisfyingFeature() {
-        // TODO: implement this method to return the 'Satisfying Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        Feature satisfyingFeature = null;
+
+        // custom implementation, not compliant with deriveSatisfyRequirementUsageSatisfyingFeature
+        // because deriveSatisfyRequirementUsageSatisfyingFeature does not use subjectMembership
+        // https://issues.omg.org/issues/SYSML21-12 also shows there is a problem with this
+        var subjectParameter = this.getSubjectParameter();
+        if (subjectParameter != null) {
+            satisfyingFeature = subjectParameter.getOwnedSubsetting().stream()
+                    .findFirst()
+                    .map(Subsetting::getSubsettedFeature)
+                    .orElse(null);
+        }
+        // fallback to default implementation
+        if (satisfyingFeature == null) {
+            List<BindingConnector> bindings = this.getOwnedMember().stream()
+                    .filter(BindingConnector.class::isInstance)
+                    .map(BindingConnector.class::cast)
+                    .filter(b -> b.getRelatedElement().contains(this.getSubjectParameter()))
+                    .toList();
+
+            if (bindings.isEmpty() || bindings.get(0).getRelatedElement().stream().anyMatch(r -> r != this.getSubjectParameter())) {
+                satisfyingFeature = null;
+            } else {
+                satisfyingFeature = bindings.get(0).getRelatedElement().stream()
+                        .filter(Feature.class::isInstance)
+                        .map(Feature.class::cast)
+                        .filter(r -> r != this.getSubjectParameter())
+                        .findAny()
+                        .orElse(null);
+            }
+        }
+        return satisfyingFeature;
     }
 
     /**

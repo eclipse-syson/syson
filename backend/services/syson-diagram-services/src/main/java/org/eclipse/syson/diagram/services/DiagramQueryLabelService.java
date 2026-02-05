@@ -42,6 +42,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -385,7 +386,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
         EObject membership = element.getOwningMembership();
         if (membership != null) {
             EObject parent = membership.eContainer();
-            boolean hasVariationParent = (parent instanceof Definition && ((Definition) parent).isIsVariation()) | (parent instanceof Usage && ((Usage) parent).isIsVariation());
+            boolean hasVariationParent = (parent instanceof Definition def && def.isIsVariation()) | (parent instanceof Usage usage && usage.isIsVariation());
             if (membership instanceof VariantMembership | hasVariationParent) {
                 label.append(LabelConstants.VARIANT);
             }
@@ -511,6 +512,21 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      */
     public String getDependencyLabel(Dependency dependency) {
         return this.getIdentificationLabel(dependency);
+    }
+
+    /**
+     * Returns the label for the given {@code dependency}.
+     *
+     * @param dependency
+     *            the dependency to get the edge label from
+     * @return the edge label
+     */
+    public String getSatisfyLabel(SatisfyRequirementUsage satisfyRequirementUsage) {
+        StringBuilder label = new StringBuilder();
+        label.append(LabelConstants.OPEN_QUOTE);
+        label.append(LabelConstants.SATISFY);
+        label.append(LabelConstants.CLOSE_QUOTE);
+        return label.toString();
     }
 
     /**

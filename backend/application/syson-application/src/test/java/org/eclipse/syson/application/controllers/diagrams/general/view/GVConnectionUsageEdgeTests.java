@@ -76,8 +76,6 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
-    private static final String EDITING_CONTEXT_ID = EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID;
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -118,28 +116,28 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
     private SemanticCheckerService semanticCheckerService;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), EDITING_CONTEXT_ID, EdgeConnectionUsageTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID, EdgeConnectionUsageTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, EDITING_CONTEXT_ID,
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 EdgeConnectionUsageTestProjectData.SemanticIds.PACKAGE1_ID);
         this.directEditTester = new DirectEditTester(this.editLabelMutationRunner, EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID);
     }
 
-    @DisplayName("Given two PartUsages in a package, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created")
-    @Test
+    @DisplayName("GIVEN two PartUsages in a package, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void createConnectionUsageOnParts() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EDITING_CONTEXT_ID,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -175,16 +173,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given two PartUsages contained in a common context, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created")
-    @Test
+    @DisplayName("GIVEN two PartUsages contained in a common context, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void createConnectionUsageOnPartsWithCommonContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EDITING_CONTEXT_ID,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -221,17 +219,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
     }
 
 
-    @DisplayName("Given two ItemUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with valid " +
-            "feature chain")
-    @Test
+    @DisplayName("GIVEN two ItemUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with valid feature chain")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void createConnectionUsageOnItemUsageWithCommonContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EDITING_CONTEXT_ID,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -267,17 +264,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given two PortUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with valid " +
-            "feature chain")
-    @Test
+    @DisplayName("GIVEN two PortUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with valid feature chain")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void createConnectionUsageOnPortUsageUsageWithCommonContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EDITING_CONTEXT_ID,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -313,18 +309,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given two inherited PortUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with " +
-            "valid " +
-            "feature chain")
-    @Test
+    @DisplayName("GIVEN two inherited PortUsage contained in a common context PartUsage, WHEN using an Edge tool to create a ConnectionUsage in between, THEN a ConnectionUsage edge is created with valid feature chain")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void createConnectionUsageOnInheritedPortUsageUsageWithCommonContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EDITING_CONTEXT_ID,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
@@ -360,16 +354,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a ConnectionUsage, WHEN reconnecting the source to a new source within the same context , THEN a ConnectionUsage updated but the container is not changed")
-    @Test
+    @DisplayName("GIVEN a ConnectionUsage, WHEN reconnecting the source to a new source within the same context, THEN a ConnectionUsage updated but the container is not changed")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectSourceSameContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createEdgeRunnable = this.buildReconnectRunnable(
+        Runnable reconnectEdgeRunnable = this.buildReconnectRunnable(
                 EdgeConnectionUsageTestProjectData.GraphicalIds.CONNECTION_0_ID,
                 EdgeConnectionUsageTestProjectData.GraphicalIds.SYSTEM_PART1_ID,
                 ReconnectEdgeKind.SOURCE,
@@ -392,23 +386,23 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(createEdgeRunnable)
+                .then(reconnectEdgeRunnable)
                 .consumeNextWith(newEdgeConsumer)
                 .then(checker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a ConnectionUsage, WHEN reconnecting the source to a new source within a new context, THEN a ConnectionUsage updated and the container is changed")
-    @Test
+    @DisplayName("GIVEN a ConnectionUsage, WHEN reconnecting the source to a new source within a new context, THEN a ConnectionUsage updated and the container is changed")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectSourceChangeContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createEdgeRunnable = this.buildReconnectRunnable(
+        Runnable reconnectEdgeRunnable = this.buildReconnectRunnable(
                 EdgeConnectionUsageTestProjectData.GraphicalIds.CONNECTION_0_ID,
                 EdgeConnectionUsageTestProjectData.GraphicalIds.PORT1_ID,
                 ReconnectEdgeKind.SOURCE,
@@ -431,23 +425,23 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(createEdgeRunnable)
+                .then(reconnectEdgeRunnable)
                 .consumeNextWith(newEdgeConsumer)
                 .then(checker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a ConnectionUsage, WHEN reconnecting the target to a new target within the same context, THEN a ConnectionUsage is updated but the container is not changed")
-    @Test
+    @DisplayName("GIVEN a ConnectionUsage, WHEN reconnecting the target to a new target within the same context, THEN a ConnectionUsage is updated but the container is not changed")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectTargetSameContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createEdgeRunnable = this.buildReconnectRunnable(
+        Runnable reconnectEdgeRunnable = this.buildReconnectRunnable(
                 EdgeConnectionUsageTestProjectData.GraphicalIds.CONNECTION_0_ID,
                 EdgeConnectionUsageTestProjectData.GraphicalIds.SYSTEM_PART2_ID,
                 ReconnectEdgeKind.TARGET,
@@ -470,23 +464,23 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(createEdgeRunnable)
+                .then(reconnectEdgeRunnable)
                 .consumeNextWith(newEdgeConsumer)
                 .then(checker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a ConnectionUsage, WHEN reconnecting the target to a new target in a new context , THEN a ConnectionUsage is updated and the container is changed")
-    @Test
+    @DisplayName("GIVEN a ConnectionUsage, WHEN reconnecting the target to a new target in a new context , THEN a ConnectionUsage is updated and the container is changed")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectTargetChangeContext() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createEdgeRunnable = this.buildReconnectRunnable(
+        Runnable reconnectEdgeRunnable = this.buildReconnectRunnable(
                 EdgeConnectionUsageTestProjectData.GraphicalIds.CONNECTION_0_ID,
                 EdgeConnectionUsageTestProjectData.GraphicalIds.PORT2_ID,
                 ReconnectEdgeKind.TARGET,
@@ -509,16 +503,16 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(createEdgeRunnable)
+                .then(reconnectEdgeRunnable)
                 .consumeNextWith(newEdgeConsumer)
                 .then(checker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("Given a ConnectionUsage, WHEN direct editing its centered label, THEN type of the usage is set")
-    @Test
+    @DisplayName("GIVEN a ConnectionUsage, WHEN direct editing its centered label, THEN type of the usage is set")
     @GivenSysONServer({ EdgeConnectionUsageTestProjectData.SCRIPT_PATH })
+    @Test
     public void directEditFeatureTyping() {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -554,7 +548,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
         String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
                 sourceNodeDescriptionName,
                 "New Connection");
-        return () -> this.edgeCreationTester.createEdgeUsingNodeId(EDITING_CONTEXT_ID,
+        return () -> this.edgeCreationTester.createEdgeUsingNodeId(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 sourceNodeId,
                 targetNodeId,
@@ -586,7 +580,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
     }
 
     private Runnable buildReconnectRunnable(String edgeId, String newTarget, ReconnectEdgeKind reconnectionKind, AtomicReference<Diagram> diagram) {
-        return () -> this.edgeReconnectionTester.reconnectEdge(EDITING_CONTEXT_ID,
+        return () -> this.edgeReconnectionTester.reconnectEdge(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 edgeId,
                 newTarget,

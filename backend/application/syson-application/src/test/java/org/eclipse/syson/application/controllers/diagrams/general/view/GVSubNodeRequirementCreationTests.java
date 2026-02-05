@@ -1203,6 +1203,6 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .then(semanticCheck1)
                 .then(semanticCheck2)
                 .thenCancel()
-                .verify(Duration.ofSeconds(100));
+                .verify(Duration.ofSeconds(10));
     }
 }

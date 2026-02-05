@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -113,13 +113,17 @@ public class AssertConstraintUsageImpl extends ConstraintUsageImpl implements As
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ConstraintUsage basicGetAssertedConstraint() {
-        // TODO: implement this method to return the 'Asserted Constraint' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        ConstraintUsage assertedConstraint = null;
+        var referencedFeatureTarget = this.referencedFeatureTarget();
+        if (referencedFeatureTarget == null) {
+            assertedConstraint = this;
+        } else if (referencedFeatureTarget instanceof ConstraintUsage constraintUsage) {
+            assertedConstraint = constraintUsage;
+        }
+        return assertedConstraint;
     }
 
     /**
