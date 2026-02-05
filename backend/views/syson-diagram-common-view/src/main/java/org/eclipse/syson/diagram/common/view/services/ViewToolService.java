@@ -512,6 +512,32 @@ public class ViewToolService extends ToolService {
     }
 
     /**
+     * Provides the root elements in the tree of the selection dialog for the any creation tool.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param candidates
+     *            the EClassifier candidates.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one candidates.
+     */
+    public List<Resource> getSelectionDialogElements(IEditingContext editingContext, List<EClassifier> candidates) {
+        return this.getAllResourcesWithInstancesOf(editingContext, candidates);
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for the ActorParameter creation tool.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param candidates
+     *            the EClassifier candidates.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are candidates.
+     */
+    public List<? extends Object> getSelectionDialogChildren(Object selectionDialogTreeElement, List<EClassifier> candidates) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, candidates);
+    }
+
+    /**
      * Redefine an inherited port.
      *
      * @param inheritedFeature

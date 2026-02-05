@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -32,6 +31,8 @@ import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvid
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -40,17 +41,34 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to describe an {@link org.eclipse.syson.sysml.ConnectionUsage} edge between two {@link org.eclipse.syson.sysml.Usage}.
+ * Describe an {@link org.eclipse.syson.sysml.SatisfyRequirementUsage} edge between a {@link Feature} and a
+ * {@link RequirementUsage}.
  *
- * @author Arthur Daussy
+ * @author arichard
  */
-public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class SatisfyRequirementEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public ConnectionUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public SatisfyRequirementEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+    }
+
+    @Override
+    public EdgeDescription create() {
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+        return this.diagramBuilderHelper.newEdgeDescription()
+                .domainType(domainType)
+                .isDomainBasedEdge(true)
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getSatisfyLabel).aqlSelf())
+                .name(this.getName())
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
+                .sourceExpression("aql:if self.satisfyingFeature <> null then self.satisfyingFeature else self.owner endif")
+                .style(this.createEdgeStyle())
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .targetExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSatisfyRequirementUsage_SatisfiedRequirement().getName())
+                .build();
     }
 
     @Override
@@ -70,51 +88,15 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
     }
 
     @Override
-    protected LabelEditTool getEdgeEditTool() {
-        var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of1(DiagramMutationAQLService::editEdgeCenterLabel).aqlSelf("newLabel"));
-
-        return this.diagramBuilderHelper.newLabelEditTool()
-                .name("Edit")
-                .initialDirectEditLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getDefaultInitialDirectEditLabel).aqlSelf())
-                .body(callEditService.build())
-                .build();
-    }
-
-    @Override
-    public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getConnectionUsage());
-        return this.diagramBuilderHelper.newEdgeDescription()
-                .domainType(domainType)
-                .isDomainBasedEdge(true)
-                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
-                .name(this.getName())
-                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
-                .sourceExpression("aql:self.getSource()")
-                .style(this.createEdgeStyle())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTarget()")
-                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectionUsageEdge)
-                        .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
-                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
-                                org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
-                                IEditingContext.EDITING_CONTEXT)
-                        // Needs this to avoid instantiation on inheriting concept
-                        + "and self.oclIsTypeOf(sysml::ConnectionUsage)")
-                .build();
-    }
-
-    @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectSource).aql(
-                                AQLConstants.EDGE_SEMANTIC_ELEMENT,
-                                AQLConstants.SEMANTIC_RECONNECTION_TARGET,
-                                AQLConstants.RECONNECTION_TARGET_VIEW,
-                                AQLConstants.OTHER_END,
-                                IEditingContext.EDITING_CONTEXT,
-                                AQLConstants.DIAGRAM
-                        ));
+                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
+                        AQLConstants.OTHER_END,
+                        IEditingContext.EDITING_CONTEXT,
+                        AQLConstants.DIAGRAM));
     }
 
     @Override
@@ -126,8 +108,11 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                         AQLConstants.OTHER_END,
                         AQLConstants.RECONNECTION_TARGET_VIEW,
                         IEditingContext.EDITING_CONTEXT,
-                        AQLConstants.DIAGRAM
-                ));
+                        AQLConstants.DIAGRAM));
+    }
+
+    private String getName() {
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -137,19 +122,15 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
                 .build();
     }
 
-    private String getName() {
-        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getConnectionUsage());
-    }
-
     private List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage());
+        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getFeature());
     }
 
     private List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage());
+        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getRequirementUsage());
     }
 }

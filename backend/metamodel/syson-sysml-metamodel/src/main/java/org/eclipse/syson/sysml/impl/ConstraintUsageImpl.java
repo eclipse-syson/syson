@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -16,21 +16,29 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.BooleanExpression;
+import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Function;
+import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.ResultExpressionMembership;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -143,7 +151,7 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public boolean isIsModelLevelEvaluable() {
-        return false;
+        return this.modelLevelEvaluable(new BasicEList<>());
     }
 
     /**
@@ -160,13 +168,19 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetResult() {
-        // TODO: implement this method to return the 'Result' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        Feature result = null;
+        List<Feature> resultParams = this.getFeatureMembership().stream()
+                .filter(ReturnParameterMembership.class::isInstance)
+                .map(ReturnParameterMembership.class::cast)
+                .map(ReturnParameterMembership::getOwnedMemberParameter)
+                .toList();
+        if (!resultParams.isEmpty()) {
+            result = resultParams.get(0);
+        }
+        return result;
     }
 
     /**
@@ -203,13 +217,17 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Predicate basicGetConstraintDefinition() {
-        // TODO: implement this method to return the 'Constraint Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(FeatureTyping::getType)
+                .filter(ConstraintDefinition.class::isInstance)
+                .map(ConstraintDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -219,19 +237,30 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public boolean checkCondition(Element target) {
-        return false;
+        List<Element> results = this.evaluate(target);
+        boolean checkCondition = results.size() == 1 && results.get(0) instanceof LiteralBoolean literalBoolean && literalBoolean.isValue();
+        return checkCondition;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Element> evaluate(Element target) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EList<Element> evaluate = new BasicEList<>();
+        if (this.isIsModelLevelEvaluable()) {
+            List<Expression> resultExprs = this.getOwnedFeatureMembership().stream()
+                    .filter(ResultExpressionMembership.class::isInstance)
+                    .map(ResultExpressionMembership.class::cast)
+                    .map(ResultExpressionMembership::getOwnedResultExpression)
+                    .toList();
+            if (!resultExprs.isEmpty()) {
+                evaluate = resultExprs.get(0).evaluate(target);
+            }
+        }
+        return evaluate;
     }
 
     /**
@@ -241,7 +270,30 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public boolean modelLevelEvaluable(EList<Feature> visited) {
-        return false;
+        boolean modelLevelEvaluable = this.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied()) && this.getOwnedFeature().stream().allMatch(f -> this.predicate(f, visited));
+        return modelLevelEvaluable;
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean predicate(Feature f, EList<Feature> visited) {
+        boolean lhs = this.directionOf(f) == FeatureDirectionKind.IN || f == this.getResult();
+        lhs = lhs && f.getOwnedFeature().isEmpty() && this.getValuation(f) == null;
+        boolean rhs = f.getOwningFeatureMembership() instanceof ResultExpressionMembership;
+        rhs = rhs && f instanceof Expression exp && exp.modelLevelEvaluable(visited);
+        return lhs || rhs;
+    }
+
+    /**
+     * @generated NOT
+     */
+    private FeatureValue getValuation(Feature feature) {
+        return feature.getOwnedMembership().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

@@ -47,7 +47,8 @@ package Package1 {
 ** Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
 ** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
-
+** Add _New Satisfy_ tool on `RequirementUsage` graphical nodes.
+This tool allows to create a `SatisfyRequirementUsage` based on the `RequirementUsage` selected during the tool creation.
 
 * In textual import/export:
 
