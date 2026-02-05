@@ -67,7 +67,10 @@ part system {
 ** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
 ** The graphical edge tools _Become nested Attribute_ is now available on `AttributeUsage` graphical nodes when the targeted graphical node is a `Usage` or `Definition`.
 ** The graphical edge tools _Add as nested Attribute_ is now available on all `Usage` and `Definition` graphical nodes that target an `AttributeUsage` graphical node.
-
+** Add _New Satisfy_ tool on `RequirementUsage` graphical nodes.
+This tool allows to create a `SatisfyRequirementUsage` based on the `RequirementUsage` selected during the tool creation.
+** Add _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
+This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and `RequirementUsage` selected during the tool creation.
 
 * In textual import/export:
 

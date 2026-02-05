@@ -23,6 +23,8 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -169,13 +171,42 @@ public class ModelMutationElementService {
     }
 
     /**
+     * Create a SatisfyRequirement with the following syntax: "satisfy req by subj", where req is a ReferenceSubsetting
+     * to an existing RequirementUsage and subj is a SubjectMembership containing a ReferenceUsage pointing to a
+     * Feature. In this case the Feature is the given parent Element.
+     *
+     * @param element
+     *            the parent {@link Element} of the new {@link SatisfyRequirementUsage}.
+     * @param existingRequirement
+     *            an existing {@link RequirementUsage}.
+     * @return the new {@link SatisfyRequirementUsage}.
+     */
+    public SatisfyRequirementUsage createSatisfy(Element element, RequirementUsage existingRequirement) {
+        // create a new SatisfyRequirementUsage as child of the given Element
+        var newSatisfyRequirementUsage = SysmlFactory.eINSTANCE.createSatisfyRequirementUsage();
+        this.metamodelMutationElementService.addChildInParent(element, newSatisfyRequirementUsage);
+        // create a new ReferenceSubsetting as child of the new SatisfyRequirementUsage
+        var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        newSatisfyRequirementUsage.getOwnedRelationship().add(newReferenceSubsetting);
+        // link the new ReferenceSubsetting to the given existing RequirementUsage
+        newReferenceSubsetting.setReferencedFeature(existingRequirement);
+        // initialize the new SatisfyRequirementUsage, after added it in the model and after linked it to the existing
+        // RequirementUsage
+        this.metamodelMutationElementService.initialize(newSatisfyRequirementUsage);
+        this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+
+        return newSatisfyRequirementUsage;
+    }
+
+    /**
      * Creates a {@link ViewUsage}.
      *
      * @param owningElement
-     *         the element owning the {@link ViewUsage} to be created
+     *            the element owning the {@link ViewUsage} to be created
      * @param viewName
-     *         the name of the view to be created
-     * @return an {@link Optional} of the newly created {@link ViewUsage} if the creation was successful, an empty {@link Optional} otherwise.
+     *            the name of the view to be created
+     * @return an {@link Optional} of the newly created {@link ViewUsage} if the creation was successful, an empty
+     *         {@link Optional} otherwise.
      */
     public Optional<ViewUsage> createViewUsage(Element owningElement, String viewName) {
         Optional<ViewUsage> viewUsageOpt = Optional.empty();

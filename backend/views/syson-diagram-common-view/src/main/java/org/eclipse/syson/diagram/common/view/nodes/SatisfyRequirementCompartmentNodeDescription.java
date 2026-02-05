@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.tools.SatisfyNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyRequirementNodeToolProvider;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -68,6 +69,7 @@ public class SatisfyRequirementCompartmentNodeDescription extends AbstractCompar
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
         creationToolProviders.add(new SatisfyRequirementNodeToolProvider());
+        creationToolProviders.add(new SatisfyNodeToolProvider());
         return creationToolProviders;
     }
 }

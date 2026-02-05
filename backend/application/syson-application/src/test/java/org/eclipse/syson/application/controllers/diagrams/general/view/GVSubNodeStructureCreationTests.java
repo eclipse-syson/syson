@@ -269,7 +269,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> partUsageSiblingAndChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "parts", SysmlPackage.eINSTANCE.getUsage_NestedPart(), 13, 1, ""),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), "satisfy requirements", SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 10, 1,
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), "satisfy requirements", SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), 10, 2,
                         SatisfyRequirementCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME))
                 .map(TestNameGenerator::namedArguments);
     }

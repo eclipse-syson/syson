@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
@@ -172,6 +173,13 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseFeature(Feature object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.edgeToolService.createSatisfyRequirementEdgeTool(this.allNodeDescriptions));
+        return edgeTools;
+    }
+
+    @Override
     public List<EdgeTool> caseInterfaceUsage(InterfaceUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
@@ -280,6 +288,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseUsage(Usage object) {
         var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.addAll(this.caseFeature(object));
         // special actions (such as Start or Done) should not be considered to create edges.
         var targetDescriptions = this.allNodeDescriptions.stream()
                 .filter(this::isRegularNodeDescription)

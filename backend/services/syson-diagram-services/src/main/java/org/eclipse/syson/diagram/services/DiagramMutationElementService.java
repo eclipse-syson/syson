@@ -56,6 +56,8 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -476,20 +478,21 @@ public class DiagramMutationElementService {
     }
 
     /**
-     * Set a new source {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the {@link ConnectorAsUsage} to a new container to match creation rules.
+     * Set a new source {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the
+     * {@link ConnectorAsUsage} to a new container to match creation rules.
      *
      * @param connectorAsUsage
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @param newSource
-     *         the new target {@link Element}.
+     *            the new target {@link Feature}.
      * @param sourceNode
-     *         new source node of the edge
+     *            new source node of the edge
      * @param targetNode
-     *         target node of the edge
+     *            target node of the edge
      * @param editingContext
-     *         the editing context
+     *            the editing context
      * @param diagram
-     *         the context diagram
+     *            the context diagram
      * @return the given {@link ConnectorAsUsage}.
      */
     public ConnectorAsUsage reconnectSource(ConnectorAsUsage connectorAsUsage, Feature newSource, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram) {
@@ -524,20 +527,21 @@ public class DiagramMutationElementService {
     }
 
     /**
-     * Set a new target {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the {@link ConnectorAsUsage} to a new container to match creation rules.
+     * Set a new target {@link Feature} for the given {@link ConnectorAsUsage}. Note that it might also move the
+     * {@link ConnectorAsUsage} to a new container to match creation rules.
      *
      * @param connectorAsUsage
-     *         the given {@link ConnectorAsUsage}.
+     *            the given {@link ConnectorAsUsage}.
      * @param newTarget
-     *         the new target {@link Element}.
+     *            the new target {@link Element}.
      * @param sourceNode
-     *         source node of the edge
+     *            source node of the edge
      * @param targetNode
-     *         new target node of the edge
+     *            new target node of the edge
      * @param editingContext
-     *         the editing context
+     *            the editing context
      * @param diagram
-     *         the context diagram
+     *            the context diagram
      * @return the given {@link ConnectorAsUsage}.
      */
     public ConnectorAsUsage reconnectTarget(ConnectorAsUsage connectorAsUsage, Feature newTarget, Node sourceNode, Node targetNode, IEditingContext editingContext, Diagram diagram) {
@@ -572,20 +576,87 @@ public class DiagramMutationElementService {
     }
 
     /**
+     * Set a new source {@link Element} for the given {@link SatisfyRequirementUsage}.
+     *
+     * @param sru
+     *            the given {@link SatisfyRequirementUsage}.
+     * @param newSource
+     *            the new source {@link Element}.
+     * @param sourceNode
+     *            new source node of the edge
+     * @param targetNode
+     *            target node of the edge
+     * @param editingContext
+     *            the editing context
+     * @param diagram
+     *            the context diagram
+     * @return the given {@link SatisfyRequirementUsage}.
+     */
+    public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
+        if (newSource instanceof Feature newFeature) {
+            var subjectParameter = sru.getSubjectParameter();
+            if (subjectParameter != null) {
+                subjectParameter.getOwnedSubsetting().stream()
+                        .findFirst()
+                        .ifPresent(s -> s.setSubsettedFeature(newFeature));
+            } else {
+                var newSubjectMembership = SysmlFactory.eINSTANCE.createSubjectMembership();
+                sru.getOwnedRelationship().add(newSubjectMembership);
+                this.metamodelMutationElementService.initialize(newSubjectMembership);
+
+                var newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                newSubjectMembership.getOwnedRelatedElement().add(newReferenceUsage);
+                this.metamodelMutationElementService.initialize(newReferenceUsage);
+                this.utilService.setSubsetting(newReferenceUsage, newFeature);
+            }
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("The satisfy source must be a Feature", MessageLevel.WARNING));
+        }
+        return sru;
+    }
+
+    /**
+     * Set a new target {@link Element} for the given {@link SatisfyRequirementUsage}.
+     *
+     * @param sru
+     *            the given {@link SatisfyRequirementUsage}.
+     * @param newTarget
+     *            the new target {@link Element}.
+     * @return the given {@link SatisfyRequirementUsage}.
+     */
+    public SatisfyRequirementUsage reconnectSatisfyRequirementTarget(SatisfyRequirementUsage sru, Element newTarget) {
+        if (newTarget instanceof RequirementUsage newReqUsage) {
+            var ownedReferenceSubsetting = sru.getOwnedReferenceSubsetting();
+            if (ownedReferenceSubsetting != null) {
+                ownedReferenceSubsetting.setReferencedFeature(newReqUsage);
+            } else {
+                var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                sru.getOwnedRelationship().add(newReferenceSubsetting);
+                // link the new ReferenceSubsetting to the given existing RequirementUsage
+                newReferenceSubsetting.setReferencedFeature(newReqUsage);
+                this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+            }
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("The satisfy target must be a RequirementUsage", MessageLevel.WARNING));
+        }
+        return sru;
+    }
+
+    /**
      * Creates a {@link BindingConnectorAsUsage}.
      *
      * @param source
-     *         the source feature
+     *            the source feature
      * @param target
-     *         the target feature
+     *            the target feature
      * @param sourceNode
-     *         the graphical source node
+     *            the graphical source node
      * @param targetNode
-     *         the graphical target node
+     *            the graphical target node
      * @param editingContext
-     *         the current {@link IEditingContext}
+     *            the current {@link IEditingContext}
      * @param diagramContext
-     *         the {@link DiagramContext}
+     *            the {@link DiagramContext}
      * @return a new {@link BindingConnectorAsUsage}
      */
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext) {

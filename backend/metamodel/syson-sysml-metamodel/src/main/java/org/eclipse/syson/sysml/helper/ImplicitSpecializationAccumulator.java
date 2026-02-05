@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -53,7 +54,7 @@ public class ImplicitSpecializationAccumulator {
         boolean hasFeatureTyping = false;
 
         for (Specialization s : specialization) {
-            if (!hasSubSetting && s instanceof Subsetting) {
+            if (!hasSubSetting && s instanceof Subsetting && !(s instanceof Redefinition) && !(s instanceof ReferenceSubsetting)) {
                 hasSubSetting = true;
             }
             if (!hasRedefinition && s instanceof Redefinition) {
@@ -96,7 +97,7 @@ public class ImplicitSpecializationAccumulator {
     }
 
     public void add(Specialization s) {
-        if (!this.hasSubSetting && s instanceof Subsetting) {
+        if (!this.hasSubSetting && s instanceof Subsetting && !(s instanceof Redefinition) && !(s instanceof ReferenceSubsetting)) {
             this.hasSubSetting = true;
         }
         if (!this.hasRedefinition && s instanceof Redefinition) {
