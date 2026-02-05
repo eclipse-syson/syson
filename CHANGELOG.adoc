@@ -43,6 +43,7 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 - https://github.com/eclipse-syson/syson/issues/1943[#1943] [diagrams] Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1946[#1946] [diagrams] Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1947[#1947] [diagrams] Add _subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
+- https://github.com/eclipse-syson/syson/issues/1954[#1954] [export] Implement textual export of `TransitionUsage`.
 
 === New features
 

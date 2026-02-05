@@ -52,6 +52,7 @@ package Package1 {
 * In textual import/export:
 
 ** Implement the textual export for `StateUsage` and `StateDefinition`.
+** Implement the textual export for `TransitionUsage`.
 
 
 == Technical details

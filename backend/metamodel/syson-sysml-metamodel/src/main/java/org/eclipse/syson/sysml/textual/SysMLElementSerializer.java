@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
+import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.CalculationDefinition;
@@ -126,6 +127,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SelectExpression;
+import org.eclipse.syson.sysml.SendActionUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -134,6 +136,7 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -165,6 +168,8 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author Arthur Daussy
  */
 public class SysMLElementSerializer extends SysmlSwitch<String> {
+
+    private static final String SPACE = " ";
 
     private final String lineSeparator;
 
@@ -292,6 +297,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
         this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseAssignmentActionUsage(AssignmentActionUsage assignmentActionUsage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, assignmentActionUsage);
+
+        this.appendAssignmentNodeDeclaration(builder, assignmentActionUsage);
+
+        this.appendChildrenContent(builder, assignmentActionUsage, assignmentActionUsage.getOwnedMembership());
 
         return builder.toString();
     }
@@ -886,7 +904,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendWithSpaceIfNeeded("perform");
         } // Else do nothing using rule PerformActionUsageDeclaration
 
-        this.appendPerformActionUsageDeclaration(performActionUsage, builder);
+        this.appendPerformActionUsageDeclaration(builder, performActionUsage);
 
         this.appendValuePart(builder, performActionUsage);
 
@@ -967,6 +985,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendUsageDeclaration(builder, reference);
             this.appendUsageCompletion(builder, reference);
         }
+        if (builder.toString().equals(";")) {
+            // This an EmptyUsage rule
+            return "";
+        }
         return builder.toString();
     }
 
@@ -1005,6 +1027,76 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendDefaultUsage(builder, usage);
         }
         return builder.toString();
+    }
+
+    @Override
+    public String caseSendActionUsage(SendActionUsage sendActionUsage) {
+        var builder = this.newAppender();
+
+        Appender localAppender = this.newAppender();
+        this.appendUsageDeclaration(localAppender, sendActionUsage);
+        if (!localAppender.isEmpty()) {
+            builder.appendWithSpaceIfNeeded("action ").append(localAppender.toString());
+        }
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.SEND);
+
+        List<ReferenceUsage> parameters = sendActionUsage.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .map(ParameterMembership::getOwnedMemberParameter)
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .toList();
+
+        if (!parameters.isEmpty()) {
+            ReferenceUsage firstParam = parameters.get(0);
+            this.childrenMembershipToSkip.add(firstParam.getOwningMembership());
+            if (this.isEmptyUsage(firstParam)) {
+                // Pattern ownedRelationship += EmptyParameterMember SendReceiverPart
+            } else {
+                // Pattern  ownedRelationship += NodeParameterMember SenderReceiverPart?
+                FeatureValue value = this.getValuation(firstParam);
+                this.appendOwnedExpression(builder, value.getValue());
+            }
+
+            if (parameters.size() >= 2) {
+                ReferenceUsage secondParam = parameters.get(1);
+                this.childrenMembershipToSkip.add(secondParam.getOwningMembership());
+
+                if (!this.isEmptyUsage(secondParam)) {
+                    // Pattern "'via' ownedRelationship += NodeParameterMember ( 'to' ownedRelationship += NodeParameterMember )?"
+                    FeatureValue secondValue = this.getValuation(secondParam);
+                    if (secondValue != null) {
+                        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.VIA);
+                        this.appendOwnedExpression(builder, secondValue.getValue());
+                    }
+                    this.appendParameterValue(builder, parameters, 2, SysMLv2Keywords.TO);
+
+                } else {
+                    // Pattern  "ownedRelationship += EmptyParameterMember 'to' ownedRelationship += NodeParameterMember"
+                    this.appendParameterValue(builder, parameters, 2, SysMLv2Keywords.TO);
+                }
+            }
+        }
+
+        return builder.toString();
+    }
+
+    private void appendParameterValue(Appender builder, List<ReferenceUsage> parameters, int index, String keyword) {
+        if (parameters.size() >= index + 1) {
+            ReferenceUsage param = parameters.get(index);
+            FeatureValue value = this.getValuation(param);
+            if (value != null) {
+                this.childrenMembershipToSkip.add(param.getOwningMembership());
+
+                builder.appendWithSpaceIfNeeded(keyword);
+                this.appendOwnedExpression(builder, value.getValue());
+            }
+        }
+    }
+
+    private boolean isEmptyUsage(Usage firstParam) {
+        return firstParam instanceof ReferenceUsage && firstParam.getOwnedRelationship().isEmpty();
     }
 
     @Override
@@ -1074,7 +1166,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseStateDefinition(StateDefinition stateDefinition) {
         Appender builder = this.newAppender();
         this.appendDefinitionPrefix(builder, stateDefinition);
-        builder.appendSpaceIfNeeded().append(SysMLv2Keywords.STATE + " " + SysMLv2Keywords.DEF);
+        builder.appendSpaceIfNeeded().append(SysMLv2Keywords.STATE + SPACE + SysMLv2Keywords.DEF);
         this.appendDefinitionDeclaration(builder, stateDefinition);
 
         if (stateDefinition.isIsParallel()) {
@@ -1209,6 +1301,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseTransitionFeatureMembership(TransitionFeatureMembership transitionFeatureMembership) {
         var builder = this.newAppender();
+        // Weird code....
         if (transitionFeatureMembership.getKind() == TransitionFeatureKind.GUARD) {
             List<String> expressions = transitionFeatureMembership.getOwnedRelatedElement().stream()
                     .filter(Expression.class::isInstance)
@@ -1225,12 +1318,125 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseTransitionUsage(TransitionUsage transitionUsage) {
         var builder = this.newAppender();
         if (this.isDecisionTransition(transitionUsage)) {
-            this.appenDecisionTransition(transitionUsage, builder);
+            this.appendDecisionTransition(transitionUsage, builder);
         } else {
-            // Not handle yet (missing the case of StateTransition)
-            this.reportUnhandledType(transitionUsage);
+            builder.append(SysMLv2Keywords.TRANSITION);
+
+            Appender declarationBuilder = this.newAppender();
+            this.appendUsageDeclaration(declarationBuilder, transitionUsage);
+
+            if (!declarationBuilder.isEmpty()) {
+                builder.appendWithSpaceIfNeeded(declarationBuilder).append(SPACE + SysMLv2Keywords.FIRST);
+            }
+
+            EList<Membership> ownedMemberships = transitionUsage.getOwnedMembership();
+
+            if (!ownedMemberships.isEmpty()) {
+
+                final Iterator<Membership> membershipIterator = ownedMemberships.iterator();
+
+                Membership membership = membershipIterator.next();
+                this.appendFeatureChainMember(builder, membership);
+                this.childrenMembershipToSkip.add(membership);
+
+                if (membershipIterator.hasNext()) {
+                    membership = membershipIterator.next();
+
+                    while (membership instanceof TransitionFeatureMembership || membership instanceof ParameterMembership) {
+                        this.childrenMembershipToSkip.add(membership);
+                        if (membership instanceof TransitionFeatureMembership transitionFeatureMembership) {
+                            switch (transitionFeatureMembership.getKind()) {
+                                case TRIGGER -> this.appendTriggerActionMember(builder, transitionFeatureMembership);
+                                case GUARD -> this.appendGuardExpressionMember(builder, transitionFeatureMembership);
+                                case EFFECT -> this.appendEffectBehaviorMember(builder, transitionFeatureMembership);
+                                default -> {
+                                }
+                            }
+                        }
+
+                        if (membershipIterator.hasNext()) {
+                            membership = membershipIterator.next();
+                        } else {
+                            membership = null;
+                        }
+                    }
+
+                    builder.appendWithSpaceIfNeeded(SysMLv2Keywords.THEN).append(SPACE);
+
+                    this.appendTransitionSuccessionMember(builder, membership);
+                }
+            }
+
+            // Append usage body (removed already handled element : Succession and guard
+            List<Relationship> children = transitionUsage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                    .filter(e -> !(e instanceof ParameterMembership))
+                    .toList();
+            this.appendChildrenContent(builder, transitionUsage, children);
+
         }
         return builder.toString();
+    }
+
+    private void appendTransitionSuccessionMember(Appender builder, Membership membership) {
+        if (membership instanceof OwningMembership) {
+            membership.getOwnedRelatedElement().stream()
+                    .filter(Succession.class::isInstance)
+                    .map(Succession.class::cast)
+                    .findFirst()
+                    .flatMap(succession -> succession.getFeatureMembership().stream()
+                            .filter(EndFeatureMembership.class::isInstance)
+                            .map(EndFeatureMembership.class::cast)
+                            .skip(1) // Skip first one see TransitionSuccession rule : EmptyEndMember
+                            .findFirst())
+                    .ifPresent(endFeatureMembership -> {
+                        this.appendConnectorEndMember(builder, endFeatureMembership);
+                        this.childrenMembershipToSkip.add(membership);
+                    });
+        }
+    }
+
+    private void appendEffectBehaviorMember(Appender builder, TransitionFeatureMembership transitionFeatureMembership) {
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.DO).append(SPACE);
+        transitionFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .findFirst()
+                .ifPresent(actionUsage -> {
+
+                    if (actionUsage instanceof AcceptActionUsage acceptActionUsage) {
+                        this.appendAcceptParameterPart(builder, acceptActionUsage);
+                    } else if (actionUsage instanceof PerformActionUsage performActionUsage) {
+                        this.appendPerformActionUsageDeclaration(builder, performActionUsage);
+                    } else if (actionUsage instanceof SendActionUsage sendActionUsage) {
+                        builder.appendWithSpaceIfNeeded(this.caseSendActionUsage(sendActionUsage));
+                    } else if (actionUsage instanceof AssignmentActionUsage assignmentActionUsage) {
+                        this.appendAssignmentNodeDeclaration(builder, assignmentActionUsage);
+                    }
+
+                    Appender bodyContent = this.newAppender();
+                    this.appendChildrenContent(bodyContent, actionUsage, actionUsage.getOwnedMembership());
+                    if (!bodyContent.isEmpty() && bodyContent.length() != 1 && !bodyContent.toString().equals(";")) {
+                        builder.append(bodyContent);
+                    }
+
+                });
+    }
+
+    private void appendGuardExpressionMember(Appender builder, TransitionFeatureMembership transitionFeatureMembership) {
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.IF);
+        transitionFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(Expression.class::isInstance)
+                .map(Expression.class::cast)
+                .findFirst()
+                .ifPresent(expression -> builder.append(SPACE).append(this.doSwitch(expression)));
+    }
+
+    private void appendTriggerActionMember(Appender builder, TransitionFeatureMembership transitionFeatureMembership) {
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.ACCEPT).append(SPACE);
+        transitionFeatureMembership.getOwnedRelatedElement().stream()
+                .filter(AcceptActionUsage.class::isInstance)
+                .map(AcceptActionUsage.class::cast).findFirst()
+                .ifPresent(acceptActionUsage -> this.appendAcceptParameterPart(builder, acceptActionUsage));
     }
 
     @Override
@@ -1498,7 +1704,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         String declaredName = referenceUsage.getDeclaredName();
 
         if (declaredName != null && !declaredName.isBlank()) {
-            builder.appendWithSpaceIfNeeded(declaredName).append(" ").append(LabelConstants.REFERENCES);
+            builder.appendWithSpaceIfNeeded(declaredName).append(SPACE).append(LabelConstants.REFERENCES);
         }
 
         ReferenceSubsetting refSubsetting = referenceUsage.getOwnedReferenceSubsetting();
@@ -1848,7 +2054,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded().append(this.caseOperatorExpression(exp));
         } else if (expression instanceof InvocationExpression exp) {
             builder.appendSpaceIfNeeded().append(this.caseInvocationExpression(exp));
-        } else {
+        } else if (expression != null) {
             this.appendSequenceExpression(builder, expression);
         }
     }
@@ -2305,7 +2511,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .toList());
     }
 
-    private void appenDecisionTransition(TransitionUsage transitionUsage, Appender builder) {
+    private void appendDecisionTransition(TransitionUsage transitionUsage, Appender builder) {
         Feature sourceFeature = transitionUsage.sourceFeature();
         boolean hasGuards = !transitionUsage.getGuardExpression().isEmpty();
         boolean isElsePattern = !hasGuards && sourceFeature instanceof DecisionNode;
@@ -2614,7 +2820,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
         if (def.isIsVariation()) {
             if (!builder.isEmpty()) {
-                builder.append(" ");
+                builder.append(SPACE);
             }
             builder.append("variation");
         }
@@ -2855,7 +3061,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 && constraintUsage.getNestedMetadata().isEmpty();
     }
 
-    private void appendPerformActionUsageDeclaration(PerformActionUsage performActionUsage, Appender builder) {
+    private void appendPerformActionUsageDeclaration(Appender builder, PerformActionUsage performActionUsage) {
         Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
         this.appendNameWithShortName(nameAppender, performActionUsage);
 
@@ -2866,6 +3072,60 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             // Use complete form
             builder.appendWithSpaceIfNeeded("action");
             this.appendUsageDeclaration(builder, performActionUsage);
+        }
+    }
+
+    private void appendAssignmentNodeDeclaration(Appender builder, AssignmentActionUsage assignmentActionUsage) {
+
+        Appender declarationBuilder = this.newAppender();
+        this.appendActionUsageDeclaration(declarationBuilder, assignmentActionUsage);
+        if (!declarationBuilder.isEmpty()) {
+            builder.append(declarationBuilder);
+        }
+
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.ASSIGN);
+
+        EList<Membership> ownedMembership = assignmentActionUsage.getOwnedMembership();
+        this.appendAssignmentTargetMember(builder, ownedMembership);
+
+        // Append feature chain member
+        if (ownedMembership.size() >= 2) {
+            Membership secondMembership = ownedMembership.get(1);
+
+            this.childrenMembershipToSkip.add(secondMembership);
+            this.appendFeatureChainMember(builder, secondMembership);
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.ASSIGNMENT);
+        }
+
+        if (ownedMembership.size() >= 3) {
+            Membership thirdMembership = ownedMembership.get(2);
+            this.childrenMembershipToSkip.add(thirdMembership);
+            if (thirdMembership instanceof ParameterMembership parameterMembership && parameterMembership.getOwnedMemberElement() instanceof ReferenceUsage thirdFeature) {
+                FeatureValue value = this.getValuation(thirdFeature);
+                if (value != null) {
+                    this.appendOwnedExpression(builder, value.getValue());
+                }
+            }
+        }
+    }
+
+    private void appendAssignmentTargetMember(Appender builder, EList<Membership> memberships) {
+        if (!memberships.isEmpty()) {
+            Membership firstMembership = memberships.get(0);
+
+            this.childrenMembershipToSkip.add(firstMembership);
+            if (firstMembership instanceof ParameterMembership parameterMembership) {
+                final Feature firstFeature = parameterMembership.getOwnedMemberFeature();
+                if (firstFeature instanceof ReferenceUsage refUsage) {
+                    Optional.ofNullable(this.getValuation(firstFeature)).ifPresent(firstExpression -> {
+                        Appender targetMemberBuilder = this.newAppender();
+                        this.appendNonFeatureChainExpression(targetMemberBuilder, firstExpression.getValue());
+                        if (!targetMemberBuilder.isEmpty()) {
+                            builder.appendWithSpaceIfNeeded(targetMemberBuilder).append(".");
+                        }
+                    });
+                }
+            }
         }
     }
 }
