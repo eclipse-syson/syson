@@ -124,8 +124,8 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> allocationDefinitionSiblingNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11))
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 4, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 11, 2))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -163,7 +163,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
 
     private static Stream<Arguments> interfaceDefinitionSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), 6, 1))
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), 7, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -337,7 +337,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("allocationDefinitionSiblingNodeParameters")
-    public void createAllocationDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+    public void createAllocationDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount, int newNodesCount) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -350,7 +350,7 @@ public class GVSubNodeInterconnectionCreationTests extends AbstractIntegrationTe
         EClass parentEClass = SysmlPackage.eINSTANCE.getAllocationDefinition();
         String parentLabel = "AllocationDefinition";
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount, newNodesCount);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 
         StepVerifier.create(flux)

@@ -44,7 +44,8 @@ package Package1 {
 * In diagrams:
 
 ** When dropping `Element` from the _Explorer_ view to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _Interconnection View_ diagram.
-** Add _attributes_ and _doc_ compartments on _ConnectionDefinition_ graphical nodes.
+** Add _attributes_, _doc_ and _parts_ compartments on `ConnectionDefinition` graphical nodes.
+** Add _parts_ compartments on `PartDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 ** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
 
