@@ -39,6 +39,10 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String ACTION_USAGE_ID = "61aaf64a-4fbc-356e-ba73-4bd47b386989";
 
         public static final String STATE_USAGE_ID = "1541c013-2cc7-3dd7-a39f-6e33d07b411e";
+
+        public static final String ATTRIBUTE_USAGE_ID = "7b8e6835-c563-35cd-8991-e2f894fc2139";
+
+        public static final String ITEM_DEFINITION_ID = "df3542d9-6314-3da5-993c-a296f4042674";
     }
 
     /**
