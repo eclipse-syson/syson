@@ -1264,6 +1264,27 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a model with ExhibitStateUsages, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one")
+    public void checkExhibitStateUsage() throws IOException {
+        var input = """
+                package root {
+                    part part1 {
+                        exhibit state s1 {
+                            /* doc */
+                        }
+                    }
+                    part part2 {
+                        exhibit part1.s1 {
+                            /* doc */
+                        }
+                    }
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(input)
+                .check();
+    }
+
+    @Test
     @DisplayName("GIVEN a model with OperatorExpression using the 'meta', WHEN importing and exporting the model, THEN the expression is properly handled")
     public void checkMetaOperatorExpressionExport() throws IOException {
         var input = """

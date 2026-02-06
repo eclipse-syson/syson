@@ -62,6 +62,7 @@ import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -451,6 +452,29 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseEnumerationUsage(EnumerationUsage enumUsage) {
         Appender builder = this.newAppender();
         this.appendDefaultUsage(builder, enumUsage);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseExhibitStateUsage(ExhibitStateUsage exhibitState) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, exhibitState);
+        builder.appendWithSpaceIfNeeded(SysMLv2Keywords.EXHIBIT);
+
+        final ReferenceSubsetting referenceSubsetting = exhibitState.getOwnedReferenceSubsetting();
+        if (referenceSubsetting != null) {
+            this.appendOwnedReferenceSubsetting(builder, referenceSubsetting);
+            this.appendFeatureSpecializationPart(builder, exhibitState, exhibitState.getOwnedSpecialization().stream().filter(specialization -> specialization != referenceSubsetting).toList(), false);
+        } else {
+            builder.appendWithSpaceIfNeeded(SysMLv2Keywords.STATE);
+            this.appendUsageDeclaration(builder, exhibitState);
+        }
+
+        this.appendValuePart(builder, exhibitState);
+
+        this.appendChildrenContent(builder, exhibitState, exhibitState.getOwnedMembership());
+
         return builder.toString();
     }
 
