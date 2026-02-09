@@ -22,7 +22,7 @@ The following methods have been added:
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.1]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.2]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.10[Spring Boot 3.5.10]
 
 === Bug fixes
