@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -65,18 +66,16 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseConcernDefinition(ConcernDefinition object) {
-        return SysMLv2Keywords.CONCERN;
+    public String caseAllocationDefinition(AllocationDefinition object) {
+        return SysMLv2Keywords.ALLOCATION;
     }
 
     @Override
-    public String caseRequirementDefinition(RequirementDefinition object) {
-        return SysMLv2Keywords.REQUIREMENT;
-    }
-
-    @Override
-    public String caseConcernUsage(ConcernUsage object) {
-        return SysMLv2Keywords.CONCERN;
+    public String caseAssertConstraintUsage(AssertConstraintUsage object) {
+        if (object.isIsNegated()) {
+            return SysMLv2Keywords.ASSERT + " " + SysMLv2Keywords.NOT;
+        }
+        return SysMLv2Keywords.ASSERT;
     }
 
     @Override
@@ -100,27 +99,47 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseConcernDefinition(ConcernDefinition object) {
+        return SysMLv2Keywords.CONCERN;
+    }
+
+    @Override
+    public String caseConcernUsage(ConcernUsage object) {
+        return SysMLv2Keywords.CONCERN;
+    }
+
+    @Override
     public String caseConstraintDefinition(ConstraintDefinition object) {
         return SysMLv2Keywords.CONSTRAINT;
     }
 
     @Override
+    public String caseConstraintUsage(ConstraintUsage object) {
+        return SysMLv2Keywords.CONSTRAINT;
+    }
+
+    @Override
+    public String caseEnumerationDefinition(EnumerationDefinition object) {
+        return SysMLv2Keywords.ENUM;
+    }
+
+    @Override
     public String caseEnumerationUsage(EnumerationUsage object) {
         if (object.getOwningDefinition() instanceof EnumerationDefinition && !this.isNullOrEmpty(object.getName())) {
-            // Inside a enumeration definition the keyword enum is optional
+            // Inside an enumeration definition the keyword enum is optional
             return "";
         }
         return SysMLv2Keywords.ENUM;
     }
 
     @Override
-    public String casePerformActionUsage(PerformActionUsage object) {
-        return SysMLv2Keywords.PERFORM + " " + SysMLv2Keywords.ACTION;
+    public String caseInterfaceDefinition(InterfaceDefinition object) {
+        return SysMLv2Keywords.INTERFACE;
     }
 
     @Override
-    public String caseEnumerationDefinition(EnumerationDefinition object) {
-        return SysMLv2Keywords.ENUM;
+    public String caseInterfaceUsage(InterfaceUsage object) {
+        return SysMLv2Keywords.INTERFACE;
     }
 
     @Override
@@ -144,23 +163,8 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseInterfaceDefinition(InterfaceDefinition object) {
-        return SysMLv2Keywords.INTERFACE;
-    }
-
-    @Override
-    public String caseInterfaceUsage(InterfaceUsage object) {
-        return SysMLv2Keywords.INTERFACE;
-    }
-
-    @Override
-    public String casePortUsage(PortUsage object) {
-        return SysMLv2Keywords.PORT;
-    }
-
-    @Override
-    public String casePortDefinition(PortDefinition object) {
-        return SysMLv2Keywords.PORT;
+    public String casePerformActionUsage(PerformActionUsage object) {
+        return SysMLv2Keywords.PERFORM + " " + SysMLv2Keywords.ACTION;
     }
 
     @Override
@@ -177,6 +181,16 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     }
 
     @Override
+    public String casePortDefinition(PortDefinition object) {
+        return SysMLv2Keywords.PORT;
+    }
+
+    @Override
+    public String casePortUsage(PortUsage object) {
+        return SysMLv2Keywords.PORT;
+    }
+
+    @Override
     public String caseReferenceUsage(ReferenceUsage object) {
         if (object.getOwningMembership() instanceof SubjectMembership) {
             return SysMLv2Keywords.SUBJECT;
@@ -185,16 +199,8 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseAssertConstraintUsage(AssertConstraintUsage object) {
-        if (object.isIsNegated()) {
-            return SysMLv2Keywords.ASSERT + " " + SysMLv2Keywords.NOT;
-        }
-        return SysMLv2Keywords.ASSERT;
-    }
-
-    @Override
-    public String caseConstraintUsage(ConstraintUsage object) {
-        return SysMLv2Keywords.CONSTRAINT;
+    public String caseRequirementDefinition(RequirementDefinition object) {
+        return SysMLv2Keywords.REQUIREMENT;
     }
 
     @Override

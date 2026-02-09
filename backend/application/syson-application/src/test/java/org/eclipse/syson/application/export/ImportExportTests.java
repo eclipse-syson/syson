@@ -1242,6 +1242,73 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 .check();
     }
 
+    @Test
+    @DisplayName("GIVEN a model with AllocationUsage and AllocationDefinition, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
+    public void checkAllocations() throws IOException {
+        var input = """
+                package AllocationTest {
+                    part def Logical {
+                        part component;
+                    }
+                    part def Physical {
+                        part assembly {
+                            part element;
+                        }
+                    }
+                    part l : Logical {
+                        part :>> component;
+                    }
+                    part p : Physical {
+                        part :>> assembly {
+                            part :>> element;
+                        }
+                        allocate l.component to assembly.element;
+                    }
+                    allocation def A;
+                    allocation def Logical_to_Physical :> A {
+                        end logical : Logical;
+                        end physical : Physical;
+                    }
+                    allocation allocation1 : Logical_to_Physical allocate l to p;
+                    allocation allocation2 : Logical_to_Physical allocate (
+                       logical ::> l,
+                       physical ::> p
+                    );
+                    allocate l.component to p.assembly.element;
+                }""";
+        var expected = """
+                package AllocationTest {
+                    part def Logical {
+                        part component;
+                    }
+                    part def Physical {
+                        part assembly {
+                            part element;
+                        }
+                    }
+                    part l : Logical {
+                        part :>> component;
+                    }
+                    part p : Physical {
+                        part :>> assembly {
+                            part :>> element;
+                        }
+                        allocate l.component to assembly.element;
+                    }
+                    allocation def A;
+                    allocation def Logical_to_Physical :> A {
+                        end logical : Logical;
+                        end physical : Physical;
+                    }
+                    allocation allocation1 : Logical_to_Physical allocate l to p;
+                    allocation allocation2 : Logical_to_Physical allocate logical ::> l to physical ::> p;
+                    allocate l.component to p.assembly.element;
+                }""";
+        this.checker.textToImport(input)
+                .expectedResult(expected)
+                .check();
+    }
+
 
     @Test
     @DisplayName("GIVEN a model with an AttributeUsage containing a LiteralString, WHEN importing and exporting the model, THEN the exported text file should be the same as the imported one.")
