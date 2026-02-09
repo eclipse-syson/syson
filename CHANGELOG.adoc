@@ -51,6 +51,7 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 Also, add a graphical edge tool to all `Usage` and `Definition` to make an `AttributeUsage` nested.
 - https://github.com/eclipse-syson/syson/issues/1649[#1649] [syson] Add support for publishing representations with libraries.
 Publishing a project that contains representations now produces libraries that also contain the representations.
+- https://github.com/eclipse-syson/syson/issues/1970[#1970] [export] Implement textual export of `AllocationUsage` and `AllocationDefinition`.
 
 === New features
 
