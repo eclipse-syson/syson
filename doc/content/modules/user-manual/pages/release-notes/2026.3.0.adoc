@@ -39,6 +39,23 @@ package Package1 {
 }
 ```
 
+** Fix the textual import to properly resolve unnamed redefined `Feature` in a `FeatureChain`.
+The following model is now properly imported:
++
+```
+part system {
+	part def Logical {
+		part component {
+			part component2;
+		}
+	}
+	part l : Logical {
+		part :>> component;
+	}
+	part c2  = l.component.component2; // "component" now resolves to "p1::l::component" instead of "p1::Logical::component"
+}
+```
+
 == Improvements
 
 * In diagrams:
@@ -75,6 +92,8 @@ package root {
 * Add support for publishing representations with libraries.
 Publishing a project that contains representations now produces libraries that also contain the representations.
 Users can navigate to `/libraries/<library identifier>` to open a library and see its representations.
+** Implement the textual export for `AllocationUsage` and `AllocationDefinition`.
+
 
 == Technical details
 

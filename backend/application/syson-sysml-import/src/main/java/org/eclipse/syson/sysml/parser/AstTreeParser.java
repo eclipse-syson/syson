@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
@@ -175,24 +177,29 @@ public class AstTreeParser {
         List<ProxiedReference> unresolvedProxiesAfterImport = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.IMPORT,
                 "Import resolution phase", List.of());
 
-        // Then resolve unclassified proxies and the previous unresolved proxies
-        List<ProxiedReference> unresolvedProxiesAfterUnqualified = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.UNCLASSIFIED,
-                "Non qualified proxy resolution phase", unresolvedProxiesAfterImport);
+        // Then resolve aliases
+        List<ProxiedReference> unresolvedAfterAliases = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.ALIAS,
+                "Aliases",
+                unresolvedProxiesAfterImport);
 
         // Then resolve specializations that are not redefinitions since redefinition needs to access inherited memberships
         List<ProxiedReference> unresolvedAfterSpecialization = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.OTHER_SPECIALIZATION,
                 "Non redefinition specialization proxy resolution phase",
-                unresolvedProxiesAfterUnqualified);
+                unresolvedAfterAliases);
 
         // Then resolve base_type redefinition proxies stored MetadataDefinition since they may impact implicit inherited members
         List<ProxiedReference> unresolvedAfterBaseTypeRedefinition = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.BASE_TYPE_METADATA_DEFINITION_REDEFINITION,
                 "Semantic MetadataData base_type redefinition proxy resolution phase", unresolvedAfterSpecialization);
 
-        // At the end resolve redefinition
+        // Then resolve redefinition
         List<ProxiedReference> unresolvedAfterRedefinition = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.OTHER_REDEFINITION, "Other redefinition proxy resolution phase",
                 unresolvedAfterBaseTypeRedefinition);
 
-        if (!unresolvedAfterRedefinition.isEmpty()) {
+        //  At the end resolve unclassified proxies and the previous unresolved proxies
+        List<ProxiedReference> unresolvedProxiesAfterUnqualified = this.doResolveAllReference(partitionedUnresolvedReferences, ReferenceType.UNCLASSIFIED,
+                "Non qualified proxy resolution phase", unresolvedAfterRedefinition);
+
+        if (!unresolvedProxiesAfterUnqualified.isEmpty()) {
             this.handleUnresolvableProxies(unresolvedAfterRedefinition);
         }
     }
@@ -209,10 +216,31 @@ public class AstTreeParser {
             result = ReferenceType.OTHER_REDEFINITION;
         } else if (owner instanceof Specialization) {
             result = ReferenceType.OTHER_SPECIALIZATION;
+        } else if (this.isAlias(owner)) {
+            result = ReferenceType.ALIAS;
         } else {
             result = ReferenceType.UNCLASSIFIED;
         }
         return result;
+    }
+
+    private boolean isAlias(EObject owner) {
+        return owner.eClass() == SysmlPackage.eINSTANCE.getMembership()
+                && this.redefineNameOrShortName((Membership) owner);
+    }
+
+    private boolean redefineNameOrShortName(Membership membership) {
+        Element memberElement = membership.getMemberElement();
+        if (memberElement != null) {
+            boolean result = false;
+            if (membership.getMemberName() != null) {
+                result = !membership.getMemberName().equals(memberElement.getName());
+            } else if (membership.getMemberShortName() != null) {
+                result = !membership.getMemberName().equals(memberElement.getShortName());
+            }
+            return result;
+        }
+        return false;
     }
 
     /**
@@ -326,6 +354,10 @@ public class AstTreeParser {
          * A proxy related to imports.
          */
         IMPORT,
+        /**
+         * A proxy related to alias.
+         */
+        ALIAS,
         /**
          * All proxies that do not belong to any other categories.
          */
