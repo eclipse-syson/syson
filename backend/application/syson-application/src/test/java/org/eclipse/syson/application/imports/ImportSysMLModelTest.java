@@ -53,6 +53,7 @@ import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FlowUsage;
@@ -154,6 +155,30 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
+    }
+
+    @DisplayName("GIVEN unnamed redefinition used in a FeatureChain, WHEN importing the model, THEN chain should reference the redefined feature instead of the inherited one.")
+    @Test
+    public void unnamedRedefinedReferenceFeature() throws IOException {
+        var input = """
+                package p1 {
+                    part def Logical {
+                        part component{
+                            part component2;
+                        }
+                    }
+                    part l : Logical {
+                        part :>> component;
+                    }
+                
+                    part c2  = l.component.component2;
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<FeatureChaining> featureChainings = EMFUtils.allContainedObjectOfType(resource, FeatureChaining.class).toList();
+            assertThat(featureChainings).hasSize(2); // component.component2
+            // "component" should to "p1::l::component" and not to "p1::Logical::component"
+            assertThat(featureChainings.get(0).getChainingFeature().getQualifiedName()).isEqualTo("p1::l::component");
+        }).check(input);
     }
 
     @Test
