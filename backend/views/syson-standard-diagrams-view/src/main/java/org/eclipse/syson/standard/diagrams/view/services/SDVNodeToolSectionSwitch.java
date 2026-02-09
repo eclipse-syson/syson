@@ -31,6 +31,7 @@ import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeTool
 import org.eclipse.syson.diagram.common.view.tools.ActorCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AssignmentActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ConnectionDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
@@ -69,6 +70,7 @@ import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
@@ -479,6 +481,13 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
 
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseConnectionDefinition(ConnectionDefinition object) {
+        var sections = this.casePartDefinition(object);
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new ConnectionDefinitionEndCompartmentNodeToolProvider().create(this.cache));
         return sections;
     }
 

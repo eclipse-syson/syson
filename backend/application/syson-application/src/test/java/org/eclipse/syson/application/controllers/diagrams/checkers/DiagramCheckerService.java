@@ -59,14 +59,15 @@ public class DiagramCheckerService {
      *            the EClass of the expected child node
      * @param compartmentCount
      *            the expected number of compartments
+     * @param newNodesCount
+     *            the expected total number of new nodes
      * @return a consumer that performs the graphical check
      */
     public Consumer<Object> childNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel, EClass childEClass,
-            int compartmentCount) {
+            int compartmentCount, int newNodesCount) {
         return assertRefreshedDiagramThat(newDiagram -> {
-            int createdNodesExpectedCount = 1 + compartmentCount;
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewNodeCount(newNodesCount)
                     .hasNewEdgeCount(0)
                     .check(previousDiagram.get(), newDiagram);
 
@@ -199,6 +200,7 @@ public class DiagramCheckerService {
      * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
      * Please, directly use the consumer returned by the other functions of this class into your {@link reactor.test.StepVerifier} instead.
      */
+    @Deprecated
     public Consumer<Object> checkDiagram(IDiagramChecker diagramChecker, AtomicReference<Diagram> previousDiagram) {
         return object -> Optional.of(object)
                 .filter(DiagramRefreshedEventPayload.class::isInstance)

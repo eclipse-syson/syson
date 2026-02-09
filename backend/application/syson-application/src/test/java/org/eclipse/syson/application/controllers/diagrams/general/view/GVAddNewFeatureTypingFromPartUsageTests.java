@@ -113,7 +113,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     private static Stream<Arguments> partUsageNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 11),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 6));
     }
 

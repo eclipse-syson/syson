@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
@@ -108,6 +109,24 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     public Element caseComment(Comment object) {
         object.setBody("add comment here");
         return object;
+    }
+
+    @Override
+    public Element caseConnectionDefinition(ConnectionDefinition object) {
+        // 8.3.13.3 ConnectionDefinition: "A ConnectionDefinition always has isSufficient = true."
+        object.setIsSufficient(true);
+        this.addConnectionEnd(object, "source");
+        this.addConnectionEnd(object, "target");
+        return null;
+    }
+
+    private void addConnectionEnd(ConnectionDefinition connectionDefinition, String name) {
+        var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        referenceUsage.setDeclaredName(name);
+        referenceUsage.setIsEnd(true);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(referenceUsage);
+        connectionDefinition.getOwnedRelationship().add(featureMembership);
     }
 
     @Override
