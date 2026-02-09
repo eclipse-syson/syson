@@ -36,11 +36,11 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
@@ -381,31 +381,28 @@ public class ViewCreateService {
     }
 
     /**
-     * Create a new Part Usage which is used as the end given Allocation Definition.
+     * Create a new connection end (a ReferenceUsage) in a given Connection Definition.
      *
      * @param self
-     *         the Allocation Definition in which the new end is added.
+     *            the Connection Definition in which the new end is added.
      * @param endParent
-     *         the owner of the new part usage used as the end.
+     *            the owner of the new part usage used as the end.
      * @return the self modified element is returned
      */
-    public Element createPartUsageAsAllocationDefinitionEnd(AllocationDefinition self, Element endParent) {
-        // create the part usage that is used as the end element
-        PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-        newPartUsage.setDeclaredName(self.getDeclaredName() + "'s end");
-        var membership = SysmlFactory.eINSTANCE.createOwningMembership();
-        membership.getOwnedRelatedElement().add(newPartUsage);
-        endParent.getOwnedRelationship().add(membership);
-        var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-        featureTyping.setType(newPartUsage);
+    public Element createConnectionDefinitionEnd(ConnectionDefinition self) {
+        int suffix = self.getOwnedEndFeature().size() + 1;
+        this.addConnectionEnd(self, "end" + suffix);
+        return self;
+    }
+
+    private void addConnectionEnd(ConnectionDefinition connectionDefinition, String name) {
         var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-        referenceUsage.setDeclaredName("end");
+        new ElementInitializerSwitch().doSwitch(referenceUsage);
+        referenceUsage.setDeclaredName(name);
         referenceUsage.setIsEnd(true);
-        referenceUsage.getOwnedRelationship().add(featureTyping);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
-        self.getOwnedRelationship().add(featureMembership);
-        return self;
+        connectionDefinition.getOwnedRelationship().add(featureMembership);
     }
 
     /**

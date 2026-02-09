@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,14 +25,14 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to handle the Ends compartment of Allocation Definition.
+ * Used to handle the Ends compartment of Connection Definition.
  *
- * @author Jerome Gout
+ * @author pcdavid
  */
-public class AllocationDefinitionEndsCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class ConnectionDefinitionEndsCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public AllocationDefinitionEndsCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), colorProvider, nameGenerator);
+    public ConnectionDefinitionEndsCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(SysmlPackage.eINSTANCE.getConnectionDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), colorProvider, nameGenerator);
     }
 
     @Override

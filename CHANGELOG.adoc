@@ -67,6 +67,9 @@ As a result, the application won't start if a service call is constructed with a
 - https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
 Integration tests that require Elasticsearch now need to extend `AbstractIntegrationTestsWithElasticsearch`.
 - https://github.com/eclipse-syson/syson/issues/1983[#1983] [details] `reqId` property of `RequirementDefinition` is now visible in the _Core_ tab of the _Details_ view.
+- https://github.com/eclipse-syson/syson/issues/1945[#1945] [diagrams] Add ends compartment on `AllocationDefinition` and `ConnectionDefinition` graphical nodes
+Newly created `AllocationDefinition` and `ConnectionDefinition` graphical nodes now have two initial _connection ends_, named `source` and `target`.
+Additional ends can be created using the _New end_ tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).
 
 === New features
 

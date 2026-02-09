@@ -70,7 +70,8 @@ part system {
 * In diagrams:
 
 ** When dropping `Element` from the _Explorer_ view to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _Interconnection View_ diagram.
-** Add _attributes_, _doc_ and _parts_ compartments on `ConnectionDefinition` graphical nodes.
+** Add _ends_ compartments on `AlloocationDefinition` graphical nodes.
+** Add _attributes_, _ends_, _doc_ and _parts_ compartments on `ConnectionDefinition` graphical nodes.
 ** Add _parts_ compartments on `PartDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 ** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
 ** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
@@ -81,7 +82,8 @@ This tool allows to create a `SatisfyRequirementUsage` based on the `Requirement
 ** Add _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
 This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and `RequirementUsage` selected during the tool creation.
 ** Add the  _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
-
+** Newly created `AllocationDefinition` and `ConnectionDefinition` graphical nodes now have two initial _connection ends_, named `source` and `target`.
+Additional ends can be created using the _New end_ tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).
 * In textual import/export:
 
 ** Implement the textual export for `StateUsage` and `StateDefinition`.
