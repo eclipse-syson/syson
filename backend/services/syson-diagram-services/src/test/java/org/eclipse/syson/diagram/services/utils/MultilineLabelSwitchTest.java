@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,8 @@ import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -62,6 +64,8 @@ public class MultilineLabelSwitchTest {
     private static final String DEFAULT_ATTRIBUTE_USAGE_LABEL = LabelConstants.OPEN_QUOTE + "attribute" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "assign" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
+    private static final String DEFAULT_CASE_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "case" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_COMMENT_LABEL = LabelConstants.OPEN_QUOTE + "comment" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
@@ -112,6 +116,8 @@ public class MultilineLabelSwitchTest {
     private static final String DEFAULT_USE_CASE_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "use case def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_USE_CASE_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "use case" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
+    private static final String DEFAULT_VIEW_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "view" + LabelConstants.CLOSE_QUOTE + LabelConstants.SPACE;
 
     private static final String DEFAULT_STATE_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "state def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
@@ -203,6 +209,28 @@ public class MultilineLabelSwitchTest {
         );
     }
 
+    private static Stream<Arguments> timesliceSnapshotPrefixParameterProvider() {
+        return Stream.of(
+                Arguments.of(SYSML.getOccurrenceUsage(), DEFAULT_OCCURRENCE_USAGE_LABEL),
+                Arguments.of(SYSML.getActionUsage(), DEFAULT_ACTION_LABEL),
+                Arguments.of(SYSML.getAcceptActionUsage(), DEFAULT_ACCEPT_ACTION_LABEL),
+                Arguments.of(SYSML.getAssignmentActionUsage(), DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL),
+                Arguments.of(SYSML.getCaseUsage(), DEFAULT_CASE_USAGE_LABEL),
+                Arguments.of(SYSML.getUseCaseUsage(), DEFAULT_USE_CASE_USAGE_LABEL),
+                Arguments.of(SYSML.getPerformActionUsage(), DEFAULT_PERFORM_ACTION_USAGE_LABEL),
+                Arguments.of(SYSML.getExhibitStateUsage(), DEFAULT_EXHIBIT_STATE_USAGE_LABEL),
+                Arguments.of(SYSML.getStateUsage(), DEFAULT_STATE_USAGE_LABEL),
+                Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
+                Arguments.of(SYSML.getSatisfyRequirementUsage(), DEFAULT_SATISFY_REQUIREMENT_USAGE_LABEL),
+                Arguments.of(SYSML.getItemUsage(), DEFAULT_ITEM_USAGE_LABEL),
+                Arguments.of(SYSML.getPartUsage(), DEFAULT_PART_USAGE_LABEL),
+                Arguments.of(SYSML.getAllocationUsage(), DEFAULT_ALLOCATION_USAGE_LABEL),
+                Arguments.of(SYSML.getInterfaceUsage(), DEFAULT_INTERFACE_USAGE_LABEL),
+                Arguments.of(SYSML.getViewUsage(), DEFAULT_VIEW_USAGE_LABEL),
+                Arguments.of(SYSML.getPortUsage(), DEFAULT_PORT_USAGE_LABEL)
+        );
+    }
+
     @ParameterizedTest(name = "[{index}] Check default prefix in {0} element label")
     @MethodSource("defaultParameterProvider")
     public void testDefaultLabel(EClass elementType, String defaultLabel) {
@@ -291,6 +319,40 @@ public class MultilineLabelSwitchTest {
         } else {
             assertEquals(variantPrefix + defaultLabel,
                     this.multiLineLabelSwitch.doSwitch(newElement));
+        }
+    }
+
+    @ParameterizedTest(name = "[{index}] Check timeslice prefix in {0} element label")
+    @MethodSource("timesliceSnapshotPrefixParameterProvider")
+    public void testPrefixLabelWithTimesliceProperty(EClass elementType, String defaultLabel) {
+        Element element = (Element) SysmlFactory.eINSTANCE.create(elementType);
+        if (element instanceof OccurrenceUsage occurrenceUsage) {
+            occurrenceUsage.setPortionKind(PortionKind.TIMESLICE);
+            String timeslicePrefix = LabelConstants.OPEN_QUOTE + PortionKind.TIMESLICE.getName() + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+            if (element instanceof AcceptActionUsage) {
+                assertEquals(timeslicePrefix + defaultLabel + LabelConstants.CR,
+                        this.multiLineLabelSwitch.doSwitch(element));
+            } else {
+                assertEquals(timeslicePrefix + defaultLabel,
+                        this.multiLineLabelSwitch.doSwitch(element));
+            }
+        }
+    }
+
+    @ParameterizedTest(name = "[{index}] Check snapshot prefix in {0} element label")
+    @MethodSource("timesliceSnapshotPrefixParameterProvider")
+    public void testPrefixLabelWithSnapshotProperty(EClass elementType, String defaultLabel) {
+        Element element = (Element) SysmlFactory.eINSTANCE.create(elementType);
+        if (element instanceof OccurrenceUsage occurrenceUsage) {
+            occurrenceUsage.setPortionKind(PortionKind.SNAPSHOT);
+            String snapshotPrefix = LabelConstants.OPEN_QUOTE + PortionKind.SNAPSHOT.getName() + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+            if (element instanceof AcceptActionUsage) {
+                assertEquals(snapshotPrefix + defaultLabel + LabelConstants.CR,
+                        this.multiLineLabelSwitch.doSwitch(element));
+            } else {
+                assertEquals(snapshotPrefix + defaultLabel,
+                        this.multiLineLabelSwitch.doSwitch(element));
+            }
         }
     }
 

@@ -102,7 +102,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAcceptActionUsage(AcceptActionUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("accept action")
@@ -139,7 +139,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseActionUsage(ActionUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("action")
@@ -173,7 +173,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAllocationUsage(AllocationUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("allocation")
@@ -226,7 +226,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAssignmentActionUsage(AssignmentActionUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("assign")
@@ -254,7 +254,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseCaseUsage(CaseUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("case")
@@ -311,7 +311,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseConcernUsage(ConcernUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("concern")
@@ -345,7 +345,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseConstraintUsage(ConstraintUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("constraint")
@@ -434,7 +434,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseExhibitStateUsage(ExhibitStateUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(this.getIsParallel(object.isIsParallel()))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
@@ -469,7 +469,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseInterfaceUsage(InterfaceUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("interface")
@@ -519,7 +519,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseItemUsage(ItemUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("item")
@@ -568,8 +568,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseOccurrenceUsage(OccurrenceUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
-                .append(this.individual(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("occurrence")
@@ -612,7 +611,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         if (!(object.getOwningMembership() instanceof ActorMembership)) {
             // The label shouldn't contain abstract, ref, or part if the part represents an actor.
             label
-                    .append(this.getBasicNamePrefix(object))
+                    .append(this.getOccurrenceUsagePrefix(object))
                     .append(LabelConstants.OPEN_QUOTE)
                     .append(this.reference(object))
                     .append("part")
@@ -634,7 +633,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePerformActionUsage(PerformActionUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append(this.getPerformActionUsageTag(object))
@@ -666,7 +665,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePortUsage(PortUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("port")
@@ -732,7 +731,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseRequirementUsage(RequirementUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("requirement")
@@ -752,7 +751,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseSatisfyRequirementUsage(SatisfyRequirementUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("satisfy requirement")
@@ -786,7 +785,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseUseCaseUsage(UseCaseUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("use case")
@@ -821,7 +820,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseStateUsage(StateUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(this.getIsParallel(object.isIsParallel()))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
@@ -842,7 +841,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseViewUsage(ViewUsage object) {
         StringBuilder label = new StringBuilder();
         label
-                .append(this.getBasicNamePrefix(object))
+                .append(this.getOccurrenceUsagePrefix(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("view")
@@ -869,6 +868,14 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .append(LabelConstants.CR);
         }
         return parallel;
+    }
+
+    private String getOccurrenceUsagePrefix(OccurrenceUsage occurrenceUsage) {
+        return new StringBuilder()
+                .append(this.getBasicNamePrefix(occurrenceUsage))
+                .append(this.individual(occurrenceUsage))
+                .append(this.portionKind(occurrenceUsage))
+                .toString();
     }
 
     private String getBasicNamePrefix(Type object) {
@@ -998,6 +1005,18 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             label
                     .append(LabelConstants.OPEN_QUOTE)
                     .append("individual")
+                    .append(LabelConstants.CLOSE_QUOTE)
+                    .append(LabelConstants.CR);
+        }
+        return label.toString();
+    }
+
+    private String portionKind(OccurrenceUsage occurrenceUsage) {
+        StringBuilder label = new StringBuilder();
+        if (occurrenceUsage.isSetPortionKind()) {
+            label
+                    .append(LabelConstants.OPEN_QUOTE)
+                    .append(occurrenceUsage.getPortionKind().getName())
                     .append(LabelConstants.CLOSE_QUOTE)
                     .append(LabelConstants.CR);
         }
