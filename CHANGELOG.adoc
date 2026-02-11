@@ -54,6 +54,8 @@ Publishing a project that contains representations now produces libraries that a
 - https://github.com/eclipse-syson/syson/issues/1970[#1970] [export] Implement textual export of `AllocationUsage` and `AllocationDefinition`.
 - https://github.com/eclipse-syson/syson/issues/1948[#1948] [diagrams] Add _New Satisfy_ tool on `RequirementUsage` graphical nodes. This tool allows to create a `SatisfyRequirementUsage` on the selected `RequirementUsage`.
 Also add a  _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/1986[#1986] [services] Make `ServiceMethod#aql` and `ServiceMethod#aqlSelf` throw an exception if the provided parameters don't match the service method arity.
+As a result, the application won't start if a service call is constructed with an invalid number of arguments.
 
 === New features
 
