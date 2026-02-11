@@ -64,6 +64,7 @@ Integration tests that require Elasticsearch now need to extend `AbstractIntegra
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1977[#1977] [diagram] Display the _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
 
 == v2026.1.0
  

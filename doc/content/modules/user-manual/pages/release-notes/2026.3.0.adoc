@@ -71,6 +71,7 @@ part system {
 This tool allows to create a `SatisfyRequirementUsage` based on the `RequirementUsage` selected during the tool creation.
 ** Add _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
 This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and `RequirementUsage` selected during the tool creation.
+** Add the  _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
 
 * In textual import/export:
 
