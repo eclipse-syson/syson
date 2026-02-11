@@ -20,6 +20,9 @@ The following methods have been added:
 +
 ** List<EObject> getAllReachableType(EObject eObject, EClass eClass)` in `UtilService`
 
+- https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
+The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that require Elasticsearch should extend `AbstractIntegrationTestsWithElasticsearch`.
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.2]
@@ -56,6 +59,8 @@ Publishing a project that contains representations now produces libraries that a
 Also add a  _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1986[#1986] [services] Make `ServiceMethod#aql` and `ServiceMethod#aqlSelf` throw an exception if the provided parameters don't match the service method arity.
 As a result, the application won't start if a service call is constructed with an invalid number of arguments.
+- https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
+Integration tests that require Elasticsearch now need to extend `AbstractIntegrationTestsWithElasticsearch`.
 
 === New features
 

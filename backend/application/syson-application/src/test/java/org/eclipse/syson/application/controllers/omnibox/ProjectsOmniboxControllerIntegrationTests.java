@@ -25,7 +25,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
 import org.eclipse.sirius.web.tests.graphql.ProjectsOmniboxSearchQueryRunner;
-import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.AbstractIntegrationTestWithElasticsearch;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.junit.jupiter.api.DisplayName;
@@ -45,8 +45,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = { SysONTestsProperties.SYSON_TEST_ENABLED + "=" + SysONTestsProperties.NO_DEFAULT_LIBRARIES + ", " + SysONTestsProperties.ELASTICSEARCH })
-public class ProjectsOmniboxControllerIntegrationTests extends AbstractIntegrationTests  {
+        properties = { SysONTestsProperties.SYSON_TEST_ENABLED + "=" + SysONTestsProperties.NO_DEFAULT_LIBRARIES })
+public class ProjectsOmniboxControllerIntegrationTests extends AbstractIntegrationTestWithElasticsearch {
 
     @Autowired
     private ProjectsOmniboxSearchQueryRunner projectsOmniboxSearchQueryRunner;
