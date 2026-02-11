@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 /**
@@ -81,8 +82,11 @@ public final class ServiceMethod {
 
     private final String name;
 
-    private ServiceMethod(String name) {
+    private final int arity;
+
+    private ServiceMethod(String name, int arity) {
         this.name = name;
+        this.arity = arity;
     }
 
     /**
@@ -105,6 +109,7 @@ public final class ServiceMethod {
      * @return A full AQL expression string
      */
     public String aqlSelf(String... params) {
+        this.checkArity(params);
         if (params == null || params.length == 0) {
             return AQLUtils.getSelfServiceCallExpression(this.name);
         }
@@ -128,6 +133,7 @@ public final class ServiceMethod {
         if (var == null || var.isEmpty()) {
             throw new IllegalArgumentException("var must be a non empty AQL variable name");
         } else {
+            this.checkArity(params);
             if (params == null || params.length == 0) {
                 aqlString = AQLUtils.getServiceCallExpression(var, this.name);
             }
@@ -143,49 +149,49 @@ public final class ServiceMethod {
      * Instance method with signature {@code R method(T self)}.
      */
     public static <S, T> ServiceMethod of0(Inst0<S, T> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 0);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1)}.
      */
     public static <S, T, P1> ServiceMethod of1(Inst1<S, T, P1> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 1);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2)}.
      */
     public static <S, T, P1, P2> ServiceMethod of2(Inst2<S, T, P1, P2> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 2);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
      */
     public static <S, T, P1, P2, P3> ServiceMethod of3(Inst3<S, T, P1, P2, P3> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 3);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4)}.
      */
     public static <S, T, P1, P2, P3, P4> ServiceMethod of4(Inst4<S, T, P1, P2, P3, P4> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 4);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)}.
      */
     public static <S, T, P1, P2, P3, P4, P5> ServiceMethod of5(Inst5<S, T, P1, P2, P3, P4, P5> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 5);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)}.
      */
     public static <S, T, P1, P2, P3, P4, P5, P6> ServiceMethod of6(Inst6<S, T, P1, P2, P3, P4, P5, P6> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 6);
     }
 
     // ---------------------- Factories for static methods ----------------------
@@ -194,28 +200,28 @@ public final class ServiceMethod {
      * Static method with signature {@code R method(T self)}.
      */
     public static <T> ServiceMethod ofStatic0(IStat0<T> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 0);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1)}.
      */
     public static <T, P1> ServiceMethod ofStatic1(IStat1<T, P1> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 1);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1, P2 p2)}.
      */
     public static <T, P1, P2> ServiceMethod ofStatic2(IStat2<T, P1, P2> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 2);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
      */
     public static <T, P1, P2, P3> ServiceMethod ofStatic3(IStat3<T, P1, P2, P3> ref) {
-        return new ServiceMethod(methodName(ref));
+        return new ServiceMethod(methodName(ref), 3);
     }
 
     // ---------------------- SAMs for method references ----------------------
@@ -429,6 +435,25 @@ public final class ServiceMethod {
             return sl.getImplMethodName();
         } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IllegalAccessException e) {
             throw new IllegalStateException("Cannot resolve method name from lambda", e);
+        }
+    }
+
+    /**
+     * Checks that the provided {@code params} array matches the arity of the service method.
+     *
+     * @param params the parameters passed to the service method (excluding self)
+     *
+     * @throws IllegalArgumentException if the provided {@code params} doesn't match the arity of the service method.
+     */
+    private void checkArity(String... params) {
+        int paramLength;
+        if (params == null) {
+            paramLength = 0;
+        } else {
+            paramLength = params.length;
+        }
+        if (this.arity != paramLength) {
+            throw new IllegalArgumentException(MessageFormat.format("Service {0} has an arity of {1} but {2} parameters were provided", this.name, this.arity, paramLength));
         }
     }
 }
