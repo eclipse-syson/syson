@@ -18,10 +18,12 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 /**
  * Superclass of all the integration tests used to setup the test environment.
+ * <p>
+ * Note that this class doesn't initialize SysON's Elasticsearch integration, use {@link AbstractIntegrationTestWithElasticsearch} if your integration tests require Elasticsearch.
+ * </p>
  *
  * @author sbegaudeau
  */
@@ -29,17 +31,9 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 public abstract class AbstractIntegrationTests {
     public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
 
-    public static final ElasticsearchContainer ELASTICSEARCH_CONTAINER;
-
-
     static {
         POSTGRESQL_CONTAINER = new PostgreSQLContainer<>("postgres:latest").withReuse(true);
         POSTGRESQL_CONTAINER.start();
-        ELASTICSEARCH_CONTAINER = new ElasticsearchContainer("elasticsearch:9.2.1")
-                .withEnv("xpack.security.transport.ssl.enabled", "false")
-                .withEnv("xpack.security.http.ssl.enabled", "false")
-                .withReuse(true);
-        ELASTICSEARCH_CONTAINER.start();
     }
 
     @DynamicPropertySource

@@ -24,9 +24,4 @@ public class SysONTestsProperties {
     public static final String NO_DEFAULT_LIBRARIES = "no-default-libraries";
 
     public static final String NO_DEFAULT_LIBRARIES_PROPERTY = SYSON_TEST_ENABLED + "=" + NO_DEFAULT_LIBRARIES;
-
-    public static final String ELASTICSEARCH = "elastic-search";
-
-    public static final String ELASTICSEARCH_PROPERTY = SYSON_TEST_ENABLED + "=" + ELASTICSEARCH;
-
 }
