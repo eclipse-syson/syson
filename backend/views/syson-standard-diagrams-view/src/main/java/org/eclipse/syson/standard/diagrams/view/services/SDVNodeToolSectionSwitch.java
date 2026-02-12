@@ -36,6 +36,7 @@ import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvide
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.InterfaceDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
@@ -390,6 +391,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     public List<NodeToolSection> caseInterfaceDefinition(InterfaceDefinition object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
 
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new InterfaceDefinitionEndCompartmentNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,

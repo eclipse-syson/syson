@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowUsage;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -122,11 +123,31 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     private void addConnectionEnd(ConnectionDefinition connectionDefinition, String name) {
         var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        this.caseReferenceUsage(referenceUsage);
         referenceUsage.setDeclaredName(name);
         referenceUsage.setIsEnd(true);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
         connectionDefinition.getOwnedRelationship().add(featureMembership);
+    }
+
+    @Override
+    public Element caseInterfaceDefinition(InterfaceDefinition object) {
+        // 8.3.13.3 ConnectionDefinition: "A ConnectionDefinition always has isSufficient = true."
+        object.setIsSufficient(true);
+        this.addPortEnd(object, "source");
+        this.addPortEnd(object, "target");
+        return super.caseInterfaceDefinition(object);
+    }
+
+    private void addPortEnd(InterfaceDefinition interfaceDefinition, String name) {
+        var portUsage = SysmlFactory.eINSTANCE.createPortUsage();
+        this.casePortUsage(portUsage);
+        portUsage.setDeclaredName(name);
+        portUsage.setIsEnd(true);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(portUsage);
+        interfaceDefinition.getOwnedRelationship().add(featureMembership);
     }
 
     @Override

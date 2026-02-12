@@ -105,6 +105,8 @@ import org.eclipse.syson.standard.diagrams.view.nodes.ConnectionDefinitionEndsCo
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.InterfaceDefinitionEndsCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.nodes.InterfaceDefinitionEndsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ObjectiveDocumentationCompartmentItemNodeDescription;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.PerformActionsCompartmentNodeDescriptionProvider;
@@ -351,6 +353,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkConnectionDefinitionEndsCompartment(cache);
+        this.linkInterfaceDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
         this.linkActionParametersCompartment(cache);
         this.linkPartPerformActionsCompartment(cache);
@@ -430,7 +433,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForObjectiveRequirement(colorProvider));
 
         // Compartment "ends" (ConnectionEnd) is defined for:
-        // AllocationDefinition, ConnectionDefinition
+        // AllocationDefinition, ConnectionDefinition, InterfaceDefinition
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForConnectionEnd(colorProvider));
 
         // Compartment "actions" (OwnedAction) is defined for:
@@ -619,6 +622,12 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders.add(new ConnectionDefinitionEndsCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConnectionDefinition(),
                 SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), colorProvider,
+                this.getDescriptionNameGenerator()));
+
+        compartmentNodeDescriptionProviders.add(new InterfaceDefinitionEndsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InterfaceDefinitionEndsCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceDefinition(),
+                SysmlPackage.eINSTANCE.getInterfaceDefinition_InterfaceEnd(), colorProvider,
                 this.getDescriptionNameGenerator()));
 
         return compartmentNodeDescriptionProviders;
@@ -1065,6 +1074,13 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         NodeDescription connectionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConnectionDefinition())).get();
         cache.getNodeDescription(
                 this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConnectionDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
+                .ifPresent(connectionDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
+    private void linkInterfaceDefinitionEndsCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription connectionDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getInterfaceDefinition(), SysmlPackage.eINSTANCE.getInterfaceDefinition_InterfaceEnd()))
                 .ifPresent(connectionDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 

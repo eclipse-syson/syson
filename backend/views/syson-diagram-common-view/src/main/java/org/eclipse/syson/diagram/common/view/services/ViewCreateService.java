@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
@@ -381,12 +382,10 @@ public class ViewCreateService {
     }
 
     /**
-     * Create a new connection end (a ReferenceUsage) in a given Connection Definition.
+     * Create a new connection end (a ReferenceUsage) in a given ConnectionDefinition.
      *
      * @param self
-     *            the Connection Definition in which the new end is added.
-     * @param endParent
-     *            the owner of the new part usage used as the end.
+     *            the ConnectionDefinition in which the new end is added.
      * @return the self modified element is returned
      */
     public Element createConnectionDefinitionEnd(ConnectionDefinition self) {
@@ -403,6 +402,29 @@ public class ViewCreateService {
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
         connectionDefinition.getOwnedRelationship().add(featureMembership);
+    }
+
+    /**
+     * Create a new interface end (a PortUsage) in a given InterfaceDefinition.
+     *
+     * @param self
+     *            the InterfaceDefinition in which the new end is added.
+     * @return the self modified element is returned
+     */
+    public Element createInterfaceDefinitionEnd(InterfaceDefinition self) {
+        int suffix = self.getOwnedEndFeature().size() + 1;
+        this.addPort(self, "port" + suffix);
+        return self;
+    }
+
+    private void addPort(InterfaceDefinition interfaceDefinition, String name) {
+        var portUsage = SysmlFactory.eINSTANCE.createPortUsage();
+        new ElementInitializerSwitch().doSwitch(portUsage);
+        portUsage.setDeclaredName(name);
+        portUsage.setIsEnd(true);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(portUsage);
+        interfaceDefinition.getOwnedRelationship().add(featureMembership);
     }
 
     /**

@@ -61,14 +61,17 @@ public class DiagramCheckerService {
      *            the expected number of compartments
      * @param newNodesCount
      *            the expected total number of new nodes
+     * @param newBorderNodesCount
+     *            the expected total number of new border nodes
      * @return a consumer that performs the graphical check
      */
     public Consumer<Object> childNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel, EClass childEClass,
-            int compartmentCount, int newNodesCount) {
+            int compartmentCount, int newNodesCount, int newBorderNodesCount) {
         return assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(newNodesCount)
                     .hasNewEdgeCount(0)
+                    .hasNewBorderNodeCount(newBorderNodesCount)
                     .check(previousDiagram.get(), newDiagram);
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
