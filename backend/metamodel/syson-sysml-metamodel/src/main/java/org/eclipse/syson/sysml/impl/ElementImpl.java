@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -547,36 +547,64 @@ public abstract class ElementImpl extends EModelElementImpl implements Element {
      * according to the KerML textual concrete syntax for qualified names (including use of unrestricted name notation
      * and escaped characters, as necessary). The qualifiedName is null if this Element has no owningNamespace or if
      * there is not a complete ownership chain of named Namespaces from a root Namespace to this Element. <!--
-     * end-user-doc -->
+     * end-user-doc
+     * <p>
+     * qualifiedName = <br/>
+     * if owningNamespace = null then null <br/>
+     * else if name <> null and owningNamespace.ownedMember-> select(m | m.name = name).indexOf(self) <> 1 then null
+     * else if owningNamespace.owner = null then escapedName() <br/>
+     * else if owningNamespace.qualifiedName = null or escapedName() = null then null <br/>
+     * else owningNamespace.qualifiedName + '::' + escapedName() <br/>
+     * endif <br/>
+     * endif <br/>
+     * endif <br/>
+     * endif
+     * </p>
+     * -->
      *
      * @generated NOT
      */
     @Override
     public String getQualifiedName() {
-        String selfName = NameHelper.toPrintableName(this.getName());
+        // SysMLv2 specification compliant implementation
+        // at some point we will have to use this implementation
+        // String getQualifiedName = null;
+        // if (this.getOwningNamespace() == null) {
+        // getQualifiedName = null;
+        // } else if (this.getName() != null && this.getOwningNamespace().getOwnedMember().stream().filter(m ->
+        // m.getName() == this.getName()).toList().indexOf(this) != 0) {
+        // getQualifiedName = null;
+        // } else if (this.getOwningNamespace().getOwner() != null) {
+        // getQualifiedName = this.escapedName();
+        // } else if (this.getOwningNamespace().getQualifiedName() == null || this.escapedName() == null) {
+        // getQualifiedName = null;
+        // } else {
+        // getQualifiedName = this.getOwningNamespace().getQualifiedName() + "::" + this.escapedName();
+        // }
+        // return getQualifiedName;
+
+        var selfName = NameHelper.toPrintableName(this.getName(), true);
         if (selfName.isBlank()) {
             return null;
         }
-
-        StringBuilder qualifiedNameBuilder = new StringBuilder();
-        Element container = this.getOwner();
-        if (container != null && container instanceof Membership membership) {
-            Element membershipContainer = membership.getOwner();
-            if (membershipContainer != null) {
-                String elementQN = membershipContainer.getQualifiedName();
+        var qualifiedNameBuilder = new StringBuilder();
+        var container = this.getOwner();
+        if (container instanceof Membership membership) {
+            var membershipContainer = membership.getOwner();
+            if (membershipContainer instanceof Element) {
+                var elementQN = membershipContainer.getQualifiedName();
                 if (elementQN != null && !elementQN.isBlank()) {
                     qualifiedNameBuilder.append(elementQN);
                     qualifiedNameBuilder.append("::");
                 }
             }
         } else if (container != null) {
-            String elementQN = container.getQualifiedName();
+            var elementQN = container.getQualifiedName();
             if (elementQN != null && !elementQN.isBlank()) {
                 qualifiedNameBuilder.append(elementQN);
                 qualifiedNameBuilder.append("::");
             }
         }
-
         qualifiedNameBuilder.append(selfName);
         return qualifiedNameBuilder.toString();
     }
@@ -630,17 +658,11 @@ public abstract class ElementImpl extends EModelElementImpl implements Element {
      */
     @Override
     public String escapedName() {
-        String escapedName = null;
-        String name = this.getName();
-        if (name == null) {
+        String escapedName = this.getName();
+        if (escapedName == null) {
             escapedName = this.getShortName();
-        } else {
-            escapedName = this.getName();
         }
-        if (escapedName != null && escapedName.contains("\\S+")) {
-            escapedName = "'" + escapedName + "'";
-        }
-        return escapedName;
+        return NameHelper.toPrintableName(escapedName, true);
     }
 
     /**

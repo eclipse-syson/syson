@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.tests.architecture;
 
+import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @author Arthur Daussy
  */
-public final class SysONServiceDependencyPredicate extends com.tngtech.archunit.base.DescribedPredicate<JavaClass> {
+public final class SysONServiceDependencyPredicate extends DescribedPredicate<JavaClass> {
 
     private final String acceptableDependentServicePattern;
 
@@ -33,7 +34,7 @@ public final class SysONServiceDependencyPredicate extends com.tngtech.archunit.
     }
 
     @Override
-    public boolean apply(JavaClass javaClass) {
+    public boolean test(JavaClass javaClass) {
         String simpleName = javaClass.getSimpleName();
 
         if (!simpleName.endsWith("Service") || !javaClass.getName().contains("syson")) {
