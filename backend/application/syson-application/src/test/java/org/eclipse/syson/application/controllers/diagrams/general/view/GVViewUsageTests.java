@@ -152,41 +152,41 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> childNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 4, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 5, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 11, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 11, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0, 0)
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 4, 2, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 5, 2, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 7, 6, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 11, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 11, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0, 0, 0)
         ).map(TestNameGenerator::namedArguments);
     }
 
@@ -228,7 +228,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount, int additionalNewNodes) {
+    public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount, int additionalNewNodes, int newBorderNodes) {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
@@ -244,6 +244,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
             int createdNodesExpectedCount = 1 + compartmentCount + additionalNewNodes;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(0)
+                    .hasNewBorderNodeCount(newBorderNodes)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(this.diagram.get(), newDiagram);
 

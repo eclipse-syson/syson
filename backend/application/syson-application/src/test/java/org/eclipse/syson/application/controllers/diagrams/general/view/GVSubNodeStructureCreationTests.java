@@ -195,41 +195,41 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> packageChildNodeParameters() {
         EReference ownedMember = SysmlPackage.eINSTANCE.getNamespace_OwnedMember();
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), ownedMember, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 4, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 7, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 1, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), ownedMember, 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), ownedMember, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), ownedMember, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), ownedMember, 4, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), ownedMember, 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 4, 2, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ownedMember, 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 7, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 1, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), ownedMember, 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), ownedMember, 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 7, 6, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), ownedMember, 2, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), ownedMember, 4, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2, 0, 0),
                 // A package doesn't have a compartment: it is handled as a custom node
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 11, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 5, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 7, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ownedMember, 8, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 6, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 6, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), ownedMember, 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 11, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 11, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), ownedMember, 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 5, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 7, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ownedMember, 8, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 6, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 6, 0, 0),
                 Arguments.of(SysmlPackage.eINSTANCE.getNamespaceImport(), SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), 0,
-                        0)
+                        0, 0)
         ).map(TestNameGenerator::namedArguments);
     }
 
@@ -702,7 +702,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("packageChildNodeParameters")
-    public void createPackageChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount, int additionalNodesCount) {
+    public void createPackageChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount, int additionalNodesCount, int newBorderNodes) {
         var flux = this.givenSubscriptionToDiagram();
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -723,7 +723,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass, finalVariables);
 
         Consumer<Object> diagramChecker = this.diagramCheckerService.childNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, childEClass, compartmentCount,
-                1 + compartmentCount + additionalNodesCount);
+                1 + compartmentCount + additionalNodesCount, newBorderNodes);
 
         Runnable semanticChecker = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
 

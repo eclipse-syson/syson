@@ -112,16 +112,16 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
     private static Stream<Arguments> partUsageNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 11),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 6),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 6));
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 11, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 6, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 17, 4));
     }
 
     @DisplayName("GIVEN a SysML Project, WHEN the New Feature Typing tool is requested on a PartUsage, THEN a new PartDefinition node and a FeatureTyping edge are created")
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("partUsageNodeParameters")
-    public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount) {
+    public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount, int newBorderNodes) {
         var flux = this.givenSubscriptionToDiagram();
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
@@ -185,6 +185,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                     // since compartment nodes of the new PartDefinition are added as well, we need to count them also.
                     .hasNewNodeCount(1 + definitionCompartmentCount)
                     .hasNewEdgeCount(1)
+                    .hasNewBorderNodeCount(newBorderNodes)
                     .check(diagramAfterAddingElement.get(), newDiagram));
 
         StepVerifier.create(flux)
