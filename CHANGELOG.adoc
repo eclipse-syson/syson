@@ -74,6 +74,7 @@ Additional ends can be created using the _New end_ tool (which replaces the _New
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/1977[#1977] [diagram] Display the _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
+- https://github.com/eclipse-syson/syson/issues/1977[#1977] [metamodel] Ensure a _timeSlice_ or a _snapshot_ `OccurrenceUsage` implicitly specializes `Occurrences::Occurrence::timeSlices` or  `Occurrences::Occurrence::snapshots`, directly or indirectly.
 
 == v2026.1.0
  

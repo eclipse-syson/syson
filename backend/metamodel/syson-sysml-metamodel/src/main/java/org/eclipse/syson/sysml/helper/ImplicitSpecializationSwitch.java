@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -740,9 +740,51 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     @Override
     public List<Specialization> caseOccurrenceUsage(OccurrenceUsage object) {
         if (!this.implicitSpecializations.hasSubSetting()) {
-            var implicitSubsetting = this.implicitSubsetting(object, "Occurrences::occurrences");
-            if (implicitSubsetting != null) {
-                this.implicitSpecializations.add(implicitSubsetting);
+            if (PortionKind.TIMESLICE.equals(object.getPortionKind())) {
+                var implicitTimeSliceSubsetting = this.implicitSubsetting(object, "Occurrences::Occurrence::timeSlices");
+                if (implicitTimeSliceSubsetting != null) {
+                    this.implicitSpecializations.add(implicitTimeSliceSubsetting);
+                }
+            } else if (PortionKind.SNAPSHOT.equals(object.getPortionKind())) {
+                var implicitSnapshotSubsetting = this.implicitSubsetting(object, "Occurrences::Occurrence::snapshots");
+                if (implicitSnapshotSubsetting != null) {
+                    this.implicitSpecializations.add(implicitSnapshotSubsetting);
+                }
+            } else {
+                var implicitSubsetting = this.implicitSubsetting(object, "Occurrences::occurrences");
+                if (implicitSubsetting != null) {
+                    this.implicitSpecializations.add(implicitSubsetting);
+                }
+            }
+        } else {
+            if (PortionKind.TIMESLICE.equals(object.getPortionKind())) {
+                // If the occurrence has subsettings and is a time slice, then we should ensure one of the subsetting specializes 'Occurrences::Occurrence::timeSlices'
+                object.getOwnedRelationship().stream()
+                        .filter(Subsetting.class::isInstance)
+                        .map(Subsetting.class::cast)
+                        .map(Subsetting::getSubsettedFeature)
+                        .filter(feature -> !feature.specializesFromLibrary("Occurrences::Occurrence::timeSlices"))
+                        .findFirst()
+                        .ifPresent(feature -> {
+                            var implicitTimeSliceSubsetting = this.implicitSubsetting(object, "Occurrences::Occurrence::timeSlices");
+                            if (implicitTimeSliceSubsetting != null) {
+                                this.implicitSpecializations.add(implicitTimeSliceSubsetting);
+                            }
+                        });
+            } else if (PortionKind.SNAPSHOT.equals(object.getPortionKind())) {
+                // If the occurrence has subsettings and is a snapshot, then we should ensure one of the subsetting specializes 'Occurrences::Occurrence::snapshots'
+                object.getOwnedRelationship().stream()
+                        .filter(Subsetting.class::isInstance)
+                        .map(Subsetting.class::cast)
+                        .map(Subsetting::getSubsettedFeature)
+                        .filter(feature -> !feature.specializesFromLibrary("Occurrences::Occurrence::snapshots"))
+                        .findFirst()
+                        .ifPresent(feature -> {
+                            var implicitTimeSliceSubsetting = this.implicitSubsetting(object, "Occurrences::Occurrence::snapshots");
+                            if (implicitTimeSliceSubsetting != null) {
+                                this.implicitSpecializations.add(implicitTimeSliceSubsetting);
+                            }
+                        });
             }
         }
         // Return null to iterate on other abstract EClass cases
