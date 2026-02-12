@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,6 +72,8 @@ public abstract class AbstractCodingRulesTests {
 
     private static final String GUAVA_THIRDPARTY = "com.google.thirdparty..";
 
+    private static final String ORG_ECLIPSE_CORE_RUNTIME = "org.eclipse.core.runtime..";
+
     private static final String SPRING_STRINGUTILS = "org.springframework.util.StringUtils";
 
     private static final String TESTCASE_SUFFIX = "TestCases";
@@ -101,7 +103,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAnyPackage(GRAPHQL_GUAVA);
+                .resideInAnyPackage(GRAPHQL_GUAVA)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -129,7 +132,21 @@ public abstract class AbstractCodingRulesTests {
                         GUAVA_UTIL,
                         GUAVA_XML,
                         GUAVA_THIRDPARTY
-                );
+                )
+                .allowEmptyShould(true);
+
+        rule.check(this.getClasses());
+    }
+
+    @Test
+    public void noClassesShouldUseEclipseCoreRuntime() {
+        var rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(ORG_ECLIPSE_CORE_RUNTIME)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -141,7 +158,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAPackage(JACKSON_ANNOTATION);
+                .resideInAPackage(JACKSON_ANNOTATION)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -153,7 +171,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAPackage(JETBRAINS);
+                .resideInAPackage(JETBRAINS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -167,7 +186,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(EMF)
                 .orShould()
                 .dependOnClassesThat()
-                .resideInAPackage(EMFJSON);
+                .resideInAPackage(EMFJSON)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -181,7 +201,9 @@ public abstract class AbstractCodingRulesTests {
                 .callMethod("org.eclipse.emf.ecore.util.EcoreUtil", "delete", "org.eclipse.emf.ecore.EObject")
                 .orShould()
                 .callMethod("org.eclipse.emf.ecore.util.EcoreUtil", "delete", "org.eclipse.emf.ecore.EObject", "boolean")
-                .because("EcoreUtil.delete doesn't work well with Sysml Standard Libraries in the ResourceSet, use DeleteService instead");
+                .because("EcoreUtil.delete doesn't work well with Sysml Standard Libraries in the ResourceSet, use DeleteService instead")
+                .allowEmptyShould(true);
+        
         rule.check(this.getClasses());
     }
 
@@ -191,7 +213,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .resideInAPackage(APACHE_COMMONS);
+                .resideInAPackage(APACHE_COMMONS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -203,7 +226,8 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should()
                 .dependOnClassesThat()
-                .areAssignableTo(SPRING_STRINGUTILS);
+                .areAssignableTo(SPRING_STRINGUTILS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -213,7 +237,8 @@ public abstract class AbstractCodingRulesTests {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.ACCESS_STANDARD_STREAMS);
+                .should(GeneralCodingRules.ACCESS_STANDARD_STREAMS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -223,7 +248,8 @@ public abstract class AbstractCodingRulesTests {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS);
+                .should(GeneralCodingRules.THROW_GENERIC_EXCEPTIONS)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -233,7 +259,8 @@ public abstract class AbstractCodingRulesTests {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(GeneralCodingRules.USE_JAVA_UTIL_LOGGING);
+                .should(GeneralCodingRules.USE_JAVA_UTIL_LOGGING)
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -245,7 +272,9 @@ public abstract class AbstractCodingRulesTests {
                 .resideInAPackage(this.getProjectRootPackage())
                 .should().bePackagePrivate()
                 .andShould().bePrivate()
-                .andShould().beProtected();
+                .andShould().beProtected()
+                .allowEmptyShould(true);
+
         rule.check(this.getClasses());
     }
 
@@ -254,7 +283,9 @@ public abstract class AbstractCodingRulesTests {
         ArchRule rule = ArchRuleDefinition.noClasses()
                 .that()
                 .resideInAPackage(this.getProjectRootPackage())
-                .should(this.haveProtectedOrPackageConstructor());
+                .should(this.haveProtectedOrPackageConstructor())
+                .allowEmptyShould(true);
+
         rule.check(this.getClasses());
     }
 
@@ -294,7 +325,8 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .areNotAnnotatedWith(Target.class)
                 .should()
-                .haveSimpleNameStartingWith("I");
+                .haveSimpleNameStartingWith("I")
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -309,7 +341,8 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .haveModifier(ABSTRACT)
                 .should()
-                .haveSimpleNameStartingWith("Abstract");
+                .haveSimpleNameStartingWith("Abstract")
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -327,7 +360,8 @@ public abstract class AbstractCodingRulesTests {
                 .areNotInterfaces()
                 .and()
                 .haveModifier(ABSTRACT)
-                .should(this.notContainBusinessCode());
+                .should(this.notContainBusinessCode())
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -422,7 +456,8 @@ public abstract class AbstractCodingRulesTests {
                 .and(this.isNotSwitchTable())
                 .and(this.isNotRecordStaticBuilder())
                 .should()
-                .beStatic();
+                .beStatic()
+                .allowEmptyShould(true);
 
         rule.check(this.getClasses());
     }
@@ -430,7 +465,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaClass> isNotTestCase() {
         return new DescribedPredicate<>("is not a test case") {
             @Override
-            public boolean apply(JavaClass javaClass) {
+            public boolean test(JavaClass javaClass) {
                 return !javaClass.getName().endsWith(TESTCASE_SUFFIX);
             }
         };
@@ -444,7 +479,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotLambda() {
         return new DescribedPredicate<>("is not a lambda") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !javaMethod.getName().startsWith("lambda$") && !javaMethod.getName().startsWith("$deserializeLambda$");
             }
         };
@@ -459,7 +494,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotSwitchTable() {
         return new DescribedPredicate<>("is not a switch table (whatever that is...)") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !javaMethod.getFullName().contains("$SWITCH_TABLE$");
             }
         };
@@ -473,7 +508,7 @@ public abstract class AbstractCodingRulesTests {
     private DescribedPredicate<JavaMethod> isNotRecordStaticBuilder() {
         return new DescribedPredicate<>("is not an alternate builder in a record") {
             @Override
-            public boolean apply(JavaMethod javaMethod) {
+            public boolean test(JavaMethod javaMethod) {
                 return !(javaMethod.getOwner().isRecord() && javaMethod.getRawReturnType().equals(javaMethod.getOwner()));
             }
         };

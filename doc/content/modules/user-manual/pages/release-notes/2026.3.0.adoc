@@ -23,6 +23,7 @@ It's not recommended for production use.
 
 ** Fix the textual export of `OccurrenceUsage` to avoid duplication of the _abstract_ keyword.
 ** Fix the textual export to properly escape names used in qualified names in some references.
+** Fix an error during textual export where `Expose` elements with apostrophes in their name were not properly escaped.
 ** Fix the textual import to properly resolve the _payload_ argument of a `SendActionUsage` used in a `TransitionUsage`.
 The following model is now properly imported:
 +

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author gescande
  */
-public class ElementTest {
+public class ElementImplTest {
 
     /**
      * Test model
@@ -51,9 +51,10 @@ public class ElementTest {
      *          }
      *          private part def 'private def1x1';
      *          private part def 'def-10';
-     *          private part def 'éléphant;
+     *          private part def 'éléphant';
      *          private part def def_11;
      *          private part def _def_12;
+     *          part def 'with escaped\'apostrophe';
      *      }
      *  }
      * }
@@ -70,14 +71,11 @@ public class ElementTest {
         private Package p1x1;
         private PartDefinition def1x1;
         private PartDefinition privatedef1x1;
-
         private PartDefinition def10;
-
         private PartDefinition defElephant;
-
         private PartDefinition def11;
-
         private PartDefinition def12;
+        private PartDefinition withEscapedApostrophe;
 
         TestModel() {
             this.build();
@@ -97,6 +95,7 @@ public class ElementTest {
             this.defElephant = this.builder.createInWithName(PartDefinition.class, this.p1x1, "éléphant");
             this.def11 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def_11");
             this.def12 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "_def_12");
+            this.withEscapedApostrophe = this.builder.createInWithName(PartDefinition.class, this.p1x1, "with escaped'apostrophe");
         }
     }
 
@@ -113,6 +112,7 @@ public class ElementTest {
         assertEquals("p1::'p1 x1'::'éléphant'", testModel.defElephant.getQualifiedName());
         assertEquals("p1::'p1 x1'::def_11", testModel.def11.getQualifiedName());
         assertEquals("p1::'p1 x1'::_def_12", testModel.def12.getQualifiedName());
+        assertEquals("p1::'p1 x1'::'with escaped\\'apostrophe'", testModel.withEscapedApostrophe.getQualifiedName());
     }
 
     @DisplayName("Check documentation feature")
@@ -139,5 +139,12 @@ public class ElementTest {
         var testModel = new TestModel();
         assertThat(testModel.def1.isIsLibraryElement()).isFalse();
         assertThat(testModel.def12.isIsLibraryElement()).isFalse();
+    }
+
+    @DisplayName("Check espacedNamed derived operation")
+    @Test
+    public void escapedNameTest() {
+        var testModel = new TestModel();
+        assertEquals("'with escaped\\'apostrophe'", testModel.withEscapedApostrophe.escapedName());
     }
 }

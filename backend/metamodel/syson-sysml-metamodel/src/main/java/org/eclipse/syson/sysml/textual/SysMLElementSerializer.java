@@ -178,7 +178,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendWithSpaceIfNeeded(SysMLv2Keywords.ALLOCATION);
             builder.appendWithSpaceIfNeeded(declarationBuilder);
         }
-        
+
         builder.appendWithSpaceIfNeeded(SysMLv2Keywords.ALLOCATE);
         this.appendConnectorPart(builder, allocationUsage);
         this.appendChildrenContent(builder, allocationUsage, allocationUsage.getOwnedMembership());
@@ -867,6 +867,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseReferenceUsage(ReferenceUsage reference) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        if (!this.isImplicit(reference)) {
+            this.appendBasicUsagePrefix(builder, reference);
+            this.appendUsageDeclaration(builder, reference);
+            this.appendUsageCompletion(builder, reference);
+        }
+        if (builder.toString().equals(";")) {
+            // This an EmptyUsage rule
+            return "";
+        }
+        return builder.toString();
+    }
+
+    @Override
     public String caseRenderingUsage(RenderingUsage rendering) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
         builder.append("render");
@@ -905,21 +920,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
 
-        return builder.toString();
-    }
-
-    @Override
-    public String caseReferenceUsage(ReferenceUsage reference) {
-        Appender builder = new Appender(this.lineSeparator, this.indentation);
-        if (!this.isImplicit(reference)) {
-            this.appendBasicUsagePrefix(builder, reference);
-            this.appendUsageDeclaration(builder, reference);
-            this.appendUsageCompletion(builder, reference);
-        }
-        if (builder.toString().equals(";")) {
-            // This an EmptyUsage rule
-            return "";
-        }
         return builder.toString();
     }
 
