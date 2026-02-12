@@ -65,6 +65,8 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String ACTION_USAGE_ID = "62481ceb-d036-4723-acda-2bace93ae370";
 
         public static final String ACTION_DEFINITION_ID = "b918a8a1-f30b-4703-b131-77cde928401d";
+
+        public static final String OCCURRENCE_USAGE_ID = "5126fb57-f6b3-4d0c-b981-92cfc961091f";
     }
 
 }
