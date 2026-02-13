@@ -73,6 +73,9 @@ Additional ends can be created using the _New end_ graphical node tool (which re
 - https://github.com/eclipse-syson/syson/issues/1972[#1972] [diagrams] Add _ends_ compartment on `InterfaceDefinition` graphical node.
 Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
+- https://github.com/eclipse-syson/syson/issues/1994[1994] [syson] Add support for excluding libraries in the search view.
+The _Search in libraries_ toggle in the _Search View_ allows to include elements from user and standard libraries in the search.
+This toggle is de-activated by default.
 
 === New features
 
