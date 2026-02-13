@@ -70,6 +70,7 @@ part system {
 * In diagrams:
 
 ** When dropping `Element` from the _Explorer_ view to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _Interconnection View_ diagram.
+** When dropping `Element` from the _Explorer_ view to a diagram, if the element was already visible on the diagram, a warning is displayed to indicate it.
 ** Add _ends_ compartments on `AllocationDefinition` graphical nodes.
 ** Add _attributes_, _ends_, _doc_ and _parts_ compartments on `ConnectionDefinition` graphical nodes.
 ** Add _parts_ compartments on `PartDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
@@ -86,6 +87,7 @@ This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and
 Additional ends can be created using the _New end_ graphical node tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).
 ** Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
+
 
 * In textual import/export:
 

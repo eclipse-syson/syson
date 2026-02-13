@@ -23,8 +23,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DropOnDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,13 +43,13 @@ import reactor.test.StepVerifier;
 public class DropFromExplorerTester {
 
     @Autowired
-    private DropOnDiagramMutationRunner dropOnDiagramMutationRunner;
+    private DropOnDiagramWithMessagesMutationRunner dropOnDiagramMutationRunner;
 
     public void dropFromExplorerOnDiagram(String projectId, AtomicReference<Diagram> diagram, String semanticElementId) {
         this.dropFromExplorer(projectId, diagram, null, semanticElementId);
     }
 
-    public void dropFromExplorer(String projectId, AtomicReference<Diagram> diagram, String targetNodeId, String semanticElementId) {
+    public GraphQLResult dropFromExplorer(String projectId, AtomicReference<Diagram> diagram, String targetNodeId, String semanticElementId) {
         DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
         final String targetId;
         if (targetNodeId == null) {
@@ -68,5 +68,6 @@ public class DropFromExplorerTester {
         var dropOnDiagramResult = this.dropOnDiagramMutationRunner.run(dropOnDiagramInput);
         var typename = JsonPath.read(dropOnDiagramResult.data(), "$.data.dropOnDiagram.__typename");
         assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
+        return dropOnDiagramResult;
     }
 }
