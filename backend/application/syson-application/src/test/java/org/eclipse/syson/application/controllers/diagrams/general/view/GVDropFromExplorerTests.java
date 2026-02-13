@@ -16,7 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -331,14 +335,22 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .then(initialState)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(() -> {
-                    this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
+                    var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
                             null, semanticElementId.get());
+                    List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
+                    assertThat(messages).isEmpty();
                 })
                 .consumeNextWith(payload -> { })
                 .then(hasBeenExposed)
                 .then(() -> {
-                    this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
+                    var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
                             null, semanticElementId.get());
+                    List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
+                    assertThat(messages).as("We should receive at least one message when dropping an already visible element").hasSizeGreaterThanOrEqualTo(1);
+                    String messageBody = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].body");
+                    assertThat(messageBody).isEqualTo("The element part1 is already visible in its parent General View");
+                    String messageLevel = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].level");
+                    assertThat(messageLevel).isEqualTo(MessageLevel.WARNING.toString());
                 })
                 .consumeNextWith(payload -> { })
                 .then(hasNotBeenExposedAgain)

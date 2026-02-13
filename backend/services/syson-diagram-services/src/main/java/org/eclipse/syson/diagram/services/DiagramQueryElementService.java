@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -56,14 +57,17 @@ public class DiagramQueryElementService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final IDiagramQueryService diagramQueryService;
+
     private final MetamodelQueryElementService metamodelQueryElementService;
 
     public DiagramQueryElementService(IObjectSearchService objectSearchService, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramIdProvider diagramIdProvider,
-            IFeedbackMessageService feedbackMessageService, ModelQueryElementService modelQueryElementService) {
+            IFeedbackMessageService feedbackMessageService, IDiagramQueryService diagramQueryService, ModelQueryElementService modelQueryElementService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
@@ -358,4 +362,19 @@ public class DiagramQueryElementService {
         }
         return false;
     }
+
+    /**
+     * Find a node inside a diagram given its id.
+     *
+     * @param diagram
+     *            the diagram to search into.
+     * @param nodeId
+     *            the id of the node to search for.
+     * @return the first node found anywhere inside the diagram with the given id, or empty if no matching node was
+     *         found.
+     */
+    public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
+        return this.diagramQueryService.findNodeById(diagram, nodeId);
+    }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -320,7 +320,13 @@ public class DiagramMutationDndService {
                         descriptionId.get(),
                         NodeContainmentKind.CHILD_NODE,
                         this.siriusWebCoreServices.identityService().getId(sourceElement));
-                diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
+                this.diagramQueryElementService.findNodeById(diagramContext.diagram(), nodeId).ifPresent(node -> {
+                    if (node.getState().equals(ViewModifier.Hidden)) {
+                        diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
+                    } else {
+                        this.logAlreadyVisibleMessage(sourceElement, targetElement);
+                    }
+                });
             } else {
                 Node newSelectedNode = selectedNode;
                 if (selectedNode == null) {
@@ -342,15 +348,13 @@ public class DiagramMutationDndService {
                 // It is easier to check it in this order (first create the ViewCreationRequest then remove
                 // it) because we need the ViewCreationRequest anyways to check if the node is on the diagram.
                 diagramContext.viewCreationRequests().remove(parentViewCreationRequest);
-                if (parentNodeOnDiagram.get().getModifiers().contains(ViewModifier.Hidden)) {
+                if (parentNodeOnDiagram.get().getState().equals(ViewModifier.Hidden)) {
                     // The node exists on the diagram but is hidden, we can't create a new view representing
                     // it, but we reveal it.
                     IDiagramService diagramService = new DiagramService(diagramContext);
                     new DiagramServices().reveal(diagramService, List.of(parentNodeOnDiagram.get()));
                 } else {
-                    String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", sourceElement.getName(), targetElement.getName());
-                    this.logger.warn(errorMessage);
-                    this.siriusWebCoreServices.feedbackMessageService().addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                    this.logAlreadyVisibleMessage(sourceElement, targetElement);
                 }
             } else if (parentViewCreationRequest != null) {
                 // The node doesn't exist on the diagram, it will be created with the ViewCreationRequest, we want to
@@ -358,6 +362,12 @@ public class DiagramMutationDndService {
                 this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
             }
         }
+    }
+
+    private void logAlreadyVisibleMessage(Element element, Element parent) {
+        String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", element.getName(), parent.getName());
+        this.logger.warn(errorMessage);
+        this.siriusWebCoreServices.feedbackMessageService().addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
     }
 
     /**
