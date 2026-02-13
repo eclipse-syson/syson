@@ -38,6 +38,7 @@ The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that r
 - https://github.com/eclipse-syson/syson/issues/1860[#1860] [diagrams] Add a precondition for compartment item node descriptions in order to filter out unwanted types.
 For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/1981[#1981] [export] Fix an error during textual export where `Expose` elements with apostrophes in their name were not properly escaped.
+- https://github.com/eclipse-syson/syson/issues/1983[#1983] [metamodel] `reqId` and `declaredShortName` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.
 
 === Improvements
 
@@ -65,6 +66,7 @@ Also add a  _New Satisfy Requirement_ graphical edge tool between `Feature` grap
 As a result, the application won't start if a service call is constructed with an invalid number of arguments.
 - https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
 Integration tests that require Elasticsearch now need to extend `AbstractIntegrationTestsWithElasticsearch`.
+- https://github.com/eclipse-syson/syson/issues/1983[#1983] [details] `reqId` property of `RequirementDefinition` is now visible in the _Core_ tab of the _Details_ view.
 
 === New features
 

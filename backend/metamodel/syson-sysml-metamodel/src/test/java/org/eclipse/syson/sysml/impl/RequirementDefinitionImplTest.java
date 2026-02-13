@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -69,5 +71,15 @@ public class RequirementDefinitionImplTest {
         final List<PartUsage> stakeholderParameterValue = REQUIREMENT_DEFINITION.getStakeholderParameter();
         Assertions.assertNotNull(stakeholderParameterValue);
         Assertions.assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholderParameterValue);
+    }
+
+    @Test
+    public void testReqId() {
+        REQUIREMENT_DEFINITION.setReqId("REQID");
+        assertEquals("REQID", REQUIREMENT_DEFINITION.getReqId());
+        assertEquals("REQID", REQUIREMENT_DEFINITION.getDeclaredShortName());
+        REQUIREMENT_DEFINITION.setDeclaredShortName("DECLARED_SHORT_NAME");
+        assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_DEFINITION.getReqId());
+        assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_DEFINITION.getDeclaredShortName());
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,7 +25,6 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -60,14 +63,24 @@ public class RequirementUsageImplTest {
     @Test
     public void testGetActorParameter() {
         final List<PartUsage> actorParameterValue = REQUIREMENT_USAGE.getActorParameter();
-        Assertions.assertNotNull(actorParameterValue);
-        Assertions.assertIterableEquals(ACTOR_PART_USAGES, actorParameterValue);
+        assertNotNull(actorParameterValue);
+        assertIterableEquals(ACTOR_PART_USAGES, actorParameterValue);
     }
 
     @Test
     public void testGetStakeholderParameter() {
         final List<PartUsage> stakeholderParameterValue = REQUIREMENT_USAGE.getStakeholderParameter();
-        Assertions.assertNotNull(stakeholderParameterValue);
-        Assertions.assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholderParameterValue);
+        assertNotNull(stakeholderParameterValue);
+        assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholderParameterValue);
+    }
+
+    @Test
+    public void testReqId() {
+        REQUIREMENT_USAGE.setReqId("REQID");
+        assertEquals("REQID", REQUIREMENT_USAGE.getReqId());
+        assertEquals("REQID", REQUIREMENT_USAGE.getDeclaredShortName());
+        REQUIREMENT_USAGE.setDeclaredShortName("DECLARED_SHORT_NAME");
+        assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_USAGE.getReqId());
+        assertEquals("DECLARED_SHORT_NAME", REQUIREMENT_USAGE.getDeclaredShortName());
     }
 }
