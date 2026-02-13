@@ -61,6 +61,10 @@ part system {
 }
 ```
 
+* In _Details_ view:
+
+** `Req Id` and `Declared Short Name` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.
+
 == Improvements
 
 * In diagrams:
@@ -100,7 +104,13 @@ package root {
 ```
 ** Implement the textual export for `AllocationUsage` and `AllocationDefinition`.
 
-* Add support for publishing representations with libraries.
+* In _Details_ view:
+
+** `Req Id` property of `RequirementDefinition` is now visible in the _Core_ tab of the _Details_ view.
+
+* Miscellaneous:
+
+** Add support for publishing representations with libraries.
 Publishing a project that contains representations now produces libraries that also contain the representations.
 Users can navigate to `/libraries/<library identifier>` to open a library and see its representations.
 

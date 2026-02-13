@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.StateDefinition;
@@ -228,6 +229,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.add(SysmlPackage.eINSTANCE.getMembership_Visibility());
         features.add(SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseRequirementDefinition(RequirementDefinition object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getRequirementDefinition_ReqId());
         return features;
     }
 

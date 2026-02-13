@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,15 @@ public class DetailsViewServiceTest {
         List<EStructuralFeature> coreStructuralFeatures = this.detailsViewService.getCoreFeatures(SysmlFactory.eINSTANCE.createOwningMembership());
         assertThat(coreStructuralFeatures).containsOnly(SysmlPackage.eINSTANCE.getMembership_Visibility(),
                 SysmlPackage.eINSTANCE.getMembership_MemberElement());
+    }
+
+    @Test
+    public void getCoreFeaturesOfRequirementDefinition() {
+        List<EStructuralFeature> coreStructuralFeatures = this.detailsViewService.getCoreFeatures(SysmlFactory.eINSTANCE.createRequirementDefinition());
+        assertThat(coreStructuralFeatures).containsOnly(SysmlPackage.eINSTANCE.getElement_DeclaredName(),
+                SysmlPackage.eINSTANCE.getElement_QualifiedName(),
+                SysmlPackage.eINSTANCE.getElement_DeclaredShortName(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_ReqId());
     }
 
     @Test
