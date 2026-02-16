@@ -45,10 +45,14 @@ import org.eclipse.syson.sysml.Multiplicity;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TypeFeaturing;
+import org.eclipse.syson.sysml.util.ILibraryNamespaceProvider;
+import org.eclipse.syson.sysml.util.LibraryNamespaceProvider;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature</b></em>'. <!-- end-user-doc -->
@@ -462,6 +466,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
         if (!chainingFeature.isEmpty()) {
             featuringTypes.addAll(chainingFeature.get(0).getFeaturingType());
         }
+
+        // Add implicit featuring type
+        Type implicitType = this.computeImplicitFeaturingType();
+        if (implicitType != null) {
+            featuringTypes.add(implicitType);
+        }
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_FeaturingType(), featuringTypes.size(), featuringTypes.toArray());
     }
 
@@ -1538,5 +1549,60 @@ public class FeatureImpl extends TypeImpl implements Feature {
             }
         }
         return featureCollector;
+    }
+
+    /**
+     * @generated NOT
+     */
+    private Type computeImplicitFeaturingType() {
+        Type owningType = this.getOwningType();
+        Type implicitType = null;
+        if (owningType != null) {
+
+            if (!this.isIsVariable()) {
+                // KerML 7.3.2.6 “Feature Membership” – “A feature that is declared within the body of a type … automatically has that type as a featuring type.”
+                // SysML 8.3.3.1.6 FeatureMembership - If the ownedMemberFeature has isVariable = false, then the FeatureMembership implies that the owningType is also a featuringType of the
+                // ownedMemberFeature.
+                implicitType = owningType;
+            } else {
+                // KerML 8.4.4.3
+                // Class (or any Type that directly or indirectly specializes Occurrence) may have ownedFeatures with
+                // isVariable = true. The checkFeatureFeatureMembershipTypeFeaturing constraint requires that such
+                //  variable Features are featured by the snapshots of their owningType.
+                TypeFeaturing typeFeaturing = SysmlFactory.eINSTANCE.createTypeFeaturing();
+                typeFeaturing.setIsImplied(true);
+
+                // Table 9. Core Semantics Implied Relationships Supporting Kernel Semantics - Note 1
+                // For the checkFeatureFeatureMembershipTypeFeaturing constraint, if the Feature has
+                //isVariable = false, then the target Type is the owningType of the Feature. If the Feature has
+                //isVariable = true and the owningType is the base Class Occurrences::Occurrence, then the
+                //target is Occurrences::Occurrence::snapshots (see 9.2.4.2.13 ). Otherwise, the target Type shall
+                //be constructed so as to satisfy the constraint and shall be owned as an ownedRelatedElement of the
+                //implied TypeFeaturing relationship. For further details, see 8.4.4.3 .
+                ILibraryNamespaceProvider nsProvider = LibraryNamespaceProvider.getFrom(this);
+                if (nsProvider == null) {
+                    nsProvider = new LibraryNamespaceProvider(this);
+                }
+                Type snapshot = nsProvider.getNamespaceFromLibrary("Occurrences::Occurrence::snapshot", Type.class);
+                if (owningType == nsProvider.getNamespaceFromLibrary("Occurrences::Occurrence")) {
+                    implicitType = snapshot;
+                } else {
+                    implicitType = SysmlFactory.eINSTANCE.createFeature();
+                    typeFeaturing.getOwnedRelatedElement().add(implicitType);
+
+                    Specialization specialization = SysmlFactory.eINSTANCE.createSpecialization();
+                    implicitType.getOwnedRelationship().add(specialization);
+                    specialization.setSpecific(implicitType);
+                    specialization.setGeneral(snapshot);
+                }
+
+                typeFeaturing.setFeaturingType(owningType);
+                typeFeaturing.setFeatureOfType((Feature) implicitType);
+                implicitType.getOwnedRelationship().add(typeFeaturing);
+
+            }
+
+        }
+        return implicitType;
     }
 } // FeatureImpl
