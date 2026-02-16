@@ -21,7 +21,9 @@ import java.util.function.Predicate;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -121,5 +123,20 @@ public class MetamodelQueryElementService {
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Gets the value expression of a feature (Value of the FeatureValue owned by this feature).
+     *
+     * @param feature
+     *         a non null feature
+     * @return an optional expression
+     */
+    public Optional<Expression> getValueExpression(Feature feature) {
+        return feature.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .map(FeatureValue::getValue);
     }
 }

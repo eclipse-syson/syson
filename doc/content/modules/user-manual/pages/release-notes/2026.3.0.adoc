@@ -86,6 +86,8 @@ package Test {
 
 ** Fix a textual export problem while exporting `LiteralString` with no value.
 ** Fix the export of `LiteralString` with backslash characters.
+** Fix textual import of `LiteralString` containing escaped backslash. In the following model, the value of "a1" is now "A \ B".
+The previous implementation was importing the value "A \\ B".
 
 * In _Explorer_ view:
 
