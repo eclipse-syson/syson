@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.ItemDefinition;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -59,4 +63,21 @@ public class FeatureImplTest {
         assertEquals("f", f2.effectiveShortName());
     }
 
+
+    @Test
+    @DisplayName("GIVEN a non variable feature in a Type, WHEN computing it's featuring types, THEN the owning type is returned")
+    public void checkImplicitFeaturingTypeNoVariableFeature() {
+        var itemDef = this.builder.createWithName(ItemDefinition.class, "ItemDef");
+        ItemUsage itemUsage = this.builder.createInWithName(ItemUsage.class, itemDef, "ItemUsage");
+        assertThat(itemUsage.getFeaturingType()).hasSize(1).allMatch(type -> type == itemDef);
+    }
+
+    @Test
+    @DisplayName("GIVEN a variable feature in a Type, WHEN computing it's featuring types, THEN the owning type is returned")
+    public void checkImplicitFeaturingTypeVariableFeature() {
+        var itemDef = this.builder.createWithName(ItemDefinition.class, "ItemDef");
+        ItemUsage itemUsage = this.builder.createInWithName(ItemUsage.class, itemDef, "ItemUsage");
+        itemUsage.setIsVariable(true);
+        assertThat(itemUsage.getFeaturingType()).hasSize(1).allMatch(type -> "ItemDef-SNAPSHOT".equals(type.getName()));
+    }
 }

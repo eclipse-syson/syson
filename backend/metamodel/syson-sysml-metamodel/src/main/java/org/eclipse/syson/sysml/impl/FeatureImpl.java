@@ -46,6 +46,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TypeFeaturing;
@@ -462,6 +463,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
         if (!chainingFeature.isEmpty()) {
             featuringTypes.addAll(chainingFeature.get(0).getFeaturingType());
         }
+
+        // Add implicit featuring type
+        Type implicitType = this.computeImplicitFeaturingType();
+        if (implicitType != null) {
+            featuringTypes.add(implicitType);
+        }
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_FeaturingType(), featuringTypes.size(), featuringTypes.toArray());
     }
 
@@ -1538,5 +1546,36 @@ public class FeatureImpl extends TypeImpl implements Feature {
             }
         }
         return featureCollector;
+    }
+
+    /**
+     * @generated NOT
+     */
+    private Type computeImplicitFeaturingType() {
+        Type owningType = this.getOwningType();
+        Type implicitType = null;
+        if (owningType != null) {
+
+            if (!this.isIsVariable()) {
+                // KerML 7.3.2.6 “Feature Membership” – “A feature that is declared within the body of a type … automatically has that type as a featuring type.”
+                implicitType = owningType;
+            } else {
+                // KerML 8.4.4.3
+                // Class (or any Type that directly or indirectly specializes Occurrence) may have ownedFeatures with
+                // isVariable = true. The checkFeatureFeatureMembershipTypeFeaturing constraint requires that such
+                //  variable Features are featured by the snapshots of their owningType.
+                implicitType = SysmlFactory.eINSTANCE.createFeature();
+                implicitType.setDeclaredName(owningType.getDeclaredName() + "-SNAPSHOT");
+
+                // This virtual type should at some point redefine Occurrences::Occurrence::snapshots
+
+                TypeFeaturing typeFeaturing = SysmlFactory.eINSTANCE.createTypeFeaturing();
+                typeFeaturing.setFeaturingType(owningType);
+                typeFeaturing.setFeatureOfType((Feature) implicitType);
+                implicitType.getOwnedRelationship().add(typeFeaturing);
+            }
+
+        }
+        return implicitType;
     }
 } // FeatureImpl
