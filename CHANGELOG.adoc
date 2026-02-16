@@ -43,6 +43,7 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/1949[#1949] [diagrams] Allow redefining a `PartUsage` with the same name as the redefined usage.
 - https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
 - https://github.com/eclipse-syson/syson/issues/2026[#2026] [explorer] Fix an issue where creating a new model using the _Create a new model_ action in the _Explorer_ view was not adding the ".sysml" extension to the model name.
+- https://github.com/eclipse-syson/syson/issues/1998[#1998] [metamodel] Missing implicit TypeFeaturing.
 
 === Improvements
 
