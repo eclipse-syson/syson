@@ -87,6 +87,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,6 +103,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Arthur Daussy
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ImportSysMLModelTest extends AbstractIntegrationTests {
@@ -125,6 +127,8 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     private IProjectEditingContextService projectToEditingContext;
 
     private SysMLv2SemanticImportChecker checker;
+
+    private final MetamodelQueryElementService metamodelService = new MetamodelQueryElementService();
 
     private String projectId;
 
@@ -182,19 +186,40 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         }).check(input);
     }
 
+    @DisplayName("Given LiteralString with escaped characters, WHEN importing the model, THEN the extra backlash is removed")
+    @Test
+    public void removeExtraBacklash() throws IOException {
+        var input = """
+                package pk1 {
+                      part part1 {
+                          attribute a1 = "A \\\\ B";
+                          attribute a2 = "A \\n a";
+                          attribute a3 = "A \\t a";
+                          attribute a4 = "A \n a";
+                      }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+
+            this.assertLiteralStringValue("A \\ B", this.getByName(AttributeUsage.class, resource, "a1"));
+            this.assertLiteralStringValue("A \\n a", this.getByName(AttributeUsage.class, resource, "a2"));
+            this.assertLiteralStringValue("A \\t a", this.getByName(AttributeUsage.class, resource, "a3"));
+            this.assertLiteralStringValue("A \n a", this.getByName(AttributeUsage.class, resource, "a4"));
+        }).check(input);
+    }
+
     @DisplayName("GIVEN an MetadataUsage annotating a ExposeMembership, WHEN importing the model, THEN the Annotation holding the MetadataUsage should be stored in ownedRelationships.")
     @Test
     public void metadataUsageOnExposeMembership() throws IOException {
         var input = """
                 package Test {
                      metadata def MyAnnotation;
-                
+
                      item def MyItem;
-                
+
                      view MyView {
                          expose MyItem { @MyAnnotation; }
                      }
-                
+
                     item def MyItem2;
                  }
                 """;
@@ -1295,5 +1320,15 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         assertThat(valuation.getValue())
                 .isNotNull()
                 .matches(v -> v instanceof LiteralString vString && expectedValue.equals(vString.getValue()), "The feature should have a Literal String with value " + expectedValue);
+    }
+
+    private void assertLiteralStringValue(String expected, Feature f) {
+        Optional<Expression> valueExpression = this.metamodelService.getValueExpression(f);
+        assertThat(valueExpression)
+                .isPresent();
+        assertThat(valueExpression.get())
+                .isInstanceOf(LiteralString.class)
+                .extracting(e -> ((LiteralString) e).getValue())
+                .isEqualTo(expected);
     }
 }

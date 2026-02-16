@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,7 +123,9 @@ public class EAttributeTranslator {
     }
 
     private Object handleLiteralStringValue(EClass ownerType, String astFeatureName, JsonNode astValue) {
-        return astValue.asText().replace(DOUBLE_QUOTE_CONST, "");
+        String literalValue = astValue.asText().replace(DOUBLE_QUOTE_CONST, "");
+        // Unescape backslash
+        return literalValue.replace("\\\\", "\\");
     }
 
     public Object getValue() {
