@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 
@@ -36,7 +37,9 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
 
     private String nodeDescriptionName;
 
-    private int compartmentCount;
+    private int totalCompartmentCount;
+
+    private int visibleCompartmentCount;
 
     private String targetObjectLabel;
 
@@ -50,8 +53,13 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
         return this;
     }
 
-    public CheckNodeOnDiagram hasCompartmentCount(int expectedCompartmentCount) {
-        this.compartmentCount = expectedCompartmentCount;
+    public CheckNodeOnDiagram hasTotalCompartmentCount(int expectedTotalCompartmentCount) {
+        this.totalCompartmentCount = expectedTotalCompartmentCount;
+        return this;
+    }
+
+    public CheckNodeOnDiagram hasVisibleCompartmentCount(int expectedVisibleCompartmentCount) {
+        this.visibleCompartmentCount = expectedVisibleCompartmentCount;
         return this;
     }
 
@@ -66,7 +74,10 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         assertThat(newDiagram.getNodes()).anySatisfy(childNode -> {
             assertThat(childNode).hasDescriptionId(nodeDescriptionId);
-            assertThat(childNode.getChildNodes()).hasSize(this.compartmentCount);
+            assertThat(childNode.getChildNodes()).hasSize(this.totalCompartmentCount);
+            if (this.visibleCompartmentCount != -1) {
+                assertThat(childNode.getChildNodes().stream().filter(node -> node.getState() != ViewModifier.Hidden)).hasSize(this.visibleCompartmentCount);
+            }
             if (this.targetObjectLabel != null) {
                 assertThat(childNode).hasTargetObjectLabel(this.targetObjectLabel);
             }

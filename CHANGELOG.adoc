@@ -75,6 +75,8 @@ Additional ends can be created using the _New end_ graphical node tool (which re
 Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
 - https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
+- https://github.com/eclipse-syson/syson/issues/2004[#2004] [diagrams] The `ports` and `ends` compartments on a newly created `InterfaceDefinition` graphical nodes are not visible by default.
+They can be revealed if needed using the _Manage Visbility_ action on the graphical node.
 
 === New features
 

@@ -251,7 +251,7 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
                 String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
                 new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                         .hasNodeDescriptionName(newNodeDescriptionName)
-                        .hasCompartmentCount(compartmentCount)
+                        .hasTotalCompartmentCount(compartmentCount)
                         .check(initialDiagram, newDiagram);
             });
         } else {

@@ -325,7 +325,7 @@ public class ViewNodeService {
     public boolean isHiddenByDefault(Element self, String referenceName) {
         boolean isHiddenByDefault = true;
         EStructuralFeature eStructuralFeature = self.eClass().getEStructuralFeature(referenceName);
-        if (eStructuralFeature != null) {
+        if (eStructuralFeature != null && eStructuralFeature != SysmlPackage.eINSTANCE.getDefinition_OwnedPort()) {
             Object referenceValue = self.eGet(eStructuralFeature);
             if (referenceValue instanceof List<?> referenceListValue) {
                 isHiddenByDefault = referenceListValue.isEmpty();

@@ -165,7 +165,7 @@ public class DiagramCheckerService {
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                     .hasNodeDescriptionName(newNodeDescriptionName)
-                    .hasCompartmentCount(compartmentCount)
+                    .hasTotalCompartmentCount(compartmentCount)
                     .check(previousDiagram.get(), newDiagram);
         });
     }
