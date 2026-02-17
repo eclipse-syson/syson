@@ -170,7 +170,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part l : Logical {
                         part :>> component;
                     }
-                
+
                     part c2  = l.component.component2;
                 }""";
         this.checker.checkImportedModel(resource -> {
@@ -178,6 +178,31 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(featureChainings).hasSize(2); // component.component2
             // "component" should to "p1::l::component" and not to "p1::Logical::component"
             assertThat(featureChainings.get(0).getChainingFeature().getQualifiedName()).isEqualTo("p1::l::component");
+        }).check(input);
+    }
+
+    @DisplayName("GIVEN a redefinition of a part with the same name as the redefined part, WHEN importing the model, THEN the redefintion's redefined feature is correctly resolved.")
+    @Test
+    public void namedRedefinedReferenceFeature() throws IOException {
+        var input = """
+                package Package1 {
+                    part def A;
+                    part def B {
+                        part x : A [0..*];
+                    }
+
+                   part y : B {
+                        x :>> x; // The second x should point B::x, not to y::x
+                   }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+            List<Redefinition> redefinitions = EMFUtils.allContainedObjectOfType(resource, Redefinition.class).toList();
+            assertThat(redefinitions).hasSize(1);
+            var xRedefinition = redefinitions.get(0);
+            // The redefin*ing* feature (the first "x") is in y
+            assertThat(xRedefinition.getRedefiningFeature().getOwner().getName()).isEqualTo("y");
+            // The redefin*ed* feature (the second "x") is the one from B
+            assertThat(xRedefinition.getRedefinedFeature().getOwningType().getName()).isEqualTo("B");
         }).check(input);
     }
 
@@ -1177,7 +1202,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package Package1 {
                     attribute def Sig ;
                     part p;
-                
+
                     state state1 {
                         state s2;
                         state s3;

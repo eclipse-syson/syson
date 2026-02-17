@@ -34,8 +34,10 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.GeneralViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
+import org.eclipse.syson.application.data.GeneralViewPartUsageRedefinitionProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.PartUsage;
@@ -646,6 +648,72 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .consumeNextWith(updatedDiagramContentMatcherBefore)
                 .then(editLabelWithMultiplicityAfter)
                 .consumeNextWith(updatedDiagramContentMatcherAfter)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a diagram with a part WHEN creating a redefinition of another part of the same name through direct edit THEN the redefined part is correctly resolved")
+    @GivenSysONServer({ GeneralViewPartUsageRedefinitionProjectData.SCRIPT_PATH })
+    @Test
+    public void directEditRedefinitionWithSameName() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewPartUsageRedefinitionProjectData.EDITING_CONTEXT_ID,
+                GeneralViewPartUsageRedefinitionProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithId(GeneralViewPartUsageRedefinitionProjectData.GraphicalIds.Y_X_NODE_ID).getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabelWithRedfinitionOfSameName = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewPartUsageRedefinitionProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "x :>> x");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
+            assertThat(messages).hasSize(0);
+        };
+
+        Consumer<Object> updatedDiagramContentMatcherBefore = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nx :>> x");
+        });
+
+        Runnable redefinedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewPartUsageRedefinitionProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    PartUsage yx = this.objectSearchService.getObject(editingContext, GeneralViewPartUsageRedefinitionProjectData.SemanticIds.Y_X_ID)
+                            .filter(PartUsage.class::isInstance)
+                            .map(PartUsage.class::cast)
+                            .orElse(null);
+                    assertThat(yx).isNotNull();
+
+                    PartUsage bx = this.objectSearchService.getObject(editingContext, GeneralViewPartUsageRedefinitionProjectData.SemanticIds.B_X_ID)
+                            .filter(PartUsage.class::isInstance)
+                            .map(PartUsage.class::cast)
+                            .orElse(null);
+                    assertThat(bx).isNotNull();
+
+                    assertThat(yx.getOwnedRedefinition()).hasSize(1);
+                    var redefinition = yx.getOwnedRedefinition().get(0);
+                    assertThat(redefinition.getRedefiningFeature()).isSameAs(yx);
+                    assertThat(redefinition.getRedefinedFeature()).isSameAs(bx);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabelWithRedfinitionOfSameName)
+                .consumeNextWith(updatedDiagramContentMatcherBefore)
+                .then(redefinedElementsChecker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

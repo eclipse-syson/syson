@@ -836,7 +836,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         var identifier = ctx.qualifiedName();
         if (identifier != null) {
             var usageAsString = this.getFullText(identifier);
-            var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
+            var usage = this.resolveRedefinedUsage(redefining, usageAsString);
             if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
                 this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the redefinition does not exist", MessageLevel.ERROR));
                 return;
@@ -858,6 +858,22 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 this.utilService.setRedefinition(redefining, usage);
             }
         }
+    }
+
+    private Feature resolveRedefinedUsage(Usage redefiningUsage, String redefinedUsageName) {
+        // When the redefining usage has the same name as the *redefined* one,
+        // temporarily rename it so that this.utilService.findByNameAndType()
+        // correctly resolves the redefined one instead of returning redefiningUsage itself.
+        boolean nameConflict = Objects.equals(redefiningUsage.getName(), redefinedUsageName);
+        var originalName = redefiningUsage.getDeclaredName();
+        if (nameConflict) {
+            redefiningUsage.setDeclaredName("_" + redefinedUsageName);
+        }
+        var usage = this.utilService.findByNameAndType(redefiningUsage, redefinedUsageName, Feature.class);
+        if (nameConflict) {
+            redefiningUsage.setDeclaredName(originalName);
+        }
+        return usage;
     }
 
     private void handleTriggerExpressionName(TransitionUsage transition, TriggerExpressionNameContext triggerExpressionName) {
