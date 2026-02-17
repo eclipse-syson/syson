@@ -158,7 +158,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from inherited port, THEN inherited port is redefined")
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke from inherited port, THEN inherited port is not redefined")
     @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
@@ -189,7 +189,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", port1Id.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -215,7 +215,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
-            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             assertThat(diagram.getEdges()).hasSize(3);
         });
 
@@ -227,7 +227,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke targeting an inherited port, THEN inherited port is redefined")
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoke targeting an inherited port, THEN inherited port is not redefined")
     @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
@@ -258,7 +258,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", inheritedPortId.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Port And %s')].id",
+            List<String> ids = JsonPath.read(connectorToolsResult.data(), String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -284,7 +284,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
             assertThat(part2Node.getBorderNodes()).hasSize(1);
             var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
-            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             assertThat(diagram.getEdges()).hasSize(3);
         });
 
@@ -296,7 +296,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoked from an inherited port and targeting an inherited port, THEN both inherited ports are redefined")
+    @DisplayName("GIVEN a diagram with some inherited port, WHEN an edge tool is invoked from an inherited port and targeting an inherited port, THEN both inherited ports are not redefined")
     @GivenSysONServer({ GeneralViewInheritedPortTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @ValueSource(strings = { "New Binding Connector As Usage (bind)", "New Interface (connect)", "New Flow (flow)" })
@@ -328,7 +328,7 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
             List<String> ids = JsonPath.read(connectorToolsResult.data(),
-                    String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='Redefine Ports And %s')].id",
+                    String.format("$.data.viewer.editingContext.representation.description.connectorTools[?(@.label=='%s')].id",
                     parameterizedValue));
             String toolId = ids.get(0);
 
@@ -352,10 +352,10 @@ public class GVInheritedPortTests extends AbstractIntegrationTests {
         Consumer<Object> updatedDiagramContentConsumerAfterEdgeTool = assertRefreshedDiagramThat(diagram -> {
             var v1Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv1 : Vehicle").getNode();
             assertThat(v1Node.getBorderNodes()).hasSize(1);
-            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(v1Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             var v2Node = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\nv2 : Vehicle").getNode();
             assertThat(v2Node.getBorderNodes()).hasSize(1);
-            assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals(" :>> fuelInPort"));
+            assertThat(v2Node.getBorderNodes()).allMatch(node -> node.getOutsideLabels().get(0).text().equals("^fuelInPort : FuelPort"));
             assertThat(diagram.getEdges()).hasSize(3);
         });
 

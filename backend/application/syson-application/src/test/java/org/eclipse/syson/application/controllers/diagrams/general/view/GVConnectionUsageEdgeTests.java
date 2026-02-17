@@ -42,7 +42,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorAsUsageCheckerBuilder;
+import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorCheckerBuilder;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
@@ -160,8 +160,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.PART1_ID)
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.PART2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.PACKAGE1_ID)
-                .setExpectedSourceReference(EdgeConnectionUsageTestProjectData.SemanticIds.PART1_ID)
-                .setExpectedTargetReference(EdgeConnectionUsageTestProjectData.SemanticIds.PART2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -205,8 +203,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART1_ID)
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ID)
-                .setExpectedSourceReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART1_ID)
-                .setExpectedTargetReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -380,7 +376,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART1_ID)
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ID)
-                .setExpectedSourceReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART1_ID)
                 .setExpectedTargetFeatureChain(List.of(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART2_ID, EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM2_ID))
                 .build(newEdge);
 
@@ -419,8 +414,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.PORT1_ID)
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.PACKAGE1_ID)
-                .setExpectedSourceReference(EdgeConnectionUsageTestProjectData.SemanticIds.PORT1_ID)
-                .setExpectedTargetReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -459,7 +452,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ID)
                 .setExpectedSourceFeatureChain(List.of(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART1_ID, EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM1IN_ID))
-                .setExpectedTargetReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_PART2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -497,8 +489,6 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM1IN_ID)
                 .setExpectedTargetSemanticId(EdgeConnectionUsageTestProjectData.SemanticIds.PORT2_ID)
                 .setExpectedSemanticContainer(EdgeConnectionUsageTestProjectData.SemanticIds.PACKAGE1_ID)
-                .setExpectedSourceReference(EdgeConnectionUsageTestProjectData.SemanticIds.SYSTEM_ITEM1IN_ID)
-                .setExpectedTargetReference(EdgeConnectionUsageTestProjectData.SemanticIds.PORT2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -547,7 +537,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
     private Runnable buildCreateEdgeRunnable(DiagramDescriptionIdProvider diagramDescriptionIdProvider, AtomicReference<Diagram> diagram, String sourceNodeDescriptionName, String sourceNodeId, String targetNodeId) {
         String creationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
                 sourceNodeDescriptionName,
-                "New Connection");
+                "New Connection (connect)");
         return () -> this.edgeCreationTester.createEdgeUsingNodeId(EdgeConnectionUsageTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 sourceNodeId,
@@ -575,8 +565,8 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
         });
     }
 
-    private ConnectorAsUsageCheckerBuilder<ConnectionUsage> createCheckerBuilder() {
-        return new ConnectorAsUsageCheckerBuilder<>(this.identityService, ConnectionUsage.class, this.semanticCheckerService);
+    private ConnectorCheckerBuilder<ConnectionUsage> createCheckerBuilder() {
+        return new ConnectorCheckerBuilder<>(this.identityService, ConnectionUsage.class, this.semanticCheckerService);
     }
 
     private Runnable buildReconnectRunnable(String edgeId, String newTarget, ReconnectEdgeKind reconnectionKind, AtomicReference<Diagram> diagram) {
@@ -587,7 +577,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 reconnectionKind);
     }
 
-    private Consumer<Object> assertReconnectThat(String expectedSourceGraplicalId, String expectedTargetGraplicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
+    private Consumer<Object> assertReconnectThat(String expectedSourceGrapicalId, String expectedTargetGraphicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
         return assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
@@ -596,8 +586,8 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
             newEdgeConsumer.accept(newEdge.getTargetObjectId());
             DiagramAssertions.assertThat(newEdge)
-                    .hasSourceId(expectedSourceGraplicalId)
-                    .hasTargetId(expectedTargetGraplicalId)
+                    .hasSourceId(expectedSourceGrapicalId)
+                    .hasTargetId(expectedTargetGraphicalId)
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);

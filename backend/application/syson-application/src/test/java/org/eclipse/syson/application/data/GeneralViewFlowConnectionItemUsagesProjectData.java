@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ public class GeneralViewFlowConnectionItemUsagesProjectData {
 
         public static final String ACTION_USAGE_3_OUT_ITEM_ID = "9b0cbdce-3f95-465f-a8d1-cb3314b271dc";
 
-        public static final String FLOW_CONNECTION_ID = "5520bf55-5ba1-4a1e-af9a-73c49de13542";
+        public static final String FLOW_CONNECTION_ID = "36ba39c8-8a64-4555-8dda-d6993178b999";
     }
 
 }

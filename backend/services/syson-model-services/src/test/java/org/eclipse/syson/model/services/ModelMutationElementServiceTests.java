@@ -156,7 +156,7 @@ public class ModelMutationElementServiceTests {
 
         assertThat(bindings)
                 .hasSize(1)
-                .allMatch(bindingConnectorAsUsage -> this.metamodelElementQueryService.getSource(bindingConnectorAsUsage) == newPort)
-                .allMatch(bindingConnectorAsUsage -> this.metamodelElementQueryService.getTarget(bindingConnectorAsUsage).get(0) == targetPort);
+                .allMatch(bindingConnectorAsUsage -> this.metamodelElementQueryService.getConnectorSource(bindingConnectorAsUsage) == newPort)
+                .allMatch(bindingConnectorAsUsage -> this.metamodelElementQueryService.getConnectorTarget(bindingConnectorAsUsage).get(0) == targetPort);
     }
 }

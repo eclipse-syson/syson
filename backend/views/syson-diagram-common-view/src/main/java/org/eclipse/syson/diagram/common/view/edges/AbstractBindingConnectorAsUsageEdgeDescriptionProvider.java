@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -83,15 +84,22 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
     public EdgeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
+                .centerLabelExpression("=")
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression("=")
                 .name(this.getName())
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectorEdge)
+                        .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
+                                IEditingContext.EDITING_CONTEXT)
+                        // Needs this to avoid instantiation on inheriting concept
+                        + "and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceExpression("aql:self.getSource()")
+                .sourceExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorSource).aqlSelf())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTarget()")
+                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorTarget).aqlSelf())
                 .build();
     }
 
@@ -153,8 +161,8 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectTarget).aql(
                         AQLConstants.EDGE_SEMANTIC_ELEMENT,
                         AQLConstants.SEMANTIC_RECONNECTION_TARGET,
-                        AQLConstants.RECONNECTION_TARGET_VIEW,
                         AQLConstants.OTHER_END,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
                         IEditingContext.EDITING_CONTEXT,
                         AQLConstants.DIAGRAM
                 ));

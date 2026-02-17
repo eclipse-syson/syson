@@ -90,6 +90,9 @@ Additional ports can be created using the _New Port as end_ graphical node tool.
 ** The `ports` and `ends` compartments on a newly created `InterfaceDefinition` graphical nodes are not visible by default.
 They can be revealed if needed using the _Manage Visbility_ action on the graphical node.
 ** Allow redefining a `PartUsage` with the same name as the redefined `Usage`.
+** Rework the way _New Binding Connector As Usage (bind)_, _New Flow (flow)_ and _New Interface (interface)_ graphical edge tools works.
+Currently, when a binding/interface/flow graphical edge tool is executed, if it involves an inherited feature(s) (as source and/or target of the tool), then the inherited feature(s) is/are redefined first.
+Instead SysON will now use the inherited elements without redefining them first, as it is done by the _New Connection (connect)_  edge tool.
 
 
 * In textual import/export:

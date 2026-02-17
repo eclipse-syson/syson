@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -32,7 +32,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
- * Object in charge of computing a chain of feature to access a {@link Feature} from one {@link Type}.
+ * Object in charge of computing a chain of feature to access a {@link Feature} from one {@link Element}.
  *
  * @author Arthur Daussy
  */
@@ -42,13 +42,19 @@ public class FeatureChainComputer {
      * Find the shortest path from the given source to the given feature.
      *
      * @param source
-     *            a Type
-     * @param target
-     *            a Feature
+     *            a {@link Element}
+     * @param end
+     *            a {@link Feature}
+     * @param endContainer
+     *            the semantic element corresponding to the graphical container of the end
      * @return an {@link Optional} list of feature (including the target)
      */
-    public Optional<List<Feature>> computeShortestPath(Type source, Feature target) {
-        List<List<Feature>> chains = this.computeChains(source, target, new HashSet<>());
+    public Optional<List<Feature>> computeShortestPath(Element source, Feature end, Element endContainer) {
+        List<List<Feature>> chains = this.computeChains(source, end, new HashSet<>());
+        // filter the chains to only keep the ones containing the endContainer
+        if (endContainer != null) {
+            chains = chains.stream().filter(chain -> chain.contains(endContainer)).toList();
+        }
         return chains.stream().min(Comparator.comparing(Collection::size));
     }
 
@@ -56,65 +62,67 @@ public class FeatureChainComputer {
      * Compute all feature paths from the given source to the given feature.
      *
      * @param source
-     *            a {@link Type}
-     * @param target
-     *            a Feature.
+     *            a {@link Element}
+     * @param end
+     *            a {@link Feature}.
      * @return list of all path
      */
-    public List<List<Feature>> computeAllPath(Type source, Feature target) {
-        return this.computeChains(source, target, new HashSet<>());
+    public List<List<Feature>> computeAllPath(Type source, Feature end) {
+        return this.computeChains(source, end, new HashSet<>());
     }
 
-    private List<List<Feature>> computeChains(Type source, Feature target, Set<Feature> encounteredFeature0) {
+    private List<List<Feature>> computeChains(Element source, Feature end, Set<Feature> alreadyEncounteredFeatures) {
         List<List<Feature>> result = new ArrayList<>();
-        Set<Feature> encounteredFeature = new HashSet<>(encounteredFeature0);
-        encounteredFeature.add(target);
+        Set<Feature> encounteredFeature = new HashSet<>(alreadyEncounteredFeatures);
+        encounteredFeature.add(end);
 
-        if (target != null) {
-
-            if (target.getOwningType() == null) {
+        if (end != null) {
+            if (end.getOwningType() == null) {
                 // The target is a feature directly available in the root namespace
                 List<Feature> features = new ArrayList<>();
-                features.add(target);
+                features.add(end);
                 result.add(features);
             }
-            EList<Feature> sourceFeatures = source.getFeature();
+            final List<Feature> sourceFeatures;
+            if (source instanceof Type sourceAsType) {
+                sourceFeatures = sourceAsType.getFeature();
+            } else {
+                sourceFeatures = new ArrayList<>();
+            }
 
-            for (Feature accessingFeature : this.computeAccessingFeature(target, encounteredFeature)) {
+            for (Feature accessingFeature : this.computeAccessingFeature(end, encounteredFeature)) {
                 if (accessingFeature == source) {
                     List<Feature> features = new ArrayList<>();
-                    features.add(target);
+                    features.add(end);
                     result.add(features);
                 } else if (sourceFeatures.contains(accessingFeature)) {
                     List<Feature> features = new ArrayList<>();
                     features.add(accessingFeature);
-                    features.add(target);
+                    features.add(end);
                     result.add(features);
                 } else {
                     List<List<Feature>> subchains = this.computeChains(source, accessingFeature, encounteredFeature);
                     for (List<Feature> subChainfeature : subchains) {
                         if (!subChainfeature.isEmpty()) {
                             List<Feature> features = new ArrayList<>(subChainfeature);
-                            features.add(target);
+                            features.add(end);
                             result.add(features);
                         }
                     }
                 }
             }
-
         }
         return result;
     }
 
-    private List<Feature> computeAccessingFeature(Feature target, Set<Feature> encounteredFeature) {
-
-        Collection<Setting> inverseReferences = EMFUtils.getInverse(target);
+    private List<Feature> computeAccessingFeature(Feature end, Set<Feature> encounteredFeatures) {
+        Collection<Setting> inverseReferences = EMFUtils.getInverse(end);
 
         List<Feature> accessingFeatures = new ArrayList<>();
         for (Setting s : inverseReferences) {
             List<Feature> accessFeatures = this.collectTargettingFeatures(s);
             for (var af : accessFeatures) {
-                if (!encounteredFeature.contains(af) && !accessingFeatures.contains(af)) {
+                if (!encounteredFeatures.contains(af) && !accessingFeatures.contains(af)) {
                     accessingFeatures.add(af);
                 }
             }
@@ -150,7 +158,6 @@ public class FeatureChainComputer {
             if (type instanceof Feature feature) {
                 accessFeatures.add(feature);
             }
-
         }
     }
 
@@ -162,7 +169,6 @@ public class FeatureChainComputer {
                 this.collectAllSubTypes(specific, result);
             }
         }
-
     }
 
     private List<Type> computeSpecific(Type superType) {
@@ -172,7 +178,4 @@ public class FeatureChainComputer {
                 .map(s -> ((Specialization) s.getEObject()).getSpecific())
                 .toList();
     }
-
-
-
 }

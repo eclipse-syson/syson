@@ -39,7 +39,7 @@ import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorAsUsageCheckerBuilder;
+import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorCheckerBuilder;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.data.GeneralViewBindingConnectorProjectData;
@@ -131,7 +131,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createEdgeRunnable = buildCreateEdgeRunnable(
+        Runnable createEdgeRunnable = this.buildCreateEdgeRunnable(
                 diagramDescriptionIdProvider,
                 diagram,
                 GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
@@ -146,7 +146,6 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID)
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A0_ID)
-                .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID))
                 .build(newEdge);
 
@@ -172,7 +171,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createEdgeRunnable = buildCreateEdgeRunnable(
+        Runnable createEdgeRunnable = this.buildCreateEdgeRunnable(
                 diagramDescriptionIdProvider,
                 diagram,
                 GeneralViewBindingConnectorProjectData.GraphicalIds.I1_ID,
@@ -187,7 +186,6 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID)
                 .setExpectedTargetSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A0_ID)
-                .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedSourceFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID))
                 .build(newEdge);
 
@@ -213,7 +211,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createEdgeRunnable = buildCreateEdgeRunnable(
+        Runnable createEdgeRunnable = this.buildCreateEdgeRunnable(
                 diagramDescriptionIdProvider,
                 diagram,
                 GeneralViewBindingConnectorProjectData.GraphicalIds.I0_ID,
@@ -228,7 +226,6 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID)
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A0_ID)
-                .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I0_ID)
                 .setExpectedTargetFeatureChain(List.of(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID, GeneralViewBindingConnectorProjectData.SemanticIds.A11_ID,
                         GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID))
                 .build(newEdge);
@@ -255,7 +252,7 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createEdgeRunnable = buildCreateEdgeRunnable(
+        Runnable createEdgeRunnable = this.buildCreateEdgeRunnable(
                 diagramDescriptionIdProvider,
                 diagram,
                 GeneralViewBindingConnectorProjectData.GraphicalIds.I11_ID,
@@ -270,8 +267,6 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedSourceSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID)
                 .setExpectedTargetSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I11TEST_ID)
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A11_ID)
-                .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I11_ID)
-                .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I11TEST_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -306,9 +301,6 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .setExpectedTargetSemanticId(GeneralViewBindingConnectorProjectData.SemanticIds.I2_ID)
                 // Semantic container should change from A0 to A1
                 .setExpectedSemanticContainer(GeneralViewBindingConnectorProjectData.SemanticIds.A1_ID)
-                .setExpectedSourceReference(GeneralViewBindingConnectorProjectData.SemanticIds.I1_ID)
-                // No more feature chain required
-                .setExpectedTargetReference(GeneralViewBindingConnectorProjectData.SemanticIds.I2_ID)
                 .build(newEdge);
 
         StepVerifier.create(flux)
@@ -320,8 +312,8 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private ConnectorAsUsageCheckerBuilder<BindingConnectorAsUsage> createCheckerBuilder() {
-        return new ConnectorAsUsageCheckerBuilder<>(this.identityService, BindingConnectorAsUsage.class, this.semanticCheckerService);
+    private ConnectorCheckerBuilder<BindingConnectorAsUsage> createCheckerBuilder() {
+        return new ConnectorCheckerBuilder<>(this.identityService, BindingConnectorAsUsage.class, this.semanticCheckerService);
     }
 
     private Consumer<Object> assertReconnectThat(String expectedSourceGraplicalId, String expectedTargetGraplicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
