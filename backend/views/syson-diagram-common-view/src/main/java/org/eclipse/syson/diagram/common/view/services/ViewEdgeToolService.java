@@ -398,6 +398,24 @@ public class ViewEdgeToolService {
                 .build();
     }
 
+    public EdgeTool createBindingConnectorAsUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createBindingConnectorAsUsage)
+                        .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(DiagramElementDescription[]::new))
+                .build();
+    }
+
     public EdgeTool createConnectionUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
@@ -409,8 +427,44 @@ public class ViewEdgeToolService {
                                 EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
                                 DiagramContext.DIAGRAM_CONTEXT));
 
-        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectionUsage()))
-                .iconURLsExpression("/icons/full/obj16/ConnectionUsage.svg")
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectionUsage()) + " (connect)")
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getConnectionUsage().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(DiagramElementDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createFlowUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createFlowUsage)
+                        .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowUsage()) + " (flow)")
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getFlowUsage().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(DiagramElementDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createInterfaceUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::createInterfaceUsage)
+                        .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.EDGE_SOURCE,
+                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                DiagramContext.DIAGRAM_CONTEXT));
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(DiagramElementDescription[]::new))
                 .build();

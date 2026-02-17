@@ -45,8 +45,6 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    protected static final String REDEFINE_PORT_PREFIX_TOOL_NAME = "Redefine Port And ";
-
     protected final IDescriptionNameGenerator descriptionNameGenerator;
 
     protected final EReference eReference;
@@ -146,9 +144,24 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
         );
     }
 
+    protected EdgeTool createBindingConnectorAsUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache).createBindingConnectorAsUsageEdgeTool(
+                new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
+    }
+
     protected EdgeTool createConnectionUsageEdgeTool(IViewDiagramElementFinder cache) {
         return this.getViewEdgeToolService(cache)
                 .createConnectionUsageEdgeTool(new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
+    }
+
+    protected EdgeTool createFlowUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache)
+                .createFlowUsageEdgeTool(new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
+    }
+
+    protected EdgeTool createInterfaceUsageEdgeTool(IViewDiagramElementFinder cache) {
+        return this.getViewEdgeToolService(cache)
+                .createInterfaceUsageEdgeTool(new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
     }
 
     protected ViewEdgeToolService getViewEdgeToolService(IViewDiagramElementFinder cache) {

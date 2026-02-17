@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.model.services.ModelQueryElementService;
-import org.eclipse.syson.sysml.ConnectionUsage;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -230,28 +230,32 @@ public class DiagramQueryElementService {
     }
 
     /**
-     * Check if a {@link ConnectionUsage} edge should be displayed between the given source and target.
+     * Check if a {@link Connector} edge should be displayed between the given source and target.
      *
-     * <p>If the {@link ConnectionUsage} use feature chain to reference inherited elements, a special computation should check that the edge only connected inherited feature and not "real" objects. To
-     * do that, it will only select elements displayed "inside" the expected parent.</p>
+     * <p>
+     * If the {@link Connector} use feature chain to reference inherited elements, a special computation should check
+     * that the edge only connected inherited feature and not "real" objects. To do that, it will only select elements
+     * displayed "inside" the expected parent.
+     * </p>
      *
-     * <p>For example, for the feature chain "part1.port1" where "port1" is not directly owned by "part1", this method will only select target/source node displayed nested a "part1" node or at its
-     * border.
+     * <p>
+     * For example, for the feature chain "part1.port1" where "port1" is not directly owned by "part1", this method will
+     * only select target/source node displayed nested a "part1" node or at its border.
      * </p>
      *
      * @param self
-     *         the connection usage
+     *            the {@link Connector}
      * @param sourceNode
-     *         the graphical source element
+     *            the graphical source element
      * @param targetNode
-     *         the graphical target element
+     *            the graphical target element
      * @param cacheRendering
-     *         the current DiagramRenderingCache
+     *            the current DiagramRenderingCache
      * @param editingContext
-     *         the editing context
+     *            the editing context
      * @return {@code true} if the edge should be rendered
      */
-    public boolean shouldRenderConnectionUsageEdge(ConnectionUsage self, org.eclipse.sirius.components.representations.Element sourceNode,
+    public boolean shouldRenderConnectorEdge(Connector self, org.eclipse.sirius.components.representations.Element sourceNode,
             org.eclipse.sirius.components.representations.Element targetNode, DiagramRenderingCache cacheRendering, IEditingContext editingContext) {
         Feature sourceFeature = self.getSourceFeature();
         if (this.isValidConnectionEnd(sourceFeature, sourceNode, cacheRendering, editingContext)) {

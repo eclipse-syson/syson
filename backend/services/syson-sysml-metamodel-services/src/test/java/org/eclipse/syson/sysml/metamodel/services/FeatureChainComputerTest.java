@@ -108,7 +108,7 @@ public class FeatureChainComputerTest {
     }
 
     private Optional<List<Feature>> computeShortestPath(Type source, Feature target) {
-        return new FeatureChainComputer().computeShortestPath(source, target);
+        return new FeatureChainComputer().computeShortestPath(source, target, null);
     }
 
     private List<List<Feature>> computeAllPath(Type source, Feature target) {

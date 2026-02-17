@@ -31,6 +31,7 @@ import org.eclipse.syson.diagram.common.view.DescriptionFinder;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -85,22 +86,22 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
     public EdgeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getConnectionUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .name(this.getName())
-                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
-                .sourceExpression("aql:self.getSource()")
-                .style(this.createEdgeStyle())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression("aql:self.getTarget()")
-                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectionUsageEdge)
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectorEdge)
                         .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
                                 org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
                                 org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
                                 IEditingContext.EDITING_CONTEXT)
                         // Needs this to avoid instantiation on inheriting concept
-                        + "and self.oclIsTypeOf(sysml::ConnectionUsage)")
+                        + "and self.oclIsTypeOf(" + domainType + ")")
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
+                .sourceExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorSource).aqlSelf())
+                .style(this.createEdgeStyle())
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorTarget).aqlSelf())
                 .build();
     }
 

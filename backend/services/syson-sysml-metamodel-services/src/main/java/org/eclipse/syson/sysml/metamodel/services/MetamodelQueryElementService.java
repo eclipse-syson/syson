@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.eclipse.syson.sysml.ActorMembership;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
@@ -34,7 +34,7 @@ import org.eclipse.syson.sysml.SubjectMembership;
 public class MetamodelQueryElementService {
 
     /**
-     * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
+     * Return {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
      * <p>
      * An actor (typically of a UseCase or Requirement) is a kind of parameter stored in an {@link ActorMembership}.
      * </p>
@@ -48,7 +48,7 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Returns {@code true} if the provided {@code element} is a subject, {@code false} otherwise.
+     * Return {@code true} if the provided {@code element} is a subject, {@code false} otherwise.
      * <p>
      * A subject (typically of a UseCase or Requirement) is a kind of parameter stored in an {@link SubjectMembership}.
      * </p>
@@ -62,28 +62,14 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Gets the target of a {@link ConnectorAsUsage}.
+     * Get the source of a {@link Connector}.
      *
      * @param connector
-     *         a {@link ConnectorAsUsage}
-     * @return a list of targets
-     */
-    public List<Feature> getTarget(ConnectorAsUsage connector) {
-        return connector.getTargetFeature().stream()
-                .filter(Objects::nonNull)
-                .map(Feature::getFeatureTarget)
-                .toList();
-    }
-
-    /**
-     * Gets the source of a {@link ConnectorAsUsage}.
-     *
-     * @param connectorAsUsage
-     *         a {@link ConnectorAsUsage}
+     *            a {@link Connector}
      * @return the source feature
      */
-    public Feature getSource(ConnectorAsUsage connectorAsUsage) {
-        Feature sourceFeature = connectorAsUsage.getSourceFeature();
+    public Feature getConnectorSource(Connector connector) {
+        Feature sourceFeature = connector.getSourceFeature();
         if (sourceFeature != null) {
             return sourceFeature.getFeatureTarget();
         }
@@ -91,12 +77,26 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Gets the closest common owner for both given {@link Element}.
+     * Get the targets of a {@link Connector}.
+     *
+     * @param connector
+     *            a {@link Connector}
+     * @return a list of targets
+     */
+    public List<Feature> getConnectorTarget(Connector connector) {
+        return connector.getTargetFeature().stream()
+                .filter(Objects::nonNull)
+                .map(Feature::getFeatureTarget)
+                .toList();
+    }
+
+    /**
+     * Get the closest common owner for both given {@link Element}.
      *
      * @param e1
-     *         an Element
+     *            an Element
      * @param e2
-     *         another Element
+     *            another Element
      * @return an optional common owning ancestor with the expected type
      */
     public <T extends Element> Optional<T> getCommonOwnerAncestor(Element e1, Element e2, Class<T> expectedType, Predicate<T> test) {
