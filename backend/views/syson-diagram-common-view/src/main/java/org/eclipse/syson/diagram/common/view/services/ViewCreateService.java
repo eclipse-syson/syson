@@ -1068,17 +1068,19 @@ public class ViewCreateService {
      */
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {
 
-        Type container = this.utilService.getConnectorContainer(source, target);
-        if (container == null) {
+        var connectorContainer = this.utilService.getConnectorContainer(source, target);
+        if (connectorContainer == null) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable Type to hold the new binding connector.", MessageLevel.WARNING));
             return null;
         }
 
-        BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
-        this.metamodelElementMutationService.addChildInParent(container, bindingConnectorAsUsage);
+        var bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
+        this.metamodelElementMutationService.addChildInParent(connectorContainer, bindingConnectorAsUsage);
         this.elementInitializer(bindingConnectorAsUsage);
 
-        this.metamodelElementMutationService.setConnectorEnds(bindingConnectorAsUsage, source, target, container);
+        Element sourceContainer = null;
+        Element targetContainer = null;
+        this.metamodelElementMutationService.setConnectorEnds(bindingConnectorAsUsage, source, target, sourceContainer, targetContainer, connectorContainer);
 
         return bindingConnectorAsUsage;
     }

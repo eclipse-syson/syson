@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.edges;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
@@ -33,7 +34,6 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -84,10 +84,17 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
     public EdgeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFlowUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .name(this.getName())
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService::shouldRenderConnectorEdge)
+                        .aqlSelf(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
+                                org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
+                                IEditingContext.EDITING_CONTEXT)
+                        // Needs this to avoid instantiation on inheriting concept
+                        + "and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression("aql:self.sourceOutputFeature.unwrapFeature()")
                 .style(this.createEdgeStyle())
@@ -138,12 +145,24 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectSource", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectSource).aql(
+                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
+                        AQLConstants.OTHER_END,
+                        IEditingContext.EDITING_CONTEXT,
+                        AQLConstants.DIAGRAM));
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTarget", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
+                .expression(ServiceMethod.of5(DiagramMutationAQLService::reconnectTarget).aql(
+                        AQLConstants.EDGE_SEMANTIC_ELEMENT,
+                        AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                        AQLConstants.OTHER_END,
+                        AQLConstants.RECONNECTION_TARGET_VIEW,
+                        IEditingContext.EDITING_CONTEXT,
+                        AQLConstants.DIAGRAM));
     }
 }

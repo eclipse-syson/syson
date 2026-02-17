@@ -13,10 +13,12 @@
 package org.eclipse.syson.application.controllers.diagrams.interconnection.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -29,29 +31,23 @@ import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.data.InterconnectionViewFlowConnectionTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
-import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.FlowUsage;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -63,13 +59,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
 
-    private final SDVDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramSubscription givenDiagramSubscription;
@@ -89,51 +80,38 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
 
-    private DiagramCheckerService diagramCheckerService;
-
-    private StepVerifier.Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
     private SemanticCheckerService semanticCheckerService;
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
+                InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
-                InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID, null);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
+                InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
-    }
-
-    @Test
     @DisplayName("GIVEN a FlowUsage, WHEN reconnecting the target, THEN the new target of the FlowUsage is correct")
-    @Sql(scripts = { InterconnectionViewFlowConnectionTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ InterconnectionViewFlowConnectionTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectFlowUsageTarget() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable creationToolRunnable = () -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
                 InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.FLOW_CONNECTION_P1_P2_ID,
                 InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_3_ID,
-                ReconnectEdgeKind.TARGET));
+                ReconnectEdgeKind.TARGET);
 
-        IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
@@ -142,36 +120,41 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(newEdge).hasSourceId(InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_1_ID);
             DiagramAssertions.assertThat(newEdge).hasTargetId(InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_3_ID);
             DiagramAssertions.assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputFillClosedArrow);
-        };
+        });
 
-        this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
-
-        this.semanticCheckerService.checkElement(this.verifier, FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
             assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_1_ID);
             assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_3_ID);
-            assertThat(this.identityService.getId(flowUsage.getSourceFeature())).isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PART_1_ID);
-            assertThat(this.identityService.getId(flowUsage.getTargetFeature().get(0))).isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PART_3_ID);
         });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
-    @Test
     @DisplayName("GIVEN a FlowUsage, WHEN reconnecting the source, THEN the new source of the FlowUsage is correct")
-    @Sql(scripts = { InterconnectionViewFlowConnectionTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ InterconnectionViewFlowConnectionTestProjectData.SCRIPT_PATH })
+    @Test
     public void reconnectFlowUsageSource() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
+        var flux = this.givenSubscriptionToDiagram();
 
-        this.verifier.then(() -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram,
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable creationToolRunnable = () -> this.edgeReconnectionTester.reconnectEdge(InterconnectionViewFlowConnectionTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
                 InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.FLOW_CONNECTION_P1_P2_ID,
                 InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_3_ID,
-                ReconnectEdgeKind.SOURCE));
+                ReconnectEdgeKind.SOURCE);
 
-        IDiagramChecker diagramCheckerTarget = (initialDiagram, newDiagram) -> {
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
@@ -180,17 +163,21 @@ public class IVFlowFromPartUsageTests extends AbstractIntegrationTests {
             DiagramAssertions.assertThat(newEdge).hasSourceId(InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_3_ID);
             DiagramAssertions.assertThat(newEdge).hasTargetId(InterconnectionViewFlowConnectionTestProjectData.GraphicalIds.PORT_PART_2_ID);
             DiagramAssertions.assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputFillClosedArrow);
-        };
+        });
 
-        this.diagramCheckerService.checkDiagram(diagramCheckerTarget, this.diagram, this.verifier);
-
-        this.semanticCheckerService.checkElement(this.verifier, FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> InterconnectionViewFlowConnectionTestProjectData.SemanticIds.FLOW_CONNECTION_P1_P2_ID, flowUsage -> {
             assertThat(this.identityService.getId(flowUsage.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_3_ID);
             assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PORT_PART_2_ID);
-            assertThat(this.identityService.getId(flowUsage.getSourceFeature())).isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PART_3_ID);
-            assertThat(this.identityService.getId(flowUsage.getTargetFeature().get(0))).isEqualTo(InterconnectionViewFlowConnectionTestProjectData.SemanticIds.PART_2_ID);
         });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 }

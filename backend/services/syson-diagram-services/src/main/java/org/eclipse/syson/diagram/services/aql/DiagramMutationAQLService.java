@@ -27,7 +27,7 @@ import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FlowUsage;
@@ -226,19 +226,19 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationElementService#reconnectSource(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     * {@link DiagramMutationElementService#reconnectSource(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
      */
-    public ConnectorAsUsage reconnectSource(ConnectorAsUsage bind, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
+    public Connector reconnectSource(Connector connector, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
             Diagram diagram) {
-        return this.diagramMutationElementService.reconnectSource(bind, newSource, newSourceNode, targetNode, editingContext, diagram);
+        return this.diagramMutationElementService.reconnectSource(connector, newSource, newSourceNode, targetNode, editingContext, diagram);
     }
 
     /**
-     * {@link DiagramMutationElementService#reconnectTarget(ConnectorAsUsage, Feature, Node, Node, IEditingContext, Diagram)}.
+     * {@link DiagramMutationElementService#reconnectTarget(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
      */
-    public ConnectorAsUsage reconnectTarget(ConnectorAsUsage bind, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
+    public Connector reconnectTarget(Connector connector, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
             Diagram diagram) {
-        return this.diagramMutationElementService.reconnectTarget(bind, newTarget, sourceNode, newTargetNode, editingContext, diagram);
+        return this.diagramMutationElementService.reconnectTarget(connector, newTarget, sourceNode, newTargetNode, editingContext, diagram);
     }
 
 

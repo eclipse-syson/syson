@@ -241,10 +241,11 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public EList<Feature> getConnectorEnd() {
-        List<Element> endFeatures = this.getOwnedRelationship().stream()
+        List<Feature> endFeatures = this.getOwnedRelationship().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+                .map(EndFeatureMembership::getOwnedMemberFeature)
+                .filter(Feature::isIsEnd)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), endFeatures.size(), endFeatures.toArray());
     }
@@ -291,6 +292,7 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 .map(Feature::getOwnedReferenceSubsetting)
                 .filter(Objects::nonNull)
                 .map(ReferenceSubsetting::getSubsettedFeature)
+                .filter(Objects::nonNull)
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_RelatedFeature(), data.size(), data.toArray());
     }

@@ -39,7 +39,7 @@ import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorAsUsageCheckerBuilder;
+import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorCheckerBuilder;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.data.GeneralViewBindingConnectorProjectData;
@@ -320,8 +320,8 @@ public class GVBindingConnectorAsUsageTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private ConnectorAsUsageCheckerBuilder<BindingConnectorAsUsage> createCheckerBuilder() {
-        return new ConnectorAsUsageCheckerBuilder<>(this.identityService, BindingConnectorAsUsage.class, this.semanticCheckerService);
+    private ConnectorCheckerBuilder<BindingConnectorAsUsage> createCheckerBuilder() {
+        return new ConnectorCheckerBuilder<>(this.identityService, BindingConnectorAsUsage.class, this.semanticCheckerService);
     }
 
     private Consumer<Object> assertReconnectThat(String expectedSourceGraplicalId, String expectedTargetGraplicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
