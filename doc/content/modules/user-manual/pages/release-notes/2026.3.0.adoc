@@ -65,6 +65,14 @@ part system {
 
 ** `Req Id` and `Declared Short Name` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.
 
+* In _Validation_ view:
+
+** Improve the computation to _featuringType_ on `Feature` to avoid getting the following validation error:
++
+```
+If a Feature is owned via a FeatureMembership, then it must have a featuringType for which the operation isFeaturingType returns true. (checkFeatureFeatureMembershipTypeFeaturing constraint on Feature is not respected for Test::MyItemDef::myFeature)
+````
+
 == Improvements
 
 * In diagrams:

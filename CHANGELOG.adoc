@@ -39,6 +39,7 @@ The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that r
 For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/1981[#1981] [export] Fix an error during textual export where `Expose` elements with apostrophes in their name were not properly escaped.
 - https://github.com/eclipse-syson/syson/issues/1983[#1983] [metamodel] `reqId` and `declaredShortName` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.
+- https://github.com/eclipse-syson/syson/issues/1998[#1998] Missing implicit TypeFeaturing.
 
 === Improvements
 
