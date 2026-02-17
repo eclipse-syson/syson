@@ -158,7 +158,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                 .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                 .hasTargetObjectLabel("part1")
-                .hasCompartmentCount(11)
+                .hasTotalCompartmentCount(11)
                 .check(diagram.get(), newDiagram);
         });
 
@@ -216,7 +216,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
                     .hasTargetObjectLabel("RequirementUsage")
-                    .hasCompartmentCount(8)
+                    .hasTotalCompartmentCount(8)
                     .check(diagram.get(), newDiagram);
         });
 
@@ -280,7 +280,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
                     .hasTargetObjectLabel("part1")
-                    .hasCompartmentCount(11)
+                    .hasTotalCompartmentCount(11)
                     .check(diagram.get(), newDiagram);
         });
 
