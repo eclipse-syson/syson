@@ -54,6 +54,7 @@ public class SatisfyNodeToolProvider implements INodeToolProvider {
         var selectionDialog = this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Requirement:")
+                .optional(false)
                 .build();
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()

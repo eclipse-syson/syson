@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,7 @@ public class SysMLNoteNodeStyleDescriptionItemProvider
             this.addBorderRadiusPropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
             this.addBackgroundPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -144,6 +145,25 @@ public class SysMLNoteNodeStyleDescriptionItemProvider
                 this.getString("_UI_BorderStyle_borderLineStyle_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
                 DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_NodeStyleDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_description_feature", "_UI_NodeStyleDescription_type"),
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__DESCRIPTION,
                 true,
                 false,
                 false,
@@ -238,6 +258,7 @@ public class SysMLNoteNodeStyleDescriptionItemProvider
             case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
+            case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:

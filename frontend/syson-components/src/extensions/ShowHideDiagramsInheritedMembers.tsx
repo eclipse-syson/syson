@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,11 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
 
+import { DiagramToolbarActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLErrorPayload,
   GQLSetShowDiagramsInheritedMembersPayload,
@@ -47,7 +47,7 @@ const isErrorPayload = (payload: GQLSetShowDiagramsInheritedMembersPayload): pay
 const showTooltip: string = 'Hide Inherited Members in Diagrams';
 const hideTooltip: string = 'Show Inherited Members in Diagrams';
 
-export const ShowHideDiagramsInheritedMembers = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
+export const ShowHideDiagramsInheritedMembers = ({ editingContextId, diagramId }: DiagramToolbarActionProps) => {
   const [state, setState] = useState<ShowHideDiagramsInheritedMembersState>({
     checked: null,
     tooltip: 'Show/Hide Inherited Members in Diagrams',

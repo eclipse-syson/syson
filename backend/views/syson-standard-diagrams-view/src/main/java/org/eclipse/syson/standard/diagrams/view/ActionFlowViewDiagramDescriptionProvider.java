@@ -52,6 +52,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IViewDescriptio
                         .preconditionExpression(ServiceMethod.of0(ActionFlowViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
                         .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
+                        .toolbar(new DiagramBuilders().newDiagramToolbar().build())
                         .build();
             }
         };

@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
@@ -95,15 +96,17 @@ public class SysmlImportExportChecker {
         Objects.requireNonNull(this.textToImport);
         Objects.requireNonNull(this.expectedResult);
         try (var inputStream = new ByteArrayInputStream(this.textToImport.getBytes())) {
-            Optional<Resource> optLoadedResources = this.sysmlLoader.getResource(inputStream, this.createFakeURI(UUID.randomUUID()), this.editingContext.getDomain().getResourceSet(),
+            Optional<ExternalResourceLoadingResult> optExternalResourceLoadingResult = this.sysmlLoader.getResource(inputStream, this.createFakeURI(UUID.randomUUID()),
+                    this.editingContext.getDomain().getResourceSet(),
                     false);
 
-            assertTrue(optLoadedResources.isPresent());
+            assertTrue(optExternalResourceLoadingResult.isPresent());
+            ExternalResourceLoadingResult externalResourceLoadingResult = optExternalResourceLoadingResult.get();
             if (this.loadedModelModifier != null) {
                 // Modify loaded model
-                this.loadedModelModifier.accept(optLoadedResources.get());
+                this.loadedModelModifier.accept(externalResourceLoadingResult.resource());
             }
-            Optional<byte[]> bytes = this.exporter.getBytes(optLoadedResources.get(), MediaType.TEXT_HTML.toString());
+            Optional<byte[]> bytes = this.exporter.getBytes(externalResourceLoadingResult.resource(), MediaType.TEXT_HTML.toString());
             assertTrue(bytes.isPresent());
 
             String content = new String(bytes.get());

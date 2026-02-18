@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
-  diagramPanelActionExtensionPoint,
+  diagramToolbarActionExtensionPoint,
   EdgeAppearanceSection,
   EdgeData,
   ImageNodeAppearanceSection,
@@ -90,8 +90,8 @@ sysONExtensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   data: [apolloClientOptionsConfigurer],
 });
 
-sysONExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
-  identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_CustomPanelEntriesMenu`,
+sysONExtensionRegistry.addComponent(diagramToolbarActionExtensionPoint, {
+  identifier: `syson_${diagramToolbarActionExtensionPoint.identifier}_CustomToolbarEntriesMenu`,
   Component: SysONDiagramPanelMenu,
 });
 
