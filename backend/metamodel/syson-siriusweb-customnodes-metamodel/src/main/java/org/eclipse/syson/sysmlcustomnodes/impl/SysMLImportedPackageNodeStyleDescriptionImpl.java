@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescripti
  * <em>Border Line Style</em>}</li>
  * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLImportedPackageNodeStyleDescriptionImpl#getChildrenLayoutStrategy
  * <em>Children Layout Strategy</em>}</li>
+ * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLImportedPackageNodeStyleDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLImportedPackageNodeStyleDescriptionImpl#getBackground
  * <em>Background</em>}</li>
  * </ul>
@@ -127,6 +129,26 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
      * @ordered
      */
     protected LayoutStrategyDescription childrenLayoutStrategy;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
@@ -326,6 +348,29 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public UserColor getBackground() {
         if (this.background != null && this.background.eIsProxy()) {
             InternalEObject oldBackground = (InternalEObject) this.background;
@@ -394,6 +439,8 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
                 return this.getBorderLineStyle();
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.getChildrenLayoutStrategy();
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 if (resolve)
                     return this.getBackground();
@@ -425,6 +472,9 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
                 return;
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
+                return;
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
@@ -455,6 +505,9 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
                 return;
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
@@ -480,6 +533,8 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.childrenLayoutStrategy != null;
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
             case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 return this.background != null;
         }
@@ -503,6 +558,8 @@ public class SysMLImportedPackageNodeStyleDescriptionImpl extends MinimalEObject
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }

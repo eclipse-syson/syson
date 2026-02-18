@@ -110,7 +110,8 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
 
         var selectExistingStateUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Action to perform:");
+                .selectionMessage("Select an existing Action to perform:")
+                .optional(false);
 
         var createMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of0(ModelMutationAQLService::createMembership).aqlSelf())

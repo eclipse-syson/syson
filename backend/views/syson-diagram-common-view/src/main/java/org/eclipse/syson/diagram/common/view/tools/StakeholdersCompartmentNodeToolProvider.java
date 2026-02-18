@@ -47,6 +47,7 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Part as stakeholder:")
+                .optional(false)
                 .build();
     }
 

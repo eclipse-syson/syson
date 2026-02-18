@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramToolbarActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
@@ -47,7 +47,7 @@ const isErrorPayload = (payload: GQLSetShowDiagramsIconsPayload): payload is GQL
 const showTooltip: string = 'Hide Icons in Diagrams';
 const hideTooltip: string = 'Show Icons in Diagrams';
 
-export const ShowHideDiagramsIcons = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
+export const ShowHideDiagramsIcons = ({ editingContextId, diagramId }: DiagramToolbarActionProps) => {
   const [state, setState] = useState<ShowHideDiagramsIconsState>({
     checked: null,
     tooltip: 'Show/Hide Icons in Diagrams',

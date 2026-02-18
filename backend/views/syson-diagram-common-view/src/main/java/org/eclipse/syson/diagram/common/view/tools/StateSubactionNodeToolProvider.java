@@ -100,7 +100,8 @@ public class StateSubactionNodeToolProvider implements INodeToolProvider {
 
         var selectExistingActionUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Action to associate to the " + StringUtils.capitalize(this.kind.getName()) + " action you want to create:");
+                .selectionMessage("Select an existing Action to associate to the " + StringUtils.capitalize(this.kind.getName()) + " action you want to create:")
+                .optional(false);
 
         return selectExistingActionUsage.build();
     }

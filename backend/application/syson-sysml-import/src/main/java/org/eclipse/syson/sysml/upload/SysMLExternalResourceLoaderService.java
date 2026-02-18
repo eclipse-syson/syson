@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,8 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.web.application.document.services.LoadingReport;
+import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.SysmlToAst;
@@ -70,19 +72,16 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
+    public Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
         InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
-        ASTTransformer tranformer = new ASTTransformer();
-        Resource resource = tranformer.convertResource(astStream, resourceSet);
+        ASTTransformer transformer = new ASTTransformer();
+        Resource resource = transformer.convertResource(astStream, resourceSet);
         if (resource != null) {
             ElementUtil.setIsImported(resource, true);
             resourceSet.getResources().add(resource);
         }
-        // Need a way to be able to report some messages to the user see
-        // https://github.com/eclipse-sirius/sirius-web/issues/4163
-        // As a workaround log in the console
-        tranformer.logTransformationMessages();
-        return Optional.ofNullable(resource);
+        var loadingReport = new LoadingReport(transformer.logTransformationMessages());
+        var result = new ExternalResourceLoadingResult(resource, loadingReport);
+        return Optional.ofNullable(result);
     }
-
 }

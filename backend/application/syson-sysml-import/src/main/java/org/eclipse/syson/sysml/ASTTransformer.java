@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
@@ -430,19 +429,14 @@ public class ASTTransformer {
         }
     }
 
-    // Check after resolution of https://github.com/eclipse-syson/syson/issues/860 and
-    // https://github.com/eclipse-sirius/sirius-web/issues/4163 if this method is still required
-    public void logTransformationMessages() {
-        List<Message> messages = this.getTransformationMessages();
-        if (!messages.isEmpty()) {
-            String logMessage = messages.stream().map(this::toLogMessage).collect(joining("\n", "Following messages have been reported during conversion: \n", ""));
-            boolean isError = messages.stream().anyMatch(m -> m.level() == MessageLevel.WARNING || m.level() == MessageLevel.ERROR);
-            if (isError) {
-                this.logger.error(logMessage);
-            } else {
-                this.logger.info(logMessage);
-            }
+    public List<String> logTransformationMessages() {
+        List<String> messages = new ArrayList<>();
+        List<Message> transformationMessages = this.getTransformationMessages();
+        if (!transformationMessages.isEmpty()) {
+            String logMessage = transformationMessages.stream().map(this::toLogMessage).collect(joining("\n", "Following messages have been reported during conversion: \n", ""));
+            messages.add(logMessage);
         }
+        return messages;
     }
 
     private String toLogMessage(Message msg) {

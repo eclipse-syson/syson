@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 
@@ -51,13 +52,14 @@ public class SysMLv2SemanticImportChecker {
         UUID uuid = UUID.randomUUID();
 
         try (var inputStream = new ByteArrayInputStream(importedText.getBytes())) {
-            Optional<Resource> optLoadedResources = this.sysmlResourceLoader.getResource(inputStream, this.createFakeURI(uuid), this.editingContext.getDomain().getResourceSet(), false);
+            Optional<ExternalResourceLoadingResult> optExternalResourceLoadingResult = this.sysmlResourceLoader.getResource(inputStream, this.createFakeURI(uuid),
+                    this.editingContext.getDomain().getResourceSet(),
+                    false);
+            assertTrue(optExternalResourceLoadingResult.isPresent());
 
-            assertTrue(optLoadedResources.isPresent());
-
-            Resource resource = optLoadedResources.get();
+            ExternalResourceLoadingResult externalResourceLoadingResult = optExternalResourceLoadingResult.get();
             for (Consumer<Resource> checker : this.semanticCheckers) {
-                checker.accept(resource);
+                checker.accept(externalResourceLoadingResult.resource());
             }
         }
     }

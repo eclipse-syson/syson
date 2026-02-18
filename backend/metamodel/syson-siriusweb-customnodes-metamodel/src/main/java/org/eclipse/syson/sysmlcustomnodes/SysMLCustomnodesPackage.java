@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -114,6 +114,14 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DiagramPackage.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION = DiagramPackage.NODE_STYLE_DESCRIPTION__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -190,6 +198,14 @@ public interface SysMLCustomnodesPackage extends EPackage {
      * @ordered
      */
     int SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DiagramPackage.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__DESCRIPTION = DiagramPackage.NODE_STYLE_DESCRIPTION__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -271,6 +287,14 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DiagramPackage.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION = DiagramPackage.NODE_STYLE_DESCRIPTION__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -347,6 +371,14 @@ public interface SysMLCustomnodesPackage extends EPackage {
      * @ordered
      */
     int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DiagramPackage.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_VIEW_FRAME_NODE_STYLE_DESCRIPTION__DESCRIPTION = DiagramPackage.NODE_STYLE_DESCRIPTION__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->

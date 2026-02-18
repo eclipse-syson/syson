@@ -91,6 +91,7 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select a Package to import:")
+                .optional(false)
                 .build();
     }
 }

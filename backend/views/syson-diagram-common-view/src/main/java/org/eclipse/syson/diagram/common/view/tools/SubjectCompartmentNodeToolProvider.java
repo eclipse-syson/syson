@@ -44,6 +44,7 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Type as subject:")
+                .optional(false)
                 .build();
     }
 

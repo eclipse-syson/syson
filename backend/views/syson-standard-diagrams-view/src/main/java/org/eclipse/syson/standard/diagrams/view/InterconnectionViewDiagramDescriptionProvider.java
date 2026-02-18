@@ -52,6 +52,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IViewDescr
                         .preconditionExpression(ServiceMethod.of0(InterconnectionViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
                         .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
+                        .toolbar(new DiagramBuilders().newDiagramToolbar().build())
                         .build();
             }
         };

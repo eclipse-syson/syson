@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramToolbarActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
@@ -53,7 +53,7 @@ const hideTooltip: string = 'Show Inherited Members from Standard Libraries in D
 export const ShowHideDiagramsInheritedMembersFromStandardLibraries = ({
   editingContextId,
   diagramId,
-}: DiagramPanelActionProps) => {
+}: DiagramToolbarActionProps) => {
   const [state, setState] = useState<ShowHideDiagramsInheritedMembersFromStandardLibrariesState>({
     checked: null,
     tooltip: 'Show/Hide Inherited Members from Standard Libraries in Diagrams',

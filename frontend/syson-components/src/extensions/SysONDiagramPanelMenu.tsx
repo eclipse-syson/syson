@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramToolbarActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
@@ -34,8 +34,7 @@ const useMenuStyles = makeStyles()((_) => ({
   },
 }));
 
-export const SysONDiagramPanelMenu = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
-  //const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+export const SysONDiagramPanelMenu = ({ editingContextId, diagramId }: DiagramToolbarActionProps) => {
   const { classes } = useMenuStyles();
   const [open, setOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement | null>(null);
