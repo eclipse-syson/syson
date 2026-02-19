@@ -51,6 +51,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
@@ -757,6 +758,42 @@ public class DiagramMutationElementService {
                                     MessageLevel.WARNING));
                     return null;
                 });
+    }
+
+    /**
+     * Creates a {@link FlowUsage} inside a connection with a specific payload.
+     *
+     * @param parent
+     *            the parent connection.
+     * @param payloadType
+     *            the payload type.
+     * @return a new {@link FlowUsage}.
+     */
+    public FlowUsage createFlowUsageWithPayload(ConnectionUsage parent, Type payloadType) {
+        var connectionTypes = parent.getType();
+        if (connectionTypes.size() > 0 && connectionTypes.get(0).getOwnedEndFeature().size() >= 2) {
+            var connectionType = connectionTypes.get(0);
+            Feature source = connectionType.getOwnedEndFeature().get(0);
+            Feature target = connectionType.getOwnedEndFeature().get(1);
+            var flowUsage = this.metamodelMutationElementService.createFlowUsage(source, target, connectionType, connectionType, parent);
+            flowUsage.getOwnedRelationship().add(this.createPayloadFeatureMembership(payloadType));
+            return flowUsage;
+        } else {
+            return null;
+        }
+    }
+
+    private FeatureMembership createPayloadFeatureMembership(Type payloadType) {
+        var featureTyping = this.metamodelMutationElementService.initialize(SysmlFactory.eINSTANCE.createFeatureTyping());
+        featureTyping.setType(payloadType);
+
+        var payloadFeature = this.metamodelMutationElementService.initialize(SysmlFactory.eINSTANCE.createPayloadFeature());
+        payloadFeature.getOwnedRelationship().add(featureTyping);
+
+        var payloadMembership = this.metamodelMutationElementService.initialize(SysmlFactory.eINSTANCE.createFeatureMembership());
+        payloadMembership.getOwnedRelatedElement().add(payloadFeature);
+
+        return payloadMembership;
     }
 
     /**

@@ -120,6 +120,9 @@ If a Feature is owned via a FeatureMembership, then it must have a featuringType
 This tool allows to create a `SatisfyRequirementUsage` based on the `RequirementUsage` selected during the tool creation.
 ** Add _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
 This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and `RequirementUsage` selected during the tool creation.
+** Add a _New Flow_ tool on `ConnectionUsage` graphical edges.
+The tool allows to create and setup a `FlowUsage` with a `PayloadFeature` selected  during the tool creation.
+The tool is only available on `ConnectionUsage` graphical edges which are typed.
 ** Add the _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
 ** Newly created `AllocationDefinition` and `ConnectionDefinition` graphical nodes now have two initial _connection ends_, named _source_ and _target_.
 Additional ends can be created using the _New end_ graphical node tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).

@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
@@ -107,6 +108,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryLabelService#getConnectionUsageLabel(ConnectionUsage)}.
+     */
+    public String getConnectionUsageLabel(ConnectionUsage element) {
+        return this.diagramQueryLabelService.getConnectionUsageLabel(element);
+    }
+
+    /**
      * {@link DiagramQueryLabelService#getInitialDirectEditListItemLabel(Documentation)}.
      * {@link DiagramQueryLabelService#getInitialDirectEditListItemLabel(Comment)}.
      * {@link DiagramQueryLabelService#getInitialDirectEditListItemLabel(Usage)}.
@@ -160,11 +168,17 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     *
      * {@link DiagramQueryElementService#shouldRenderConnectorEdge(Connector, org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache, IEditingContext)}.
      */
     public boolean shouldRenderConnectorEdge(Connector connector, org.eclipse.sirius.components.representations.Element sourceNode,
             org.eclipse.sirius.components.representations.Element targetNode, DiagramRenderingCache cache, IEditingContext editingContext) {
         return this.diagramQueryElementService.shouldRenderConnectorEdge(connector, sourceNode, targetNode, cache, editingContext);
+    }
+
+    /**
+     * {@link DiagramQueryElementService#canCreateFlowUsage(ConnectionUsage)}.
+     */
+    public boolean canCreateFlowUsage(ConnectionUsage connection) {
+        return this.diagramQueryElementService.canCreateFlowUsage(connection);
     }
 }

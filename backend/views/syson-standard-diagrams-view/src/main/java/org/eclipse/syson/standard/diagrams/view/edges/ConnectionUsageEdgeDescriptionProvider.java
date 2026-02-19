@@ -23,12 +23,15 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.DescriptionFinder;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.FlowNodeToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
@@ -86,7 +89,7 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
     public EdgeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getConnectionUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
-                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
+                .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getConnectionUsageLabel).aqlSelf())
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
                 .name(this.getName())
@@ -129,6 +132,17 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                         IEditingContext.EDITING_CONTEXT,
                         AQLConstants.DIAGRAM
                 ));
+    }
+
+    @Override
+    protected List<EdgeToolSection> createEdgeToolSections(IViewDiagramElementFinder cache) {
+        var edgeToolSections = super.createEdgeToolSections(cache);
+        var structureToolSection = this.diagramBuilderHelper.newEdgeToolSection()
+                .name(ToolConstants.BEHAVIOR)
+                .nodeTools(new FlowNodeToolProvider().create(cache))
+                .build();
+        edgeToolSections.add(structureToolSection);
+        return edgeToolSections;
     }
 
     private EdgeStyle createEdgeStyle() {

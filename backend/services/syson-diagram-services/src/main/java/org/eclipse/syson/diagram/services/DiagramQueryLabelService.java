@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.services;
 import static java.util.stream.Collectors.joining;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 
 import org.eclipse.emf.common.util.EList;
@@ -26,6 +27,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
@@ -36,6 +38,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OccurrenceUsage;
@@ -432,7 +435,6 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
         return textualRepresentation.getBody();
     }
 
-
     /**
      * Return the label of the prefix part of the given {@link Usage}.
      *
@@ -511,6 +513,27 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
         label.append(this.getIdentificationLabel(element));
         label.append(this.getTypingLabel(element));
         return label.toString();
+    }
+
+    /**
+     * Returns the label to display for a {@link ConnectionUsage} graphical edge. In addition to the usual edge label,
+     * if the connection has an owned {@link FlowUsage}, then a suffix is added with a marker and the flow's name (or
+     * "Flow") as there is otherwise no visual representation that such a flow is present.
+     *
+     * @param element
+     *            the {@link ConnectionUsage}.
+     * @return the edge label.
+     */
+    public String getConnectionUsageLabel(ConnectionUsage element) {
+        String defaultLabel = this.getEdgeLabel(element);
+        Optional<FlowUsage> optionalFlowUsage = element.getOwnedFeature().stream()
+                .filter(FlowUsage.class::isInstance)
+                .map(FlowUsage.class::cast)
+                .findFirst();
+        if (optionalFlowUsage.isPresent()) {
+            defaultLabel = defaultLabel + " \u25b6 " + optionalFlowUsage.map(FlowUsage::getName).orElse("Flow");
+        }
+        return defaultLabel;
     }
 
     /**

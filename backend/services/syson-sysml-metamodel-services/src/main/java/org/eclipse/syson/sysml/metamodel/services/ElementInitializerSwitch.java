@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FlowEnd;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.Namespace;
@@ -343,6 +344,13 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         var generalViewViewDef = this.elementUtil.findByNameAndType(object, "StandardViewDefinitions::GeneralView", ViewDefinition.class);
         featureTyping.setType(generalViewViewDef);
         featureTyping.setTypedFeature(object);
+        return object;
+    }
+
+    @Override
+    public Element caseFlowEnd(FlowEnd object) {
+        this.caseFeature(object);
+        object.setIsEnd(true);
         return object;
     }
 
