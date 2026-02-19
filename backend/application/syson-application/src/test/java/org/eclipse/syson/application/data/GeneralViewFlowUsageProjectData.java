@@ -13,34 +13,33 @@
 package org.eclipse.syson.application.data;
 
 /**
- * Ids for project "GeneralView-PartUsage-redefinition".
+ * Ids for project "GeneralView-FlowUsage".
  *
  * @author pcdavid
  */
-public class GeneralViewPartUsageRedefinitionProjectData {
+public class GeneralViewFlowUsageProjectData {
+    public static final String EDITING_CONTEXT_ID = "4b2c5775-0728-4b12-a520-89a8f2b90041";
 
-    public static final String EDITING_CONTEXT_ID = "d84a3d30-a8c8-47a2-a278-f6212169b959";
-
-    public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-PartUsage-redefinition.sql";
+    public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-FlowUsage.sql";
 
     /**
      * Ids of the graphical elements elements.
      */
     public static final class GraphicalIds {
-        public static final String DIAGRAM_ID = "72cccffa-81b6-4ed6-bc45-8b095440f11d";
+        public static final String DIAGRAM_ID = "2a1b62cf-36ea-41d2-8433-8ff781b3f4e5";
 
-        public static final String B_X_NODE_ID = "efb2c50e-53c9-3f66-97f2-298c13666cb7";
-
-        public static final String Y_X_NODE_ID = "a32582de-926a-3f6c-8df3-72908e714121";
+        public static final String CONNECTION_EDGE_ID = "7f3367d5-a200-339b-820a-2408e5b82c84";
     }
 
     /**
      * Ids of the semantic elements.
      */
     public static final class SemanticIds {
-        public static final String B_X_ID = "d43d7901-779e-4058-951a-0a0ad6e25733";
+        public static final String CONNECT_ID = "1604e1d8-1e30-44fb-a147-9f50f660f803";
 
-        public static final String Y_X_ID = "aeee4482-d95c-44d8-900c-36463eca802a";
+        public static final String HDMI_CABLE_ID = "1df3f0e9-7d6d-4dd6-93d9-206129fd793f";
+
+        public static final String VIDEO_SIGNAL_ID = "d9b2dd49-4bae-44a7-8137-73bcaf0a2d5e";
+
     }
-
 }

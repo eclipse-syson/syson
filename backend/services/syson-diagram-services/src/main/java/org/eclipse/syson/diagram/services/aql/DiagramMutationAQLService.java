@@ -35,6 +35,7 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 
@@ -286,6 +287,13 @@ public class DiagramMutationAQLService {
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
             DiagramContext diagramContext) {
         return this.diagramMutationElementService.createBindingConnectorAsUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createFlowUsageWithPayload(ConnectionUsage, Type)}.
+     */
+    public FlowUsage createFlowUsageWithPayload(ConnectionUsage parent, Type payloadType) {
+        return this.diagramMutationElementService.createFlowUsageWithPayload(parent, payloadType);
     }
 
 }

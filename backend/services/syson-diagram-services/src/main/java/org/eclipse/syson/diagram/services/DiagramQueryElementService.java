@@ -32,9 +32,12 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.model.services.ModelQueryElementService;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
@@ -379,6 +382,20 @@ public class DiagramQueryElementService {
      */
     public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
         return this.diagramQueryService.findNodeById(diagram, nodeId);
+    }
+
+    /**
+     * Determines whether a {@link FlowUsage flow} can be created <em>inside</em> a given {@link ConnectionUsage
+     * connection}. It is only possible to setup such a flow correctly if the connection has a {@link FeatureTyping
+     * type} with source and target ends, so we do not propose the tool at all if that is not the case.
+     *
+     * @param connection
+     *            the connection on which the tool should or should not be proposed.
+     * @return <code>true</code> if the tool can be applied correctly.
+     */
+    public boolean canCreateFlowUsage(ConnectionUsage connection) {
+        var connectionTypes = connection.getType();
+        return connectionTypes.size() > 0 && connectionTypes.get(0).getOwnedEndFeature().size() >= 2;
     }
 
 }

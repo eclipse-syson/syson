@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -152,7 +153,8 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
             edgeBuilder.centerLabelEditTool(centerLabelEditTool);
         }
 
-        edgeBuilder.toolSections(this.defaultToolsFactory.createDefaultHideRevealEdgeToolSection());
+        List<EdgeToolSection> edgeToolSections = this.createEdgeToolSections(cache);
+        edgeBuilder.toolSections(edgeToolSections.toArray(EdgeToolSection[]::new));
 
         var toolsWithoutSection = new ArrayList<NodeTool>();
         toolsWithoutSection.addAll(this.getToolsWithoutSection(cache));
@@ -160,6 +162,12 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
         edgeBuilder.nodeTools(toolsWithoutSection.toArray(NodeTool[]::new));
 
         return edgeBuilder.build();
+    }
+
+    protected List<EdgeToolSection> createEdgeToolSections(IViewDiagramElementFinder cache) {
+        var edgeToolSections = new ArrayList<EdgeToolSection>();
+        edgeToolSections.add(this.defaultToolsFactory.createDefaultHideRevealEdgeToolSection());
+        return edgeToolSections;
     }
 
     private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
