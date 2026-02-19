@@ -1,6 +1,6 @@
 {
   "name": "syson-integration-tests-cypress",
-  "version": "2026.1.2",
+  "version": "2026.1.3",
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {
