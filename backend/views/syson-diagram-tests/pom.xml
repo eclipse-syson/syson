@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-diagram-tests</artifactId>
-	<version>2026.1.2</version>
+	<version>2026.1.3</version>
 	<name>syson-diagram-tests</name>
 	<description>SysON Diagram Tests</description>
 
@@ -97,17 +97,17 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
