@@ -23,6 +23,16 @@ The following methods have been added:
 - https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
 The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that require Elasticsearch should extend `AbstractIntegrationTestsWithElasticsearch`.
 
+- [validation] The following classes have been renamed, and some of them reworked:
+
+** `org.eclipse.syson.sysml.validation.SysMLv2ValidationRules`: turned into enumeration `org.eclipse.syson.sysml.validation.rules.SysMLValidationRule`.
+** `org.eclipse.syson.sysml.validation.SysMLv2ValidationService`: renamed into `org.eclipse.syson.sysml.validation.SysONSysMLValidationService`.
+** `org.eclipse.syson.sysml.validation.SysMLv2Validator`: renamed into `org.eclipse.syson.sysml.validation.SysMLValidator`.
+** `org.eclipse.syson.sysml.validation.ValidationRule`: renamed into `org.eclipse.syson.sysml.validation.rules.ValidationRule`, extracted its methods into interface `org.eclipse.syson.sysml.validation.rules.api.ISysMLValidationRule` and added `int getSeverity()` to represent the severity of the rule.
+** `org.eclipse.syson.sysml.validation.SysONQueryServices`: renamed into `org.eclipse.syson.sysml.validation.rules.SysMLValidationRuleQueryServices`.
+** `org.eclipse.syson.sysml.validation.SysMLv2ValidatorConfiguration`: renamed into `org.eclipse.syson.sysml.validation.SysMLValidatorRegistrationConfiguration` and now expects an injected `org.eclipse.syson.sysml.validation.rules.api.ISysMLValidationRulesProvider`, for which SysON provides default implementation `org.eclipse.syson.sysml.validation.rules.SysONValidationRulesProvider`.
+
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.3]
@@ -88,6 +98,16 @@ Instead SysON will now use the inherited elements without redefining them first,
 - https://github.com/eclipse-syson/syson/issues/1994[1994] [syson] Add support for excluding libraries in the _Search_ view.
 The _Search in libraries_ toggle in the _Search_ view allows to include elements from user and standard libraries in the search.
 This toggle is de-activated by default.
+- https://github.com/eclipse-syson/syson/issues/2011[#2011] [validation] Improve SysML validation to be more modular:
+Add interface `ISysMLValidationRulesProvider` in charge of providing the validation rules to execute on SysML models.
+The default implementation, `SysONValidationRulesProvider` always provides all validation rules from the SysML specification.
+Downstream applications can override this to choose (possibly dynamically) which rules get executed.
+Add interface `ISysMLValidationRule` for the validation rules supported by our validation service, so downstream applications can easily execute their custom rules without having to implement their own service.
+The SysML validation rules from the specification have been turned into literals of enumeration `SysMLValidationRule` that implements this interface.
+Add a few simple unit tests to help maintain this enumeration.
+Add possibility for validation rules to specify their severity ; the SysML rules from the specification remain as WARNINGs for now.
+Tweak the diagnostic messages to help users understand where the erroneous element is in their editing context.
+Make sure diagnostics are sorted according to their validated element and its containing document.
 
 === New features
 

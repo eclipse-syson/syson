@@ -50,7 +50,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-metamodel-edit", 17.0),
   new ModuleCoverage("syson-sysml-metamodel-services", 92.0),
   new ModuleCoverage("syson-sysml-rest-api-services", 93.0),
-  new ModuleCoverage("syson-sysml-validation", 99.0),
+  new ModuleCoverage("syson-sysml-validation", 97.0),
   new ModuleCoverage("syson-table-requirements-view", 77.0),
   new ModuleCoverage("syson-table-services", 100.0),
   new ModuleCoverage("syson-tree-explorer-view", 88.0),
