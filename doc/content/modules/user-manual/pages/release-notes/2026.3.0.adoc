@@ -13,6 +13,10 @@ This feature is currently considered experimental.
 Try it out and give feedback by reporting bugs and suggesting new features.
 It's not recommended for production use.
 
+* Downtream applications can now easily choose which SysML validation rules to apply, by providing an implementation of `ISysMLValidationRulesProvider`.
+They can also add their own SysML-based validation rules by returning additional `ISysMLValidationRule` instances.
+
+
 == Bug fixes
 
 * In diagrams:
@@ -151,6 +155,12 @@ package root {
 
 ** `Req Id` property of `RequirementDefinition` is now visible in the _Core_ tab of the _Details_ view.
 
+* In validation:
+
+** In the _Validation_ view, the labels and order of the validation results have been modified to clarify in which document, and on which element, a rule is not respected.
+
+image::validation-view-labels-with-document.png[_Validation_ view with labels indicating containing document, width=40%,height=40%]
+
 * Miscellaneous:
 
 ** Add support for publishing representations with libraries.
@@ -159,6 +169,7 @@ Users can navigate to `/libraries/<library identifier>` to open a library and se
 ** Add support for excluding libraries in the _Search_ view.
 The _Search in libraries_ toggle in the _Search_ view allows to include elements from user and standard libraries in the search.
 This toggle is de-activated by default.
+
 
 == Technical details
 

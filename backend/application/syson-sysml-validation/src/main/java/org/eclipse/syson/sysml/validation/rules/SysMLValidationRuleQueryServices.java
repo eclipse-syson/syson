@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.sysml.validation;
+package org.eclipse.syson.sysml.validation.rules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.eclipse.syson.sysml.Element;
  *
  * @author arichard
  */
-public class SysONQueryServices {
+public class SysMLValidationRuleQueryServices {
 
     /**
      * Service allowing to replace the interval '..' operator of OCL, which does not exist in AQL.
