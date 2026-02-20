@@ -57,6 +57,7 @@ import org.eclipse.syson.direct.edit.grammars.DirectEditParser.MultiplicityExpre
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.NodeExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.NonuniqueMultiplicityExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.OrderedMultiplicityExpressionContext;
+import org.eclipse.syson.direct.edit.grammars.DirectEditParser.PortionKindPrefixExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ReferenceExpressionContext;
 import org.eclipse.syson.direct.edit.grammars.DirectEditParser.ShortNameContext;
@@ -91,9 +92,11 @@ import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
@@ -184,6 +187,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 new AttributeToDirectEditSwitch(newValue).doSwitch(this.element);
             }
         }
+        this.handleMissingPortionKindPrefixExpression(ctx);
         this.handleMissingAbstractPrefixExpression(ctx);
         this.handleMissingVariationPrefixExpression(ctx);
         this.handleMissingReferenceExpression(ctx);
@@ -254,6 +258,22 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         super.exitDirectionPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitPortionKindPrefixExpression(PortionKindPrefixExpressionContext ctx) {
+        if (this.element instanceof OccurrenceUsage occurrenceUsage) {
+            if (ctx != null) {
+                if ((LabelConstants.TIMESLICE + LabelConstants.SPACE).equals(ctx.getText())) {
+                    occurrenceUsage.setPortionKind(PortionKind.TIMESLICE);
+                } else if ((LabelConstants.SNAPSHOT + LabelConstants.SPACE).equals(ctx.getText())) {
+                    occurrenceUsage.setPortionKind(PortionKind.SNAPSHOT);
+                }
+            } else {
+                occurrenceUsage.unsetPortionKind();
+            }
+        }
+        super.exitPortionKindPrefixExpression(ctx);
     }
 
     @Override
@@ -1031,6 +1051,16 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixListItemExpression().directionPrefixExpression(0);
         if (this.element instanceof Usage usage && directionPrefixExpression == null) {
             usage.setDirection(null);
+        }
+    }
+
+    private void handleMissingPortionKindPrefixExpression(ParserRuleContext ctx) {
+        PortionKindPrefixExpressionContext portionKindPrefixExpressionContext = null;
+        if (ctx instanceof NodeExpressionContext nodeCtx) {
+            portionKindPrefixExpressionContext = nodeCtx.prefixNodeExpression().portionKindPrefixExpression(0);
+        }
+        if (this.element instanceof OccurrenceUsage occurrenceUsage && portionKindPrefixExpressionContext == null) {
+            occurrenceUsage.unsetPortionKind();
         }
     }
 

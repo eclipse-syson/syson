@@ -104,7 +104,8 @@ Additional ports can be created using the _New Port as end_ graphical node tool.
 They can be revealed if needed using the _Manage Visibility_ action on the graphical node.
 ** Rework the way _New Binding Connector As Usage (bind)_, _New Flow (flow)_ and _New Interface (interface)_ graphical edge tools works.
 Previously, when a binding/interface/flow graphical edge tool was executed, if it involves an inherited feature(s) (as source and/or target of the tool), then the inherited feature(s) were redefined first.
-Instead SysON will now use the inherited elements without redefining them first, as it is done by the _New Connection (connect)_  edge tool.
+Instead, SysON will now use the inherited elements without redefining them first, as it is done by the _New Connection (connect)_  edge tool.
+** Allow to edit the _timeslice_ and _snapshot_ properties of `OccurrenceUsage` graphical nodes (and all its subtypes such as `PartUsage`, `ItemUsage`, ...) with the direct edit.
 
 * In textual import/export:
 
