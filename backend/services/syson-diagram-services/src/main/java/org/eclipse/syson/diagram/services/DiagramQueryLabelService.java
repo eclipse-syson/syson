@@ -38,7 +38,9 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -366,14 +368,21 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     }
 
     /**
-     * Return the label of the prefix part of the given {@link Usage}.
+     * Return the label of the prefix part of the given {@link Element}.
      *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the prefix part of the given {@link Usage} if there is one, an empty string otherwise.
+     * @param element
+     *            the given {@link Element}.
+     * @return the label of the prefix part of the given {@link Element} if there is one, an empty string otherwise.
      */
     private String getBasicNamePrefix(Element element) {
         StringBuilder label = new StringBuilder();
+        if (element instanceof OccurrenceUsage occurrenceUsage && occurrenceUsage.isSetPortionKind()) {
+            if (occurrenceUsage.getPortionKind().equals(PortionKind.TIMESLICE)) {
+                label.append(LabelConstants.TIMESLICE + LabelConstants.SPACE);
+            } else if (occurrenceUsage.getPortionKind().equals(PortionKind.SNAPSHOT)) {
+                label.append(LabelConstants.SNAPSHOT + LabelConstants.SPACE);
+            }
+        }
         if (element instanceof Usage usage) {
             if (usage.isIsVariation()) {
                 label.append(LabelConstants.VARIATION + LabelConstants.SPACE);

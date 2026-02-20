@@ -1,7 +1,7 @@
 // Generated from DirectEdit.g4 by ANTLR 4.13.2
 
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrefixNodeExpression(DirectEditParser.PrefixNodeExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPortionKindExpression(DirectEditParser.PortionKindExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPortionKindExpression(DirectEditParser.PortionKindExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

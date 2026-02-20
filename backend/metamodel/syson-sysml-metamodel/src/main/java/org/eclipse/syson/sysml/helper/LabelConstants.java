@@ -83,6 +83,10 @@ public class LabelConstants {
 
     public static final String SUBSETTING = SysMLv2Keywords.SPECIALIZES_OPERATOR;
 
+    public static final String TIMESLICE = SysMLv2Keywords.TIMESLICE;
+
+    public static final String SNAPSHOT = SysMLv2Keywords.SNAPSHOT;
+
     public static final String VARIANT = SysMLv2Keywords.VARIANT;
 
     public static final String VARIATION = SysMLv2Keywords.VARIATION;
