@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +134,7 @@ public class DiagramMutationExposeService {
             this.handleUnsynchronizedElement(element, parentElement, editingContext, diagramContext, selectedNode, convertedNodes);
         } else {
             var viewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode);
-            if (viewUsage != null && !viewUsage.getExposedElement().contains(element)) {
+            if (viewUsage != null && !viewUsage.getExposedElement().contains(element) && !this.exposeItself(viewUsage, element, new HashSet<>())) {
                 var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
                 membershipExpose.setImportedMembership(element.getOwningMembership());
                 viewUsage.getOwnedRelationship().add(membershipExpose);
@@ -453,5 +454,40 @@ public class DiagramMutationExposeService {
             }
         }
         return isItemNotContainedByAction;
+    }
+
+    /**
+     * Check if the given {@link Element} is a {@link ViewUsage} and is exposed in the given {@link ViewUsage}, directly
+     * or indirectly (in other words expose in a ViewUsage exposed by this ViewUsage, recursively).
+     *
+     * @param viewUsage
+     *            the given {@link ViewUsage}
+     * @param element
+     *            the given {@link Element}
+     * @param alreadyVisited
+     *            a list of already visited {@link ViewUsage} to avoid infinite loops.
+     * @return <code>true</code> if the given {@link Element} is a {@link ViewUsage} and is exposed in the given
+     *         {@link ViewUsage} directly or indirectly.
+     */
+    private boolean exposeItself(ViewUsage viewUsage, Element element, Set<ViewUsage> alreadyVisited) {
+        boolean exposeItself = false;
+        if (element instanceof ViewUsage viewUsageToExpose && !alreadyVisited.contains(viewUsage)) {
+            var exposedElements = viewUsageToExpose.getExposedElement();
+            if (exposedElements.contains(viewUsage)) {
+                exposeItself = true;
+            } else {
+                for (Element exposedElement : exposedElements) {
+                    if (exposedElement instanceof ViewUsage exposedViewUsage) {
+                        alreadyVisited.add(viewUsage);
+                        boolean exposedElementExposeItself = this.exposeItself(exposedViewUsage, element, alreadyVisited);
+                        if (exposedElementExposeItself) {
+                            exposeItself = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return exposeItself;
     }
 }

@@ -45,8 +45,12 @@ public class DropFromExplorerTester {
     @Autowired
     private DropOnDiagramWithMessagesMutationRunner dropOnDiagramMutationRunner;
 
-    public void dropFromExplorerOnDiagram(String projectId, AtomicReference<Diagram> diagram, String semanticElementId) {
-        this.dropFromExplorer(projectId, diagram, null, semanticElementId);
+    public void dropFromExplorerOnDiagram(String projectId, AtomicReference<Diagram> diagram, String semanticElementIdToDnd) {
+        this.dropFromExplorer(projectId, diagram, null, semanticElementIdToDnd);
+    }
+
+    public void dropFromExplorerOnDiagramElement(String projectId, AtomicReference<Diagram> diagram, String semanticElementIdToDnd, String targetNodeId) {
+        this.dropFromExplorer(projectId, diagram, targetNodeId, semanticElementIdToDnd);
     }
 
     public GraphQLResult dropFromExplorer(String projectId, AtomicReference<Diagram> diagram, String targetNodeId, String semanticElementId) {
