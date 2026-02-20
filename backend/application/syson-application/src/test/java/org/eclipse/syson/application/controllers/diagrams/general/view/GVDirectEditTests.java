@@ -34,19 +34,19 @@ import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.GeneralViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -90,9 +90,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part and a part definition, WHEN the part is typed with direct edit, THEN the feature typing is created")
-    @Sql(scripts = { GeneralViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void directEditUsingName() {
         var flux = this.givenSubscriptionToDiagram();
@@ -142,10 +140,58 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a diagram with a part, WHEN the part portion kind is changed with direct edit, THEN the portion kind property is updated")
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
+    @Test
+    public void directEditUsingPortionKind() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var partNodeId = new AtomicReference<String>();
+        var partNodeLabelId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1").getNode();
+            partNodeId.set(partNode.getId());
+            partNodeLabelId.set(partNode.getInsideLabel().getId());
+        });
+
+        Runnable editLabel = () -> {
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "timeslice part1");
+            var result = this.editLabelMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
+            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
+            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText(LabelConstants.OPEN_QUOTE + "timeslice" + LabelConstants.CLOSE_QUOTE + "\n" + LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + "\npart1");
+        });
+
+        Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewDirectEditTestProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    PartUsage part = this.objectSearchService.getObject(editingContext, GeneralViewDirectEditTestProjectData.SemanticIds.PART_USAGE_ID)
+                            .filter(PartUsage.class::isInstance)
+                            .map(PartUsage.class::cast)
+                            .orElse(null);
+                    assertThat(part).isNotNull();
+                    assertThat(part.getPortionKind()).isEqualTo(PortionKind.TIMESLICE);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(editLabel)
+                .consumeNextWith(updatedDiagramContentMatcher)
+                .then(exposedElementsChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN a diagram with a part and a part definition, WHEN the part is typed with direct edit using the qualified name, THEN the feature typing is created")
-    @Sql(scripts = { GeneralViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void directEditUsingWithQualifiedFullName() {
         var flux = this.givenSubscriptionToDiagram();
@@ -196,9 +242,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part and a part definition, WHEN the part is typed with direct edit using short name, THEN the feature typing is created")
-    @Sql(scripts = { GeneralViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void directEditUsingShortName() {
         var flux = this.givenSubscriptionToDiagram();
@@ -249,9 +293,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part and a part definition, WHEN the part is typed with direct edit using the qualified short name, THEN the feature typing is created")
-    @Sql(scripts = { GeneralViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void directEditUsingQualifiedShortName() {
         var flux = this.givenSubscriptionToDiagram();
@@ -302,9 +344,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part and a part definition in the same scope, WHEN the part is typed with direct edit using short name, THEN the feature typing is created with the best candidat")
-    @Sql(scripts = { GeneralViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void directEditUsingShortNameAndScope() {
         var flux = this.givenSubscriptionToDiagram();
@@ -355,9 +395,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with an attribute, WHEN we direct edit with an operation using an unimported namespace, THEN the attribute is correctly set")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditOperationUsingUnImportedNameSpaceName() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -401,9 +439,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and subsetting, THEN the part is correctly set")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditMultiplicityWithSubsetting() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -464,9 +500,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part, WHEN we direct edit  with multiplicity and redefinition, THEN the part is correctly set")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditMultiplicityWithRedefinition() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -527,9 +561,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and feature typing, THEN the part is correctly set")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditMultiplicityWithFeatureTyping() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -590,9 +622,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and operation, THEN the part is correctly set only if the multiplicity is before the operation")
-    @Sql(scripts = { GeneralViewItemAndAttributeProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditMultiplicityWithOperation() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),

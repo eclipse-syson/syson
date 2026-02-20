@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ grammar DirectEdit;
 
 @header {
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,11 @@ listItemExpression :
 ;
 
 prefixNodeExpression : 
-	(abstractPrefixExpression | variationPrefixExpression | variantPrefixExpression)*
+	(portionKindExpression)* (abstractPrefixExpression | variationPrefixExpression | variantPrefixExpression)*
+;
+
+portionKindExpression :
+    TIMESLICE_PREFIX | SNAPSHOT_PREFIX
 ;
 
 prefixListItemExpression : 
@@ -369,6 +373,7 @@ REF_PREFIX : REF WS;
 REFERENCES : 'references';
 REP : 'rep';
 RETURN : 'return';
+SNAPSHOT_PREFIX : 'snapshot';
 SPECIALIZTION : 'specialization';
 SPECIALIZES : 'specializes';
 STEP : 'step';
@@ -379,6 +384,7 @@ SUBSETS : 'subsets';
 SUBTYPE : 'subtype';
 SUCCESSION : 'succession';
 THEN : 'then';
+TIMESLICE_PREFIX : 'timeslice';
 TO : 'to';
 TRUE : 'true';
 TYPE : 'type';

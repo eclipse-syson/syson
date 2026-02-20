@@ -87,7 +87,7 @@ This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and
 Additional ends can be created using the _New end_ graphical node tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).
 ** Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
-
+** Allow to edit the _timeslice_ and _snapshot_ property of `OccurrenceUsage` and subtypes graphical nodes with the direct edit.
 
 * In textual import/export:
 

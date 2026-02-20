@@ -80,6 +80,7 @@ Additional ports can be created using the _New Port as end_ graphical node tool.
 
 - https://github.com/eclipse-syson/syson/issues/1977[#1977] [diagram] Display the _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
 - https://github.com/eclipse-syson/syson/issues/1977[#1977] [metamodel] Ensure a _timeSlice_ or a _snapshot_ `OccurrenceUsage` implicitly specializes `Occurrences::Occurrence::timeSlices` or  `Occurrences::Occurrence::snapshots`, directly or indirectly.
+- https://github.com/eclipse-syson/syson/issues/1978[#1978] [diagram] Allow to edit the _timeslice_ and _snapshot_ properties of `OccurrenceUsage` and subtypes graphical nodes with the direct edit.
 
 == v2026.1.0
  
