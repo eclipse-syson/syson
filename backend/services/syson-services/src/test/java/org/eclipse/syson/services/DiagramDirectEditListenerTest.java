@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -697,6 +698,29 @@ public class DiagramDirectEditListenerTest {
         String initialName = partUsage.getName();
         this.doDirectEditOnCompartmentListItem(partUsage, "<>");
         assertThat(partUsage.getShortName()).isEmpty();
+        assertThat(partUsage.getName()).isEqualTo(initialName);
+    }
+
+    @DisplayName("GIVEN a PartUsage which is not a time slice, WHEN it is edited with 'timeslice flashlight', THEN it become a time slice and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageNodeAddTimeSlice() {
+        PartUsage partUsage = this.createFlashlight();
+        assertThat(partUsage.isSetPortionKind()).isFalse();
+        String initialName = partUsage.getName();
+        this.doDirectEditOnNode(partUsage, "timeslice flashlight");
+        assertThat(partUsage.isSetPortionKind()).isTrue();
+        assertThat(partUsage.getPortionKind()).isEqualTo(PortionKind.TIMESLICE);
+        assertThat(partUsage.getName()).isEqualTo(initialName);
+    }
+
+    @DisplayName("GIVEN a time slice PartUsage, WHEN it is edited with 'flashlight', THEN it is not a time slice anymore and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageNodeRemoveTimeSlice() {
+        PartUsage partUsage = this.createFlashlight();
+        partUsage.setPortionKind(PortionKind.TIMESLICE);
+        String initialName = partUsage.getName();
+        this.doDirectEditOnNode(partUsage, "flashlight");
+        assertThat(partUsage.isSetPortionKind()).isFalse();
         assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
