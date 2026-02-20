@@ -46,7 +46,6 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -137,26 +136,24 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID,
                 creationToolId);
 
-        String[] newFlow = new String[1];
+        AtomicReference<String> newFlow = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
-            newFlow[0] = newEdge.getTargetObjectId();
+            newFlow.set(newEdge.getTargetObjectId());
             assertThat(newEdge).hasSourceId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_2_OUT_ITEM_ID);
             assertThat(newEdge).hasTargetId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID);
             assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputFillClosedArrow);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> newFlow[0], flow -> {
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(FlowUsage.class, () -> newFlow.get(), flow -> {
             assertThat(this.identityService.getId(flow.getSourceOutputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_OUT_ITEM_ID);
             assertThat(this.identityService.getId(flow.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
-            assertThat(this.identityService.getId(flow.getSourceFeature())).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_ID);
-            assertThat(this.identityService.getId(flow.getTargetFeature().get(0))).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_ID);
         });
 
         StepVerifier.create(flux)
@@ -189,14 +186,14 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID,
                 creationToolId);
 
-        String[] newBinding = new String[1];
+        AtomicReference<String> newBinding = new AtomicReference<>();
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
             Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
-            newBinding[0] = newEdge.getTargetObjectId();
+            newBinding.set(newEdge.getTargetObjectId());
             assertThat(newEdge)
                     .hasSourceId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_2_OUT_ITEM_ID)
                     .hasTargetId(GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_3_IN_ITEM_ID)
@@ -205,18 +202,10 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                     .hasTargetArrow(ArrowStyle.None);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkElement(BindingConnectorAsUsage.class, () -> newBinding[0], binding -> {
-            assertThat(this.identityService.getId(binding.getSourceFeature()))
-                    .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_OUT_ITEM_ID);
-            assertThat(this.identityService.getId(binding.getTargetFeature().get(0).getFeatureTarget()))
-                    .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
-        });
-
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(creationToolRunnable)
                 .consumeNextWith(diagramCheck)
-                .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -253,8 +242,6 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_1_OUT_ITEM_ID);
             assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                     .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_IN_ITEM_ID);
-            assertThat(this.identityService.getId(flowUsage.getSourceFeature())).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_1_ID);
-            assertThat(this.identityService.getId(flowUsage.getTargetFeature().get(0))).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_ID);
         });
 
         StepVerifier.create(flux)
@@ -299,8 +286,6 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                             .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_OUT_ITEM_ID);
                     assertThat(this.identityService.getId(flowUsage.getTargetInputFeature().getOwnedRedefinition().get(0).getRedefinedFeature()))
                             .isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_IN_ITEM_ID);
-                    assertThat(this.identityService.getId(flowUsage.getSourceFeature())).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_3_ID);
-                    assertThat(this.identityService.getId(flowUsage.getTargetFeature().get(0))).isEqualTo(GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.ACTION_USAGE_2_ID);
                 });
 
         StepVerifier.create(flux)

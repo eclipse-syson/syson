@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -94,6 +95,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getFeature_Direction());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseFeatureChaining(FeatureChaining object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getFeatureChaining_ChainingFeature());
         return features;
     }
 

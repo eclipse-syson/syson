@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,9 @@ public class InterconnectionViewFlowConnectionTestProjectData {
      */
     public static final class SemanticIds {
 
-        public static final String FLOW_CONNECTION_P1_P2_ID = "4c289c86-b476-4580-956a-f2e5ea0a0b5f";
+        public static final String FLOW_CONNECTION_P1_P2_ID = "f51cadc9-2ad7-406d-9c07-d51cd6f241f1";
+
+        public static final String PACKAGE_1_ID = "1901f3c5-c4b5-49eb-9d77-8f3e898ea81c";
 
         public static final String PART_1_ID = "f431b2c3-3854-4239-a93b-97ef8be9fc4e";
 

@@ -104,7 +104,7 @@ public class ModelMutationElementService {
             this.metamodelMutationElementService.addChildInParent(newPartUsage, newPartUsagePort);
             this.metamodelMutationElementService.initialize(newPartUsagePort);
             // create binding connector as usage edge between both new ports
-            this.metamodelMutationElementService.createBindingConnectorAsUsage(newSelfPort, newPartUsagePort, parentNamespace);
+            this.metamodelMutationElementService.createBindingConnectorAsUsage(newSelfPort, newPartUsagePort, self, newPartUsage, parentNamespace);
             return newPartUsage;
         }
         return self;
@@ -134,7 +134,7 @@ public class ModelMutationElementService {
             this.metamodelMutationElementService.addChildInParent(newPartUsage, newPartUsagePort);
             this.metamodelMutationElementService.initialize(newPartUsagePort);
             // create flow connection edge between both new ports
-            this.metamodelMutationElementService.createFlowUsage(newSelfPort, newPartUsagePort, parentNamespace);
+            this.metamodelMutationElementService.createFlowUsage(newSelfPort, newPartUsagePort, self, newPartUsage, parentNamespace);
             return newPartUsage;
         }
         return self;
@@ -164,7 +164,7 @@ public class ModelMutationElementService {
             this.metamodelMutationElementService.addChildInParent(newPartUsage, newPartUsagePort);
             this.metamodelMutationElementService.initialize(newPartUsagePort);
             // create interface edge between both new ports
-            this.metamodelMutationElementService.createInterfaceUsage(newSelfPort, newPartUsagePort, parentNamespace);
+            this.metamodelMutationElementService.createInterfaceUsage(newSelfPort, newPartUsagePort, self, newPartUsage, parentNamespace);
             return newPartUsage;
         }
         return self;

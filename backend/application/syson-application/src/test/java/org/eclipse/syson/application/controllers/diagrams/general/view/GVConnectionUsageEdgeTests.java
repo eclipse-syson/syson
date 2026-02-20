@@ -42,7 +42,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
-import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorAsUsageCheckerBuilder;
+import org.eclipse.syson.application.controllers.diagrams.checkers.ConnectorCheckerBuilder;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
@@ -575,8 +575,8 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
         });
     }
 
-    private ConnectorAsUsageCheckerBuilder<ConnectionUsage> createCheckerBuilder() {
-        return new ConnectorAsUsageCheckerBuilder<>(this.identityService, ConnectionUsage.class, this.semanticCheckerService);
+    private ConnectorCheckerBuilder<ConnectionUsage> createCheckerBuilder() {
+        return new ConnectorCheckerBuilder<>(this.identityService, ConnectionUsage.class, this.semanticCheckerService);
     }
 
     private Runnable buildReconnectRunnable(String edgeId, String newTarget, ReconnectEdgeKind reconnectionKind, AtomicReference<Diagram> diagram) {
@@ -587,7 +587,7 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
                 reconnectionKind);
     }
 
-    private Consumer<Object> assertReconnectThat(String expectedSourceGraplicalId, String expectedTargetGraplicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
+    private Consumer<Object> assertReconnectThat(String expectedSourceGrapicalId, String expectedTargetGraphicalId, AtomicReference<Diagram> diagram, Consumer<String> newEdgeConsumer) {
         return assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(1)
@@ -596,8 +596,8 @@ public class GVConnectionUsageEdgeTests extends AbstractIntegrationTests {
             Edge newEdge = this.diagramComparator.newEdges(diagram.get(), newDiagram).get(0);
             newEdgeConsumer.accept(newEdge.getTargetObjectId());
             DiagramAssertions.assertThat(newEdge)
-                    .hasSourceId(expectedSourceGraplicalId)
-                    .hasTargetId(expectedTargetGraplicalId)
+                    .hasSourceId(expectedSourceGrapicalId)
+                    .hasTargetId(expectedTargetGraphicalId)
                     .extracting(Edge::getStyle, EDGE_STYLE)
                     .hasSourceArrow(ArrowStyle.None)
                     .hasTargetArrow(ArrowStyle.None);

@@ -68,13 +68,17 @@ As a result, the application won't start if a service call is constructed with a
 - https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
 Integration tests that require Elasticsearch now need to extend `AbstractIntegrationTestsWithElasticsearch`.
 - https://github.com/eclipse-syson/syson/issues/1983[#1983] [details] `reqId` property of `RequirementDefinition` is now visible in the _Core_ tab of the _Details_ view.
-- https://github.com/eclipse-syson/syson/issues/1945[#1945] [diagrams] Add ends compartment on `AllocationDefinition` and `ConnectionDefinition` graphical nodes
+- https://github.com/eclipse-syson/syson/issues/1945[#1945] [diagrams] Add ends compartment on `AllocationDefinition` and `ConnectionDefinition` graphical nodes.
 Newly created `AllocationDefinition` and `ConnectionDefinition` graphical nodes now have two initial _connection ends_, named _source_ and _target_.
 Additional ends can be created using the _New end_ graphical node tool (which replaces the _New Part as end_ previously available only on `AllocationDefinition` graphical nodes).
 - https://github.com/eclipse-syson/syson/issues/1972[#1972] [diagrams] Add _ends_ compartment on `InterfaceDefinition` graphical node.
 Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
 - https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
+- https://github.com/eclipse-syson/syson/issues/2003[#2003] [diagrams] Rework the way _New Binding Connector As Usage (bind)_, _New Flow (flow)_ and _New Interface (interface)_ graphical edge tools works.
+Currently, when a binding/interface/flow graphical edge tool is executed, if it involves an inherited feature(s) (as source and/or target of the tool), then the inherited feature(s) is/are redefined first.
+Instead SysON will now use the inherited elements without redefining them first, as it is done by the _New Connection (connect)_  edge tool.
+
 
 === New features
 

@@ -14,6 +14,7 @@ package org.eclipse.syson.model.services.aql;
 
 import java.util.List;
 
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
@@ -48,16 +49,16 @@ public class ModelQueryAQLService {
     }
 
     /**
-     * {@link MetamodelQueryElementService#getTarget(ConnectorAsUsage)}.
+     * {@link MetamodelQueryElementService#getConnectorSource(Connector)}.
      */
-    public List<Feature> getTarget(ConnectorAsUsage connectorAsUsage) {
-        return this.metamodelQueryElementService.getTarget(connectorAsUsage);
+    public Feature getConnectorSource(Connector connector) {
+        return this.metamodelQueryElementService.getConnectorSource(connector);
     }
 
     /**
-     * {@link MetamodelQueryElementService#getSource(ConnectorAsUsage)}.
+     * {@link MetamodelQueryElementService#getConnectorTarget(Connector)}.
      */
-    public Feature getSource(ConnectorAsUsage connectorAsUsage) {
-        return this.metamodelQueryElementService.getSource(connectorAsUsage);
+    public List<Feature> getConnectorTarget(ConnectorAsUsage connector) {
+        return this.metamodelQueryElementService.getConnectorTarget(connector);
     }
 }
