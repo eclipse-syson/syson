@@ -134,10 +134,10 @@ public class ToolDescriptionService {
     }
 
     /**
-     * Get the tool section name for the given {@link EClass}.
+     * Get the tool section name for the given {@link EClassifier}.
      *
-     * @param eClass
-     *            the given {@link EClass}.
+     * @param eClassifier
+     *            the given {@link EClassifier}.
      * @return the tool section name.
      */
     public String getToolSectionName(EClassifier eClassifier) {
