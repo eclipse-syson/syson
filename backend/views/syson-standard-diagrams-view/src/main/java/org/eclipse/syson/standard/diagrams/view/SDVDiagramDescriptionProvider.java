@@ -63,6 +63,8 @@ import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.OccurrenceUsageSnapshotNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.OccurrenceUsageTimeSliceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -1349,6 +1351,11 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         var nodeTools = new ArrayList<NodeTool>();
         if (BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+            // TODO: The following tool providers may not have to be added here.
+            //   We should discuss if timeslice or snapshot creation tools of any Occurrence Usage and sub-types should be added to the diagram palette
+            //   Because that's a lot of tools to add in a single section.
+            nodeTools.add(new OccurrenceUsageTimeSliceNodeToolProvider(this.getDescriptionNameGenerator()).create(null));
+            nodeTools.add(new OccurrenceUsageSnapshotNodeToolProvider(this.getDescriptionNameGenerator()).create(null));
         } else if (STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
