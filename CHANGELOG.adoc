@@ -40,6 +40,8 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/1981[#1981] [export] Fix an error during textual export where `Expose` elements with apostrophes in their name were not properly escaped.
 - https://github.com/eclipse-syson/syson/issues/1983[#1983] [metamodel] `reqId` and `declaredShortName` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.
 - https://github.com/eclipse-syson/syson/issues/2014[#2014] [diagrams] Forbid the expose of a `ViewUsage` in this same `ViewUsage`, directly or indirectly (i.e. through others exposed `ViewUsages`).
+- https://github.com/eclipse-syson/syson/issues/1949[#1949] [diagrams] Allow redefining a `PartUsage` with the same name as the redefined usage.
+- https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
 
 === Improvements
 
@@ -55,7 +57,7 @@ You can find more information on how to setup Elasticsearch, how elements are ma
 - https://github.com/eclipse-syson/syson/issues/1947[#1947] [diagrams] Add _subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
 - https://github.com/eclipse-syson/syson/issues/1954[#1954] [export] Implement textual export of `TransitionUsage`.
 - https://github.com/eclipse-syson/syson/issues/1966[#1966] [export] Implement textual export of `ExhibitStateUsage`.
-- https://github.com/eclipse-syson/syson/issues/1942[#1942] [diagrams] Add _parts_ compartment on `PartDefintion`, `ConnectionDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/1942[#1942] [diagrams] Add _parts_ compartment on `PartDefinition`, `ConnectionDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/1962[#1962] [diagrams] Add graphical edge tools to add an `AttributeUsage` as a nested attribute of a `Usage` or a `Definition`.
 Also, add a graphical edge tool to all `Usage` and `Definition` to make an `AttributeUsage` nested.
 - https://github.com/eclipse-syson/syson/issues/1649[#1649] [syson] Add support for publishing representations with libraries.
@@ -74,12 +76,10 @@ Additional ends can be created using the _New end_ graphical node tool (which re
 - https://github.com/eclipse-syson/syson/issues/1972[#1972] [diagrams] Add _ends_ compartment on `InterfaceDefinition` graphical node.
 Newly created `InterfaceDefinition` graphical nodes now have two initial _ports_ named _source_ and _target_.
 Additional ports can be created using the _New Port as end_ graphical node tool.
-- https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
 - https://github.com/eclipse-syson/syson/issues/2004[#2004] [diagrams] The `ports` and `ends` compartments on a newly created `InterfaceDefinition` graphical nodes are not visible by default.
-They can be revealed if needed using the _Manage Visbility_ action on the graphical node.
-- https://github.com/eclipse-syson/syson/issues/1949[#1949] [diagrams] Allow redefining a `PartUsage` with the same name as the redefined usage.
+They can be revealed if needed using the _Manage Visibility_ action on the graphical node.
 - https://github.com/eclipse-syson/syson/issues/2003[#2003] [diagrams] Rework the way _New Binding Connector As Usage (bind)_, _New Flow (flow)_ and _New Interface (interface)_ graphical edge tools works.
-Currently, when a binding/interface/flow graphical edge tool is executed, if it involves an inherited feature(s) (as source and/or target of the tool), then the inherited feature(s) is/are redefined first.
+Previously, when a binding/interface/flow graphical edge tool was executed, if it involves an inherited feature(s) (as source and/or target of the tool), then the inherited feature(s) were redefined first.
 Instead SysON will now use the inherited elements without redefining them first, as it is done by the _New Connection (connect)_  edge tool.
 
 === New features

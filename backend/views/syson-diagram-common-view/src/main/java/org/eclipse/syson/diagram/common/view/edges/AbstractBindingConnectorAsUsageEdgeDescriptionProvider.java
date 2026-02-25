@@ -94,7 +94,7 @@ public abstract class AbstractBindingConnectorAsUsageEdgeDescriptionProvider ext
                                 org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
                                 IEditingContext.EDITING_CONTEXT)
                         // Needs this to avoid instantiation on inheriting concept
-                        + "and self.oclIsTypeOf(" + domainType + ")")
+                        + " and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorSource).aqlSelf())
                 .style(this.createEdgeStyle())

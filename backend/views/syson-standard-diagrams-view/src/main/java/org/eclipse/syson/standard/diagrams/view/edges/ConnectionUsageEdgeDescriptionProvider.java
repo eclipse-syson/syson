@@ -96,7 +96,7 @@ public class ConnectionUsageEdgeDescriptionProvider extends AbstractEdgeDescript
                                 org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
                                 IEditingContext.EDITING_CONTEXT)
                         // Needs this to avoid instantiation on inheriting concept
-                        + "and self.oclIsTypeOf(" + domainType + ")")
+                        + " and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression(ServiceMethod.of0(ModelQueryAQLService::getConnectorSource).aqlSelf())
                 .style(this.createEdgeStyle())
