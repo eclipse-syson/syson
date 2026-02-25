@@ -75,6 +75,8 @@ public class MultilineLabelSwitchTest {
 
     private static final String DEFAULT_CONSTRAINT_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "constraint def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
+    private static final String DEFAULT_CONNECTION_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "connection def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
     private static final String DEFAULT_CONSTRAINT_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "constraint" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_DOCUMENTATION_LABEL = LabelConstants.OPEN_QUOTE + "doc" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
@@ -145,6 +147,7 @@ public class MultilineLabelSwitchTest {
                 Arguments.of(SYSML.getConcernDefinition(), DEFAULT_CONCERN_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConcernUsage(), DEFAULT_CONCERN_USAGE_LABEL),
                 Arguments.of(SYSML.getConstraintDefinition(), DEFAULT_CONSTRAINT_DEFINITION_LABEL),
+                Arguments.of(SYSML.getConnectionDefinition(), DEFAULT_CONNECTION_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
                 Arguments.of(SYSML.getDocumentation(), DEFAULT_DOCUMENTATION_LABEL),
                 Arguments.of(SYSML.getEnumerationDefinition(), DEFAULT_ENUMERATION_DEFINITION_LABEL),
@@ -184,6 +187,7 @@ public class MultilineLabelSwitchTest {
                 Arguments.of(SYSML.getConcernDefinition(), DEFAULT_CONCERN_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConcernUsage(), DEFAULT_CONCERN_USAGE_LABEL),
                 Arguments.of(SYSML.getConstraintDefinition(), DEFAULT_CONSTRAINT_DEFINITION_LABEL),
+                Arguments.of(SYSML.getConnectionDefinition(), DEFAULT_CONNECTION_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
                 Arguments.of(SYSML.getEnumerationDefinition(), DEFAULT_ENUMERATION_DEFINITION_LABEL),
                 Arguments.of(SYSML.getExhibitStateUsage(), DEFAULT_EXHIBIT_STATE_USAGE_LABEL),

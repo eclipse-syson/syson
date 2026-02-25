@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -76,6 +77,7 @@ import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -358,6 +360,22 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.labelService.getReferenceSubsettingLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseConnectionDefinition(ConnectionDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(SysMLv2Keywords.CONNECTION)
+                .append(LabelConstants.SPACE)
+                .append(SysMLv2Keywords.DEF)
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.labelService.getSubclassificationLabel(object));
         return label.toString();
     }
 

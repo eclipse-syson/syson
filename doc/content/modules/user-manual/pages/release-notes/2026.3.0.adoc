@@ -19,6 +19,7 @@ It's not recommended for production use.
 
 ** Fix an issue where some type of `Elements` could appear in the wrong compartment if they shared a common type with said compartment, for example `ViewUsage` elements could appear in the _parts_ compartment since they extends `PartUsage`.
 ** Allow redefining a `PartUsage` with the same name as the redefined `Usage`.
+** Fix an issue where `ConnectionDefinition` graphical nodes where incorrectly labelled as `«part def»` instead of `«connection def»`.
 
 * In textual import/export:
 
