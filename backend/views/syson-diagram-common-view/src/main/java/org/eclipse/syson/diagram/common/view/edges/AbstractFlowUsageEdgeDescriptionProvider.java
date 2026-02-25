@@ -94,7 +94,7 @@ public abstract class AbstractFlowUsageEdgeDescriptionProvider extends AbstractE
                                 org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE,
                                 IEditingContext.EDITING_CONTEXT)
                         // Needs this to avoid instantiation on inheriting concept
-                        + "and self.oclIsTypeOf(" + domainType + ")")
+                        + " and self.oclIsTypeOf(" + domainType + ")")
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression("aql:self.sourceOutputFeature.unwrapFeature()")
                 .style(this.createEdgeStyle())
