@@ -62,6 +62,10 @@ part system {
 }
 ```
 
+* In _Explorer_ view:
+
+** Fix an issue where creating a new model using the _Create a new model_ action in the _Explorer_ view was not adding the ".sysml" extension to the model name.
+
 * In _Details_ view:
 
 ** `Req Id` and `Declared Short Name` properties of `RequirementDefinition` and `RequirementUsage` are now synchronized, as required by the SysMLv2 specification.

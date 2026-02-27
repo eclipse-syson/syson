@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.controller.editingContext.checkers;
+package org.eclipse.syson.application.controller.editingcontext.checkers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,6 +72,7 @@ public class SemanticCheckerService {
      * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
      * Please, use {@link SemanticCheckerService#checkElement(Class type, Supplier idSupplier, Consumer semanticChecker)} instead.
      */
+    @Deprecated
     public <T extends Element> void checkElement(Step<?> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
         ISemanticChecker checker = editingContext -> {
             Optional<Object> optElement = this.objectSearchService.getObject(editingContext, idSupplier.get());

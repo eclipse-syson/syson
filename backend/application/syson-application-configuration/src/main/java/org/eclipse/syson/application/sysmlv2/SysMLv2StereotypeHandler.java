@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,17 +70,25 @@ public class SysMLv2StereotypeHandler implements IStereotypeHandler {
 
     private Optional<DocumentDTO> createEmptySysMLv2Document(IEMFEditingContext emfEditingContext, String name) {
         var documentId = UUID.randomUUID();
-        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(documentId, name);
+        var rectifiedName = name;
+        if (rectifiedName != null && !rectifiedName.toLowerCase().endsWith(".sysml")) {
+            rectifiedName += ".sysml";
+        }
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(documentId, rectifiedName);
         emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
 
-        return Optional.of(new DocumentDTO(documentId, name, ExplorerDescriptionProvider.DOCUMENT_KIND));
+        return Optional.of(new DocumentDTO(documentId, rectifiedName, ExplorerDescriptionProvider.DOCUMENT_KIND));
     }
 
     private Optional<DocumentDTO> createEmptySysMLv2LibraryDocument(IEMFEditingContext emfEditingContext, String name) {
         var documentId = UUID.randomUUID();
-        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(documentId, name);
+        var rectifiedName = name;
+        if (rectifiedName != null && !rectifiedName.toLowerCase().endsWith(".sysml")) {
+            rectifiedName += ".sysml";
+        }
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2LibraryResource(documentId, rectifiedName);
         emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
 
-        return Optional.of(new DocumentDTO(documentId, name, ExplorerDescriptionProvider.DOCUMENT_KIND));
+        return Optional.of(new DocumentDTO(documentId, rectifiedName, ExplorerDescriptionProvider.DOCUMENT_KIND));
     }
 }

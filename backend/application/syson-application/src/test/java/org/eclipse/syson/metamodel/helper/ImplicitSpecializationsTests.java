@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
-import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controller.editingcontext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.sysml.AcceptActionUsage;
