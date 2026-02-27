@@ -22,6 +22,15 @@ The following methods have been added:
 
 - https://github.com/eclipse-syson/syson/issues/1988[#1988] [syson] Extract Elasticsearch container initialization in a dedicated abstract test class.
 The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that require Elasticsearch should extend `AbstractIntegrationTestsWithElasticsearch`.
+- https://github.com/eclipse-syson/syson/issues/2027[#2027] [publication] `org.eclipse.syson.application.publication.SysONSysMLLibraryPublisher` has been reworked to be more extensible.
+As a result, the following method has been deleted:
+
+** `getDependencies(DependencyGraph<Resource>, Set<Resource>)`
++
+And the following methods have been added:
++
+** `getDependenciesForPublishedLibrary(IEMFEditingContext, Set<Resource>)`
+** `getDependenciesBasedOnResources(IEMFEditingContext, Set<Resource>)`
 
 - [validation] The following classes have been renamed, and some of them reworked:
 
@@ -31,6 +40,16 @@ The property `SysONTestsProperties#ELASTICSEARCH` has been removed, tests that r
 ** `org.eclipse.syson.sysml.validation.ValidationRule`: renamed into `org.eclipse.syson.sysml.validation.rules.ValidationRule`, extracted its methods into interface `org.eclipse.syson.sysml.validation.rules.api.ISysMLValidationRule` and added `int getSeverity()` to represent the severity of the rule.
 ** `org.eclipse.syson.sysml.validation.SysONQueryServices`: renamed into `org.eclipse.syson.sysml.validation.rules.SysMLValidationRuleQueryServices`.
 ** `org.eclipse.syson.sysml.validation.SysMLv2ValidatorConfiguration`: renamed into `org.eclipse.syson.sysml.validation.SysMLValidatorRegistrationConfiguration` and now expects an injected `org.eclipse.syson.sysml.validation.rules.api.ISysMLValidationRulesProvider`, for which SysON provides default implementation `org.eclipse.syson.sysml.validation.rules.SysONValidationRulesProvider`.
+
+- https://github.com/eclipse-syson/syson/issues/2027[#2027] [publication] `org.eclipse.syson.application.publication.SysONSysMLLibraryPublisher` has been reworked to be more extensible.
+As a result, the following method has been deleted:
+
+** `getDependencies(DependencyGraph<Resource>, Set<Resource>)`
++
+And the following methods have been added:
++
+** `getDependenciesForPublishedLibrary(IEMFEditingContext, Set<Resource>)`
+** `getDependenciesBasedOnResources(IEMFEditingContext, Set<Resource>)`
 
 
 === Dependency update
