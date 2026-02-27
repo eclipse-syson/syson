@@ -145,12 +145,11 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
     protected IPayload doPublish(final ICause cause, final IEMFEditingContext emfEditingContext, final String libraryNamespace, final String libraryName,
             final String libraryVersion, final String libraryDescription) {
         final Set<Resource> resourcesToPublish = this.getResourcesToPublish(emfEditingContext);
-        final DependencyGraph<Resource> dependencyGraph = this.sysONLibraryDependencyCollector.collectDependencies(emfEditingContext.getDomain().getResourceSet());
 
-        final List<AggregateReference<SemanticData, UUID>> dependencies = this.getDependencies(dependencyGraph, resourcesToPublish);
+        final List<AggregateReference<SemanticData, UUID>> dependenciesOfPublishedLibrary = this.getDependenciesForPublishedLibrary(emfEditingContext, resourcesToPublish);
 
         final Optional<SemanticData> maybePublishedLibrarySemanticData = this.publishAsLibrary(cause, resourcesToPublish, libraryNamespace, libraryName, libraryVersion, libraryDescription,
-                dependencies);
+                dependenciesOfPublishedLibrary);
         // After this transaction is done, SysONLibraryPublicationListener reacts by also creating the
         // associated Library metadata.
 
@@ -162,7 +161,54 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
                                 List.of(new Message("Failed to publish library '%s:%s@%s'.".formatted(libraryNamespace, libraryName, libraryVersion), MessageLevel.ERROR))));
     }
 
-    protected List<AggregateReference<SemanticData, UUID>> getDependencies(final DependencyGraph<Resource> dependencyGraph, final Set<Resource> resourcesToPublish) {
+    /**
+     * Provides the resources to include in the contents of the library being published.
+     * <p>
+     * <b>Note:</b> If this implementation gets extended to include additional resources, consider also extending
+     * {@link #getDependenciesForPublishedLibrary(IEMFEditingContext, Set)} to express the impact on the dependencies to
+     * include.
+     * </p>
+     *
+     * @param emfEditingContext
+     *            the (non-{@code null}) {@link IEMFEditingContext} that authors the library.
+     * @return a (non-{@code null}) {@link Set} of {@link Resource}, most likely a subset of the resources in
+     *         {@code emfEditingContext}.
+     */
+    protected Set<Resource> getResourcesToPublish(final IEMFEditingContext emfEditingContext) {
+        return emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                .filter(Predicate.not(ElementUtil::isStandardLibraryResource))
+                .filter(resource -> !this.sysONResourceService.isFromReferencedLibrary(emfEditingContext, resource))
+                // Only the ".sysml" resources can be published.
+                .filter(this.sysONResourceService::isSysML)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    /**
+     * Provides the dependencies to set up for the library being published.
+     *
+     * @param emfEditingContext
+     *            the (non-{@code null}) {@link IEMFEditingContext} that authors the library.
+     * @param resourcesToPublish
+     *            the (non-{@code null}) {@link Set} of {@link Resource} to include as contents of the library.
+     * @return a (non-{@code null}) {@link List} of the desired dependencies for the library.
+     */
+    protected List<AggregateReference<SemanticData, UUID>> getDependenciesForPublishedLibrary(final IEMFEditingContext emfEditingContext, final Set<Resource> resourcesToPublish) {
+        return this.getDependenciesBasedOnResources(emfEditingContext, resourcesToPublish);
+    }
+
+    /**
+     * Provides the dependencies based on the existing actual EMF cross-references from the resources being published to
+     * resources coming from published libraries.
+     *
+     * @param emfEditingContext
+     *            the (non-{@code null}) {@link IEMFEditingContext} that authors the library.
+     * @param resourcesToPublish
+     *            the (non-{@code null}) {@link Set} of {@link Resource} to include as contents of the library.
+     * @return a (non-{@code null}) {@link List} of the dependencies required for the library, if we want
+     *         {@code resourcesToPublish} to not have any unresolved proxies.
+     */
+    protected List<AggregateReference<SemanticData, UUID>> getDependenciesBasedOnResources(final IEMFEditingContext emfEditingContext, final Set<Resource> resourcesToPublish) {
+        final DependencyGraph<Resource> dependencyGraph = this.sysONLibraryDependencyCollector.collectDependencies(emfEditingContext.getDomain().getResourceSet());
         final List<AggregateReference<SemanticData, UUID>> dependencies = new ArrayList<>();
 
         for (final Resource resourceToPublish : resourcesToPublish) {
@@ -223,15 +269,6 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
         } else {
             return Optional.empty();
         }
-    }
-
-    protected Set<Resource> getResourcesToPublish(final IEMFEditingContext emfEditingContext) {
-        return emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                .filter(Predicate.not(ElementUtil::isStandardLibraryResource))
-                .filter(resource -> !this.sysONResourceService.isFromReferencedLibrary(emfEditingContext, resource))
-                // Only the ".sysml" resources can be published.
-                .filter(this.sysONResourceService::isSysML)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     protected Optional<LibraryMetadataAdapter> getLibraryMetadata(final Resource resource) {
