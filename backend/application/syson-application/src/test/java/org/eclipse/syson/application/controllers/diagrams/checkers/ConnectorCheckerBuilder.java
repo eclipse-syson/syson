@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.FeatureChaining;
 

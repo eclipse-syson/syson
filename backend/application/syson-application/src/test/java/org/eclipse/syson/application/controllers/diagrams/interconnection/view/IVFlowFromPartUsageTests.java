@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.data.InterconnectionViewFlowConnectionTestProjectData;
