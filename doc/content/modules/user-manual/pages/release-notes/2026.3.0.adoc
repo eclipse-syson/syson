@@ -76,7 +76,7 @@ part system {
 +
 ```
 If a Feature is owned via a FeatureMembership, then it must have a featuringType for which the operation isFeaturingType returns true. (checkFeatureFeatureMembershipTypeFeaturing constraint on Feature is not respected for Test::MyItemDef::myFeature)
-````
+```
 
 == Improvements
 
