@@ -61,6 +61,7 @@ import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
@@ -178,6 +179,29 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(featureChainings).hasSize(2); // component.component2
             // "component" should to "p1::l::component" and not to "p1::Logical::component"
             assertThat(featureChainings.get(0).getChainingFeature().getQualifiedName()).isEqualTo("p1::l::component");
+        }).check(input);
+    }
+
+    @DisplayName("GIVEN an MetadataUsage annotating a ExposeMembership, WHEN importing the model, THEN the Annotation holding the MetadataUsage should be stored in ownedRelationships.")
+    @Test
+    public void metadataUsageOnExposeMembership() throws IOException {
+        var input = """
+                package Test {
+                     metadata def MyAnnotation;
+                
+                     item def MyItem;
+                
+                     view MyView {
+                         expose MyItem { @MyAnnotation; }
+                     }
+                
+                    item def MyItem2;
+                 }
+                """;
+        this.checker.checkImportedModel(resource -> {
+            List<MembershipExpose> membershipExposes = EMFUtils.allContainedObjectOfType(resource, MembershipExpose.class).toList();
+            assertThat(membershipExposes).hasSize(1);
+            assertThat(membershipExposes.get(0).getOwnedRelationship()).hasSize(1);
         }).check(input);
     }
 

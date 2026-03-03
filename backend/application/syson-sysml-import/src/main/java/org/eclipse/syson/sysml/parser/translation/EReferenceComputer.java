@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +74,11 @@ public class EReferenceComputer {
              */
 
             if (references.equals(REL_CONTAINEMTS_REF)) {
-                if (owner.eContainingFeature() == SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement()) {
+                // Case where the previously described pattern is not correct.
+                // Here we have a Relationship holding a Relationship in "ownedRelationship"
+                if (owner instanceof Relationship && SysmlPackage.eINSTANCE.getAnnotation().isSuperTypeOf(targetEClass)) {
+                    ref = Optional.of(SysmlPackage.eINSTANCE.getElement_OwnedRelationship());
+                } else if (owner.eContainingFeature() == SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement()) {
                     ref = Optional.of(SysmlPackage.eINSTANCE.getElement_OwnedRelationship());
                 } else {
                     ref = Optional.of(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement());
