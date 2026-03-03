@@ -1257,6 +1257,9 @@ public class SysMLElementSerializerTest {
         literalStr.setValue("value");
 
         this.assertTextualFormEquals("\"value\"", literalStr);
+
+        literalStr.setValue(null);
+        this.assertTextualFormEquals("\"\"", literalStr);
     }
 
     @Test

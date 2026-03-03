@@ -631,7 +631,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseLiteralString(LiteralString literal) {
         Appender builder = this.newAppender();
         builder.append("\"");
-        builder.append(literal.getValue().replace("\"", "\\\""));
+        if (literal.getValue() != null) {
+            builder.append(literal.getValue().replace("\"", "\\\""));
+        }
         builder.append("\"");
         return builder.toString();
     }
