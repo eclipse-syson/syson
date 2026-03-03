@@ -420,6 +420,30 @@ public class ViewNodeService {
     }
 
     /**
+     * Get all Stakeholder ({@link PartUsage}) in {@link ViewUsage}'s exposed elements.
+     *
+     * @param element
+     *            the {@link Element} for which we want the Stakeholders.
+     * @param domainType
+     *            the domain type to the elements to retrieve
+     * @param ancestors
+     *            the given ancestors (semantic elements of the graphical nodes that are the ancestors) of the Node on
+     *            which this service has been called.
+     * @param editingContext
+     *            the given {@link IEditingContext} in which this service has been called.
+     * @param diagramContext
+     *            the given {@link DiagramContext} in which this service has been called.
+     * @return the list of Actor {@link PartUsage}s in {@link ViewUsage}'s exposed elements.
+     */
+    public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.getExposedElements(element, domainType, ancestors, editingContext, diagramContext).stream()
+                .filter(PartUsage.class::isInstance)
+                .map(PartUsage.class::cast)
+                .filter(this.metamodelQueryElementService::isStakeholder)
+                .toList();
+    }
+
+    /**
      * Get all Subjects ({@link ReferenceUsage}) in {@link ViewUsage}'s exposed elements.
      *
      * @param element

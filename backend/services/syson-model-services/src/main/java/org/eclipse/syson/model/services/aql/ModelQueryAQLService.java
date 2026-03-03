@@ -42,6 +42,13 @@ public class ModelQueryAQLService {
     }
 
     /**
+     * {@link MetamodelQueryElementService#isStakeholder(Element)}.
+     */
+    public boolean isStakeholder(Element element) {
+        return this.metamodelQueryElementService.isStakeholder(element);
+    }
+
+    /**
      * {@link MetamodelQueryElementService#isSubject(Element)}.
      */
     public boolean isSubject(Element element) {

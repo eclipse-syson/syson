@@ -59,7 +59,7 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/StakeholderMembership.svg";
+        return "/icons/full/obj16/Stakeholder.svg";
     }
 
     @Override

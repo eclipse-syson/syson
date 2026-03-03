@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
 
 /**
@@ -61,6 +62,20 @@ public class MetamodelQueryElementService {
      */
     public boolean isSubject(Element element) {
         return element instanceof ReferenceUsage && element.getOwningMembership() instanceof SubjectMembership;
+    }
+
+    /**
+     * Return {@code true} if the provided {@code element} is a stakeholder, {@code false} otherwise.
+     * <p>
+     * A stakeholder is a kind of parameter stored in an {@link StakeholderMembership}.
+     * </p>
+     *
+     * @param element
+     *            the element to check
+     * @return {@code true} if the provided {@code element} is an stakeholder, {@code false} otherwise
+     */
+    public boolean isStakeholder(Element element) {
+        return element instanceof PartUsage && element.getOwningMembership() instanceof StakeholderMembership;
     }
 
     /**

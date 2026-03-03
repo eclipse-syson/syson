@@ -48,6 +48,7 @@ import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -168,6 +169,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .collapsible(true)
                 .defaultHeightExpression(defaultSizeExpression.defaultHeightExpression())
                 .defaultWidthExpression(defaultSizeExpression.defaultWidthExpression())
+                .isHiddenByDefaultExpression(this.getHiddenByDefaultExpression())
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .outsideLabels(this.createOutsideLabelDescriptions().toArray(OutsideLabelDescription[]::new))
@@ -200,6 +202,10 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
             }
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
         });
+    }
+
+    protected String getHiddenByDefaultExpression() {
+        return AQLConstants.AQL_FALSE;
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {

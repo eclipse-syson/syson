@@ -1107,7 +1107,8 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(1)
+                    .hasNewNodeCount(9)
+                    .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(targetObjectId)
