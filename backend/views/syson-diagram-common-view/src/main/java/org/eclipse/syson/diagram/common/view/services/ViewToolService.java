@@ -58,6 +58,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -230,6 +231,38 @@ public class ViewToolService extends ToolService {
             }
         } else {
             String errorMessage = "Cannot reconnect an Actor to a non-UseCase, non-Requirement element";
+            this.logger.warn(errorMessage);
+            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+        }
+        return otherEnd;
+    }
+
+    /**
+     * Reconnects the source of a nested stakeholder edge.
+     * <p>
+     * The source of this edge is a Requirement, and can only be reconnected to Requirements.
+     * </p>
+     *
+     * @param self
+     *            the current Requirement
+     * @param newSource
+     *            the new Requirement
+     * @param otherEnd
+     *            the Stakeholder connected to the Requirement
+     * @return the Stakeholder
+     */
+    public Element reconnectSourceNestedStakeholderEdge(Element self, Element newSource, Element otherEnd) {
+        if (newSource instanceof RequirementUsage || newSource instanceof RequirementDefinition) {
+            if (otherEnd.getOwningMembership() instanceof StakeholderMembership stakeholderMembership) {
+                newSource.getOwnedRelationship().add(stakeholderMembership);
+            } else {
+                // This is an error, an Stakeholder should always be contained in an StakeholderMembership.
+                String errorMessage = "Cannot reconnect the Stakeholder, it is not owned by an " + StakeholderMembership.class.getSimpleName();
+                this.logger.error(errorMessage);
+                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.ERROR));
+            }
+        } else {
+            String errorMessage = "Cannot reconnect an Stakeholder to non-Requirement element";
             this.logger.warn(errorMessage);
             this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
         }

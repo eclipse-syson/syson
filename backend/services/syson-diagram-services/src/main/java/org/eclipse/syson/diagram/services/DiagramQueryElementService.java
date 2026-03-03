@@ -305,6 +305,11 @@ public class DiagramQueryElementService {
                         .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + SysmlPackage.eINSTANCE.getPackage().getName()))
                         .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
                         .findFirst();
+            } else if (this.metamodelQueryElementService.isStakeholder(element)) {
+                nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
+                        .filter(nodeDesc -> nodeDesc.getName().equals("GV Node Stakeholder"))
+                        .map(nodeDesc -> this.diagramIdProvider.getId(nodeDesc))
+                        .findFirst();
             } else {
                 nodeDescriptionId = EMFUtils.allContainedObjectOfType(optViewDD.get(), org.eclipse.sirius.components.view.diagram.NodeDescription.class)
                         .filter(nodeDesc -> nodeDesc.getName().equals("GV Node " + element.eClass().getName()))

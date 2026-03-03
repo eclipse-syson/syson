@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -61,16 +62,35 @@ public class RequirementDefinitionImplTest {
 
     @Test
     public void testGetActorParameter() {
+        // Check that we can find the actors from the Requirement
         final List<PartUsage> actorParameterValue = REQUIREMENT_DEFINITION.getActorParameter();
         Assertions.assertNotNull(actorParameterValue);
         Assertions.assertIterableEquals(ACTOR_PART_USAGES, actorParameterValue);
+
+        // Also check that we can get them directly from the ActorMembership themselves
+        List<PartUsage> actors = REQUIREMENT_DEFINITION.getOwnedMembership().stream()
+                .filter(ActorMembership.class::isInstance)
+                .map(ActorMembership.class::cast)
+                .map(ActorMembership::getOwnedActorParameter)
+                .toList();
+        Assertions.assertIterableEquals(ACTOR_PART_USAGES, actors);
     }
 
     @Test
     public void testGetStakeholderParameter() {
+        // Check that we can find the stakeholders from the Requirement
         final List<PartUsage> stakeholderParameterValue = REQUIREMENT_DEFINITION.getStakeholderParameter();
         Assertions.assertNotNull(stakeholderParameterValue);
         Assertions.assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholderParameterValue);
+
+        // Also check that we can get them directly from the StakeholderMembership themselves
+        List<PartUsage> stakeholders = REQUIREMENT_DEFINITION.getOwnedMembership().stream()
+                .filter(StakeholderMembership.class::isInstance)
+                .map(StakeholderMembership.class::cast)
+                .map(StakeholderMembership::getOwnedStakeholderParameter)
+                .toList();
+        Assertions.assertIterableEquals(STAKEHOLDER_PART_USAGES, stakeholders);
+        assertThat(stakeholders).hasSameElementsAs(STAKEHOLDER_PART_USAGES);
     }
 
     @Test

@@ -35,6 +35,7 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/1583[#1583] [diagrams] Improve support for `Stakeholder`.
 
 === New features
 

@@ -24,6 +24,7 @@
 
 ** Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
 These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
+** Improved support for `Stakeholder`.
 
 == Technical details
 
