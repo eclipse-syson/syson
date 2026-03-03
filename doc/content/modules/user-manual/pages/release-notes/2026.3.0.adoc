@@ -63,6 +63,23 @@ part system {
 }
 ```
 
+** Fix the textual import so `Relationships` can be annotated.
+Such as in :
+
+```
+package Test {
+    metadata def MyAnnotation;
+
+    item def MyItem;
+
+    view MyView {
+        expose MyItem { @MyAnnotation; } // The MembershipExpose is annotated with MyAnnotation
+    }
+
+   item def MyItem2;
+}
+```
+
 * In _Explorer_ view:
 
 ** Fix an issue where creating a new model using the _Create a new model_ action in the _Explorer_ view was not adding the ".sysml" extension to the model name.
