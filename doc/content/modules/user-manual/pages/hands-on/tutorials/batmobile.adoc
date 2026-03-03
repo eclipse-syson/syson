@@ -31,7 +31,7 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 
 === Setting Multiplicity
 
-. Select the `Batmobile` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
+. Select the `Vehicle` part definition and click on the `Structure` -> `New Part` tool in the {diag-toolbar} to create a new part usage
 . Rename the new part usage to `wheels`.
 . Select the `wheels` part usage, type "F2" and rename it `wheels[4] : Wheel`. `Wheel` does not exist yet so it will automatically be created.
 
@@ -58,7 +58,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 . Right-click on the diagram background and click on the `Structure` -> `New Part Definition` tool.
 . A new part definition is created.
-. Rename it `Batmobile:> Vehicle`.
+. Rename it `Batmobile :> Vehicle`.
 . A new `specialization` relationship is created between the `Batmobile` part definition and the `Vehicle` part definition.
 
 === Creating Subsetting
@@ -73,7 +73,7 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 
 . Right-click on the diagram background and click on the `Structure` -> `New Part` tool.
 . A new part usage is created.
-. Rename it to `bulletProofWheels[4]:>>wheels`.
+. Rename it to `bulletProofWheels[4] :>> wheels`.
 . A new `redefines` relationship appears between the `bulletProofWheels` part definition and the`wheels` part usage.
 
 == Step 4: Create Relationship
@@ -84,19 +84,19 @@ image::tutorial-referenced-library.png[Tutorial: Referenced library]
 . A new part definition is created.
 . Rename it `BatmobileNG`
 . Click on node `BatmobileNG`.
-. Click on arrow border and hold down until `Batmobile:> Vehicle` node.
+. Click on arrow border and hold down until `Batmobile :> Vehicle` node.
 . Select the `New Subclassification` tool.
 
 
 === Creating containment relationships
 
 . Click on node `frontRightWheel :> wheels`.
-. Click on arrow border and hold down until `Batmobile:> Vehicle` node.
+. Click on arrow border and hold down until `Batmobile :> Vehicle` node.
 . Select the `Become nested part` tool.
 . A new containment edge is created and element `frontRightWheel` is moved under `Batmobile` in model
 . Redo same actions with `frontLeftWheel :> wheels`.
 . Click on node `bulletProofWheels[4] :>> wheels`.
-. Click on arrow border and hold down until `BatmobileNG:> Batmobile` node.
+. Click on arrow border and hold down until `BatmobileNG :> Batmobile` node.
 . Select the `Become nested part` tool.
 . A new containment edge is created and element `bulletProofWheels` is moved under `BatmobileNG` in model
 
