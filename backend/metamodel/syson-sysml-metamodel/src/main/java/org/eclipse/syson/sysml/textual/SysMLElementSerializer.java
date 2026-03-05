@@ -66,6 +66,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private final Consumer<Status> reportConsumer;
 
+    private final boolean needEscapeCharacter;
+
     /**
      * Collection of Memberships that should be skip when trying to handle the content of an object.
      * In most case, those  membership has been handled with their parent content.
@@ -75,16 +77,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     /**
      * Simple constructor.
      *
-     * @param lineSeparator
-     *         the string used to separate line
-     * @param indentation
-     *         the string used to indent the file
+     * @param options
+     *         option to configure the serialization
+     * @param reportConsumer used to report any error during serialization
      */
-    public SysMLElementSerializer(String lineSeparator, String indentation, INameDeresolver nameDeresolver, Consumer<Status> reportConsumer) {
+    public SysMLElementSerializer(SysMLSerializingOptions options, Consumer<Status> reportConsumer) {
         super();
-        this.lineSeparator = lineSeparator;
-        this.indentation = indentation;
-        this.nameDeresolver = nameDeresolver;
+        this.lineSeparator = options.lineSeparator();
+        this.indentation = options.indentation();
+        this.nameDeresolver = options.nameDeresolver();
+        this.needEscapeCharacter = options.needEscapeCharacter();
         if (reportConsumer == null) {
             this.reportConsumer = r -> {
             };
@@ -630,11 +632,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseLiteralString(LiteralString literal) {
         Appender builder = this.newAppender();
-        builder.append("\"");
-        if (literal.getValue() != null) {
-            builder.append(literal.getValue().replace("\"", "\\\""));
-        }
-        builder.append("\"");
+        final String value = literal.getValue();
+        builder.append(this.toKerMLStringValue(value));
         return builder.toString();
     }
 
@@ -3065,5 +3064,36 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 }
             }
         }
+    }
+
+    private String toKerMLStringValue(String input) {
+        if (input == null) {
+            return "\"\"";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append('"');
+        if (this.needEscapeCharacter) {
+            for (int i = 0; i < input.length(); i++) {
+                char c = input.charAt(i);
+                switch (c) {
+                    case '\\':
+                        sb.append("\\\\"); // Escape backslash
+                        break;
+                    case '\"':
+                        sb.append("\\\""); // Escape "
+                        break;
+                    default:
+                        sb.append(c);
+                        break;
+                }
+            }
+        } else {
+            sb.append(input);
+        }
+
+
+        sb.append('"');
+        return sb.toString();
     }
 }

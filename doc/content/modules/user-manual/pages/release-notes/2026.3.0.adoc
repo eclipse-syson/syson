@@ -85,6 +85,7 @@ package Test {
 ```
 
 ** Fix a textual export problem while exporting `LiteralString` with no value.
+** Fix the export of `LiteralString` with backslash characters.
 
 * In _Explorer_ view:
 

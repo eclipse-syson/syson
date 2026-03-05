@@ -55,6 +55,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
 import org.eclipse.syson.sysml.textual.utils.Appender;
 import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.INameDeresolver;
@@ -777,19 +778,30 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     /**
      * Builds a SysMLSerializer.
      *
-     * @param resolvableName
-     *            holds <code>true</code> to compute resolvable names for references, otherwise simple name are used to
-     *            reference an element.
+     * @param sysmlTextualFormatCompliant
+     *            holds <code>true</code> to build a Serializer that would produce a valid text that is fully compliant with SysML textual format (resolvable name, escaped character), otherwise
+     *            holds <code>false /code> to build a serializer that provides simple String representation (use simple name, do not escape character in LiteralString etc...). The second mode is
+     *            used to print elements in diagrams or in the detail view.
      * @return a new {@link SysMLElementSerializer}.
      */
-    private SysMLElementSerializer buildSerializer(boolean resolvableName) {
+    private SysMLElementSerializer buildSerializer(boolean sysmlTextualFormatCompliant) {
         final INameDeresolver nameDeresolver;
-        if (resolvableName) {
+        final boolean escapeChar;
+        if (sysmlTextualFormatCompliant) {
             nameDeresolver = new FileNameDeresolver();
+            escapeChar = true;
         } else {
             nameDeresolver = new SimpleNameDeresolver();
+            escapeChar = false;
         }
-        return new SysMLElementSerializer("\n", " ", nameDeresolver, s -> {
+
+        SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
+                .lineSeparator("\n")
+                .nameDeresolver(nameDeresolver)
+                .indentation(" ")
+                .needEscapeCharacter(escapeChar)
+                .build();
+        return new SysMLElementSerializer(options, s -> {
             this.logger.info(s.message());
         });
     }

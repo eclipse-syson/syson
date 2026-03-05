@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.SimpleNameDeresolver;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +67,13 @@ public class ViewLabelService {
      * @return the element itself
      */
     public Element sendMessageWithTextualRepresentation(String msg, String level, Element element) {
-        var serializer = new SysMLElementSerializer("\n", " ", new SimpleNameDeresolver(), s -> {
+        SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
+                .lineSeparator("\n")
+                .nameDeresolver(new SimpleNameDeresolver())
+                .indentation(" ")
+                .needEscapeCharacter(false)
+                .build();
+        var serializer = new SysMLElementSerializer(options, s -> {
             this.logger.info(s.message());
         });
         this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format(msg, serializer.doSwitch(element)), MessageLevel.valueOf(level)));

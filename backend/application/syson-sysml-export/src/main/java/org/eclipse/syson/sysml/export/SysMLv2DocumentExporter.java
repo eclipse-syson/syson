@@ -22,6 +22,7 @@ import org.eclipse.sirius.web.application.document.services.api.IDocumentExporte
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.impl.MembershipCacheAdapter;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
 import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.textual.utils.Status;
 import org.slf4j.Logger;
@@ -38,6 +39,13 @@ import org.springframework.stereotype.Service;
 public class SysMLv2DocumentExporter implements IDocumentExporter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SysMLv2DocumentExporter.class);
+
+    private static final SysMLSerializingOptions SYSML_TEXTUAL_FORMAT_OPTIONS = new SysMLSerializingOptions.Builder()
+            .lineSeparator(System.lineSeparator())
+            .nameDeresolver(new FileNameDeresolver())
+            .indentation("\t")
+            .needEscapeCharacter(true)
+            .build();
 
     @Override
     public boolean canHandle(Resource resource, String mediaType) {
@@ -56,7 +64,8 @@ public class SysMLv2DocumentExporter implements IDocumentExporter {
             this.installCacheAdapter(resource, membershipCacheAdapter);
             try {
                 List<Status> status = new ArrayList<>();
-                String textualForm = new SysMLElementSerializer(System.lineSeparator(), "\t", new FileNameDeresolver(), status::add).doSwitch(element);
+                String textualForm = new SysMLElementSerializer(SYSML_TEXTUAL_FORMAT_OPTIONS, status::add)
+                        .doSwitch(element);
                 if (textualForm == null) {
                     textualForm = "";
                 }

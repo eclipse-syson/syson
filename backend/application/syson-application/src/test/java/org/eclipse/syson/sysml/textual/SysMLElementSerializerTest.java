@@ -871,17 +871,19 @@ public class SysMLElementSerializerTest {
         }
     }
 
-    private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer("\n", "    ", new FileNameDeresolver(), this.status::add).doSwitch(source);
-    }
-
     private String convertToText(Element source) {
-        return this.convertToText(source, (Element) source.eContainer(), 0);
+        SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
+                .lineSeparator("\n")
+                .nameDeresolver(new FileNameDeresolver())
+                .indentation("    ")
+                .needEscapeCharacter(true)
+                .build();
+        return new SysMLElementSerializer(options, this.status::add).doSwitch(source);
     }
 
-    private void assertTextualFormEquals(String extexted, Element elementToTest) {
+    private void assertTextualFormEquals(String expected, Element elementToTest) {
         String content = this.convertToText(elementToTest);
-        assertEquals(extexted, content);
+        assertEquals(expected, content);
     }
 
     @Test
@@ -1268,6 +1270,49 @@ public class SysMLElementSerializerTest {
         literalStr.setValue("va\"lue");
 
         this.assertTextualFormEquals("\"va\\\"lue\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithQuotes() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("Unit is \"meter\"");
+        this.assertTextualFormEquals("\"Unit is \\\"meter\\\"\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithBackslash() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("Folder\\SubFolder");
+
+        // Only \ is escaped
+        this.assertTextualFormEquals("\"Folder\\\\SubFolder\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithBoth() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("Path: \"C:\\\"");
+
+        // Expected result : "Path: \"C:\\\""
+        this.assertTextualFormEquals("\"Path: \\\"C:\\\\\\\"\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithLineBreak() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("Ligne1\nLigne2");
+
+        // \n should not be escaped
+        this.assertTextualFormEquals("\"Ligne1\nLigne2\"", literalStr);
+    }
+
+    @Test
+    public void literalStringWithTab() {
+        LiteralString literalStr = SysmlFactory.eINSTANCE.createLiteralString();
+        literalStr.setValue("Text\twith\ttab");
+
+        // Tabs should not be escaped
+        this.assertTextualFormEquals("\"Text\twith\ttab\"", literalStr);
     }
 
     @Test
