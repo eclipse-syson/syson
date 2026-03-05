@@ -51,6 +51,7 @@ And the following methods have been added:
 ** `getDependenciesForPublishedLibrary(IEMFEditingContext, Set<Resource>)`
 ** `getDependenciesBasedOnResources(IEMFEditingContext, Set<Resource>)`
 
+- https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] `org.eclipse.syson.sysml.textual.SysMLElementSerializer` now takes a `org.eclipse.syson.sysml.textual.SysMLSerializingOptions` as parameter that gather all serializing options.
 
 === Dependency update
 
@@ -76,6 +77,7 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/2023[#2023] [diagrans] On diagrams, `ConnectionDefinition` graphical nodes are now correctly labelled as `«connection def»`.
 - https://github.com/eclipse-syson/syson/issues/2034[#2034] [import] Fix textual import to be able to annotate `Relationships`.
 - https://github.com/eclipse-syson/syson/issues/2032[#2032] [export] Fix NPE when exporting `LiteralString`.
+- https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] Backslashes need to be escaped during textual export in `LiteralString`.
 
 === Improvements
 

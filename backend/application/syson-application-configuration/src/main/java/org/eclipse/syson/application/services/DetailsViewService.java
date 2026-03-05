@@ -71,6 +71,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
 import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
 
 /**
@@ -590,7 +591,13 @@ public class DetailsViewService {
         Expression value = featureValue.getValue();
         String result = "";
         if (value != null) {
-            String textualFormat = new SysMLElementSerializer("\n", "\t", new FileNameDeresolver(), s -> {
+            SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
+                    .lineSeparator("\n")
+                    .nameDeresolver(new FileNameDeresolver())
+                    .indentation("\t")
+                    .needEscapeCharacter(false)
+                    .build();
+            String textualFormat = new SysMLElementSerializer(options, s -> {
                 // Do nothing for now
             }).doSwitch(value);
             if (textualFormat != null) {
