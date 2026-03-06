@@ -87,6 +87,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,6 +103,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Arthur Daussy
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ImportSysMLModelTest extends AbstractIntegrationTests {
@@ -125,6 +127,8 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     private IProjectEditingContextService projectToEditingContext;
 
     private SysMLv2SemanticImportChecker checker;
+
+    private final MetamodelQueryElementService metamodelService = new MetamodelQueryElementService();
 
     private String projectId;
 
@@ -171,7 +175,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part l : Logical {
                         part :>> component;
                     }
-
+                
                     part c2  = l.component.component2;
                 }""";
         this.checker.checkImportedModel(resource -> {
@@ -179,6 +183,27 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(featureChainings).hasSize(2); // component.component2
             // "component" should to "p1::l::component" and not to "p1::Logical::component"
             assertThat(featureChainings.get(0).getChainingFeature().getQualifiedName()).isEqualTo("p1::l::component");
+        }).check(input);
+    }
+
+    @DisplayName("Given LiteralString with escaped characters, WHEN importing the model, THEN the extra backlash is removed")
+    @Test
+    public void removeExtraBacklash() throws IOException {
+        var input = """
+                package pk1 {
+                      part part1 {
+                          attribute a1 = "A \\\\ B";
+                          attribute a2 = "A \\n a";
+                          attribute a3 = "A \\t a";
+                          attribute a4 = "A \n a";
+                      }
+                }""";
+        this.checker.checkImportedModel(resource -> {
+
+            this.assertLiteralStringValue("A \\ B", this.getByName(AttributeUsage.class, resource, "a1"));
+            this.assertLiteralStringValue("A \\n a", this.getByName(AttributeUsage.class, resource, "a2"));
+            this.assertLiteralStringValue("A \\t a", this.getByName(AttributeUsage.class, resource, "a3"));
+            this.assertLiteralStringValue("A \n a", this.getByName(AttributeUsage.class, resource, "a4"));
         }).check(input);
     }
 
@@ -214,7 +239,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part def B {
                         part x : A [0..*];
                     }
-
+                
                    part y : B {
                         x :>> x; // The second x should point B::x, not to y::x
                    }
@@ -248,7 +273,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         action a12; // Composite because no "ref" keyword
                         succession suc1 first a11 then a12; // Referential because is a Connector
                     }
-
+                
                     use case def ucd_1 {
                         objective c; // Composite because no "ref" keyword
                         subject subject_1; // Ref because ReferenceUsage
@@ -426,7 +451,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pa1 {
                     part pa1;
                     part pa2;
-
+                
                     connect pa1 to pa2;
                 }
                 """;
@@ -452,7 +477,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute y : ScalarValues::String;
                         :> annotatedElement : SysML::PartUsage;
                     }
-
+                
                     #MD1 part p1;
                     part p2 {
                         @MD1 {
@@ -463,7 +488,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     metadata MD1 about p3;
                     part p4;
                     metadata m1 : MD1 about p4;
-
+                
                     #MD2 part p5;
                 }""";
         this.checker.checkImportedModel(resource -> {
@@ -516,17 +541,17 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkSemanticMetadataDefinition() throws IOException {
         var input = """
                 private import Metaobjects::SemanticMetadata;
-
+                
                 part def Functions {
                     attribute x : ScalarValues::String;
                 }
-
+                
                 part functions : Functions [*] nonunique;
-
+                
                 metadata def Function :> SemanticMetadata {
                     :>> baseType = functions meta SysML::ActionUsage;
                 }
-
+                
                 #Function action a0;
                 action a1;
                 metadata Function about a1;
@@ -613,7 +638,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package pk1 {
                     action a1 {
                         in item i1;
-
+                
                         action a11 {
                             in item i11;
                         }
@@ -678,11 +703,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkFeatureChainExpressionNameResolution() throws IOException {
         var input = """
                 action def P1 {
-
+                
                     action def A2 {
                         out pr2 : ScalarValues::Boolean;
                     }
-
+                
                     action a2 : A2 {
                          out pr2;
                     }
@@ -734,11 +759,11 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                     part def P1 {
                         isValid : ScalarValues::Boolean;
                     }
-
+                
                     action def A2 {
                         out prA2 : P1;
                     }
-
+                
                     action a2 : A2 {
                         out pra2;
                     }
@@ -1039,7 +1064,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-
+                
                 state myState {
                     state off;
                     accept StartSignal then on;
@@ -1064,7 +1089,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     public void checkTransitionUsageWithAcceptActionUsageAndSendSignalActionTest() throws IOException {
         var input = """
                 attribute def StartSignal;
-
+                
                 state myState {
                     state off;
                     accept StartSignal
@@ -1169,7 +1194,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                         attribute upper:ScalarValues::Integer = 2;
                     }
                 }
-
+                
                 part myPart[bounds::lower..bounds::upperBounds::upper];
                 """;
         this.checker.checkImportedModel(resource -> {
@@ -1226,7 +1251,7 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 package Package1 {
                     attribute def Sig ;
                     part p;
-
+                
                     state state1 {
                         state s2;
                         state s3;
@@ -1295,5 +1320,15 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
         assertThat(valuation.getValue())
                 .isNotNull()
                 .matches(v -> v instanceof LiteralString vString && expectedValue.equals(vString.getValue()), "The feature should have a Literal String with value " + expectedValue);
+    }
+
+    private void assertLiteralStringValue(String expected, Feature f) {
+        Optional<Expression> valueExpression = this.metamodelService.getValueExpression(f);
+        assertThat(valueExpression)
+                .isPresent();
+        assertThat(valueExpression.get())
+                .isInstanceOf(LiteralString.class)
+                .extracting(e -> ((LiteralString) e).getValue())
+                .isEqualTo(expected);
     }
 }

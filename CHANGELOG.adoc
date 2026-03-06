@@ -78,6 +78,7 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/2034[#2034] [import] Fix textual import to be able to annotate `Relationships`.
 - https://github.com/eclipse-syson/syson/issues/2032[#2032] [export] Fix NPE when exporting `LiteralString`.
 - https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] Backslashes need to be escaped during textual export in `LiteralString`.
+- https://github.com/eclipse-syson/syson/issues/2039[#2039] [import] Import should unescape backslash in `LiteralString`.
 
 === Improvements
 
