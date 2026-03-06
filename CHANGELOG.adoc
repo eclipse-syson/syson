@@ -53,11 +53,19 @@ And the following methods have been added:
 
 - https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] `org.eclipse.syson.sysml.textual.SysMLElementSerializer` now takes a `org.eclipse.syson.sysml.textual.SysMLSerializingOptions` as parameter that gather all serializing options.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [explorer] As a consequence of a Sirius Web change, some SysON _Explorer_ APIs have been updated:
+
+**`org.eclipse.syson.tree.explorer.services.api.ISysONDefaultExplorerService` has a new `String getTreeItemTooltip(Object self);` method to provide tooltip for tree items in the explorer.
+**`org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService` has a new `String getTreeItemTooltip(Object self);` method to provide tooltip for tree items in the explorer.
+**`org.eclipse.syson.tree.explorer.services.api.ISysONExplorerServiceDelegate` has a new `String getTreeItemTooltip(Object self);` method to provide tooltip for tree items in the explorer.
+** `org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment` has a new `String getTooltip(Object self);` method to provide tooltip for tree items in the explorer.
+
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.3]
-- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.10[Spring Boot 3.5.10]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.4]
+- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Update to archunit-junit5 1.3.0
+- [releng] Update to @ObeoNetwork/gantt-task-react 0.6.3
 
 === Bug fixes
 

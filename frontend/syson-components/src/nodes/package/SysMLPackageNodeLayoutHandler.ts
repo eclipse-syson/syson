@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,12 +85,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
-    const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
-    const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const headerHeightFootprint: number = labelElement
-      ? getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP')
-      : 33;
-
+    const headerHeightFootprint: number = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
     const borderNodes: Node<NodeData, string>[] = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren: Node<NodeData, string>[] = directChildren.filter((child) => !child.data.isBorderNode);
 
