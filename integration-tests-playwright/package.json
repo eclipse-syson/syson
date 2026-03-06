@@ -4,7 +4,7 @@
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {
-    "@playwright/test": "1.55.0",
+    "@playwright/test": "1.57.0",
     "@types/node": "24.3.0",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",

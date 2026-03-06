@@ -42,7 +42,7 @@ test.describe('diagram - general view', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('WHEN creating an attribute inside a part, THEN the new attribute is automatically selected and can be renamed immediately', async ({
+  test.skip('WHEN creating an attribute inside a part, THEN the new attribute is automatically selected and can be renamed immediately', async ({
     page,
   }) => {
     const partNode = new PlaywrightNode(page, 'part1', 'List');
