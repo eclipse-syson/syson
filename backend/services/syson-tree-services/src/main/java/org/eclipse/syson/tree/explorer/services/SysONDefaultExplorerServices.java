@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -109,6 +112,24 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             id = this.explorerServices.getTreeItemId(self);
         }
         return id;
+    }
+
+    @Override
+    public String getTreeItemTooltip(Object self) {
+        String tooltip = "";
+        if (self instanceof ISysONExplorerFragment fragment) {
+            tooltip = fragment.getTooltip();
+        } else {
+            if (self instanceof RepresentationMetadata representationMetadata) {
+                String kind = representationMetadata.getKind();
+                tooltip = new URLParser().getParameterValues(kind).get("type").get(0);
+            } else if (self instanceof EObject eObject) {
+                EClass eClass = eObject.eClass();
+                EPackage ePackage = eClass.getEPackage();
+                tooltip = ePackage.getName() + "::" + eClass.getName();
+            }
+        }
+        return tooltip;
     }
 
     @Override

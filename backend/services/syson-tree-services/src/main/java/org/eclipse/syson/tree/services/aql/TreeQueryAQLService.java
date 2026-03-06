@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,10 @@ public class TreeQueryAQLService {
 
     public String getTreeItemId(Object self) {
         return this.sysonExplorerService.getTreeItemId(self);
+    }
+
+    public String getTreeItemTooltip(Object self) {
+        return this.sysonExplorerService.getTreeItemTooltip(self);
     }
 
     public String getKind(Object self) {
