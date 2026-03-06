@@ -103,7 +103,7 @@ export class PlaywrightNode {
   }
 
   async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right') {
-    const resizeAnchor = this.page.locator(`.react-flow__resize-control.${anchor}`);
+    const resizeAnchor = this.nodeLocator.locator(`.react-flow__resize-control.${anchor}`).first();
 
     const box = (await resizeAnchor.boundingBox())!;
     await resizeAnchor.hover();
@@ -127,9 +127,9 @@ export class PlaywrightNode {
   }
 
   async revealElement(name: string) {
-	await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
-	await expect(this.nodeLocator.getByTestId('manage-visibility')).toBeVisible();
+    await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await expect(this.nodeLocator.getByTestId('manage-visibility')).toBeVisible();
     await this.nodeLocator.getByTestId('manage-visibility').click();
-    await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click();
+    await this.page.getByTestId(`manage_visibility_list_item_button_${name}`).click({ force: true });
   }
 }

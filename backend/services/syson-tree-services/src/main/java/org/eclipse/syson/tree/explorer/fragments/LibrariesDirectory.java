@@ -50,6 +50,11 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
     }
 
     @Override
+    public String getTooltip() {
+        return this.label;
+    }
+
+    @Override
     public String getLabel() {
         return this.label;
     }

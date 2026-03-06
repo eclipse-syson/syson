@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,14 @@ import { type Locator, type Page } from '@playwright/test';
 export class PlaywrightLabel {
   readonly page: Page;
   readonly labelLocator: Locator;
+  readonly labelContentLocator: Locator;
 
   constructor(page: Page, label: string) {
     this.page = page;
-    this.labelLocator = page.locator(`[data-testid="Label - ${label}"]`);
+    this.labelLocator = page.locator(`[data-testid="Label - ${label}"]:not(#hidden-node-container *)`).first();
+    this.labelContentLocator = page
+      .locator(`[data-testid="Label content - ${label}"]:not(#hidden-node-container *)`)
+      .first();
   }
 
   async getFontSize() {

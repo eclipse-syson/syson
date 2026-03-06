@@ -45,7 +45,9 @@ public class EdgeReconnectionTester {
                 diagram.get().getId(),
                 edgeId,
                 newEdgeEnd,
-                reconnectEdgeKind);
+                reconnectEdgeKind,
+                0,
+                0);
         var createEdgeResult = this.reconnectEdgeMutationRunner.run(reconnectEdgeInput);
         var typename = JsonPath.read(createEdgeResult.data(), "$.data.reconnectEdge.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());

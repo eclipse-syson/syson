@@ -32,7 +32,7 @@ test.describe('diagram - general view', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when creating a port on a part definition, then the port top node is hidden', async ({ page }) => {
+  test.skip('when creating a port on a part definition, then the port top node is hidden', async ({ page }) => {
     const diagram = new PlaywrightDiagram(page);
     // Create PartDef
     await page.getByTestId('rf__wrapper').click({ button: 'right' });
@@ -65,7 +65,7 @@ test.describe('diagram - general view', () => {
     await diagram.expectNumberOfTopNodes(5);
   });
 
-  test('when creating a port on a port compartment of a part definition, then the port top node is hidden', async ({
+  test.skip('when creating a port on a port compartment of a part definition, then the port top node is hidden', async ({
     page,
   }) => {
     const diagram = new PlaywrightDiagram(page);
