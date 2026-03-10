@@ -13,7 +13,7 @@ This feature is currently considered experimental.
 Try it out and give feedback by reporting bugs and suggesting new features.
 It's not recommended for production use.
 
-* Downtream applications can now easily choose which SysML validation rules to apply, by providing an implementation of `ISysMLValidationRulesProvider`.
+* Downstream applications can now easily choose which SysML validation rules to apply, by providing an implementation of `ISysMLValidationRulesProvider`.
 They can also add their own SysML-based validation rules by returning additional `ISysMLValidationRule` instances.
 
 
@@ -158,6 +158,14 @@ package root {
 }
 ```
 ** Implement the textual export for `AllocationUsage` and `AllocationDefinition`.
+** A limitation has been identified regarding the size of the textual SysML model that can be imported.
+An explicit error message has been added to the upload report to help identify this issue.
++
+[WARNING]
+====
+Due to an API limitation, the upload may still appear to be successful, but the created document is empty.
+An error message is available in the upload report.
+====
 
 * In _Details_ view:
 

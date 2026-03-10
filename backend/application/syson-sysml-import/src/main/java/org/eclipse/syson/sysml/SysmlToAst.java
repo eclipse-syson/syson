@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,16 +14,23 @@ package org.eclipse.syson.sysml;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.eclipse.syson.sysml.textual.utils.Severity;
+import org.eclipse.syson.sysml.textual.utils.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,13 +55,16 @@ public class SysmlToAst {
         this.cliPath = cliPath;
     }
 
-    public InputStream convert(final InputStream input, final String fileExtension) {
-        InputStream output = null;
+    public AstParsingResult convert(final InputStream input, final String fileExtension) {
+        Path sysmlInputPath = null;
+        Path sysIdeInputPath = null;
+        Optional<InputStream> astInputStream = Optional.empty();
+        List<Status> reports = new ArrayList<>();
 
         try {
-            final Path sysmlInputPath = this.createTempFile(input, "syson", fileExtension);
+            sysmlInputPath = this.createTempFile(input, "syson", fileExtension);
 
-            Path sysIdeInputPath = null;
+
             if (this.cliPath != null) {
                 sysIdeInputPath = Path.of(this.cliPath);
             } else {
@@ -64,47 +74,115 @@ public class SysmlToAst {
                 sysIdeInputPath = this.createTempFile(sysIdeInputStream, "syside-cli", "js");
             }
 
-            this.logger.info("Call syside application : node " + sysIdeInputPath.toString() + " dump " + sysmlInputPath.toString());
+            this.logger.info("Call syside application : node " + sysIdeInputPath + " dump " + sysmlInputPath);
             final String[] args = { "node", sysIdeInputPath.toString(), "dump", sysmlInputPath.toString() };
             ProcessBuilder pb = new ProcessBuilder(args);
-            pb = pb.redirectErrorStream(false);
             final Process sysIdeProcess = pb.start();
-            final InputStream is = sysIdeProcess.getInputStream();
-            final InputStreamReader isr = new InputStreamReader(is);
-            final BufferedReader br = new BufferedReader(isr);
-            final StringBuilder builder = new StringBuilder();
 
-            String line = br.readLine();
-            if (line != null) {
-                while (!line.contains("{")) {
-                    line = br.readLine();
-                }
-                builder.append(line);
-                while ((line = br.readLine()) != null) {
-                    builder.append(line);
+
+            CompletableFuture<String> stdoutFuture = this.readStdOut(sysIdeProcess, reports);
+            CompletableFuture<String> stderrFuture = this.readStdErr(sysIdeProcess, reports);
+
+            this.handleStdError(stderrFuture.join(), reports);
+            boolean finished = sysIdeProcess.waitFor(60, TimeUnit.SECONDS);
+
+            if (finished) {
+                String stdout = stdoutFuture.join();
+                int exitCode = sysIdeProcess.exitValue();
+                if (exitCode == 0) {
+                    astInputStream = Optional.of(new ByteArrayInputStream(stdout.getBytes()));
+                } else {
+                    this.logger.error("The process that parse the SysML file ended with an error core : {}", exitCode);
                 }
             } else {
-                final InputStream er = sysIdeProcess.getErrorStream();
-                final InputStreamReader err = new InputStreamReader(er);
-                final BufferedReader erbr = new BufferedReader(err);
-                this.logger.error("Fail to call syside application : \n " + erbr.lines().collect(Collectors.joining("\n")));
+                reports.add(new Status(Severity.ERROR, "Process timed out : The upload process was canceled."));
+                sysIdeProcess.destroyForcibly();
             }
 
-            output = new ByteArrayInputStream(builder.toString().getBytes());
-
-            sysmlInputPath.toFile().delete();
+        } catch (final IOException | InterruptedException e) {
+            this.logger.error(e.getMessage());
+        } finally {
+            if (sysmlInputPath != null) {
+                sysmlInputPath.toFile().delete();
+            }
             if (this.cliPath == null) {
                 sysIdeInputPath.toFile().delete();
             }
-
-        } catch (final IOException e) {
-            this.logger.error(e.getMessage());
         }
+        return new AstParsingResult(astInputStream, reports);
 
-        return output;
+
     }
 
-    private Path createTempFile(final InputStream input, final String fileName, final String fileExtension) throws IOException, FileNotFoundException {
+    private CompletableFuture<String> readStdErr(Process sysIdeProcess, List<Status> messages) {
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        return this.readStream(sysIdeProcess.getErrorStream());
+                    } catch (IOException e) {
+                        this.logger.error("Error while reading AST : " + e.getMessage(), e);
+                        messages.add(new Status(Severity.ERROR, "Error while building AST on stdErr."));
+                        return "";
+                    }
+                });
+    }
+
+    private CompletableFuture<String> readStdOut(Process sysIdeProcess, List<Status> messages) {
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        return this.readAstStream(sysIdeProcess.getInputStream());
+                    } catch (IOException e) {
+                        this.logger.error("Error while reading AST : " + e.getMessage(), e);
+                        messages.add(new Status(Severity.ERROR, "Error while building AST on stdOut."));
+                        return "";
+                    }
+                });
+    }
+
+    private void handleStdError(String stderr, List<Status> reports) {
+        if (stderr != null && !stderr.isBlank()) {
+            this.logger.error("AST parsing errors :" + System.lineSeparator() + stderr);
+
+            if (stderr.contains("JSON.stringify")) {
+                // This case occurs when the provided JSon file is too big
+                reports.add(new Status(Severity.ERROR, "Error: File size exceeds limit : The selected SysML file is too large to be processed by SysON." +
+                        " Please optimize the model or split it into smaller sub-packages and try again."));
+            } else {
+                reports.add(new Status(Severity.ERROR, "An unhandled exception has occurred during file parsing. Contact your administrator."));
+            }
+        }
+    }
+
+    private String readStream(InputStream stream) throws IOException {
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            return reader.lines()
+                    .collect(Collectors.joining(System.lineSeparator()));
+        }
+    }
+
+    private String readAstStream(InputStream stream) throws IOException {
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            StringBuilder builder = new StringBuilder();
+            String line = reader.readLine();
+            if (line != null) {
+                while (line != null && !line.contains("{")) {
+                    line = reader.readLine();
+                }
+                if (line != null) {
+                    builder.append(line);
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
+                    }
+                }
+            }
+            return builder.toString();
+        }
+    }
+
+    private Path createTempFile(final InputStream input, final String fileName, final String fileExtension) throws IOException {
         final Path inputPath = Files.createTempFile(fileName, "." + fileExtension);
         final OutputStream outStream = new FileOutputStream(inputPath.toString());
         final byte[] buffer = new byte[8 * 1024];

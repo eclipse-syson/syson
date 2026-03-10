@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.imports;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.web.application.document.services.LoadingReport;
 import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
@@ -39,6 +41,8 @@ public class SysMLv2SemanticImportChecker {
     private final SysMLExternalResourceLoaderService sysmlResourceLoader;
 
     private final List<Consumer<Resource>> semanticCheckers = new ArrayList<>();
+
+    private final List<String> expectedErrorMessages = new ArrayList<>();
 
     private final EditingContext editingContext;
 
@@ -58,10 +62,20 @@ public class SysMLv2SemanticImportChecker {
             assertTrue(optExternalResourceLoadingResult.isPresent());
 
             ExternalResourceLoadingResult externalResourceLoadingResult = optExternalResourceLoadingResult.get();
+            if (!this.expectedErrorMessages.isEmpty()) {
+                LoadingReport report = (LoadingReport) externalResourceLoadingResult.loadingReport();
+                assertThat(report.content()).isEqualTo(this.expectedErrorMessages);
+            }
+
             for (Consumer<Resource> checker : this.semanticCheckers) {
                 checker.accept(externalResourceLoadingResult.resource());
             }
         }
+    }
+
+    public SysMLv2SemanticImportChecker addExpectedReportMessage(String report) {
+        this.expectedErrorMessages.add(report);
+        return this;
     }
 
     public SysMLv2SemanticImportChecker checkImportedModel(Consumer<Resource> checker) {

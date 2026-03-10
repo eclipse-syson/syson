@@ -139,6 +139,7 @@ Add a few simple unit tests to help maintain this enumeration.
 Add possibility for validation rules to specify their severity ; the SysML rules from the specification remain as WARNINGs for now.
 Tweak the diagnostic messages to help users understand where the erroneous element is in their editing context.
 Make sure diagnostics are sorted according to their validated element and its containing document.
+- https://github.com/eclipse-syson/syson/issues/2042[#2042] [import] Improve error reporting while uploading a document.
 
 === New features
 
