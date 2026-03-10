@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.dto;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlToAst;
+import org.eclipse.syson.sysml.textual.utils.Status;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -82,21 +84,18 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
         IPayload payload = null;
 
         if (input instanceof InsertTextualSysMLv2Input insertTextualInput && editingContext instanceof IEMFEditingContext emfEditingContext) {
+            messages = new ArrayList<>();
             var parentObjectId = insertTextualInput.objectId();
             var parentElement = this.getParentElement(parentObjectId, emfEditingContext);
             if (parentElement != null) {
-                var tranformer = new ASTTransformer();
-                var newObjects = this.convert(insertTextualInput, emfEditingContext, tranformer, parentElement);
+                var transformer = new ASTTransformer();
+                var newObjects = this.convert(insertTextualInput, emfEditingContext, transformer, parentElement, messages);
+                messages.addAll(transformer.getTransformationMessages());
                 if (!newObjects.isEmpty()) {
-                    messages = tranformer.getTransformationMessages();
                     payload = new SuccessPayload(input.id(), messages);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 } else {
-                    if (!tranformer.getTransformationMessages().isEmpty()) {
-                        messages = tranformer.getTransformationMessages();
-                    } else {
-                        messages = List.of(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
-                    }
+                    messages.add(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
                 }
             }
         }
@@ -120,12 +119,33 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
         return null;
     }
 
-    private List<Element> convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer tranformer, Element parentElement) {
+    private List<Element> convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer transformer, Element parentElement, List<Message> messages) {
         var textualContent = insertTextualInput.textualContent();
         var resourceSet = emfEditingContext.getDomain().getResourceSet();
         var inputStream = new ByteArrayInputStream(textualContent.getBytes());
-        var astStream = this.sysmlToAst.convert(inputStream, ".sysml");
-        var newObjects = tranformer.convertToElements(astStream, resourceSet, parentElement);
-        return newObjects;
+        var astParsingResult = this.sysmlToAst.convert(inputStream, ".sysml");
+        messages.addAll(astParsingResult.reports().stream()
+                .map(this::toMessage)
+                .filter(Objects::nonNull)
+                .toList());
+        if (astParsingResult.ast().isPresent()) {
+            return transformer.convertToElements(astParsingResult.ast().get(), resourceSet, parentElement);
+        } else {
+            return List.of();
+        }
+    }
+
+    private Message toMessage(Status status) {
+        MessageLevel msgLevel = switch (status.severity()) {
+            case INFO -> MessageLevel.INFO;
+            case WARNING -> MessageLevel.WARNING;
+            case ERROR -> MessageLevel.ERROR;
+            default -> null;
+        };
+        if (msgLevel != null) {
+            return new Message(status.message(), msgLevel);
+        } else {
+            return null;
+        }
     }
 }

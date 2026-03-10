@@ -319,6 +319,22 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("GIVEN a really big SysML model, WHEN importing that model, THEN the import fails but a error message is returned")
+    public void checkBigSysmlFileFailure() throws IOException {
+
+        final StringBuilder builder = this.generateInDepthSysmlStructure(3000, 20);
+
+        String input = builder.toString();
+        this.checker.addExpectedReportMessage("[ERROR] Error: File size exceeds limit : The selected SysML file is too large to be processed by SysON." +
+                        " Please optimize the model or split it into smaller sub-packages and try again.")
+                .checkImportedModel(resource -> {
+                    assertThat(resource.getContents()).isEmpty();
+                })
+                .check(input);
+    }
+
+
+    @Test
     @DisplayName("GIVEN of model with redefinition depending on inherited memberships computation, WHEN importing the model, THEN redefined feature should resolve properly using inherited " +
             "memberships")
     public void checkRedefinedFeatureToInheritedFields() throws IOException {
@@ -1330,5 +1346,23 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
                 .isInstanceOf(LiteralString.class)
                 .extracting(e -> ((LiteralString) e).getValue())
                 .isEqualTo(expected);
+    }
+
+    private void generateInDepthSysmlStructure(StringBuilder builder, int prefix, int level, int maxDepth) {
+        builder.append("\t".repeat(level)).append("package pack_").append(prefix).append("_").append(level).append("{").append(System.lineSeparator());
+        builder.append("\t".repeat(level)).append("    part part_").append(prefix).append("_").append(level).append(";").append(System.lineSeparator());
+
+        if (level < maxDepth) {
+            this.generateInDepthSysmlStructure(builder, prefix, level + 1, maxDepth);
+        }
+        builder.append("\t".repeat(level)).append("}").append(System.lineSeparator());
+    }
+
+    private StringBuilder generateInDepthSysmlStructure(int width, int depth) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < width; i++) {
+            this.generateInDepthSysmlStructure(builder, i, 0, depth);
+        }
+        return builder;
     }
 }

@@ -18,17 +18,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.web.application.document.services.LoadingReport;
 import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
+import org.eclipse.syson.sysml.AstParsingResult;
 import org.eclipse.syson.sysml.SysmlToAst;
+import org.eclipse.syson.sysml.textual.utils.Status;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,15 +78,25 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     @Override
     public Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
-        InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
-        ASTTransformer transformer = new ASTTransformer();
-        Resource resource = transformer.convertResource(astStream, resourceSet);
-        if (resource != null) {
-            ElementUtil.setIsImported(resource, true);
-            resourceSet.getResources().add(resource);
+        AstParsingResult astResult = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
+
+        List<String> reports = new ArrayList<>(astResult.reports().stream().map(Status::toString).toList());
+        final Resource resource;
+        if (astResult.ast().isPresent()) {
+            ASTTransformer transformer = new ASTTransformer();
+            resource = transformer.convertResource(astResult.ast().get(), resourceSet);
+            if (resource != null) {
+                ElementUtil.setIsImported(resource, true);
+                resourceSet.getResources().add(resource);
+            }
+            reports.addAll(transformer.logTransformationMessages());
+
+        } else {
+            // It seems there is a problem in the API, to be able to report an error, we need a resource.
+            // https://github.com/eclipse-sirius/sirius-web/issues/6281
+            resource = new JSONResourceFactory().createResourceFromPath(null);
         }
-        var loadingReport = new LoadingReport(transformer.logTransformationMessages());
-        var result = new ExternalResourceLoadingResult(resource, loadingReport);
-        return Optional.ofNullable(result);
+        return Optional.of(new ExternalResourceLoadingResult(resource, new LoadingReport(reports)));
+
     }
 }

@@ -28,7 +28,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.ASTTransformer;
+import org.eclipse.syson.sysml.AstParsingResult;
 import org.eclipse.syson.sysml.SysmlToAst;
+import org.eclipse.syson.sysml.textual.utils.Status;
 
 /**
  * Converts a SyML file to its XMI representation using SysON import.
@@ -89,23 +91,33 @@ public class SysMLFileToXMIModel {
         SysmlToAst sysmlToAst = new SysmlToAst(null);
         ASTTransformer astTransformer = new ASTTransformer();
         try (InputStream inputStream = new FileInputStream(sysmlFile)) {
-            InputStream astStream = sysmlToAst.convert(inputStream, "sysml");
-            Resource resource = astTransformer.convertResource(astStream, resourceSet);
+            AstParsingResult astResult = sysmlToAst.convert(inputStream, "sysml");
 
-            if (resource != null && !resource.getContents().isEmpty()) {
-                System.out.println("Model parsed successfully.");
-                XMIResource resourceToSave = new XMIResourceImpl(URI.createFileURI(targetFilePath));
-                resourceToSave.getContents().addAll(resource.getContents());
-                resourceToSave.save(Collections.emptyMap());
-                if (!astTransformer.getTransformationMessages().isEmpty()) {
-                    final String errorMessage = astTransformer.getTransformationMessages().stream()
-                            .map(message -> message.level().toString() + " - " + message.body())
-                            .collect(Collectors.joining("\n", "\n", "\n"));
-                    System.err.println("Error while parsing input file : " + errorMessage);
+            if (!astResult.reports().isEmpty()) {
+                final String errorMessage = astResult.reports().stream()
+                        .map(Status::toString)
+                        .collect(Collectors.joining(System.lineSeparator(), System.lineSeparator(), System.lineSeparator()));
+                System.err.println("[AST] while parsing input file : " + errorMessage);
+            }
+
+            if (astResult.ast().isPresent()) {
+                Resource resource = astTransformer.convertResource(astResult.ast().get(), resourceSet);
+
+                if (resource != null && !resource.getContents().isEmpty()) {
+                    System.out.println("Model parsed successfully.");
+                    XMIResource resourceToSave = new XMIResourceImpl(URI.createFileURI(targetFilePath));
+                    resourceToSave.getContents().addAll(resource.getContents());
+                    resourceToSave.save(Collections.emptyMap());
+                } else {
+                    System.err.println("Failed to parse resource or resource is empty.");
                 }
+            }
 
-            } else {
-                System.err.println("Failed to parse resource or resource is empty.");
+            if (!astTransformer.getTransformationMessages().isEmpty()) {
+                final String errorMessage = astTransformer.getTransformationMessages().stream()
+                        .map(message -> message.level().toString() + " - " + message.body())
+                        .collect(Collectors.joining(System.lineSeparator(), System.lineSeparator(), System.lineSeparator()));
+                System.err.println("Error while parsing input file : " + errorMessage);
             }
         }
     }
