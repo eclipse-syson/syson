@@ -175,7 +175,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseFeature(Feature object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.add(this.edgeToolService.createSatisfyRequirementEdgeTool(this.allNodeDescriptions));
+        edgeTools.add(this.edgeToolService.createSatisfyRequirementEdgeTool());
         return edgeTools;
     }
 

@@ -17,7 +17,10 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.EDGE_STYLE;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +32,8 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -36,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -103,6 +109,9 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private DiagramComparator diagramComparator;
+
+    @Autowired
+    private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -333,7 +342,8 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        String satisfyEdgeToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Satisfy Requirement");
+        var satisfyEdgeToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Satisfy Requirement");
+
         Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdge(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
                 PART_LABEL,
@@ -362,7 +372,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                     .hasToString(LabelConstants.OPEN_QUOTE + LabelConstants.SATISFY + LabelConstants.CLOSE_QUOTE);
         });
 
-        ISemanticChecker semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(PART_LABEL, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
+        var semanticChecker = semanticCheckerService.getElementInParentSemanticChecker(PART_LABEL, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
                 SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
 
         Runnable editingContextChecker = semanticCheckerService.checkEditingContext(semanticChecker);
@@ -372,6 +382,50 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 .then(creationToolRunnable)
                 .consumeNextWith(diagramChecker)
                 .then(editingContextChecker)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a General View with a PartUsage and an ActionUsage, WHEN linking the PartUsage and the ActionUsage with Satisfy tool, THEN it should not be possible")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void doNotCreateSatisfyEdge() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var satisfyEdgeToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Satisfy Requirement");
+
+        Runnable creationToolRunnable = () -> this.edgeCreationTester.createEdge(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                PART_LABEL,
+                "requirement",
+                satisfyEdgeToolId);
+
+        var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
+                UUID.randomUUID(),
+                GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID,
+                GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID,
+                0,
+                0,
+                0,
+                0,
+                satisfyEdgeToolId,
+                new ArrayList<>());
+        var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
+        String typename = JsonPath.read(createEdgeResult.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(creationToolRunnable)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
