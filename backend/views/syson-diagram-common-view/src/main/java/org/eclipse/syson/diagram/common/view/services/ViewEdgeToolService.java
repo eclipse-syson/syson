@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -591,8 +592,8 @@ public class ViewEdgeToolService {
 
     public EdgeTool createIncludeUseCaseUsageTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
-        String useCaseUsageNodeName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage());
-        var useCaseUsageNode = targetElementDescriptions.stream()
+        var useCaseUsageNodeName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage());
+        var useCaseUsageNodeDescription = targetElementDescriptions.stream()
                 .filter(nd -> useCaseUsageNodeName.equals(nd.getName()))
                 .findFirst().get();
 
@@ -602,7 +603,7 @@ public class ViewEdgeToolService {
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getIncludeUseCaseUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getIncludeUseCaseUsage().getName() + SVG)
                 .body(body.build())
-                .targetElementDescriptions(useCaseUsageNode)
+                .targetElementDescriptions(useCaseUsageNodeDescription)
                 .build();
     }
 
@@ -636,16 +637,29 @@ public class ViewEdgeToolService {
                 .build();
     }
 
-    public EdgeTool createSatisfyRequirementEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    public EdgeTool createSatisfyRequirementEdgeTool() {
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(
                         ServiceMethod.of1(ModelMutationAQLService::createSatisfy).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
 
+        var targetNodeDescriptions = new ArrayList<NodeDescription>();
+        var requirementUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> requirementUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
+        var satisfyRequirementUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> satisfyRequirementUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSatisfyRequirementUsage().getName() + SVG)
                 .body(body.build())
-                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
 }
