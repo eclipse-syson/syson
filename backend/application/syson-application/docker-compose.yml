@@ -13,6 +13,7 @@ services:
     ports:
       - '8080:8080'
     environment:
+      SIRIUS_COMPONENTS_DIAGRAM_DEBUG: true
       SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
       SPRING_DATASOURCE_USERNAME: test_username
       SPRING_DATASOURCE_PASSWORD: test_password
