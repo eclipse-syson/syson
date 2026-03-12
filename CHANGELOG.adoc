@@ -95,7 +95,7 @@ It now follows the same rule than all other graphical node: if a compartment tha
 - https://github.com/eclipse-syson/syson/issues/1990[#1990] [diagrams] Fix the `EnumerationDefinition` graphical node compartment name to follow the SysMLv2 specification.
 - https://github.com/eclipse-syson/syson/issues/2049[#2049] [diagrams] Fix the direct edit and the display of `ends` graphical node elements inside the _ends_ compartment.
 Now the _end_ keyword is not displayed anymore in the label of these graphical nodes, and the direct edit only allows to edit the name of the end instead of the full label which was confusing for users.
-
+- https://github.com/eclipse-syson/syson/issues/2054[#2054] [diagrams] Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
 
 === Improvements
 

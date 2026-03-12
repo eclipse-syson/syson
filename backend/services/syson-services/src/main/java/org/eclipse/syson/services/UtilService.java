@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
@@ -601,7 +602,7 @@ public class UtilService {
      * @return the standard start ActionUsage defined in the <code>Actions</code> library.
      */
     public ActionUsage retrieveStandardStartAction(Element eObject) {
-        return this.findByName(eObject, "Actions::Action::start");
+        return this.findByNameAndTypeInStandardLibraries(eObject, ActionUsage.class, "Actions::Action::start");
     }
 
     /**
@@ -613,7 +614,17 @@ public class UtilService {
      * @return the standard done ActionUsage defined in the <code>Actions</code> library.
      */
     public ActionUsage retrieveStandardDoneAction(Element eObject) {
-        return this.findByName(eObject, "Actions::Action::done");
+        return this.findByNameAndTypeInStandardLibraries(eObject, ActionUsage.class, "Actions::Action::done");
+    }
+
+    private <T extends Element> T findByNameAndTypeInStandardLibraries(Element context, Class<T> klass, String qualifiedName) {
+        return context.eResource().getResourceSet().getResources().stream()
+                .flatMap(resource -> this.getLibraries(resource, true).stream())
+                .flatMap(stdlibPackage -> Optional.ofNullable(this.findByName(stdlibPackage, qualifiedName)).stream())
+                .filter(klass::isInstance)
+                .map(klass::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
