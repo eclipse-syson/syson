@@ -29,21 +29,24 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
 
     private final EReference eReference;
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     private final FeatureDirectionKind featureDirectionKind;
 
-    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator nameGenerator) {
-        this(eReference, nameGenerator, null);
+    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator descriptionNameGenerator) {
+        this(eReference, descriptionNameGenerator, null);
     }
 
-    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator nameGenerator, FeatureDirectionKind featureDirectionKind) {
+    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator descriptionNameGenerator, FeatureDirectionKind featureDirectionKind) {
         super();
         this.eReference = eReference;
-        this.nameGenerator = nameGenerator;
+        this.descriptionNameGenerator = descriptionNameGenerator;
         this.featureDirectionKind = featureDirectionKind;
     }
 
+    public IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
+    }
 
     @Override
     protected String getServiceCallExpression() {
@@ -57,7 +60,7 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
 
     @Override
     protected String getNodeToolName() {
-        var toolLabel = this.nameGenerator.getCreationToolName(this.eReference);
+        var toolLabel = this.descriptionNameGenerator.getCreationToolName(this.eReference);
         if (this.featureDirectionKind != null) {
             toolLabel += ' ' + StringUtils.capitalize(this.featureDirectionKind.getLiteral());
         }

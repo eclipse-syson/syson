@@ -817,6 +817,9 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider,
                         this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider,
                         this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
