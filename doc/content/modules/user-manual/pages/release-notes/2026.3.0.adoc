@@ -24,6 +24,8 @@ They can also add their own SysML-based validation rules by returning additional
 ** Fix an issue where some type of `Elements` could appear in the wrong compartment if they shared a common type with said compartment, for example `ViewUsage` elements could appear in the _parts_ compartment since they extends `PartUsage`.
 ** Allow redefining a `PartUsage` with the same name as the redefined `Usage`.
 ** Fix an issue where `ConnectionDefinition` graphical nodes where incorrectly labelled as `«part def»` instead of `«connection def»`.
+** Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
+
 
 * In textual import/export:
 

@@ -82,11 +82,12 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/1863[#1863] [diagrams] Dropping an elements on a diagram which is already visible gives feedback again.
 - https://github.com/eclipse-syson/syson/issues/2026[#2026] [explorer] Fix an issue where creating a new model using the _Create a new model_ action in the _Explorer_ view was not adding the ".sysml" extension to the model name.
 - https://github.com/eclipse-syson/syson/issues/1998[#1998] [metamodel] Missing implicit TypeFeaturing.
-- https://github.com/eclipse-syson/syson/issues/2023[#2023] [diagrans] On diagrams, `ConnectionDefinition` graphical nodes are now correctly labelled as `«connection def»`.
+- https://github.com/eclipse-syson/syson/issues/2023[#2023] [diagrams] On diagrams, `ConnectionDefinition` graphical nodes are now correctly labelled as `«connection def»`.
 - https://github.com/eclipse-syson/syson/issues/2034[#2034] [import] Fix textual import to be able to annotate `Relationships`.
 - https://github.com/eclipse-syson/syson/issues/2032[#2032] [export] Fix NPE when exporting `LiteralString`.
 - https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] Backslashes need to be escaped during textual export in `LiteralString`.
 - https://github.com/eclipse-syson/syson/issues/2039[#2039] [import] Import should unescape backslash in `LiteralString`.
+- https://github.com/eclipse-syson/syson/issues/2054[#2054] [diagrams] Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
 
 === Improvements
 
