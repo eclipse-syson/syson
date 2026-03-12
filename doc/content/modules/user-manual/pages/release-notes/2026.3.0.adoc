@@ -25,6 +25,7 @@ They can also add their own SysML-based validation rules by returning additional
 ** Allow redefining a `PartUsage` with the same name as the redefined `Usage`.
 ** Fix an issue where `ConnectionDefinition` graphical nodes where incorrectly labelled as `«part def»` instead of `«connection def»`.
 ** Fix an issue where it was possible to create a `SatisfyRequirementUsage` from the `SatisfyRequirementUsage` graphical edge tool with a target that is not a `RequirementUsage`.
+** Fix an issue where it was not possible to drag and drop a `LibraryPackage` from the _Explorer_ to a diagram.
 
 * In textual import/export:
 

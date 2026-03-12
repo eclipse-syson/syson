@@ -88,6 +88,7 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/2037[#2037] [export] Backslashes need to be escaped during textual export in `LiteralString`.
 - https://github.com/eclipse-syson/syson/issues/2039[#2039] [import] Import should unescape backslash in `LiteralString`.
 - https://github.com/eclipse-syson/syson/issues/2052[#2052] [diagrams] Fix an issue where it was possible to create a `SatisfyRequirementUsage` from the `SatisfyRequirementUsage` graphical edge tool with a target that is not a `RequirementUsage`.
+- https://github.com/eclipse-syson/syson/issues/2031[#2031] [diagrams] Fix an issue where it was not possible to drag and drop a `LibraryPackage` from the _Explorer_ to a diagram.
 
 === Improvements
 

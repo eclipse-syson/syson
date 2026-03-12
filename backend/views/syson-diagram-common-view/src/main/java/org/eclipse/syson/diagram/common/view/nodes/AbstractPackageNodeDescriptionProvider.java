@@ -212,7 +212,6 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
             nodesWithoutSection.add(this.createNodeTool(docNodeDesc, SysmlPackage.eINSTANCE.getDocumentation()));
         });
 
-
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())

@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expose;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.MembershipExpose;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
@@ -684,6 +685,9 @@ public class ViewNodeService {
      *         <code>false</code> otherwise.
      */
     protected boolean isTypeOf(Element element, EClass domainType) {
+        if (element instanceof LibraryPackage) {
+            return Objects.equals(SysmlPackage.eINSTANCE.getPackage(), domainType);
+        }
         return element != null && Objects.equals(element.eClass(), domainType);
     }
 }

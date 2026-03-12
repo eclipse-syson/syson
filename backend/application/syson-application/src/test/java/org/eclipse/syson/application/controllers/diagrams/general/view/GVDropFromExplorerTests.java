@@ -28,6 +28,8 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
+import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -36,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
@@ -44,6 +47,8 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramE
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.DropFromExplorerTester;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
+import org.eclipse.syson.application.services.SysMLv2EditService;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -104,12 +109,22 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     @Autowired
     private DiagramComparator diagramComparator;
 
+    @Autowired
+    private CreateChildMutationRunner createChildMutationRunner;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
                 GeneralViewAddExistingElementsTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToEmptyDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
@@ -181,7 +196,6 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .then(exposedElementsChecker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-
     }
 
     @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
@@ -331,29 +345,80 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
+        Runnable dropPart1 = () -> {
+            var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
+                    null, semanticElementId.get());
+            List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
+            assertThat(messages).isEmpty();
+        };
+
+        Runnable dropAgainPart1 = () -> {
+            var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
+                    null, semanticElementId.get());
+            List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
+            assertThat(messages).as("We should receive at least one message when dropping an already visible element").hasSizeGreaterThanOrEqualTo(1);
+            String messageBody = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].body");
+            assertThat(messageBody).isEqualTo("The element part1 is already visible in its parent General View");
+            String messageLevel = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].level");
+            assertThat(messageLevel).isEqualTo(MessageLevel.WARNING.toString());
+        };
+
         StepVerifier.create(flux)
                 .then(initialState)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(() -> {
-                    var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
-                            null, semanticElementId.get());
-                    List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
-                    assertThat(messages).isEmpty();
-                })
+                .then(dropPart1)
                 .consumeNextWith(payload -> { })
                 .then(hasBeenExposed)
-                .then(() -> {
-                    var result = this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
-                            null, semanticElementId.get());
-                    List<Object> messages = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[*]");
-                    assertThat(messages).as("We should receive at least one message when dropping an already visible element").hasSizeGreaterThanOrEqualTo(1);
-                    String messageBody = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].body");
-                    assertThat(messageBody).isEqualTo("The element part1 is already visible in its parent General View");
-                    String messageLevel = JsonPath.read(result.data(), "$.data.dropOnDiagram.messages[0].level");
-                    assertThat(messageLevel).isEqualTo(MessageLevel.WARNING.toString());
-                })
+                .then(dropAgainPart1)
                 .consumeNextWith(payload -> { })
                 .then(hasNotBeenExposedAgain)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
+    @Test
+    public void dropLibraryPackageFromExplorerOnDiagram() {
+        var input = new CreateChildInput(
+                UUID.randomUUID(),
+                GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                GeneralViewEmptyTestProjectData.SemanticIds.PACKAGE_1_ID,
+                SysMLv2EditService.ID_PREFIX + "LibraryPackage");
+        var result = this.createChildMutationRunner.run(input);
+
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
+        assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
+
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
+        assertThat(objectId).isNotBlank();
+
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
+        assertThat(objectLabel).isEqualTo("LibraryPackage1");
+
+        var flux = this.givenSubscriptionToEmptyDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        Runnable dropFromExplorerRunnable = () -> {
+            this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagram, objectId);
+        };
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            assertThat(newDiagram.getNodes()).hasSize(1);
+            Node packageDiagramNode = newDiagram.getNodes().get(0);
+            String packageNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
+            assertThat(packageDiagramNode).hasDescriptionId(packageNodeDescriptionId);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(dropFromExplorerRunnable)
+                .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
