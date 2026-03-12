@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
         SDVDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(reusedChildren::add));
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(reusedChildren::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(reusedChildren::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(reusedChildren::add);
+
         return reusedChildren;
     }
 
@@ -62,6 +64,7 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
         SDVDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(droppableNodes::add));
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(droppableNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(droppableNodes::add);
 
         return droppableNodes;
     }
@@ -75,6 +78,8 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
         SDVDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(allNodes::add));
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(allNodes::add);
+
         return allNodes;
     }
 

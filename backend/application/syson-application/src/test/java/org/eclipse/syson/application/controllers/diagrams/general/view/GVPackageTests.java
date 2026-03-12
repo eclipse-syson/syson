@@ -431,4 +431,53 @@ public class GVPackageTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
+
+    @DisplayName("GIVEN a diagram with a Package node, WHEN a ReferenceUsage node is created, THEN the ReferenceUsage node is only visible inside the Package")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateReferenceInPackage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newReferenceToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Reference");
+        assertThat(newReferenceToolId).as("The tool 'New Reference' should exist on the Package").isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var packageNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            packageNodeId.set(packageNode.getId());
+
+            assertThat(packageNode.getChildNodes()).hasSize(0);
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        Runnable newReferenceTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), packageNodeId.get(), newReferenceToolId,
+                List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterNewPart = assertRefreshedDiagramThat(diag -> {
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE).getNode();
+            assertThat(packageNode.getChildNodes()).hasSize(1);
+
+            var referenceUsageNode = new DiagramNavigator(diag)
+                    .nodeWithLabel(LabelConstants.OPEN_QUOTE + "ref reference" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "reference1").getNode();
+            assertThat(referenceUsageNode).isNotNull();
+
+            assertThat(new DiagramNavigator(diag).findDiagramEdgeCount()).isEqualTo(3);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newReferenceTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterNewPart)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

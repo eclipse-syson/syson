@@ -28,6 +28,7 @@ They can also add their own SysML-based validation rules by returning additional
 ** Fix an issue where it was not possible to drag and drop a `LibraryPackage` from the _Explorer_ to a diagram.
 ** Fix an issue where creating a `PerformActionUsage` from the `ActionUsage` graphical node (or any other graphical node that allows to create it) was displaying it in the diagram background and its compartments every time.
 It now follows the same rule than all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
+** Fix an issue where the creation of a `RequirementUsage` from a `Package` graphical node was not revealing it.
 
 * In textual import/export:
 
