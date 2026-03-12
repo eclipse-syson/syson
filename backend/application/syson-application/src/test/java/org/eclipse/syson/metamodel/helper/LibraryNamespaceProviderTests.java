@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,6 @@ public class LibraryNamespaceProviderTests {
         for (Resource r : this.resourceSet.getResources()) {
             provider.addImmutableLibrariesNamespaces(r);
         }
-
         // Test some use case
         this.assertNamespaceAccess("BooleanFunctions::ToString::x", provider);
         this.assertNamespaceAccess("Clocks::TimeOf::timeOrderingConstraint", provider);
@@ -84,12 +83,10 @@ public class LibraryNamespaceProviderTests {
         this.assertNamespaceAccess("Views::asElementTable::columnView::viewRendering", provider);
         this.assertNamespaceAccess("USCustomaryUnits::'degree fahrenheit (absolute temperature scale)'::zeroDegreeFahrenheitToKelvinShift::source", provider);
         this.assertNamespaceAccess("'Custom library'::'Custom part def'::'Custom part usage'", provider);
-
     }
 
     @Test
     @DisplayName("Given a ResourceSet with no library registered as immutable, WHEN accessing some Namespace from their qualified name, THEN the targeted element should be returned.")
-
     public void withNoLibraryAdded() {
         LibraryNamespaceProvider provider = new LibraryNamespaceProvider(this.resourceSet);
         // Test some use case
@@ -100,7 +97,6 @@ public class LibraryNamespaceProviderTests {
         this.assertNamespaceAccess("USCustomaryUnits::'degree fahrenheit (absolute temperature scale)'::zeroDegreeFahrenheitToKelvinShift::source", provider);
         this.assertNamespaceAccess("USCustomaryUnits::'quad (10^15 Btu_IT)'::unitConversion::isExact", provider);
         this.assertNamespaceAccess("'Custom library'::'Custom part def'::'Custom part usage'", provider);
-
     }
 
     private void assertNamespaceAccess(String expectedQualifiedName, LibraryNamespaceProvider provider) {
@@ -108,7 +104,6 @@ public class LibraryNamespaceProviderTests {
                 .as("Looking for " + expectedQualifiedName)
                 .isNotNull()
                 .matches(e -> expectedQualifiedName.equals(e.getQualifiedName()));
-
     }
 
     private Resource createStandardLibWithSpace() {
@@ -125,5 +120,4 @@ public class LibraryNamespaceProviderTests {
         this.builder.createInWithName(PartUsage.class, partDef, "Custom part usage");
         return resource;
     }
-
 }

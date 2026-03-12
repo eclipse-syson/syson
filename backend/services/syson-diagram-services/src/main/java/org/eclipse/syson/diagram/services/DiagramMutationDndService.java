@@ -316,17 +316,19 @@ public class DiagramMutationDndService {
             if (this.modelQueryElementService.isExposed(sourceElement, this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode))) {
                 var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
                 var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(sourceElement, diagramContext.diagram(), editingContext);
-                var nodeId = new NodeIdProvider().getNodeId(parentId,
-                        descriptionId.get(),
-                        NodeContainmentKind.CHILD_NODE,
-                        this.siriusWebCoreServices.identityService().getId(sourceElement));
-                this.diagramQueryElementService.findNodeById(diagramContext.diagram(), nodeId).ifPresent(node -> {
-                    if (node.getState().equals(ViewModifier.Hidden)) {
-                        diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
-                    } else {
-                        this.logAlreadyVisibleMessage(sourceElement, targetElement);
-                    }
-                });
+                if (descriptionId.isPresent()) {
+                    var nodeId = new NodeIdProvider().getNodeId(parentId,
+                            descriptionId.get(),
+                            NodeContainmentKind.CHILD_NODE,
+                            this.siriusWebCoreServices.identityService().getId(sourceElement));
+                    this.diagramQueryElementService.findNodeById(diagramContext.diagram(), nodeId).ifPresent(node -> {
+                        if (node.getState().equals(ViewModifier.Hidden)) {
+                            diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
+                        } else {
+                            this.logAlreadyVisibleMessage(sourceElement, targetElement);
+                        }
+                    });
+                }
             } else {
                 Node newSelectedNode = selectedNode;
                 if (selectedNode == null) {

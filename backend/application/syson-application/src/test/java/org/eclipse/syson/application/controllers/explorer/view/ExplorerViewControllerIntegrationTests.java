@@ -41,6 +41,7 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
@@ -51,8 +52,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,9 +136,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN a Package, WHEN the New Representation menu is invoked, THEN InterconnectionView is a possible candidate")
-    @Sql(scripts = { GeneralViewEmptyTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void canCreateInterconnectionViewOnPackage() {
         Map<String, Object> variables = Map.of(
@@ -173,9 +170,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit a ViewUsage typed with a standard diagram, THEN the type of ViewUsage is not part of the initial value of the direct edit")
-    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testDirectEditOnViewUsage() {
         var expandedIds = this.getAllTreeItemIds();
@@ -203,9 +198,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN we direct edit an Element with a shortName, THEN the shortName is not part of the initial value of the direct edit")
-    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testDirectEditOnElementWithShortName() {
         var expandedIds = this.getAllTreeItemIds();
@@ -228,9 +221,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN hide expose element filter is active, THEN the expose element are not return as tree item")
-    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testHideExposeElementFilter() {
         var expandedIds = this.getAllTreeItemIds();
@@ -249,9 +240,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN hide user libraries filter is active, THEN no user libraries are return as tree item")
-    @Sql(scripts = { ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData.SCRIPT_PATH })
     @Test
     public void testHideUserLibrariesFilter() {
         var expandedIds = List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString());
@@ -270,9 +259,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the SysON Explorer View, WHEN querying the filters, THEN the syson filters are returned")
-    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testSysONFiltersOnSysONExplorer() {
         Map<String, Object> variables = Map.of(
@@ -291,9 +278,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     @DisplayName("GIVEN the Sirius Explorer View, WHEN querying the filters, THEN no syson filters are returned")
-    @Sql(scripts = { ExplorerViewDirectEditTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testSysONFiltersOnSiriusExplorer() {
         Map<String, Object> variables = Map.of(
