@@ -53,6 +53,8 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint() ||
                 this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
             customLabel = "require constraints";
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue()) {
+            customLabel = "enums";
         }
         return customLabel;
     }

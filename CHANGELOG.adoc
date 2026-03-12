@@ -92,6 +92,7 @@ For example `ViewUsage` elements are no longer rendered in _parts_ compartments.
 - https://github.com/eclipse-syson/syson/issues/2050[#2050] [diagrams] Fix an issue where creating a `PerformActionUsage` from the `ActionUsage` graphical node (or any other graphical node that allows to create it) was displaying it in the diagram background and its compartments every time.
 It now follows the same rule than all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
 - https://github.com/eclipse-syson/syson/issues/2046[#2046] [diagrams] Fix an issue where the creation of a `RequirementUsage` from a `Package` graphical node was not revealing it.
+- https://github.com/eclipse-syson/syson/issues/1990[#1990] [diagrams] Fix the `EnumerationDefinition` graphical node compartment name to follow the SysMLv2 specification.
 
 === Improvements
 

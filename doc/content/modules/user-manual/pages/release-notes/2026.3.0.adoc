@@ -23,12 +23,13 @@ They can also add their own SysML-based validation rules by returning additional
 
 ** Fix an issue where some type of `Elements` could appear in the wrong compartment if they shared a common type with said compartment, for example `ViewUsage` elements could appear in the _parts_ compartment since they extends `PartUsage`.
 ** Allow redefining a `PartUsage` with the same name as the redefined `Usage`.
-** Fix an issue where `ConnectionDefinition` graphical nodes where incorrectly labelled as `«part def»` instead of `«connection def»`.
+** Fix an issue where `ConnectionDefinition` graphical nodes where incorrectly labeled as `«part def»` instead of `«connection def»`.
 ** Fix an issue where it was possible to create a `SatisfyRequirementUsage` from the `SatisfyRequirementUsage` graphical edge tool with a target that is not a `RequirementUsage`.
 ** Fix an issue where it was not possible to drag and drop a `LibraryPackage` from the _Explorer_ to a diagram.
 ** Fix an issue where creating a `PerformActionUsage` from the `ActionUsage` graphical node (or any other graphical node that allows to create it) was displaying it in the diagram background and its compartments every time.
 It now follows the same rule than all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
 ** Fix an issue where the creation of a `RequirementUsage` from a `Package` graphical node was not revealing it.
+** Fix the `EnumerationDefinition` graphical node compartment name from `enumerations` to `enums`, to follow the SysMLv2 specification.
 
 * In textual import/export:
 
@@ -38,7 +39,8 @@ It now follows the same rule than all other graphical node: if a compartment tha
 ** Fix the textual import to properly resolve the _payload_ argument of a `SendActionUsage` used in a `TransitionUsage`.
 The following model is now properly imported:
 +
-```
+[source]
+----
 package Package1 {
     attribute def Sig ;
     part p;
@@ -53,12 +55,13 @@ package Package1 {
               then s3;
     }
 }
-```
+----
 
 ** Fix the textual import to properly resolve unnamed redefined `Feature` in a `FeatureChain`.
 The following model is now properly imported:
 +
-```
+[source]
+----
 part system {
 	part def Logical {
 		part component {
@@ -70,12 +73,13 @@ part system {
 	}
 	part c2  = l.component.component2; // "component" now resolves to "p1::l::component" instead of "p1::Logical::component"
 }
-```
+----
 
 ** Fix the textual import so `Relationships` can be annotated.
 Such as in :
 
-```
+[source]
+----
 package Test {
     metadata def MyAnnotation;
 
@@ -87,7 +91,7 @@ package Test {
 
    item def MyItem2;
 }
-```
+----
 
 ** Fix a textual export problem while exporting `LiteralString` with no value.
 ** Fix the export of `LiteralString` with backslash characters.
@@ -106,9 +110,10 @@ The previous implementation was importing the value "A \\ B".
 
 ** Improve the computation of _featuringType_ on `Feature` to avoid getting the following validation error:
 +
-```
+[source]
+----
 If a Feature is owned via a FeatureMembership, then it must have a featuringType for which the operation isFeaturingType returns true. (checkFeatureFeatureMembershipTypeFeaturing constraint on Feature is not respected for Test::MyItemDef::myFeature)
-```
+----
 
 == Improvements
 
@@ -148,7 +153,8 @@ Instead, SysON will now use the inherited elements without redefining them first
 ** Implement the textual export for `TransitionUsage`.
 ** Implement the textual export for `ExhibitStateUsage` such as in:
 +
-```
+[source]
+----
 package root {
     part part1 {
         exhibit state s1 {
@@ -161,7 +167,7 @@ package root {
         }
     }
 }
-```
+----
 ** Implement the textual export for `AllocationUsage` and `AllocationDefinition`.
 ** A limitation has been identified regarding the size of the textual SysML model that can be imported.
 An explicit error message has been added to the upload report to help identify this issue.

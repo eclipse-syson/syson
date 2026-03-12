@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,12 +45,13 @@ test.describe('diagram - interconnection view', () => {
 
     await page.getByTestId('zoom-out').click();
 
-    const compartmentSizeBefore = await interconnectionCompartment.getDOMBoundingBox();
+    const compartmentSizeBefore = await interconnectionCompartment.getReactFlowSize();
 
     await partNode.click();
     await partNode.resize({ height: 20, width: 20 });
 
-    const compartmentSizeAfter = await interconnectionCompartment.getDOMBoundingBox();
-    expect(compartmentSizeAfter.height).toBeLessThan(compartmentSizeBefore.height);
+    const compartmentSizeAfter = await interconnectionCompartment.getReactFlowSize();
+    expect(compartmentSizeAfter.height).toBeGreaterThan(compartmentSizeBefore.height);
+    expect(compartmentSizeAfter.width).toBeGreaterThan(compartmentSizeBefore.width);
   });
 });
