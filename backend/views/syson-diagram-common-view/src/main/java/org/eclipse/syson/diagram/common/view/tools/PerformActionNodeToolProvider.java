@@ -12,11 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 
 /**
@@ -24,29 +20,25 @@ import org.eclipse.syson.util.ServiceMethod;
  *
  * @author Jerome Gout
  */
-public class PerformActionNodeToolProvider extends AbstractFreeFormCompartmentNodeToolProvider {
-
-    public PerformActionNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(ownerEClass, ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL, descriptionNameGenerator);
-    }
+public class PerformActionNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
     @Override
-    protected String getNodeDescriptionName() {
-        return this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
-    }
-
-    @Override
-    protected String getCreationServiceCallExpression() {
+    protected String getServiceCallExpression() {
         return ServiceMethod.of0(ViewCreateService::createPerformAction).aqlSelf();
     }
 
     @Override
-    protected String getLabel() {
+    protected String getNodeToolName() {
         return "New Perform action";
     }
 
     @Override
-    protected String getIconPath() {
+    protected boolean revealOnCreate() {
+        return false;
+    }
+
+    @Override
+    protected String getNodeToolIconURLsExpression() {
         return "/icons/full/obj16/PerformActionUsage.svg";
     }
 }

@@ -632,10 +632,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewNodeCount(3) // 1 visible new PerformActionUsage node + 1 list items (in 'perform actions'
-                                        // compartments, now visible) + 1 node in 'action flow' compartment
-                    .hasNewEdgeCount(3) // 1 visible composition edge and 2 visible ReferenceSubsetting edge (one for
-                                        // the top-level node, one for the node in "action flow" compartment
+                    .hasNewNodeCount(1) // 1 visible new PerformActionUsage node
+                    .hasNewEdgeCount(2) // 1 visible composition edge and 1 hidden ReferenceSubsetting edge or the node
+                                        // in "action flow" compartment
                     .check(initialDiagram, newDiagram, true);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
