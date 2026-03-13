@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
@@ -314,21 +316,7 @@ public class DiagramMutationDndService {
             this.utilService.setFeatureTyping(usage, definition);
         } else if (this.modelQueryElementService.isExposable(sourceElement)) {
             if (this.modelQueryElementService.isExposed(sourceElement, this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode))) {
-                var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
-                var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(sourceElement, diagramContext.diagram(), editingContext);
-                if (descriptionId.isPresent()) {
-                    var nodeId = new NodeIdProvider().getNodeId(parentId,
-                            descriptionId.get(),
-                            NodeContainmentKind.CHILD_NODE,
-                            this.siriusWebCoreServices.identityService().getId(sourceElement));
-                    this.diagramQueryElementService.findNodeById(diagramContext.diagram(), nodeId).ifPresent(node -> {
-                        if (node.getState().equals(ViewModifier.Hidden)) {
-                            diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), false));
-                        } else {
-                            this.logAlreadyVisibleMessage(sourceElement, targetElement);
-                        }
-                    });
-                }
+                this.handleExposedElement(sourceElement, targetElement, editingContext, diagramContext, selectedNode);
             } else {
                 Node newSelectedNode = selectedNode;
                 if (selectedNode == null) {
@@ -366,8 +354,105 @@ public class DiagramMutationDndService {
         }
     }
 
+    /**
+     * Handle the case where the semantic element dropped is already exposed on the diagram. There are four distinct
+     * cases to handle:
+     * <ol>
+     * <li>The element is dropped on a diagram element in which it is already represented:
+     * <ol>
+     * <li>if this representation was hidden, reveal it;</li>
+     * <li>otherwise display a message "the element is already visible".
+     * <li>
+     * </ol>
+     * </li>
+     * <li>The element is dropped on a diagram element where is is <em>not</em> already represented:
+     * <ol>
+     * <li>if the element is actually <em>visible</em> elsewhere, display a message;</li>
+     * <li>otherwise do nothing.</li>
+     * </ol>
+     * </li>
+     * </ol>
+     *
+     * @param sourceElement
+     *            the source element to drop
+     * @param targetElement
+     *            the target of the drop
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the service has been called (may be null if the tool has been called from
+     *            the diagram). It corresponds to a variable accessible from the variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     */
+    private void handleExposedElement(Element sourceElement, Element targetElement, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
+        String droppedElementId = this.siriusWebCoreServices.identityService().getId(sourceElement);
+
+        // Are there any which are actually inside the drop target?
+        // Is the dropped element already represented inside the drop target?
+        Set<Node> subNodes = this.findSubNodesBySemanticElementId(diagramContext, selectedNode, droppedElementId);
+        if (!subNodes.isEmpty()) {
+            if (subNodes.stream().anyMatch(n -> !n.getState().equals(ViewModifier.Hidden))) {
+                // The semantic element is already visible in the drop context
+                this.logAlreadyVisibleMessage(sourceElement, targetElement);
+            } else {
+                // All are hidden, reveal them (all)
+                Set<String> nodeIds = subNodes.stream().map(Node::getId).collect(Collectors.toSet());
+                diagramContext.diagramEvents().add(new HideDiagramElementEvent(nodeIds, false));
+            }
+        } else {
+            // If the dropped element is not represented *in the target*, is it represented elsewhere?
+            var droppedElementNodes = new NodeFinder(diagramContext.diagram()).getAllNodesMatching(n -> n.getTargetObjectId().equals(droppedElementId));
+            var visibleNodes = droppedElementNodes.stream().filter(n -> !n.getState().equals(ViewModifier.Hidden)).toList();
+            if (!visibleNodes.isEmpty()) {
+                String parentTargetObjectId = this.findParentTargetObjectId(diagramContext, visibleNodes.get(0));
+                this.siriusWebCoreServices.objectSearchService()
+                        .getObject(editingContext, parentTargetObjectId)
+                        .filter(Element.class::isInstance)
+                        .map(Element.class::cast)
+                        .ifPresent(parentElement -> this.logAlreadyVisibleMessage(sourceElement, parentElement));
+            } else {
+                // The semantic is already *visible* elsewhere on the diagram, so nothing to reveal.
+                // Do nothing on purpose (for the moment).
+            }
+        }
+    }
+
+    private String findParentTargetObjectId(DiagramContext diagramContext, Node visibleNode) {
+        Object parentElement = new NodeFinder(diagramContext.diagram()).getParent(visibleNode);
+        String parentTargetObjectId = null;
+        if (parentElement instanceof Diagram diagram) {
+            parentTargetObjectId = diagram.getTargetObjectId();
+        } else if (parentElement instanceof Node node) {
+            parentTargetObjectId = node.getTargetObjectId();
+        }
+        return parentTargetObjectId;
+    }
+
+    private Set<Node> findSubNodesBySemanticElementId(DiagramContext diagramContext, Node parenNode, String semanticElementId) {
+        Set<Node> subnodes = new HashSet<>();
+        if (parenNode != null) {
+            subnodes.addAll(parenNode.getChildNodes());
+            subnodes.addAll(parenNode.getBorderNodes());
+        } else {
+            subnodes.addAll(diagramContext.diagram().getNodes());
+        }
+        subnodes.removeIf(node -> !Objects.equals(node.getTargetObjectId(), semanticElementId));
+        return subnodes;
+    }
+
     private void logAlreadyVisibleMessage(Element element, Element parent) {
-        String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", element.getName(), parent.getName());
+        // For the diagram itself, show the name of the corresponding semantic element instead of e.g. "view1"
+        String parentName = parent.getName();
+        if (parent instanceof ViewUsage viewUsage && viewUsage.getOwner() != null) {
+            parentName = viewUsage.getOwner().getName();
+        }
+        String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", element.getName(), parentName);
         this.logger.warn(errorMessage);
         this.siriusWebCoreServices.feedbackMessageService().addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
     }

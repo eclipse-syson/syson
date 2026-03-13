@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,12 +53,9 @@ public class DropFromExplorerTester {
     }
 
     public GraphQLResult dropFromExplorer(String projectId, AtomicReference<Diagram> diagram, String targetNodeId, String semanticElementId) {
-        DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-        final String targetId;
+        String targetId = targetNodeId;
         if (targetNodeId == null) {
             targetId = diagram.get().getId();
-        } else {
-            targetId = diagramNavigator.nodeWithId(targetNodeId).getNode().getId();
         }
         var dropOnDiagramInput = new DropOnDiagramInput(
                 UUID.randomUUID(),
