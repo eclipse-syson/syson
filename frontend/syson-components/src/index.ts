@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ export { PublishProjectSysMLContentsAsLibraryCommand } from './extensions/omnibo
 export type { PublishProjectSysMLContentsAsLibraryCommandState } from './extensions/omnibox/PublishProjectSysMLContentsAsLibraryCommand.types';
 export { sysONExtensionRegistry } from './extensions/registry/SysONExtensionRegistry';
 export { sysONNodeTypeRegistry } from './extensions/registry/SysONNodeTypeRegistry';
-export { CreateRequirementMenuEntry } from './extensions/requirementsTable/CreateRequirementMenuEntry';
-export { ExposeRequirementsMenuEntry } from './extensions/requirementsTable/ExposeRequirementsMenuEntry';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
 export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
 export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';
