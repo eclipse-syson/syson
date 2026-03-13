@@ -226,12 +226,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         this.handleMissingDirectionPrefixExpression(ctx);
-        this.handleMissingAbstractPrefixExpression(ctx);
-        this.handleMissingDerivedPrefixExpression(ctx);
-        this.handleMissingEndPrefixExpression(ctx);
-        this.handleMissingVariationPrefixExpression(ctx);
-        this.handleMissingConstantPrefixExpression(ctx);
-        this.handleMissingReferenceExpression(ctx);
         this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingOrderedMultiplicityExpression(ctx);
         this.handleMissingNonuniqueMultiplicityExpression(ctx);
@@ -281,10 +275,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsAbstract(true);
-            } else {
-                usage.setIsAbstract(false);
-                // A variation is always abstract
-                usage.setIsVariation(false);
             }
         }
         super.exitAbstractPrefixExpression(ctx);
@@ -305,8 +295,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsDerived(true);
-            } else {
-                usage.setIsDerived(false);
             }
         }
         super.exitDerivedPrefixExpression(ctx);
@@ -317,8 +305,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsEnd(true);
-            } else {
-                usage.setIsEnd(false);
             }
         }
         super.exitEndPrefixExpression(ctx);
@@ -329,8 +315,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsConstant(true);
-            } else {
-                usage.setIsConstant(false);
             }
         }
         super.exitConstantPrefixExpression(ctx);
@@ -343,8 +327,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 usage.setIsVariation(true);
                 // A variation is always abstract
                 usage.setIsAbstract(true);
-            } else {
-                usage.setIsVariation(false);
             }
         }
         super.exitVariationPrefixExpression(ctx);
@@ -396,8 +378,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsOrdered(true);
-            } else {
-                usage.setIsOrdered(false);
             }
         }
         super.exitOrderedMultiplicityExpression(ctx);
@@ -408,8 +388,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsUnique(false);
-            } else {
-                usage.setIsUnique(true);
             }
         }
         super.exitNonuniqueMultiplicityExpression(ctx);
@@ -1074,27 +1052,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage && abstractPrefixExpression == null && !usage.isIsVariation()) {
             // A variation is always abstract
             usage.setIsAbstract(false);
-        }
-    }
-
-    private void handleMissingDerivedPrefixExpression(ListItemExpressionContext ctx) {
-        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixListItemExpression().derivedPrefixExpression(0);
-        if (this.element instanceof Usage usage && derivedPrefixExpression == null) {
-            usage.setIsDerived(false);
-        }
-    }
-
-    private void handleMissingEndPrefixExpression(ListItemExpressionContext ctx) {
-        EndPrefixExpressionContext endPrefixExpression = ctx.prefixListItemExpression().endPrefixExpression(0);
-        if (this.element instanceof Usage usage && endPrefixExpression == null) {
-            usage.setIsEnd(false);
-        }
-    }
-
-    private void handleMissingConstantPrefixExpression(ListItemExpressionContext ctx) {
-        ConstantPrefixExpressionContext constantPrefixExpression = ctx.prefixListItemExpression().constantPrefixExpression(0);
-        if (this.element instanceof Usage usage && constantPrefixExpression == null) {
-            usage.setIsConstant(false);
         }
     }
 
