@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,10 @@ public class GeneralViewAddExistingElementsTestProjectData {
     public static final class SemanticIds {
 
         public static final String PACKAGE_1_ID = "8d4123ac-3ac5-412d-90f2-49282b923003";
+
+        public static final String PACKAGE1_ID = "98a777a3-15df-400f-a8d6-b5033e37e082";
+
+        public static final String ATTRIBUTE_DEFINITION_1_ID = "f42f0e49-8f00-49b4-b1ce-f4b0a98d3eb8";
 
         public static final String GENERAL_VIEW_VIEW_USAGE_ID = "b67872fa-5900-48d3-88f0-e6ced193c8ec";
 
