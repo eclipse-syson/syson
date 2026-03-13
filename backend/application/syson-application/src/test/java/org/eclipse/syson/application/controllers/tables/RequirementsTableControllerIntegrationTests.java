@@ -27,20 +27,19 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.InvokeToolMenuEntryInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.TextareaCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
 import org.eclipse.sirius.components.tables.tests.graphql.InvokeRowContextMenuEntryMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.InvokeToolMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.RowContextMenuQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
-import org.eclipse.syson.application.controllers.diagrams.graphql.CreateRequirementMutationRunner;
-import org.eclipse.syson.application.controllers.diagrams.graphql.ExposeRequirementsMutationRunner;
 import org.eclipse.syson.application.data.RequirementsTableTestProjectData;
-import org.eclipse.syson.table.requirements.view.dto.CreateRequirementInput;
-import org.eclipse.syson.table.requirements.view.dto.ExposeRequirementsInput;
+import org.eclipse.syson.table.requirements.view.RTVTableToolMenuEntriesProvider;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,10 +70,7 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
     private IGivenCreatedTableSubscription givenCreatedTableSubscription;
 
     @Autowired
-    private CreateRequirementMutationRunner createRequirementMutationRunner;
-
-    @Autowired
-    private ExposeRequirementsMutationRunner exposeRequirementsMutationRunner;
+    private InvokeToolMenuEntryMutationRunner invokeToolMenuEntryMutationRunner;
 
     @Autowired
     private RowContextMenuQueryRunner rowContextMenuQueryRunner;
@@ -182,13 +178,15 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         });
 
         Runnable createRequirementTask = () -> {
-            var createRequirementInput = new CreateRequirementInput(
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
                     UUID.randomUUID(),
                     RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
-                    tableId.get());
+                    tableId.get(),
+                    tableId.get(),
+                    RTVTableToolMenuEntriesProvider.ADD_REQUIREMENT_TABLE_TOOL_ENTRY);
 
-            var result = this.createRequirementMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result.data(), "$.data.createRequirement.__typename");
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeToolMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -222,13 +220,15 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         });
 
         Runnable exposeRequirementsTask = () -> {
-            var createRequirementInput = new ExposeRequirementsInput(
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
                     UUID.randomUUID(),
                     RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
-                    tableId.get());
+                    tableId.get(),
+                    tableId.get(),
+                    RTVTableToolMenuEntriesProvider.IMPORT_EXISTING_REQUIREMENTS_TABLE_TOOL_ENTRY);
 
-            var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeToolMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -269,13 +269,15 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         });
 
         Runnable exposeRequirementsTask = () -> {
-            var createRequirementInput = new ExposeRequirementsInput(
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
                     UUID.randomUUID(),
                     RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
-                    tableId.get());
+                    tableId.get(),
+                    tableId.get(),
+                    RTVTableToolMenuEntriesProvider.IMPORT_EXISTING_REQUIREMENTS_TABLE_TOOL_ENTRY);
 
-            var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeToolMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -354,13 +356,15 @@ public class RequirementsTableControllerIntegrationTests extends AbstractIntegra
         });
 
         Runnable exposeRequirementsTask = () -> {
-            var createRequirementInput = new ExposeRequirementsInput(
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
                     UUID.randomUUID(),
                     RequirementsTableTestProjectData.EDITING_CONTEXT_ID,
-                    tableId.get());
+                    tableId.get(),
+                    tableId.get(),
+                    RTVTableToolMenuEntriesProvider.IMPORT_EXISTING_REQUIREMENTS_TABLE_TOOL_ENTRY);
 
-            var result = this.exposeRequirementsMutationRunner.run(createRequirementInput);
-            String typename = JsonPath.read(result.data(), "$.data.exposeRequirements.__typename");
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+            String typename = JsonPath.read(result.data(), "$.data.invokeToolMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
