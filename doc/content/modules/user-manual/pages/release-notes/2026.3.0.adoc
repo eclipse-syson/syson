@@ -36,6 +36,8 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 ** Fix the support for removing the multiplicity using the direct edit.
 + During the direct edit, typing `[]` will remove the multiplicity if it exists, as it is supposed to do.
 ** Fix an issue where the _New Flow (flow)_ tool between two parameters was broken.
+** The `ForkNode` and `JoinNode` graphical nodes style have been updated and are restricted to horizontal resizing.
++ Consequently, their entire footprint is filled with black, ensuring that all incoming and outgoing edges maintain a valid connection point.
 
 * In textual import/export:
 
