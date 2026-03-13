@@ -26,7 +26,6 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
-import { toolsButtonMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-tables';
 import {
   GQLTreeItemContextMenuEntry,
   treeItemContextMenuEntryOverrideExtensionPoint,
@@ -48,8 +47,6 @@ import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_fra
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
-import { CreateRequirementMenuEntry } from '../requirementsTable/CreateRequirementMenuEntry';
-import { ExposeRequirementsMenuEntry } from '../requirementsTable/ExposeRequirementsMenuEntry';
 import { SysONDiagramPanelMenu } from '../SysONDiagramPanelMenu';
 
 const sysONExtensionRegistry: ExtensionRegistry = new ExtensionRegistry();
@@ -98,16 +95,6 @@ sysONExtensionRegistry.addComponent(diagramToolbarActionExtensionPoint, {
 sysONExtensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   identifier: `syson_${navigationBarMenuIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarMenuIcon,
-});
-
-sysONExtensionRegistry.addComponent(toolsButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${toolsButtonMenuEntryExtensionPoint.identifier}`,
-  Component: CreateRequirementMenuEntry,
-});
-
-sysONExtensionRegistry.addComponent(toolsButtonMenuEntryExtensionPoint, {
-  identifier: `syson_${toolsButtonMenuEntryExtensionPoint.identifier}`,
-  Component: ExposeRequirementsMenuEntry,
 });
 
 const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContribution[] = [
