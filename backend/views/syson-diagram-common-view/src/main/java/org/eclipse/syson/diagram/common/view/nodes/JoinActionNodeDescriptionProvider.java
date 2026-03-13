@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -41,12 +43,22 @@ public class JoinActionNodeDescriptionProvider extends AbstractControlNodeAction
     }
 
     @Override
-    protected String getImagePath() {
-        return "images/join_action.svg";
+    protected String getRemoveToolLabel() {
+        return "Remove Join";
     }
 
     @Override
-    protected String getRemoveToolLabel() {
-        return "Remove Join";
+    protected UserResizableDirection isNodeResizable() {
+        return UserResizableDirection.HORIZONTAL;
+    }
+
+    @Override
+    protected NodeStyleDescription createNodeStyleDescription() {
+        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+                .borderColor(this.colorProvider.getColor("transparent"))
+                .borderRadius(0)
+                .borderSize(0)
+                .background(this.colorProvider.getColor("black"))
+                .build();
     }
 }

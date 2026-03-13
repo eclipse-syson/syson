@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
@@ -69,12 +70,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
      */
     protected abstract EClass getDomainType();
 
-    /**
-     * Implementers should provide the path of the image associated to the actual node description.
-     *
-     * @return The String representing the path to access the image associated to the node description.
-     */
-    protected abstract String getImagePath();
+    protected abstract NodeStyleDescription createNodeStyleDescription();
 
     /**
      * Implementers should provide the label used by the removal tool of the actual node description.
@@ -91,9 +87,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
         return "12";
     }
 
-    protected UserResizableDirection isNodeResizable() {
-        return UserResizableDirection.BOTH;
-    }
+    protected abstract UserResizableDirection isNodeResizable();
 
     @Override
     public NodeDescription create() {
@@ -107,7 +101,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .name(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName()))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getExposedElements",
                         List.of(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
-                .style(this.createImageNodeStyleDescription(this.getImagePath()))
+                .style(this.createNodeStyleDescription())
                 .userResizable(this.isNodeResizable())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -42,8 +43,8 @@ public class DecisionActionNodeDescriptionProvider extends AbstractControlNodeAc
     }
 
     @Override
-    protected String getImagePath() {
-        return "images/decision_action.svg";
+    protected NodeStyleDescription createNodeStyleDescription() {
+        return this.createImageNodeStyleDescription("images/decision_action.svg");
     }
 
     @Override

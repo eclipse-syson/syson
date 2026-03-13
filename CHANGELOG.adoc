@@ -99,6 +99,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 - https://github.com/eclipse-syson/syson/issues/2057[#2057] [diagrams] Fix the support for removing the multiplicity using the direct edit.
 - https://github.com/eclipse-syson/syson/issues/1938[#1938] [diagrams] Fix an issue where the _New Flow (flow)_ tool between two parameters was broken.
 - https://github.com/eclipse-syson/syson/issues/2058[#2058] [diagrams] Fix error when importing SysML snippets referencing unknown units which could make the resluting model inconsistent
+- https://github.com/eclipse-syson/syson/issues/2053[#2053] [diagrams] Prevent incoming and outgoing graphical edges of a graphical `ForkNode` or `JoindNode` to point empty space.
 
 === Improvements
 
@@ -153,6 +154,8 @@ Tweak the diagnostic messages to help users understand where the erroneous eleme
 Make sure diagnostics are sorted according to their validated element and its containing document.
 - https://github.com/eclipse-syson/syson/issues/2042[#2042] [import] Improve error reporting while uploading a document.
 - https://github.com/eclipse-syson/syson/issues/2057[#2057] [diagrams] Add the support for empty value for multiplicity in the ANTLR grammar.
+- https://github.com/eclipse-syson/syson/issues/2053[#2053] [diagrams] The graphical `ForkNode` and `JoinNode` now use `RectangularNodeStyleDescription` and are restricted to horizontal resizing.
+Consequently, their entire footprint is filled with black, ensuring that all incoming and outgoing edges maintain a valid connection point.
 
 === New features
 
