@@ -35,6 +35,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 ** Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
 ** Fix the support for removing the multiplicity using the direct edit.
 + During the direct edit, typing `[]` will remove the multiplicity if it exists, as it is supposed to do.
+** Fix an issue where the _New Flow (flow)_ tool between two parameters was broken.
 
 * In textual import/export:
 

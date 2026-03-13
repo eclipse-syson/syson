@@ -55,6 +55,7 @@ import org.eclipse.syson.application.controller.editingcontext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
+import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewFlowConnectionItemUsagesProjectData;
 import org.eclipse.syson.application.data.GeneralViewFlowUsageProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -69,6 +70,7 @@ import org.eclipse.syson.sysml.FlowEnd;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.PayloadFeature;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,6 +133,9 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
     @Autowired
     private IIdentityService identityService;
 
+    @Autowired
+    private ToolTester toolTester;
+
     private SemanticCheckerService semanticCheckerService;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
@@ -191,6 +196,73 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                 .then(creationToolRunnable)
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a SysML Project with ActionUsages with parameters (ReferenceUsages), WHEN creating a FlowUsage between parameters, THEN an edge should be displayed to represent that new flow")
+    @GivenSysONServer({ GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH })
+    @Test
+    public void checkFlowConnectionBetweenParametersCreation() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var parameterCreationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Parameter In");
+        var flowCreationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()), "New Flow (flow)");
+
+        Runnable parameterOnAction1CreationTool = () -> this.toolTester.invokeTool(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.DIAGRAM_ID,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_1_ID, parameterCreationToolId, List.of());
+
+        var parameterOnAction1BorderNodeId = new AtomicReference<String>();
+        Consumer<Object> diagramContentConsumerAfterNewParameterOnAction1 = assertRefreshedDiagramThat(newDiagram -> {
+            var parameterOnAction1BorderNode = new DiagramNavigator(newDiagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action1")
+                    .getNode().getBorderNodes().stream().filter(bn -> bn.getOutsideLabels().get(0).text().equals("parameter1")).findFirst().orElseThrow();
+            parameterOnAction1BorderNodeId.set(parameterOnAction1BorderNode.getId());
+        });
+
+        Runnable parameterOnAction2CreationTool = () -> this.toolTester.invokeTool(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.DIAGRAM_ID,
+                GeneralViewFlowConnectionItemUsagesProjectData.GraphicalIds.ACTION_USAGE_2_ID, parameterCreationToolId, List.of());
+
+        var parameterOnAction2BorderNodeId = new AtomicReference<String>();
+        Consumer<Object> diagramContentConsumerAfterNewParameterOnAction2 = assertRefreshedDiagramThat(newDiagram -> {
+            var parameterOnAction2BorderNode = new DiagramNavigator(newDiagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action2")
+                    .getNode().getBorderNodes().stream().filter(bn -> bn.getOutsideLabels().get(0).text().equals("parameter1")).findFirst().orElseThrow();
+            parameterOnAction2BorderNodeId.set(parameterOnAction2BorderNode.getId());
+        });
+
+        Runnable flowCreationTool = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                diagram,
+                parameterOnAction1BorderNodeId.get(),
+                parameterOnAction2BorderNodeId.get(),
+                flowCreationToolId);
+
+        AtomicReference<String> newFlow = new AtomicReference<>();
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            assertThat(this.diagramComparator.newEdges(initialDiagram, newDiagram)).hasSize(1);
+            Edge newEdge = this.diagramComparator.newEdges(initialDiagram, newDiagram).get(0);
+            newFlow.set(newEdge.getTargetObjectId());
+            assertThat(newEdge).hasSourceId(parameterOnAction1BorderNodeId.get());
+            assertThat(newEdge).hasTargetId(parameterOnAction2BorderNodeId.get());
+            assertThat(newEdge.getStyle()).hasTargetArrow(ArrowStyle.InputFillClosedArrow);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(parameterOnAction1CreationTool)
+                .consumeNextWith(diagramContentConsumerAfterNewParameterOnAction1)
+                .then(parameterOnAction2CreationTool)
+                .consumeNextWith(diagramContentConsumerAfterNewParameterOnAction2)
+                .then(flowCreationTool)
+                .consumeNextWith(diagramCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
