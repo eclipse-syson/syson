@@ -177,7 +177,8 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::createBindingConnectorAsUsage)
-                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET,
+                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 EdgeDescription.EDGE_SOURCE,
                                 EdgeDescription.EDGE_TARGET,
                                 IEditingContext.EDITING_CONTEXT,
@@ -196,9 +197,11 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of5(DiagramMutationAQLService::createFlowUsage)
-                        .aqlSelf(EdgeDescription.SEMANTIC_EDGE_TARGET,
+                        .aql(EdgeDescription.SEMANTIC_EDGE_SOURCE,
+                                EdgeDescription.SEMANTIC_EDGE_TARGET,
                                 EdgeDescription.EDGE_SOURCE,
-                                EdgeDescription.EDGE_TARGET, IEditingContext.EDITING_CONTEXT,
+                                EdgeDescription.EDGE_TARGET,
+                                IEditingContext.EDITING_CONTEXT,
                                 DiagramContext.DIAGRAM_CONTEXT));
 
         return builder
