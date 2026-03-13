@@ -311,18 +311,21 @@ These shortcuts offer a convenient way to update model elements efficiently.
 
 [WARNING]
 ====
-When using the direct edit tool to set the name of an `Element` be aware that the following keywords would not be accepted in the name part of your input:
+In diagrams, when using the direct edit tool to set the name of an `Element` be aware that the following keywords would not be accepted in the name part of your input:
 
-* ':'
-* ':>'
-* '::>'
-* ':>>'
-* '=' 
-* ':='
-* '['
-* ' default'
-* ' ordered'
-* ' nonunique'
+* ':' (because it's used to set the type of an `Element`)
+* ':>' (because it's used to set a subsetting `Relationship` between two `Element`)
+* '::>' (because it's used to set a redefinition `Relationship` between two `Element`)
+* ':>>' (because it's used to set a reference subsetting `Relationship` between two `Element`)
+* '=' (because it's used to set a value to a `Feature`)
+* ':=' (because it's used to set an initial value to a `Feature`)
+* '[' (because it's used to set the cardinality of an `Element` or a `Relationship`)
+* ' constant' (note the space before _constant_)(because it's used to set a `Feature` as constant)
+* ' default' (note the space before _default_)(because it's used to set a `Feature` value as default)
+* ' end' (note the space before _end_)(because it's used to set a `Feature` as an end)
+* ' nonunique' (note the space before _nonunique_)(because it's used to set a `Feature` as non-unique)
+* ' ordered' (note the space before _ordered_)(because it's used to set a `Feature` as ordered)
+* ' variation' (note the space before _variation_)(because it's used to set a `Feature` as a variation)
 
-To be able to use those in the name of the `Element`, use the "name" field in the {details} view.
+To be able to use those in the name of the `Element`, use the "Declared Name" text field in the {details} view.
 ====

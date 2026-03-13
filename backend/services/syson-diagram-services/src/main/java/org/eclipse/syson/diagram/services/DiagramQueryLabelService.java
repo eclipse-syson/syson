@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionDefinition;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -457,13 +458,13 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
         if (usage.isIsVariation()) {
             label.append(LabelConstants.VARIATION + LabelConstants.SPACE);
         }
-        if (usage.isIsConstant()) {
+        if (usage.isIsConstant() && !(usage.getOwner() instanceof ConnectionDefinition)) {
             label.append(LabelConstants.CONSTANT + LabelConstants.SPACE);
         }
         if (usage.isIsDerived()) {
             label.append(LabelConstants.DERIVED + LabelConstants.SPACE);
         }
-        if (usage.isIsEnd()) {
+        if (usage.isIsEnd() && !(usage.getOwner() instanceof ConnectionDefinition)) {
             label.append(LabelConstants.END + LabelConstants.SPACE);
         }
         this.getReferenceUsagePrefix(usage, label);
@@ -792,7 +793,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
      *         otherwise.
      */
     private void getReferenceUsagePrefix(Usage usage, StringBuilder label) {
-        if (usage.isIsReference() && !(usage instanceof AttributeUsage)) {
+        if (usage.isIsReference() && !(usage instanceof AttributeUsage) && !(usage.getOwner() instanceof ConnectionDefinition)) {
             // AttributeUsage are always referential, so no need to add the ref keyword
             label.append(LabelConstants.REF + LabelConstants.SPACE);
         }
