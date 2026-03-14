@@ -38,7 +38,6 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
@@ -47,6 +46,8 @@ import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.OccurrenceUsageSnapshotNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.OccurrenceUsageTimeSliceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -224,7 +225,9 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         elements.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition))
                 .ifPresent(nodeDescription -> nodeTools.add(this.createNodeTool(nodeDescription, definition))));
 
-        nodeTools.sort(Comparator.comparing(Tool::getName));
+        nodeTools.addAll(this.addCustomTools(cache, toolSectionName));
+
+        nodeTools.sort(Comparator.comparing(NodeTool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
     }
@@ -268,5 +271,14 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .body(changeContextViewUsageOwner.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
+    }
+
+    private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
+        var nodeTools = new ArrayList<NodeTool>();
+        if (SDVDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
+            nodeTools.add(new OccurrenceUsageTimeSliceNodeToolProvider(this.descriptionNameGenerator).create(null));
+            nodeTools.add(new OccurrenceUsageSnapshotNodeToolProvider(this.descriptionNameGenerator).create(null));
+        }
+        return nodeTools;
     }
 }
