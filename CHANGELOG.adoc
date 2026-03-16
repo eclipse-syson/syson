@@ -96,6 +96,7 @@ It now follows the same rule than all other graphical node: if a compartment tha
 - https://github.com/eclipse-syson/syson/issues/2049[#2049] [diagrams] Fix the direct edit and the display of `ends` graphical node elements inside the _ends_ compartment.
 Now the _end_ keyword is not displayed anymore in the label of these graphical nodes, and the direct edit only allows to edit the name of the end instead of the full label which was confusing for users.
 - https://github.com/eclipse-syson/syson/issues/2054[#2054] [diagrams] Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
+- https://github.com/eclipse-syson/syson/issues/2057[#2057] [diagrams] Fix the support for removing the multiplicity using the direct edit.
 
 === Improvements
 
@@ -149,6 +150,7 @@ Add possibility for validation rules to specify their severity ; the SysML rules
 Tweak the diagnostic messages to help users understand where the erroneous element is in their editing context.
 Make sure diagnostics are sorted according to their validated element and its containing document.
 - https://github.com/eclipse-syson/syson/issues/2042[#2042] [import] Improve error reporting while uploading a document.
+- https://github.com/eclipse-syson/syson/issues/2057[#2057] [diagrams] Add the support for empty value for multiplicity in the ANTLR grammar.
 
 === New features
 

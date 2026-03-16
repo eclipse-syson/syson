@@ -83,7 +83,7 @@ referenceExpression :
 ;
 
 multiplicityExpression :
-	LBRACKET (lowerBound=multiplicityExpressionMember DOTDOT)? upperBound=multiplicityExpressionMember RBRACKET
+	LBRACKET ((lowerBound=multiplicityExpressionMember DOTDOT)? upperBound=multiplicityExpressionMember)? RBRACKET
 ;
 
 multiplicityPropExpression :

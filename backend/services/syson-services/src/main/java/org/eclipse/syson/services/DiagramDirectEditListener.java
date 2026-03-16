@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
@@ -191,7 +190,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingAbstractPrefixExpression(ctx);
         this.handleMissingVariationPrefixExpression(ctx);
         this.handleMissingReferenceExpression(ctx);
-        this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingSubclassificationExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
@@ -226,7 +224,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         this.handleMissingDirectionPrefixExpression(ctx);
-        this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingOrderedMultiplicityExpression(ctx);
         this.handleMissingNonuniqueMultiplicityExpression(ctx);
         this.handleMissingSubclassificationExpression(ctx);
@@ -370,6 +367,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             if (memberships.size() == 2) {
                 multiplicityRange.getOwnedRelationship().remove(1);
             }
+        } else if (bounds.isEmpty()) {
+            EcoreUtil.remove(multiplicityRange.eContainer());
         }
     }
 
@@ -1077,38 +1076,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage && referenceExpression == null) {
             usage.setIsComposite(true);
         }
-    }
-
-    private void handleMissingMultiplicityExpression(ParserRuleContext ctx) {
-        if (this.options.contains(LabelService.MULTIPLICITY_OFF)) {
-            return;
-        }
-        MultiplicityExpressionContext multiplicityExpression = null;
-        if (ctx instanceof ListItemExpressionContext listCtx) {
-            multiplicityExpression = listCtx.multiplicityExpression();
-        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
-            multiplicityExpression = nodeCtx.multiplicityExpression();
-        }
-        if (this.element instanceof Usage && multiplicityExpression != null && this.isDeleteMultiplicityExpression(multiplicityExpression)) {
-            var optMultiplicityRange = this.element.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .flatMap(m -> m.getOwnedRelatedElement().stream())
-                    .filter(MultiplicityRange.class::isInstance)
-                    .map(MultiplicityRange.class::cast)
-                    .findFirst();
-            if (optMultiplicityRange.isPresent()) {
-                MultiplicityRange multiplicityRange = optMultiplicityRange.get();
-                EcoreUtil.remove(multiplicityRange.eContainer());
-            }
-        }
-    }
-
-    private boolean isDeleteMultiplicityExpression(MultiplicityExpressionContext multiplicityExpression) {
-        return multiplicityExpression.exception instanceof InputMismatchException
-                && multiplicityExpression.getChildCount() == 2
-                && LabelConstants.OPEN_BRACKET.equals(multiplicityExpression.getChild(0).getText())
-                && LabelConstants.CLOSE_BRACKET.equals(multiplicityExpression.getChild(1).getText());
     }
 
     private void handleMissingOrderedMultiplicityExpression(ListItemExpressionContext ctx) {
