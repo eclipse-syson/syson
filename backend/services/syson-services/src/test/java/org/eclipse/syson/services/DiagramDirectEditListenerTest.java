@@ -14,7 +14,6 @@ package org.eclipse.syson.services;
 
 import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -337,35 +336,53 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditPartUsageNodeWithMultiplicity() {
         PartUsage partUsage = this.createFlashlight();
-        this.doDirectEditOnNode(partUsage, "[4]");
-        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+        var optMultiplicityRangeBeforeDirectEdit = partUsage.getOwnedRelationship().stream()
                 .filter(OwningMembership.class::isInstance)
                 .map(OwningMembership.class::cast)
                 .flatMap(m -> m.getOwnedRelatedElement().stream())
                 .filter(MultiplicityRange.class::isInstance)
                 .map(MultiplicityRange.class::cast)
                 .findFirst();
-        assertTrue(optMultiplicityRange.isPresent());
-        MultiplicityRange multiplicityRange = optMultiplicityRange.get();
+        assertThat(optMultiplicityRangeBeforeDirectEdit).isEmpty();
+
+        this.doDirectEditOnNode(partUsage, "[4]");
+        var optMultiplicityRangeAfterDirectEdit = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertThat(optMultiplicityRangeAfterDirectEdit).isPresent();
+        MultiplicityRange multiplicityRange = optMultiplicityRangeAfterDirectEdit.get();
         Expression lowerBound = multiplicityRange.getLowerBound();
-        assertTrue(lowerBound instanceof LiteralInteger);
+        assertThat(lowerBound).isInstanceOf(LiteralInteger.class);
         LiteralInteger lowerBoundLiteral = (LiteralInteger) lowerBound;
-        assertEquals(4, lowerBoundLiteral.getValue());
+        assertThat(lowerBoundLiteral.getValue()).isEqualTo(4);
     }
 
     @DisplayName("GIVEN a PartUsage as graphical node, WHEN it is edited with '[]', THEN its multiplicity is deleted")
     @Test
     public void testDirectEditPartUsageNodeWithMultiplicityDeleted() {
-        PartUsage partUsage = this.createFlashlight();
-        this.doDirectEditOnNode(partUsage, "[]");
-        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+        PartUsage partUsage = this.addMultiplicity(this.createFlashlight(), 4);
+        var optMultiplicityRangeBeforeDirectEdit = partUsage.getOwnedRelationship().stream()
                 .filter(OwningMembership.class::isInstance)
                 .map(OwningMembership.class::cast)
                 .flatMap(m -> m.getOwnedRelatedElement().stream())
                 .filter(MultiplicityRange.class::isInstance)
                 .map(MultiplicityRange.class::cast)
                 .findFirst();
-        assertTrue(optMultiplicityRange.isEmpty());
+        assertThat(optMultiplicityRangeBeforeDirectEdit).isPresent();
+
+        this.doDirectEditOnNode(partUsage, "[]");
+        var optMultiplicityRangeAfterDirectEdit = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertThat(optMultiplicityRangeAfterDirectEdit).isEmpty();
     }
 
     @DisplayName("GIVEN a PartUsage as graphical node, WHEN it is edited with '<1.1>', THEN its short name is set and its name is unchanged")
@@ -664,20 +681,29 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditPartUsageListItemWithMultiplicity() {
         PartUsage partUsage = this.createFlashlight();
-        this.doDirectEditOnCompartmentListItem(partUsage, "[4]");
-        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+        var optMultiplicityRangeBeforeDirectEdit = partUsage.getOwnedRelationship().stream()
                 .filter(OwningMembership.class::isInstance)
                 .map(OwningMembership.class::cast)
                 .flatMap(m -> m.getOwnedRelatedElement().stream())
                 .filter(MultiplicityRange.class::isInstance)
                 .map(MultiplicityRange.class::cast)
                 .findFirst();
-        assertTrue(optMultiplicityRange.isPresent());
-        MultiplicityRange multiplicityRange = optMultiplicityRange.get();
+        assertThat(optMultiplicityRangeBeforeDirectEdit).isEmpty();
+
+        this.doDirectEditOnCompartmentListItem(partUsage, "[4]");
+        var optMultiplicityRangeAfterDirectEdit = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertThat(optMultiplicityRangeAfterDirectEdit).isPresent();
+        MultiplicityRange multiplicityRange = optMultiplicityRangeAfterDirectEdit.get();
         Expression lowerBound = multiplicityRange.getLowerBound();
-        assertTrue(lowerBound instanceof LiteralInteger);
+        assertThat(lowerBound).isInstanceOf(LiteralInteger.class);
         LiteralInteger lowerBoundLiteral = (LiteralInteger) lowerBound;
-        assertEquals(4, lowerBoundLiteral.getValue());
+        assertThat(lowerBoundLiteral.getValue()).isEqualTo(4);
     }
 
     @DisplayName("GIVEN a PartUsage as graphical compartment list item, WHEN it is edited with '<1.1>', THEN its short name is set and its name is unchanged")
@@ -777,6 +803,19 @@ public class DiagramDirectEditListenerTest {
      */
     private PartUsage createFlashlight() {
         return new SmallFlashlightExample().getFlashlightPartUsage();
+    }
+
+    private PartUsage addMultiplicity(PartUsage part, int value) {
+        var rangeMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        var multiplicityRange = SysmlFactory.eINSTANCE.createMultiplicityRange();
+        var literalMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        var literalInteger = SysmlFactory.eINSTANCE.createLiteralInteger();
+        literalInteger.setValue(value);
+        literalMembership.getOwnedRelatedElement().add(literalInteger);
+        multiplicityRange.getOwnedRelationship().add(literalMembership);
+        rangeMembership.getOwnedRelatedElement().add(multiplicityRange);
+        part.getOwnedRelationship().add(rangeMembership);
+        return part;
     }
 
     private void doDirectEditOnNode(Element element, String input) {

@@ -33,6 +33,8 @@ It now follows the same rule than all other graphical node: if a compartment tha
 ** Fix the direct edit and the display of `ends` graphical node elements inside the _ends_ compartment.
 Now the _end_ keyword is not displayed anymore in the label of these graphical nodes, and the direct edit only allows to edit the name of the `end` element instead of the full label which was confusing for users.
 ** Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
+** Fix the support for removing the multiplicity using the direct edit.
++ During the direct edit, typing `[]` will remove the multiplicity if it exists, as it is supposed to do.
 
 * In textual import/export:
 
