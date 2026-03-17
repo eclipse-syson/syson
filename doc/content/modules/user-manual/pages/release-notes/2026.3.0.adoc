@@ -103,6 +103,7 @@ package Test {
 ** Fix the export of `LiteralString` with backslash characters.
 ** Fix textual import of `LiteralString` containing escaped backslash. In the following example `attribute a1 = "A \\ B";`, the value of "a1" is now "A \ B".
 The previous implementation was importing the value "A \\ B".
+** Fix error when importing SysML snippets referencing unknown units which could make the resluting model inconsistent
 
 * In _Explorer_ view:
 
