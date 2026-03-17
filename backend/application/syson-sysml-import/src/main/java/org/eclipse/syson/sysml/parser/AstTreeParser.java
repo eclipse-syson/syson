@@ -200,7 +200,7 @@ public class AstTreeParser {
                 "Non qualified proxy resolution phase", unresolvedAfterRedefinition);
 
         if (!unresolvedProxiesAfterUnqualified.isEmpty()) {
-            this.handleUnresolvableProxies(unresolvedAfterRedefinition);
+            this.handleUnresolvableProxies(unresolvedProxiesAfterUnqualified);
         }
     }
 

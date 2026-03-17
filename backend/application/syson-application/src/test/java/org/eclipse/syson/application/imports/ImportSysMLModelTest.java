@@ -27,6 +27,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -1280,6 +1281,27 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
             assertThat(sendAction.getPayloadArgument())
                     .isInstanceOf(FeatureReferenceExpression.class)
                     .matches(expression -> ((FeatureReferenceExpression) expression).getReferent().getName().equals("s"));
+        }).check(input);
+    }
+
+    @DisplayName("Given an attribute valued with an unknown unit, WHEN importing the model, THEN then no unresolvable proxies are left")
+    @Test
+    public void referenceToUnknownUnit() throws IOException {
+        var input = """
+                part p {
+                    attribute a = 42 [W]
+                }
+                """;
+        this.checker.checkImportedModel(resource -> {
+            var iter = resource.getAllContents();
+            while (iter.hasNext()) {
+                var current = iter.next();
+                for (var target : current.eCrossReferences()) {
+                    assertThat(target).isNotNull();
+                    assertThat(((InternalEObject) target).eProxyURI()).isNull();
+                    assertThat(target.eIsProxy()).isFalse();
+                }
+            }
         }).check(input);
     }
 
