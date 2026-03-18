@@ -94,7 +94,7 @@ sudo keytool -J-Duser.language=en -import -trustcacerts -alias elasticsearch-sir
 ----
 
 TIP: `keytool` will ask you for a password for the JVM's keystore.
-If you never set a custom password, https://docs.oracle.com/en/java/javase/17/docs//specs/man/keytool.html[the default is `changeit`].
+If you never set a custom password, https://docs.oracle.com/en/java/javase/21/docs//specs/man/keytool.html[the default is `changeit`].
 
 == Configure {product} to use Elasticsearch
 

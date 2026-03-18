@@ -4,6 +4,8 @@
 
 == Breaking changes
 
+- As of version 2026.5.0, SysON now requires **Java 21** or later.
+
 == New features
 
 == Bug fixes

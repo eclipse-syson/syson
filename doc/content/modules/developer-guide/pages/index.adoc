@@ -36,11 +36,11 @@ git config core.eol lf
 ==== Java
 
 All {product} backend modules use Java.
-The current version used by {product} is Java 17.
+The current version used by {product} is Java 21.
 
-You can download Java 17 JDK here: https://adoptium.net/temurin/archive/
+You can download Java 21 JDK here: https://adoptium.net/fr/temurin/releases?version=21&os=any&arch=any
 
-Then, you can test that your favorite shell is using Java 17 by applying this command (from anywhere):
+Then, you can test that your favorite shell is using Java 21 by applying this command (from anywhere):
 [source,shell]
 ----
 java --version
@@ -133,15 +133,15 @@ docker run -p 5433:5432 --rm --name syson-postgres \
 
 It will setup a PostgreSQL instance with the appropriate parameters to locally test the {product} application.
 
-==== Development with Spring Tools 4 for Eclipse
+==== Development with Spring Tools 5 for Eclipse
 
-If you want to develop with Eclipse, you will need Spring Tools 4 for Eclipse.
+If you want to develop with Eclipse, you will need Spring Tools 5 for Eclipse.
 
-You can download Spring Tools 4 for Eclipse here: https://spring.io/tools
+You can download Spring Tools 5 for Eclipse here: https://spring.io/tools#eclipse
 
 Please download the latest version and try to stay up-to-date.
 
-Once launched, please check that your Eclipse is using Java 17. Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS) and then _Java > Installed JREs_.
+Once launched, please check that your Eclipse is using Java 21. Go to _Window > Preferences_ menu (or _SpringToolSuite4 > Settings_ on macOS) and then _Java > Installed JREs_.
 
 image::SetupDev_SpringToolSuite_Check_Java.png[Check installed JRE in Spring Tool Suite]
 

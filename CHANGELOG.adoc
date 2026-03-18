@@ -6,12 +6,15 @@
  
 === Breaking changes
 
+- SysON now requires **Java 21** or later.
 - [cleanup] The definition of the tools specific to the requirements table has been moved to the backend.
 As a result, the following GraphQL mutations have been removed `exposeRequirements` and `createRequirement`.
 - [test] Reduce our call to `DiagramNavigator#nodeWithTargetObjectLabel` which has been deprecated for removal.
 + The API of `ToolTester#invokeTool` and `NodeCreationTestsService#createNode` has been updated accordingly to take a `targetObjectId` instead of a `label`.
 
 === Dependency update
+
+- As of version 2026.5.0, SysON now requires **Java 21** or later.
 
 === Bug fixes
 
