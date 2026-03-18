@@ -30,7 +30,7 @@ import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
  */
 public class LibrariesDirectory implements ISysONExplorerFragment {
 
-    private final String id = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
+    public static final String LIBRARIES_DIRECTORY_ID = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
 
     private final String label;
 
@@ -46,7 +46,7 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
 
     @Override
     public String getId() {
-        return this.id;
+        return LIBRARIES_DIRECTORY_ID;
     }
 
     @Override

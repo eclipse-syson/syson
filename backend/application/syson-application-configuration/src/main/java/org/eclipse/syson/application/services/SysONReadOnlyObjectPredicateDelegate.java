@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.application.services;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -26,10 +27,10 @@ import org.springframework.stereotype.Service;
  * <p>
  * It ensures that a {@link Resource}, an {@link EAnnotation} or a {@link Element SysML element} is considered read-only
  * by the {@link IReadOnlyObjectPredicate} implementation (used for the <i>Explorer</i> and <i>Details</i> views) when
- * it is (or belongs to) a {@link Resource} matching at least one of the following criterias:
+ * it is (or belongs to) a {@link Resource} matching at least one of the following criteria:
  * <ul>
  * <li>From the SysML and KerML standard libraries</li>
- * <li>From an {@link org.eclipse.syson.services.api.ISysONResourceService#isImported(Resource) imported resource}
+ * <li>From an {@link org.eclipse.syson.services.api.ISysONResourceService#isImported(IEditingContext, Resource) read-only imported resource}
  * containing {@link org.eclipse.syson.sysml.LibraryPackage libraries}.</li>
  * </ul>
  *

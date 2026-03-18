@@ -53,7 +53,6 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
-import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.GetIntermediateContainerCreationSwitch;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -199,9 +198,6 @@ public class SysMLv2EditService implements IEditServiceDelegate {
             } else if (container instanceof Membership membership && eObject instanceof Element newElement) {
                 membership.getOwnedRelatedElement().add(newElement);
             }
-            // Updating an element in an imported model removes its imported flag. This ensures that creating a library
-            // model from an imported SysML file does not make it an imported user library.
-            ElementUtil.setIsImported(eObject.eResource(), false);
             new ElementInitializerSwitch().doSwitch(eObject);
             if (eObject instanceof ViewUsage viewUsage) {
                 this.createDiagram(editingContext, viewUsage);
