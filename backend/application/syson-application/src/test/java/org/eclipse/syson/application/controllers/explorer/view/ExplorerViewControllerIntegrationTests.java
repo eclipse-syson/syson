@@ -28,6 +28,8 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
+import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -37,6 +39,8 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.TreeItemContextMenuQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -45,7 +49,10 @@ import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
+import org.eclipse.syson.application.data.WithUserLibrariesTestProjectData;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
+import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
+import org.eclipse.syson.tree.explorer.fragments.UserLibrariesDirectory;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,6 +70,7 @@ import reactor.test.StepVerifier;
  * @author arichard
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -99,6 +107,14 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             tree -> tree.getChildren().get(0).getChildren().get(1).getChildren().get(2),
             treeItem -> treeItem.getLabel().toString().equals("<Req2> "));
 
+    private final TreeItemMatcher userLibraryPackageRW = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(2).getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.getLabel().toString().equals("Package2"));
+
+    private final TreeItemMatcher userLibraryPackageRO = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(2).getChildren().get(1).getChildren().get(0),
+            treeItem -> treeItem.getLabel().toString().equals("Package3"));
+
     private final TreeItemMatcher view1GVRepresentation = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0),
             treeItem -> treeItem.getLabel().toString().equals("view1"));
@@ -129,6 +145,12 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
     @Autowired
     private TreeFiltersQueryRunner treeFiltersQueryRunner;
+
+    @Autowired
+    private CreateChildMutationRunner createChildMutationRunner;
+
+    @Autowired
+    private TreeItemContextMenuQueryRunner treeItemContextMenuQueryRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -173,7 +195,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testDirectEditOnViewUsage() {
-        var expandedIds = this.getAllTreeItemIds();
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
         var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
@@ -201,7 +223,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testDirectEditOnElementWithShortName() {
-        var expandedIds = this.getAllTreeItemIds();
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
         var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
@@ -220,11 +242,95 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN the SysON Explorer View, WHEN we try to create a new element in an imported read-write user library, THEN a new element is added to the user library")
+    @GivenSysONServer({ WithUserLibrariesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testImportedReadWriteUserLibraryEdition() {
+        var expandedIds = this.getAllTreeItemIds(WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID);
+        expandedIds.add(LibrariesDirectory.LIBRARIES_DIRECTORY_ID);
+        expandedIds.add(UserLibrariesDirectory.USER_LIBRARIES_DIRECTORY_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.userLibraryPackageRW));
+
+        Runnable getContextualMenuRunnable = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", treeRepresentationId,
+                    "treeItemId", WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID);
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            List<String> contextualMenuIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(contextualMenuIds).contains("new-object", "expand-all");
+        };
+
+        Runnable createChildRunnable = () -> {
+            var input = new CreateChildInput(UUID.randomUUID(), WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID, "SysMLv2EditService-AcceptActionUsage");
+
+            var result = this.createChildMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
+            assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedExplorerView = assertRefreshedTreeThat(tree -> {
+            var package2TreeItem = tree.getChildren().get(0).getChildren().get(2).getChildren().get(0).getChildren().get(0);
+            assertThat(package2TreeItem.getId()).isEqualTo(WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID);
+            assertThat(package2TreeItem.getChildren()).size().isEqualTo(2);
+            assertThat(package2TreeItem.getChildren().get(1).getKind()).contains("AcceptActionUsage");
+        });
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasProjectContent)
+                .then(getContextualMenuRunnable)
+                .then(createChildRunnable)
+                .consumeNextWith(updatedExplorerView)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer View, WHEN we request the contextual menu of a tree item in an imported read-only user library, THEN the contextual menu does not contain entry to mutate the library")
+    @GivenSysONServer({ WithUserLibrariesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testImportedReadOnlyUserLibraryEdition() {
+        var expandedIds = this.getAllTreeItemIds(WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID);
+        expandedIds.add(LibrariesDirectory.LIBRARIES_DIRECTORY_ID);
+        expandedIds.add(UserLibrariesDirectory.USER_LIBRARIES_DIRECTORY_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
+
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.userLibraryPackageRO));
+
+        Runnable getContextualMenuRunnable = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", WithUserLibrariesTestProjectData.EDITING_CONTEXT_ID,
+                    "representationId", treeRepresentationId,
+                    "treeItemId", WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID);
+            var result = this.treeItemContextMenuQueryRunner.run(variables);
+
+            List<String> contextualMenuIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            assertThat(contextualMenuIds).doesNotContain("new-object", "new-representation", "newObjectsFromText", "duplicate-object").contains("expand-all");
+        };
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(hasProjectContent)
+                .then(getContextualMenuRunnable)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     @DisplayName("GIVEN the SysON Explorer View, WHEN hide expose element filter is active, THEN the expose element are not return as tree item")
     @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
     @Test
     public void testHideExposeElementFilter() {
-        var expandedIds = this.getAllTreeItemIds();
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
         var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, SysONTreeFilterConstants.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
 
@@ -291,8 +397,8 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         assertThat(treeFilterIds).isEmpty();
     }
 
-    private List<String> getAllTreeItemIds() {
-        var optionalEditingContext = this.editingContextSearchService.findById(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID)
+    private List<String> getAllTreeItemIds(String editingContextId) {
+        var optionalEditingContext = this.editingContextSearchService.findById(editingContextId)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast);
         assertThat(optionalEditingContext).isPresent();

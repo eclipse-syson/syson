@@ -111,6 +111,7 @@ The previous implementation was importing the value "A \\ B".
 * In _Explorer_ view:
 
 ** Fix an issue where creating a new model using the _Create a new model_ action in the _Explorer_ view was not adding the ".sysml" extension to the model name.
+** Fix an issue where user libraries were moved from the `User libraries` folder to the root of the project when a child element was created in it.
 
 * In _Details_ view:
 

@@ -101,6 +101,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 - https://github.com/eclipse-syson/syson/issues/2058[#2058] [diagrams] Fix error when importing SysML snippets referencing unknown units which could make the resulting model inconsistent
 - https://github.com/eclipse-syson/syson/issues/2053[#2053] [diagrams] Prevent incoming and outgoing graphical edges of a graphical `ForkNode` or `JoinNode` to point empty space.
 - https://github.com/eclipse-syson/syson/issues/2059[#2059] [diagrams] Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2043[#2043] [explorer] Prevent user libraries from being moved to the root of the project when a child is created in it.
 
 === Improvements
 
