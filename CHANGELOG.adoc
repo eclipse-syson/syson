@@ -103,6 +103,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 - https://github.com/eclipse-syson/syson/issues/2059[#2059] [diagrams] Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2043[#2043] [explorer] Prevent user libraries from being moved to the root of the project when a child is created in it.
 - https://github.com/eclipse-syson/syson/issues/2056[#2056] [diagams] Fix the user feedback when dropping an `Element` which is already exposed on a diagram.
+- https://github.com/eclipse-syson/syson/issues/2048[#2048] [diagrams] Fix an issue where the non-empty compartments of graphical nodes were being displayed when executing the _Add existing elements_ tool.
 
 === Improvements
 

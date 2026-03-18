@@ -72,7 +72,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
-                .isHiddenByDefaultExpression("aql:true")
+                .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.name)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
@@ -162,7 +162,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
                 .fontSize(12)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:false")
+                .showIconExpression(AQLConstants.AQL_FALSE)
                 .withHeader(true)
                 .build();
     }

@@ -40,6 +40,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 + Consequently, their entire footprint is filled with black, ensuring that all incoming and outgoing edges maintain a valid connection point.
 ** Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
 ** Fix the user feedback when dropping an `Element` from the _Explorer_ view which is already exposed on a diagram.
+** Fix an issue where the non-empty compartments of graphical nodes were being displayed when executing the _Add existing elements_ tool.
 
 * In textual import/export:
 

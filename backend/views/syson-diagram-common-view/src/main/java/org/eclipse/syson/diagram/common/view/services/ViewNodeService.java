@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
@@ -315,39 +314,36 @@ public class ViewNodeService {
     }
 
     /**
-     * Check if the compartment associated to the given {@link Element} and reference should be hidden by default.
+     * Check if the compartment associated to the given {@link Element} should be hidden by default.
      *
      * @param self
      *            the {@link Element} associated to the compartment node.
-     * @param referenceName
-     *            the name of the reference associated to the compartment node.
+     * @param compartmentName
+     *            the name of the compartment to display/hide by default
+     * @param ancestors
+     *            the list of ancestors of the element (semantic elements corresponding to graphical ancestors). It
+     *            corresponds to a variable accessible from the variable manager.
+     * @param editingContext
+     *            the {@link IEditingContext} of the element. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the element. It corresponds to a variable accessible from the variable
+     *            manager.
      * @return <code>true</code> if the compartment should be hidden by default, <code>false</code> otherwise
      */
-    public boolean isHiddenByDefault(Element self, String referenceName) {
+    public boolean isHiddenByDefault(Element self, String compartmentName, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         boolean isHiddenByDefault = true;
-        EStructuralFeature eStructuralFeature = self.eClass().getEStructuralFeature(referenceName);
-        if (eStructuralFeature != null && eStructuralFeature != SysmlPackage.eINSTANCE.getDefinition_OwnedPort()) {
-            Object referenceValue = self.eGet(eStructuralFeature);
-            if (referenceValue instanceof List<?> referenceListValue) {
-                isHiddenByDefault = referenceListValue.isEmpty();
-            } else {
-                isHiddenByDefault = referenceValue == null;
+        // @technical-debt we should find a way to compute this compartment name here and in
+        // InterconnectionCompartmentNodeDescriptionProvider only once.
+        if ("GV Compartment interconnection FreeForm".equals(compartmentName)) {
+            var exposedParts = this.getExposedElements(self, SysmlPackage.eINSTANCE.getPartUsage(), ancestors, editingContext, diagramContext);
+            var exposedActions = this.getExposedElements(self, SysmlPackage.eINSTANCE.getActionUsage(), ancestors, editingContext, diagramContext);
+            var exposedSatisfyRequirements = this.getExposedElements(self, SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), ancestors, editingContext, diagramContext);
+            if (!exposedParts.isEmpty() || !exposedActions.isEmpty() || !exposedSatisfyRequirements.isEmpty()) {
+                isHiddenByDefault = false;
             }
         }
         return isHiddenByDefault;
-    }
-
-    /**
-     * Check if the compartment associated to the given {@link Element} and references should be hidden by default.
-     *
-     * @param self
-     *            the {@link Element} associated to the compartment node.
-     * @param referenceNames
-     *            the name of the references associated to the compartment node.
-     * @return <code>true</code> if the compartment should be hidden by default, <code>false</code> otherwise
-     */
-    public boolean isHiddenByDefault(Element self, List<String> referenceNames) {
-        return referenceNames.stream().allMatch(referenceName -> this.isHiddenByDefault(self, referenceName));
     }
 
     /**

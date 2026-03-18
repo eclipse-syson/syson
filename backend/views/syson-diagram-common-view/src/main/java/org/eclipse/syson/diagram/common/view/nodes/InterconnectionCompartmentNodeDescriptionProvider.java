@@ -33,12 +33,14 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -66,6 +68,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
+                .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.compartmentName)
                 .preconditionExpression(
                         AQLUtils.getSelfServiceCallExpression("isView",
@@ -161,5 +164,11 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .background(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newFreeFormLayoutStrategyDescription().build())
                 .build();
+    }
+
+    @Override
+    protected String isHiddenByDefaultExpression() {
+        return ServiceMethod.of4(ViewNodeService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.compartmentName), org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
+                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
     }
 }

@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ConnectionDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -50,5 +51,10 @@ public class ConnectionDefinitionEndsCompartmentNodeDescriptionProvider extends 
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
         creationToolProviders.add(new ConnectionDefinitionEndCompartmentNodeToolProvider());
         return creationToolProviders;
+    }
+
+    @Override
+    protected String isHiddenByDefaultExpression() {
+        return AQLConstants.AQL_FALSE;
     }
 }
