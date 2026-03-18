@@ -98,7 +98,7 @@ public class GVDropFromExplorerVisibilityTests extends AbstractIntegrationTests 
             diagramTargetId.set(diagram.getTargetObjectId());
             diagramId.set(diagram.getId());
             var partNode = new DiagramNavigator(diagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "p1").getNode();
-            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(9);
+            assertThat(partNode.getChildNodes().stream().filter(node -> node.getModifiers().contains(ViewModifier.Hidden))).hasSize(10);
             partNodeSemanticId.set(partNode.getTargetObjectId());
             partNodeId.set(partNode.getId());
         });

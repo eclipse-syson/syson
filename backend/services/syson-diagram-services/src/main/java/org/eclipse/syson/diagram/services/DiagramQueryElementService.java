@@ -330,17 +330,17 @@ public class DiagramQueryElementService {
     }
 
     /**
-     * Checks if the given node represents the given feature. This especially handle can of feature chain that target inherited member. In such case, the two last segments of the chain should be used
-     * to find the suitable node.
+     * Checks if the given node represents the given feature. This especially handle can of feature chain that target
+     * inherited member. In such case, the two last segments of the chain should be used to find the suitable node.
      *
      * @param endFeature
-     *         the end feature of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}
+     *            the end feature of a {@link org.eclipse.syson.sysml.ConnectorAsUsage}
      * @param nodeToTest
-     *         the node to test
+     *            the node to test
      * @param cacheRendering
-     *         the current cache rendering
+     *            the current cache rendering
      * @param editingContext
-     *         the editing context
+     *            the editing context
      * @return true if the given node is valid source/target for the given node
      */
     private boolean isValidConnectionEnd(Feature endFeature, org.eclipse.sirius.components.representations.Element nodeToTest, DiagramRenderingCache cacheRendering,

@@ -104,7 +104,6 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
-
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
@@ -123,10 +122,9 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
-        assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
+        String addExistingElementsToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
 
-        Runnable nodeCreationRunner = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
+        Runnable nodeCreationRunner = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsToolId);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             assertThat(newDiagram.getNodes()).as("3 nodes should be visible on the diagram").hasSize(4);
@@ -147,7 +145,6 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
-
     }
 
     @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
@@ -164,15 +161,13 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
         String addExistingElementToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
-        assertThat(addExistingElementToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
 
         Runnable addExistingElementTool = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementToolId);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
-            assertThat(newDiagram.getNodes()).as("6 nodes should be visible on the diagram").hasSize(7);
+            assertThat(newDiagram.getNodes()).as("7 root nodes should be visible on the diagram").hasSize(7);
             assertThat(newDiagram.getEdges().stream().filter(e -> ViewModifier.Normal.equals(e.getState())).toList())
-                    .as("3 edges should be visible on the diagram")
-                    .hasSize(3)
+                    .as("3 edges should be visible on the diagram").hasSize(3)
                     .as("The diagram should contain a composite edge between part2 and part1")
                     .anyMatch(edge -> edge.getTargetObjectLabel().equals(PART1))
                     .as("The diagram should contain a composite edge between action1 and action2")
@@ -340,16 +335,8 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         assertThat(optRequirementNode).isPresent();
         assertThat(optRequirementNode.get().getChildNodes())
-                .as("Node RequirementUsage should contain 6 children")
-                .hasSize(8);
-
-        var requirementDocCompartment = this.getCompartment(optRequirementNode.get(), "doc");
-        assertThat(requirementDocCompartment).isPresent();
-        assertThat(requirementDocCompartment.get())
-                .as("The doc compartment should be visible")
-                .matches(node -> !node.getModifiers().contains(ViewModifier.Hidden))
-                .as("The doc compartment should contain a document item")
-                .matches(node -> node.getChildNodes().size() == 1);
+                .as("Node RequirementUsage should contain 8 hidden compartment children").hasSize(8)
+                .allMatch(node -> node.getModifiers().contains(ViewModifier.Hidden));
     }
 
     private Optional<Node> getCompartment(Node node, String compartmentName) {

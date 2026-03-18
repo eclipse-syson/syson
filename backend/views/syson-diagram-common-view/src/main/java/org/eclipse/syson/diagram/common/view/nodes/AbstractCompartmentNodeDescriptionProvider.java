@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
@@ -100,6 +101,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         });
     }
 
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
+    }
+
     /**
      * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment
      * {@link NodeDescription}.
@@ -140,7 +145,9 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      *         <code>false</code> otherwise.
      */
     protected String isHiddenByDefaultExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "'" + this.eReference.getName() + "'");
+        return ServiceMethod.of4(ViewNodeService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.getCompartmentName()),
+                org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
+                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
     }
 
     /**
@@ -237,10 +244,6 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
-    }
-
-    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
-        return this.descriptionNameGenerator;
     }
 
     protected String getCompartmentLabel() {

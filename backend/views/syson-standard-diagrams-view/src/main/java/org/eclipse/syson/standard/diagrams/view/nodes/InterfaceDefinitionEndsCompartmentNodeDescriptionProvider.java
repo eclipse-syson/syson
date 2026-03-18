@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.InterfaceDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -51,10 +50,5 @@ public class InterfaceDefinitionEndsCompartmentNodeDescriptionProvider extends A
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
         creationToolProviders.add(new InterfaceDefinitionEndCompartmentNodeToolProvider());
         return creationToolProviders;
-    }
-
-    @Override
-    protected String isHiddenByDefaultExpression() {
-        return AQLConstants.AQL_TRUE;
     }
 }
