@@ -28,7 +28,7 @@
 	<description>SysON Direct Edit Grammar</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<sirius.web.version>2026.3.0</sirius.web.version>
 		<antlr.version>4.13.2</antlr.version>
 	</properties>
