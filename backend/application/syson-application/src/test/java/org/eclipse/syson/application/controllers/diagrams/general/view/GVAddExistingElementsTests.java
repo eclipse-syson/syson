@@ -17,6 +17,7 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 
 import java.text.MessageFormat;
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,17 +29,24 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
+import org.eclipse.syson.application.data.GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewAddExistingElementsTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -86,6 +94,8 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
     @Autowired
     private ToolTester nodeCreationTester;
+
+    private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
@@ -153,10 +163,10 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String creationToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
-        assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
+        String addExistingElementToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
+        assertThat(addExistingElementToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
 
-        Runnable nodeCreationRunner = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, creationToolId);
+        Runnable addExistingElementTool = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementToolId);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             assertThat(newDiagram.getNodes()).as("6 nodes should be visible on the diagram").hasSize(7);
@@ -196,7 +206,56 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(nodeCreationRunner)
+                .then(addExistingElementTool)
+                .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN an ActionUsage with its action flow compartment displayed and a nested ActionUsage in it, WHEN Delete from diagram the nested ActionUsage then use the Add existing element tool on the action flow compartment, THEN the nested ActionUsage should only be displayed in the action flow compartment")
+    @GivenSysONServer({ GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.SCRIPT_PATH })
+    @Test
+    public void addExistingElementsOnActionFlowCompartment() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(initialDiagram -> {
+            diagram.set(initialDiagram);
+
+            assertThat(initialDiagram.getNodes()).hasSize(1);
+
+            var action1ActionFlowCompartmentNode = new DiagramNavigator(initialDiagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action1")
+                    .childNodeWithLabel("action flow").getNode();
+            assertThat(action1ActionFlowCompartmentNode.getChildNodes()).isEmpty();
+        });
+
+        String addExistingElementToolId = diagramDescriptionIdProvider.getNodeToolId(
+                this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()), "Add existing elements");
+
+        Runnable addExistingElementTool = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
+                GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.GraphicalIds.ACTION_1_ACTIONFLOW_COMPARTMENT_NODE_ID, addExistingElementToolId, List.of());
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            assertThat(newDiagram.getNodes()).hasSize(2);
+
+            var action1ActionFlowCompartmentNode = new DiagramNavigator(newDiagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action1")
+                    .childNodeWithLabel("action flow").getNode();
+            var childNodes = action1ActionFlowCompartmentNode.getChildNodes();
+            assertThat(childNodes).hasSize(1);
+            assertThat(childNodes.get(0).getTargetObjectId()).isEqualTo(GeneralViewAddExistingElementsActionFlowCompartmentTestProjectData.SemanticIds.ACTION_2_ID);
+
+            var action2HiddenNode = new DiagramNavigator(newDiagram).nodeWithLabel(LabelConstants.OPEN_QUOTE + "action" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "action2").getNode();
+            assertThat(action2HiddenNode.getModifiers()).contains(ViewModifier.Hidden);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(addExistingElementTool)
                 .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

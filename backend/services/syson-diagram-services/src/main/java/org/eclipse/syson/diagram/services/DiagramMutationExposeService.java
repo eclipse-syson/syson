@@ -191,6 +191,14 @@ public class DiagramMutationExposeService {
                     if (recursive) {
                         membershipExpose.setIsRecursive(true);
                     }
+                    // if it is the General View, ActionFlow View or StateTrabnsition View, we want to hide tree
+                    // elements if a compartment containing the same
+                    // element is displayed or it is displayed as border node
+                    if (selectedNode != null && !ViewDefinitionKind.isInterconnectionView(this.utilService.getViewDefinitionKind(childElement, List.of(), editingContext))) {
+                        this.hideNodeIfVisibleCompartmentCouldHostTheFutureNode(childElement, editingContext, diagramContext, selectedNode, convertedNodes);
+                        this.hideNodeIfBorderNodeCouldHostTheFutureNode(childElement, editingContext, diagramContext, selectedNode, convertedNodes);
+                        this.hideNodeIfNestedIsDefault(childElement, editingContext, diagramContext, selectedNode, convertedNodes);
+                    }
                 }
             }
         }
