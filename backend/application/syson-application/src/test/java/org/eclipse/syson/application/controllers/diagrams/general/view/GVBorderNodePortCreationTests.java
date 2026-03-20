@@ -105,7 +105,7 @@ public class GVBorderNodePortCreationTests extends AbstractIntegrationTests {
         assertThat(creationToolId).as("The tool 'New Port' should exist on a PartUsage").isNotNull();
         Runnable nodeCreationRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram,
-                "part",
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID,
                 creationToolId);
 
         Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> new CheckDiagramElementCount(this.diagramComparator)

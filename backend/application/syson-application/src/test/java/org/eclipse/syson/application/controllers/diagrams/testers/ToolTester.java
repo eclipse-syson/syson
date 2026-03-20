@@ -60,16 +60,16 @@ public class ToolTester {
         this.invokeTool(editingContextId, diagram, null, toolId);
     }
 
-    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId) {
-        this.invokeTool(editingContextId, diagram, selectedNodeTargetObjectLabel, toolId, List.of());
+    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectId, String toolId) {
+        this.invokeTool(editingContextId, diagram, selectedNodeTargetObjectId, toolId, List.of());
     }
 
-    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
+    public void invokeTool(String editingContextId, AtomicReference<Diagram> diagram, String selectedNodeTargetObjectId, String toolId, List<ToolVariable> variables) {
         String diagramId = diagram.get().getId();
         String diagramElementId = null;
-        if (selectedNodeTargetObjectLabel != null) {
+        if (selectedNodeTargetObjectId != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
-            diagramElementId = diagramNavigator.nodeWithTargetObjectLabel(selectedNodeTargetObjectLabel).getNode().getId();
+            diagramElementId = diagramNavigator.nodeWithTargetObjectId(selectedNodeTargetObjectId).getNode().getId();
         } else {
             diagramElementId = diagramId;
         }
@@ -115,8 +115,8 @@ public class ToolTester {
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
 
-    public void renameRootNode(String editingContextId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
-        Optional<Node> optionalNode = diagram.get().getNodes().stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
+    public void renameRootNode(String editingContextId, AtomicReference<Diagram> diagram, String nodeName, String targetObjectId, String newName) {
+        Optional<Node> optionalNode = diagram.get().getNodes().stream().filter(n -> n.getTargetObjectId().equals(targetObjectId)).findFirst();
 
         assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
 
