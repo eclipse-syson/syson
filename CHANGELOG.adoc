@@ -63,6 +63,10 @@ And the following methods have been added:
 - [test] Reduce our call to `DiagramNavigator#nodeWithTargetObjectLabel` which has been deprecated for removal.
 + The API of `ToolTester#invokeTool` and `NodeCreationTestsService#createNode` has been updated accordingly to take a `targetObjectId` instead of a `label`.
 
+- https://github.com/eclipse-syson/syson/issues/2045[#2045] [diagrams] The service `ViewNodeService#revealCompartment` has been changed to reveal a compartment only when it is needed.
++ Only reveal a compartment of a node when none of the revealed compartment can display the `targetElement`.
++ If many compartment candidates exist, choose the first free form compartment.
+
 === Dependency update
 
 - [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.6]
@@ -105,8 +109,9 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 - https://github.com/eclipse-syson/syson/issues/2053[#2053] [diagrams] Prevent incoming and outgoing graphical edges of a graphical `ForkNode` or `JoinNode` to point empty space.
 - https://github.com/eclipse-syson/syson/issues/2059[#2059] [diagrams] Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2043[#2043] [explorer] Prevent user libraries from being moved to the root of the project when a child is created in it.
-- https://github.com/eclipse-syson/syson/issues/2056[#2056] [diagams] Fix the user feedback when dropping an `Element` which is already exposed on a diagram.
+- https://github.com/eclipse-syson/syson/issues/2056[#2056] [diagrams] Fix the user feedback when dropping an `Element` which is already exposed on a diagram.
 - https://github.com/eclipse-syson/syson/issues/2048[#2048] [diagrams] Fix an issue where the non-empty compartments of graphical nodes were being displayed when executing the _Add existing elements_ tool.
+- https://github.com/eclipse-syson/syson/issues/2045[#2045] [diagrams] In Interconnection View diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
 
 === Improvements
 

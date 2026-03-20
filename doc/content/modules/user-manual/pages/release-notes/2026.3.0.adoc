@@ -27,7 +27,7 @@ They can also add their own SysML-based validation rules by returning additional
 ** Fix an issue where it was possible to create a `SatisfyRequirementUsage` from the `SatisfyRequirementUsage` graphical edge tool with a target that is not a `RequirementUsage`.
 ** Fix an issue where it was not possible to drag and drop a `LibraryPackage` from the _Explorer_ to a diagram.
 ** Fix an issue where creating a `PerformActionUsage` from the `ActionUsage` graphical node (or any other graphical node that allows to create it) was displaying it in the diagram background and its compartments every time.
-It now follows the same rule than all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
+It now follows the same rule as all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
 ** Fix an issue where the creation of a `RequirementUsage` from a `Package` graphical node was not revealing it.
 ** Fix the `EnumerationDefinition` graphical node compartment name from `enumerations` to `enums`, to follow the SysMLv2 specification.
 ** Fix the direct edit and the display of `ends` graphical node elements inside the _ends_ compartment.
@@ -41,6 +41,7 @@ Now the _end_ keyword is not displayed anymore in the label of these graphical n
 ** Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
 ** Fix the user feedback when dropping an `Element` from the _Explorer_ view which is already exposed on a diagram.
 ** Fix an issue where the non-empty compartments of graphical nodes were being displayed when executing the _Add existing elements_ tool.
+** In Interconnection View diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
 
 * In textual import/export:
 

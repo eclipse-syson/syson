@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
@@ -31,8 +33,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -254,6 +259,10 @@ public class ViewNodeService {
     /**
      * Reveals the compartment in {@code node} that can display {@code targetElement}.
      * <p>
+     * Reveals a compartment in {@code node} only if none of the displayed compartment can handle {@code targetElement}.
+     * If many compartment candidates exist, selects the first free-form compartment.
+     * </p>
+     * <p>
      * This method does not assume that the node representing {@code targetElement} is already displayed on the diagram.
      * It looks for the compartment that can (or already does) contain the node, and makes it visible. This means that
      * this method can be called as part of the creation process of {@code targetElement}, even if the node representing
@@ -296,19 +305,27 @@ public class ViewNodeService {
 
         NodeDescriptionService nodeDescriptionService = new NodeDescriptionService(this.objectSearchService);
 
-        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(targetElement, parentObject, allChildNodeDescriptions,
-                convertedNodes, editingContext, diagramContext);
+        Map<String, NodeDescription> compartmentDescriptionCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(targetElement, parentObject, allChildNodeDescriptions,
+                convertedNodes, editingContext, diagramContext)
+                .stream()
+                .collect(Collectors.toMap(NodeDescription::getId, Function.identity()));
 
-        if (!compartmentCandidates.isEmpty()) {
-            if (compartmentCandidates.size() > 1) {
-                this.logger.warn("Multiple compartment candidates found for {} in {}.", targetElement.eClass().getName(), node.toString());
-            }
+        if (!compartmentDescriptionCandidates.isEmpty()) {
             NodeFinder nodeFinder = new NodeFinder(diagramContext.diagram());
-            List<Node> candidateNodes = nodeFinder
-                    .getAllNodesMatching(n -> compartmentCandidates.stream().map(NodeDescription::getId).anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
+            List<Node> compartmentNodeCandidates = nodeFinder
+                    .getAllNodesMatching(n -> compartmentDescriptionCandidates.keySet().stream().anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
                             && Objects.equals(n.getTargetObjectId(), node.getTargetObjectId())
                     );
-            new DiagramServices().reveal(new DiagramService(diagramContext), candidateNodes);
+            var noCompartmentToHandleTargetElement = compartmentNodeCandidates.stream()
+                    .allMatch(candidate -> ViewModifier.Hidden.equals(candidate.getState()));
+            if (noCompartmentToHandleTargetElement) {
+                compartmentNodeCandidates.stream().reduce((previousCandidate, newCandidate) -> {
+                    if (previousCandidate.getStyle().getChildrenLayoutStrategy() instanceof ListLayoutStrategy && newCandidate.getStyle().getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategy) {
+                        return newCandidate;
+                    }
+                    return previousCandidate;
+                }).ifPresent(compartmentToReveal -> new DiagramServices().reveal(new DiagramService(diagramContext), List.of(compartmentToReveal)));
+            }
         }
         return node;
     }
