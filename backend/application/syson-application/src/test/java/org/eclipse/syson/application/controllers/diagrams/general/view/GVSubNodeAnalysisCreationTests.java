@@ -71,8 +71,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -205,10 +203,10 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -233,8 +231,8 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -243,13 +241,13 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -260,9 +258,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("caseUsageBorderAndChildNodeParameters")
     public void createCaseUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
@@ -276,8 +272,8 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
-        String parentLabel = CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -287,18 +283,18 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
             new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withParentTargetObjectId(targetObjectId)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -323,10 +319,10 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getCaseDefinition();
-        String parentLabel = "CaseDefinition";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName, false);
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_DEFINITION_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, targetObjectId, parentEClass, containmentReference, compartmentName, false);
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("CaseDefinition", containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -351,10 +347,10 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = USE_CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(USE_CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -379,8 +375,8 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = USE_CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -389,13 +385,13 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(USE_CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -406,9 +402,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @Sql(scripts = { GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("useCaseUsageBorderAndChildNodeParameters")
     public void createUseCaseUsageBorderAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, EClass borderNodeType) {
@@ -422,8 +416,8 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
-        String parentLabel = USE_CASE;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -433,18 +427,18 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType, containmentReference);
             new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withParentTargetObjectId(targetObjectId)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(USE_CASE, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -469,10 +463,10 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseDefinition();
-        String parentLabel = "UseCaseDefinition";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
-        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName, false);
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_DEFINITION_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        Consumer<Object> diagramCheck = this.diagramCheckerService.compartmentNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, targetObjectId, parentEClass, containmentReference, compartmentName, false);
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("UseCaseDefinition", containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -486,52 +480,52 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewUsageSubjectInCaseUsage() {
-        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewUsageSubjectInUseCaseUsage() {
-        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+        this.createSubjectWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewDefinitionSubjectInCaseUsage() {
-        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewDefinitionSubjectInUseCaseUsage() {
-        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+        this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithSubsettingInCaseUsage() {
-        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithSubsettingInUseCaseUsage() {
-        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+        this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithFeatureTypingInCaseUsage() {
-        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), CASE);
+        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithFeatureTypingInUseCaseUsage() {
-        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), USE_CASE);
+        this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
-    private void createSubjectWithSubsettingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+    private void createSubjectWithSubsettingInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -548,7 +542,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
         variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -565,7 +559,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("subject")
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
@@ -598,7 +592,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void createSubjectWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+    private void createSubjectWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -615,7 +609,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         String existingPartDefId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
         variables.add(new ToolVariable("selectedObject", existingPartDefId, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -632,7 +626,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("subject")
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
@@ -665,7 +659,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void createActorWithSubsettingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+    private void createActorWithSubsettingInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -682,7 +676,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
         variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -719,7 +713,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void createActorWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String parentLabel) {
+    private void createActorWithFeatureTypingInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -736,7 +730,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         String existingPartDefId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
         variables.add(new ToolVariable("selectedObject", existingPartDefId, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();

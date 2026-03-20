@@ -201,7 +201,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     public void createStateUsageSubactionNode(StateSubactionKind kind) {
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
 
-        this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), "state", toolName);
+        this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, toolName);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
@@ -211,7 +211,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action with referenced Action";
         var params = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
 
-        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), "state", toolName, params);
+        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, toolName, params);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
@@ -220,7 +220,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     public void createStateDefinitionSubactionNode(StateSubactionKind kind) {
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
 
-        this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), "StateDefinition", toolName);
+        this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID, toolName);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
@@ -230,10 +230,10 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action with referenced Action";
         var params = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
 
-        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), "StateDefinition", toolName, params);
+        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID, toolName, params);
     }
 
-    private void createStateSubactionNode(StateSubactionKind kind, EClass parentEClass, String parentLabel, String toolName) {
+    private void createStateSubactionNode(StateSubactionKind kind, EClass parentEClass, String targetObjectId, String toolName) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -243,7 +243,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName);
 
         String[] subActionId = new String[1];
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -276,7 +276,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void createStateSubactionWithReferencedActionNode(StateSubactionKind kind, EClass parentEClass, String parentLabel, String toolName, List<@NotNull ToolVariable> params) {
+    private void createStateSubactionWithReferencedActionNode(StateSubactionKind kind, EClass parentEClass, String targetObjectId, String toolName, List<@NotNull ToolVariable> params) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -286,7 +286,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName, params);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, params);
 
         String[] subActionId = new String[1];
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -337,8 +337,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getStateUsage();
-        String parentLabel = "state";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -353,7 +353,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME;
             }
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
@@ -364,7 +364,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
 
         // Actions are not semantically owned by parent
         if (!SysmlPackage.eINSTANCE.getActionUsage().equals(childEClass)) {
-            semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+            semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("state", containmentReference, childEClass));
         }
 
         StepVerifier.create(flux)
@@ -391,8 +391,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getStateDefinition();
-        String parentLabel = "StateDefinition";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -407,7 +407,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME;
             }
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
@@ -418,7 +418,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
 
         // Actions are not semantically owned by parent
         if (!SysmlPackage.eINSTANCE.getActionUsage().equals(childEClass)) {
-            semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+            semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("StateDefinition", containmentReference, childEClass));
         }
 
         StepVerifier.create(flux)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public class CheckNodeInCompartment implements IDiagramChecker {
 
     private final DiagramComparator diagramComparator;
 
-    private String parentLabel;
+    private String targetObjectId;
 
     private String compartmentName;
 
@@ -51,8 +51,8 @@ public class CheckNodeInCompartment implements IDiagramChecker {
         this.diagramComparator = diagramComparator;
     }
 
-    public CheckNodeInCompartment withParentLabel(String expectedParentLabel) {
-        this.parentLabel = expectedParentLabel;
+    public CheckNodeInCompartment withTargetObjectId(String expectedTargetObjectId) {
+        this.targetObjectId = expectedTargetObjectId;
         return this;
     }
 
@@ -80,7 +80,7 @@ public class CheckNodeInCompartment implements IDiagramChecker {
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-        var compartmentNode = diagramNavigator.nodeWithTargetObjectLabel(this.parentLabel)
+        var compartmentNode = diagramNavigator.nodeWithTargetObjectId(this.targetObjectId)
                 .childNodeWithLabel(this.compartmentName)
                 .getNode();
         assertThat(compartmentNode.getChildNodes()).anySatisfy(childNode -> {

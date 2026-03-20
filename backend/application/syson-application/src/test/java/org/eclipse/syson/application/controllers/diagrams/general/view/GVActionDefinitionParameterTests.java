@@ -120,7 +120,7 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable newCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "UseCaseDefinition", creationToolId, variables);
+        Runnable newCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_DEFINITION_ID, creationToolId, variables);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
