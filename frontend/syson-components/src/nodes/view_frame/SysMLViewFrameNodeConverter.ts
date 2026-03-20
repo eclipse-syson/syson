@@ -104,6 +104,7 @@ const toViewFrameNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.style.childrenLayoutStrategy),
     isDraggedNode: false,
     isDropNodeTarget: false,
+    isDragNodeSource: false,
     isDropNodeCandidate: false,
     isHovered: false,
     nodeAppearanceData: {

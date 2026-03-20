@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,4 +55,9 @@
 .source_handle_left ~ .react-flow__edgeupdater-source {
   transform: translate(12px, 0px);
   r: 4px;
+}
+
+/* Make the interaction area of edges dynamic based on the zoom level  */
+.react-flow__edge-interaction {
+  stroke-width: var(--edge-selection-width);
 }
