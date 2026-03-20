@@ -10,6 +10,10 @@
 
 == Bug fixes
 
+* In diagrams:
+
+** In _Interconnection View_ diagrams, fix an issue where the `parts` compartment of `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
+
 == Improvements
 
 == Technical details

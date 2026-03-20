@@ -46,6 +46,8 @@ public class CheckNodeInCompartment implements IDiagramChecker {
 
     private boolean isRevealed;
 
+    private boolean isHidden;
+
     public CheckNodeInCompartment(DiagramDescriptionIdProvider diagramDescriptionIdProvider, DiagramComparator diagramComparator) {
         this.diagramDescriptionIdProvider = diagramDescriptionIdProvider;
         this.diagramComparator = diagramComparator;
@@ -76,6 +78,11 @@ public class CheckNodeInCompartment implements IDiagramChecker {
         return this;
     }
 
+    public CheckNodeInCompartment isHidden() {
+        this.isHidden = true;
+        return this;
+    }
+
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
@@ -92,6 +99,9 @@ public class CheckNodeInCompartment implements IDiagramChecker {
         });
         if (this.isRevealed) {
             assertThat(compartmentNode.getState()).isEqualTo(ViewModifier.Normal);
+        }
+        if (this.isHidden) {
+            assertThat(compartmentNode.getState()).isEqualTo(ViewModifier.Hidden);
         }
     }
 }
