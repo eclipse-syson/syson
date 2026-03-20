@@ -236,9 +236,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getAcceptActionUsage();
-        String parentLabel = "acceptAction";
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACCEPT_ACTION_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel,
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
                 this.descriptionNameGenerator.getCreationToolName("New {0} as Payload", eClass));
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -248,7 +248,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(diagram.get(), newDiagram);
 
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-            Node updatedNode = diagramNavigator.nodeWithTargetObjectLabel(parentLabel).getNode();
+            Node updatedNode = diagramNavigator.nodeWithTargetObjectId(targetObjectId).getNode();
             assertThat(updatedNode).as("The updated node should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel()).as("The updated node label should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel().getText())
@@ -261,7 +261,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<Element> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, Element.class)
-                    .filter(element -> Objects.equals(element.getName(), parentLabel))
+                    .filter(element -> Objects.equals(element.getName(), "acceptAction"))
                     .findFirst();
             assertThat(optParentElement).isPresent();
             assertThat(optParentElement.get()).isInstanceOf(AcceptActionUsage.class);
@@ -295,13 +295,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getAcceptActionUsage();
-        String parentLabel = "acceptAction";
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACCEPT_ACTION_USAGE_ID;
         EClass eClass = SysmlPackage.eINSTANCE.getPortUsage();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel,
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
                 this.descriptionNameGenerator.getCreationToolName("New {0} as Receiver", eClass));
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -311,7 +311,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(diagram.get(), newDiagram);
 
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-            Node updatedNode = diagramNavigator.nodeWithTargetObjectLabel(parentLabel).getNode();
+            Node updatedNode = diagramNavigator.nodeWithTargetObjectId(targetObjectId).getNode();
             assertThat(updatedNode).as("The updated node should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel()).as("The updated node label should exist").isNotNull();
             assertThat(updatedNode.getInsideLabel().getText())
@@ -324,7 +324,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<Element> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, Element.class)
-                    .filter(element -> Objects.equals(element.getName(), parentLabel))
+                    .filter(element -> Objects.equals(element.getName(), "acceptAction"))
                     .findFirst();
             assertThat(optParentElement).isPresent();
             assertThat(optParentElement.get()).isInstanceOf(AcceptActionUsage.class);
@@ -362,13 +362,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
 
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount);
 
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -393,8 +393,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -403,13 +403,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -434,8 +434,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -445,18 +445,18 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
             new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withParentTargetObjectId(targetObjectId)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -481,8 +481,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
-        String parentLabel = "ActionDefinition";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -492,18 +492,18 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             String compartmentNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(compartmentNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
             String borderNodeDescription = this.descriptionNameGenerator.getBorderNodeName(borderNodeType);
             new CheckBorderNode(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withParentTargetObjectId(targetObjectId)
                     .hasBorderNodeDescriptionName(borderNodeDescription)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("ActionDefinition", containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -528,14 +528,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
 
         String creationToolName = this.descriptionNameGenerator.getCreationToolName(childEClass);
         if (creationToolName.endsWith(" Node")) {
             creationToolName = creationToolName.substring(0, creationToolName.length() - 5);
         }
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             int createdNodesExpectedCount = 1 + compartmentCount;
@@ -546,14 +546,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             String nodeName = this.getActionFlowNodeName(childEClass);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(compartmentCountInNewChild)
                     .check(initialDiagram, newDiagram);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -579,9 +579,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -590,13 +590,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -621,13 +621,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
         String creationToolName = "New Perform";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
         List<ToolVariable> variables = new ArrayList<>();
         variables.add(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName, variables);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -638,13 +638,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(5)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -669,11 +669,11 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
         String creationToolName = "New Perform action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             int createdNodesExpectedCount = 13;
@@ -683,13 +683,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(childEClass);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(5)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -714,10 +714,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
-        String parentLabel = "ActionDefinition";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, compartmentCount, 2);
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("ActionDefinition", containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -742,14 +742,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
-        String parentLabel = "ActionDefinition";
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID;
 
         String creationToolName = this.descriptionNameGenerator.getCreationToolName(childEClass);
         if (creationToolName.endsWith(" Node")) {
             creationToolName = creationToolName.substring(0, creationToolName.length() - 5);
         }
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -761,14 +761,14 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             String nodeName = this.getActionFlowNodeName(childEClass);
             String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
                     .hasCompartmentCount(compartmentCountInNewChild)
                     .check(initialDiagram, newDiagram);
         });
 
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("ActionDefinition", containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -794,9 +794,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
-        String parentLabel = ACTION;
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass);
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
@@ -805,13 +805,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(listStatesNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         });
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(ACTION, containmentReference, childEClass));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

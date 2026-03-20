@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public class CheckBorderNode implements IDiagramChecker {
 
     private final DiagramComparator diagramComparator;
 
-    private String parentLabel;
+    private String parentTargetObjectId;
 
     private String borderNodeDescriptionName;
 
@@ -44,8 +44,8 @@ public class CheckBorderNode implements IDiagramChecker {
         this.diagramComparator = diagramComparator;
     }
 
-    public CheckBorderNode withParentLabel(String expectedParentLabel) {
-        this.parentLabel = expectedParentLabel;
+    public CheckBorderNode withParentTargetObjectId(String expectedParentTargetObjectId) {
+        this.parentTargetObjectId = expectedParentTargetObjectId;
         return this;
     }
 
@@ -58,7 +58,7 @@ public class CheckBorderNode implements IDiagramChecker {
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
-        var parentNode = diagramNavigator.nodeWithTargetObjectLabel(this.parentLabel).getNode();
+        var parentNode = diagramNavigator.nodeWithTargetObjectId(this.parentTargetObjectId).getNode();
         assertThat(parentNode.getBorderNodes()).anySatisfy(borderNode -> {
             String borderNodeDescriptionId = this.diagramDescriptionIdProvider.getNodeDescriptionId(this.borderNodeDescriptionName);
             assertThat(borderNode).hasDescriptionId(borderNodeDescriptionId);

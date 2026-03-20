@@ -165,7 +165,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()), "New Item " + kind);
-        Runnable creationToolRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "action", creationToolId);
+        Runnable creationToolRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, creationToolId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -226,7 +226,7 @@ public class GVEdgeItemUsageTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Item " + kind);
-        Runnable creationToolRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "ActionDefinition", creationToolId);
+        Runnable creationToolRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, creationToolId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();

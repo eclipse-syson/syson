@@ -53,8 +53,8 @@ public class DiagramCheckerService {
      *            the reference to the previous diagram state
      * @param diagramDescriptionIdProvider
      *            the provider for diagram description IDs
-     * @param parentLabel
-     *            the label of the parent node
+     * @param parentTargetObjectId
+     *            the parent target object ID
      * @param childEClass
      *            the EClass of the expected child node
      * @param compartmentCount
@@ -65,7 +65,7 @@ public class DiagramCheckerService {
      *            the expected total number of new border nodes
      * @return a consumer that performs the graphical check
      */
-    public Consumer<Object> childNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel, EClass childEClass,
+    public Consumer<Object> childNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentTargetObjectId, EClass childEClass,
             int compartmentCount, int newNodesCount, int newBorderNodesCount) {
         return assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -76,7 +76,7 @@ public class DiagramCheckerService {
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(childEClass);
             new CheckChildNode(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withParentTargetObjectId(parentTargetObjectId)
                     .hasNodeDescriptionName(newNodeDescriptionName)
                     .hasCompartmentCount(compartmentCount)
                     .check(previousDiagram.get(), newDiagram);
@@ -90,8 +90,8 @@ public class DiagramCheckerService {
      *            the reference to the previous diagram state
      * @param diagramDescriptionIdProvider
      *            the provider for diagram description IDs
-     * @param parentLabel
-     *            the label of the parent node
+     * @param parentTargetObjectId
+     *            the parent target object ID
      * @param parentEClass
      *            the EClass of the parent node
      * @param containmentReference
@@ -102,7 +102,7 @@ public class DiagramCheckerService {
      *            check only new nodes and edges that are visible on the diagram
      * @return a consumer that performs the graphical check
      */
-    public Consumer<Object> compartmentNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentLabel,
+    public Consumer<Object> compartmentNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, String parentTargetObjectId,
             EClass parentEClass, EReference containmentReference, String compartmentName, boolean onlyNewVisibleNodesAndEdges) {
         return assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -112,7 +112,7 @@ public class DiagramCheckerService {
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
-                    .withParentLabel(parentLabel)
+                    .withTargetObjectId(parentTargetObjectId)
                     .withCompartmentName(compartmentName)
                     .hasNodeDescriptionName(newNodeDescriptionName)
                     .hasCompartmentCount(0)
