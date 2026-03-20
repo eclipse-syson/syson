@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public class CheckChildNode implements IDiagramChecker {
 
     private final DiagramComparator diagramComparator;
 
-    private String parentLabel;
+    private String parentTargetObjectId;
 
     private String parentNodeId;
 
@@ -48,8 +48,8 @@ public class CheckChildNode implements IDiagramChecker {
         this.diagramComparator = Objects.requireNonNull(diagramComparator);
     }
 
-    public CheckChildNode withParentLabel(String expectedParentLabel) {
-        this.parentLabel = expectedParentLabel;
+    public CheckChildNode withParentTargetObjectId(String expectedParentTargetObjectId) {
+        this.parentTargetObjectId = expectedParentTargetObjectId;
         return this;
     }
 
@@ -76,7 +76,7 @@ public class CheckChildNode implements IDiagramChecker {
         if (this.parentNodeId != null) {
             parentNode = diagramNavigator.nodeWithId(this.parentNodeId).getNode();
         } else {
-            parentNode = diagramNavigator.nodeWithTargetObjectLabel(this.parentLabel).getNode();
+            parentNode = diagramNavigator.nodeWithTargetObjectId(this.parentTargetObjectId).getNode();
         }
         assertThat(parentNode).isNotNull();
         assertThat(parentNode.getChildNodes()).anySatisfy(childNode -> {

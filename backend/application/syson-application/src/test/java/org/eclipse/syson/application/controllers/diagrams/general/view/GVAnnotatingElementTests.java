@@ -143,9 +143,9 @@ public class GVAnnotatingElementTests extends AbstractIntegrationTests {
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String parentLabel = "part";
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID;
 
-        Runnable invokeCreationToolRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), parentLabel,
+        Runnable invokeCreationToolRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), targetObjectId,
                 this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getTextualRepresentation()));
 
         Consumer<Object> diagramCheckerConsumer = assertRefreshedDiagramThat(newDiagram -> {

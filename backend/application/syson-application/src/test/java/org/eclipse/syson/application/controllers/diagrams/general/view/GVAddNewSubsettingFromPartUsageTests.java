@@ -105,7 +105,7 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
 
         String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Subsetting");
         assertThat(creationToolId).as("The tool 'New Subsetting' should exist on a PartUsage").isNotNull();
-        Runnable nodeCreationRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "part", creationToolId);
+        Runnable nodeCreationRunnable = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, creationToolId);
 
         Consumer<Object> diagramAfterNodeCreationConsumer = assertRefreshedDiagramThat(newDiagram -> new CheckDiagramElementCount(this.diagramComparator)
                 // we should have 1 more node (the new PartUsage) and one more edge (the new subsetting)

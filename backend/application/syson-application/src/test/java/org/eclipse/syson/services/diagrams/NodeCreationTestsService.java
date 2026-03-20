@@ -51,15 +51,15 @@ public class NodeCreationTestsService {
      *            the diagram reference
      * @param parentEClass
      *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
+     * @param targetObjectId
+     *            the ID of the element on which apply the tool
      * @param childEClass
      *            the EClass of the child node to create
      * @return a runnable that performs the node creation
      */
     public Runnable createNode(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, EClass childEClass) {
-        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, childEClass, List.of());
+            AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, EClass childEClass) {
+        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, List.of());
     }
 
     /**
@@ -71,8 +71,8 @@ public class NodeCreationTestsService {
      *            the diagram reference
      * @param parentEClass
      *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
+     * @param targetObjectId
+     *            the ID of the element on which apply the tool
      * @param childEClass
      *            the EClass of the child node to create
      * @param variables
@@ -80,8 +80,8 @@ public class NodeCreationTestsService {
      * @return a runnable that performs the node creation
      */
     public Runnable createNode(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, EClass childEClass, List<ToolVariable> variables) {
-        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, this.descriptionNameGenerator.getCreationToolName(childEClass), variables);
+            AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, EClass childEClass, List<ToolVariable> variables) {
+        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, this.descriptionNameGenerator.getCreationToolName(childEClass), variables);
     }
 
     /**
@@ -93,15 +93,15 @@ public class NodeCreationTestsService {
      *            the diagram reference
      * @param parentEClass
      *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
+     * @param targetObjectId
+     *            the ID of the element on which apply the tool
      * @param toolName
      *            the name of the creation tool
      * @return a runnable that performs the node creation
      */
     public Runnable createNode(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName) {
-        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, parentLabel, toolName, List.of());
+            AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, String toolName) {
+        return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, List.of());
     }
 
     /**
@@ -113,8 +113,8 @@ public class NodeCreationTestsService {
      *            the diagram reference
      * @param parentEClass
      *            the EClass of the parent node
-     * @param parentLabel
-     *            the label of the parent node
+     * @param targetObjectId
+     *            the ID of the element on which apply the tool
      * @param toolName
      *            the name of the creation tool
      * @param variables
@@ -122,11 +122,11 @@ public class NodeCreationTestsService {
      * @return a runnable that performs the node creation
      */
     public Runnable createNode(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
-            AtomicReference<Diagram> diagram, EClass parentEClass, String parentLabel, String toolName, List<ToolVariable> variables) {
+            AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, String toolName, List<ToolVariable> variables) {
         String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(parentEClass), toolName);
         return () -> this.toolTester.invokeTool(this.editingContextId,
                 diagram,
-                parentLabel,
+                targetObjectId,
                 creationToolId,
                 variables);
     }

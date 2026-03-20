@@ -137,7 +137,7 @@ public class GVNewStartDoneActionsTests extends AbstractIntegrationTests {
             assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
         };
 
-        Runnable invokeCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, "ActionDefinition", creationToolId);
+        Runnable invokeCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, creationToolId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.ActionTransitionUsagesProjectData;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -47,8 +48,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,10 +113,8 @@ public class ActionTransitionUsagesTests extends AbstractIntegrationTests {
         }
     }
 
-    @Sql(scripts = { ActionTransitionUsagesProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @DisplayName("GIVEN a model with TransitionUsage ending on 'start' or 'done' ActionUsage, WHEN adding existing nested element on the parent of the TransitionUsage, THEN the 'start' and 'done' node should be added to the ActionFlow compartment.")
+    @GivenSysONServer({ ActionTransitionUsagesProjectData.SCRIPT_PATH })
     @Test
     public void addExistingNestedElementsOnActionUsage() {
         TestTransaction.flagForCommit();
@@ -126,7 +123,7 @@ public class ActionTransitionUsagesTests extends AbstractIntegrationTests {
                 "Add existing nested elements");
         assertThat(toolId).as("The tool 'Add existing elements' should exist on Action Usage").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.invokeTool(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, this.diagram, "a0", toolId));
+        this.verifier.then(() -> this.nodeCreationTester.invokeTool(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, this.diagram, ActionTransitionUsagesProjectData.SemanticIds.A0_ID, toolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
