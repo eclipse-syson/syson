@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.syson.util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * StandardDiagrams-related constants.
@@ -34,5 +37,18 @@ public class StandardDiagramsConstants {
     public static final String AFV_QN = "StandardViewDefinitions::ActionFlowView";
 
     public static final String STV_QN = "StandardViewDefinitions::StateTransitionView";
+
+    public static final Map<String, String> SHORT_NAME_TO_VALUE = new HashMap<>();
+
+    static {
+        SHORT_NAME_TO_VALUE.put("gv", GV);
+        SHORT_NAME_TO_VALUE.put("iv", IV);
+        SHORT_NAME_TO_VALUE.put("afv", AFV);
+        SHORT_NAME_TO_VALUE.put("stv", STV);
+    }
+
+    public static String getValueFromShortName(String shortName) {
+        return SHORT_NAME_TO_VALUE.get(shortName.toLowerCase());
+    }
 
 }

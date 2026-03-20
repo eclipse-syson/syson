@@ -209,6 +209,7 @@ Users can navigate to `/libraries/<library identifier>` to open a library and se
 The _Search in libraries_ toggle in the _Search_ view allows to include elements from user and standard libraries in the search.
 This toggle is de-activated by default.
 
+image::release-note-views-explorer.png[_Views Explorer_ view with diagrams and table, width=60%,height=60%]
 
 == Technical details
 
