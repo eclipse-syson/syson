@@ -62,7 +62,7 @@ And the following methods have been added:
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.5]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.6]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Update to archunit-junit5 1.3.0
 - [releng] Update to @ObeoNetwork/gantt-task-react 0.6.3

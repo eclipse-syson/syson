@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             result.addAll(this.getLibraryRelatedEntries(emfEditingContext, treeItem));
         }
         if (this.sysonExplorerService.canExpandAll(treeItem, editingContext)) {
-            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false));
+            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false, List.of()));
         }
         return result;
     }
@@ -113,9 +113,9 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (this.sysonExplorerService.isEditable(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false));
+            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -129,7 +129,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             var object = optionalEObject.get();
             if (this.sysonExplorerService.isEditable(object)) {
                 List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false, List.of()));
                 if (object instanceof ViewUsage) {
                     Optional<UUID> semanticDataId = new UUIDParser().parse(editingContext.getId());
                     var sysonRepresentationAlreadyExists = this.representationMetadataSearchService
@@ -137,16 +137,16 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
                             .anyMatch(rm -> SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(rm.getDescriptionId())
                                     || SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(rm.getDescriptionId()));
                     if (!sysonRepresentationAlreadyExists) {
-                        entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
+                        entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()));
                     }
                 } else {
-                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false));
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()));
                 }
 
-                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false));
+                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
 
                 if (object instanceof Element && !(object instanceof Relationship)) {
-                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false));
+                    entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false, List.of()));
                 }
                 return entries;
             }
@@ -163,7 +163,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             if (!SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())
                     && !SysONRepresentationDescriptionIdentifiers.REQUIREMENTS_TABLE_VIEW_DESCRIPTION_ID.equals(representationMetadata.getDescriptionId())) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false));
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false, List.of()));
             }
         }
         return List.of();
@@ -193,8 +193,8 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
             if (this.isDirectDependency(editingContext, libraryMetadataAdapter) && !this.sysonExplorerService.isEditable(optionalNotifier.get())) {
                 // We do not support the update or removal of a transitive dependency for the moment.
-                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, "", List.of(), true));
-                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true));
+                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, "", List.of(), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true, List.of()));
             }
         }
         return result;
