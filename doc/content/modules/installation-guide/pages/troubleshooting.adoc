@@ -53,3 +53,7 @@ These can be solved by adding
     privileged: true
 ----
 to both containers (_database_ and _app_) in the `docker-compose.yml`.
+
+== NetworkError when downloading a document
+If you encounter a `NetworkError` when trying to download a document from {product}, don't worry this is a https://github.com/eclipse-sirius/sirius-web/issues/6319[known issue] that will be fixed in the next releases.
+It does not affect the download of the document.
