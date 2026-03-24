@@ -12,7 +12,7 @@
 This view is available on the left side of the screen, and displays all diagrams and tables of the current project in a hierarchical way.
 Selecting a diagram or a table in this view will open it in the main area:
 +
-image::release-note-views-explorer.png[_Views Explorer_ view with diagrams and table, width=60%,height=60%]
+image::release-note-views-explorer.png[_Views Explorer_ view with diagrams and table, width=40%,height=40%]
 
 * SysON can now be connected with Elasticsearch to support cross-project search.
 The Elasticsearch integration uses its own indexing logic instead of the default one provided by Sirius Web.
@@ -208,7 +208,7 @@ An error message is available in the upload report.
 
 ** In the _Validation_ view, the labels and order of the validation results have been modified to clarify in which document, and on which element, a rule is not respected.
 +
-image::validation-view-labels-with-document.png[_Validation_ view with labels indicating containing document, width=40%,height=40%]
+image::validation-view-labels-with-document.png[_Validation_ view with labels indicating containing document, width=50%,height=50%]
 
 * Miscellaneous:
 
