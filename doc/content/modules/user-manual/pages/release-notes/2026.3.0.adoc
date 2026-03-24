@@ -2,11 +2,21 @@
 
 == Key highlights
 
+* New _Views Explorer_ view to easily navigate between diagrams and tables.
+* Cross-project search powered by Elasticsearch integration for improved model discovery and navigation across large enterprise architectures (experimental, not enabled by default).
+* Improved diagrams: lots of improvements and bug fixes about SysMLv2 standard diagrams, including new tools, new compartments, better usability.
+
 == New features
+
+* New _Views Explorer_ view to easily navigate between diagrams and tables.
+This view is available on the left side of the screen, and displays all diagrams and tables of the current project in a hierarchical way.
+Selecting a diagram or a table in this view will open it in the main area:
++
+image::release-note-views-explorer.png[_Views Explorer_ view with diagrams and table, width=60%,height=60%]
 
 * SysON can now be connected with Elasticsearch to support cross-project search.
 The Elasticsearch integration uses its own indexing logic instead of the default one provided by Sirius Web.
-This allows to keep indices compact, and ensures information stored in the indices are useful to perform cross-project search.
+This allows keeping indices compact, and ensures information stored in the indices are useful to perform cross-project search.
 You can find more information on how to setup Elasticsearch, how elements are mapped to index documents, and how to query them in the documentation.
 +
 This feature is currently considered experimental.
@@ -30,14 +40,10 @@ They can also add their own SysML-based validation rules by returning additional
 It now follows the same rule than all other graphical node: if a compartment that can display the new `PerformActionUsage` is displayed, then the new `PerformActionUsage` is displayed in this compartment, otherwise it is displayed in the diagram background.
 ** Fix an issue where the creation of a `RequirementUsage` from a `Package` graphical node was not revealing it.
 ** Fix the `EnumerationDefinition` graphical node compartment name from `enumerations` to `enums`, to follow the SysMLv2 specification.
-** Fix the direct edit and the display of `ends` graphical node elements inside the _ends_ compartment.
-Now the _end_ keyword is not displayed anymore in the label of these graphical nodes, and the direct edit only allows to edit the name of the `end` element instead of the full label which was confusing for users.
 ** Fix an error when invoking the tools _New Start Action_ or _New Done Action_ from inside a package named `Actions`.
 ** Fix the support for removing the multiplicity using the direct edit.
 + During the direct edit, typing `[]` will remove the multiplicity if it exists, as it is supposed to do.
 ** Fix an issue where the _New Flow (flow)_ tool between two parameters was broken.
-** The `ForkNode` and `JoinNode` graphical nodes style have been updated and are restricted to horizontal resizing.
-+ Consequently, their entire footprint is filled with black, ensuring that all incoming and outgoing edges maintain a valid connection point.
 ** Fix an issue where the _Add existing elements_ tool was not working correctly on the _action flow_ compartment of `ActionUsage` graphical nodes.
 ** Fix the user feedback when dropping an `Element` from the _Explorer_ view which is already exposed on a diagram.
 ** Fix an issue where the non-empty compartments of graphical nodes were being displayed when executing the _Add existing elements_ tool.
@@ -107,7 +113,7 @@ package Test {
 ** Fix the export of `LiteralString` with backslash characters.
 ** Fix textual import of `LiteralString` containing escaped backslash. In the following example `attribute a1 = "A \\ B";`, the value of "a1" is now "A \ B".
 The previous implementation was importing the value "A \\ B".
-** Fix error when importing SysML snippets referencing unknown units which could make the resulting model inconsistent
+** Fix error when importing SysML snippets referencing unknown units which could make the resulting model inconsistent.
 
 * In _Explorer_ view:
 
@@ -131,21 +137,25 @@ If a Feature is owned via a FeatureMembership, then it must have a featuringType
 
 * In diagrams:
 
+** Improve the direct edit and display of `ends` graphical node elements inside the _ends_ compartment.
+The _end_ keyword is no longer displayed in the label of these graphical nodes, and the direct edit now only allows editing the name of the `end` element, simplifying the user experience.
+** Enhance the `ForkNode` and `JoinNode` graphical nodes style with restriction to horizontal resizing only.
+Their entire footprint is filled with black, ensuring that all incoming and outgoing edges maintain valid connection points.
 ** When dropping `Element` from the _Explorer_ view to a diagram, hide its compartments unless it's the _interconnection compartment_ on an _Interconnection View_ diagram.
 ** When dropping `Element` from the _Explorer_ view to a diagram, if the element was already visible on the diagram, a warning is displayed to indicate it.
 ** Add _ends_ compartments on `AllocationDefinition` graphical nodes.
 ** Add _attributes_, _ends_, _doc_ and _parts_ compartments on `ConnectionDefinition` graphical nodes.
 ** Add _parts_ compartments on `PartDefinition`, `AllocationDefinition` and `InterfaceDefinition` graphical nodes.
 ** Add _actors_ compartment on `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Add _Subjects_ as graphical nodes in addition to the existing the _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`,  `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
-** The graphical edge tools _Become nested Attribute_ is now available on `AttributeUsage` graphical nodes when the targeted graphical node is a `Usage` or `Definition`.
-** The graphical edge tools _Add as nested Attribute_ is now available on all `Usage` and `Definition` graphical nodes that target an `AttributeUsage` graphical node.
+** Add _Subjects_ as graphical nodes in addition to the existing _subject_ compartment for `CaseUsages`, `CaseDefinitions`, `UseCaseUsage`, `UseCaseDefinitions`, `RequirementsUsages`, `RequirementsDefinitions` and `SatisfyRequirementUsages`.
+** The graphical edge tool _Become nested Attribute_ is now available on `AttributeUsage` graphical nodes when the targeted graphical node is a `Usage` or `Definition`.
+** The graphical edge tool _Add as nested Attribute_ is now available on all `Usage` and `Definition` graphical nodes that target an `AttributeUsage` graphical node.
 ** Add _New Satisfy_ tool on `RequirementUsage` graphical nodes.
 This tool allows to create a `SatisfyRequirementUsage` based on the `RequirementUsage` selected during the tool creation.
 ** Add _New Satisfy Requirement_ graphical edge tool between `Feature` graphical nodes and `RequirementUsage` graphical nodes.
 This tool allows to create a `SatisfyRequirementUsage` between the `Feature` and `RequirementUsage` selected during the tool creation.
 ** Add a _New Flow_ tool on `ConnectionUsage` graphical edges.
-The tool allows to create and setup a `FlowUsage` with a `PayloadFeature` selected  during the tool creation.
+The tool allows you to create and set up a `FlowUsage` with a `PayloadFeature` selected during the tool creation.
 The tool is only available on `ConnectionUsage` graphical edges which are typed.
 ** Add the _timeslice_ and _snapshot_ prefixes in the label of `OccurrenceUsage` graphical nodes and some of the graphical nodes representing subclasses of `OccurrenceUsage`.
 ** Newly created `AllocationDefinition` and `ConnectionDefinition` graphical nodes now have two initial _connection ends_, named _source_ and _target_.
@@ -197,7 +207,7 @@ An error message is available in the upload report.
 * In validation:
 
 ** In the _Validation_ view, the labels and order of the validation results have been modified to clarify in which document, and on which element, a rule is not respected.
-
++
 image::validation-view-labels-with-document.png[_Validation_ view with labels indicating containing document, width=40%,height=40%]
 
 * Miscellaneous:
@@ -208,8 +218,6 @@ Users can navigate to `/libraries/<library identifier>` to open a library and se
 ** Add support for excluding libraries in the _Search_ view.
 The _Search in libraries_ toggle in the _Search_ view allows to include elements from user and standard libraries in the search.
 This toggle is de-activated by default.
-
-image::release-note-views-explorer.png[_Views Explorer_ view with diagrams and table, width=60%,height=60%]
 
 == Technical details
 
