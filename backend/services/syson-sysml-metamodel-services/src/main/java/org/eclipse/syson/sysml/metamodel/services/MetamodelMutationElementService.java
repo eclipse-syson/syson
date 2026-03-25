@@ -14,6 +14,8 @@ package org.eclipse.syson.sysml.metamodel.services;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
@@ -30,6 +32,7 @@ import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
@@ -37,6 +40,7 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
@@ -191,20 +195,41 @@ public class MetamodelMutationElementService {
     /**
      * Creates a new {@link InterfaceUsage} in the given container.
      *
-     * @param sourcePort
+     * @param source
      *            the source of the interface
-     * @param targetPort
+     * @param target
      *            the target of the interface
      * @param sourceContainer
      *            the semantic element corresponding to the graphical container of the source
      * @param targetContainer
      *            the semantic element corresponding to the graphical container of the target
-     * @param interfaceContainer
+     * @param newConnectionContainer
      *            the container of the new {@link InterfaceUsage}
      * @return a new {@link InterfaceUsage}
      */
     public InterfaceUsage createInterfaceUsage(PortUsage source, PortUsage target, Element sourceContainer, Element targetContainer, Namespace newConnectionContainer) {
         return (InterfaceUsage) this.createConnector(source, target, sourceContainer, targetContainer, newConnectionContainer, SysmlFactory.eINSTANCE.createInterfaceUsage());
+    }
+
+    /**
+     * Creates an instance of {@code eClass} in the given {@link OccurrenceUsage} container.
+     * <p>It returns {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage}</p>
+     *
+     * @param container
+     *            the {@link OccurrenceUsage} container
+     * @param eClass
+     *            the {@link EClass} assignable to {@link OccurrenceUsage} to instantiate
+     * @return a new {@link EClass} instantiated {@link EObject}, {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage}
+     */
+    public EObject createOccurrenceInOccurrence(OccurrenceUsage container, EClass eClass) {
+        if (SysmlPackage.eINSTANCE.getOccurrenceUsage().isSuperTypeOf(eClass)) {
+            var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var timeSlice = (OccurrenceUsage) SysmlFactory.eINSTANCE.create(eClass);
+            membership.getOwnedRelatedElement().add(timeSlice);
+            container.getOwnedRelationship().add(membership);
+            return timeSlice;
+        }
+        return null;
     }
 
     /**
@@ -246,13 +271,13 @@ public class MetamodelMutationElementService {
 
     /**
      * Create a {@link Documentation} element inside the element referenced by the given {@link EReference}. If the
-     * referenced element (i.e. a RequirementUsage inside an ObjectiveMembership) doesn't exists yet, it is also
+     * referenced element (i.e. a RequirementUsage inside an ObjectiveMembership) doesn't exist yet, it is also
      * created. This method only works for an Objective Documentation.
      *
      * @param element
      *            the given {@link Element}
-     * @param reference
-     *            the given {@link EReference}.
+     * @param referenceName
+     *            the given {@link EReference} name.
      * @return the newly created {@link Documentation}.
      */
     public Documentation createObjectiveDocumentation(Element element, String referenceName) {

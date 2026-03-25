@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -42,6 +43,8 @@ public class CheckElementInParent implements ISemanticChecker {
 
     private EClass eClass;
 
+    private Consumer<Object> additionalCheckOnElement;
+
     public CheckElementInParent(IObjectSearchService objectSearchService, String rootElementId) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.rootElementId = Objects.requireNonNull(rootElementId);
@@ -62,6 +65,11 @@ public class CheckElementInParent implements ISemanticChecker {
         return this;
     }
 
+    public CheckElementInParent additionalCheckOnElement(Consumer<Object> additionalCheck) {
+        this.additionalCheckOnElement = additionalCheck;
+        return this;
+    }
+
     @Override
     public void check(IEditingContext editingContext) {
         Object semanticRootObject = this.objectSearchService.getObject(editingContext, this.rootElementId).orElse(null);
@@ -79,6 +87,9 @@ public class CheckElementInParent implements ISemanticChecker {
             });
         } else {
             assertThat(this.eClass.isInstance(referenced)).isTrue();
+        }
+        if (additionalCheckOnElement != null) {
+            additionalCheckOnElement.accept(referenced);
         }
     }
 
