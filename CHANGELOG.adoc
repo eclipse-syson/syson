@@ -2,8 +2,6 @@
 
 == v2026.3.0 (work in progress)
 
-=== Shapes
-
 === Breaking changes
 
 - [sirius-web] SysON is based on Sirius Web, so please also read https://github.com/eclipse-sirius/sirius-web/blob/master/CHANGELOG.adoc[the breaking changes of Sirius Web].
@@ -62,7 +60,7 @@ And the following methods have been added:
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.1.6]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.0]
 - [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Update to archunit-junit5 1.3.0
 - [releng] Update to @ObeoNetwork/gantt-task-react 0.6.3
