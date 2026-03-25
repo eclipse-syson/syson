@@ -14,10 +14,13 @@ package org.eclipse.syson.model.services.aql;
 
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -80,6 +83,13 @@ public class ModelMutationAQLService {
      */
     public Element createSatisfy(Element element, RequirementUsage existingRequirement) {
         return this.modelMutationElementService.createSatisfy(element, existingRequirement);
+    }
+
+    /**
+     * {@link MetamodelMutationElementService#createOccurrenceInOccurrence(OccurrenceUsage, EClass)}.
+     */
+    public EObject createOccurrenceInOccurrence(OccurrenceUsage container, EClass eClass) {
+        return this.metamodelElementMutationService.createOccurrenceInOccurrence(container, eClass);
     }
 
     /**

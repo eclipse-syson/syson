@@ -20,6 +20,11 @@
 
 == Improvements
 
+* In diagrams:
+
+** Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
+These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

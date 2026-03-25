@@ -28,6 +28,8 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/1979[#1979] [diagrams] Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
+These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
 
 == v2026.3.0
 

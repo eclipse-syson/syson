@@ -130,7 +130,7 @@ public class DiagramCheckerService {
      * @param childEClass
      *            the EClass of the expected child node
      * @param compartmentCount
-     *            the expected number of compartments
+     *            the expected number of compartments (visible, faded and hidden)
      * @return a consumer that performs the graphical check
      */
     public Consumer<Object> siblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,
@@ -148,9 +148,10 @@ public class DiagramCheckerService {
      * @param childEClass
      *            the EClass of the expected child node
      * @param compartmentCount
-     *            the expected number of compartments
+     *            the expected number of compartments (visible, faded and hidden)
      * @param newNodesCount
-     *            the expected number of new nodes
+     *            the expected number of new nodes (visible, faded and hidden)
+     *            That count should include list items.
      * @return a consumer that performs the graphical check
      */
     public Consumer<Object> siblingNodeGraphicalChecker(AtomicReference<Diagram> previousDiagram, DiagramDescriptionIdProvider diagramDescriptionIdProvider, EClass childEClass,

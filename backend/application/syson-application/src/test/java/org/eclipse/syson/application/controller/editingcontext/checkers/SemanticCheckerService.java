@@ -50,10 +50,15 @@ public class SemanticCheckerService {
     }
 
     public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass) {
+        return this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass, null);
+    }
+
+    public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass, Consumer<Object> additionalCheckOnElement) {
         return new CheckElementInParent(this.objectSearchService, this.rootElementId)
                 .withParentLabel(parentLabel)
                 .withContainmentReference(containmentReference)
-                .hasType(childEClass);
+                .hasType(childEClass)
+                .additionalCheckOnElement(additionalCheckOnElement);
     }
 
     /**
