@@ -94,7 +94,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.6.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>13.3.0</version>
+                    </dependency>
+                </dependencies>
 				<configuration>
 					<configLocation>../../releng/syson-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<sourceDirectories>
