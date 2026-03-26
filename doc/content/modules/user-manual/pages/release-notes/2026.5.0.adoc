@@ -14,6 +14,10 @@
 
 ** In _Interconnection View_ diagrams, fix an issue where the `parts` compartment of `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
 
+* In _Details_ view:
+
+** Fix an issue that allowed to edit library objects via the _Details_ view. 
+
 == Improvements
 
 == Technical details
