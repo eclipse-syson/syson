@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.Message;
@@ -242,6 +243,14 @@ public class SysONSysMLLibraryPublisher implements ISysMLLibraryPublisher {
         // should be determined by its import kind (reference or copy), and not whether it was imported from a textual
         // SysML file in the first place.
         resources.forEach(resource -> ElementUtil.setIsImported(resource, false));
+        // Ensure all the resources are flagged as read-only
+        for (Resource resource : resources) {
+            resource.eAdapters().stream()
+                    .filter(ResourceMetadataAdapter.class::isInstance)
+                    .map(ResourceMetadataAdapter.class::cast)
+                    .findFirst()
+                    .ifPresent(resourceMetadataAdapter -> resourceMetadataAdapter.setIsReadOnly(true));
+        }
 
         final ICause cause = new SysONPublishedLibrarySemanticDataCreationRequested(parentCause, libraryNamespace, libraryName, libraryVersion, libraryDescription);
         return this.createSemanticData(cause, resources, dependencies);

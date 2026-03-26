@@ -52,6 +52,7 @@ import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.application.publication.SysONLibraryPublicationHandler;
 import org.eclipse.syson.application.publication.SysONLibraryPublicationListener;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,11 +125,25 @@ public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
 
-        assertThat(this.librarySearchService.findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION))
+        Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(SimpleProjectElementsTestProjectData.PROJECT_ID, SimpleProjectElementsTestProjectData.PROJECT_NAME, LIBRARY_VERSION);
+        assertThat(optionalLibrary)
                 .isPresent()
                 .hasValueSatisfying(library -> assertThat(library.getName()).isEqualTo(SimpleProjectElementsTestProjectData.PROJECT_NAME))
                 .hasValueSatisfying(library -> assertThat(library.getVersion()).isEqualTo(LIBRARY_VERSION))
                 .hasValueSatisfying(library -> assertThat(library.getDescription()).isEqualTo(LIBRARY_DESCRIPTION));
+
+        // Load the editing context manually, we can't use ExecuteEditingContextFunctionInput because the editing context dispatcher doesn't allow mutations on libraries
+        Optional<IEditingContext> optionalEditingContext = this.editingContextSearchService.findById(optionalLibrary.get().getSemanticData().getId().toString());
+        assertThat(optionalEditingContext).isPresent();
+        IEditingContext editingContext = optionalEditingContext.get();
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            List<Resource> properLibraryResources = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                    .filter(resource -> !ElementUtil.isStandardLibraryResource(resource))
+                    .toList();
+            assertThat(properLibraryResources).hasSize(1);
+            assertThat(properLibraryResources.getFirst().eAdapters())
+                    .anyMatch(adapter -> adapter instanceof ResourceMetadataAdapter resourceMetadataAdapter && resourceMetadataAdapter.isReadOnly());
+        }
     }
 
     @Test
