@@ -18,6 +18,7 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 === Dependency update
 
 - As of version 2026.5.0, SysON now requires **Java 21** or later.
+- [releng] Switch to `jacoco-maven-plugin` 0.8.14
 
 === Bug fixes
 
