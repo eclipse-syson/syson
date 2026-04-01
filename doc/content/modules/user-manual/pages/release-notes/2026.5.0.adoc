@@ -25,6 +25,12 @@
 ** Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
 These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
 ** Improved support for `Stakeholder`.
+On `Requirement` or `Concern` (either definition or usage) graphical nodes it is now possible to create new _stakeholders_ (which must reference existing `PartUsage`).
+Stakeholders are by default represented with a dedicated graphical node connected to the parent graphical node, or can appear inside the `stakeholders` list compartment.
+
+image::release-notes-stakeholder-menu.png[Tool to create a new Stakeholder]
+
+image::release-notes-stakeholder-node.png[Default representation of Stakeholder connected to its corresponding `RequirementDefinition`]
 
 == Technical details
 
