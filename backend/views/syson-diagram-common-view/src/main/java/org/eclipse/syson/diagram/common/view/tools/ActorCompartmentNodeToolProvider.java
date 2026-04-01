@@ -46,8 +46,17 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .defaultTitleExpression(this.getNodeToolName())
-                .descriptionExpression("Select an existing Part as actor:")
-                .optional(false)
+                .noSelectionTitleExpression(this.getNodeToolName())
+                .withSelectionTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Create an actor:")
+                .noSelectionActionLabelExpression("Create a new actor")
+                .noSelectionActionDescriptionExpression("Create a new actor without specialization")
+                .withSelectionActionLabelExpression("Select an existing Element as actor")
+                .withSelectionActionDescriptionExpression("Create a new specialized actor")
+                .noSelectionActionStatusMessageExpression("It will create a new actor without specialization")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Element to specialize the new actor")
+                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create an actor specialized with ' + selectedObjects->first().name")
+                .optional(true)
                 .build();
     }
 

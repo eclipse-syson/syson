@@ -27,10 +27,12 @@ These tools leverage a selection dialog to either create a specific timeslice/sn
 ** Improved support for `Stakeholder`.
 On `Requirement` or `Concern` (either definition or usage) graphical nodes it is now possible to create new _stakeholders_ (which must reference existing `PartUsage`).
 Stakeholders are by default represented with a dedicated graphical node connected to the parent graphical node, or can appear inside the `stakeholders` list compartment.
-
++
 image::release-notes-stakeholder-menu.png[Tool to create a new Stakeholder]
-
++
 image::release-notes-stakeholder-node.png[Default representation of Stakeholder connected to its corresponding `RequirementDefinition`]
+
+** Improve the tool to create an `Actor` graphical node by making specialization selection optional.
 
 == Technical details
 

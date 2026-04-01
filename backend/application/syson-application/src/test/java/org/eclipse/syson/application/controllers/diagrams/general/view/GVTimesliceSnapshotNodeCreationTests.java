@@ -150,7 +150,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
 
-        Runnable createNodeRunnable = creationTestsService.createNodeWithSelectionDialog(diagramDescriptionIdProvider, diagram, parentEClass, parentTargetObjectId, "New Timeslice", selectedObject);
+        Runnable createNodeRunnable = creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, parentTargetObjectId, "New Timeslice", selectedObject);
         // The created child EClass depends on the behavior of the selection dialog, here without selection
         Consumer<Object> diagramChecker = diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, newCompartmentCount, newNodeCount);
         Consumer<Object> additionalSemanticCheck = object -> {
@@ -194,7 +194,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createNodeRunnable = creationTestsService.createNodeWithSelectionDialog(diagramDescriptionIdProvider, diagram, parentEClass, parentTargetObjectId, "New Snapshot", selectedObject);
+        Runnable createNodeRunnable = creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, parentTargetObjectId, "New Snapshot", selectedObject);
         // The created child EClass depends on the behavior of the selection dialog, here without selection
         Consumer<Object> diagramChecker = diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, childEClass, newCompartmentCount, newNodeCount);
         Consumer<Object> additionalSemanticCheck = object -> {

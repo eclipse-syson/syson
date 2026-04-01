@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -58,6 +59,7 @@ import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -65,6 +67,7 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -501,28 +504,46 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         this.createSubjectWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
+    @DisplayName("GIVEN a Case, WHEN creating a new Actor selecting a Part, THEN the Actor subsetted by the Part is created in the Case")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithSubsettingInCaseUsage() {
         this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
+    @DisplayName("GIVEN a UseCase, WHEN creating a new Actor selecting a Part, THEN the Actor subsetted by the Part is created in the UseCase")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithSubsettingInUseCaseUsage() {
         this.createActorWithSubsettingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
+    @DisplayName("GIVEN a Case, WHEN creating a new Actor selecting a PartDefinition, THEN the Actor typed by the PartDefinition is created in the Case")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithFeatureTypingInCaseUsage() {
         this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
     }
 
+    @DisplayName("GIVEN a UseCase, WHEN creating a new Actor selecting a PartDefinition, THEN the Actor typed by the PartDefinition is created in the UseCase")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewActorWithFeatureTypingInUseCaseUsage() {
         this.createActorWithFeatureTypingInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
+    }
+
+    @DisplayName("GIVEN a Case, WHEN creating a new Actor without selection, THEN the Actor without specialization is created in the Case")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorWithoutSpecializationInCaseUsage() {
+        this.createActorWithoutSpecializationInCaseUsage(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE);
+    }
+
+    @DisplayName("GIVEN a UseCase, WHEN creating a new Actor without selection, THEN the Actor without specialization is created in the UseCase")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewActorWithoutSpecializationInUseCaseUsage() {
+        this.createActorWithoutSpecializationInCaseUsage(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE);
     }
 
     private void createSubjectWithSubsettingInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
@@ -672,11 +693,9 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         EClass childEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String creationToolName = "New Actor";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter();
-        List<ToolVariable> variables = new ArrayList<>();
-        String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
-        variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
+        String existingPartId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, existingPartId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -687,28 +706,29 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
         });
 
-        ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
-            assertThat(semanticRootObject).isInstanceOf(Element.class);
-            Element semanticRootElement = (Element) semanticRootObject;
-            Optional<PartUsage> optActor = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
-                    .filter(element -> Objects.equals(element.getName(), "actor1"))
-                    .findFirst();
-            assertThat(optActor).isPresent();
-            var actor = optActor.get();
-            EList<Subsetting> subjectSubsets = actor.getOwnedSubsetting();
-            assertFalse(subjectSubsets.isEmpty());
-            assertThat(subjectSubsets.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(actors -> {
+                        assertThat(actors).size().isEqualTo(1);
+                        assertThat(actors.getFirst())
+                                .isInstanceOf(PartUsage.class)
+                                .asInstanceOf(type(PartUsage.class))
+                                .satisfies(actor -> {
+                                    EList<Subsetting> subjectSubsets = actor.getOwnedSubsetting();
+                                    assertThat(subjectSubsets).isNotEmpty();
+                                    assertThat(subjectSubsets.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+                                });
+                    });
         };
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
-        Runnable semanticCheck2 = this.semanticCheckerService.checkEditingContext(semanticChecker);
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass, additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNodeRunnable)
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
-                .then(semanticCheck2)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -726,11 +746,9 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         EClass childEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String creationToolName = "New Actor";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter();
-        List<ToolVariable> variables = new ArrayList<>();
         String existingPartDefId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
-        variables.add(new ToolVariable("selectedObject", existingPartDefId, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName, existingPartDefId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -741,28 +759,83 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram, true);
         });
 
-        ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).orElse(null);
-            assertThat(semanticRootObject).isInstanceOf(Element.class);
-            Element semanticRootElement = (Element) semanticRootObject;
-            Optional<PartUsage> optActor = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
-                    .filter(element -> Objects.equals(element.getName(), "actor1"))
-                    .findFirst();
-            assertThat(optActor).isPresent();
-            var actor = optActor.get();
-            EList<Type> types = actor.getType();
-            assertFalse(types.isEmpty());
-            assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(actors -> {
+                        assertThat(actors).size().isEqualTo(1);
+                        assertThat(actors.getFirst())
+                                .isInstanceOf(PartUsage.class)
+                                .asInstanceOf(type(PartUsage.class))
+                                .satisfies(actor -> {
+                                    EList<Type> types = actor.getType();
+                                    assertThat(types).isNotEmpty();
+                                    assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
+                                });
+                    });
         };
-        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
-        Runnable semanticCheck2 = this.semanticCheckerService.checkEditingContext(semanticChecker);
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass, additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNodeRunnable)
                 .consumeNextWith(diagramCheck)
                 .then(semanticCheck)
-                .then(semanticCheck2)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private void createActorWithoutSpecializationInCaseUsage(EClass caseUsageSubclass, String targetObjectId, String parentLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        EClass childEClass = SysmlPackage.eINSTANCE.getPartUsage();
+        String creationToolName = "New Actor";
+        EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter();
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, caseUsageSubclass, targetObjectId, creationToolName);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+        });
+
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(actors -> {
+                        assertThat(actors).size().isEqualTo(1);
+                        assertThat(actors.getFirst())
+                                .isInstanceOf(PartUsage.class)
+                                .asInstanceOf(type(PartUsage.class))
+                                .satisfies(actor -> {
+                                    assertThat(actor.getOwnedSpecialization()).allMatch(Specialization::isIsImplied);
+                                    EList<Type> types = actor.getType();
+                                    assertThat(types)
+                                            .isNotEmpty()
+                                            .allMatch(Element::isIsLibraryElement);
+                                });
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass, additionalCheck));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
