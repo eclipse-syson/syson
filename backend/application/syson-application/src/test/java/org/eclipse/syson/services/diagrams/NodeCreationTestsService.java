@@ -107,6 +107,30 @@ public class NodeCreationTestsService {
     /**
      * Creates a runnable that invokes a named node creation tool.
      *
+     * <p>It behaves as if the selection dialog was called without any selection provided.</p>
+     *
+     * @param diagramDescriptionIdProvider
+     *            the diagram description ID provider
+     * @param diagram
+     *            the diagram reference
+     * @param parentEClass
+     *            the EClass of the parent node
+     * @param targetObjectId
+     *            the ID of the element on which apply the tool
+     * @param toolName
+     *            the name of the creation tool
+     * @return a runnable that performs the node creation
+     */
+    public Runnable createNodeWithSelectionDialogWithoutSelectionProvided(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
+            AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, String toolName) {
+        return this.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, "");
+    }
+
+    /**
+     * Creates a runnable that invokes a named node creation tool.
+     *
+     * <p>It behaves as if the selection dialog was called, and a single selection has been provided.</p>
+     *
      * @param diagramDescriptionIdProvider
      *            the diagram description ID provider
      * @param diagram
@@ -118,14 +142,11 @@ public class NodeCreationTestsService {
      * @param toolName
      *            the name of the creation tool
      * @param selectedObject
-     *            the object ID selected in the selection dialog.
-     *            Most of the time the ID is computed thanks to {@link org.eclipse.sirius.components.core.api.IIdentityService#getId(Object)}.
-     *            Provide an empty string if the selection in the selection dialog is optional and you do not want to provide a selection.
+     *            the object id selected in the selection dialog.
+     *            Put an empty string if the selection is optional and you want the behavior without selection
      * @return a runnable that performs the node creation
-     *
-     * @see org.eclipse.sirius.components.view.emf.diagram.SelectionDialogDescriptionConverter
      */
-    public Runnable createNodeWithSelectionDialog(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
+    public Runnable createNodeWithSelectionDialogWithSingleSelection(DiagramDescriptionIdProvider diagramDescriptionIdProvider,
             AtomicReference<Diagram> diagram, EClass parentEClass, String targetObjectId, String toolName, String selectedObject) {
         return this.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, List.of(new ToolVariable("selectedObject", selectedObject, ToolVariableType.OBJECT_ID)));
     }

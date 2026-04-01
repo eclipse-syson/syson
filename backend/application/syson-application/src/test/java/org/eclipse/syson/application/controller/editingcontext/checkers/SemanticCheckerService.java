@@ -53,6 +53,20 @@ public class SemanticCheckerService {
         return this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass, null);
     }
 
+    /**
+     * Creates a semantic checker that should be checked in an editing context.
+     *
+     * @param parentLabel
+     *                      The label of the parent element
+     * @param containmentReference
+     *                      The {@link EReference} that contains the element to check in the parent
+     * @param childEClass
+     *                      The expected child EClass
+     * @param additionalCheckOnElement
+     *                      A consumer to allow additional checking of the element.
+     *                      The element can either be an object if the EReference is single valued, or a list of object if the referenced is multivalued.
+     * @return the created semantic checker
+     */
     public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass, Consumer<Object> additionalCheckOnElement) {
         return new CheckElementInParent(this.objectSearchService, this.rootElementId)
                 .withParentLabel(parentLabel)
@@ -75,7 +89,7 @@ public class SemanticCheckerService {
      * @param semanticChecker
      *            the checks that needs to be run
      * @deprecated this function will be removed when all the tests will be migrated to follow the same format as Sirius Web.
-     * Please, use {@link SemanticCheckerService#checkElement(Class type, Supplier idSupplier, Consumer semanticChecker)} instead.
+     * Please, use {@link SemanticCheckerService#checkElement(Class type, Supplier idSupplier, Consumer semanticChecker)}instead.
      */
     @Deprecated
     public <T extends Element> void checkElement(Step<?> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {

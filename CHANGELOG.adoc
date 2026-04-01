@@ -42,6 +42,7 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 On `Requirement` or `Concern` (either definition or usage) graphical nodes it is now possible to create new _stakeholders_ (which must reference existing `PartUsage`).
 Stakeholders are by default represented with a dedicated graphical node connected to the parent graphical node, or can appear inside the `stakeholders` list compartment.
 - [releng] Fix the license and URL of our maven modules in the SBOM
+- https://github.com/eclipse-syson/syson/issues/2108[#2108] [diagrams] Leverage the latest change of the selection dialog to allow creating an `Actor` graphical node without specialization.
 
 === New features
 

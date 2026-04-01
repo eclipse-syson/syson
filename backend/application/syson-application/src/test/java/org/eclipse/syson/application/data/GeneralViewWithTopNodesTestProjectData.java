@@ -102,7 +102,7 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String PART_DEFINITION_ID = "fabf5949-463d-4292-8ccc-960645da72b2";
 
-        public static final String PART_DEFINITION_TEXTUAL_REP_ID = "a2348331-4625-49b1-8455-2d9e4f0e1dc0";
+        public static final String PART_DEFINITION_TEXTUAL_REP_ID = "b36b66bc-7a91-439e-ba1c-4e269f870f2f";
 
         public static final String PART_USAGE_ID = "2ae87f41-e214-4a36-9985-e9ec156e28e6";
 
