@@ -4,6 +4,8 @@
 
 === Shapes
 
+- link:./doc/shapes/2026.05/expressions.adoc[Handle expressions in SysON]
+
 === Breaking changes
 
 - SysON now requires **Java 21** or later.
