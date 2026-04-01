@@ -256,13 +256,13 @@ public class ViewToolService extends ToolService {
             if (otherEnd.getOwningMembership() instanceof StakeholderMembership stakeholderMembership) {
                 newSource.getOwnedRelationship().add(stakeholderMembership);
             } else {
-                // This is an error, an Stakeholder should always be contained in an StakeholderMembership.
-                String errorMessage = "Cannot reconnect the Stakeholder, it is not owned by an " + StakeholderMembership.class.getSimpleName();
+                // This is an error, a Stakeholder should always be contained in a StakeholderMembership.
+                String errorMessage = "Cannot reconnect the Stakeholder, it is not owned by a " + StakeholderMembership.class.getSimpleName();
                 this.logger.error(errorMessage);
                 this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.ERROR));
             }
         } else {
-            String errorMessage = "Cannot reconnect an Stakeholder to non-Requirement element";
+            String errorMessage = "Cannot reconnect a Stakeholder to a non-Requirement element";
             this.logger.warn(errorMessage);
             this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
         }
