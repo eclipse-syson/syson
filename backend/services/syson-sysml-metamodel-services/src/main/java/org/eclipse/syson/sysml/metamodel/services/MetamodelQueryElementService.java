@@ -21,13 +21,16 @@ import java.util.function.Predicate;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.ElementFilterMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
+import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Element-related services doing queries. This class should not depend on sirius-web services or other spring services.
@@ -76,6 +79,25 @@ public class MetamodelQueryElementService {
      */
     public boolean isStakeholder(Element element) {
         return element instanceof PartUsage && element.getOwningMembership() instanceof StakeholderMembership;
+    }
+
+    /**
+     * Check if a given {@code element} is an {@link Expression} definition. We can not simply rely on whether the
+     * element is an instance of {@link Expression} as many types in SysMLv2 inherit from this type without being
+     * themselves an actual expressions.
+     *
+     * @param element
+     *            the element to test.
+     * @return true if the element is an actual expression definition.
+     */
+    public boolean isExpressionDefinition(Element element) {
+        if (element instanceof Expression && !(element instanceof Usage)) {
+            var owningRelationship = element.getOwningRelationship();
+            return owningRelationship instanceof FeatureValue || owningRelationship instanceof ElementFilterMembership
+                    || owningRelationship instanceof ResultExpressionMembership;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -144,7 +166,7 @@ public class MetamodelQueryElementService {
      * Gets the value expression of a feature (Value of the FeatureValue owned by this feature).
      *
      * @param feature
-     *         a non null feature
+     *            a non null feature
      * @return an optional expression
      */
     public Optional<Expression> getValueExpression(Feature feature) {
