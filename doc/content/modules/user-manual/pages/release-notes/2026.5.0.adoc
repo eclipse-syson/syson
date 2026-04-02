@@ -37,6 +37,12 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** Improve the tool to create a `Subject` graphical node by making specialization selection optional.
 ** Improve the tool to create a `FlowUsage` from a `ConnectionUsage` by making the payload selection optional.
 
+* In the _Explorer_ view:
+
+** `Expression` elements now display their full textual representation:
++
+image::explorer-expression-text.png[Expression textual representation]
+
 == Technical details
 
 * For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

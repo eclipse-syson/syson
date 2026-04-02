@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ public class ActionTransitionUsagesProjectData {
      * @author Arthur Daussy
      */
     public static final class SemanticIds {
+
+        public static final String DOCUMENT_ID = "26a78eef-bfa1-4de0-9d0a-c1f86a1b97d5";
 
         public static final String PACKAGE_1_ID = "2264f62c-b223-4b9b-ae41-96dc2ba0070e";
 

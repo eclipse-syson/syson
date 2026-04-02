@@ -282,7 +282,6 @@ public class EMFUtils {
      */
     public static <T extends EObject> Optional<T> getFirstAncestor(Class<T> type, EObject object, Predicate<EObject> ancestorPredicate) {
         var current = object;
-        List<T> results = new ArrayList<>();
         while (current != null) {
             if (type.isInstance(current) && (ancestorPredicate == null || ancestorPredicate.test(current))) {
                 return Optional.of((T) current);
