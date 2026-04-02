@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -31,15 +30,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
-import org.eclipse.syson.application.controller.editingcontext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckBorderNode;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
@@ -61,7 +57,6 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -1055,28 +1050,60 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a ConcernDefinition, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the ConcernDefinition")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewStakeholderFromPartInConcernDefinition() {
+        this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+    }
+
+    @DisplayName("GIVEN a Concern, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the Concern")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewStakeholderFromPartInConcernUsage() {
+        this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+    }
+
+    @DisplayName("Given a RequirementDefinition, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the RequirementDefinition")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewStakeholderFromPartInRequirementDefinition() {
+        this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+    }
+
+    @DisplayName("Given a Requirement, WHEN creating a new Stakeholder selecting a Part, THEN the Stakeholder subsetted by the Part is created in the Requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewStakeholderFromPartInRequirementUsage() {
+        this.createNewStakeholderSelectingExistingElementIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+    }
+
+    @DisplayName("GIVEN a ConcernDefinition, WHEN creating a new Stakeholder without selection, THEN the Stakeholder without subsetting is created in the ConcernDefinition")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderInConcernDefinition() {
-        this.createNewStakeholderIn(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition");
+        this.createNewStakeholderWithoutSelectionIn(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition");
     }
 
+    @DisplayName("GIVEN a Concern, WHEN creating a new Stakeholder without selection, THEN the Stakeholder without subsetting is created in the Concern")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderInConcernUsage() {
-        this.createNewStakeholderIn(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern");
+        this.createNewStakeholderWithoutSelectionIn(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern");
     }
 
+    @DisplayName("GIVEN a RequirementDefinition, WHEN creating a new Stakeholder without selection, THEN the Stakeholder without specialization is created in the RequirementDefinition")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderInRequirementDefinition() {
-        this.createNewStakeholderIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition");
+        this.createNewStakeholderWithoutSelectionIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition");
     }
 
+    @DisplayName("GIVEN a Requirement, WHEN creating a new Stakeholder without selection, THEN the Stakeholder without specialization is created in the Requirement")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createNewStakeholderInRequirementUsage() {
-        this.createNewStakeholderIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
+        this.createNewStakeholderWithoutSelectionIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
     }
 
     @DisplayName("GIVEN a Requirement, WHEN creating a new Actor selecting a Part, THEN the Actor subsetted by the Part is created in the Requirement")
@@ -1121,7 +1148,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         this.createNewActorWithoutSpecializationIn(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition");
     }
 
-    private void createNewStakeholderIn(EClass eClassWithStakeholderParameter, String targetObjectId, String parentNodeLabel) {
+    private void createNewStakeholderSelectingExistingElementIn(EClass eClassWithStakeholderParameter, String targetObjectId, String parentNodeLabel, String existingElementId) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -1136,8 +1163,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithStakeholderParameter.getName())));
 
         final String stakeholderCreationToolName = "New Stakeholder";
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, eClassWithStakeholderParameter, targetObjectId, stakeholderCreationToolName,
-                Stream.of(new ToolVariable("selectedObject", /* PartUsage 'part' */ "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a", ToolVariableType.OBJECT_ID)).toList());
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, eClassWithStakeholderParameter, targetObjectId, stakeholderCreationToolName, existingElementId);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -1153,29 +1179,90 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                     .check(initialDiagram, newDiagram);
         });
 
-        final ISemanticChecker semanticChecker = (editingContext) -> {
-            final Element semanticRootElement = this.objectSearchService.getObject(editingContext, GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID).filter(Element.class::isInstance)
-                    .map(Element.class::cast).orElseGet(() -> Assertions.fail("Could not find the expected root semantic object."));
-            final List<PartUsage> allStakeholderPartUsages = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
-                    .filter(element -> Objects.equals(element.getName(), "stakeholder1")).toList();
-            assertEquals(1, allStakeholderPartUsages.size());
-
-            final PartUsage stakeholderPartUsage = allStakeholderPartUsages.get(0);
-            final EList<Subsetting> subsettings = stakeholderPartUsage.getOwnedSubsetting();
-            assertEquals(1, subsettings.size());
-            assertThat(subsettings.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(stakeholders -> {
+                        assertThat((List<?>) stakeholders).size().isEqualTo(1);
+                        assertThat(stakeholders.getFirst())
+                                .isInstanceOf(PartUsage.class)
+                                .asInstanceOf(type(PartUsage.class))
+                                .satisfies(stakeholderPartUsage -> {
+                                    final EList<Subsetting> subsettings = stakeholderPartUsage.getOwnedSubsetting();
+                                    assertEquals(1, subsettings.size());
+                                    assertThat(subsettings.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+                                });
+                    });
         };
 
-        Runnable semanticCheck1 = this.semanticCheckerService.checkEditingContext(
-                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, stakeholderParameterEReference, SysmlPackage.eINSTANCE.getPartUsage()));
-        Runnable semanticCheck2 = this.semanticCheckerService.checkEditingContext(semanticChecker);
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, stakeholderParameterEReference, SysmlPackage.eINSTANCE.getPartUsage(), additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNodeRunnable)
                 .consumeNextWith(diagramCheck)
-                .then(semanticCheck1)
-                .then(semanticCheck2)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private void createNewStakeholderWithoutSelectionIn(EClass eClassWithStakeholderParameter, String targetObjectId, String parentNodeLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        final EReference stakeholderParameterEReference = eClassWithStakeholderParameter.getEAllReferences().stream()
+                .filter(eReference -> eReference.getName().equals("stakeholderParameter") && eReference.getEType() == SysmlPackage.eINSTANCE.getPartUsage()).findFirst()
+                .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithStakeholderParameter.getName())));
+
+        final String stakeholderCreationToolName = "New Stakeholder";
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, eClassWithStakeholderParameter, targetObjectId, stakeholderCreationToolName);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("stakeholders")
+                    .hasNodeDescriptionName(this.descriptionNameGenerator.getCompartmentItemName(eClassWithStakeholderParameter, stakeholderParameterEReference))
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(stakeholders -> {
+                        assertThat((List<?>) stakeholders).size().isEqualTo(1);
+                        assertThat(stakeholders.getFirst())
+                                .isInstanceOf(PartUsage.class)
+                                .asInstanceOf(type(PartUsage.class))
+                                .satisfies(stakeholderPartUsage -> {
+                                    assertThat(stakeholderPartUsage.getOwnedSpecialization()).allMatch(Specialization::isIsImplied);
+                                    assertThat(stakeholderPartUsage.getType())
+                                            .isNotEmpty()
+                                            .allMatch(Element::isIsLibraryElement);
+                                });
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, stakeholderParameterEReference, SysmlPackage.eINSTANCE.getPartUsage(), additionalCheck));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -1218,7 +1305,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
@@ -1280,7 +1367,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
@@ -1341,7 +1428,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
