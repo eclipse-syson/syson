@@ -290,17 +290,16 @@ public class ViewCreateService {
      *         a {@link RequirementUsage} or {@link RequirementDefinition}, otherwise no {@link PartUsage} will be
      *         created.
      * @param selectedObject
-     *         a {@link ItemUsage} or {@link ItemDefinition} that will be subsetted by (respectively that will type)
+     *         an {@link ItemUsage} or {@link ItemDefinition} that will be subsetted by (respectively that will type)
      *         the created {@link PartUsage}.
+     *         If {@code null} then the <b>stakeholder</b> {@link PartUsage} will not be subsetted.
      * @return the newly-created {@link PartUsage}, contained by {@code self} through a {@link StakeholderMembership}.
      * If {@code self} was neither a {@link RequirementUsage} nor a {@link RequirementDefinition}, {@code self}
      * is returned as-is.
      */
     public Element createPartUsageAsStakeholder(Element self, Element selectedObject) {
-        Objects.requireNonNull(self);
-        Objects.requireNonNull(selectedObject);
-
-        if ((self instanceof RequirementUsage || self instanceof RequirementDefinition) && (selectedObject instanceof ItemUsage || selectedObject instanceof ItemDefinition)) {
+        Element result = self;
+        if (self instanceof RequirementUsage || self instanceof RequirementDefinition) {
             var createdPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
             var stakeholderMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getStakeholderMembership());
             stakeholderMembership.getOwnedRelatedElement().add(createdPartUsage);
@@ -312,10 +311,9 @@ public class ViewCreateService {
                 this.utilService.setFeatureTyping(createdPartUsage, selectedItemDefinition);
             }
 
-            return createdPartUsage;
-        } else {
-            return self;
+            result = createdPartUsage;
         }
+        return result;
     }
 
     public Element createActionParameter(Element self, String direction) {

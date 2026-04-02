@@ -46,9 +46,18 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .defaultTitleExpression("New Stakeholder")
-                .descriptionExpression("Select an existing Part as stakeholder:")
-                .optional(false)
+                .defaultTitleExpression(this.getNodeToolName())
+                .noSelectionTitleExpression(this.getNodeToolName())
+                .withSelectionTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Select a stakeholder:")
+                .noSelectionActionLabelExpression("Create a new stakeholder")
+                .noSelectionActionDescriptionExpression("Create a new stakeholder without specialization")
+                .withSelectionActionLabelExpression("Select an existing Element as stakeholder")
+                .withSelectionActionDescriptionExpression("Create a new specialized stakeholder")
+                .noSelectionActionStatusMessageExpression("It will create a new stakeholder without specialization")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Element to specialize the new stakeholder")
+                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create an stakeholder specialized with ' + selectedObjects->first().name")
+                .optional(true)
                 .build();
     }
 

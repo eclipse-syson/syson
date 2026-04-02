@@ -33,6 +33,7 @@ image::release-notes-stakeholder-menu.png[Tool to create a new Stakeholder]
 image::release-notes-stakeholder-node.png[Default representation of Stakeholder connected to its corresponding `RequirementDefinition`]
 
 ** Improve the tool to create an `Actor` graphical node by making specialization selection optional.
+** Improve the tool to create a `Stakeholder` graphical node by making specialization selection optional.
 
 == Technical details
 

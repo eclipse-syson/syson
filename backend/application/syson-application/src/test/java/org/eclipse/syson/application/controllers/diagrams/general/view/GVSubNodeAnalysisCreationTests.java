@@ -710,7 +710,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
@@ -763,7 +763,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
@@ -815,7 +815,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
             assertThat(referencedObject).isInstanceOf(List.class)
                     .asInstanceOf(type(List.class))
                     .satisfies(actors -> {
-                        assertThat(actors).size().isEqualTo(1);
+                        assertThat((List<?>) actors).size().isEqualTo(1);
                         assertThat(actors.getFirst())
                                 .isInstanceOf(PartUsage.class)
                                 .asInstanceOf(type(PartUsage.class))
