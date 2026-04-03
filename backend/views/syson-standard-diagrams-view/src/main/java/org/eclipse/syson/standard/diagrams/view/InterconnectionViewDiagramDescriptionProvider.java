@@ -51,6 +51,8 @@ public class InterconnectionViewDiagramDescriptionProvider implements IViewDescr
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                         .preconditionExpression(ServiceMethod.of0(InterconnectionViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
+                        .style(new DiagramBuilders().newDiagramStyleDescription()
+                                .build())
                         .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
                         .toolbar(new DiagramBuilders().newDiagramToolbar().build())
                         .build();

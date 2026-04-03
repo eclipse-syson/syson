@@ -43,7 +43,8 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Type as subject:")
+                .defaultTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Select an existing Type as subject:")
                 .optional(false)
                 .build();
     }

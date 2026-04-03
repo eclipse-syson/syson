@@ -117,8 +117,15 @@ public class OccurrenceUsageTimesliceNodeToolProvider implements INodeToolProvid
     private DialogDescription getDescriptionDialog() {
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .optional(true)
-                .selectionMessage("Choose the timeslice to create")
-                .noSelectionLabel("Create a timeslice occurrence usage")
+                .defaultTitleExpression("New Timeslice")
+                .descriptionExpression("Create a default timeslice or select the type of timeslice you want:")
+                .noSelectionActionDescriptionExpression("The default timeslice is an Occurrence")
+                .noSelectionActionLabelExpression("Create a default timeslice")
+                .noSelectionActionStatusMessageExpression("A timeslice Occurrence will be created")
+                .noSelectionTitleExpression("New Timeslice")
+                .withSelectionActionDescriptionExpression("Select in the list below which kind of timeslice you want to create")
+                .withSelectionActionLabelExpression("Create a timeslice")
+                .withSelectionTitleExpression("New Timeslice")
                 .selectionDialogTreeDescription(this.getDialogTreeDescriptionDialog())
                 .build();
     }

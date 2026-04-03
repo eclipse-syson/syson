@@ -28,6 +28,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -50,6 +51,10 @@ import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.WithUserLibrariesTestProjectData;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.LibraryPackage;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
 import org.eclipse.syson.tree.explorer.fragments.UserLibrariesDirectory;
@@ -405,12 +410,36 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
         var editingContext = optionalEditingContext.get();
         var expandedIds = new ArrayList<String>();
-        editingContext.getDomain().getResourceSet().getAllContents().forEachRemaining(notifier -> {
-            if (notifier instanceof Resource || notifier instanceof EObject) {
-                expandedIds.add(this.identityService.getId(notifier));
-            }
-        });
+        ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
+        List<Resource> resources = resourceSet.getResources().stream().filter(r -> !this.isStandardLibrary(r)).toList();
+        for (Resource resource : resources) {
+            expandedIds.add(this.identityService.getId(resource));
+            resource.getAllContents().forEachRemaining(notifier -> {
+                if (notifier instanceof EObject) {
+                    expandedIds.add(this.identityService.getId(notifier));
+                }
+            });
+        }
         return expandedIds;
+    }
+
+    private boolean isStandardLibrary(Resource resource) {
+        var standardLib = resource.getContents().stream()
+                .filter(Namespace.class::isInstance)
+                .map(Namespace.class::cast)
+                .filter(this::isRootNamespace)
+                .flatMap(namespace -> namespace.getOwnedElement().stream())
+                .filter(LibraryPackage.class::isInstance)
+                .map(LibraryPackage.class::cast)
+                .filter(libraryPackage -> libraryPackage.isIsStandard())
+                .findFirst();
+        return standardLib.isPresent();
+    }
+
+    private boolean isRootNamespace(Element element) {
+        return element.eClass() == SysmlPackage.eINSTANCE.getNamespace()
+                && element.getOwner() == null
+                && element.getName() == null;
     }
 
     private Consumer<Object> getTreeRefreshedEventPayloadMatcher(List<TreeItemMatcher> treeItemMatchers) {

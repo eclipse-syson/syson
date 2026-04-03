@@ -108,7 +108,8 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
 
         var selectExistingStateUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing State to associate to the ExhibitState you want to create:")
+                .defaultTitleExpression("New ExhibitState with Reference")
+                .descriptionExpression("Select an existing State to associate to the ExhibitState you want to create:")
                 .optional(false);
 
         var changeContextMembership = this.viewBuilderHelper.newChangeContext()
