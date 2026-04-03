@@ -322,6 +322,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .domainType(domainType)
                 .preconditionExpression(ServiceMethod.of0(ViewCreateService::canCreateDiagram).aqlSelf())
                 .name(DESCRIPTION_NAME)
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .build())
                 .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
                 .toolbar(this.diagramBuilderHelper.newDiagramToolbar()
                         .build());

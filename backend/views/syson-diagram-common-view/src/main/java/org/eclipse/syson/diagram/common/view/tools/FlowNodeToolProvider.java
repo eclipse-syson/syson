@@ -70,7 +70,8 @@ public class FlowNodeToolProvider implements INodeToolProvider {
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select a payload for the new Flow:")
+                .defaultTitleExpression("New Flow")
+                .descriptionExpression("Select a payload for the new Flow:")
                 .optional(false)
                 .build();
     }

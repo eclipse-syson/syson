@@ -116,8 +116,15 @@ public class OccurrenceUsageSnapshotNodeToolProvider implements INodeToolProvide
     private DialogDescription getDescriptionDialog() {
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .optional(true)
-                .selectionMessage("Choose the snapshot to create")
-                .noSelectionLabel("Create a snapshot occurrence usage")
+                .defaultTitleExpression("New Snapshot")
+                .descriptionExpression("Create a default snapshot or select the type of snapshot you want:")
+                .noSelectionActionDescriptionExpression("The default snapshot is an Occurrence")
+                .noSelectionActionLabelExpression("Create a default snapshot")
+                .noSelectionActionStatusMessageExpression("A snapshot Occurrence will be created")
+                .noSelectionTitleExpression("New Snapshot")
+                .withSelectionActionDescriptionExpression("Select in the list below which kind of snapshot you want to create")
+                .withSelectionActionLabelExpression("Create a snapshot")
+                .withSelectionTitleExpression("New Snapshot")
                 .selectionDialogTreeDescription(this.getDialogTreeDescriptionDialog())
                 .build();
     }

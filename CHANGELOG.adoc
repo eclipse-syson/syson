@@ -17,9 +17,11 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 
 === Dependency update
 
-- As of version 2026.5.0, SysON now requires **Java 21** or later.
-- [releng] Switch to `jacoco-maven-plugin` 0.8.14.
-- [releng] Switch to `maven-checkstyle-plugin` 3.6.0 and CheckStyle 3.13.0.
+- [releng] As of version 2026.5.0, SysON now requires **Java 21** or later.
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.1]
+- [releng] Update to `jacoco-maven-plugin` 0.8.14.
+- [releng] Update to `maven-checkstyle-plugin` 3.6.0 and CheckStyle 3.13.0.
+- [releng] Update to lexical 0.42.0
 
 === Bug fixes
 
@@ -27,6 +29,7 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 - https://github.com/eclipse-syson/syson/issues/2094[#2094] [libraries] Ensure library documents are read-only.
 
 === Improvements
+
 
 === New features
 

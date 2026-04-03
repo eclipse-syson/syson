@@ -42,7 +42,8 @@ public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider 
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Requirement as objective:")
+                .defaultTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Select an existing Requirement as objective:")
                 .optional(false)
                 .build();
     }

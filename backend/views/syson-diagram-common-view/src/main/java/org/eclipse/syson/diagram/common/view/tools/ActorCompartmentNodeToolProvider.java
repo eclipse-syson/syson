@@ -45,7 +45,8 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Part as actor:")
+                .defaultTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Select an existing Part as actor:")
                 .optional(false)
                 .build();
     }

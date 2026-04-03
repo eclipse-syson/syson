@@ -51,6 +51,8 @@ public class ActionFlowViewDiagramDescriptionProvider implements IViewDescriptio
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace()))
                         .preconditionExpression(ServiceMethod.of0(ActionFlowViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
+                        .style(new DiagramBuilders().newDiagramStyleDescription()
+                                .build())
                         .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
                         .toolbar(new DiagramBuilders().newDiagramToolbar().build())
                         .build();
