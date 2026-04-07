@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConv
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AddYourFirstElement;
 import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
@@ -103,7 +104,6 @@ import org.eclipse.syson.standard.diagrams.view.nodes.CompartmentNodeDescription
 import org.eclipse.syson.standard.diagrams.view.nodes.ConnectionDefinitionEndsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.ConnectionDefinitionEndsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.FakeNodeDescriptionProvider;
-import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InheritedPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InterfaceDefinitionEndsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.nodes.InterfaceDefinitionEndsCompartmentNodeDescriptionProvider;
@@ -315,6 +315,16 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     public RepresentationDescription create(IColorProvider colorProvider) {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace());
 
+        var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
+                .condition("aql:self.exposedElement->size() == 0 and editingContext.isDiagramEmpty(diagramContext, previousDiagram, self.exposedElement->size())")
+                .style(new DiagramBuilders().newDiagramStyleDescription()
+                        .background(this.viewBuilderHelper.newFixedColor()
+                                .name("AddYourFirstElement")
+                                .value("url(" + AddYourFirstElement.BASE64 + ") no-repeat center center / contain")
+                                .build())
+                        .build())
+                .build();
+
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         diagramDescriptionBuilder
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
@@ -322,8 +332,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .domainType(domainType)
                 .preconditionExpression(ServiceMethod.of0(ViewCreateService::canCreateDiagram).aqlSelf())
                 .name(DESCRIPTION_NAME)
-                .style(new DiagramBuilders().newDiagramStyleDescription()
-                        .build())
+                .style(new DiagramBuilders().newDiagramStyleDescription().build())
+                .conditionalStyles(emptyDiagramStyle)
                 .titleExpression("aql:'view'+ Sequence{self.existingViewUsagesCountForRepresentationCreation(), 1}->sum()")
                 .toolbar(this.diagramBuilderHelper.newDiagramToolbar()
                         .build());
@@ -379,7 +389,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new GeneralViewEmptyDiagramNodeDescriptionProvider(colorProvider));
+        // diagramElementDescriptionProviders.add(new GeneralViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new InheritedPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));

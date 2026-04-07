@@ -136,9 +136,7 @@ public class GVUndoTests extends AbstractIntegrationTests {
 
         Consumer<Object> updatedDiagramAfterPartDeletion = assertRefreshedDiagramThat(diag -> {
             var nodeCount = new DiagramNavigator(diag).findDiagramNodeCount();
-            assertThat(nodeCount).isEqualTo(1); // empty node to help users to start modeling
-            Node node = new DiagramNavigator(diag).nodeWithTargetObjectId(GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID).getNode();
-            assertThat(node).isNotNull();
+            assertThat(nodeCount).isEqualTo(0);
         });
 
         Runnable invokeUndoDeletePartUsage = () -> {

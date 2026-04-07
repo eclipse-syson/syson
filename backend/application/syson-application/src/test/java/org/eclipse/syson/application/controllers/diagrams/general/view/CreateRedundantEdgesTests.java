@@ -149,7 +149,7 @@ public class CreateRedundantEdgesTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
-            assertThat(diagram.getNodes()).hasSize(1); // The "Add your first element" pseudo-node
+            assertThat(diagram.getNodes()).hasSize(0);
             assertThat(diagram.getEdges()).isEmpty();
         });
 
