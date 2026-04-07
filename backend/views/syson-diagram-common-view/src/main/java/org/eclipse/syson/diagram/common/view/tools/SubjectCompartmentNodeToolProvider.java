@@ -44,8 +44,17 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .defaultTitleExpression(this.getNodeToolName())
-                .descriptionExpression("Select an existing Type as subject:")
-                .optional(false)
+                .noSelectionTitleExpression(this.getNodeToolName())
+                .withSelectionTitleExpression(this.getNodeToolName())
+                .descriptionExpression("Create a subject:")
+                .noSelectionActionLabelExpression("Create a new subject")
+                .noSelectionActionDescriptionExpression("Create a new subject without specialization")
+                .withSelectionActionLabelExpression("Select an existing Element as subject")
+                .withSelectionActionDescriptionExpression("Create a new specialized subject")
+                .noSelectionActionStatusMessageExpression("It will create a new subject without specialization")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Element to specialize the new subject")
+                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create a subject specialized with ' + selectedObjects->first().name")
+                .optional(true)
                 .build();
     }
 

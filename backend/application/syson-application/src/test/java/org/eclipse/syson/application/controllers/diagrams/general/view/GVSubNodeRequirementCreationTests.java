@@ -53,6 +53,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -1207,6 +1208,27 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a Requirement, WHEN creating a new Subject selecting a Part, THEN the Subject subsetted by the Part is created in the Requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewSubjectWithSubsettingInRequirementUsage() {
+        this.createSubjectWithSubsettingIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
+    }
+
+    @DisplayName("GIVEN a Requirement, WHEN creating a new Subject selecting a PartDefinition, THEN the Subject typed by the PartDefinition is created in the Requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewSubjectWithFeatureTypingInRequirementUsage() {
+        this.createSubjectWithFeatureTypingIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
+    }
+
+    @DisplayName("GIVEN a Requirement, WHEN creating a new Subject without selection, THEN the Subject without specialization is created in the Requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createNewSubjectWithoutSpecializationInRequirementUsage() {
+        this.createSubjectWithoutSpecializationIn(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement");
+    }
+
     private void createNewStakeholderWithoutSelectionIn(EClass eClassWithStakeholderParameter, String targetObjectId, String parentNodeLabel) {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -1443,6 +1465,200 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
                 this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, actorParameterEReference, SysmlPackage.eINSTANCE.getPartUsage(), additionalCheck));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    public void createSubjectWithSubsettingIn(EClass eClassWithSubjectParameter, String targetObjectId, String parentNodeLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var subjectParameterEReference = eClassWithSubjectParameter.getEAllReferences().stream()
+                .filter(eReference -> eReference.getName().equals("subjectParameter") && eReference.getEType() == SysmlPackage.eINSTANCE.getUsage()).findFirst()
+                .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithSubjectParameter.getName())));
+
+        var subjectCreationToolName = "New Subject";
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, eClassWithSubjectParameter, targetObjectId,
+                subjectCreationToolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            int createdNodesExpectedCount = 2;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            // Only the node inside the compartment is visible
+            // The "sibling" node is hidden
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(eClassWithSubjectParameter, subjectParameterEReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("subject")
+                    .hasNodeDescriptionName(listNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject)
+                    .isInstanceOf(ReferenceUsage.class)
+                    .asInstanceOf(type(ReferenceUsage.class))
+                    .satisfies(referenceUsage -> {
+                        EList<Subsetting> subjectSubsets = referenceUsage.getOwnedSubsetting();
+                        assertThat(subjectSubsets).isNotEmpty();
+                        assertThat(subjectSubsets.get(0).getSubsettedFeature().getName()).isEqualTo("part");
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, subjectParameterEReference, SysmlPackage.eINSTANCE.getReferenceUsage(), additionalCheck));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    public void createSubjectWithFeatureTypingIn(EClass eClassWithSubjectParameter, String targetObjectId, String parentNodeLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var subjectParameterEReference = eClassWithSubjectParameter.getEAllReferences().stream()
+                .filter(eReference -> eReference.getName().equals("subjectParameter") && eReference.getEType() == SysmlPackage.eINSTANCE.getUsage()).findFirst()
+                .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithSubjectParameter.getName())));
+
+        var subjectCreationToolName = "New Subject";
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, eClassWithSubjectParameter, targetObjectId,
+                subjectCreationToolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            int createdNodesExpectedCount = 2;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            // Only the node inside the compartment is visible
+            // The "sibling" node is hidden
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(eClassWithSubjectParameter, subjectParameterEReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("subject")
+                    .hasNodeDescriptionName(listNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject)
+                    .isInstanceOf(ReferenceUsage.class)
+                    .asInstanceOf(type(ReferenceUsage.class))
+                    .satisfies(referenceUsage -> {
+                        EList<Type> types = referenceUsage.getType();
+                        assertThat(types).isNotEmpty();
+                        assertThat(types.get(0).getName()).isEqualTo("PartDefinition");
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, subjectParameterEReference, SysmlPackage.eINSTANCE.getReferenceUsage(), additionalCheck));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    public void createSubjectWithoutSpecializationIn(EClass eClassWithSubjectParameter, String targetObjectId, String parentNodeLabel) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var subjectParameterEReference = eClassWithSubjectParameter.getEAllReferences().stream()
+                .filter(eReference -> eReference.getName().equals("subjectParameter") && eReference.getEType() == SysmlPackage.eINSTANCE.getUsage()).findFirst()
+                .orElseGet(() -> Assertions.fail("No fitting EReference could be found in '%s'.".formatted(eClassWithSubjectParameter.getName())));
+
+        var subjectCreationToolName = "New Subject";
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, eClassWithSubjectParameter, targetObjectId,
+                subjectCreationToolName);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            int createdNodesExpectedCount = 2;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            // Only the node inside the compartment is visible
+            // The "sibling" node is hidden
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram, true);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(eClassWithSubjectParameter, subjectParameterEReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("subject")
+                    .hasNodeDescriptionName(listNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = referencedObject -> {
+            assertThat(referencedObject)
+                    .isInstanceOf(ReferenceUsage.class)
+                    .asInstanceOf(type(ReferenceUsage.class))
+                    .satisfies(referenceUsage -> {
+                        assertThat(referenceUsage.getOwnedSpecialization()).allMatch(Specialization::isIsImplied);
+                        assertThat(referenceUsage.getType()).isEmpty();
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(
+                this.semanticCheckerService.getElementInParentSemanticChecker(parentNodeLabel, subjectParameterEReference, SysmlPackage.eINSTANCE.getReferenceUsage(), additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
