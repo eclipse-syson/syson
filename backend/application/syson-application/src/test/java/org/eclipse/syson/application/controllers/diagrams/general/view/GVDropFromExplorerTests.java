@@ -62,7 +62,6 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
-import org.eclipse.syson.standard.diagrams.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
@@ -172,11 +171,9 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         Runnable dropFromExplorerRunnable = () -> {
-            assertThat(diagram.get().getNodes()).hasSize(1);
-            Node emptyDiagramNode = diagram.get().getNodes().get(0);
-            String emptyDiagramNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
-            // Ensure the existing node is the "empty diagram" one.
-            assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
+            assertThat(diagram.get().getNodes()).hasSize(0);
+            var background = diagram.get().getStyle().getBackground();
+            assertThat(background).isNotEqualTo("transparent");
             this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, semanticElementId.get());
         };
 
@@ -192,6 +189,8 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .hasTargetObjectLabel("part1")
                 .hasTotalCompartmentCount(11)
                 .check(diagram.get(), newDiagram);
+            var background = newDiagram.getStyle().getBackground();
+            assertThat(background).isEqualTo("transparent");
         });
 
         Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
@@ -229,11 +228,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         Runnable dropFromExplorerRunnable = () -> {
-            assertThat(diagram.get().getNodes()).hasSize(1);
-            Node emptyDiagramNode = diagram.get().getNodes().get(0);
-            String emptyDiagramNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
-            // Ensure the existing node is the "empty diagram" one.
-            assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
+            assertThat(diagram.get().getNodes()).hasSize(0);
             this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram,
                     GeneralViewAddExistingElementsTestProjectData.SemanticIds.SN_REQUIREMENT_ELEMENT_ID);
         };
@@ -270,58 +265,6 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
-    }
-
-    @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
-    @Test
-    public void dropFromExplorerOnEmptyDiagramNode() {
-        var flux = this.givenSubscriptionToDiagram();
-
-        AtomicReference<String> semanticElementId = new AtomicReference<>();
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
-                (editingContext, executeEditingContextFunctionInput) -> {
-                    String partUsageId = this.getSemanticElementWithTargetObjectLabel(editingContext, "part1");
-                    semanticElementId.set(partUsageId);
-                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
-                });
-
-        AtomicReference<Diagram> diagram = new AtomicReference<>();
-        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
-
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
-
-        Runnable dropFromExplorerRunnable = () -> {
-            assertThat(diagram.get().getNodes()).hasSize(1);
-            Node emptyDiagramNode = diagram.get().getNodes().get(0);
-            String emptyDiagramNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(GeneralViewEmptyDiagramNodeDescriptionProvider.NAME);
-            // Ensure the existing node is the "empty diagram" one.
-            assertThat(emptyDiagramNode).hasDescriptionId(emptyDiagramNodeDescriptionId);
-            this.dropFromExplorerTester.dropFromExplorer(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, emptyDiagramNode.getId(), semanticElementId.get());
-        };
-
-        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
-            new CheckDiagramElementCount(this.diagramComparator)
-                    .hasNewEdgeCount(0)
-                    // 1 node for the PartUsage, 11 for its compartments, 1 for the list-item for part2 in its
-                    // "parts" compartment
-                    .hasNewNodeCount(13)
-                    .check(diagram.get(), newDiagram);
-            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
-                    .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()))
-                    .hasTargetObjectLabel("part1")
-                    .hasTotalCompartmentCount(11)
-                    .check(diagram.get(), newDiagram);
-        });
-
-        StepVerifier.create(flux)
-                .then(semanticChecker)
-                .consumeNextWith(initialDiagramContentConsumer)
-                .then(dropFromExplorerRunnable)
-                .consumeNextWith(updatedDiagramConsumer)
-                .thenCancel()
-                .verify(Duration.ofSeconds(10));
     }
 
     @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
