@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import {
   GQLInsertTextualSysMLv2MutationData,
   GQLInsertTextualSysMLv2Payload,
   UseInsertTextualSysMLv2Value,
-} from './useInsertTextualSysML.v2types';
+} from './useInsertTextualSysMLv2.types';
 
 const insertTextualSysMLv2Mutation = gql`
   mutation insertTextualSysMLv2($input: InsertTextualSysMLv2Input!) {
