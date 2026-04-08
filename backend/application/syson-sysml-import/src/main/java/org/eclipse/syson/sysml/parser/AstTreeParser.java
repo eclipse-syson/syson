@@ -12,17 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -39,6 +34,8 @@ import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * AstTreeParser.
@@ -120,29 +117,24 @@ public class AstTreeParser {
      *            the {@link EObject} to fill
      */
     private void fillElementWith(final JsonNode astJson, final EObject eObject) {
-        Iterator<Entry<String, JsonNode>> fiedIterator = astJson.fields();
-        while (fiedIterator.hasNext()) {
-            Entry<String, JsonNode> node = fiedIterator.next();
-            String key = node.getKey();
+        astJson.propertyStream().forEach(node -> {
+            var key = node.getKey();
             // Ignore meta information
             if (!key.startsWith("$")) {
-
                 JsonNode valueNode = node.getValue();
                 final List<JsonNode> values;
                 if (valueNode.isArray()) {
-                    Iterable<JsonNode> iterable = () -> valueNode.elements();
-                    values = StreamSupport.stream(iterable.spliterator(), false).toList();
+                    values = valueNode.valueStream().toList();
                 } else {
                     values = List.of(valueNode);
                 }
                 for (JsonNode value : values) {
                     this.handleNodeValue(eObject, key, value);
                 }
-
             } else {
                 LOGGER.trace("Ignoring field " + key);
             }
-        }
+        });
     }
 
     private void handleNodeValue(final EObject eObject, String key, JsonNode value) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.application.nodes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.eclipse.sirius.components.collaborative.diagrams.api.ICustomNodeStyleDeserializer;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Use to correctly deserialize custom node style.
@@ -33,7 +35,7 @@ public class SysMLPackageNodeStyleDeserializer implements ICustomNodeStyleDeseri
     }
 
     @Override
-    public INodeStyle handle(ObjectMapper mapper, String root) throws JsonProcessingException {
-        return mapper.readValue(root, SysMLPackageNodeStyle.class);
+    public INodeStyle handle(ObjectNode root, JsonParser jsonParser, DeserializationContext context) throws JacksonException {
+        return context.readTreeAsValue(root, SysMLPackageNodeStyle.class);
     }
 }

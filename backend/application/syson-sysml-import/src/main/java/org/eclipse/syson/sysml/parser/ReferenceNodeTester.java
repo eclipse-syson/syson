@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.function.Predicate;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * Check if a given {@link JsonNode} represent a reference node in the AST. A reference node in the AST represent
@@ -44,11 +44,11 @@ public class ReferenceNodeTester implements Predicate<JsonNode> {
 
     private boolean hasNonNullTextualField(JsonNode node, String field) {
         JsonNode nodeField = node.get(field);
-        return nodeField != null && nodeField.isTextual();
+        return nodeField != null && nodeField.isString();
     }
 
     private boolean isTextualOrNull(JsonNode node) {
-        return node != null && (node.isTextual() || node.isNull());
+        return node != null && (node.isString() || node.isNull());
     }
 
 }

@@ -14,10 +14,6 @@ package org.eclipse.syson.sysml;
 
 import static java.util.stream.Collectors.joining;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +37,10 @@ import org.eclipse.syson.sysml.parser.ProxyResolver;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Transforms AST data using defined mappings and updates resources accordingly.
@@ -422,7 +422,7 @@ public class ASTTransformer {
         try {
             // Read JSON file and map to JSON Object
             return objectMapper.readTree(input);
-        } catch (final IOException e) {
+        } catch (final JacksonException e) {
             this.logger.error(e.getMessage());
             this.messageReporter.error(e.getMessage());
             return null;

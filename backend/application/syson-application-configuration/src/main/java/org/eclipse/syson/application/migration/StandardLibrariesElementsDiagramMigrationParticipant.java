@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.application.migration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
@@ -24,6 +20,9 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Diagram migration participant used to migrate SysON diagrams with diagram elements having "targetObjectId" pointing
@@ -66,8 +65,8 @@ public class StandardLibrariesElementsDiagramMigrationParticipant implements IRe
 
     @Override
     public void replaceJsonNode(IEditingContext editingContext, ObjectNode root, String currentAttribute, JsonNode currentValue) {
-        if (currentAttribute.equals("targetObjectId") && currentValue instanceof TextNode textNode) {
-            String oldId = textNode.asText();
+        if (currentAttribute.equals("targetObjectId") && currentValue.isString()) {
+            String oldId = currentValue.asString();
             var optElement = this.objectSearchService.getObject(editingContext, oldId)
                     .filter(Element.class::isInstance)
                     .map(Element.class::cast);

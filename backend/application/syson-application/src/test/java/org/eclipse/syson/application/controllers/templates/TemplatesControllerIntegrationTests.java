@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.templates;
 
-import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -143,7 +143,7 @@ public class TemplatesControllerIntegrationTests extends AbstractIntegrationTest
                 .flatMap(this.editingContextSearchService::findById);
         var representationMetadatas = optionalSemanticData.map(
                         semanticData -> this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(semanticData))
-                .orElse(EMPTY_LIST);
+                .orElse(Collections.emptyList());
 
 
         assertThat(optionalEditingContext).isPresent();

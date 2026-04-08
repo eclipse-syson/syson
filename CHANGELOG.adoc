@@ -20,10 +20,13 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 === Dependency update
 
 - [releng] As of version 2026.5.0, SysON now requires **Java 21** or later.
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.1]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.2]
 - [releng] Update to `jacoco-maven-plugin` 0.8.14.
 - [releng] Update to `maven-checkstyle-plugin` 3.6.0 and CheckStyle 3.13.0.
 - [releng] Update to lexical 0.42.0
+- [releng] Update to https://vite.dev/blog/announcing-vite8[Vite 8.0.1] and @vitejs/plugin-react 6.0.1
+- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.5[Spring Boot 4.0.5]
+- [releng] Update to `com.tngtech.archunit:archunit-junit5` 1.4.1
 
 === Bug fixes
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.table.requirements.view.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +23,10 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Query services for the Requirements Table View. The services declared in this class must not modify the model or the
@@ -58,16 +58,16 @@ public class RTVQueryServices {
                 .orElse("");
     }
 
-    public List<RequirementUsage> sortAndFilterRequirements(List<Object> objects, List<ColumnSort> columnSort, List<ColumnFilter> columnFilters, String gloablFilterData) {
+    public List<RequirementUsage> sortAndFilterRequirements(List<Object> objects, List<ColumnSort> columnSort, List<ColumnFilter> columnFilters, String globalFilterData) {
         var requirementsElements = objects.stream().filter(RequirementUsage.class::isInstance).map(RequirementUsage.class::cast).collect(Collectors.toList());
-        this.filterRequirements(columnFilters, gloablFilterData, requirementsElements);
+        this.filterRequirements(columnFilters, globalFilterData, requirementsElements);
         this.sortRequirements(columnSort, requirementsElements);
         return requirementsElements;
     }
 
-    private void filterRequirements(List<ColumnFilter> columnFilters, String gloablFilterData, List<RequirementUsage> requirementsElements) {
-        if (gloablFilterData != null && !gloablFilterData.isBlank()) {
-            requirementsElements.removeIf(r -> !this.isValidGlobalFilterCandidate(r, gloablFilterData));
+    private void filterRequirements(List<ColumnFilter> columnFilters, String globalFilterData, List<RequirementUsage> requirementsElements) {
+        if (globalFilterData != null && !globalFilterData.isBlank()) {
+            requirementsElements.removeIf(r -> !this.isValidGlobalFilterCandidate(r, globalFilterData));
         }
         for (ColumnFilter columnFilter : columnFilters) {
             if ("DeclaredName".equals(columnFilter.id())) {
@@ -107,11 +107,10 @@ public class RTVQueryServices {
     private boolean isValidColumnFilterCandidate(String candidate, ColumnFilter columnFilter) {
         var isValid = true;
         try {
-            String filterValue = this.objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
-
-            });
+            JavaType javaType = objectMapper.getTypeFactory().constructType(String.class);
+            String filterValue = this.objectMapper.readValue(columnFilter.value(), javaType);
             isValid = candidate != null && candidate.contains(filterValue);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
         return isValid;

@@ -18,7 +18,7 @@ import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.util.ModelBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * {@link UseCaseDefinitionImpl} related tests.

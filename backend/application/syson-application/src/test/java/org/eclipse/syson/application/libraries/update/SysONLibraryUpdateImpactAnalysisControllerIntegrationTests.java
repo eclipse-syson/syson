@@ -15,10 +15,7 @@ package org.eclipse.syson.application.libraries.update;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +38,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the library controllers when computing the impact analysis of a library update.
@@ -69,9 +68,9 @@ public class SysONLibraryUpdateImpactAnalysisControllerIntegrationTests extends 
         this.givenInitialServerState.initialize();
     }
 
-    @Test
-    @SysONLibraryImportTestServer
     @DisplayName("GIVEN a project with dependencies, WHEN an impact analysis report is requested for the update of a dependency, THEN the report is returned")
+    @SysONLibraryImportTestServer
+    @Test
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyThenTheReportIsReturned() {
         Optional<Library> optionalLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(ProjectWithLibraryDependencyTestProjectData.LIBRARY_PROJECT_ID, "MyLibrary", "v2");
         assertThat(optionalLibrary).isPresent();
@@ -85,8 +84,10 @@ public class SysONLibraryUpdateImpactAnalysisControllerIntegrationTests extends 
         int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
         assertThat(nbElementCreated).isEqualTo(0);
 
-        Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-        DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
+        DataTree dataTree = this.objectMapper.convertValue(
+                JsonPath.parse(result.data()).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree"),
+                DataTree.class
+        );
 
         assertThat(dataTree.id()).isEqualTo("impact_tree");
         this.assertHasNode(dataTree, "LibraryResource1 (MyLibrary@v1)", null, ChangeKind.DELETION);
