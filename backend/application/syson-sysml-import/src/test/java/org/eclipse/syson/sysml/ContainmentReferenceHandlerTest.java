@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,18 +13,18 @@
 package org.eclipse.syson.sysml;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Test class for {@link ContainmentReferenceHandler}.
@@ -45,12 +45,12 @@ public class ContainmentReferenceHandlerTest {
     }
 
     @Test
-    public void checkInvalidContainementNode() throws JsonMappingException, JsonProcessingException {
+    public void checkInvalidContainementNode() throws DatabindException, JacksonException {
         assertFalse(this.refHandler.isContainmentReference(SysmlFactory.eINSTANCE.createPartDefinition(), "", this.read("")));
     }
 
     @Test
-    public void checkInvalidTypeName() throws JsonMappingException, JsonProcessingException {
+    public void checkInvalidTypeName() throws DatabindException, JacksonException {
         assertNull(this.refHandler.handleContainmentReference(SysmlFactory.eINSTANCE.createPartDefinition(), "", this.read("""
                 {
                     "$type" : "InvalidType"
@@ -59,7 +59,7 @@ public class ContainmentReferenceHandlerTest {
         assertThat(this.msgReporter.getReportedMessages()).hasSize(1);
     }
 
-    private JsonNode read(String input) throws JsonMappingException, JsonProcessingException {
+    private JsonNode read(String input) throws DatabindException, JacksonException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readTree(input);
     }

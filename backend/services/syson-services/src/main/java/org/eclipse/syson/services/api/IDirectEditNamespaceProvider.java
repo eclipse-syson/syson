@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.services.api;
 
+import java.util.Optional;
+
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.util.NamedProxy;
-
-import java.util.Optional;
 
 /**
  * Service use to resolve a proxy if the namespace provided was not resolved by default, usually if it was not imported.

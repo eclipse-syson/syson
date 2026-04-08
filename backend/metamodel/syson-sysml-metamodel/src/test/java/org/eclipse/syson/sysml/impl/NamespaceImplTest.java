@@ -13,8 +13,8 @@
 package org.eclipse.syson.sysml.impl;
 
 import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;

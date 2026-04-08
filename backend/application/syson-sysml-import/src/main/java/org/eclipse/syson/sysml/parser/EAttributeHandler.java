@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -24,6 +22,8 @@ import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.parser.translation.EAttributeTranslator;
 import org.eclipse.syson.sysml.utils.MessageReporter;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * Class that handles EAttribute.
@@ -39,7 +39,7 @@ public class EAttributeHandler {
     }
 
     public boolean isAttribute(final EObject eObject, String attrName, final JsonNode value) {
-        return value.isTextual() || value.isNumber() || value.isBoolean();
+        return value.isString() || value.isNumber() || value.isBoolean();
     }
 
     public void setAttribute(final EObject eObject, String attrName, final JsonNode value) {

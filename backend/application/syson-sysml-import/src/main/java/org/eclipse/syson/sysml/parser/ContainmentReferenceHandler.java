@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -33,6 +31,8 @@ import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.parser.translation.EReferenceComputer;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * Handler of containment references.
@@ -56,9 +56,9 @@ public class ContainmentReferenceHandler {
     }
 
     public boolean isContainmentReference(final EObject eObject, String referenceName, final JsonNode astValue) {
-        if (astValue.isContainerNode()) {
+        if (astValue.isContainer()) {
             JsonNode referenceTypeNode = astValue.get("$type");
-            return referenceTypeNode != null && referenceTypeNode.isTextual() && !this.referenceNodeTester.test(astValue);
+            return referenceTypeNode != null && referenceTypeNode.isString() && !this.referenceNodeTester.test(astValue);
         }
         return false;
     }

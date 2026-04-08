@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Objects;
 
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.SysmlFactory;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * In charge of handling non containment reference incompatibilities between the AST provided by SysIDE and the current

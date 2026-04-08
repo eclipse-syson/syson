@@ -105,7 +105,7 @@ public class SysmlToAst {
             if (sysmlInputPath != null) {
                 sysmlInputPath.toFile().delete();
             }
-            if (this.cliPath == null) {
+            if (this.cliPath == null && sysIdeInputPath != null) {
                 sysIdeInputPath.toFile().delete();
             }
         }

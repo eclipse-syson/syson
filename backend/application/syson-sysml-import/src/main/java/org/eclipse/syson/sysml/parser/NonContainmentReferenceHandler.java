@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -29,6 +27,8 @@ import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.parser.translation.EReferenceComputer;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * Class that handles non containment references.
@@ -59,7 +59,7 @@ public class NonContainmentReferenceHandler {
     }
 
     public boolean isNonContainmentReference(final Element owner, String referenceName, final JsonNode astValue) {
-        if (astValue.isContainerNode()) {
+        if (astValue.isContainer()) {
             JsonNode referenceTypeNode = astValue.get("$type");
             return referenceTypeNode != null && this.referenceNodeTester.test(astValue);
         }
@@ -71,11 +71,11 @@ public class NonContainmentReferenceHandler {
         if (!handled) {
             JsonNode referenceTypeNode = astValue.get("$type");
             JsonNode textNode = astValue.get("text");
-            String referenceType = referenceTypeNode.asText();
+            String referenceType = referenceTypeNode.asString();
             final EObject refrenceTypeInstance = this.typeBuilder.createObject(astValue);
 
             if (refrenceTypeInstance instanceof InternalEObject internalTarget) {
-                String qualifiedNameTarget = textNode.asText();
+                String qualifiedNameTarget = textNode.asString();
                 internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", QUALIFIED_CONST, qualifiedNameTarget));
                 // It should be a reference
                 Optional<EReference> optEReference = this.referenceComputer.getNonContainmentReference(owner.eClass(), refrenceTypeInstance.eClass(), referenceName);

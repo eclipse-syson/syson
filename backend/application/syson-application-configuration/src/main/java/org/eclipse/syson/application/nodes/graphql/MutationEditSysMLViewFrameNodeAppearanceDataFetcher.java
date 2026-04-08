@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.application.nodes.graphql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,6 +23,7 @@ import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.syson.application.nodes.dto.EditSysMLViewFrameNodeAppearanceInput;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * The data fetcher used to edit the appearance of a SysMLViewFrame node.

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser.translation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -23,6 +21,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
+
+import tools.jackson.databind.JsonNode;
 
 /**
  * Transforms a feature name and value in the AST in an EAttribute with a value that can be set in SysON metamodel.
@@ -50,7 +50,6 @@ public class EAttributeTranslator {
      *            the value of that feature in the AST
      */
     public void computeAttributeAndValueToSet(EClass ownerType, String astFeatureName, JsonNode astValue) {
-
         // Use to force the value of an attribute
         Object forcedValue = null;
 
@@ -123,7 +122,7 @@ public class EAttributeTranslator {
     }
 
     private Object handleLiteralStringValue(EClass ownerType, String astFeatureName, JsonNode astValue) {
-        String literalValue = astValue.asText().replace(DOUBLE_QUOTE_CONST, "");
+        String literalValue = astValue.asString().replace(DOUBLE_QUOTE_CONST, "");
         // Unescape backslash
         return literalValue.replace("\\\\", "\\");
     }
@@ -139,7 +138,7 @@ public class EAttributeTranslator {
     private Object getValue(EAttribute attr, JsonNode astValue) {
         final Object result;
 
-        if (astValue.isTextual() || astValue.isNumber()) {
+        if (astValue.isString() || astValue.isNumber()) {
             String cleanedValue = this.asCleanedText(astValue);
             EDataType eAttributeType = attr.getEAttributeType();
             if (this.isSpecialEnum(eAttributeType)) {
@@ -225,7 +224,7 @@ public class EAttributeTranslator {
     }
 
     private boolean handleBooleanAsString(String attributeName, String mappedName, String stringValueIfTrue, JsonNode astValue) {
-        return attributeName.equals(mappedName) && stringValueIfTrue.equals(astValue.asText());
+        return attributeName.equals(mappedName) && stringValueIfTrue.equals(astValue.asString());
     }
 
     private Optional<EAttribute> getAttribute(EClass ownerType, String name) {
@@ -240,11 +239,11 @@ public class EAttributeTranslator {
     private String asCleanedText(final JsonNode node) {
         String result = null;
 
-        if (node.isTextual()) {
-            result = node.asText().replace(QUOTE_CONST, "");
+        if (node.isString()) {
+            result = node.asString().replace(QUOTE_CONST, "");
         }
         if (node.isNumber()) {
-            result = node.asText();
+            result = node.asString();
         }
 
         return result;
