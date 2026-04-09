@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -113,11 +114,11 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
             treeItem -> treeItem.getLabel().toString().equals("<Req2> "));
 
     private final TreeItemMatcher userLibraryPackageRW = new TreeItemMatcher(
-            tree -> tree.getChildren().get(0).getChildren().get(2).getChildren().get(0).getChildren().get(0),
+            tree -> this.findTreeItem(tree, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID).orElseThrow(),
             treeItem -> treeItem.getLabel().toString().equals("Package2"));
 
     private final TreeItemMatcher userLibraryPackageRO = new TreeItemMatcher(
-            tree -> tree.getChildren().get(0).getChildren().get(2).getChildren().get(1).getChildren().get(0),
+            tree -> this.findTreeItem(tree, WithUserLibrariesTestProjectData.SemanticIds.RO_USER_LIBRARY_PACKAGE_ID).orElseThrow(),
             treeItem -> treeItem.getLabel().toString().equals("Package3"));
 
     private final TreeItemMatcher view1GVRepresentation = new TreeItemMatcher(
@@ -283,8 +284,7 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
         };
 
         Consumer<Object> updatedExplorerView = assertRefreshedTreeThat(tree -> {
-            var package2TreeItem = tree.getChildren().get(0).getChildren().get(2).getChildren().get(0).getChildren().get(0);
-            assertThat(package2TreeItem.getId()).isEqualTo(WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID);
+            var package2TreeItem = this.findTreeItem(tree, WithUserLibrariesTestProjectData.SemanticIds.RW_USER_LIBRARY_PACKAGE_ID).orElseThrow();
             assertThat(package2TreeItem.getChildren()).size().isEqualTo(2);
             assertThat(package2TreeItem.getChildren().get(1).getKind()).contains("AcceptActionUsage");
         });
@@ -449,6 +449,23 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 return treeItemMatcher.treeItemPredicate.test(treeItem);
             });
         });
+    }
+
+    private Optional<TreeItem> findTreeItem(Tree tree, String treeItemId) {
+        return tree.getChildren().stream()
+                .map(child -> this.findTreeItem(child, treeItemId))
+                .flatMap(Optional::stream)
+                .findFirst();
+    }
+
+    private Optional<TreeItem> findTreeItem(TreeItem treeItem, String treeItemId) {
+        if (treeItemId.equals(treeItem.getId())) {
+            return Optional.of(treeItem);
+        }
+        return treeItem.getChildren().stream()
+                .map(child -> this.findTreeItem(child, treeItemId))
+                .flatMap(Optional::stream)
+                .findFirst();
     }
 
     private Runnable triggerDirectEditTreeItemLabel(String editingContextId, String treeId, UUID treeItemId, String expectedLabel) {
