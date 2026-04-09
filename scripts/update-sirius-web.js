@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,58 +24,25 @@ if (!newSiriusWebVersion) {
 
 const workspace = process.cwd();
 
-const projects = new Map();
-projects.set("syson-application", "application");
-projects.set("syson-application-configuration", "application");
-projects.set("syson-common-view", "views");
-projects.set("syson-diagram-common-view", "views");
-projects.set("syson-diagram-tests", "views");
-projects.set("syson-diagram-services", "services");
-projects.set("syson-direct-edit-grammar", "services");
-projects.set("syson-form-services", "services");
-projects.set("syson-frontend", "application");
-projects.set("syson-model-services", "services");
-projects.set("syson-representation-services", "services");
-projects.set("syson-services", "services");
-projects.set("syson-siriusweb-customnodes-metamodel", "metamodel");
-projects.set("syson-siriusweb-customnodes-metamodel-edit", "metamodel");
-projects.set("syson-standard-diagrams-view", "views");
-projects.set("syson-sysml-import", "application");
-projects.set("syson-sysml-export", "application");
-projects.set("syson-sysml-metamodel", "metamodel");
-projects.set("syson-sysml-metamodel-edit", "metamodel");
-projects.set("syson-sysml-metamodel-services", "services");
-projects.set("syson-sysml-rest-api-services", "services");
-projects.set("syson-sysml-validation", "application");
-projects.set("syson-table-requirements-view", "views");
-projects.set("syson-table-services", "services");
-projects.set("syson-tree-explorer-view", "views");
-projects.set("syson-tree-services", "services");
-
-console.log("Updating the following pom.xml:");
-projects.forEach((folder, project) => {
-  const pomXmlPath = path.join(
-    workspace,
-    "backend",
-    folder,
-    project,
-    "pom.xml"
-  );
-  console.log(pomXmlPath);
-
+const updatePomProperty = (pomXmlPath, propertyName, value) => {
   const pomXmlContent = fs.readFileSync(pomXmlPath, { encoding: "utf-8" });
-  const startTagIndex = pomXmlContent.indexOf("<sirius.web.version>");
-  const endTagIndex = pomXmlContent.indexOf("</sirius.web.version>");
-  if (startTagIndex !== -1 && endTagIndex !== -1) {
-    let newPomXmlContent = pomXmlContent.substring(
-      0,
-      startTagIndex + "<sirius.web.version>".length
-    );
-    newPomXmlContent += newSiriusWebVersion;
-    newPomXmlContent += pomXmlContent.substring(endTagIndex);
-    fs.writeFileSync(pomXmlPath, newPomXmlContent, { encoding: "utf-8" });
+  const tag = `<${propertyName}>`;
+  const closingTag = `</${propertyName}>`;
+  const startTagIndex = pomXmlContent.indexOf(tag);
+  const endTagIndex = pomXmlContent.indexOf(closingTag);
+  if (startTagIndex === -1 || endTagIndex === -1) {
+    throw new Error(`Could not find <${propertyName}> in ${pomXmlPath}`);
   }
-});
+
+  let newPomXmlContent = pomXmlContent.substring(0, startTagIndex + tag.length);
+  newPomXmlContent += value;
+  newPomXmlContent += pomXmlContent.substring(endTagIndex);
+  fs.writeFileSync(pomXmlPath, newPomXmlContent, { encoding: "utf-8" });
+};
+
+const rootPomXmlPath = path.join(workspace, "pom.xml");
+console.log(`Updating ${rootPomXmlPath}`);
+updatePomProperty(rootPomXmlPath, "sirius.web.version", newSiriusWebVersion);
 
 const updateSiriusWebCommand = `npm install --save-exact @eclipse-sirius/sirius-components-browser@${newSiriusWebVersion} @eclipse-sirius/sirius-components-charts@${newSiriusWebVersion} @eclipse-sirius/sirius-components-core@${newSiriusWebVersion} @eclipse-sirius/sirius-components-datatree@${newSiriusWebVersion} @eclipse-sirius/sirius-components-deck@${newSiriusWebVersion} @eclipse-sirius/sirius-components-diagrams@${newSiriusWebVersion} @eclipse-sirius/sirius-components-formdescriptioneditors@${newSiriusWebVersion} @eclipse-sirius/sirius-components-forms@${newSiriusWebVersion} @eclipse-sirius/sirius-components-gantt@${newSiriusWebVersion} @eclipse-sirius/sirius-components-impactanalysis@${newSiriusWebVersion} @eclipse-sirius/sirius-components-omnibox@${newSiriusWebVersion} @eclipse-sirius/sirius-components-palette@${newSiriusWebVersion} @eclipse-sirius/sirius-components-portals@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-reference@${newSiriusWebVersion} @eclipse-sirius/sirius-components-widget-table@${newSiriusWebVersion} @eclipse-sirius/sirius-components-selection@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tables@${newSiriusWebVersion} @eclipse-sirius/sirius-components-trees@${newSiriusWebVersion} @eclipse-sirius/sirius-components-validation@${newSiriusWebVersion} @eclipse-sirius/sirius-components-tsconfig@${newSiriusWebVersion} @eclipse-sirius/sirius-web-application@${newSiriusWebVersion}`;
 
@@ -91,7 +58,7 @@ const updateSiriusWebPeerCommand = `npm install --save-peer --save-exact @eclips
 const sysonComponentsFrontendWorkingDirectory = path.join(
   workspace,
   "frontend",
-  "syson-components"
+  "syson-components",
 );
 childProcess.execSync(updateSiriusWebPeerCommand, {
   cwd: sysonComponentsFrontendWorkingDirectory,

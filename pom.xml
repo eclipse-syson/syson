@@ -15,6 +15,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.0.5</version>
+		<relativePath />
+	</parent>
+
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson</artifactId>
 	<version>2026.3.2</version>
@@ -23,9 +30,212 @@
 	<description>SysON</description>
 	<packaging>pom</packaging>
 
-<properties>
+	<properties>
+		<java.version>21</java.version>
+		<sirius.web.version>2026.3.2</sirius.web.version>
+		<syson.version>2026.3.2</syson.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/releng/syson-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>Central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>github-sirius-emfjson</id>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
+		</repository>
+		<repository>
+			<id>github-sirius-web</id>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-application</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-application-configuration</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-common-view</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-diagram-common-view</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-diagram-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-diagram-tests</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-direct-edit-grammar</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-form-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-frontend</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-model-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-representation-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-standard-diagrams-view</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-export</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-import</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-metamodel</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-metamodel</artifactId>
+				<version>${syson.version}</version>
+				<type>test-jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-metamodel-edit</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-metamodel-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-rest-api-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-sysml-validation</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-table-requirements-view</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-table-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-test-coverage</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-tests</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-tree-explorer-view</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.syson</groupId>
+				<artifactId>syson-tree-services</artifactId>
+				<version>${syson.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.6.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>3.6.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>13.3.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.14</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.3.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<distributionManagement>
 		<repository>
@@ -57,9 +267,43 @@
 	<profiles>
 		<profile>
 			<id>sonar</id>
-			<build>
-				<pluginManagement>
-					<plugins>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-build-requirements</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>[21,22)</version>
+									<message>SysON must be built with Java 21.</message>
+								</requireJavaVersion>
+								<requireMavenVersion>
+									<version>[3.6.3,)</version>
+									<message>SysON requires Maven 3.6.3 or newer.</message>
+								</requireMavenVersion>
+								<requirePluginVersions>
+									<message>All Maven plugins must declare a version directly or through pluginManagement.</message>
+									<phases>clean,validate,compile,test,package,verify,install,deploy,site</phases>
+								</requirePluginVersions>
+								<banDuplicatePomDependencyVersions>
+									<message>Each POM must declare a dependency only once for a given groupId:artifactId:type:classifier.</message>
+								</banDuplicatePomDependencyVersions>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
 						<plugin>
 							<groupId>org.sonarsource.scanner.maven</groupId>
 							<artifactId>sonar-maven-plugin</artifactId>

@@ -1,7 +1,14 @@
 #!/bin/sh
 
 VERSION="$1"
-mvn versions:set -DgroupId=org.eclipse.syson -DartifactId="*" -DoldVersion="*" -DnewVersion="$VERSION"
+
+if [ -z "$VERSION" ]; then
+  echo "Usage: $0 <version>"
+  exit 1
+fi
+
+mvn versions:set -DgroupId=org.eclipse.syson -DartifactId="*" -DoldVersion="*" -DnewVersion="$VERSION" -DgenerateBackupPoms=false
+perl -0pi -e "s#<syson.version>[^<]+</syson.version>#<syson.version>$VERSION</syson.version>#g" pom.xml
 
 npm version "$VERSION"  --commit-hooks=false --git-tag-version=false --workspaces=true --include-workspace-root=true --workspaces-update=false
 npm i

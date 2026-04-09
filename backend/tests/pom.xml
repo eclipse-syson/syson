@@ -15,6 +15,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.eclipse.syson</groupId>
+		<artifactId>syson</artifactId>
+		<version>2026.3.2</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-tests-parent</artifactId>
 	<version>2026.3.2</version>
@@ -22,14 +29,6 @@
 	<name>syson-tests-parent</name>
 	<description>SysON Tests Parent</description>
 	<packaging>pom</packaging>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
-		</repository>
-	</distributionManagement>
 
 	<modules>
 		<module>syson-tests</module>
