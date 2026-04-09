@@ -71,8 +71,17 @@ public class FlowNodeToolProvider implements INodeToolProvider {
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
                 .defaultTitleExpression("New Flow")
-                .descriptionExpression("Select a payload for the new Flow:")
-                .optional(false)
+                .noSelectionTitleExpression("New Flow")
+                .withSelectionTitleExpression("New Flow")
+                .descriptionExpression("Create an Flow:")
+                .noSelectionActionLabelExpression("Create a new Flow")
+                .noSelectionActionDescriptionExpression("Create a new Flow without Payload")
+                .withSelectionActionLabelExpression("Select a Payload for the new Flow")
+                .withSelectionActionDescriptionExpression("Create a new Flow with a Payload")
+                .noSelectionActionStatusMessageExpression("It will create a new Flow without Payload")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Element to be added as the new Flow Payload")
+                .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create an Flow with ' + selectedObjects->first().name + ' as Payload'")
+                .optional(true)
                 .build();
     }
 
