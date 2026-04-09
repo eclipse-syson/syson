@@ -16,35 +16,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.eclipse.syson</groupId>
+		<artifactId>syson</artifactId>
+		<version>2026.3.2</version>
+		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-metamodel</artifactId>
 	<version>2026.3.2</version>
 	<name>syson-sysml-metamodel</name>
 	<description>SysON SysMLv2 Metamodel</description>
-
-	<properties>
-		<java.version>21</java.version>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>Central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -98,7 +79,6 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.14</version>
 				<executions>
 					<execution>
 						<goals>

@@ -16,40 +16,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>org.eclipse.syson</groupId>
+		<artifactId>syson</artifactId>
+		<version>2026.3.2</version>
+		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-table-services</artifactId>
 	<version>2026.3.2</version>
 	<name>syson-table-services</name>
 	<description>SysON Table Services</description>
-
-	<properties>
-		<java.version>21</java.version>
-		<sirius.web.version>2026.3.2</sirius.web.version>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>Central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-		</repository>
-		<repository>
-			<id>github-sirius-web</id>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -60,7 +36,6 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2026.3.2</version>
 		</dependency>
 		<!-- Tests -->
 		<dependency>
@@ -76,14 +51,12 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-tests</artifactId>
-			<version>2026.3.2</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2026.3.2</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -94,14 +67,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.6.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>13.3.0</version>
-                    </dependency>
-                </dependencies>
 				<configuration>
 					<configLocation>../../releng/syson-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<sourceDirectories>
@@ -124,7 +89,6 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.14</version>
 				<executions>
 					<execution>
 						<goals>
