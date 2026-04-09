@@ -13,6 +13,7 @@
 package org.eclipse.syson.tree.explorer.fragments;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -95,6 +96,7 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
                     .filter(Resource.class::isInstance)
                     .map(Resource.class::cast)
                     .filter(resource -> this.filterService.isUserLibrary(editingContext, resource))
+                    .sorted(Comparator.comparing(resource -> Objects.toString(resource.getURI(), "")))
                     .forEach(result::add);
         }
         return result;
