@@ -30,8 +30,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -43,7 +41,6 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
-import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -111,9 +108,6 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private EditLabelMutationRunner editLabelMutationRunner;
-
-    @Autowired
-    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
     @Autowired
     private PaletteQueryRunner paletteQueryRunner;
@@ -437,14 +431,7 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
 
         Runnable createFlowUsageOnConnection = () -> {
             var selectedObjectVariable = new ToolVariable("selectedObject", GeneralViewFlowUsageProjectData.SemanticIds.VIDEO_SIGNAL_ID, ToolVariableType.OBJECT_ID);
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID, diagramId.get(), List.of(connectionEdgeId.get()),
-                    flowCreationToolId, 0, 0,
-                    List.of(selectedObjectVariable));
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-            List<String> messages = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.messages[*].body");
-            assertThat(messages).hasSize(0);
+            this.toolTester.invokeTool(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID, diagramId.get(), connectionEdgeId.get(), flowCreationToolId, List.of(selectedObjectVariable));
         };
 
         Consumer<Object> validateEffectOnLabel = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable \u25b6 Flow"));
@@ -466,6 +453,85 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
                     var payloadFeature = optionalPayloadFeature.get();
                     var payloadType = ((FeatureTyping) payloadFeature.getOwnedRelationship().get(0)).getType();
                     assertThat(this.identityService.getId(payloadType)).isEqualTo(GeneralViewFlowUsageProjectData.SemanticIds.VIDEO_SIGNAL_ID);
+
+                    // The flow has two FlowEnds: one redefining HDMICable::inputSide, the other HDMICable::outputSide
+                    var flowEnds = flowUsage.getOwnedFeature().stream().filter(FlowEnd.class::isInstance).map(FlowEnd.class::cast).toList();
+                    assertThat(flowEnds).hasSize(2);
+                    var sourceEnd = flowEnds.get(0);
+                    assertThat(sourceEnd.getOwnedFeature().get(0).getOwnedRedefinition().get(0).getRedefinedFeature().getQualifiedName()).isEqualTo("Package1::HDMICable::inputSide");
+                    var targetEnd = flowEnds.get(1);
+                    assertThat(targetEnd.getOwnedFeature().get(0).getOwnedRedefinition().get(0).getRedefinedFeature().getQualifiedName()).isEqualTo("Package1::HDMICable::outputSide");
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(renameAndTypeTheConnection)
+                .consumeNextWith(validateLabelEditResult)
+                .then(validateSemanticEffectOfLabelEdit)
+                .then(createFlowUsageOnConnection)
+                .consumeNextWith(validateEffectOnLabel)
+                .then(validateSemanticEffectOfFlowCreation)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @DisplayName("GIVEN a connection WHEN we create a flow usage in it without selecting a payload THEN the flow is correctly setup without a payload feature")
+    @GivenSysONServer({ GeneralViewFlowUsageProjectData.SCRIPT_PATH })
+    public void createFlowUsageInConnectionWithoutPayloadFeature() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
+                GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+                GeneralViewFlowUsageProjectData.GraphicalIds.DIAGRAM_ID);
+
+        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
+
+        var diagramId = new AtomicReference<String>();
+        var connectionEdgeId = new AtomicReference<String>();
+        var connectionEdgeLabelId = new AtomicReference<String>();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+        String flowCreationToolId = diagramDescriptionIdProvider.getNodeCreationToolIdOnEdge(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getConnectionUsage()), "New Flow");
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            var connectionEdge = new DiagramNavigator(diagram).edgeWithId(GeneralViewFlowUsageProjectData.GraphicalIds.CONNECTION_EDGE_ID).getEdge();
+            connectionEdgeId.set(connectionEdge.getId());
+            connectionEdgeLabelId.set(connectionEdge.getCenterLabel().id());
+        });
+
+        Runnable renameAndTypeTheConnection = () -> this.editLabel(diagramId.get(), connectionEdgeLabelId.get(), "cable : HDMICable");
+
+        Consumer<Object> validateLabelEditResult = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable"));
+
+        Runnable validateSemanticEffectOfLabelEdit = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    this.assertConnectionType(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID, GeneralViewFlowUsageProjectData.SemanticIds.HDMI_CABLE_ID);
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
+                });
+
+        Runnable createFlowUsageOnConnection = () -> {
+            var selectedObjectVariable = new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID);
+            this.toolTester.invokeTool(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID, diagramId.get(), connectionEdgeId.get(), flowCreationToolId, List.of(selectedObjectVariable));
+        };
+
+        Consumer<Object> validateEffectOnLabel = assertRefreshedDiagramThat(diagram -> this.assertEdgeLabelText(connectionEdgeId.get(), diagram, "cable : HDMICable \u25b6 Flow"));
+
+        Runnable validateSemanticEffectOfFlowCreation = this.semanticRunnableFactory.createRunnable(GeneralViewFlowUsageProjectData.EDITING_CONTEXT_ID,
+                (editingContext, executeEditingContextFunctionInput) -> {
+                    var optionalConnection = this.objectSearchService.getObject(editingContext, GeneralViewFlowUsageProjectData.SemanticIds.CONNECT_ID);
+                    assertThat(optionalConnection).containsInstanceOf(ConnectionUsage.class);
+                    ConnectionUsage connection = (ConnectionUsage) optionalConnection.get();
+                    // The flow usage has been created
+                    var optionalFlowUsage = connection.getOwnedFeature().stream().filter(FlowUsage.class::isInstance).map(FlowUsage.class::cast).findFirst();
+                    assertThat(optionalFlowUsage).isPresent();
+                    var flowUsage = optionalFlowUsage.get();
+
+                    // The flow does not have a payload feature
+                    var optionalPayloadFeature = flowUsage.getOwnedFeature().stream().filter(PayloadFeature.class::isInstance).map(PayloadFeature.class::cast).findFirst();
+                    assertThat(optionalPayloadFeature).isEmpty();
 
                     // The flow has two FlowEnds: one redefining HDMICable::inputSide, the other HDMICable::outputSide
                     var flowEnds = flowUsage.getOwnedFeature().stream().filter(FlowEnd.class::isInstance).map(FlowEnd.class::cast).toList();

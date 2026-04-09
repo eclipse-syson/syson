@@ -615,14 +615,6 @@ public class DiagramMutationElementService {
      *            the given {@link SatisfyRequirementUsage}.
      * @param newSource
      *            the new source {@link Element}.
-     * @param sourceNode
-     *            new source node of the edge
-     * @param targetNode
-     *            target node of the edge
-     * @param editingContext
-     *            the editing context
-     * @param diagram
-     *            the context diagram
      * @return the given {@link SatisfyRequirementUsage}.
      */
     public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
@@ -771,12 +763,14 @@ public class DiagramMutationElementService {
      */
     public FlowUsage createFlowUsageWithPayload(ConnectionUsage parent, Type payloadType) {
         var connectionTypes = parent.getType();
-        if (connectionTypes.size() > 0 && connectionTypes.get(0).getOwnedEndFeature().size() >= 2) {
-            var connectionType = connectionTypes.get(0);
+        if (!connectionTypes.isEmpty() && connectionTypes.getFirst().getOwnedEndFeature().size() >= 2) {
+            var connectionType = connectionTypes.getFirst();
             Feature source = connectionType.getOwnedEndFeature().get(0);
             Feature target = connectionType.getOwnedEndFeature().get(1);
             var flowUsage = this.metamodelMutationElementService.createFlowUsage(source, target, connectionType, connectionType, parent);
-            flowUsage.getOwnedRelationship().add(this.createPayloadFeatureMembership(payloadType));
+            if (payloadType != null) {
+                flowUsage.getOwnedRelationship().add(this.createPayloadFeatureMembership(payloadType));
+            }
             return flowUsage;
         } else {
             return null;
