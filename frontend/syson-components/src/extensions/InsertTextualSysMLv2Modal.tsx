@@ -22,7 +22,6 @@ import { Theme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-
 import { InsertTextualSysMLv2ModalProps, InsertTextualSysMLv2ModalState } from './InsertTextualSysMLv2Modal.types';
 import { NewObjectAsTextReport } from './NewObjectAsTextDocumentReport';
 import { useInsertTextualSysMLv2 } from './useInsertTextualSysMLv2';
@@ -106,7 +105,7 @@ export const InsertTextualSysMLv2Modal = ({ editingContextId, item, onClose }: I
             onClick={(event) => onInsertTextualSysMLv2(event)}
             startIcon={
               state.insertInProgress ? (
-                <CircularProgress size="20px" data-testid="arrange-all-circular-loading" />
+                <CircularProgress size="20px" data-testid="create-objects-circular-loading" />
               ) : (
                 <PublishIcon />
               )

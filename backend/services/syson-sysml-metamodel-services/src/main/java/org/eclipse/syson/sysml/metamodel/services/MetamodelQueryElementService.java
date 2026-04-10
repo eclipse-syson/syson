@@ -21,14 +21,12 @@ import java.util.function.Predicate;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ElementFilterMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
-import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Usage;
 
@@ -91,13 +89,7 @@ public class MetamodelQueryElementService {
      * @return true if the element is an actual expression definition.
      */
     public boolean isExpressionDefinition(Element element) {
-        if (element instanceof Expression && !(element instanceof Usage)) {
-            var owningRelationship = element.getOwningRelationship();
-            return owningRelationship instanceof FeatureValue || owningRelationship instanceof ElementFilterMembership
-                    || owningRelationship instanceof ResultExpressionMembership;
-        } else {
-            return false;
-        }
+        return element instanceof Expression && !(element instanceof Usage);
     }
 
     /**
