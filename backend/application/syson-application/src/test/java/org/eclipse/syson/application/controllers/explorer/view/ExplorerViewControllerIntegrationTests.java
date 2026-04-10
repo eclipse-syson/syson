@@ -399,7 +399,8 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID,
-                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID);
     }
 
     @DisplayName("GIVEN the Sirius Explorer View, WHEN querying the filters, THEN no syson filters are returned")
