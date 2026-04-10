@@ -480,7 +480,8 @@ public class SysONChangeDescriptionDataTreeProvider implements IChangeDescriptio
                 SysONTreeFilterConstants.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID,
                 SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID,
-                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID);
+                SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID,
+                SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID);
     }
 
     private List<?> getFeatureAsList(EObject eObject, EStructuralFeature eStructuralFeature) {

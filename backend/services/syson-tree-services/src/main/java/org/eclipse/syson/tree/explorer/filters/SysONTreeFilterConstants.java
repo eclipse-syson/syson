@@ -32,4 +32,6 @@ public class SysONTreeFilterConstants {
     public static final String HIDE_ROOT_NAMESPACES_ID = UUID.nameUUIDFromBytes("SysONTreeRootNamespacesFilter".getBytes()).toString();
 
     public static final String HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID = UUID.nameUUIDFromBytes("SysONTreeExposeElementsFilter".getBytes()).toString();
+
+    public static final String HIDE_EXPRESSION_INTERNALS_ID = UUID.nameUUIDFromBytes("SysONTreeExpressionInternalsFilter".getBytes()).toString();
 }

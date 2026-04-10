@@ -36,6 +36,7 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Expose;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.tree.explorer.filters.HideExpressionInternalsTreeItemAlteredContentProvider;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
@@ -153,6 +154,9 @@ public class SysONExplorerTreePathProvider implements ITreePathProvider {
         }
         if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID)) {
             alteredElements.removeIf(Expose.class::isInstance);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID)) {
+            return new HideExpressionInternalsTreeItemAlteredContentProvider(this.filterService).apply(alteredElements, new VariableManager());
         }
         return alteredElements;
     }

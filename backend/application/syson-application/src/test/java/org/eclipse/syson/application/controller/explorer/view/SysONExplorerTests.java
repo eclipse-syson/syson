@@ -47,6 +47,7 @@ import org.eclipse.syson.application.controller.explorer.testers.ExpandAllTreeIt
 import org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester;
 import org.eclipse.syson.application.controller.explorer.testers.TreePathTester;
 import org.eclipse.syson.application.data.ActionTransitionUsagesProjectData;
+import org.eclipse.syson.application.data.ExpressionSamplesProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingCommentAndLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
@@ -870,5 +871,129 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer, WHEN displaying an Expression item, THEN its internal details are hidden by default")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void sysONExplorerHidesExpressionInternalsByDefault() {
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
+
+        var expandedItemIds = List.of(
+                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_DOCUMENT_ID,
+                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_PACKAGE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_VALUE_ID);
+
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, defaultFilters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+            assertThat(tree.getChildren()).hasSize(2);
+            var documentItem = tree.getChildren().get(0);
+            assertThat(documentItem.getChildren()).hasSize(1);
+            assertThat(documentItem.getLabel().toString()).isEqualTo("expressions.sysml");
+            var packageItem = documentItem.getChildren().get(0);
+            assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
+
+            assertThat(packageItem.getChildren()).hasSize(7);
+
+            var tankItem = this.getChildByLabel(packageItem, "Tank");
+            assertThat(tankItem).isPresent();
+
+            var maxVolumeAttribute = this.getChildByLabel(tankItem.get(), "maxVolume");
+            assertThat(maxVolumeAttribute).isPresent();
+            assertThat(maxVolumeAttribute.get().getChildren()).hasSize(2);
+            var maxVolumeAttributeValueItem = maxVolumeAttribute.get().getChildren().get(0);
+            assertThat(maxVolumeAttributeValueItem.getLabel().toString()).isEqualTo("100.0 * minVolume");
+            assertThat(maxVolumeAttributeValueItem.getChildren()).isEmpty(); // Details filtered out by default
+
+            var pressureLimitAttribute = this.getChildByLabel(tankItem.get(), "pressureLimit");
+            assertThat(pressureLimitAttribute).isPresent();
+            assertThat(pressureLimitAttribute.get().getChildren()).hasSize(1);
+            var pressureLimitAttributeValueItem = pressureLimitAttribute.get().getChildren().get(0);
+            assertThat(pressureLimitAttributeValueItem.getLabel().toString()).isEqualTo("pressure <= maxPressure");
+            assertThat(pressureLimitAttributeValueItem.getChildren()).isEmpty(); // Details filtered out by default
+
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the SysON Explorer, WHEN displaying an Expression item, THEN its internal details can be revealed by disabling the corresponding filter")
+    @GivenSysONServer({ ExpressionSamplesProjectData.SCRIPT_PATH })
+    @Test
+    public void sysONExplorerExpressionInternalsCanBeRevealed() {
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
+        // Keep all defaults but HIDE_EXPRESSION_INTERNALS_ID
+        List<String> activeFilters = defaultFilters.stream().filter(filterId -> !SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID.equals(filterId)).toList();
+
+        var expandedItemIds = List.of(
+                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_DOCUMENT_ID,
+                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_PACKAGE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID,
+                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_VALUE_ID);
+
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, activeFilters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
+            assertThat(tree).isNotNull();
+            treeId.set(tree.getId());
+            assertThat(tree.getChildren()).hasSize(2);
+            var documentItem = tree.getChildren().get(0);
+            assertThat(documentItem.getChildren()).hasSize(1);
+            assertThat(documentItem.getLabel().toString()).isEqualTo("expressions.sysml");
+            var packageItem = documentItem.getChildren().get(0);
+            assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
+
+            assertThat(packageItem.getChildren()).hasSize(7);
+
+            var tankItem = this.getChildByLabel(packageItem, "Tank");
+            assertThat(tankItem).isPresent();
+
+            var maxVolumeAttribute = this.getChildByLabel(tankItem.get(), "maxVolume");
+            assertThat(maxVolumeAttribute).isPresent();
+            assertThat(maxVolumeAttribute.get().getChildren()).hasSize(2);
+            var maxVolumeAttributeValueItem = maxVolumeAttribute.get().getChildren().get(0);
+            assertThat(maxVolumeAttributeValueItem.getLabel().toString()).isEqualTo("100.0 * minVolume");
+            assertThat(maxVolumeAttributeValueItem.getChildren()).hasSize(2); // Details visible
+
+            var pressureLimitAttribute = this.getChildByLabel(tankItem.get(), "pressureLimit");
+            assertThat(pressureLimitAttribute).isPresent();
+            assertThat(pressureLimitAttribute.get().getChildren()).hasSize(1);
+            var pressureLimitAttributeValueItem = pressureLimitAttribute.get().getChildren().get(0);
+            assertThat(pressureLimitAttributeValueItem.getLabel().toString()).isEqualTo("pressure <= maxPressure");
+            assertThat(pressureLimitAttributeValueItem.getChildren()).hasSize(2); // Details visible
+
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private Optional<TreeItem> getChildByLabel(TreeItem parent, String label) {
+        return parent.getChildren().stream().filter(child -> child.getLabel().toString().equals(label)).findFirst();
     }
 }
