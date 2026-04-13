@@ -55,7 +55,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Objective compartment related tests.
+ * Objective documentation compartment related tests.
  *
  * @author arichard
  */

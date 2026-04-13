@@ -68,6 +68,7 @@ Stakeholders are by default represented with a dedicated graphical node connecte
 - https://github.com/eclipse-syson/syson/issues/2122[#2122] [diagrams] Leverage the latest change of the selection dialog to allow creating a `Subject` graphical node without specialization.
 - https://github.com/eclipse-syson/syson/issues/2129[#2129] [diagrams] Leverage the latest change of the selection dialog to allow creating a `FlowUsage` from a `ConnectionUsage` without selection a `PayloadFeature`
 - https://github.com/eclipse-syson/syson/issues/2105[#2105] [explorer] In the _Explorer_ view, `Expression` elements now display their full textual representation.
+- https://github.com/eclipse-syson/syson/issues/2137[#2137] [diagrams] Merge the two objective creation tools into a single tool, leveraging the updated selection dialog.
 
 === New features
 

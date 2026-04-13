@@ -36,6 +36,7 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** Improve the tool to create a `Stakeholder` graphical node by making specialization selection optional.
 ** Improve the tool to create a `Subject` graphical node by making specialization selection optional.
 ** Improve the tool to create a `FlowUsage` from a `ConnectionUsage` by making the payload selection optional.
+** Merge the two objective creation tools into a single tool by leveraging the updated selection dialog which make the specialization selection optional.
 
 * In the _Explorer_ view:
 
