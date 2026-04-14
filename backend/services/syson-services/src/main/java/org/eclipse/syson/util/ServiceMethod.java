@@ -13,6 +13,7 @@
 package org.eclipse.syson.util;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodType;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -72,6 +73,10 @@ import java.util.Arrays;
  * }
  * </pre>
  * <p>
+ * Overloaded services: if several service methods share the same name, use the factory overloads that also take the
+ * service class and Java parameter types, for example
+ * {@code ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class)}.
+ * <p>
  * Performance: this uses reflection once per reference at startup to read a method name. The cost is negligible
  * compared to normal init work.
  *
@@ -80,12 +85,15 @@ import java.util.Arrays;
  */
 public final class ServiceMethod {
 
+    private final Method declaration;
+
     private final String name;
 
     private final int arity;
 
-    private ServiceMethod(String name, int arity) {
-        this.name = name;
+    private ServiceMethod(Method declaration, int arity) {
+        this.declaration = declaration;
+        this.name = declaration.getName();
         this.arity = arity;
     }
 
@@ -96,6 +104,15 @@ public final class ServiceMethod {
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * the Java declaration that will be called from AQL.
+     *
+     * @return the declaration.
+     */
+    public Method declaration() {
+        return this.declaration;
     }
 
     /**
@@ -149,50 +166,173 @@ public final class ServiceMethod {
      * Instance method with signature {@code R method(T self)}.
      */
     public static <S, T> ServiceMethod of0(Inst0<S, T> ref) {
-        return new ServiceMethod(methodName(ref), 0);
+        return new ServiceMethod(method(ref), 0);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self)}.
+     * <p>
+     * Use this overload when the referenced Java service is overloaded and you need to disambiguate on the
+     * {@code self} type.
+     */
+    public static <S, T> ServiceMethod of0(Class<T> selfType, Inst0<S, T> ref) {
+        return new ServiceMethod(method(ref, selfType), 0);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self)}.
+     * <p>
+     * Use this overload when the referenced Java service is overloaded and you need to disambiguate on the declaring
+     * service and {@code self} types.
+     */
+    public static <S, T> ServiceMethod of0(Class<S> serviceType, Inst0<S, T> ref, Class<T> selfType) {
+        return new ServiceMethod(method(serviceType, ref, selfType), 0);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1)}.
      */
     public static <S, T, P1> ServiceMethod of1(Inst1<S, T, P1> ref) {
-        return new ServiceMethod(methodName(ref), 1);
+        return new ServiceMethod(method(ref), 1);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1)}.
+     * <p>
+     * Use this overload when the referenced Java service is overloaded and you need to disambiguate on parameter
+     * types.
+     */
+    public static <S, T, P1> ServiceMethod of1(Class<T> selfType, Class<P1> p1Type, Inst1<S, T, P1> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type), 1);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1)}.
+     * <p>
+     * Use this overload when the referenced Java service is overloaded and you need to disambiguate on the declaring
+     * service and parameter types.
+     */
+    public static <S, T, P1> ServiceMethod of1(Class<S> serviceType, Inst1<S, T, P1> ref, Class<T> selfType, Class<P1> p1Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type), 1);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2)}.
      */
     public static <S, T, P1, P2> ServiceMethod of2(Inst2<S, T, P1, P2> ref) {
-        return new ServiceMethod(methodName(ref), 2);
+        return new ServiceMethod(method(ref), 2);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2)}.
+     */
+    public static <S, T, P1, P2> ServiceMethod of2(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Inst2<S, T, P1, P2> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type), 2);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2)}.
+     */
+    public static <S, T, P1, P2> ServiceMethod of2(Class<S> serviceType, Inst2<S, T, P1, P2> ref, Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type, p2Type), 2);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
      */
     public static <S, T, P1, P2, P3> ServiceMethod of3(Inst3<S, T, P1, P2, P3> ref) {
-        return new ServiceMethod(methodName(ref), 3);
+        return new ServiceMethod(method(ref), 3);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
+     */
+    public static <S, T, P1, P2, P3> ServiceMethod of3(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, Inst3<S, T, P1, P2, P3> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type, p3Type), 3);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
+     */
+    public static <S, T, P1, P2, P3> ServiceMethod of3(Class<S> serviceType, Inst3<S, T, P1, P2, P3> ref, Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type,
+            Class<P3> p3Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type, p2Type, p3Type), 3);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4)}.
      */
     public static <S, T, P1, P2, P3, P4> ServiceMethod of4(Inst4<S, T, P1, P2, P3, P4> ref) {
-        return new ServiceMethod(methodName(ref), 4);
+        return new ServiceMethod(method(ref), 4);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4)}.
+     */
+    public static <S, T, P1, P2, P3, P4> ServiceMethod of4(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type,
+            Inst4<S, T, P1, P2, P3, P4> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type, p3Type, p4Type), 4);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4)}.
+     */
+    public static <S, T, P1, P2, P3, P4> ServiceMethod of4(Class<S> serviceType, Inst4<S, T, P1, P2, P3, P4> ref, Class<T> selfType, Class<P1> p1Type,
+            Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type, p2Type, p3Type, p4Type), 4);
     }
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)}.
      */
     public static <S, T, P1, P2, P3, P4, P5> ServiceMethod of5(Inst5<S, T, P1, P2, P3, P4, P5> ref) {
-        return new ServiceMethod(methodName(ref), 5);
+        return new ServiceMethod(method(ref), 5);
     }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)}.
+     */
+    public static <S, T, P1, P2, P3, P4, P5> ServiceMethod of5(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type,
+            Class<P5> p5Type, Inst5<S, T, P1, P2, P3, P4, P5> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type, p3Type, p4Type, p5Type), 5);
+    }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5)}.
+     */
+    // CHECKSTYLE:OFF
+    public static <S, T, P1, P2, P3, P4, P5> ServiceMethod of5(Class<S> serviceType, Inst5<S, T, P1, P2, P3, P4, P5> ref, Class<T> selfType, Class<P1> p1Type,
+            Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type, Class<P5> p5Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type, p2Type, p3Type, p4Type, p5Type), 5);
+    }
+    // CHECKSTYLE:ON
 
     /**
      * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)}.
      */
     public static <S, T, P1, P2, P3, P4, P5, P6> ServiceMethod of6(Inst6<S, T, P1, P2, P3, P4, P5, P6> ref) {
-        return new ServiceMethod(methodName(ref), 6);
+        return new ServiceMethod(method(ref), 6);
     }
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)}.
+     */
+    // CHECKSTYLE:OFF
+    public static <S, T, P1, P2, P3, P4, P5, P6> ServiceMethod of6(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type,
+            Class<P5> p5Type, Class<P6> p6Type, Inst6<S, T, P1, P2, P3, P4, P5, P6> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type, p3Type, p4Type, p5Type, p6Type), 6);
+    }
+    // CHECKSTYLE:ON
+
+    /**
+     * Instance method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6)}.
+     */
+    // CHECKSTYLE:OFF
+    public static <S, T, P1, P2, P3, P4, P5, P6> ServiceMethod of6(Class<S> serviceType, Inst6<S, T, P1, P2, P3, P4, P5, P6> ref, Class<T> selfType,
+            Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, Class<P4> p4Type, Class<P5> p5Type, Class<P6> p6Type) {
+        return new ServiceMethod(method(serviceType, ref, selfType, p1Type, p2Type, p3Type, p4Type, p5Type, p6Type), 6);
+    }
+    // CHECKSTYLE:ON
 
     // ---------------------- Factories for static methods ----------------------
 
@@ -200,28 +340,56 @@ public final class ServiceMethod {
      * Static method with signature {@code R method(T self)}.
      */
     public static <T> ServiceMethod ofStatic0(IStat0<T> ref) {
-        return new ServiceMethod(methodName(ref), 0);
+        return new ServiceMethod(method(ref), 0);
+    }
+
+    /**
+     * Static method with signature {@code R method(T self)}.
+     */
+    public static <T> ServiceMethod ofStatic0(Class<T> selfType, IStat0<T> ref) {
+        return new ServiceMethod(method(ref, selfType), 0);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1)}.
      */
     public static <T, P1> ServiceMethod ofStatic1(IStat1<T, P1> ref) {
-        return new ServiceMethod(methodName(ref), 1);
+        return new ServiceMethod(method(ref), 1);
+    }
+
+    /**
+     * Static method with signature {@code R method(T self, P1 p1)}.
+     */
+    public static <T, P1> ServiceMethod ofStatic1(Class<T> selfType, Class<P1> p1Type, IStat1<T, P1> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type), 1);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1, P2 p2)}.
      */
     public static <T, P1, P2> ServiceMethod ofStatic2(IStat2<T, P1, P2> ref) {
-        return new ServiceMethod(methodName(ref), 2);
+        return new ServiceMethod(method(ref), 2);
+    }
+
+    /**
+     * Static method with signature {@code R method(T self, P1 p1, P2 p2)}.
+     */
+    public static <T, P1, P2> ServiceMethod ofStatic2(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, IStat2<T, P1, P2> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type), 2);
     }
 
     /**
      * Static method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
      */
     public static <T, P1, P2, P3> ServiceMethod ofStatic3(IStat3<T, P1, P2, P3> ref) {
-        return new ServiceMethod(methodName(ref), 3);
+        return new ServiceMethod(method(ref), 3);
+    }
+
+    /**
+     * Static method with signature {@code R method(T self, P1 p1, P2 p2, P3 p3)}.
+     */
+    public static <T, P1, P2, P3> ServiceMethod ofStatic3(Class<T> selfType, Class<P1> p1Type, Class<P2> p2Type, Class<P3> p3Type, IStat3<T, P1, P2, P3> ref) {
+        return new ServiceMethod(method(ref, selfType, p1Type, p2Type, p3Type), 3);
     }
 
     // ---------------------- SAMs for method references ----------------------
@@ -427,14 +595,42 @@ public final class ServiceMethod {
 
     // ---------------------- Lambda -> method name ----------------------
 
-    private static String methodName(Serializable lambdaRef) {
+    private static Method method(Serializable lambdaRef, Class<?>... expectedParameterTypes) {
         try {
-            Method m = lambdaRef.getClass().getDeclaredMethod("writeReplace");
-            m.setAccessible(true);
-            SerializedLambda sl = (SerializedLambda) m.invoke(lambdaRef);
-            return sl.getImplMethodName();
-        } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IllegalAccessException e) {
-            throw new IllegalStateException("Cannot resolve method name from lambda", e);
+            SerializedLambda lambda = serializedLambda(lambdaRef);
+            Class<?> implementationClass = Class.forName(lambda.getImplClass().replace('/', '.'), false, lambdaRef.getClass().getClassLoader());
+            MethodType methodType = MethodType.fromMethodDescriptorString(lambda.getImplMethodSignature(), implementationClass.getClassLoader());
+            Method method = thisClassMethod(implementationClass, lambda.getImplMethodName(), methodType.parameterArray());
+            if (expectedParameterTypes.length > 0 && !Arrays.equals(method.getParameterTypes(), expectedParameterTypes)) {
+                throw new IllegalArgumentException(
+                        MessageFormat.format("Resolved method {0} has parameters {1} but expected {2}", method, Arrays.toString(method.getParameterTypes()), Arrays.toString(expectedParameterTypes)));
+            }
+            return method;
+        } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | SecurityException | IllegalAccessException e) {
+            throw new IllegalStateException("Cannot resolve method declaration from lambda", e);
+        }
+    }
+
+    private static Method method(Class<?> expectedServiceType, Serializable lambdaRef, Class<?>... expectedParameterTypes) {
+        Method method = method(lambdaRef, expectedParameterTypes);
+        if (!expectedServiceType.isAssignableFrom(method.getDeclaringClass())) {
+            throw new IllegalArgumentException(MessageFormat.format("Resolved method {0} is declared on {1} but expected a service assignable to {2}", method,
+                    method.getDeclaringClass().getName(), expectedServiceType.getName()));
+        }
+        return method;
+    }
+
+    private static SerializedLambda serializedLambda(Serializable lambdaRef) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method writeReplace = lambdaRef.getClass().getDeclaredMethod("writeReplace");
+        writeReplace.setAccessible(true);
+        return (SerializedLambda) writeReplace.invoke(lambdaRef);
+    }
+
+    private static Method thisClassMethod(Class<?> implementationClass, String methodName, Class<?>[] parameterTypes) throws NoSuchMethodException {
+        try {
+            return implementationClass.getDeclaredMethod(methodName, parameterTypes);
+        } catch (NoSuchMethodException exception) {
+            return implementationClass.getMethod(methodName, parameterTypes);
         }
     }
 
@@ -457,4 +653,3 @@ public final class ServiceMethod {
         }
     }
 }
-

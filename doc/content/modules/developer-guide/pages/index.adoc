@@ -549,6 +549,7 @@ When to use which call:
 
 Type inference:
 - if the compiler says something like _The type X does not define methodName(Object, Object,...)_, add a type witness to the factory so it can match the real signature.
+- if the service method is overloaded, use the factory overload that also takes the service class and Java parameter types to disambiguate the method reference.
 
 Examples:
 
@@ -562,6 +563,9 @@ ServiceMethod.<DiagramMutationAQLService, ViewUsage, String> of1(DiagramMutation
 
 // predicate isActor(Element)
 ServiceMethod.<ModelQueryAQLService, Element> of0(ModelQueryAQLService::isActor).aqlSelf();
+
+// overloaded EObjectServices::eGet(EObject, EStructuralFeature)
+ServiceMethod.of1(EObjectServices.class, EObjectServices::eGet, EObject.class, EStructuralFeature.class).aqlSelf(E_STRUCTURAL_FEATURE);
 ----
 
 [#generate_openapi]
