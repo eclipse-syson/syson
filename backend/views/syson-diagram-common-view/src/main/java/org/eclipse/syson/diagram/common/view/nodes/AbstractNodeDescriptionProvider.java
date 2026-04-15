@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
@@ -113,8 +115,9 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Show content as Nested")
                 .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("isView",
-                        List.of(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
+                .preconditionExpression(ServiceMethod.of4(ViewNodeService.class, ViewNodeService::isView,
+                        Element.class, String.class, Node.class, IEditingContext.class, DiagramContext.class)
+                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
@@ -128,8 +131,9 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Show content as Tree")
                 .iconURLsExpression("/icons/full/obj16/ShowTool.svg")
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("isView",
-                        List.of(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT)))
+                .preconditionExpression(ServiceMethod.of4(ViewNodeService.class, ViewNodeService::isView,
+                        Element.class, String.class, Node.class, IEditingContext.class, DiagramContext.class)
+                        .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), Node.SELECTED_NODE, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                 .body(this.diagramBuilderHelper.newDeleteView()
                         .children(this.viewBuilderHelper.newChangeContext()
                                 .expression(
