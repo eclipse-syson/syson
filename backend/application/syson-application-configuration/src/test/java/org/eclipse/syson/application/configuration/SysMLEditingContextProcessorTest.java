@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.syson.application.libraries.SysONLibraryLoader;
+import org.eclipse.syson.application.services.StandardLibrariesLoader;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,7 +64,7 @@ public class SysMLEditingContextProcessorTest {
         resourceSet.setPackageRegistry(ePackageRegistry);
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration()),
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new StandardLibrariesLoader(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration())),
                 e -> false);
         editingContextProcessor.preProcess(editingContext);
         assertNotNull(resourceSet);
@@ -113,7 +114,7 @@ public class SysMLEditingContextProcessorTest {
         rSet.setPackageRegistry(ePackageRegistry);
         rSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration()),
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new StandardLibrariesLoader(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration())),
                 e -> true);
         editingContextProcessor.preProcess(editingContext);
 

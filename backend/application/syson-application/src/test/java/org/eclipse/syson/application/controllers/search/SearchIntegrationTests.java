@@ -22,8 +22,10 @@ import java.util.Map;
 import org.eclipse.sirius.web.application.views.search.dto.SearchResult;
 import org.eclipse.sirius.web.application.views.search.dto.SearchSuccessPayload;
 import org.eclipse.sirius.web.tests.graphql.SearchQueryRunner;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,14 @@ public class SearchIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private SearchQueryRunner searchQueryRunner;
+
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
 
     @Test
     @DisplayName("GIVEN a SysML project, WHEN we execute a search including user libraries, THEN all the matching semantic elements are returned")

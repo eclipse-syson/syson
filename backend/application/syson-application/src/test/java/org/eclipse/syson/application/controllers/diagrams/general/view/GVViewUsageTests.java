@@ -27,13 +27,9 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -53,10 +49,10 @@ import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
-import org.eclipse.syson.tree.explorer.view.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -127,16 +123,10 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     private SysONTreeViewDescriptionProvider sysonTreeViewDescriptionProvider;
 
     @Autowired
-    private SysONTreeFilterProvider sysonTreeFilterProvider;
-
-    @Autowired
     private ExpandAllTreeItemTester expandAllTreeItemTester;
 
     @Autowired
-    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
+    private IExplorerDefaultFiltersSearchService explorerDefaultFiltersSearchService;
 
     private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
 
@@ -204,16 +194,8 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
 
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
-        var optionalEditingContext = this.editingContextSearchService.findById(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID);
-        TreeDescription treeDescription = optionalEditingContext
-                .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .orElse(null);
-        this.defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+
+        this.defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
     }
 
     @AfterEach

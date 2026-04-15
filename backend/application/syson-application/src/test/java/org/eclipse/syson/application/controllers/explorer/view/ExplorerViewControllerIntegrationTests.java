@@ -32,10 +32,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.RepresentationDescriptionsQueryRunner;
+import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.InitialDirectEditTreeItemLabelQueryRunner;
@@ -129,9 +134,6 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
     private IIdentityService identityService;
 
     @Autowired
@@ -157,6 +159,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
     @Autowired
     private TreeItemContextMenuQueryRunner treeItemContextMenuQueryRunner;
+
+    @Autowired
+    private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -403,24 +408,28 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
     }
 
     private List<String> getAllTreeItemIds(String editingContextId) {
-        var optionalEditingContext = this.editingContextSearchService.findById(editingContextId)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast);
-        assertThat(optionalEditingContext).isPresent();
-
-        var editingContext = optionalEditingContext.get();
-        var expandedIds = new ArrayList<String>();
-        ResourceSet resourceSet = editingContext.getDomain().getResourceSet();
-        List<Resource> resources = resourceSet.getResources().stream().filter(r -> !this.isStandardLibrary(r)).toList();
-        for (Resource resource : resources) {
-            expandedIds.add(this.identityService.getId(resource));
-            resource.getAllContents().forEachRemaining(notifier -> {
-                if (notifier instanceof EObject) {
-                    expandedIds.add(this.identityService.getId(notifier));
+        ExecuteEditingContextFunctionInput executeEditingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, (editingContext, input) -> {
+            if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+                List<String> expandedIds = new ArrayList<>();
+                ResourceSet resourceSet = emfEditingContext.getDomain().getResourceSet();
+                List<Resource> resources = resourceSet.getResources().stream().filter(r -> !this.isStandardLibrary(r)).toList();
+                for (Resource resource : resources) {
+                    expandedIds.add(this.identityService.getId(resource));
+                    resource.getAllContents().forEachRemaining(notifier -> {
+                        if (notifier instanceof EObject) {
+                            expandedIds.add(this.identityService.getId(notifier));
+                        }
+                    });
                 }
-            });
-        }
-        return expandedIds;
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), expandedIds);
+            } else {
+                return new ErrorPayload(input.id(), List.of(new Message("Invalid editing context", MessageLevel.ERROR)));
+            }
+        });
+
+        var payload = this.executeEditingContextFunctionRunner.execute(executeEditingContextFunctionInput).block();
+        assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        return (List<String>) ((ExecuteEditingContextFunctionSuccessPayload) payload).result();
     }
 
     private boolean isStandardLibrary(Resource resource) {

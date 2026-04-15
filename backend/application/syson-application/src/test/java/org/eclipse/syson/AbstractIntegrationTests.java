@@ -14,6 +14,9 @@ package org.eclipse.syson;
 
 import org.eclipse.sirius.web.infrastructure.configuration.persistence.JDBCConfiguration;
 import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
+import org.eclipse.syson.services.IEditingContextCachingService;
+import org.junit.jupiter.api.AfterEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -36,10 +39,18 @@ public abstract class AbstractIntegrationTests {
         POSTGRESQL_CONTAINER.start();
     }
 
+    @Autowired
+    protected IEditingContextCachingService editingContextCachingService;
+
     @DynamicPropertySource
     public static void registerProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        this.editingContextCachingService.cache();
     }
 }

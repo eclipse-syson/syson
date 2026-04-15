@@ -46,6 +46,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.I
 import org.eclipse.sirius.web.tests.graphql.PublishLibrariesMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.data.ProjectWithUnusedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
@@ -73,6 +74,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@InvalidateStandardLibrariesCache
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class SysONLibraryPublicationTests extends AbstractIntegrationTests {
 
