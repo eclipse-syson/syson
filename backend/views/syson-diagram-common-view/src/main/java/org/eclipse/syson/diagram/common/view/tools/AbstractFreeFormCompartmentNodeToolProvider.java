@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
@@ -25,8 +24,8 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -117,9 +116,8 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(
-                        AQLUtils.getServiceCallExpression(Node.SELECTED_NODE, "revealCompartment",
-                                List.of("self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE)));
+                .expression(ServiceMethod.of4(ViewNodeService::revealCompartment)
+                        .aql(Node.SELECTED_NODE, "self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getCreationServiceCallExpression())

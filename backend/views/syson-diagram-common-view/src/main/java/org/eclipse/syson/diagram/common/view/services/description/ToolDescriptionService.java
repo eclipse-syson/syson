@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
@@ -41,7 +42,6 @@ import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -52,8 +52,6 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  * @author adieumegard
  */
 public class ToolDescriptionService {
-
-    protected static final String SERVICE_ELEMENT_INITIALIZER = "elementInitializer";
 
     protected static final String NEW_INSTANCE = "newInstance";
 
@@ -442,7 +440,7 @@ public class ToolDescriptionService {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql(NEW_INSTANCE));
 
         var createDiagramIfNeeded = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT));
@@ -530,7 +528,7 @@ public class ToolDescriptionService {
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
+                .expression(ServiceMethod.of0(ViewCreateService::elementInitializer).aql(NEW_INSTANCE));
 
         if (direction != null) {
             changeContextNewInstance.children(setDirection.build(), updateExposedElements.build());
