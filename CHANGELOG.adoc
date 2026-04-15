@@ -12,10 +12,10 @@
 - [cleanup] The definition of the tools specific to the requirements table has been moved to the backend.
 As a result, the following GraphQL mutations have been removed `exposeRequirements` and `createRequirement`.
 - [test] Reduce our call to `DiagramNavigator#nodeWithTargetObjectLabel` which has been deprecated for removal.
-+ The API of `ToolTester#invokeTool` and `NodeCreationTestsService#createNode` has been updated accordingly to take a `targetObjectId` instead of a `label`.
+The API of `ToolTester#invokeTool` and `NodeCreationTestsService#createNode` has been updated accordingly to take a `targetObjectId` instead of a `label`.
 - https://github.com/eclipse-syson/syson/issues/2045[#2045] [diagrams] The service `ViewNodeService#revealCompartment` has been changed to reveal a compartment only when it is needed.
-+ Only reveal a compartment of a node when none of the revealed compartment can display the `targetElement`.
-+ If many compartment candidates exist, choose the first free form compartment.
+Only reveal a compartment of a node when none of the revealed compartment can display the `targetElement`.
+If many compartment candidates exist, choose the first free form compartment.
 - [services] As part of the migration to the new diagram service architecture, the following methods have been moved out of `ViewNodeService` (which as been deleted):
 +
 ** `List<Element> getExposedElements(Element self, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext)` to `DiagramQueryAQLService.getExposedElements(Element self, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext)`
@@ -34,6 +34,8 @@ As a result, the following GraphQL mutations have been removed `exposeRequiremen
 ** `org.eclipse.syson.diagram.common.view.services.RevealCompartmentSwitch` to `org.eclipse.syson.diagram.services.utils.RevealCompartmentSwitch`
 +
 Also, a new helper method `DiagramQueryAQLService.isNotAncestorOf(...)` has been added to support edge preconditions previously written as `aql:not graphicalEdgeSource.isAncestorOf(graphicalEdgeTarget, cache)`.
+- https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] The `relativePathToDirectoryContainingLibraryFiles` field in `SysONLibraryLoadingDefinition` now expects a `String` instead of a `java.nio.file.Path`.
+This change ensures compatibility with classpath resource resolution, which requires forward slashes (`/`) as path separators.
 
 === Dependency update
 
@@ -53,6 +55,7 @@ Also, a new helper method `DiagramQueryAQLService.isNotAncestorOf(...)` has been
 
 - https://github.com/eclipse-syson/syson/issues/2045[#2045] [diagrams] In Interconnection View diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
 - https://github.com/eclipse-syson/syson/issues/2094[#2094] [libraries] Ensure library documents are read-only.
+- https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] Fixed classpath resource resolution on Windows by enforcing forward slashes (`/`) in library paths.
 
 === Improvements
 
