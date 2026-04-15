@@ -57,6 +57,7 @@ import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuil
 import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventSubscriptionRunner;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
+import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
@@ -254,6 +255,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     @DisplayName("GIVEN an empty SysML Project, WHEN New Namespace Import tool on diagram is requested, THEN a new NamespaceImport is created")
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
+    @InvalidateStandardLibrariesCache
     public void createTopNamespaceImportNode() {
         var flux = this.givenSubscriptionToDiagram();
 

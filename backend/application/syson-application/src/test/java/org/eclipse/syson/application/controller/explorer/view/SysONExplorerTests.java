@@ -28,16 +28,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.trees.api.TreeFilter;
-import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
@@ -57,11 +53,11 @@ import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContaining
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingPackageAndLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithUsedBatmobileLibraryDependencyTestProjectData;
 import org.eclipse.syson.application.data.SysonStudioTestProjectData;
+import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
-import org.eclipse.syson.tree.explorer.view.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.menu.context.SysONExplorerTreeItemContextMenuEntryProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,13 +114,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     private TreePathTester treePathTester;
 
     @Autowired
-    private SysONTreeFilterProvider sysonTreeFilterProvider;
-
-    @Autowired
-    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
-
-    @Autowired
-    private IEditingContextSearchService editingContextSearchService;
+    private IExplorerDefaultFiltersSearchService explorerDefaultFiltersSearchService;
 
     private String sysONExplorerTreeDescriptionId;
 
@@ -167,16 +157,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void getExplorerContentWithDefaultFilters() {
-        var optionalEditingContext = this.editingContextSearchService.findById(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
-        TreeDescription treeDescription = optionalEditingContext
-                .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .orElse(null);
-        List<String> defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, List.of(), defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
@@ -257,16 +239,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void getExplorerContentWithKerMLAndSysMLExpanded() {
-        var optionalEditingContext = this.editingContextSearchService.findById(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
-        TreeDescription treeDescription = optionalEditingContext
-                .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .orElse(null);
-        List<String> defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
         String librariesTreeItemId = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
         String sysmlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
         String kermlLibrariesTreeItemId = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
@@ -350,16 +324,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void getContextMenuOfModelAndLibraryDirectories() {
-        var optionalEditingContext = this.editingContextSearchService.findById(GeneralViewEmptyTestProjectData.EDITING_CONTEXT);
-        TreeDescription treeDescription = optionalEditingContext
-                .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .orElse(null);
-        List<String> defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, this.sysONExplorerTreeDescriptionId);
         // Expand the Libraries directory when building the explorer, we want to check the context menu of elements
         // under it.
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId,
@@ -855,17 +821,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     @GivenSysONServer({ ActionTransitionUsagesProjectData.SCRIPT_PATH })
     @Test
     public void sysONExplorerTreeExpressionLabelTest() {
-
-        var optionalEditingContext = this.editingContextSearchService.findById(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID);
-        TreeDescription treeDescription = optionalEditingContext
-                .flatMap(editingContext -> this.representationDescriptionSearchService.findById(editingContext, this.sysONExplorerTreeDescriptionId))
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .orElse(null);
-        List<String> defaultFilters = this.sysonTreeFilterProvider.get(null, treeDescription).stream()
-                .filter(TreeFilter::defaultState)
-                .map(TreeFilter::id)
-                .toList();
+        List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(ActionTransitionUsagesProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
 
         var expandedItemIds = List.of(
                 ActionTransitionUsagesProjectData.SemanticIds.DOCUMENT_ID,

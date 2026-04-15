@@ -40,6 +40,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.InvalidateStandardLibrariesCache;
 import org.eclipse.syson.application.libraries.SysONLibraryImportTestServer;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Type;
@@ -66,6 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(OutputCaptureExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
+@InvalidateStandardLibrariesCache
 public class SysONLibraryUpdateTests extends AbstractIntegrationTests {
 
     protected IEditingContext projectEditingContext;
