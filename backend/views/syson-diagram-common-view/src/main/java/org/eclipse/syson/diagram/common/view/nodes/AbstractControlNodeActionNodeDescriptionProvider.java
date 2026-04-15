@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
@@ -102,8 +101,8 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .defaultHeightExpression(this.getDefaultHeightExpression())
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName()))
-                .semanticCandidatesExpression(ServiceMethod.of4(ViewNodeService.class,
-                        ViewNodeService::getExposedElements, Element.class, EClass.class, List.class,
+                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                        DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
                         IEditingContext.class, DiagramContext.class)
                         .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                 .style(this.createNodeStyleDescription())

@@ -35,9 +35,9 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -73,7 +73,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.compartmentName)
-                .preconditionExpression(ServiceMethod.of4(ViewNodeService.class, ViewNodeService::isView, Element.class, String.class, List.class,
+                .preconditionExpression(ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::isView, Element.class, String.class, List.class,
                         IEditingContext.class, DiagramContext.class)
                         .aqlSelf(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), ANCESTORS,
                                 IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
@@ -170,7 +170,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
 
     @Override
     protected String isHiddenByDefaultExpression() {
-        return ServiceMethod.of4(ViewNodeService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.compartmentName), ANCESTORS,
+        return ServiceMethod.of4(DiagramQueryAQLService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.compartmentName), ANCESTORS,
                 IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
     }
 }

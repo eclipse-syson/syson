@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
@@ -83,7 +82,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .variableName("newInstanceView");
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(ViewNodeService::revealCompartment).aql(Node.SELECTED_NODE, "newInstance", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, "newInstance", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var updateExposedElements = this.viewBuilderHelper.newChangeContext()

@@ -39,10 +39,10 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
@@ -145,7 +145,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      *         <code>false</code> otherwise.
      */
     protected String isHiddenByDefaultExpression() {
-        return ServiceMethod.of4(ViewNodeService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.getCompartmentName()),
+        return ServiceMethod.of4(DiagramQueryAQLService::isHiddenByDefault).aqlSelf(AQLUtils.aqlString(this.getCompartmentName()),
                 org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS,
                 IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
     }

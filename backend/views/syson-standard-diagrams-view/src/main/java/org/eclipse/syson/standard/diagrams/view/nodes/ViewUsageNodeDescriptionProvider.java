@@ -46,7 +46,6 @@ import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConv
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
@@ -94,8 +93,8 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getNodeDescriptionName())
-                .semanticCandidatesExpression(ServiceMethod.of4(ViewNodeService.class,
-                        ViewNodeService::getExposedElements, Element.class, EClass.class, List.class,
+                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                        DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
                         IEditingContext.class, DiagramContext.class)
                         .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                 .style(this.createViewFrameNodeStyle())

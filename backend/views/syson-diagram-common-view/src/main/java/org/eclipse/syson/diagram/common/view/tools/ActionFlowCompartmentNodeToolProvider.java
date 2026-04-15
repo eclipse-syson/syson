@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
@@ -49,7 +48,7 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(ViewNodeService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()

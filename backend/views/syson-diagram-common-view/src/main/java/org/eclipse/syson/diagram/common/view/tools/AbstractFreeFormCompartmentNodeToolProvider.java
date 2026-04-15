@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
@@ -116,7 +115,7 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(ViewNodeService::revealCompartment)
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment)
                         .aql(Node.SELECTED_NODE, "self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()

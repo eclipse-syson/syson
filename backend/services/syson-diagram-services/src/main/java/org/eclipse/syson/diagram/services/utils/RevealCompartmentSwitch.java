@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.services;
+package org.eclipse.syson.diagram.services.utils;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -27,17 +27,12 @@ import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
- * Switch allowing to know in which cases a compartment should be revealed. It is used by
- * ViewNodeService#revealCompartment().
+ * Switch allowing to know in which cases a compartment should be revealed.
  *
  * @author arichard
  */
 public class RevealCompartmentSwitch extends SysmlSwitch<Boolean> {
 
-    /**
-     * If the ViewUsage associated to the object on which this Switch is applied is typed by a GeneralView
-     * ViewDefinition or not.
-     */
     private final boolean isGeneralView;
 
     public RevealCompartmentSwitch(boolean isGeneralView) {

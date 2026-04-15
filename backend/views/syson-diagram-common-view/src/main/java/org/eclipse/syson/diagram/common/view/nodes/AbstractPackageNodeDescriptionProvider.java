@@ -46,7 +46,6 @@ import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConv
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
@@ -141,8 +140,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
-                .semanticCandidatesExpression(ServiceMethod.of4(ViewNodeService.class,
-                        ViewNodeService::getExposedElements, Element.class, EClass.class, List.class,
+                .semanticCandidatesExpression(ServiceMethod.of4(DiagramQueryAQLService.class,
+                        DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class,
                         IEditingContext.class, DiagramContext.class)
                         .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT))
                 .style(this.createPackageNodeStyle())

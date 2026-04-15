@@ -14,7 +14,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -38,7 +38,7 @@ public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(ViewNodeService::getAllReachableRequirements).aqlSelf())
+                .elementsExpression(ServiceMethod.of0(DiagramQueryAQLService::getAllReachableRequirements).aqlSelf())
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
