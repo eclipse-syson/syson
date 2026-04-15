@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.syson.diagram.services.DiagramMutationCompartmentService;
 import org.eclipse.syson.diagram.services.DiagramMutationDiagramService;
 import org.eclipse.syson.diagram.services.DiagramMutationDndService;
 import org.eclipse.syson.diagram.services.DiagramMutationElementService;
@@ -57,13 +58,17 @@ public class DiagramMutationAQLService {
 
     private final DiagramMutationDiagramService diagramMutationDiagramService;
 
+    private final DiagramMutationCompartmentService diagramMutationCompartmentService;
+
     public DiagramMutationAQLService(DiagramMutationDndService diagramMutationDndService, DiagramMutationElementService diagramMutationElementService,
-            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService) {
+            DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService,
+            DiagramMutationCompartmentService diagramMutationCompartmentService) {
         this.diagramMutationDndService = Objects.requireNonNull(diagramMutationDndService);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.diagramMutationLabelService = Objects.requireNonNull(diagramMutationLabelService);
         this.diagramMutationDiagramService = Objects.requireNonNull(diagramMutationDiagramService);
+        this.diagramMutationCompartmentService = Objects.requireNonNull(diagramMutationCompartmentService);
     }
 
     /**
@@ -75,17 +80,11 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationDiagramService#duplicateElementAndExpose(Element, IEditingContext, DiagramContext, Node, Map)}.
+     * {@link DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
      */
-    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return this.diagramMutationDiagramService.duplicateElementAndExpose(element, editingContext, diagramContext, node, convertedNodes);
-    }
-
-    /**
-     * {@link DiagramMutationDiagramService#createDiagram(Element, IEditingContext, String)}.
-     */
-    public Element createDiagram(Element element, IEditingContext editingContext) {
-        return this.diagramMutationDiagramService.createDiagram(element, editingContext, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+    public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createBindingConnectorAsUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
     }
 
     /**
@@ -97,17 +96,48 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationElementService#createConnectionUsage(Usage, Usage, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public ConnectionUsage createConnectionUsage(Usage connectionSource, Usage connectionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createConnectionUsage(connectionSource, connectionTarget, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationDiagramService#createDiagram(Element, IEditingContext, String)}.
+     */
+    public Element createDiagram(Element element, IEditingContext editingContext) {
+        return this.diagramMutationDiagramService.createDiagram(element, editingContext, SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createFlowUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public FlowUsage createFlowUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createFlowUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createFlowUsageWithPayload(ConnectionUsage, Type)}.
+     */
+    public FlowUsage createFlowUsageWithPayload(ConnectionUsage parent, Type payloadType) {
+        return this.diagramMutationElementService.createFlowUsageWithPayload(parent, payloadType);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#createInterfaceUsage(PortUsage, PortUsage, Node, Node, IEditingContext, DiagramContext)}.
+     */
+    public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort, Node sourceNode, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext) {
+        return this.diagramMutationElementService.createInterfaceUsage(sourcePort, targetPort, sourceNode, targetNode, editingContext, diagramContext);
+    }
+
+    /**
      * {@link DiagramMutationLabelService#directEdit(Element, String)}.
      */
     public Element directEdit(Element element, String newLabel) {
         return this.diagramMutationLabelService.directEdit(element, newLabel);
-    }
-
-    /**
-     * {@link DiagramMutationLabelService#directEditNode(Element, String)}.
-     */
-    public Element directEditNode(Element element, String newLabel) {
-        return this.diagramMutationLabelService.directEditNode(element, newLabel);
     }
 
     /**
@@ -118,11 +148,27 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationLabelService#directEditNode(Element, String)}.
+     */
+    public Element directEditNode(Element element, String newLabel) {
+        return this.diagramMutationLabelService.directEditNode(element, newLabel);
+    }
+
+    /**
      * {@link DiagramMutationDndService#dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
      */
     public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.diagramMutationDndService.dropElementFromDiagram(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+    }
+
+    /**
+     * {@link DiagramMutationDndService#dropElementFromDiagramInConstraintCompartment(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
+     */
+    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDndService.dropElementFromDiagramInConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
+                convertedNodes);
     }
 
     /**
@@ -140,15 +186,6 @@ public class DiagramMutationAQLService {
     public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
             DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.diagramMutationDndService.dropElementFromDiagramInRequirementRequireConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
-                convertedNodes);
-    }
-
-    /**
-     * {@link DiagramMutationDndService#dropElementFromDiagramInConstraintCompartment(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)}.
-     */
-    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return this.diagramMutationDndService.dropElementFromDiagramInConstraintCompartment(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext,
                 convertedNodes);
     }
 
@@ -177,10 +214,11 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationLabelService#editMultiplicityRangeCenterLabel(Element, String)}.
+     * {@link DiagramMutationDiagramService#duplicateElementAndExpose(Element, IEditingContext, DiagramContext, Node, Map)}.
      */
-    public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
-        return this.diagramMutationLabelService.editMultiplicityRangeCenterLabel(element, newLabel);
+    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationDiagramService.duplicateElementAndExpose(element, editingContext, diagramContext, node, convertedNodes);
     }
 
     /**
@@ -188,6 +226,13 @@ public class DiagramMutationAQLService {
      */
     public Element editEdgeCenterLabel(Element element, String newLabel) {
         return this.diagramMutationLabelService.editEdgeCenterLabel(element, newLabel);
+    }
+
+    /**
+     * {@link DiagramMutationLabelService#editMultiplicityRangeCenterLabel(Element, String)}.
+     */
+    public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
+        return this.diagramMutationLabelService.editMultiplicityRangeCenterLabel(element, newLabel);
     }
 
     /**
@@ -199,10 +244,48 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationElementService#reconnectSatisfyRequirementSource(SatisfyRequirementUsage, Element)}.
+     */
+    public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
+        return this.diagramMutationElementService.reconnectSatisfyRequirementSource(sru, newSource);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectSatisfyRequirementTarget(SatisfyRequirementUsage, Element)}.
+     */
+    public SatisfyRequirementUsage reconnectSatisfyRequirementTarget(SatisfyRequirementUsage sru, Element newTarget) {
+        return this.diagramMutationElementService.reconnectSatisfyRequirementTarget(sru, newTarget);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectSource(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
+     */
+    public Connector reconnectSource(Connector connector, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
+            Diagram diagram) {
+        return this.diagramMutationElementService.reconnectSource(connector, newSource, newSourceNode, targetNode, editingContext, diagram);
+    }
+
+    /**
+     * {@link DiagramMutationElementService#reconnectTarget(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
+     */
+    public Connector reconnectTarget(Connector connector, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
+            Diagram diagram) {
+        return this.diagramMutationElementService.reconnectTarget(connector, newTarget, sourceNode, newTargetNode, editingContext, diagram);
+    }
+
+    /**
      * {@link DiagramMutationExposeService#removeFromExposedElements(Element, Node, IEditingContext, DiagramContext)}.
      */
     public boolean removeFromExposedElements(Element element, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramMutationExposeService.removeFromExposedElements(element, selectedNode, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramMutationCompartmentService#revealCompartment(Node, Element, DiagramContext, IEditingContext, Map)}.
+     */
+    public Node revealCompartment(Node node, Element targetElement, DiagramContext diagramContext, IEditingContext editingContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationCompartmentService.revealCompartment(node, targetElement, diagramContext, editingContext, convertedNodes);
     }
 
     /**
@@ -225,75 +308,4 @@ public class DiagramMutationAQLService {
     public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
         return this.diagramMutationElementService.viewNodeAs(element, newViewDefinition, editingContext, diagramContext, selectedNode);
     }
-
-    /**
-     * {@link DiagramMutationElementService#reconnectSource(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
-     */
-    public Connector reconnectSource(Connector connector, Feature newSource, Node newSourceNode, Node targetNode, IEditingContext editingContext,
-            Diagram diagram) {
-        return this.diagramMutationElementService.reconnectSource(connector, newSource, newSourceNode, targetNode, editingContext, diagram);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#reconnectTarget(Connector, Feature, Node, Node, IEditingContext, Diagram)}.
-     */
-    public Connector reconnectTarget(Connector connector, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
-            Diagram diagram) {
-        return this.diagramMutationElementService.reconnectTarget(connector, newTarget, sourceNode, newTargetNode, editingContext, diagram);
-    }
-
-
-    /**
-     * {@link DiagramMutationElementService#reconnectSatisfyRequirementSource(SatisfyRequirementUsage, Element)}.
-     */
-    public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
-        return this.diagramMutationElementService.reconnectSatisfyRequirementSource(sru, newSource);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#reconnectSatisfyRequirementTarget(SatisfyRequirementUsage, Element)}.
-     */
-    public SatisfyRequirementUsage reconnectSatisfyRequirementTarget(SatisfyRequirementUsage sru, Element newTarget) {
-        return this.diagramMutationElementService.reconnectSatisfyRequirementTarget(sru, newTarget);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#createConnectionUsage(Usage, Usage, Node, Node, IEditingContext, DiagramContext)}.
-     */
-    public ConnectionUsage createConnectionUsage(Usage connectionSource, Usage connectionTarget, Node sourceNode, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext) {
-        return this.diagramMutationElementService.createConnectionUsage(connectionSource, connectionTarget, sourceNode, targetNode, editingContext, diagramContext);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#createInterfaceUsage(PortUsage, PortUsage, Node, Node, IEditingContext, DiagramContext)}.
-     */
-    public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort, Node sourceNode, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext) {
-        return this.diagramMutationElementService.createInterfaceUsage(sourcePort, targetPort, sourceNode, targetNode, editingContext, diagramContext);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#createFlowUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
-     */
-    public FlowUsage createFlowUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext) {
-        return this.diagramMutationElementService.createFlowUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
-     */
-    public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext) {
-        return this.diagramMutationElementService.createBindingConnectorAsUsage(source, target, sourceNode, targetNode, editingContext, diagramContext);
-    }
-
-    /**
-     * {@link DiagramMutationElementService#createFlowUsageWithPayload(ConnectionUsage, Type)}.
-     */
-    public FlowUsage createFlowUsageWithPayload(ConnectionUsage parent, Type payloadType) {
-        return this.diagramMutationElementService.createFlowUsageWithPayload(parent, payloadType);
-    }
-
 }

@@ -34,7 +34,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.services.SDVNodeToolSectionSwitch;
@@ -57,7 +57,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return ServiceMethod.of4(ViewNodeService.class, ViewNodeService::getExposedElements, Element.class, EClass.class, List.class, IEditingContext.class, DiagramContext.class)
+        return ServiceMethod.of4(DiagramQueryAQLService.class, DiagramQueryAQLService::getExposedElements, Element.class, EClass.class, List.class, IEditingContext.class, DiagramContext.class)
                 .aqlSelf(domainType, ANCESTORS, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
     }
 

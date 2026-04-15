@@ -15,7 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.PartUsage;
@@ -47,7 +47,7 @@ public class SubjectNodeDescriptionProvider extends UsageNodeDescriptionProvider
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return ServiceMethod.of4(ViewNodeService::getExposedSubjects).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
+        return ServiceMethod.of4(DiagramQueryAQLService::getExposedSubjects).aqlSelf(domainType, org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS, IEditingContext.EDITING_CONTEXT,
                 DiagramContext.DIAGRAM_CONTEXT);
     }
 }

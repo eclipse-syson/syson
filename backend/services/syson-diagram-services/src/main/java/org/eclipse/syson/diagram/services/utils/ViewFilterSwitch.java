@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.services;
+package org.eclipse.syson.diagram.services.utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,46 +34,25 @@ import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
- * Switch allowing to know in which cases a Node should be displayed or not.
- * <p>
- * In General View, a sibling Node and a composition edge should be displayed after the creation of a new nested
- * semantic Usage/Definition.
- * </p>
- * <p>
- * In Interconnection View, the nested Nodes should not be displayed. They are handled by other NodeDescriptions, inside
- * compartments.
- * </p>
- * <p>
- * Root elements return true for this switch because the NodeDescriptions calling ViewNodeService#getExposedElements are
- * the same for root and nested Nodes.
- * </p>
+ * Switch allowing to know in which cases a node should be displayed or not.
  *
  * @author arichard
  */
 public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
 
-    /**
-     * The kind of ViewDefinition the ViewUsage associated to the object on which this Switch is applied is typed by.
-     */
     private final ViewDefinitionKind kind;
 
-    /**
-     * The list of exposed Elements associated the ViewUsage associated to the object on which this Switch is applied.
-     */
     private final List<Element> exposedElements;
 
-    /**
-     * The parent Element of the object on which this Switch is applied. It can be <code>null</code>.
-     */
     private final Element parentElement;
 
     private final MetamodelQueryElementService metamodelQueryElementService;
 
-    public ViewFilterSwitch(ViewDefinitionKind kind, List<Element> exposedElements, Element parentElement) {
+    public ViewFilterSwitch(ViewDefinitionKind kind, List<Element> exposedElements, Element parentElement, MetamodelQueryElementService metamodelQueryElementService) {
         this.kind = kind;
         this.exposedElements = Objects.requireNonNull(exposedElements);
         this.parentElement = parentElement;
-        this.metamodelQueryElementService = new MetamodelQueryElementService();
+        this.metamodelQueryElementService = Objects.requireNonNull(metamodelQueryElementService);
     }
 
     @Override
@@ -93,8 +72,6 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean caseAttributeUsage(AttributeUsage object) {
-        // For AttributeUsages we don't want tree Nodes on InterconnectionView, ActionFlow View or StateTransition
-        // View.
         return ViewDefinitionKind.isGeneralView(this.kind);
     }
 
@@ -106,26 +83,15 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
 
     @Override
     public Boolean casePackage(Package object) {
-        // For Packages we don't want nested Nodes, no matter the type of ViewDefinition.
         return !this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind);
     }
 
     @Override
     public Boolean caseReferenceUsage(ReferenceUsage object) {
-        // For ReferenceUsage we don't want nested Nodes, no matter the type of ViewDefinition.
-        // The sub ReferenceUsages are displayed in a compartment list called "references" and/or as border nodes.
         return this.metamodelQueryElementService.isSubject(object)
                 || (!this.isIndirectNestedNode(object) && !ViewDefinitionKind.isActionFlowView(this.kind) && !ViewDefinitionKind.isStateTransitionView(this.kind));
     }
 
-    /**
-     * Check if the given object is an indirect nested node of the parentElement of this class.
-     *
-     * @param object
-     *            the given object
-     * @return <code>true</code> if the given object is an indirect node of the parentElement of this class,
-     *         <code>false</code> otherwise.
-     */
     private boolean isIndirectNestedNode(EObject object) {
         boolean isDirectNestedNode = false;
         if (this.parentElement instanceof Namespace elt && !elt.getOwnedMember().contains(object)) {
@@ -145,14 +111,6 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
         return isDirectNestedNode;
     }
 
-    /**
-     * Check if the given object is a direct nested node of the parentElement of this class.
-     *
-     * @param object
-     *            the given object
-     * @return <code>true</code> if the given object is a direct nested node of the parentElement of this class,
-     *         <code>false</code> otherwise.
-     */
     private boolean isDirectNestedNode(EObject object) {
         boolean isDirectNestedNode = false;
         if (this.parentElement instanceof Namespace elt && elt.getOwnedMember().contains(object)) {
@@ -163,22 +121,10 @@ public class ViewFilterSwitch extends SysmlSwitch<Boolean> {
         return isDirectNestedNode;
     }
 
-    /**
-     * Check if a sub Package of the given Package contains the given object.
-     *
-     * @param pkg
-     *            the given Package
-     * @param object
-     *            the given object.
-     * @return <code>true</code> if a sub Package of the given Package contains the given object, <code>false</code>
-     *         otherwise.
-     */
     private boolean subPackageContainsElement(Package pkg, EObject object) {
         return pkg.getOwnedElement().stream()
                 .filter(Package.class::isInstance)
                 .map(Package.class::cast)
-                .anyMatch(subPkg -> {
-                    return EMFUtils.isAncestor(subPkg, object);
-                });
+                .anyMatch(subPkg -> EMFUtils.isAncestor(subPkg, object));
     }
 }

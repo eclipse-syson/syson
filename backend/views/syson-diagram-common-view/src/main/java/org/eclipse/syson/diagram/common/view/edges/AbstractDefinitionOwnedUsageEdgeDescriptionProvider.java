@@ -79,8 +79,10 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .targetExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
-                .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
-                        + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + "," + "cache" + ")")
+                .preconditionExpression(ServiceMethod.of2(DiagramQueryAQLService::isNotAncestorOf)
+                        .aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
+                                org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET,
+                                "cache"))
                 .build();
     }
 

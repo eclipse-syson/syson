@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
@@ -81,7 +80,7 @@ public class AnnotatingNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .style(this.createNoteNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .preconditionExpression(ServiceMethod.of2(ViewNodeService::showAnnotatingNode).aqlSelf(DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT))
+                .preconditionExpression(ServiceMethod.of2(DiagramQueryAQLService::showAnnotatingNode).aqlSelf(DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT))
                 .build();
     }
 

@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
@@ -77,7 +76,7 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         ChangeContextBuilder revealOperation;
         if (this.revealOnCreate()) {
             revealOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression(ServiceMethod.of4(ViewNodeService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                    .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
                             ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
         } else {
             revealOperation = this.viewBuilderHelper.newChangeContext().expression(AQLConstants.AQL_SELF);

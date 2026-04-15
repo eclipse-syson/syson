@@ -12,20 +12,30 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services.aql;
 
+import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.syson.diagram.services.DiagramQueryAnnotatingService;
 import org.eclipse.syson.diagram.services.DiagramQueryElementService;
+import org.eclipse.syson.diagram.services.DiagramQueryExposeService;
+import org.eclipse.syson.diagram.services.DiagramQueryGraphicalService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
+import org.eclipse.syson.diagram.services.DiagramQueryViewService;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -43,9 +53,37 @@ public class DiagramQueryAQLService {
 
     private final DiagramQueryLabelService diagramQueryLabelService;
 
-    public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService) {
+    private final DiagramQueryExposeService diagramQueryExposeService;
+
+    private final DiagramQueryGraphicalService diagramQueryGraphicalService;
+
+    private final DiagramQueryViewService diagramQueryViewService;
+
+    private final DiagramQueryAnnotatingService diagramQueryAnnotatingService;
+
+    public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService,
+            DiagramQueryExposeService diagramQueryExposeService, DiagramQueryGraphicalService diagramQueryGraphicalService, DiagramQueryViewService diagramQueryViewService,
+            DiagramQueryAnnotatingService diagramQueryAnnotatingService) {
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.diagramQueryLabelService = Objects.requireNonNull(diagramQueryLabelService);
+        this.diagramQueryExposeService = Objects.requireNonNull(diagramQueryExposeService);
+        this.diagramQueryGraphicalService = Objects.requireNonNull(diagramQueryGraphicalService);
+        this.diagramQueryViewService = Objects.requireNonNull(diagramQueryViewService);
+        this.diagramQueryAnnotatingService = Objects.requireNonNull(diagramQueryAnnotatingService);
+    }
+
+    /**
+     * {@link DiagramQueryElementService#canCreateFlowUsage(ConnectionUsage)}.
+     */
+    public boolean canCreateFlowUsage(ConnectionUsage connection) {
+        return this.diagramQueryElementService.canCreateFlowUsage(connection);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getAllReachableRequirements(EObject)}.
+     */
+    public List<Element> getAllReachableRequirements(EObject eObject) {
+        return this.diagramQueryExposeService.getAllReachableRequirements(eObject);
     }
 
     /**
@@ -67,6 +105,13 @@ public class DiagramQueryAQLService {
             compartmentItemLabel = this.diagramQueryLabelService.getCompartmentItemLabel(usage);
         }
         return compartmentItemLabel;
+    }
+
+    /**
+     * {@link DiagramQueryLabelService#getConnectionUsageLabel(ConnectionUsage)}.
+     */
+    public String getConnectionUsageLabel(ConnectionUsage element) {
+        return this.diagramQueryLabelService.getConnectionUsageLabel(element);
     }
 
     /**
@@ -108,10 +153,38 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryLabelService#getConnectionUsageLabel(ConnectionUsage)}.
+     * {@link DiagramQueryExposeService#getExposedActors(Element, EClass, List, IEditingContext, DiagramContext)}.
      */
-    public String getConnectionUsageLabel(ConnectionUsage element) {
-        return this.diagramQueryLabelService.getConnectionUsageLabel(element);
+    public List<PartUsage> getExposedActors(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryExposeService.getExposedActors(element, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedElements(Element, EClass, List, IEditingContext, DiagramContext)}.
+     */
+    public List<Element> getExposedElements(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryExposeService.getExposedElements(element, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedElements(Element, Element, EClass, List, IEditingContext, DiagramContext)}.
+     */
+    public List<Element> getExposedElements(Element element, Element parent, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryExposeService.getExposedElements(element, parent, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedStakeholders(Element, EClass, List, IEditingContext, DiagramContext)}.
+     */
+    public List<PartUsage> getExposedStakeholders(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryExposeService.getExposedStakeholders(element, domainType, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryExposeService#getExposedSubjects(Element, EClass, List, IEditingContext, DiagramContext)}.
+     */
+    public List<ReferenceUsage> getExposedSubjects(Element element, EClass domainType, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryExposeService.getExposedSubjects(element, domainType, ancestors, editingContext, diagramContext);
     }
 
     /**
@@ -139,17 +212,17 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryLabelService#getTransitionLabel(TransitionUsage)}.
-     */
-    public String getTransitionLabel(TransitionUsage transition) {
-        return this.diagramQueryLabelService.getTransitionLabel(transition);
-    }
-
-    /**
      * {@link DiagramQueryLabelService#getSatisfyLabel(SatisfyRequirementUsage)}.
      */
     public String getSatisfyLabel(SatisfyRequirementUsage satisfyRequirementUsage) {
         return this.diagramQueryLabelService.getSatisfyLabel(satisfyRequirementUsage);
+    }
+
+    /**
+     * {@link DiagramQueryLabelService#getTransitionLabel(TransitionUsage)}.
+     */
+    public String getTransitionLabel(TransitionUsage transition) {
+        return this.diagramQueryLabelService.getTransitionLabel(transition);
     }
 
     /**
@@ -168,6 +241,35 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryViewService#isHiddenByDefault(Element, String, List, IEditingContext, DiagramContext)}.
+     */
+    public boolean isHiddenByDefault(Element self, String compartmentName, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryViewService.isHiddenByDefault(self, compartmentName, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryGraphicalService#isNotAncestorOf(org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache)}.
+     */
+    public boolean isNotAncestorOf(org.eclipse.sirius.components.representations.Element parentNodeElement,
+            org.eclipse.sirius.components.representations.Element childNodeElement, DiagramRenderingCache cache) {
+        return this.diagramQueryGraphicalService.isNotAncestorOf(parentNodeElement, childNodeElement, cache);
+    }
+
+    /**
+     * {@link DiagramQueryViewService#isView(Element, String, List, IEditingContext, DiagramContext)}.
+     */
+    public boolean isView(Element element, String viewDefinition, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryViewService.isView(element, viewDefinition, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryViewService#isView(Element, String, Node, IEditingContext, DiagramContext)}.
+     */
+    public boolean isView(Element element, String viewDefinition, Node selectedNode, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryViewService.isView(element, viewDefinition, selectedNode, editingContext, diagramContext);
+    }
+
+    /**
      * {@link DiagramQueryElementService#shouldRenderConnectorEdge(Connector, org.eclipse.sirius.components.representations.Element, org.eclipse.sirius.components.representations.Element, DiagramRenderingCache, IEditingContext)}.
      */
     public boolean shouldRenderConnectorEdge(Connector connector, org.eclipse.sirius.components.representations.Element sourceNode,
@@ -176,9 +278,9 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * {@link DiagramQueryElementService#canCreateFlowUsage(ConnectionUsage)}.
+     * {@link DiagramQueryAnnotatingService#showAnnotatingNode(Element, DiagramContext, IEditingContext)}.
      */
-    public boolean canCreateFlowUsage(ConnectionUsage connection) {
-        return this.diagramQueryElementService.canCreateFlowUsage(connection);
+    public boolean showAnnotatingNode(Element element, DiagramContext diagramContext, IEditingContext editingContext) {
+        return this.diagramQueryAnnotatingService.showAnnotatingNode(element, diagramContext, editingContext);
     }
 }
