@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.application.libraries;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -24,7 +23,9 @@ import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfigur
 /**
  * Defines how to identify, retrieve and load the different files constituting a SysON library.
  *
- * Note that the resources must be in the classpath of the application.
+ * The resources must be in the classpath of the application.
+ * The {@code relativePathToDirectoryContainingLibraryFiles} must use forward slashes ("/") as separators,
+ * as it is intended to be used in the classpath (e.g., JAR files or classpath directories).
  *
  * @author flatombe
  * @see SysONDefaultLibrariesConfiguration#KERML
@@ -33,7 +34,7 @@ import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfigur
 public record SysONLibraryLoadingDefinition(
         String familyName,
         String scheme,
-        Path relativePathToDirectoryContainingLibraryFiles,
+        String relativePathToDirectoryContainingLibraryFiles,
         List<String> fileExtensions,
         Function<URI, Resource> resourceLoadingBehavior) {
 
@@ -45,9 +46,7 @@ public record SysONLibraryLoadingDefinition(
      * @param scheme
      *            the (non-{@code null}) scheme to use for the EMF {@link URI}s used to load resources of this library.
      * @param relativePathToDirectoryContainingLibraryFiles
-     *            the (non-{@code null}) relative {@link Path} to the <b>directory</b> containing the library files. If
-     *            set to {@code foo/bar} then the library files are expected to be in directory
-     *            {@code src/main/resources/foo/bar}.
+     *            the (non-{@code null}) relative path (using forward slashes "/") to the <b>directory</b> containing the library files in the classpath.
      * @param fileExtensions
      *            the (non-{@code null}) {@link List} of file extensions to look for in
      *            {@code relativePathToDirectoryContainingLibraryFiles}.
@@ -61,11 +60,15 @@ public record SysONLibraryLoadingDefinition(
         Objects.requireNonNull(fileExtensions);
         Objects.requireNonNull(resourceLoadingBehavior);
 
-        if (relativePathToDirectoryContainingLibraryFiles.isAbsolute()) {
-            throw new IllegalArgumentException("Path '%s' is absolute, but a relative one was expected.".formatted(relativePathToDirectoryContainingLibraryFiles.toString()));
+        if (relativePathToDirectoryContainingLibraryFiles.startsWith("/")) {
+            throw new IllegalArgumentException("Path '%s' is absolute, but a relative one was expected.".formatted(relativePathToDirectoryContainingLibraryFiles));
         }
-        if (relativePathToDirectoryContainingLibraryFiles.toFile().exists() && !relativePathToDirectoryContainingLibraryFiles.toFile().isDirectory()) {
-            throw new IllegalArgumentException("Path '%s' exists but is not a directory.".formatted(relativePathToDirectoryContainingLibraryFiles.toString()));
+
+        // Validate that the path does not contain Windows-style separators
+        if (relativePathToDirectoryContainingLibraryFiles.contains("\\")) {
+            throw new IllegalArgumentException(
+                    "Path '%s' contains Windows-style separators ('\\'). Only forward slashes ('/') are allowed for classpath resources.".formatted(relativePathToDirectoryContainingLibraryFiles)
+            );
         }
     }
 

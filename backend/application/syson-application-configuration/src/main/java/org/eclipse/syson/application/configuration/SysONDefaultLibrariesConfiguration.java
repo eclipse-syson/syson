@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.application.configuration;
 
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -47,14 +46,14 @@ public class SysONDefaultLibrariesConfiguration {
     public static final SysONLibraryLoadingDefinition KERML = new SysONLibraryLoadingDefinition(
             "KerML Standard Library",
             ElementUtil.KERML_LIBRARY_SCHEME,
-            Paths.get("kerml.libraries"),
+            "kerml.libraries",
             Collections.singletonList(JsonResourceFactoryImpl.EXTENSION),
             new JSONResourceFactory()::createResource);
 
     public static final SysONLibraryLoadingDefinition SYSML = new SysONLibraryLoadingDefinition(
             "SysML Standard Library",
             ElementUtil.SYSML_LIBRARY_SCHEME,
-            Paths.get("sysml.libraries"),
+            "sysml.libraries",
             Collections.singletonList(JsonResourceFactoryImpl.EXTENSION),
             new JSONResourceFactory()::createResource);
 

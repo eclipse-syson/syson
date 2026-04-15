@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,7 +132,7 @@ public class SysONLibraryLoader {
         final List<ClassPathResource> allResourcesForLibraryLoadingDefinition = new ArrayList<>();
         final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         for (final String fileExtension : definition.fileExtensions()) {
-            final String locationPattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + definition.relativePathToDirectoryContainingLibraryFiles().toString() + "/*." + fileExtension;
+            final String locationPattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + definition.relativePathToDirectoryContainingLibraryFiles() + "/*." + fileExtension;
 
             final List<org.springframework.core.io.Resource> resources = new ArrayList<>();
             try {
@@ -141,7 +141,7 @@ public class SysONLibraryLoader {
                 LOGGER.error("There was an unexpected issue while attempting to retrieve %s resources at location: %s".formatted(definition.familyName(), locationPattern), ioException);
             }
 
-            resources.stream().map(resource -> new ClassPathResource(definition.relativePathToDirectoryContainingLibraryFiles().resolve(resource.getFilename()).toString()))
+            resources.stream().map(resource -> new ClassPathResource(definition.relativePathToDirectoryContainingLibraryFiles() + "/" + resource.getFilename()))
                     .forEach(allResourcesForLibraryLoadingDefinition::add);
         }
 
