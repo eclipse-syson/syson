@@ -6,6 +6,10 @@
 
 - link:./doc/shapes/2026.05/expressions.adoc[Handle expressions in SysON]
 
+=== Architectural decision records
+
+- [ADR-003] Improve performances of integration tests
+
 === Breaking changes
 
 - SysON now requires **Java 21** or later.
