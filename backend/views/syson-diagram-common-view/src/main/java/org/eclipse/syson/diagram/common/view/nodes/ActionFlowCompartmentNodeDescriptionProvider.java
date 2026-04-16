@@ -41,7 +41,6 @@ import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -119,7 +118,6 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(cache));
 
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());

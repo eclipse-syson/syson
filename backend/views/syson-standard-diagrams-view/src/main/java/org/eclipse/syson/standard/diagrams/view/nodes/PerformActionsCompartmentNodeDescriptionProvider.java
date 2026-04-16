@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -75,7 +74,6 @@ public class PerformActionsCompartmentNodeDescriptionProvider extends AbstractCo
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
         // in perform actions compartment only perform action tools are allowed
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(cache));
 
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
