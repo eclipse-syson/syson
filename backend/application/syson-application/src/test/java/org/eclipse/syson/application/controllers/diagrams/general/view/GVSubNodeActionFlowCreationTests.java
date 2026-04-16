@@ -17,8 +17,6 @@ import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadCo
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +28,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -70,6 +66,7 @@ import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -607,6 +604,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN an action, WHEN creating a perform action referencing another action, THEN the perform action is created and reference the other action")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createReferencingPerformActionUsageInActionUsage() {
@@ -622,12 +620,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID;
-        String creationToolName = "New Perform";
+        String creationToolName = "New Perform action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
-        List<ToolVariable> variables = new ArrayList<>();
-        variables.add(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName, variables);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID);
 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
@@ -655,6 +651,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN an action, WHEN creating a perform action without selecting another action, THEN the perform action is created and does not reference anything")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
     public void createPerformActionUsageInActionUsage() {
@@ -673,7 +670,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         String creationToolName = "New Perform action";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             int createdNodesExpectedCount = 13;

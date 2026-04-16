@@ -49,7 +49,6 @@ import org.eclipse.syson.diagram.common.view.tools.PartUsageFlowConnectionNodeTo
 import org.eclipse.syson.diagram.common.view.tools.PartUsageInterfaceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SatisfyRequirementNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
@@ -164,7 +163,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
         if (!(object instanceof StateDefinition)) {
             // StateDefinition has its own "action" creation tools
@@ -215,7 +213,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ActionFlowCompartmentNodeToolProvider().create(this.cache));
 
@@ -521,7 +518,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ActionFlowCompartmentNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getPartDefinition(), this.descriptionNameGenerator).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
@@ -582,7 +578,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ActionFlowCompartmentNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.descriptionNameGenerator).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
@@ -650,7 +645,6 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ActionFlowCompartmentNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache));
-        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
         this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem(), sections, this.cache);
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
