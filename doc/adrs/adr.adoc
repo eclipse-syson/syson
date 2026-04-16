@@ -1,0 +1,97 @@
+:author: lists the author of this document
+:date: YYYY-MM-DD
+:status: {proposed | rejected | accepted | deprecated | superseded by}
+:consulted: lists everyone whose opinions are sought and with whom there is a two-way communication
+:informed: lists everyone who is kept up-to-date on progress in one-way communication
+:deciders: lists everyone involved in the decision
+:pitch: link to the related pitch (if any)
+:issue: link to the related issue
+
+= ADR-XXX - Title of The Architectural Decision Record
+
+== Context and Problem Statement
+
+Describes the context and problem statement in a few sentences.
+One may want to articulate the problem in form of a question or provide an illustrative story that invites to a conversation.
+Links to collaboration boards or issue management systems can go here too.
+
+
+== Decision Drivers
+
+Desired qualities, forces, faced concerns of potential solutions are identified here:
+
+- First criteria used to evaluate a potential solution
+- Second criteria used to evaluate a potential solution
+- Third criteria used to evaluate a potential solution
+
+
+== Considered Options
+
+This section lists the alternatives (or choices) investigated.
+The selected options should be listed first in the end here.
+
+=== First Option
+
+Description of the first option
+
+
+=== Second Option
+
+Description of the second option
+
+
+=== Third Option
+
+Description of the third option
+
+
+== Decision Outcome
+
+In the context of <use case>, facing <concerns> we decided for <option> to achieve <quality>, accepting <downside>.
+
+
+Some examples of justifications are: 
+
+- It is the only option that meets a certain decision driver
+- It resolves a particular force
+- It comes out best when comparing options
+- We applied this design pattern several times with success in the past and we have similar requirements here
+- We performed a proof of concept and the results were convincing
+- We have the relevant skills for this specific approach
+
+
+== Consequences
+
+=== Advantages
+
+Advantages of the selected option.
+
+
+=== Drawbacks
+
+Drawbacks of the selected option such as suspected API breaks, code migration required, database migration required, code to deprecate, new patterns to use, change in dependencies, performance impact, increase in continuous integration time, etc.
+
+
+== More Information
+
+This section should contain additional details on the decision made such as:
+
+=== Implementation
+
+- How this decision should be realized?
+- Which steps should be taken for the implementation?
+  - Should we start frontend first or backend first?
+  - Do we need a temporary capability to disable the feature while it is being developed?
+  - Do we need to perform some refactoring to prepare this work?
+
+
+=== Decision Details
+
+- Additional evidence for the decision outcome (possibly including assumptions made).
+- Details of the team agreement on the decision (including the confidence level).
+- When it should be re-visited
+
+
+=== References
+
+- Links to other decisions and resources might appear in this section as well.

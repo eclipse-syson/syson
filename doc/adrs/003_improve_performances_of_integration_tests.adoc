@@ -1,0 +1,118 @@
+:author: Gwendal Daniel
+:date: 2026-04-16
+:status: accepted
+:consulted: Axel Richard
+:informed: Axel Richard, Pierre-Charles David
+:deciders: Axel Richard
+:pitch: 
+:issue: https://github.com/eclipse-syson/syson/issues/2139
+
+= ADR-003 - Improve performances of integration tests
+
+== Context and Problem Statement
+
+SysON's build takes a lot of time to complete, especially on the CI.
+This creates uncomfortable situations for contributors, reviewers, and when releasing new versions of the application.
+
+Most of the execution time is spent building the backend, especially in running the integration tests.
+We identified a bottleneck in the way standard libraries are loaded and copied in `EditingContext` in each tests. 
+These copy operations, in the context of the CI, eat up to 10 minutes of the build time (~30% of the backend build time).
+
+We want to reduce the time needed to run the integration tests, focusing first on this identified bottleneck.
+
+== Decision Drivers
+
+The existing implementation ensures that every `EditingContext` is loaded from scratch in each test.
+This limits the dependencies between tests by ensuring a corrupted `EditingContext` don't get reused in a later test.
+Altering this behavior one way or another, will add uncertainty regarding the context in which each test is executed.
+
+The first decision driver should be to agree with SysON contributors that the added uncertainty is fine and that we can manage its consequences (e.g. rewrite some tests, invest some time fixing the solution if an edge case is detected, etc).
+
+The selected solution should be as little invasive as possible: ideally, existing tests shouldn't be modified to benefit from it.
+
+Since the solution may create error-prone testing contexts (like shared resources), or involuntary dependencies between tests, it should be possible to de-activate it on a single test method, a test class, or the entire testing suite and run the tests as before.
+
+The solution should report testing context integrity issues it detects (e.g. shared resources that aren't available anymore).
+
+== Considered Options
+
+=== Cache standard libraries
+
+The `SysMLEditingContextProcessor` takes care of copying the standard libraries into a loading `EditingContext`.
+This happens in each test, since `EditingContext` are discarded as part of the `GivenInitialServerState#initialize` method (which ensures `EditingContext` are not shared between tests).
+
+We will replace this behavior in the tests to move the standard libraries from a shared cache instead of copying them.
+The first time an `EditingContext` will be loaded, its standard libraries will be copied as usual, and these libraries will be cached, allowing to retrieve them quickly the next time the `EditingContext` is loaded.
+
+We won't change the way `EditingContextProcessors` are disposed between tests, but we'll ensure that the standard libraries resources are removed from the `EditingContext` being discarded and put back into the cache to ensure they are reusable in latter tests (otherwise they'll be unloaded by `EditingContext#dispose`).
+
+We will provide methods and annotations to invalidate the cache, allowing to disable standard library caching on specific test methods and test classes.
+The caching mechanism will be activated only if the `org.eclipse.syson.test.cacheStandardLibraries` property is provided, otherwise, the default mechanism will be used and standard libraries will be copied every time they are needed.
+
+
+=== Use undo/redo to reset the editing context
+
+This solution relies on the undo capabilities provided by Sirius Web to reset the editing context into its initial state once a test has been completed.
+
+A new `IEditingContextDispatcher` will be provided to record inputs used by the tests.
+These inputs will be iterated backward once the test is completed to undo them in the right order.
+
+We will override `IGivenInitialServerState` to prevent the disposal of editing contexts, since they are now reset to their initial state.
+
+We will provide annotations to de-activate this behavior, and force the disposal of the `EditingContext` if needed.
+
+== Decision Outcome
+
+In the context of improving the execution time of integration tests, while keeping a relatively high confidence in the contexts in which tests are executed, we decided for the caching solution.
+
+The caching solution has the main advantage of being an in-house solution, which can be tweaked and adjusted as needed.
+For example, it can be configured to log inconsistent cache contents, informing the developer that something is probably wrong with a test.
+
+The undo solution relies on Sirius Web's ability to actually undo operations, and we don't have much control on this at the SysON level. 
+Furthermore, there is currently no way to know if an undo operation was successfully performed or not.
+This solution also completely change the testing approach, by reusing the same `EditingContext` instance over and over, which seems too much to keep a good enough confidence level in the approach.
+
+
+== Consequences
+
+=== Advantages
+
+Tests that operate on the same `EditingContext` will run faster.
+
+
+=== Drawbacks
+
+The caching approach strongly relies on the assumption that only one client loads a given `EditingContext` at a time.
+Since standard libraries are moved and not copied, loading the same `EditingContext` two times will move the standard library resources from the first `EditingContext` to the second.
+This will typically lead to corrupted cached resources, which don't contain any element.
+
+Note that this issue appears when _loading_ the same `EditingContext` two times.
+It doesn't happen if an `EditingContext` is used multiple times in a test, for example by calling two runners, and opening two subscriptions.
+In these cases, the same `EditingContext` instance is reused, and the caching mechanism works as expected. 
+
+From a contributor perspective, this limitation implies that `IEditingContextSearchService#findById` should never be called in tests.
+This method loads a new `EditingContext` instance, which will lead to caching issues.
+Instead, contributors can rely on `ExecuteEditingContextFunctionInput` and `IExecuteEditingContextFunctionRunner` to execute code inside an `EditingContext`.
+
+[NOTE]
+====
+Using `IEditingContextSearchService#findById` in integration tests is considered a bad practice in Sirius Web.
+====
+
+The initial implementation of this solution will require to change some calls to `IEditingContextSearchService#findById` to ensure the caches work properly.
+
+
+== More Information
+
+
+=== Implementation
+
+`AbstractIntegrationTests` will define an `@AfterEach` method that ensures standard libraries are removed from `EditingContext` instances before being disposed.
+Contributors should ensure their test calls `super.afterEach()` if they need to implement their own `@AfterEach` method.
+
+The `InvalidateStandardLibrariesCache` annotation can be used on test methods or test classes to invalidate standard libraries cache and ensure an `EditingContext` is loaded from scratch.
+Note that doing so will invalidate the cache for all the `EditingContexts`.
+
+The way standard libraries are removed from the `EditingContext` before its disposal could be implemented in an external service, as well as a dedicated `EditingContext` subclass, which would take care of filtering which resources to store in the cache before being disposed.
+While this solution would probably be cleaner (it wouldn't require an `@AfterEach` cleanup method), it would also add some distance between the code used to run the tests and the code used to run the application (different `EditingContext` implementation, most likely different `EditingContextSearchService` implementation, and maybe other related services).
+As a result, the external service approach will be used for an initial implementation.
