@@ -60,6 +60,7 @@ import reactor.test.StepVerifier;
  * @author pcdavid
  */
 @Transactional
+@GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVStateDoActionWithReferencedActionTests extends AbstractIntegrationTests {
 
@@ -84,8 +85,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
                 GeneralViewEmptyTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        return flux;
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
@@ -94,7 +94,6 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
     }
 
     @DisplayName("GIVEN a General View with a state and action, WHEN invoking do action with referenced action, THEN the PerformActionUsage is visible in the state")
-    @GivenSysONServer({ GeneralViewEmptyTestProjectData.SCRIPT_PATH })
     @Test
     public void checkPerformActionRevealInState() {
         var flux = this.givenSubscriptionToDiagram();
@@ -107,9 +106,9 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
         assertThat(newStateToolId).as("The tool 'New State' should exist on the diagram").isNotNull();
         var newActionToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("New Action");
         assertThat(newActionToolId).as("The tool 'New Action' should exist on the diagram").isNotNull();
-        var newDoActionWithReferencedActionToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage()),
-                "New Do Action with referenced Action");
-        assertThat(newDoActionWithReferencedActionToolId).as("The tool 'New Do Action with referenced Action' should exist on State").isNotNull();
+        var newDoActionToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage()),
+                "New Do Action");
+        assertThat(newDoActionToolId).as("The tool 'New Do Action' should exist on State").isNotNull();
 
         var diagramReference = new AtomicReference<Diagram>(null);
         var stateNodeId = new AtomicReference<String>(null);
@@ -117,9 +116,7 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
 
         Consumer<DiagramRefreshedEventPayload> initialDiagramContentConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
-                .ifPresentOrElse(diagram -> {
-                    diagramReference.set(diagram);
-                }, () -> fail("Missing diagram"));
+                .ifPresentOrElse(diagramReference::set, () -> fail("Missing diagram"));
 
         Runnable createState = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference, newStateToolId);
 
@@ -128,9 +125,9 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes()).hasSize(1);
                     diagram.getNodes().stream()
-                            .filter(node -> node.getTargetObjectLabel().equals("state1"))
+                            .filter(node -> node.getDescriptionId().equals(diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage()))))
                             .findFirst()
-                            .ifPresentOrElse(node -> stateNodeId.set(node.getId()), () -> fail("Node 'state1' not found"));
+                            .ifPresentOrElse(node -> stateNodeId.set(node.getId()), () -> fail("Node state not found"));
                 }, () -> fail("Missing diagram"));
 
         Runnable createAction = () -> this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference, newActionToolId);
@@ -140,13 +137,13 @@ public class GVStateDoActionWithReferencedActionTests extends AbstractIntegratio
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes()).hasSize(2);
                     diagram.getNodes().stream()
-                            .filter(node -> node.getTargetObjectLabel().equals("action1"))
+                            .filter(node -> node.getDescriptionId().equals(diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))))
                             .findFirst()
-                            .ifPresentOrElse(node -> actionId.set(node.getTargetObjectId()), () -> fail("Node 'action1' not found"));
+                            .ifPresentOrElse(node -> actionId.set(node.getTargetObjectId()), () -> fail("Node action not found"));
                 }, () -> fail("Missing diagram"));
 
         Runnable createDoActionWithReference = () -> {
-            this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference.get().getId(), stateNodeId.get(), newDoActionWithReferencedActionToolId,
+            this.toolTester.invokeTool(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, diagramReference.get().getId(), stateNodeId.get(), newDoActionToolId,
                     List.of(new ToolVariable("selectedObject", actionId.get(), ToolVariableType.OBJECT_ID)));
         };
 
