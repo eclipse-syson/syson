@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -27,8 +26,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -66,7 +63,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.validation.constraints.NotNull;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -200,7 +196,6 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @MethodSource("stateSubactionsParameters")
     public void createStateUsageSubactionNode(StateSubactionKind kind) {
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
-
         this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, toolName);
     }
 
@@ -208,10 +203,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @ParameterizedTest
     @MethodSource("stateSubactionsParameters")
     public void createStateUsageSubactionWithReferencedActionNode(StateSubactionKind kind) {
-        String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action with referenced Action";
-        var params = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
-
-        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, toolName, params);
+        String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
+        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, toolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID);
     }
 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
@@ -219,7 +212,6 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @MethodSource("stateSubactionsParameters")
     public void createStateDefinitionSubactionNode(StateSubactionKind kind) {
         String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
-
         this.createStateSubactionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID, toolName);
     }
 
@@ -227,10 +219,8 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
     @ParameterizedTest
     @MethodSource("stateSubactionsParameters")
     public void createStateDefinitionSubactionWithReferencedActionNode(StateSubactionKind kind) {
-        String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action with referenced Action";
-        var params = List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID, ToolVariableType.OBJECT_ID));
-
-        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID, toolName, params);
+        String toolName = "New " + StringUtils.capitalize(kind.getName()) + " Action";
+        this.createStateSubactionWithReferencedActionNode(kind, SysmlPackage.eINSTANCE.getStateDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID, toolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_USAGE_ID);
     }
 
     private void createStateSubactionNode(StateSubactionKind kind, EClass parentEClass, String targetObjectId, String toolName) {
@@ -243,7 +233,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName);
 
         String[] subActionId = new String[1];
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
@@ -276,7 +266,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 .verify(Duration.ofSeconds(10));
     }
 
-    private void createStateSubactionWithReferencedActionNode(StateSubactionKind kind, EClass parentEClass, String targetObjectId, String toolName, List<@NotNull ToolVariable> params) {
+    private void createStateSubactionWithReferencedActionNode(StateSubactionKind kind, EClass parentEClass, String targetObjectId, String toolName, String selectedObject) {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -286,7 +276,7 @@ public class GVSubNodeStateTransitionCreationTests extends AbstractIntegrationTe
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, params);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, selectedObject);
 
         String[] subActionId = new String[1];
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
