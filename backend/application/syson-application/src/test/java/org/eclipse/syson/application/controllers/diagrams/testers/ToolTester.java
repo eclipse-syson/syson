@@ -77,11 +77,15 @@ public class ToolTester {
     }
 
     public void invokeTool(String editingContextId, String diagramId, String diagramElementId, String toolId, List<ToolVariable> variables) {
+        this.invokeTool(editingContextId, diagramId, List.of(diagramElementId), toolId, variables);
+    }
+
+    public void invokeTool(String editingContextId, String diagramId, List<String> diagramElementIds, String toolId, List<ToolVariable> variables) {
         var input = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
                 editingContextId,
                 diagramId,
-                List.of(diagramElementId),
+                diagramElementIds,
                 toolId,
                 0,
                 0,

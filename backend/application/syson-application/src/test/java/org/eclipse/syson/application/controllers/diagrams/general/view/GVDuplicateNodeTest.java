@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -38,6 +39,7 @@ import org.eclipse.syson.application.controller.editingcontext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -48,7 +50,9 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,6 +73,22 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVDuplicateNodeTest extends AbstractIntegrationTests {
+
+    private static final String A1_1_COPY = "a1_1-copy";
+
+    private static final String A1_3_COPY = "a1_3-copy";
+
+    private static final String ACTION_COPY = "action-copy";
+
+    private static final String PART_COPY = "part-copy";
+
+    private static final String PART_DEFINITION_COPY = "PartDefinition-copy";
+
+    private static final String PART_1_COPY = "part1-copy";
+
+    private static final String REQUIREMENT_COPY = "requirement-copy";
+
+    private static final String STATE_DEFINITION_COPY = "StateDefinition-copy";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -100,6 +120,11 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
+    }
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram(String editingContextId, String diagramId) {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), editingContextId, diagramId);
         return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
@@ -192,7 +217,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             Optional<Node> rootNewNode = newDiagram.getNodes().stream()
-                    .filter(n -> this.containsLabel(n, "a1_3-copy"))
+                    .filter(n -> this.containsLabel(n, A1_3_COPY))
                     .findFirst();
 
             assertThat(rootNewNode).isPresent();
@@ -200,7 +225,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             assertThat(rootNewNode.get()).as("Newly created root node should be hidden")
                     .matches(node -> node.getState() == ViewModifier.Hidden);
 
-            assertThat(this.diagramComparator.newNodes(initialDiagram, newDiagram).stream().filter(node -> this.containsLabel(node, "a1_3-copy")).toList())
+            assertThat(this.diagramComparator.newNodes(initialDiagram, newDiagram).stream().filter(node -> this.containsLabel(node, A1_3_COPY)).toList())
                     .as("Contains 3 nodes named a1_3-copy (A root node, A borderedNode and item compartment")
                     .hasSize(3)
                     .contains(a13RootNode)
@@ -219,7 +244,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         Runnable semanticCheck = this.semanticCheckerService.checkElement(ActionUsage.class, () -> GeneralViewItemAndAttributeProjectData.SemanticIds.A1_ID, actionUsage -> {
             assertThat(actionUsage.getOwnedElement().stream()
                     .filter(ItemUsage.class::isInstance)
-                    .filter(e -> "a1_3-copy".equals(e.getName()))
+                    .filter(e -> A1_3_COPY.equals(e.getName()))
                     .toList()
             ).hasSize(1);
         });
@@ -258,7 +283,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             Optional<Node> rootNewNode = newDiagram.getNodes().stream()
-                    .filter(n -> this.containsLabel(n, "a1_1-copy"))
+                    .filter(n -> this.containsLabel(n, A1_1_COPY))
                     .findFirst();
 
             /*
@@ -270,7 +295,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                     .matches(node -> node.getState() == ViewModifier.Hidden);
 
 
-            assertThat(this.diagramComparator.newNodes(initialDiagram, newDiagram).stream().filter(node -> this.containsLabel(node, "a1_1-copy")).toList())
+            assertThat(this.diagramComparator.newNodes(initialDiagram, newDiagram).stream().filter(node -> this.containsLabel(node, A1_1_COPY)).toList())
                     .as("Contains 3 nodes named a1_1-copy (A root node, A borderedNode and item compartment")
                     .hasSize(3)
                     .contains(a21RootNode)
@@ -289,7 +314,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         Runnable semanticCheck = this.semanticCheckerService.checkElement(ActionUsage.class, () -> GeneralViewItemAndAttributeProjectData.SemanticIds.A1_ID, actionUsage -> {
             assertThat(actionUsage.getOwnedElement().stream()
                     .filter(ItemUsage.class::isInstance)
-                    .filter(e -> "a1_1-copy".equals(e.getName()))
+                    .filter(e -> A1_1_COPY.equals(e.getName()))
                     .toList()
             ).hasSize(1);
         });
@@ -301,6 +326,170 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a General View diagram, WHEN duplicating two top container nodes, THEN both semantic elements and representations are duplicated")
+    @Test
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    public void checkMultiSelectionContainerNodeDuplication() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var topNodesSemanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Element");
+        Runnable duplicateToolRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram.get().getId(),
+                List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID),
+                duplicateToolId,
+                List.of()
+        );
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+
+            this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, PART_COPY);
+            this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, ACTION_COPY);
+
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(20)
+                    .hasNewBorderNodeCount(0)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Runnable semanticCheckPart = topNodesSemanticCheckerService.checkElement(Package.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID, rootPackage -> {
+            assertThat(rootPackage.getOwnedElement().stream()
+                    .filter(PartUsage.class::isInstance)
+                    .filter(e -> PART_COPY.equals(e.getName()))
+                    .toList()
+            ).hasSize(1);
+        });
+
+        Runnable semanticCheckAction = topNodesSemanticCheckerService.checkElement(Package.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID, rootPackage -> {
+            assertThat(rootPackage.getOwnedElement().stream()
+                    .filter(ActionUsage.class::isInstance)
+                    .filter(e -> ACTION_COPY.equals(e.getName()))
+                    .toList()
+            ).hasSize(1);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(duplicateToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheckPart)
+                .then(semanticCheckAction)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a General View diagram, WHEN a part is created in a Package and duplicated with a StateDefinition, THEN both semantic elements and representations are duplicated")
+    @Test
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    public void checkMultiSelectionDifferentContainerNodeDuplication() {
+        var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
+        var topNodesSemanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+        var nestedPackageSemanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_ID);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> packageNodeId = new AtomicReference<>();
+        AtomicReference<String> stateDefinitionNodeId = new AtomicReference<>();
+        AtomicReference<String> createdPartNodeId = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var newPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part");
+        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Element");
+
+        Runnable createPartToolRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram.get().getId(),
+                packageNodeId.get(),
+                newPartToolId,
+                List.of()
+        );
+
+        Consumer<Object> diagramCheckAfterCreate = assertRefreshedDiagramThat(newDiagram -> {
+            diagram.set(newDiagram);
+
+            var packageNode = new DiagramNavigator(newDiagram).nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_ID).getNode();
+            assertThat(packageNode.getChildNodes()).hasSize(1);
+
+            var createdPartNode = packageNode.getChildNodes().get(0);
+            createdPartNodeId.set(createdPartNode.getId());
+
+            assertThat(this.containsLabel(createdPartNode, LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "part1")).isTrue();
+        });
+
+        Runnable duplicateToolRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                diagram.get().getId(),
+                List.of(createdPartNodeId.get(), stateDefinitionNodeId.get()),
+                duplicateToolId,
+                List.of()
+        );
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+
+            this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, PART_1_COPY);
+            this.assertDuplicatedContainerNodeRepresentation(initialDiagram, newDiagram, STATE_DEFINITION_COPY);
+
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(19)
+                    .hasNewBorderNodeCount(0)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+
+        Runnable semanticCheckCreatedPartCopy = nestedPackageSemanticCheckerService.checkElement(Package.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_ID, nestedPackage -> {
+            assertThat(nestedPackage.getOwnedElement().stream()
+                    .filter(PartUsage.class::isInstance)
+                    .filter(e -> PART_1_COPY.equals(e.getName()))
+                    .toList()
+            ).hasSize(1);
+        });
+
+        Runnable semanticCheckStateDefinitionCopy = topNodesSemanticCheckerService.checkElement(Package.class, () -> GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID, rootPackage -> {
+            assertThat(rootPackage.getOwnedElement().stream()
+                    .filter(StateDefinition.class::isInstance)
+                    .filter(e -> STATE_DEFINITION_COPY.equals(e.getName()))
+                    .toList()
+            ).hasSize(1);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(diag -> {
+                    initialDiagramContentConsumer.accept(diag);
+                    var initialDiagram = (Diagram) ((DiagramRefreshedEventPayload) diag).diagram();
+                    packageNodeId.set(new DiagramNavigator(initialDiagram).nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_ID).getNode().getId());
+                    stateDefinitionNodeId.set(new DiagramNavigator(initialDiagram).nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID).getNode().getId());
+                })
+                .then(createPartToolRunnable)
+                .consumeNextWith(diagramCheckAfterCreate)
+                .then(duplicateToolRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheckCreatedPartCopy)
+                .then(semanticCheckStateDefinitionCopy)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    private void assertDuplicatedContainerNodeRepresentation(Diagram initialDiagram, Diagram newDiagram, String label) {
+        assertThat(this.diagramComparator.newNodes(initialDiagram, newDiagram).stream().filter(node -> this.containsLabel(node, label)).toList())
+                .as("Contains graphical container node for %s".formatted(label))
+                .isNotEmpty()
+                .allMatch(node -> !node.isBorderNode());
     }
 
     private boolean containsLabel(Node node, String label) {

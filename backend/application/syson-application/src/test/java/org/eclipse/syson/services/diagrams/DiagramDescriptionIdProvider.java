@@ -56,6 +56,17 @@ public class DiagramDescriptionIdProvider {
         return creationToolId.get();
     }
 
+    public String getGroupNodeToolId(String toolName) {
+        Optional<String> creationToolId = Optional.ofNullable(this.diagramDescription.getGroupPalette())
+                .stream()
+                .flatMap(groupPalette -> EMFUtils.allContainedObjectOfType(groupPalette, NodeTool.class))
+                .filter(nodeTool -> nodeTool.getName().equals(toolName))
+                .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
+                .findFirst();
+        assertThat(creationToolId).as(this.shouldExist("Group tool " + toolName)).isPresent();
+        return creationToolId.get();
+    }
+
     public String getNodeToolId(String nodeDescriptionName, String toolName) {
         Optional<String> nodeToolId =  EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class)
                 .filter(nodeDescription -> nodeDescription.getName().equals(nodeDescriptionName))

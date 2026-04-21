@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.services;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -56,15 +58,18 @@ public class DiagramMutationDiagramService {
 
     private final ModelMutationElementService modelMutationElementService;
 
+    private final IIdentityService identityService;
+
     public DiagramMutationDiagramService(IDiagramCreationService diagramCreationService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
-            DiagramMutationExposeService diagramMutationExposeService, ModelMutationElementService modelMutationElementService) {
+            DiagramMutationExposeService diagramMutationExposeService, ModelMutationElementService modelMutationElementService, IIdentityService identityService) {
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.modelMutationElementService = Objects.requireNonNull(modelMutationElementService);
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     /**
@@ -105,21 +110,61 @@ public class DiagramMutationDiagramService {
     }
 
     /**
-     * Duplicates the given element (with its owning Relationship) and exposes the duplicated element. Note that this method will do nothing on {@link org.eclipse.syson.sysml.Relationship}.
+     * Duplicates the given elements (with their owning Relationship) and exposes the duplicated elements. Note that
+     * this method will do nothing on {@link org.eclipse.syson.sysml.Relationship}.
      *
-     * @param element
-     *         the element to duplicate
+     * @param elements
+     *         the elements to duplicate
      * @param editingContext
      *         the {@link IEditingContext}
      * @param diagramContext
      *         the {@link DiagramContext}
-     * @param node
-     *         the node that will be duplicated
+     * @param nodes
+     *         the nodes that will be duplicated
      * @param convertedNodes
      *         the map of the converted nodes for this diagram
-     * @return the duplicated element if any
+     * @return the duplicated elements if any
      */
-    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    public List<Element> duplicateElementAndExpose(List<Element> elements, IEditingContext editingContext, DiagramContext diagramContext, List<Node> nodes,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return IntStream.range(0, Math.min(elements.size(), nodes.size()))
+                .mapToObj(index -> this.duplicateElementAndExpose(elements.get(index), editingContext, diagramContext, nodes.get(index), convertedNodes))
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    /**
+     * AQL-facing entry point for duplication.
+     * <p>
+     * Sirius invokes this service once per selected semantic receiver, while still providing the full selection in
+     * {@code nodes}. This method therefore resolves the node corresponding to the current semantic receiver and
+     * delegates to the list-based implementation with one semantic/node pair.
+     *
+     * @param element
+     *         the current semantic receiver
+     * @param editingContext
+     *         the {@link IEditingContext}
+     * @param diagramContext
+     *         the {@link DiagramContext}
+     * @param nodes
+     *         the selected nodes
+     * @param convertedNodes
+     *         the map of the converted nodes for this diagram
+     * @return the current semantic receiver
+     */
+    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, List<Node> nodes,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (element != null && nodes != null) {
+            nodes.stream()
+                    .filter(node -> Objects.equals(this.identityService.getId(element), node.getTargetObjectId()))
+                    .findFirst()
+                    .ifPresent(node -> this.duplicateElementAndExpose(List.of(element), editingContext, diagramContext, List.of(node), convertedNodes));
+        }
+        return element;
+    }
+
+    private Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         OwningMembership owningMembership = element.getOwningMembership();
         Element result = null;
         if (owningMembership != null) {
@@ -134,30 +179,33 @@ public class DiagramMutationDiagramService {
             }
         }
 
-        if (result != null) {
-            Node creationRequestSource = null;
-            // The expose API requires to pass the node used for a basic creation request.
-            // For a duplication, this node would either be the parent (bordered node) , grandparent (for list item) or the diagram
-            Object parent = new NodeFinder(diagramContext.diagram()).getParent(node);
-            if (parent instanceof Node parentNode) {
-                // In case the parent node is compartment go up once again
-                boolean isParentCompartment = convertedNodes.entrySet().stream()
-                        .filter(entry -> entry.getValue().getId().equals(parentNode.getDescriptionId()))
-                        .map(Map.Entry::getKey)
-                        .map(nodeDescription -> nodeDescription.getName().contains("Compartment"))
-                        .findFirst()
-                        .orElse(false);
-                if (isParentCompartment) {
-                    Object grandParent = new NodeFinder(diagramContext.diagram()).getParent(parentNode);
-                    if (grandParent instanceof Node grandParentNode) {
-                        creationRequestSource = grandParentNode;
-                    }
-                } else {
-                    creationRequestSource = parentNode;
-                }
-            }
-            this.diagramMutationExposeService.expose(result, editingContext, diagramContext, creationRequestSource, convertedNodes);
+        if (result != null && node != null) {
+            this.diagramMutationExposeService.expose(result, editingContext, diagramContext, this.getCreationRequestSource(diagramContext, node, convertedNodes), convertedNodes);
         }
         return result;
+    }
+
+    private Node getCreationRequestSource(DiagramContext diagramContext, Node node, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Node creationRequestSource = null;
+        // The expose API requires to pass the node used for a basic creation request.
+        // For a duplication, this node would either be the parent (bordered node), grandparent (for list item) or the diagram.
+        Object parent = new NodeFinder(diagramContext.diagram()).getParent(node);
+        if (parent instanceof Node parentNode) {
+            boolean isParentCompartment = convertedNodes.entrySet().stream()
+                    .filter(entry -> entry.getValue().getId().equals(parentNode.getDescriptionId()))
+                    .map(Map.Entry::getKey)
+                    .map(nodeDescription -> nodeDescription.getName().contains("Compartment"))
+                    .findFirst()
+                    .orElse(false);
+            if (isParentCompartment) {
+                Object grandParent = new NodeFinder(diagramContext.diagram()).getParent(parentNode);
+                if (grandParent instanceof Node grandParentNode) {
+                    creationRequestSource = grandParentNode;
+                }
+            } else {
+                creationRequestSource = parentNode;
+            }
+        }
+        return creationRequestSource;
     }
 }
