@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.services.aql;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -214,11 +215,11 @@ public class DiagramMutationAQLService {
     }
 
     /**
-     * {@link DiagramMutationDiagramService#duplicateElementAndExpose(Element, IEditingContext, DiagramContext, Node, Map)}.
+     * {@link DiagramMutationDiagramService#duplicateElementAndExpose(Element, IEditingContext, DiagramContext, List, Map)}.
      */
-    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node node,
+    public Element duplicateElementAndExpose(Element element, IEditingContext editingContext, DiagramContext diagramContext, List<Node> nodes,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return this.diagramMutationDiagramService.duplicateElementAndExpose(element, editingContext, diagramContext, node, convertedNodes);
+        return this.diagramMutationDiagramService.duplicateElementAndExpose(element, editingContext, diagramContext, nodes, convertedNodes);
     }
 
     /**

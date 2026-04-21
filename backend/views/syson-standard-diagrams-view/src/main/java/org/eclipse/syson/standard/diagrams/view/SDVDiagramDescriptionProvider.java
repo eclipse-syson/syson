@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -379,8 +380,25 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
+        diagramDescription.setGroupPalette(this.createGroupPalette());
 
         return diagramDescription;
+    }
+
+    private GroupPalette createGroupPalette() {
+        return this.diagramBuilderHelper.newGroupPalette()
+                .quickAccessTools(this.diagramBuilderHelper.newNodeTool()
+                        .name("Duplicate Element")
+                        .iconURLsExpression("/images/content_copy.svg")
+                        .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
+                        .body(this.viewBuilderHelper.newChangeContext()
+                                .expression(ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, org.eclipse.syson.sysml.Element.class,
+                                                IEditingContext.class, DiagramContext.class, List.class, Map.class)
+                                        .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
+                                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                                .build())
+                        .build())
+                .build();
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {

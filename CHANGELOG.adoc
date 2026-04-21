@@ -77,6 +77,7 @@ Stakeholders are by default represented with a dedicated graphical node connecte
 Standard libraries are now cached between tests to speed up editing context creation.
 This feature can be de-activated by setting the property `org.eclipse.syson.test.cacheStandardLibraries` to `false` in `application.properties`.
 The cache holding standard libraries can be invalidated for a specific test method or test class by using the `@InvalidateStandardLibrariesCache` annotation, ensuring the editing contexts are loaded from scratch.
+- https://github.com/eclipse-syson/syson/issues/2154[#2154] [diagrams] Improve the _Duplicate Element_ diagram tool to support multi-selection in standard diagrams.
 
 === New features
 

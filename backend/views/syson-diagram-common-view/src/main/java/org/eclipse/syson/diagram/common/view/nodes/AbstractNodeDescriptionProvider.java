@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
@@ -102,10 +103,29 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .preconditionExpression(AQLConstants.AQL + "self.oclIsKindOf(sysml::Element) and not self.oclIsKindOf(sysml::Relationship)")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
-                                ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
+                                ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
+                                                DiagramContext.class, List.class, Map.class)
                                         .aqlSelf(IEditingContext.EDITING_CONTEXT,
                                                 DiagramContext.DIAGRAM_CONTEXT,
-                                                Node.SELECTED_NODE,
+                                                "Sequence{selectedNode}",
+                                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
+                .build();
+    }
+
+    protected NodeTool getDuplicateElementsAndNodesTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Duplicate Element")
+                .iconURLsExpression("/images/content_copy.svg")
+                .preconditionExpression(AQLConstants.AQL
+                        + "selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(
+                                ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, Element.class, IEditingContext.class,
+                                                DiagramContext.class, List.class, Map.class)
+                                        .aqlSelf(IEditingContext.EDITING_CONTEXT,
+                                                DiagramContext.DIAGRAM_CONTEXT,
+                                                "selectedNodes",
                                                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
