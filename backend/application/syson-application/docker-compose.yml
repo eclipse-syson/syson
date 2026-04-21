@@ -1,23 +1,23 @@
-version: '3.8'
+version: "3.8"
 services:
   database:
     image: postgres:15
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: test_username
       POSTGRES_PASSWORD: test_password
   app:
-    image: '${IMAGE_TAG:-eclipsesyson/syson:v2026.3.0}'
+    image: "${IMAGE_TAG:-eclipsesyson/syson:latest}"
     ports:
-      - '8080:8080'
+      - "8080:8080"
     environment:
       SIRIUS_COMPONENTS_DIAGRAM_DEBUG: true
       SPRING_DATASOURCE_URL: jdbc:postgresql://database/postgres
       SPRING_DATASOURCE_USERNAME: test_username
       SPRING_DATASOURCE_PASSWORD: test_password
-      SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: '*'
+      SIRIUS_COMPONENTS_CORS_ALLOWEDORIGINPATTERNS: "*"
       SERVER_PORT: 8080
     depends_on:
       - database
