@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
@@ -387,18 +388,71 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
     private GroupPalette createGroupPalette() {
         return this.diagramBuilderHelper.newGroupPalette()
-                .quickAccessTools(this.diagramBuilderHelper.newNodeTool()
-                        .name("Duplicate Element")
-                        .iconURLsExpression("/images/content_copy.svg")
-                        .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
-                        .body(this.viewBuilderHelper.newChangeContext()
-                                .expression(ServiceMethod.of4(DiagramMutationAQLService.class, DiagramMutationAQLService::duplicateElementAndExpose, org.eclipse.syson.sysml.Element.class,
-                                                IEditingContext.class, DiagramContext.class, List.class, Map.class)
-                                        .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
-                                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                .quickAccessTools(this.createDuplicateElementsGroupTool())
+                .toolSections(this.createGroupToolSections())
+                .build();
+    }
+
+    /**
+     * Creates the group-palette tool sections available on a node multi-selection.
+     *
+     * @return the group-palette tool sections.
+     */
+    private ToolSection createGroupToolSections() {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                        .name(ToolConstants.VIEW_AS)
+                        .nodeTools(
+                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV),
+                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV),
+                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV),
+                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV))
+                .build();
+    }
+
+    private NodeTool createDuplicateElementsGroupTool() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Duplicate Elements")
+                .iconURLsExpression("/images/content_copy.svg")
+                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
+                                .aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
+                                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
+                .build();
+    }
+
+    private NodeTool createViewNodeAsGroupTool(String viewDefinition, String label) {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name(label)
+                .iconURLsExpression("/icons/full/obj16/ViewUsage.svg")
+                .preconditionExpression(this.getViewNodeAsGroupToolPrecondition(label))
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:self->viewNodeAs(" + viewDefinition + ", editingContext, diagramContext, selectedNodes)")
+                        .children(this.viewBuilderHelper.newChangeContext()
+                                .expression(ServiceMethod.of1(DiagramMutationAQLService::createDiagram).aqlSelf(IEditingContext.EDITING_CONTEXT))
                                 .build())
                         .build())
                 .build();
+    }
+
+    /**
+     * Returns the AQL precondition used by a group-level {@code View as} tool.
+     *
+     * @param label
+     *            the target view label.
+     * @return the AQL precondition.
+     */
+    private String getViewNodeAsGroupToolPrecondition(String label) {
+        String supportedElementsCondition = "e.oclIsKindOf(sysml::Package)";
+        if (StandardDiagramsConstants.GV.equals(label) || StandardDiagramsConstants.IV.equals(label)) {
+            supportedElementsCondition += " or e.oclIsKindOf(sysml::Usage) or e.oclIsKindOf(sysml::Definition)";
+        } else if (StandardDiagramsConstants.AFV.equals(label)) {
+            supportedElementsCondition += " or e.oclIsKindOf(sysml::ActionUsage) or e.oclIsKindOf(sysml::ActionDefinition)";
+        } else if (StandardDiagramsConstants.STV.equals(label)) {
+            supportedElementsCondition += " or e.oclIsKindOf(sysml::StateUsage) or e.oclIsKindOf(sysml::StateDefinition)";
+        }
+        return "aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | " + supportedElementsCondition + ")";
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {

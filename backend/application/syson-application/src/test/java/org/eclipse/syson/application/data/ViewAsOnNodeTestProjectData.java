@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,9 +50,16 @@ public class ViewAsOnNodeTestProjectData {
 
         public static final String PART_A_ELEMENT_ID = "b87ed042-a552-4b0b-aebf-0c47b8d0cfbd";
 
+        public static final String PART_A_ID = "45b69ed5-cb3c-42d1-80c5-1ad08342fcb9";
+
         public static final String PART_B_ELEMENT_ID = "82987ce2-47ca-4943-910b-df1d57447b19";
 
         public static final String PART_C_ELEMENT_ID = "3be21122-d555-45bf-96eb-84bb4abc95d5";
+
+        public static final String PART_DEFINITION_ELEMENT_ID = "04b2b69b-aa1a-4d7e-aa92-49300f5a9bc2";
+
+        public static final String PART_DEFINITION_ID = "884cb950-cef7-4cfa-a7b5-dd757d01ecf2";
+
     }
 
 }
