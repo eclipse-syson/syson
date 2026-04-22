@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -36,12 +38,17 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
+import org.eclipse.syson.application.controller.editingcontext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeReconnectionTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
+import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
@@ -66,6 +73,7 @@ import reactor.test.StepVerifier;
  * @author arichard
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
 
@@ -85,6 +93,15 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
     private DiagramComparator diagramComparator;
 
     @Autowired
+    private SemanticRunnableFactory semanticRunnableFactory;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private IIdentityService identityService;
+
+    @Autowired
     private ToolTester toolTester;
 
     @Autowired
@@ -93,7 +110,11 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
     @Autowired
     private EdgeReconnectionTester edgeReconnectionTester;
 
+    private NodeCreationTestsService creationTestsService;
+
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
+
+    private SemanticCheckerService semanticCheckerService;
 
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
@@ -103,6 +124,255 @@ public class GVSatisfyRequirementTests extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
+        this.creationTestsService = new NodeCreationTestsService(this.toolTester, this.descriptionNameGenerator, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_1_ID);
+    }
+
+    @DisplayName("Given a Part, WHEN applying the 'New Satisfy' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateSatisfy() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> createdSemanticId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "New Satisfy", GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(3)
+                    .hasNewNodeCount(10)
+                    .hasNewBorderNodeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasTotalCompartmentCount(8)
+                    .hasVisibleCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(newNodeDescriptionName);
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            var createdNode = newNodes.stream()
+                    .filter(node -> node.getDescriptionId().equals(newNodeDescriptionId))
+                    .findFirst();
+            assertThat(createdNode).isPresent();
+            createdSemanticId.set(createdNode.get().getTargetObjectId());
+        });
+
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SatisfyRequirementUsage.class, createdSemanticId::get, (satisfyRequirement) -> {
+            var featureMembership = satisfyRequirement.eContainer();
+            assertThat(featureMembership.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getFeatureMembership());
+
+            var partParent = featureMembership.eContainer();
+            assertThat(partParent.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getPartUsage());
+            assertThat(this.identityService.getId(partParent)).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+            assertThat(this.identityService.getId(satisfyRequirement.getSatisfiedRequirement())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a requirement, THEN the created satisfy requirement is subsetted by reference by the selected requirement")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateSatisfyRequirementSelectingRequirementUsage() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> createdSemanticId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "New Satisfy Requirement", GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(3)
+                    .hasNewNodeCount(10)
+                    .hasNewBorderNodeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasTotalCompartmentCount(8)
+                    .hasVisibleCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(newNodeDescriptionName);
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            var createdNode = newNodes.stream()
+                    .filter(node -> node.getDescriptionId().equals(newNodeDescriptionId))
+                    .findFirst();
+            assertThat(createdNode).isPresent();
+            createdSemanticId.set(createdNode.get().getTargetObjectId());
+        });
+
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SatisfyRequirementUsage.class, createdSemanticId::get, (satisfyRequirement) -> {
+            var featureMembership = satisfyRequirement.eContainer();
+            assertThat(featureMembership.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getFeatureMembership());
+
+            var partParent = featureMembership.eContainer();
+            assertThat(partParent.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getPartUsage());
+            assertThat(this.identityService.getId(partParent)).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+            assertThat(this.identityService.getId(satisfyRequirement.getSatisfiedRequirement())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool selecting a Definition, THEN the created satisfy requirement is typed by the selected Definition")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateSatisfyRequirementSelectingDefinition() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> createdSemanticId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "New Satisfy Requirement", GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_DEFINITION_ID);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(3)
+                    .hasNewNodeCount(10)
+                    .hasNewBorderNodeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasTotalCompartmentCount(8)
+                    .hasVisibleCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(newNodeDescriptionName);
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            var createdNode = newNodes.stream()
+                    .filter(node -> node.getDescriptionId().equals(newNodeDescriptionId))
+                    .findFirst();
+            assertThat(createdNode).isPresent();
+            createdSemanticId.set(createdNode.get().getTargetObjectId());
+        });
+
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SatisfyRequirementUsage.class, createdSemanticId::get, (satisfyRequirement) -> {
+            var featureMembership = satisfyRequirement.eContainer();
+            assertThat(featureMembership.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getFeatureMembership());
+
+            var partParent = featureMembership.eContainer();
+            assertThat(partParent.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getPartUsage());
+            assertThat(this.identityService.getId(partParent)).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+
+            assertThat(satisfyRequirement.getType()).anySatisfy(type -> assertThat(this.identityService.getId(type)).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_DEFINITION_ID));
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("Given a Part, WHEN applying the 'New Satisfy Requirement' tool without selection, THEN the standalone satisfy requirement is created")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateStandaloneSatisfyRequirement() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> createdSemanticId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, "New Satisfy Requirement");
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewEdgeCount(2)
+                    .hasNewNodeCount(10)
+                    .hasNewBorderNodeCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage());
+
+            new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasTotalCompartmentCount(8)
+                    .hasVisibleCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+
+            String newNodeDescriptionId = diagramDescriptionIdProvider.getNodeDescriptionId(newNodeDescriptionName);
+            var newNodes = this.diagramComparator.newNodes(initialDiagram, newDiagram);
+            var createdNode = newNodes.stream()
+                    .filter(node -> node.getDescriptionId().equals(newNodeDescriptionId))
+                    .findFirst();
+            assertThat(createdNode).isPresent();
+            createdSemanticId.set(createdNode.get().getTargetObjectId());
+        });
+
+        Runnable semanticCheck = this.semanticCheckerService.checkElement(SatisfyRequirementUsage.class, createdSemanticId::get, (satisfyRequirement) -> {
+            var featureMembership = satisfyRequirement.eContainer();
+            assertThat(featureMembership.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getFeatureMembership());
+
+            var partParent = featureMembership.eContainer();
+            assertThat(partParent.eClass()).isEqualTo(SysmlPackage.eINSTANCE.getPartUsage());
+            assertThat(this.identityService.getId(partParent)).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID);
+
+            assertThat(this.identityService.getId(satisfyRequirement.getSatisfiedRequirement())).isEqualTo(createdSemanticId.get());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a SatisfyRequirement edge, WHEN reconnecting the source to a new valid source, THEN the edge is connected to the new source")

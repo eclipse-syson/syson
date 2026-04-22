@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Namespace;
@@ -195,6 +196,47 @@ public class ModelMutationElementService {
         this.metamodelMutationElementService.initialize(newSatisfyRequirementUsage);
         this.metamodelMutationElementService.initialize(newReferenceSubsetting);
 
+        return newSatisfyRequirementUsage;
+    }
+
+    /**
+     * Creates a {@link SatisfyRequirementUsage SatisfyRequirement} on {@code parentElement}.
+     * <p>
+     *     Depending on the value of {@code selectedObject} the new {@link SatisfyRequirementUsage SatisfyRequirement} will be:
+     *     <ul>
+     *         <li>typed with {@code selectedObject} if the {@code selectedObject} is a {@link Definition}</li>
+     *         <li>subsetted by reference by {@code selectedObject} if the {@code selectedObject} is a {@link RequirementUsage}</li>
+     *         <li>standalone otherwise</li>
+     *     </ul>
+     * </p>
+     *
+     * @param parentElement
+     *            The parent element of the new {@link SatisfyRequirementUsage SatisfyRequirement}
+     * @param selectedObject
+     *            The optionally selected object which will be used to provide additional behavior depending on its value
+     * @return The new created {@link SatisfyRequirementUsage SatisfyRequirement}
+     *
+     * @see ModelMutationElementService#createSatisfy(Element, RequirementUsage)
+     */
+    public SatisfyRequirementUsage createSatisfyRequirement(Element parentElement, Element selectedObject) {
+        // create a new SatisfyRequirementUsage as child of the given Element
+        var newSatisfyRequirementUsage = SysmlFactory.eINSTANCE.createSatisfyRequirementUsage();
+        this.metamodelMutationElementService.addChildInParent(parentElement, newSatisfyRequirementUsage);
+
+        if (selectedObject instanceof Definition definition) {
+            var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            newSatisfyRequirementUsage.getOwnedRelationship().add(newFeatureTyping);
+            newFeatureTyping.setType(definition);
+            newFeatureTyping.setTypedFeature(newSatisfyRequirementUsage);
+            this.metamodelMutationElementService.initialize(newFeatureTyping);
+        } else if (selectedObject instanceof RequirementUsage requirementUsage) {
+            var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            newSatisfyRequirementUsage.getOwnedRelationship().add(newReferenceSubsetting);
+            newReferenceSubsetting.setReferencedFeature(requirementUsage);
+            this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+        }
+
+        this.metamodelMutationElementService.initialize(newSatisfyRequirementUsage);
         return newSatisfyRequirementUsage;
     }
 
