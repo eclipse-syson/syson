@@ -26,6 +26,8 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -135,7 +137,7 @@ public class IVInterconnectionCompartmentToolsTests extends AbstractIntegrationT
                 diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newActionToolId.get(), 0, 0, List.of())
                 .isSuccess();
         Runnable createSatisfyRequirementTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(InterconnectionViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
-                diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newSatisfyRequirementToolId.get(), 0, 0, List.of())
+                diagramId.get(), List.of(interconnectionCompartmentNodeId.get()), newSatisfyRequirementToolId.get(), 0, 0, List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID)))
                 .isSuccess();
 
         Consumer<Object> afterCreatePartToolConsumer = assertRefreshedDiagramThat(diagram -> {

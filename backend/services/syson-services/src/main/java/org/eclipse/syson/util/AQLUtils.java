@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.syson.util;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tooling around AQL expressions.
@@ -115,6 +116,17 @@ public class AQLUtils {
      */
     public static String getServiceCallExpression(String var, String serviceName, List<String> parameters) {
         return AQLConstants.AQL + var + '.' + serviceName + '(' + String.join(",", parameters) + ')';
+    }
+
+    /**
+     * Returns an AQL sequence from the given members.
+     *
+     * @param members
+ *                The members to transform into a sequence
+     * @return the AQL sequence made from the members
+     */
+    public static String aqlSequence(List<String> members) {
+        return members.stream().collect(Collectors.joining(",", "Sequence{", "}"));
     }
 
 }

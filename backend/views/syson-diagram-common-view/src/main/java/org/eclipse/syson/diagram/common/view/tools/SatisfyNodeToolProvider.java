@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -26,6 +28,7 @@ import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -47,8 +50,8 @@ public class SatisfyNodeToolProvider implements INodeToolProvider {
         String reqUsageType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementUsage());
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, "Sequence{" + reqUsageType + "}"))
-                .childrenExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogChildren).aqlSelf("Sequence{" + reqUsageType + "}"))
+                .elementsExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(List.of(reqUsageType))))
+                .childrenExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogChildren).aqlSelf(AQLUtils.aqlSequence(List.of(reqUsageType))))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + reqUsageType + ")")
                 .build();
         var selectionDialog = this.diagramBuilderHelper.newSelectionDialogDescription()

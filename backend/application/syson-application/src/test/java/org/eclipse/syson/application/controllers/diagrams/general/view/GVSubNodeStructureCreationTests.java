@@ -809,7 +809,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     @ParameterizedTest
     @MethodSource("partDefinitionSiblingAndChildNodeParameters")
     public void createPartDefinitionSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, int expectedNumberOfNewNodes,
-            int expectedNumberOfNewEdges, String compartmentNodeDecriptionNameSuffix) {
+            int expectedNumberOfNewEdges, String compartmentNodeDescriptionNameSuffix) {
         var flux = this.givenSubscriptionToDiagram();
 
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -822,14 +822,15 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        var variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
 
         Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
                     .check(diagram.get(), newDiagram);
-            String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDecriptionNameSuffix;
+            String compartmentItemNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentNodeDescriptionNameSuffix;
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
@@ -929,7 +930,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID;
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass);
+        var variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, childEClass, variables);
 
         Consumer<Object> diagramChecker = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)

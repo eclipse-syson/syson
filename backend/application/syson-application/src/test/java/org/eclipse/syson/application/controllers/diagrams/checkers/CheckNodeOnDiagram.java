@@ -63,6 +63,7 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
         return this;
     }
 
+    @Deprecated
     public CheckNodeOnDiagram hasTargetObjectLabel(String expectedTargetObjectLabel) {
         this.targetObjectLabel = Objects.requireNonNull(expectedTargetObjectLabel);
         return this;

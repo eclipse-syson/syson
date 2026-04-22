@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SatisfyRequirementNodeToolProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -110,7 +111,7 @@ public class InterconnectionCompartmentNodeDescriptionProvider extends AbstractC
             this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.STRUCTURE,
                     this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage()));
             this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.REQUIREMENTS,
-                    this.toolDescriptionService.createNodeTool(nodeDesc, SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()));
+                    new SatisfyRequirementNodeToolProvider().create(cache));
         });
 
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);

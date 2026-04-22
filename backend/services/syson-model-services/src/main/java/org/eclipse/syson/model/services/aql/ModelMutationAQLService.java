@@ -86,6 +86,13 @@ public class ModelMutationAQLService {
     }
 
     /**
+     * {@link ModelMutationElementService#createSatisfyRequirement(Element, Element)}.
+     */
+    public Element createSatisfyRequirement(Element self, Element selectedObject) {
+        return this.modelMutationElementService.createSatisfyRequirement(self, selectedObject);
+    }
+
+    /**
      * {@link MetamodelMutationElementService#createOccurrenceInOccurrence(OccurrenceUsage, EClass)}.
      */
     public EObject createOccurrenceInOccurrence(OccurrenceUsage container, EClass eClass) {
