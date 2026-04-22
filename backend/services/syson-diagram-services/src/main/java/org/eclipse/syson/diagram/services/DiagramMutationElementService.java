@@ -127,64 +127,97 @@ public class DiagramMutationElementService {
     }
 
     /**
-     * Allows to expose the given {@link Element} in a new {@link ViewUsage} that will be type by the a ViewDefinition
-     * (represented by its qualified name). The given {@link Element} is also removed from the exposed elements of the
-     * existing {@link ViewUsage} associated to the given {@code selectedNode}. The new {@link ViewUsage} will be
-     * exposed in the existing {@link ViewUsage}.
+     * Allows to expose the given {@link Element elements} in a new {@link ViewUsage} typed by the target
+     * ViewDefinition. Each selected element is removed from the exposed elements of its existing {@link ViewUsage}
+     * associated to the matching selected node, then re-exposed in the newly created {@link ViewUsage}, which is
+     * itself exposed in each source {@link ViewUsage}.
      *
-     * @param element
-     *            the {@link Element} to expose in a new ViewUsage.
+     * @param elements
+     *            the {@link Element elements} to expose in the new {@link ViewUsage}.
      * @param newViewDefinition
-     *            the ViewDefinition (represented by its qualified name) that will be the type of the new ViewUsage.
+     *            the qualified name of the target ViewDefinition.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
      *            the {@link DiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     * @return the new {@link ViewUsage} or the given {@link Element} if its existing associated {@link ViewUsage} has
-     *         not been found.
+     * @param selectedNodes
+     *            the selected graphical nodes matching the provided {@code elements}.
+     * @return the created {@link ViewUsage}, wrapped in a list when it exists.
      */
-    public Element viewNodeAs(Element element, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode) {
-        var existingViewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNode);
+    public ViewUsage viewNodeAs(List<Element> elements, String newViewDefinition, IEditingContext editingContext, DiagramContext diagramContext, List<Node> selectedNodes) {
+        ViewUsage newViewUsage = null;
+        var existingViewUsage = this.diagramQueryElementService.getViewUsage(editingContext, diagramContext, selectedNodes.get(0));
         if (existingViewUsage != null) {
-            Element viewUsageContainer = existingViewUsage.getOwner();
-            // 1 - create a new ViewUsage in the viewUsageContainer, typed by the ViewDefinition corresponding to the
-            // newViewDefinition
-            var newViewUsage = SysmlFactory.eINSTANCE.createViewUsage();
-            var newViewUsageMembership = this.metamodelMutationElementService.createMembership(viewUsageContainer);
-            newViewUsageMembership.getOwnedRelatedElement().add(newViewUsage);
-            var elementInitializerSwitch = new ElementInitializerSwitch();
-            elementInitializerSwitch.doSwitch(newViewUsage);
-            this.modelMutationElementService.setAsView(newViewUsage, newViewDefinition);
-
-            // 2 - move the element and its children from the existingViewUsage to new newViewUsage
-            var exposed = existingViewUsage.getOwnedImport().stream()
-                    .filter(Expose.class::isInstance)
-                    .map(Expose.class::cast)
-                    .toList();
-            this.moveExposedElements(element, exposed, newViewUsage);
-
-            // 3 - expose the new ViewUsage in the existingViewUsage
-            if (!existingViewUsage.getExposedElement().contains(newViewUsage)) {
-                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-                membershipExpose.setImportedMembership(newViewUsage.getOwningMembership());
-                existingViewUsage.getOwnedRelationship().add(membershipExpose);
-                elementInitializerSwitch.doSwitch(membershipExpose);
-            }
-            // 4 - expose the element and its sub elements previously exposed in the existingViewUsage in the
-            // newViewUsage
-            var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
-            membershipExpose.setImportedMembership(element.getOwningMembership());
-            newViewUsage.getOwnedRelationship().add(membershipExpose);
-            elementInitializerSwitch.doSwitch(membershipExpose);
-
-            return newViewUsage;
+            newViewUsage = this.createViewUsage(existingViewUsage.getOwner(), newViewDefinition);
+            this.moveSelectedElementsToViewUsage(elements, existingViewUsage, newViewUsage);
+            this.exposeNewViewUsageInExistingOne(existingViewUsage, newViewUsage);
         }
-        return element;
+        return newViewUsage;
+    }
+
+    /**
+     * Creates the semantic {@link ViewUsage} used by the {@code View As} tool.
+     *
+     * @param viewUsageContainer
+     *            the owner of the new {@link ViewUsage}.
+     * @param newViewDefinition
+     *            the qualified name of the target ViewDefinition.
+     * @return the created {@link ViewUsage}.
+     */
+    private ViewUsage createViewUsage(Element viewUsageContainer, String newViewDefinition) {
+        var newViewUsage = SysmlFactory.eINSTANCE.createViewUsage();
+        var newViewUsageMembership = this.metamodelMutationElementService.createMembership(viewUsageContainer);
+        newViewUsageMembership.getOwnedRelatedElement().add(newViewUsage);
+        var elementInitializerSwitch = new ElementInitializerSwitch();
+        elementInitializerSwitch.doSwitch(newViewUsage);
+        this.modelMutationElementService.setAsView(newViewUsage, newViewDefinition);
+        return newViewUsage;
+    }
+
+    /**
+     * Exposes the the new {@link ViewUsage} in the existing {@link ViewUsage}.
+     *
+     * @param existingViewUsage
+     *            the existing {@link ViewUsage}.
+     * @param newViewUsage
+     *            the created {@link ViewUsage}.
+     */
+    private void exposeNewViewUsageInExistingOne(ViewUsage existingViewUsage, ViewUsage newViewUsage) {
+        if (!existingViewUsage.getExposedElement().contains(newViewUsage)) {
+            var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+            membershipExpose.setImportedMembership(newViewUsage.getOwningMembership());
+            existingViewUsage.getOwnedRelationship().add(membershipExpose);
+            var elementInitializerSwitch = new ElementInitializerSwitch();
+            elementInitializerSwitch.doSwitch(membershipExpose);
+        }
+    }
+
+    /**
+     * Moves the selected elements and its exposed descendants to the newly created {@link ViewUsage}.
+     *
+     * @param elementsToMove
+     *            the selected elements.
+     * @param existingViewUsage
+     *            the existing {@link ViewUsage}.
+     * @param newViewUsage
+     *            the created {@link ViewUsage}.
+     */
+    private void moveSelectedElementsToViewUsage(List<Element> elementsToMove, ViewUsage existingViewUsage, ViewUsage newViewUsage) {
+        var exposed = existingViewUsage.getOwnedImport().stream()
+                .filter(Expose.class::isInstance)
+                .map(Expose.class::cast)
+                .toList();
+        for (Element elementToMove : elementsToMove) {
+            this.moveExposedElements(elementToMove, exposed, newViewUsage);
+            if (!newViewUsage.getExposedElement().contains(elementToMove)) {
+                var membershipExpose = SysmlFactory.eINSTANCE.createMembershipExpose();
+                membershipExpose.setImportedMembership(elementToMove.getOwningMembership());
+                newViewUsage.getOwnedRelationship().add(membershipExpose);
+                new ElementInitializerSwitch().doSwitch(membershipExpose);
+            }
+        }
     }
 
     private void moveExposedElements(Element element, List<Expose> exposed, ViewUsage newViewUsage) {

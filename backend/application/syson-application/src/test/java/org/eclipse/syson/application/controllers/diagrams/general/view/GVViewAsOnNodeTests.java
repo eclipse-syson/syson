@@ -66,6 +66,10 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
+    private static final String PACKAGE_1_LABEL = "Package1";
+
+    private static final String PART = "part";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -127,10 +131,10 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             diagramId.set(diag.getId());
-            assertThat(diag.getNodes()).hasSize(3);
+            assertThat(diag.getNodes()).hasSize(4);
             assertThat(diag.getEdges()).hasSize(2);
 
-            var partBNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pB").getNode();
+            var partBNode = new DiagramNavigator(diag).nodeWithLabel(LabelConstants.OPEN_QUOTE + PART + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pB").getNode();
             partBNodeId.set(partBNode.getId());
         });
 
@@ -138,7 +142,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
                 List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterToolExecution = assertRefreshedDiagramThat(diag -> {
-            assertThat(diag.getNodes()).hasSize(2);
+            assertThat(diag.getNodes()).hasSize(3);
             assertThat(diag.getEdges()).hasSize(1);
 
             var view2NodeNavigator = new DiagramNavigator(diag)
@@ -147,12 +151,12 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
             assertThat(newViewUsageNode).isNotNull();
             view2Id.set(newViewUsageNode.getTargetObjectId());
 
-            var partBNodeNavigator = view2NodeNavigator.childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pB");
+            var partBNodeNavigator = view2NodeNavigator.childNodeWithLabel(LabelConstants.OPEN_QUOTE + PART + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pB");
             var partBNode = partBNodeNavigator.getNode();
             assertThat(partBNode).isNotNull();
 
             var partCNodeNavigator = partBNodeNavigator.childNodeWithLabel("interconnection")
-                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + "part" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pC");
+                    .childNodeWithLabel(LabelConstants.OPEN_QUOTE + PART + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + "pC");
             var partCNode = partCNodeNavigator.getNode();
             assertThat(partCNode).isNotNull();
         });
@@ -186,14 +190,16 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
             assertThat(sysmlv2Model.getLabel().toString()).isEqualTo("SysMLv2.sysml");
             assertThat(sysmlv2Model.getChildren()).hasSize(1);
             TreeItem pkg1 = sysmlv2Model.getChildren().get(0);
-            assertThat(pkg1.getLabel().toString()).isEqualTo("Package1");
+            assertThat(pkg1.getLabel().toString()).isEqualTo(PACKAGE_1_LABEL);
 
-            assertThat(pkg1.getChildren()).hasSize(3);
+            assertThat(pkg1.getChildren()).hasSize(4);
             TreeItem view1 = pkg1.getChildren().get(0);
             assertThat(view1.getLabel().toString()).isEqualTo("view1 [GeneralView]");
-            TreeItem gv = pkg1.getChildren().get(1);
-            assertThat(gv.getLabel().toString()).isEqualTo("pA");
-            TreeItem view2 = pkg1.getChildren().get(2);
+            TreeItem pA = pkg1.getChildren().get(1);
+            assertThat(pA.getLabel().toString()).isEqualTo("pA");
+            TreeItem partDef = pkg1.getChildren().get(2);
+            assertThat(partDef.getLabel().toString()).isEqualTo("PartDefinition1");
+            TreeItem view2 = pkg1.getChildren().get(3);
             assertThat(view2.getLabel().toString()).isEqualTo("view2 [InterconnectionView]");
             assertThat(view2.getChildren()).hasSize(2);
             TreeItem diagramView2 = view2.getChildren().get(0);
@@ -227,17 +233,17 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
             diagramId.set(diag.getId());
-            assertThat(diag.getNodes()).hasSize(3);
+            assertThat(diag.getNodes()).hasSize(4);
             assertThat(diag.getEdges()).hasSize(2);
         });
 
         Runnable packageTool = () -> this.toolTester.invokeTool(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, diagramId.get(), diagramId.get(), packageToolId, List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterPackageToolExecution = assertRefreshedDiagramThat(diag -> {
-            assertThat(diag.getNodes()).hasSize(4);
+            assertThat(diag.getNodes()).hasSize(5);
             assertThat(diag.getEdges()).hasSize(2);
 
-            var packageNode = new DiagramNavigator(diag).nodeWithLabel("Package1").getNode();
+            var packageNode = new DiagramNavigator(diag).nodeWithLabel(PACKAGE_1_LABEL).getNode();
             assertThat(packageNode).isNotNull();
             packageNodeId.set(packageNode.getId());
         });
@@ -246,7 +252,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
                 List.of());
 
         Consumer<Object> updatedDiagramContentConsumerAfterViewAsToolExecution = assertRefreshedDiagramThat(diag -> {
-            assertThat(diag.getNodes()).hasSize(4);
+            assertThat(diag.getNodes()).hasSize(5);
             assertThat(diag.getEdges()).hasSize(2);
 
             var view2NodeNavigator = new DiagramNavigator(diag)
@@ -254,7 +260,7 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
             var newViewUsageNode = view2NodeNavigator.getNode();
             assertThat(newViewUsageNode).isNotNull();
 
-            var packageNode = view2NodeNavigator.childNodeWithLabel("Package1").getNode();
+            var packageNode = view2NodeNavigator.childNodeWithLabel(PACKAGE_1_LABEL).getNode();
             assertThat(packageNode).isNotNull();
         });
 
@@ -263,6 +269,76 @@ public class GVViewAsOnNodeTests extends AbstractIntegrationTests {
                 .then(packageTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterPackageToolExecution)
                 .then(viewAsGeneralViewTool)
+                .consumeNextWith(updatedDiagramContentConsumerAfterViewAsToolExecution)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a GV diagram, WHEN the group 'View as > Interconnection View' tool is applied on partA and PartDefinition, THEN one new IV ViewUsage is created and visible in the GV with both elements.")
+    @GivenSysONServer({ ViewAsOnNodeTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testViewAsIVOnMultiSelection() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var viewAsInterconnectionViewToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Interconnection View");
+        assertThat(viewAsInterconnectionViewToolId).isNotNull();
+
+        var diagramId = new AtomicReference<String>();
+        var partANodeId = new AtomicReference<String>();
+        var partDefinitionNodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diag -> {
+            diagramId.set(diag.getId());
+            assertThat(diag.getNodes()).hasSize(4);
+            assertThat(diag.getEdges()).hasSize(2);
+
+            partANodeId.set(new DiagramNavigator(diag).nodeWithTargetObjectId(ViewAsOnNodeTestProjectData.SemanticIds.PART_A_ID).getNode().getId());
+            partDefinitionNodeId.set(new DiagramNavigator(diag).nodeWithTargetObjectId(ViewAsOnNodeTestProjectData.SemanticIds.PART_DEFINITION_ID).getNode().getId());
+        });
+
+        Runnable viewAsInterconnectionViewTool = () -> this.toolTester.invokeTool(ViewAsOnNodeTestProjectData.EDITING_CONTEXT_ID, diagramId.get(),
+                List.of(partANodeId.get(), partDefinitionNodeId.get()), viewAsInterconnectionViewToolId, List.of());
+
+        Consumer<Object> updatedDiagramContentConsumerAfterViewAsToolExecution = assertRefreshedDiagramThat(diag -> {
+            assertThat(diag.getNodes()).hasSize(1);
+            assertThat(diag.getEdges()).hasSize(0);
+
+            var interconnectionViewNodes = diag.getNodes().stream()
+                    .filter(node -> node.getInsideLabel() != null)
+                    .filter(node -> node.getInsideLabel().getText().contains("StandardViewDefinitions::InterconnectionView"))
+                    .toList();
+            assertThat(interconnectionViewNodes)
+                    .as("Only one Interconnection ViewUsage should be created for the whole selection")
+                    .hasSize(1);
+
+            assertThat(diag.getNodes().stream()
+                    .anyMatch(node -> ViewAsOnNodeTestProjectData.SemanticIds.PART_A_ID.equals(node.getTargetObjectId())))
+                    .as("partA should no longer be displayed as a top-level node")
+                    .isFalse();
+            assertThat(diag.getNodes().stream()
+                    .anyMatch(node -> ViewAsOnNodeTestProjectData.SemanticIds.PART_DEFINITION_ID.equals(node.getTargetObjectId())))
+                    .as("PartDefinition should no longer be displayed as a top-level node")
+                    .isFalse();
+
+            var interconnectionViewNode = interconnectionViewNodes.get(0);
+            assertThat(interconnectionViewNode.getChildNodes())
+                    .as("The new Interconnection ViewUsage should expose the two selected elements")
+                    .hasSize(2);
+            assertThat(interconnectionViewNode.getChildNodes().stream()
+                    .anyMatch(child -> ViewAsOnNodeTestProjectData.SemanticIds.PART_A_ID.equals(child.getTargetObjectId())))
+                    .isTrue();
+            assertThat(interconnectionViewNode.getChildNodes().stream()
+                    .anyMatch(child -> ViewAsOnNodeTestProjectData.SemanticIds.PART_DEFINITION_ID.equals(child.getTargetObjectId())))
+                            .isTrue();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(viewAsInterconnectionViewTool)
                 .consumeNextWith(updatedDiagramContentConsumerAfterViewAsToolExecution)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));

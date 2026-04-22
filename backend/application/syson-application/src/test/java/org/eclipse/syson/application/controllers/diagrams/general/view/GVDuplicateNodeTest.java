@@ -82,11 +82,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
 
     private static final String PART_COPY = "part-copy";
 
-    private static final String PART_DEFINITION_COPY = "PartDefinition-copy";
-
     private static final String PART_1_COPY = "part1-copy";
-
-    private static final String REQUIREMENT_COPY = "requirement-copy";
 
     private static final String STATE_DEFINITION_COPY = "StateDefinition-copy";
 
@@ -343,7 +339,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
-        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Element");
+        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Elements");
         Runnable duplicateToolRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram.get().getId(),
                 List.of(GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_USAGE_ID),
@@ -411,7 +407,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         var newPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()), "New Part");
-        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Element");
+        var duplicateToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Duplicate Elements");
 
         Runnable createPartToolRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 diagram.get().getId(),
@@ -471,7 +467,7 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(diag -> {
                     initialDiagramContentConsumer.accept(diag);
-                    var initialDiagram = (Diagram) ((DiagramRefreshedEventPayload) diag).diagram();
+                    var initialDiagram = diag.diagram();
                     packageNodeId.set(new DiagramNavigator(initialDiagram).nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.PACKAGE_ID).getNode().getId());
                     stateDefinitionNodeId.set(new DiagramNavigator(initialDiagram).nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_DEFINITION_ID).getNode().getId());
                 })
