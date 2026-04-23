@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -98,11 +99,11 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
         if (this.showsExhibitOnly) {
-            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(cache));
-            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true, true).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(false).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(true).create(cache));
         } else {
-            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(cache));
-            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true, false).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false).create(cache));
+            this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR,  new StateTransitionCompartmentNodeToolProvider(true).create(cache));
         }
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);

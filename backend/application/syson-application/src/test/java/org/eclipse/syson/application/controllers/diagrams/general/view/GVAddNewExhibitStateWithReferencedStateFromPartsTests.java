@@ -121,26 +121,25 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> newExhibitStateId = new AtomicReference<>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Exhibit State with referenced State");
-        assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartUsage").isNotNull();
+        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Exhibit State");
+        assertThat(creationToolId).as("The tool 'New Exhibit State' should exist on a PartUsage").isNotNull();
 
         Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, creationToolId,
                 List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, ToolVariableType.OBJECT_ID)));
-
-        String[] newExhibitStateId = new String[1];
 
         Consumer<Object> diagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 1 more node (the new ExhibitStateUsage)
                     .hasNewNodeCount(1).check(diagram.get(), newDiagram);
             var node = this.diagramComparator.newNodes(diagram.get(), newDiagram).get(0);
-            newExhibitStateId[0] = node.getTargetObjectId();
+            newExhibitStateId.set(node.getTargetObjectId());
         });
 
-        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, () -> newExhibitStateId[0], exhibitStateUsage -> {
+        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, newExhibitStateId::get, exhibitStateUsage -> {
             assertThat(this.identityService.getId(exhibitStateUsage.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
         });
 
@@ -164,26 +163,25 @@ public class GVAddNewExhibitStateWithReferencedStateFromPartsTests extends Abstr
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> newExhibitStateId = new AtomicReference<>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State with referenced State");
-        assertThat(creationToolId).as("The tool 'New Exhibit State with referenced State' should exist on a PartDefinition").isNotNull();
+        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()), "New Exhibit State");
+        assertThat(creationToolId).as("The tool 'New Exhibit State' should exist on a PartDefinition").isNotNull();
 
         Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, creationToolId,
                 List.of(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID, ToolVariableType.OBJECT_ID)));
-
-        String[] newExhibitStateId = new String[1];
 
         Consumer<Object> diagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 1 more node (the new ExhibitStateUsage)
                     .hasNewNodeCount(1).check(diagram.get(), newDiagram);
             var node = this.diagramComparator.newNodes(diagram.get(), newDiagram).get(0);
-            newExhibitStateId[0] = node.getTargetObjectId();
+            newExhibitStateId.set(node.getTargetObjectId());
         });
 
-        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, () -> newExhibitStateId[0], exhibitStateUsage -> {
+        Runnable semanticCheckerRunnable = this.semanticCheckerService.checkElement(ExhibitStateUsage.class, newExhibitStateId::get, exhibitStateUsage -> {
             assertThat(this.identityService.getId(exhibitStateUsage.getExhibitedState())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.STATE_USAGE_ID);
         });
 

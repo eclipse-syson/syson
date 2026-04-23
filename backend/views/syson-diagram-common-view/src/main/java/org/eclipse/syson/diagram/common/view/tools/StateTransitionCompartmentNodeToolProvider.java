@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,26 +28,20 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
 
     private final boolean isParallel;
 
-    private final boolean isExhibit;
-
-    public StateTransitionCompartmentNodeToolProvider(boolean isParallel, boolean isExhibit) {
+    public StateTransitionCompartmentNodeToolProvider(boolean isParallel) {
         this.isParallel = isParallel;
-        this.isExhibit = isExhibit;
     }
 
     @Override
     protected String getServiceCallExpression() {
         return ServiceMethod.of6(DiagramMutationAQLService::createChildState).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                 ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, String.valueOf(this.isParallel),
-                String.valueOf(this.isExhibit));
+                String.valueOf(Boolean.FALSE));
     }
 
     @Override
     protected String getNodeToolName() {
         StringBuilder builder = new StringBuilder("New ");
-        if (this.isExhibit) {
-            builder.append("Exhibit ");
-        }
         if (this.isParallel) {
             builder.append("Parallel ");
         }
@@ -57,13 +51,7 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        var iconPath = "";
-        if (this.isExhibit) {
-            iconPath = "/icons/full/obj16/ExhibitStateUsage.svg";
-        } else {
-            iconPath = "/icons/full/obj16/StateUsage.svg";
-        }
-        return iconPath;
+        return "/icons/full/obj16/StateUsage.svg";
     }
 
     @Override

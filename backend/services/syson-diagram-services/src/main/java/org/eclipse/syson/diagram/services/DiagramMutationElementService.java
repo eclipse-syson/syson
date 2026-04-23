@@ -433,15 +433,16 @@ public class DiagramMutationElementService {
     public StateUsage createChildState(Element parentState, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
         StateUsage childState = this.utilService.createChildState(parentState, isParallel, isExhibit);
-        if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
-            this.createView(childState, editingContext, diagramContext, selectedNode, convertedNodes);
-        } else {
-            selectedNode.getChildNodes().stream().filter(child -> child.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst()
-                    .ifPresent(compartmentNode -> {
-                        this.createView(childState, editingContext, diagramContext, compartmentNode, convertedNodes);
-                    });
+        if (selectedNode != null) {
+            if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
+                this.createView(childState, editingContext, diagramContext, selectedNode, convertedNodes);
+            } else {
+                selectedNode.getChildNodes().stream().filter(child -> child.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst()
+                        .ifPresent(compartmentNode -> {
+                            this.createView(childState, editingContext, diagramContext, compartmentNode, convertedNodes);
+                        });
+            }
         }
-
         return childState;
     }
 

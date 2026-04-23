@@ -15,6 +15,7 @@ package org.eclipse.syson.standard.diagrams.view.nodes;
 import static org.eclipse.sirius.components.diagrams.description.NodeDescription.ANCESTORS;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +49,7 @@ import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
@@ -229,6 +231,8 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         elements.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition))
                 .ifPresent(nodeDescription -> nodeTools.add(this.createNodeTool(nodeDescription, definition))));
 
+        nodeTools.addAll(this.addCustomTools(cache, toolSectionName));
+
         nodeTools.sort(Comparator.comparing(Tool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
@@ -273,5 +277,14 @@ public class ViewUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .body(changeContextViewUsageOwner.build())
                 .elementsToSelectExpression("aql:newInstance")
                 .build();
+    }
+
+    private Collection<? extends NodeTool> addCustomTools(IViewDiagramElementFinder cache, String toolSectionName) {
+        var nodeTools = new ArrayList<NodeTool>();
+        if (SDVDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(toolSectionName)) {
+            nodeTools.add(new ExhibitStateNodeToolProvider(false).create(cache));
+            nodeTools.add(new ExhibitStateNodeToolProvider(true).create(cache));
+        }
+        return nodeTools;
     }
 }
