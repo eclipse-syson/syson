@@ -43,6 +43,8 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** Improve the _Add existing elements_ tool on graphical nodes to support multi-selection in standard diagrams.
 ** Improve the tools to create `PerformActionUsage` by making the selection of a subsetted reference optional.
 ** Improve the tool to create a `SatisfyRequirement` graphical node, either standalone, feature typed, or subsetting a `RequirementUsage` by reference.
+** Reorganize the three tools to create `ExhibitStateUsage` graphical nodes into two tools, one for parallel `ExhibitStateUsage`, one for non-parallel `ExhibitStateUsage`.
+Both tools optionally allow selecting an existing `StateUsage` to exhibit.
 
 * In the _Explorer_ view:
 

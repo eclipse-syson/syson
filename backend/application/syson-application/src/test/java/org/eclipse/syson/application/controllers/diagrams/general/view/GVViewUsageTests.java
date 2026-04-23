@@ -27,10 +27,11 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.trees.TreeItem;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -47,7 +48,6 @@ import org.eclipse.syson.application.data.GeneralViewViewTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
-import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.services.explorer.api.IExplorerDefaultFiltersSearchService;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
@@ -56,7 +56,6 @@ import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,11 +64,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
@@ -91,9 +89,6 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenDiagramReference givenDiagram;
 
     @Autowired
     private IGivenDiagramDescription givenDiagramDescription;
@@ -128,99 +123,90 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
     @Autowired
     private IExplorerDefaultFiltersSearchService explorerDefaultFiltersSearchService;
 
-    private DiagramDescriptionIdProvider diagramDescriptionIdProvider;
-
-    private StepVerifier.Step<DiagramRefreshedEventPayload> verifier;
-
-    private AtomicReference<Diagram> diagram;
-
-    private DiagramDescription diagramDescription;
-
     private String sysONExplorerTreeDescriptionId;
 
     private List<String> defaultFilters;
 
     private static Stream<Arguments> childNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 4, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 5, 2, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 7, 6, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 11, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 11, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0, 0, 0)
+                Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 6, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 7, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 4, 2, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 3, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 1, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeDefinition(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), 3, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 8, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), 8, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getConnectionDefinition(), 5, 2, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 4, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationDefinition(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), 6, 0, 0, true),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), 7, 6, 2, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 4, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), 4, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 11, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 11, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortDefinition(), 5, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), 5, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), 8, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 8, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), 5, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), 7, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), 8, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 6, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 6, 0, 0, false),
+                Arguments.of(SysmlPackage.eINSTANCE.getViewUsage(), 0, 0, 0, false)
         ).map(TestNameGenerator::namedArguments);
+    }
+
+    private Flux<DiagramRefreshedEventPayload> givenSubscriptionToDiagram() {
+        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID);
+        return this.givenDiagramSubscription.subscribe(diagramEventInput);
     }
 
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
-        var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
-                GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID);
-        var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
-        this.verifier = StepVerifier.create(flux);
-        this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
-                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
-        this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-
         this.sysONExplorerTreeDescriptionId = this.sysonTreeViewDescriptionProvider.getDescriptionId();
-
         this.defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        if (this.verifier != null) {
-            this.verifier.thenCancel()
-                    .verify(Duration.ofSeconds(10));
-        }
     }
 
     @DisplayName("GIVEN a General View with ViewUsage node, WHEN child nodes are created, THEN nodes are added to the diagram")
     @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("childNodeParameters")
-    public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount, int additionalNewNodes, int newBorderNodes) {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
+    public void checkViewUsageChildNodeCreation(EClass eClass, int compartmentCount, int additionalNewNodes, int newBorderNodes, boolean withSelectionDialog) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        String creationToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(eClass));
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        Runnable invokeTool = () -> this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
-                this.diagram.get().getId(),
-                GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
-                creationToolId, List.of());
+        Runnable invokeTool = () -> {
+            List<ToolVariable> variables = List.of();
+            if (withSelectionDialog) {
+                variables = List.of(new ToolVariable("selectedObject", "", ToolVariableType.OBJECT_ID));
+            }
+            this.nodeCreationTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID, creationToolId,
+                    variables);
+        };
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             int createdNodesExpectedCount = 1 + compartmentCount + additionalNewNodes;
@@ -228,29 +214,41 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
                     .hasNewEdgeCount(0)
                     .hasNewBorderNodeCount(newBorderNodes)
                     .hasNewNodeCount(createdNodesExpectedCount)
-                    .check(this.diagram.get(), newDiagram);
+                    .check(diagram.get(), newDiagram);
 
             String newNodeDescriptionName = this.descriptionNameGenerator.getNodeName(eClass);
 
-            new CheckChildNode(this.diagramDescriptionIdProvider, this.diagramComparator)
+            new CheckChildNode(diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentNodeId(GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID)
                     .hasNodeDescriptionName(newNodeDescriptionName)
                     .hasCompartmentCount(compartmentCount)
-                    .check(this.diagram.get(), newDiagram);
+                    .check(diagram.get(), newDiagram);
         });
 
-        this.verifier
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
                 .then(invokeTool)
-                .consumeNextWith(updatedDiagramConsumer);
+                .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a General View with ViewUsage node, WHEN sub-child nodes are created in the ViewUsage node, THEN nodes are added in the ViewUsage node")
     @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @Test
     public void checkViewUsageSubChildNodeCreation() {
-        var partOnViewUsageToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var partOnViewUsageToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getViewUsage()),
                 this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getPartUsage()));
-        var actionOnPartToolId = this.diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
+        var actionOnPartToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getActionUsage()));
 
         var partNodeId = new AtomicReference<String>();
@@ -258,7 +256,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        Runnable newPartOnViewUsage = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID,
+        Runnable newPartOnViewUsage = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
                 GeneralViewViewTestProjectData.GraphicalIds.VIEW_USAGE_ID,
                 partOnViewUsageToolId,
                 List.of());
@@ -275,7 +273,7 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
             assertThat(viewUsageNode.getChildNodes().get(0)).isEqualTo(partNode);
         });
 
-        Runnable newActionOnPart = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, GeneralViewViewTestProjectData.GraphicalIds.DIAGRAM_ID, partNodeId.get(),
+        Runnable newActionOnPart = () -> this.toolTester.invokeTool(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(), partNodeId.get(),
                 actionOnPartToolId,
                 List.of());
 
@@ -296,19 +294,25 @@ public class GVViewUsageTests extends AbstractIntegrationTests {
             assertThat(viewUsageNode.getChildNodes().contains(actionNode)).isTrue();
         });
 
-        this.verifier
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
                 .then(newPartOnViewUsage)
                 .consumeNextWith(updatedDiagramAfterNewPart)
                 .then(newActionOnPart)
-                .consumeNextWith(updatedDiagramAfterNewSubPart);
+                .consumeNextWith(updatedDiagramAfterNewSubPart)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @DisplayName("GIVEN a diagram, WHEN a ViewUsage is created, THEN the Explorer contains the new ViewUSage and a diagram associated")
-    @Sql(scripts = { GeneralViewViewTestProjectData.SCRIPT_PATH }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @GivenSysONServer({ GeneralViewViewTestProjectData.SCRIPT_PATH })
     @Test
     public void testCreateViewUsage() {
-        var viewUsageToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getViewUsage()));
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewViewTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        var viewUsageToolId = diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getViewUsage()));
 
         List<String> expandedIds = new ArrayList<>();
         expandedIds.add(GeneralViewViewTestProjectData.SemanticIds.DOCUMENT_ID);

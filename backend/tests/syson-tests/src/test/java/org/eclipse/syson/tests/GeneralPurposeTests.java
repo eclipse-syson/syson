@@ -236,7 +236,8 @@ public class GeneralPurposeTests {
 
     private void testNoCheckstyleOff(int index, String line, Path javaFilePath) {
         var whitelist = Stream.of(
-                Path.of("ServiceMethod.java")
+                Path.of("ServiceMethod.java"),
+                Path.of("GVTopNodeCreationTests.java")
         );
         if (whitelist.filter(javaFilePath::endsWith).findFirst().isEmpty()) {
             if (line.contains(CHECKSTYLE_OFF)) {

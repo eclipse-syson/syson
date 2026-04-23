@@ -40,6 +40,7 @@ If many compartment candidates exist, choose the first free form compartment.
 Also, a new helper method `DiagramQueryAQLService.isNotAncestorOf(...)` has been added to support edge preconditions previously written as `aql:not graphicalEdgeSource.isAncestorOf(graphicalEdgeTarget, cache)`.
 - https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] The `relativePathToDirectoryContainingLibraryFiles` field in `SysONLibraryLoadingDefinition` now expects a `String` instead of a `java.nio.file.Path`.
 This change ensures compatibility with classpath resource resolution, which requires forward slashes (`/`) as path separators.
+- https://github.com/eclipse-syson/syson/issues/2166[#2166] [cleanup] Remove unused `ViewToolService#getParentViewExpression` services.
 
 === Dependency update
 
@@ -85,6 +86,8 @@ The cache holding standard libraries can be invalidated for a specific test meth
 - https://github.com/eclipse-syson/syson/issues/2161[#2161] [diagrams] Leverage the latest selection dialog changes to optionally allow creating a `SatisfyRequirement` graphical node, either standalone, feature typed, or subsetting a `RequirementUsage` by reference.
 Also use that same tool in the `interconnection` compartment.
 - https://github.com/eclipse-syson/syson/issues/2172[#2172] [diagrams] Add keybinding to the _Duplicate Element_ tool (ctrl+d).
+- https://github.com/eclipse-syson/syson/issues/2166[#2166] [diagrams] Reorganize tools to create `ExhibitStateUsage` graphical nodes, to ends up with two tools, one for parallel, one for non-parallel.
+Both tools optionally allow selecting an existing `StateUsage` to exhibit.
 
 === New features
 

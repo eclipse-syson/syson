@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.common.view.tools.ViewNodeAsToolProvider;
@@ -98,7 +98,8 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
         if (SDVDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
-            nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
+            nodeTools.add(new ExhibitStateNodeToolProvider(false).create(cache));
+            nodeTools.add(new ExhibitStateNodeToolProvider(true).create(cache));
         } else if (SDVDiagramDescriptionProvider.STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache));

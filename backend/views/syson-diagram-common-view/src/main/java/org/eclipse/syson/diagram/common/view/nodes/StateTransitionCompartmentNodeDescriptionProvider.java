@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -117,10 +118,10 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(cache));
-        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(false).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ExhibitStateNodeToolProvider(true).create(cache));
 
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
         this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);

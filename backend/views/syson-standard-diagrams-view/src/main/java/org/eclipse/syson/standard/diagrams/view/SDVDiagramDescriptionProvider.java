@@ -64,7 +64,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescript
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
-import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
@@ -268,7 +268,6 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             SysmlPackage.eINSTANCE.getActionUsage(),
             SysmlPackage.eINSTANCE.getActionDefinition(),
             SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
-            SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getOccurrenceUsage(),
             SysmlPackage.eINSTANCE.getOccurrenceDefinition(),
             SysmlPackage.eINSTANCE.getStateUsage(),
@@ -500,6 +499,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
 
         // create nodes that are not in a section
         diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(SysmlPackage.eINSTANCE.getPerformActionUsage()));
+        diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(SysmlPackage.eINSTANCE.getExhibitStateUsage()));
 
         return diagramElementDescriptionProviders;
     }
@@ -1455,7 +1455,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
         if (BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
-            nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new ExhibitStateNodeToolProvider(false).create(cache));
+            nodeTools.add(new ExhibitStateNodeToolProvider(true).create(cache));
         } else if (STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
