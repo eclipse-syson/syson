@@ -49,7 +49,7 @@ This change ensures compatibility with classpath resource resolution, which requ
 - [releng] Update to `maven-checkstyle-plugin` 3.6.0 and CheckStyle 3.13.0.
 - [releng] Update to lexical 0.42.0.
 - [releng] Update to https://vite.dev/blog/announcing-vite8[Vite 8.0.1] and @vitejs/plugin-react 6.0.1.
-- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.5[Spring Boot 4.0.5].
+- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.6[Spring Boot 4.0.6].
 - [releng] Update to `com.tngtech.archunit:archunit-junit5` 1.4.1.
 - [releng] Update to `@mui/material` 7.3.10.
 - [releng] Update to `@mui/icons-material` 7.3.10.
