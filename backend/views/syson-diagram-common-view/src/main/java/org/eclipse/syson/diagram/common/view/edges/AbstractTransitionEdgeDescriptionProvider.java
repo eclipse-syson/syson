@@ -33,7 +33,9 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.services.UtilService;
@@ -73,7 +75,7 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
                 .name(this.getEdgeDescriptionName())
                 .preconditionExpression(ServiceMethod.of2(ViewEdgeService::isInSameGraphicalContainer).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE,
                         org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET, org.eclipse.sirius.components.diagrams.description.DiagramDescription.CACHE))
-                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
+                .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachableWithoutStandardLibs).aqlSelf(domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getTransitionUsage_Source().getName())
                 .style(this.createDefaultEdgeStyle())
                 .conditionalStyles(this.createStateConditionalStyle())
@@ -181,11 +183,13 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
     }
 
     protected boolean isStartNode(NodeDescription n) {
-        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME), n.getName());
+        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME), n.getName()) ||
+                Objects.equals(this.getDescriptionNameGenerator().getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME), n.getName());
     }
 
     protected boolean isDoneNode(NodeDescription n) {
-        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME), n.getName());
+        return Objects.equals(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME), n.getName()) ||
+                Objects.equals(this.getDescriptionNameGenerator().getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME), n.getName());
     }
 
     protected boolean isActionOrStateUsage(NodeDescription nodeDescription) {
