@@ -785,6 +785,17 @@ public class ViewCreateService {
     }
 
     /**
+     * Add the standard start state as the child of the given element.
+     *
+     * @param ownerElement
+     *         an element that will own the standard start state.
+     * @return the {@link Membership} element containing the start state in its memberElement feature.
+     */
+    public ActionUsage addStartState(Element ownerElement) {
+        return this.utilService.retrieveStandardStartState(ownerElement);
+    }
+
+    /**
      * Add the standard done action as the child of the given element.
      *
      * @param ownerElement
@@ -793,6 +804,17 @@ public class ViewCreateService {
      */
     public ActionUsage addDoneAction(Element ownerElement) {
         return this.utilService.retrieveStandardDoneAction(ownerElement);
+    }
+
+    /**
+     * Add the standard done state as the child of the given element.
+     *
+     * @param ownerElement
+     *         an element that will own the standard done state.
+     * @return the {@link Membership} element containing the done state in its memberElement feature.
+     */
+    public ActionUsage addDoneState(Element ownerElement) {
+        return this.utilService.retrieveStandardDoneState(ownerElement);
     }
 
     /**
@@ -1131,48 +1153,46 @@ public class ViewCreateService {
      * @return the given source {@link Feature}.
      */
     public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage, Node source, Node target, IDiagramService diagramService, IEditingContext editingContext) {
-        if (this.isInSameGraphicalContainer(source, target, diagramService)) {
-            // Check source and target have the same parent
-            Element semanticContainer = this.getEdgeSemanticContainer(source, target, diagramService.getDiagramContext().diagram(), editingContext);
-            if (semanticContainer != null) {
-                Element sourceParentElement = sourceUsage.getOwner();
-                if (this.utilService.isParallelState(sourceParentElement)) {
-                    // Should probably not be here as the transition creation should not be allowed.
-                    return sourceUsage;
-                }
-                // Create transition usage and add it to the parent element
-                // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
-                TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
-                var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-                featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
-                sourceParentElement.getOwnedRelationship().add(featureMembership);
-
-                // Create EndFeature
-                // TransitionUsage <>-> Membership -> MemberElement = sourceAction
-                var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
-                newTransitionUsage.getOwnedRelationship().add(sourceMembership);
-                sourceMembership.setMemberElement(sourceUsage);
-
-                // Create Succession
-                // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
-                Succession succession = SysmlFactory.eINSTANCE.createSuccession();
-                this.elementInitializerSwitch.doSwitch(succession);
-                var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-                successionFeatureMembership.getOwnedRelatedElement().add(succession);
-                newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
-
-                // Set Succession Source and Target Features
-                succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
-                succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
-                this.elementInitializerSwitch.doSwitch(newTransitionUsage);
-            } else {
-                this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable semantic owner for the new transition", MessageLevel.WARNING));
-            }
-
-        } else {
+        if (!this.isInSameGraphicalContainer(source, target, diagramService)) {
+            // The current implementation only rely on the semantic features "sourceFeature" and "targetFeature" to find source and target
+            // In order to avoid duplicated edges in case the source/target is displayed more than once we forbid the display of cross container edge
             this.feedbackMessageService.addFeedbackMessage(new Message("Can't create cross container TransitionUsage", MessageLevel.WARNING));
+            return sourceUsage;
         }
+        EObject transitionOwner = this.getSourceOwner(source, editingContext, diagramService);
+        return this.createTransitionUsage(sourceUsage, targetUsage, transitionOwner);
+    }
 
+    private Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage , EObject transitionOwner) {
+        if (transitionOwner instanceof  Element ownerElement) {
+            // Create transition usage and add it to the parent element
+            // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
+            TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+            var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
+            ownerElement.getOwnedRelationship().add(featureMembership);
+
+            // Create EndFeature
+            // TransitionUsage <>-> Membership -> MemberElement = sourceAction
+            var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
+            newTransitionUsage.getOwnedRelationship().add(sourceMembership);
+            sourceMembership.setMemberElement(sourceUsage);
+
+            // Create Succession
+            // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
+            Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+            this.elementInitializerSwitch.doSwitch(succession);
+            var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            successionFeatureMembership.getOwnedRelatedElement().add(succession);
+            newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
+
+            // Set Succession Source and Target Features
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
+            succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
+            this.elementInitializerSwitch.doSwitch(newTransitionUsage);
+        } else {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to find a suitable semantic owner for the new transition", MessageLevel.WARNING));
+        }
         return sourceUsage;
     }
 
