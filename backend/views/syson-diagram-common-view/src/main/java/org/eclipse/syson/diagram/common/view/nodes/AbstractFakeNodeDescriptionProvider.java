@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,6 +123,10 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME))
                 .ifPresent(childrenNodes::add);
     }
 }
