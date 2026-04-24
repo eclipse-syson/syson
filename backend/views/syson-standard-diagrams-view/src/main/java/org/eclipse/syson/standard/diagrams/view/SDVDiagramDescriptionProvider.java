@@ -47,6 +47,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
@@ -56,6 +57,7 @@ import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
@@ -781,6 +783,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         customNodeDescriptionProviders.add(new StakeholderNodeDescriptionProvider(colorProvider));
         customNodeDescriptionProviders.add(new SubjectNodeDescriptionProvider(colorProvider));
         customNodeDescriptionProviders.add(new ImportedPackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        customNodeDescriptionProviders.add(new StartStateNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        customNodeDescriptionProviders.add(new DoneStateNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return customNodeDescriptionProviders;
     }

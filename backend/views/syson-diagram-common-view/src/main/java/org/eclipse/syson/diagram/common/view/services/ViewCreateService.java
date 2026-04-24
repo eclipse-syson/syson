@@ -785,6 +785,17 @@ public class ViewCreateService {
     }
 
     /**
+     * Add the standard start state as the child of the given element.
+     *
+     * @param ownerElement
+     *         an element that will own the standard start state.
+     * @return the {@link Membership} element containing the start state in its memberElement feature.
+     */
+    public ActionUsage addStartState(Element ownerElement) {
+        return this.utilService.retrieveStandardStartState(ownerElement);
+    }
+
+    /**
      * Add the standard done action as the child of the given element.
      *
      * @param ownerElement
@@ -793,6 +804,17 @@ public class ViewCreateService {
      */
     public ActionUsage addDoneAction(Element ownerElement) {
         return this.utilService.retrieveStandardDoneAction(ownerElement);
+    }
+
+    /**
+     * Add the standard done state as the child of the given element.
+     *
+     * @param ownerElement
+     *         an element that will own the standard done state.
+     * @return the {@link Membership} element containing the done state in its memberElement feature.
+     */
+    public ActionUsage addDoneState(Element ownerElement) {
+        return this.utilService.retrieveStandardDoneState(ownerElement);
     }
 
     /**

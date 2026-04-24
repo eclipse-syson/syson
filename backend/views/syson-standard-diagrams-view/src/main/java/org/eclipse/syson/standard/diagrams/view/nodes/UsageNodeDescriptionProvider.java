@@ -30,11 +30,13 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.services.SDVNodeToolSectionSwitch;
@@ -135,6 +137,8 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(allNodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(allNodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME)).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME)).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME)).ifPresent(allNodes::add);
         return allNodes;
     }
 

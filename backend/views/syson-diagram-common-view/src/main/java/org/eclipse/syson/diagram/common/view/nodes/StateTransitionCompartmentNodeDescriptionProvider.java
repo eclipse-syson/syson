@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
+import org.eclipse.syson.diagram.common.view.tools.DoneStateNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StartStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -76,6 +78,8 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -117,6 +121,8 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
         var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StartStateNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new DoneStateNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(cache));
         this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(cache));

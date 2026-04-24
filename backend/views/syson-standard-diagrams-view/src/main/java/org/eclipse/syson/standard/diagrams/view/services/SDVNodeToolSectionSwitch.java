@@ -34,6 +34,7 @@ import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ConnectionDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.DoneStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.InterfaceDefinitionEndCompartmentNodeToolProvider;
@@ -58,6 +59,7 @@ import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StakeholdersCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StartStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateSubactionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
@@ -741,6 +743,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     @Override
     public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StartStateNodeToolProvider(object.eClass(), this.descriptionNameGenerator).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new DoneStateNodeToolProvider(object.eClass(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
@@ -768,6 +772,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     @Override
     public List<NodeToolSection> caseStateUsage(StateUsage object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StartStateNodeToolProvider(object.eClass(), this.descriptionNameGenerator).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new DoneStateNodeToolProvider(object.eClass(), this.descriptionNameGenerator).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));

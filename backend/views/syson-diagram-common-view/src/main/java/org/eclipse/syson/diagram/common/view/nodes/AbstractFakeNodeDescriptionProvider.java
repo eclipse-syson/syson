@@ -124,5 +124,9 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME))
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME))
+                .ifPresent(childrenNodes::add);
     }
 }
