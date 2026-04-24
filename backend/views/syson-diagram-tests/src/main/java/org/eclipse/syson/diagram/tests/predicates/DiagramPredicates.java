@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,9 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -57,7 +59,9 @@ public class DiagramPredicates {
         this.isInheritedBorderNode = n -> n.getName().contains(inheritedBorderNodeNameFragment);
         this.isNamespaceImportNode = n -> n.getName().equals(diagramPrefix + " Node NamespaceImport");
         this.isStartOrDoneNode = n -> n.getName().equals(descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
-                || n.getName().equals(descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME));
+                || n.getName().equals(descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME))
+                || n.getName().equals(descriptionNameGenerator.getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME))
+                || n.getName().equals(descriptionNameGenerator.getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME));
     }
 
     public Predicate<NodeDescription> isFakeNode() {
