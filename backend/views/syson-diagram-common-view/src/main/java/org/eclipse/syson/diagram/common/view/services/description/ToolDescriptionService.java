@@ -37,6 +37,7 @@ import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -172,6 +173,18 @@ public class ToolDescriptionService {
     }
 
     /**
+     * Create a {@link NodeToolSection} containing the {@code Add Existing Elements} tools for node multi-selection.
+     *
+     * @return The created {@link NodeToolSection}
+     */
+    public NodeToolSection relatedElementsGroupToolSection() {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Related Elements")
+                .nodeTools(this.addExistingElementsGroupTool(false), this.addExistingElementsGroupTool(true))
+                .build();
+    }
+
+    /**
      * Create a {@link NodeTool} adding/displaying existing elements from {@code self} on the context diagram or diagram
      * element.
      *
@@ -187,8 +200,9 @@ public class ToolDescriptionService {
 
         var addToExposedElements = this.viewBuilderHelper.newChangeContext()
                 .expression(
-                        ServiceMethod.of5(DiagramMutationAQLService::addToExposedElements).aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
-                                ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+                        ServiceMethod.of5(DiagramMutationAQLService.class, DiagramMutationAQLService::addToExposedElements, Element.class, boolean.class, IEditingContext.class, DiagramContext.class,
+                                Node.class, java.util.Map.class).aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
+                                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
                 .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
@@ -209,6 +223,27 @@ public class ToolDescriptionService {
                 .name(title)
                 .iconURLsExpression(iconURL)
                 .body(changeContextViewUsageOwner.build())
+                .build();
+    }
+
+    private NodeTool addExistingElementsGroupTool(boolean recursive) {
+        String title = "Add existing elements";
+        String iconURL = "/icons/AddExistingElements.svg";
+        if (recursive) {
+            title += " (recursive)";
+            iconURL = "/icons/AddExistingElementsRecursive.svg";
+        }
+
+        return this.diagramBuilderHelper.newNodeTool()
+                .name(title)
+                .iconURLsExpression(iconURL)
+                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element))")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression(ServiceMethod.of5(DiagramMutationAQLService.class, DiagramMutationAQLService::addToExposedElements, Element.class, boolean.class, IEditingContext.class, DiagramContext.class,
+                                List.class, java.util.Map.class)
+                                .aqlSelf("" + recursive, IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, "selectedNodes",
+                                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .build())
                 .build();
     }
 

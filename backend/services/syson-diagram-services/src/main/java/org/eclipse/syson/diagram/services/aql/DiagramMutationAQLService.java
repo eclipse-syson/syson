@@ -81,6 +81,14 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationExposeService#addToExposedElements(Element, boolean, IEditingContext, DiagramContext, List, Map)}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, List<Node> selectedNodes,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return this.diagramMutationExposeService.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNodes, convertedNodes);
+    }
+
+    /**
      * {@link DiagramMutationElementService#createBindingConnectorAsUsage(Feature, Feature, Node, Node, IEditingContext, DiagramContext)}.
      */
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target, Node sourceNode, Node targetNode, IEditingContext editingContext,

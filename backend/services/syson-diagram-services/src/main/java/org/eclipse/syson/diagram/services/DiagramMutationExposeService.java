@@ -206,6 +206,41 @@ public class DiagramMutationExposeService {
     }
 
     /**
+     * Adds/displays existing elements from the given element on the matching selected graphical node.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param recursive
+     *            if the process should add elements recursively.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param selectedNodes
+     *            the selected graphical nodes matching the selected semantic elements.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram.
+     * @return the given {@link Element}.
+     */
+    public Element addToExposedElements(Element element, boolean recursive, IEditingContext editingContext, DiagramContext diagramContext, List<Node> selectedNodes,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var selectedNode = this.findSelectedNode(element, selectedNodes);
+        this.addToExposedElements(element, recursive, editingContext, diagramContext, selectedNode, convertedNodes);
+        return element;
+    }
+
+    private Node findSelectedNode(Element element, List<Node> selectedNodes) {
+        if (selectedNodes == null) {
+            return null;
+        }
+        var elementId = this.siriusWebCoreServices.identityService().getId(element);
+        return selectedNodes.stream()
+                .filter(selectedNode -> Objects.equals(selectedNode.getTargetObjectId(), elementId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
      * Remove the given Element from the exposedElements reference of the {@link ViewUsage} that is the target of the
      * given {@link DiagramContext}. Also removes potential children that are sub-nodes of the given selectedNode
      * corresponding to the given Element.

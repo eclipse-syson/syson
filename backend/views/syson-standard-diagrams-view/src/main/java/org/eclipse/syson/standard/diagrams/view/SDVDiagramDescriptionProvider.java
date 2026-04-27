@@ -389,7 +389,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private GroupPalette createGroupPalette() {
         return this.diagramBuilderHelper.newGroupPalette()
                 .quickAccessTools(this.createDuplicateElementsGroupTool())
-                .toolSections(this.createGroupToolSections())
+                .toolSections(this.createGroupToolSections().toArray(ToolSection[]::new))
                 .build();
     }
 
@@ -398,15 +398,19 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
      *
      * @return the group-palette tool sections.
      */
-    private ToolSection createGroupToolSections() {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                        .name(ToolConstants.VIEW_AS)
-                        .nodeTools(
-                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV),
-                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV),
-                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV),
-                                this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV))
+    private List<ToolSection> createGroupToolSections() {
+        List<ToolSection> groupToolSections = new ArrayList<>();
+        var viewAsToolSection = this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.VIEW_AS)
+                .nodeTools(
+                        this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV),
+                        this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.IV_QN), StandardDiagramsConstants.IV),
+                        this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.AFV_QN), StandardDiagramsConstants.AFV),
+                        this.createViewNodeAsGroupTool(AQLUtils.aqlString(StandardDiagramsConstants.STV_QN), StandardDiagramsConstants.STV))
                 .build();
+        groupToolSections.add(viewAsToolSection);
+        groupToolSections.add(this.toolDescriptionService.relatedElementsGroupToolSection());
+        return groupToolSections;
     }
 
     private NodeTool createDuplicateElementsGroupTool() {

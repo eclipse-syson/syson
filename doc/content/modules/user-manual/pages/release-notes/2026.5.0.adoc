@@ -40,6 +40,7 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** Merge the two perform action creation tools into a single tool by leveraging the updated selection dialog which make the selection of a referenced action optional.
 ** Improve the _Duplicate Element_ tool to support multi-selection in standard diagrams.
 ** Improve the _View As_ tool on graphical nodes to support multi-selection in standard diagrams.
+** Improve the _Add existing elements_ tool on graphical nodes to support multi-selection in standard diagrams.
 ** Improve the tools to create `PerformActionUsage` by making the selection of a subsetted reference optional.
 
 * In the _Explorer_ view:

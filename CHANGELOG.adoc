@@ -79,6 +79,7 @@ This feature can be de-activated by setting the property `org.eclipse.syson.test
 The cache holding standard libraries can be invalidated for a specific test method or test class by using the `@InvalidateStandardLibrariesCache` annotation, ensuring the editing contexts are loaded from scratch.
 - https://github.com/eclipse-syson/syson/issues/2154[#2154] [diagrams] Improve the _Duplicate Element_ diagram tool to support multi-selection in standard diagrams.
 - https://github.com/eclipse-syson/syson/issues/2160[#2160] [diagrams] Improve the _View As_ diagram tool on graphical nodes to support multi-selection in standard diagrams.
+- https://github.com/eclipse-syson/syson/issues/2170[#2170] [diagrams] Improve the _Add existing elements_ diagram tool on graphical nodes to support multi-selection in standard diagrams.
 - https://github.com/eclipse-syson/syson/issues/2148[#2148] [diagrams] Merge the two perform action creation tools into a single tool, leveraging the updated selection dialog.
 - https://github.com/eclipse-syson/syson/issues/2152[#2152] [diagrams] Leverage the latest selection dialog changes to allow creating a sub action with and without associating the sub action with another `ActionUsage`.
 
