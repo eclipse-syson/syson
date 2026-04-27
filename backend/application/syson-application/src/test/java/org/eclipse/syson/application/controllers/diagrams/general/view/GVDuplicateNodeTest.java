@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -52,6 +53,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -60,6 +62,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.core.publisher.Flux;
@@ -132,8 +135,8 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a General View diagram, WHEN duplicating a Part Usage node with attributes, THEN the semantic element is duplicated with its content and its representation")
-    @Test
     @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
+    @Test
     public void checkTopUsageNodeDuplication() {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -189,9 +192,32 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a General View diagram, WHEN duplicating an ItemUsage bordered node, THEN the semantic element is duplicated with its representation")
-    @Test
+    @DisplayName("GIVEN a General View diagram, WHEN inspecting duplicate tools, THEN they provide the Ctrl+D keybinding")
     @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
+    @Test
+    public void checkDuplicateToolsKeyBinding() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+
+        var duplicateElementTool = EMFUtils.allContainedObjectOfType(diagramDescription, NodeTool.class)
+                .filter(nodeTool -> "Duplicate Element".equals(nodeTool.getName()))
+                .findFirst();
+        assertThat(duplicateElementTool).isPresent();
+        this.assertCtrlDKeyBinding(duplicateElementTool.get());
+
+        var duplicateElementsGroupTool = EMFUtils.allContainedObjectOfType(diagramDescription.getGroupPalette(), NodeTool.class)
+                .filter(nodeTool -> "Duplicate Elements".equals(nodeTool.getName()))
+                .findFirst();
+        assertThat(duplicateElementsGroupTool).isPresent();
+        this.assertCtrlDKeyBinding(duplicateElementsGroupTool.get());
+    }
+
+    @DisplayName("GIVEN a General View diagram, WHEN duplicating an ItemUsage bordered node, THEN the semantic element is duplicated with its representation")
+    @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
+    @Test
     public void checkBorderedNodeUsageNodeDuplication() {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -325,8 +351,8 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a General View diagram, WHEN duplicating two top container nodes, THEN both semantic elements and representations are duplicated")
-    @Test
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
     public void checkMultiSelectionContainerNodeDuplication() {
         var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var topNodesSemanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -387,8 +413,8 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a General View diagram, WHEN a part is created in a Package and duplicated with a StateDefinition, THEN both semantic elements and representations are duplicated")
-    @Test
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
     public void checkMultiSelectionDifferentContainerNodeDuplication() {
         var flux = this.givenSubscriptionToDiagram(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, GeneralViewWithTopNodesTestProjectData.GraphicalIds.DIAGRAM_ID);
         var topNodesSemanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
@@ -497,6 +523,17 @@ public class GVDuplicateNodeTest extends AbstractIntegrationTests {
             match = node.getOutsideLabels().stream().map(OutsideLabel::text).anyMatch(s -> s.contains(label));
         }
         return match;
+    }
+
+    private void assertCtrlDKeyBinding(NodeTool nodeTool) {
+        assertThat(nodeTool.getKeyBindings())
+                .singleElement()
+                .satisfies(keyBinding -> {
+                    assertThat(keyBinding.isCtrl()).isTrue();
+                    assertThat(keyBinding.isAlt()).isFalse();
+                    assertThat(keyBinding.isMeta()).isFalse();
+                    assertThat(keyBinding.getKey()).isEqualTo("d");
+                });
     }
 
 }

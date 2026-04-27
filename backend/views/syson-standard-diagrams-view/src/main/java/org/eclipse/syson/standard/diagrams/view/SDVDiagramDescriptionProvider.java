@@ -417,6 +417,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Elements")
                 .iconURLsExpression("/images/content_copy.svg")
+                .keyBindings(this.viewBuilderHelper.newKeyBinding().ctrl(true).key("d").build())
                 .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of4(DiagramMutationAQLService::duplicateElementAndExpose)
