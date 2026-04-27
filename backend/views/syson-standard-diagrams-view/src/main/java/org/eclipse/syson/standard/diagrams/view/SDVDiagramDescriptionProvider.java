@@ -77,6 +77,7 @@ import org.eclipse.syson.standard.diagrams.view.edges.DependencyEdgeDescriptionP
 import org.eclipse.syson.standard.diagrams.view.edges.FeatureTypingEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.FeatureValueEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.FlowUsageEdgeDescriptionProvider;
+import org.eclipse.syson.standard.diagrams.view.edges.FrameConcernEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.IncludeUseCaseDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.edges.NestedActorEdgeDescriptionProvider;
@@ -882,6 +883,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         edgeDescriptionProviders.add(new IncludeUseCaseDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new ConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         edgeDescriptionProviders.add(new SatisfyRequirementEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        edgeDescriptionProviders.add(new FrameConcernEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         return edgeDescriptionProviders;
     }

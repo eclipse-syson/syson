@@ -17,12 +17,14 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.model.services.ModelMutationElementService;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelMutationElementService;
 
@@ -79,7 +81,7 @@ public class ModelMutationAQLService {
     }
 
     /**
-     * {@link ModelMutationElementService#createPartUsageAndFlowConnection(PartUsage)}.
+     * {@link ModelMutationElementService#createSatisfy(Element, RequirementUsage)}.
      */
     public Element createSatisfy(Element element, RequirementUsage existingRequirement) {
         return this.modelMutationElementService.createSatisfy(element, existingRequirement);
@@ -104,5 +106,12 @@ public class ModelMutationAQLService {
      */
     public Element setAsView(ViewUsage viewUsage, String newViewDefinition) {
         return this.modelMutationElementService.setAsView(viewUsage, newViewDefinition);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createFramedConcern(Type, ConcernUsage)}.
+     */
+    public Element createFramedConcern(Type type, ConcernUsage concernUsage) {
+        return this.modelMutationElementService.createFramedConcern(type, concernUsage);
     }
 }

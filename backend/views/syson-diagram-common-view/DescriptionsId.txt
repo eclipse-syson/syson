@@ -534,3 +534,4 @@ GV Edge BindingConnectorAsUsage => siriusComponents://edgeDescription?sourceKind
 GV Edge FeatureValue => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=6fde9074-7fd4-375f-9ba0-c70c4408ca66
 GV Edge IncludeUseCaseUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=72e2d57a-8fd1-3b99-b9de-e6575a97ff10
 GV Edge ConnectionUsage => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=b51cf026-b4cc-3d4a-a4e3-ca4a1d50a2e0
+GV Edge FramedConcernMembership => siriusComponents://edgeDescription?sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=64234f9b-80ec-3cdd-97aa-15a42b7d3fc2
