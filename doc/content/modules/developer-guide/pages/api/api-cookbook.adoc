@@ -65,3 +65,5 @@ include::developer-guide:partial$element_owned_elements_recipe.adoc[leveloffset=
 include::developer-guide:partial$create_element_recipe.adoc[leveloffset=+2]
 
 include::developer-guide:partial$new_objects_from_text.adoc[leveloffset=+2]
+
+include::developer-guide:partial$import_sysml_file_recipe.adoc[leveloffset=+2]

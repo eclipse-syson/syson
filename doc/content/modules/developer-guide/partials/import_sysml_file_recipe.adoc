@@ -1,0 +1,83 @@
+= Import SysML file recipe (python script)
+
+Learn how to import a textual SysML file into an existing {product} project through the Sirius Web GraphQL API.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* <<import_sysml_file>>: imports a `.sysml` file as a document in a {product} project.
+
+[#import_sysml_file]
+== Import a SysML file
+This example demonstrates how to upload a `.sysml` file by using the Sirius Web `uploadDocument` GraphQL mutation.
+
+The script fetches the editing context of the selected project, uploads the file with a multipart GraphQL request, and lets {product} convert the textual SysML content into a model document.
+
+[NOTE]
+====
+If the file depends on other SysML or KerML files, import those dependencies first.
+Otherwise, some relationships may remain unresolved.
+====
+
+Example script to import a SysML file:
+
+[source,python]
+.import_sysml_file.py
+----
+include::example$import_sysml_file.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `build_headers` function* to add an optional bearer token to the HTTP headers.
+
+<3> *Define the `fetch_editing_context_id` function* with three parameters:
+
+* `url`: The {product} server URL.
+* `project_id`: The UUID of the project in which the SysML file will be imported.
+* `token`: The optional bearer token used for authentication.
+
+<4> *Define the `import_sysml_file` function* with five parameters:
+
+* `url`: The {product} server URL.
+* `file_path`: The path of the `.sysml` file to import.
+* `editing_context_id`: The UUID of the Sirius Web editing context in which the file will be imported.
+* `read_only`: Whether the imported document should be read-only.
+* `token`: The optional bearer token used for authentication.
+
+<5> *Sends a `POST` request* to `/api/graphql/upload` with the GraphQL multipart request format used by Sirius Web.
+
+<6> *Fetches the editing context ID* from the project ID.
+
+<7> *Calls the import function* and exits with an error code if the import fails.
+
+Run the script:
+[source,bash]
+----
+$ python import_sysml_file.py file-path-of-sysml-file your-project-id
+$ python import_sysml_file.py url-of-syson-server file-path-of-sysml-file your-project-id
+----
+
+For example, to import a file into a local {product} server:
+[source,bash]
+----
+$ python import_sysml_file.py /Users/myUserFolder/myFolder/mySysMLv2File.sysml 76bb3f29-17d1-465a-a2ca-a331978c36f3
+----
+
+For an authenticated server, provide a bearer token:
+[source,bash]
+----
+$ python import_sysml_file.py https://my-syson-server.example.com /Users/myUserFolder/myFolder/mySysMLv2File.sysml 76bb3f29-17d1-465a-a2ca-a331978c36f3 --token your-token
+----
+
+Output example:
+[source,bash]
+----
+SysML file imported successfully: /Users/myUserFolder/myFolder/mySysMLv2File.sysml
+----
+
+If the server returns an import report, the script prints it after the success message.
+Then you can check the project in the {product} web application to see the imported document.
