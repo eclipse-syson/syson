@@ -91,7 +91,7 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ConcernUsage basicGetReferencedConcern() {
         var referencedConstraint = super.getReferencedConstraint();

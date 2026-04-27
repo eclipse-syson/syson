@@ -662,4 +662,24 @@ public class ViewEdgeToolService {
                 .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
+
+    public EdgeTool createFramedConcernEdgeTool() {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of1(ModelMutationAQLService::createFramedConcern).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET));
+
+        var targetNodeDescriptions = new ArrayList<NodeDescription>();
+        var concernUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConcernUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> concernUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName("New framed ", SysmlPackage.eINSTANCE.getConcernUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getFramedConcernMembership().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
 }
