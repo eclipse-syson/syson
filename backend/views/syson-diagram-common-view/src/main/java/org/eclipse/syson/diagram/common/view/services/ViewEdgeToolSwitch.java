@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
@@ -252,6 +253,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseRequirementDefinition(RequirementDefinition object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
+        edgeTools.addAll(this.caseDefinition(object));
+        return edgeTools;
+    }
+
+    @Override
     public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
@@ -265,6 +274,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                         || this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition()))
                 .toList();
         edgeTools.add(this.edgeToolService.createBecomeObjectiveRequirementEdgeTool(objectiveTargets));
+        edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }

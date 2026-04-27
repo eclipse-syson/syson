@@ -19,11 +19,13 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
@@ -158,7 +160,7 @@ public class MetamodelQueryElementService {
      * Gets the value expression of a feature (Value of the FeatureValue owned by this feature).
      *
      * @param feature
-     *            a non null feature
+     *            a non-null feature
      * @return an optional expression
      */
     public Optional<Expression> getValueExpression(Feature feature) {
@@ -167,5 +169,22 @@ public class MetamodelQueryElementService {
                 .map(FeatureValue.class::cast)
                 .findFirst()
                 .map(FeatureValue::getValue);
+    }
+
+    /**
+     * Returns the framed concern target of {@link FramedConcernMembership}.
+     * <p>
+     *     It returns a concern when the framed concern membership owned concern is subsetted by another concern.
+     * </p>
+     *
+     * @param framedConcernMembership
+     *               The framed concern membership
+     * @return the framed concern target of {@link FramedConcernMembership}
+     */
+    public ConcernUsage getFramedConcernTarget(FramedConcernMembership framedConcernMembership) {
+        if (framedConcernMembership.getOwnedConcern() != framedConcernMembership.getReferencedConcern()) {
+            return framedConcernMembership.getReferencedConcern();
+        }
+        return null;
     }
 }

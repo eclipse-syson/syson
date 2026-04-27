@@ -18,6 +18,7 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/2174[#2174] [diagrams] Add a new edge tool creating a _frame_ graphical edge between a `RequirementUsage` or a `RequirementDefinition` graphical node, and a `ConcernUsage` graphical node.
 
 == v2026.5.0
 

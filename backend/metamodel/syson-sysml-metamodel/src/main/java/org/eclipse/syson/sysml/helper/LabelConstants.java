@@ -49,6 +49,8 @@ public class LabelConstants {
 
     public static final String EQUAL = SysMLv2Keywords.EQUALS;
 
+    public static final String FRAME = SysMLv2Keywords.FRAME;
+
     public static final String GREATER_THAN = SysMLv2Keywords.GREATER_THAN;
 
     public static final String IN = SysMLv2Keywords.IN;
