@@ -84,6 +84,7 @@ The cache holding standard libraries can be invalidated for a specific test meth
 - https://github.com/eclipse-syson/syson/issues/2152[#2152] [diagrams] Leverage the latest selection dialog changes to allow creating a sub action with and without associating the sub action with another `ActionUsage`.
 - https://github.com/eclipse-syson/syson/issues/2161[#2161] [diagrams] Leverage the latest selection dialog changes to optionally allow creating a `SatisfyRequirement` graphical node, either standalone, feature typed, or subsetting a `RequirementUsage` by reference.
 Also use that same tool in the `interconnection` compartment.
+- https://github.com/eclipse-syson/syson/issues/2172[#2172] [diagrams] Add keybinding to the _Duplicate Element_ tool (ctrl+d).
 
 === New features
 

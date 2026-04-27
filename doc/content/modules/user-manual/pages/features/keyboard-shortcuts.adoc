@@ -21,6 +21,10 @@ User can press `F2` key or start typing the new value directly to efficiently up
 
 Explore further by referring to the following how-tos for xref:user-manual:features/general-view.adoc#edit-label[Edit Label action].
 
+== Duplicate
+
+User can press `Ctrl+d` to duplicate the selected element from the representation editor.
+
 == Multi-selection
 
 Two ways to select several elements exist:
