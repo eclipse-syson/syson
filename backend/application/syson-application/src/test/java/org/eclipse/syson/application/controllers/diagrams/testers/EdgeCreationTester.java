@@ -47,6 +47,7 @@ public class EdgeCreationTester {
     @Autowired
     private InvokeSingleClickOnTwoDiagramElementsToolMutationRunner invokeSingleClickOnTwoDiagramElementsToolMutationRunner;
 
+    @Deprecated
     public void createEdge(String projectId, AtomicReference<Diagram> diagram, String sourceNodeTargetObjectLabel, String targetNodeTargetObjectLabel, String toolId) {
         DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
         String sourceId = diagramNavigator.nodeWithTargetObjectLabel(sourceNodeTargetObjectLabel).getNode().getId();
