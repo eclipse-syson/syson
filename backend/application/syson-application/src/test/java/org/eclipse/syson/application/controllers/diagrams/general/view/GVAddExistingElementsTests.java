@@ -194,7 +194,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
             // Objects.equals(imageStyle.getImageURL(), "images/start_action.svg")
             // && Objects.equals("start", n.getTargetObjectLabel()));
 
-            this.checkAction2(newDiagram);
+            this.checkAction2(newDiagram, false);
 
             this.checkRequirementUsage(newDiagram);
         });
@@ -202,6 +202,95 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(addExistingElementTool)
+                .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a General View diagram with multiple selected nodes, WHEN Add existing elements is invoked, THEN existing elements are added for each selected node")
+    @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
+    @Test
+    public void addExistingElementsOnMultiSelection() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> part1NodeId = new AtomicReference<>();
+        AtomicReference<String> action1NodeId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        Runnable addExistingElementsOnDiagram = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsOnDiagramToolId);
+
+        Consumer<Object> diagramWithTopNodesConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            diagram.set(newDiagram);
+            part1NodeId.set(this.getNodeIdWithLabel(newDiagram, PART1));
+            action1NodeId.set(this.getNodeIdWithLabel(newDiagram, ACTION1));
+        });
+
+        String addExistingElementsGroupToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Add existing elements");
+        Runnable addExistingElementsOnMultiSelection = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
+                List.of(part1NodeId.get(), action1NodeId.get()), addExistingElementsGroupToolId, List.of());
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            this.checkPart1(newDiagram);
+            this.checkAction1(newDiagram, true);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(addExistingElementsOnDiagram)
+                .consumeNextWith(diagramWithTopNodesConsumer)
+                .then(addExistingElementsOnMultiSelection)
+                .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a General View diagram with multiple selected nodes, WHEN Add existing elements recursive is invoked, THEN existing elements are added recursively for each selected node")
+    @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
+    @Test
+    public void addExistingElementsRecursiveOnMultiSelection() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        AtomicReference<String> part1NodeId = new AtomicReference<>();
+        AtomicReference<String> action1NodeId = new AtomicReference<>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        String addExistingElementsOnDiagramToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
+        Runnable addExistingElementsOnDiagram = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementsOnDiagramToolId);
+
+        Consumer<Object> diagramWithTopNodesConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            diagram.set(newDiagram);
+            part1NodeId.set(this.getNodeIdWithLabel(newDiagram, PART1));
+            action1NodeId.set(this.getNodeIdWithLabel(newDiagram, ACTION1));
+        });
+
+        String addExistingElementsRecursiveGroupToolId = diagramDescriptionIdProvider.getGroupNodeToolId("Add existing elements (recursive)");
+        Runnable addExistingElementsRecursiveOnMultiSelection = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
+                List.of(part1NodeId.get(), action1NodeId.get()), addExistingElementsRecursiveGroupToolId, List.of());
+
+        Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            this.checkPart1(newDiagram);
+            this.checkAction1(newDiagram, true);
+            this.checkAction2(newDiagram, true);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(addExistingElementsOnDiagram)
+                .consumeNextWith(diagramWithTopNodesConsumer)
+                .then(addExistingElementsRecursiveOnMultiSelection)
                 .consumeNextWith(updatedDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -272,8 +361,24 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ATTRIBUTE_DEFINITION));
     }
 
-    private void checkAction2(Diagram newDiagram) {
-        var action1ActionFlowCompartment = this.checkAction1(newDiagram);
+    private void checkPart1(Diagram newDiagram) {
+        var optPart1Node = newDiagram.getNodes().stream()
+                .filter(n -> Objects.equals(n.getTargetObjectLabel(), PART1))
+                .findFirst();
+        assertThat(optPart1Node).isPresent();
+        var part1PartsCompartment = this.getCompartment(optPart1Node.get(), "parts");
+        assertThat(part1PartsCompartment)
+                .as(PART1 + " should contain a parts compartment")
+                .isPresent();
+        assertThat(part1PartsCompartment.get().getChildNodes())
+                .as(PART1 + " parts compartment should contain 1 child")
+                .hasSize(1)
+                .as(PART1 + " parts compartment should contain " + PART2)
+                .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), PART2));
+    }
+
+    private void checkAction2(Diagram newDiagram, boolean expectStartNode) {
+        var action1ActionFlowCompartment = this.checkAction1(newDiagram, expectStartNode);
         var optAction2Node = action1ActionFlowCompartment.getChildNodes().stream()
                 .filter(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2))
                 .findFirst();
@@ -300,7 +405,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ACTION3));
     }
 
-    private Node checkAction1(Diagram newDiagram) {
+    private Node checkAction1(Diagram newDiagram, boolean expectStartNode) {
         var optAction1Node = newDiagram.getNodes().stream()
                 .filter(n -> Objects.equals(n.getTargetObjectLabel(), ACTION1))
                 .findFirst();
@@ -320,11 +425,21 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         assertThat(action1ActionFlowCompartment)
                 .as(ACTION1 + " should contain an action flow compartment")
                 .isPresent();
-        assertThat(action1ActionFlowCompartment.get().getChildNodes())
-                .as(ACTION1 + " action flow compartment should contain 2 children")
-                .hasSize(1) // @technical-debt should be 2 when start node will be synchronized
+        var action1ActionFlowCompartmentChildNodes = action1ActionFlowCompartment.get().getChildNodes();
+        var expectedChildNodeCount = 1;
+        if (expectStartNode) {
+            expectedChildNodeCount = 2;
+        }
+        assertThat(action1ActionFlowCompartmentChildNodes)
+                .as(ACTION1 + " action flow compartment should contain " + expectedChildNodeCount + " child nodes")
+                .hasSize(expectedChildNodeCount)
                 .as(ACTION1 + " action flow compartment should contain " + ACTION2)
                 .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2));
+        if (expectStartNode) {
+            assertThat(action1ActionFlowCompartmentChildNodes)
+                    .as(ACTION1 + " action flow compartment should contain a start node")
+                    .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), "start"));
+        }
         return action1ActionFlowCompartment.get();
     }
 
@@ -337,6 +452,14 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         assertThat(optRequirementNode.get().getChildNodes())
                 .as("Node RequirementUsage should contain 8 hidden compartment children").hasSize(8)
                 .allMatch(node -> node.getModifiers().contains(ViewModifier.Hidden));
+    }
+
+    private String getNodeIdWithLabel(Diagram diagram, String label) {
+        return diagram.getNodes().stream()
+                .filter(node -> Objects.equals(node.getTargetObjectLabel(), label))
+                .map(Node::getId)
+                .findFirst()
+                .orElseThrow();
     }
 
     private Optional<Node> getCompartment(Node node, String compartmentName) {
