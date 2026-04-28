@@ -1,15 +1,15 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
-* This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v2.0
-* which accompanies this distribution, and is available at
-* https://www.eclipse.org/legal/epl-2.0/
-*
-* SPDX-License-Identifier: EPL-2.0
-*
-* Contributors:
-*     Obeo - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2023, 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -67,13 +67,14 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ConcernUsage basicGetOwnedConcern() {
-        // TODO: implement this method to return the 'Owned Concern' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(ConcernUsage.class::isInstance)
+                .map(ConcernUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -93,9 +94,10 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
      * @generated
      */
     public ConcernUsage basicGetReferencedConcern() {
-        // TODO: implement this method to return the 'Referenced Concern' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        var referencedConstraint = super.getReferencedConstraint();
+        if (referencedConstraint instanceof ConcernUsage referencedConcern) {
+            return referencedConcern;
+        }
         return null;
     }
 
