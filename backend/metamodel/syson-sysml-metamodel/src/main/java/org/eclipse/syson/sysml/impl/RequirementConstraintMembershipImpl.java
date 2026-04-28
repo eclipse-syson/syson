@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023, 2025 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,10 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
+
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -140,13 +142,16 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ConstraintUsage basicGetReferencedConstraint() {
-        // TODO: implement this method to return the 'Referenced Constraint' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        var ownedConstraint = this.getOwnedConstraint();
+        return Optional.ofNullable(ownedConstraint)
+                .map(ConstraintUsage::referencedFeatureTarget)
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .or(() -> Optional.ofNullable(ownedConstraint))
+                .orElse(null);
     }
 
     /**
