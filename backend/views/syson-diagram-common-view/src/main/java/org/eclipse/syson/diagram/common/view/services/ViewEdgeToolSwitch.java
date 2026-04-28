@@ -25,10 +25,12 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.DescriptionFinder;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartStateNodeDescriptionProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -328,6 +330,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         isSpecial = isSpecial || this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
         isSpecial = isSpecial || this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
         isSpecial = isSpecial || this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
+        isSpecial = isSpecial || this.descriptionNameGenerator.getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME).equals(nodeDesc.getName());
+        isSpecial = isSpecial || this.descriptionNameGenerator.getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME).equals(nodeDesc.getName());
         return !isSpecial;
     }
 

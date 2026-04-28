@@ -238,12 +238,26 @@ public class UtilService {
      *
      * @param eObject
      *            the {@link EObject} stored in a {@link ResourceSet}
-     * @param type
+     * @param eClass
      *            the searched type, represented by its qualified name
      * @return a list of reachable object
      */
     public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
         return this.getAllReachableType(eObject, eClass);
+    }
+
+    /**
+     *  * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given type
+     * (represented by its qualified name) without considering elements inside standard libs.
+     *
+     * @param eObject
+     *            the {@link EObject} stored in a {@link ResourceSet}
+     * @param eClass
+     *            the searched type, represented by its qualified name
+     * @return a list of reachable object
+     */
+    public List<EObject> getAllReachableWithoutStandardLibs(EObject eObject, EClass eClass) {
+        return this.getAllReachableType(eObject, eClass, false);
     }
 
     /**
@@ -606,6 +620,18 @@ public class UtilService {
     }
 
     /**
+     * Retrieve the start state defined inside the standard library <code>States</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard start StateUsage defined in the <code>States</code> library.
+     */
+    public StateUsage retrieveStandardStartState(Element eObject) {
+        return this.findByNameAndTypeInStandardLibraries(eObject, StateUsage.class, "States::StateAction::start");
+    }
+
+    /**
      * Retrieve the done action defined inside the standard library <code>Actions</code>.
      *
      * @param eObject
@@ -615,6 +641,18 @@ public class UtilService {
      */
     public ActionUsage retrieveStandardDoneAction(Element eObject) {
         return this.findByNameAndTypeInStandardLibraries(eObject, ActionUsage.class, "Actions::Action::done");
+    }
+
+    /**
+     * Retrieve the done state defined inside the standard library <code>States</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard done StateUsage defined in the <code>States</code> library.
+     */
+    public ActionUsage retrieveStandardDoneState(Element eObject) {
+        return this.findByNameAndTypeInStandardLibraries(eObject, ActionUsage.class, "States::StateAction::done");
     }
 
     private <T extends Element> T findByNameAndTypeInStandardLibraries(Element context, Class<T> klass, String qualifiedName) {
@@ -1021,6 +1059,10 @@ public class UtilService {
         if (Objects.equals(element, this.retrieveStandardStartAction(element))) {
             isUnsynchronized = true;
         } else if (Objects.equals(element, this.retrieveStandardDoneAction(element))) {
+            isUnsynchronized = true;
+        } else if (Objects.equals(element, this.retrieveStandardStartState(element))) {
+            isUnsynchronized = true;
+        } else if (Objects.equals(element, this.retrieveStandardDoneState(element))) {
             isUnsynchronized = true;
         } else if (element instanceof NamespaceImport) {
             isUnsynchronized = true;
