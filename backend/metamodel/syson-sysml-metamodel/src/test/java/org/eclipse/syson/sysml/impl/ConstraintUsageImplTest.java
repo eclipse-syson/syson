@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -47,6 +48,7 @@ public class ConstraintUsageImplTest {
 
         reqMembership.getOwnedRelatedElement().add(constraint);
         this.builder.addReferenceSubsetting(constraint, superConstraint);
+        assertThat(reqMembership.getReferencedConstraint()).isEqualTo(superConstraint);
 
         assertEquals("SuperConstraint", constraint.getName());
         assertEquals("SuperConstraint", constraint.effectiveName());
