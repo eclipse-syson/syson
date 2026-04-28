@@ -51,6 +51,17 @@ Both tools optionally allow selecting an existing `StateUsage` to exhibit.
 ** `Expression` elements now display their full textual representation:
 +
 image::explorer-expression-text.png[Expression textual representation]
+** The treem items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.
+Disabling the _Hide expression internals_ filter in the _Explorer_ view allows to display them if needed.
++
+[cols="1,1"]
+|===
+|Internals hidden (default)
+|Internals visible
+
+a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
+a|image::explorer-expression-internals-visible.png[Internals visible]
+|===
 
 == Technical details
 

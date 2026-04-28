@@ -88,6 +88,8 @@ Also use that same tool in the `interconnection` compartment.
 - https://github.com/eclipse-syson/syson/issues/2172[#2172] [diagrams] Add keybinding to the _Duplicate Element_ tool (ctrl+d).
 - https://github.com/eclipse-syson/syson/issues/2166[#2166] [diagrams] Reorganize tools to create `ExhibitStateUsage` graphical nodes, to ends up with two tools, one for parallel, one for non-parallel.
 Both tools optionally allow selecting an existing `StateUsage` to exhibit.
+- https://github.com/eclipse-syson/syson/issues/2116[#2116] [explorer] In the _Explorer_ view, the items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.
+Disabling the _Hide expression internals_ filter in the _Explorer_ view allows to display them if needed.
 
 === New features
 

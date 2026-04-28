@@ -39,6 +39,7 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
             filters.add(new TreeFilter(SysONTreeFilterConstants.HIDE_USER_LIBRARIES_TREE_FILTER_ID, "Hide User Libraries", false));
             filters.add(new TreeFilter(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID, "Hide Root Namespaces", true));
             filters.add(new TreeFilter(SysONTreeFilterConstants.HIDE_EXPOSE_ELEMENTS_TREE_ITEM_FILTER_ID, "Hide Expose Elements", true));
+            filters.add(new TreeFilter(SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID, "Hide Expression Internals", true));
         }
         return filters;
     }
