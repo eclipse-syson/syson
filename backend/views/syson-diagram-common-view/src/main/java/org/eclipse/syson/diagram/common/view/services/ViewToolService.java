@@ -18,20 +18,17 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
@@ -66,6 +63,8 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
+import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,16 +75,17 @@ import org.slf4j.LoggerFactory;
  */
 public class ViewToolService extends ToolService {
 
-    private static final String STATE_TRANSITION_COMPARTMENT_NAME = "state transition";
-
     protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+
+    protected final ISysONExplorerService sysONExplorerService;
 
     protected final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
 
     public ViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-            IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+            IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService, ISysONExplorerService sysONExplorerService) {
         super(identityService, objectSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        this.sysONExplorerService = Objects.requireNonNull(sysONExplorerService);
     }
 
     /**
@@ -389,40 +389,38 @@ public class ViewToolService extends ToolService {
      *            the editing context
      * @return the list of resources that contain at least one {@link Package}
      */
-    public List<Resource> getNamespaceImportSelectionDialogElements(IEditingContext editingContext) {
-        var optionalResourceSet = Optional.of(editingContext)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(IEMFEditingContext::getDomain)
-                .map(EditingDomain::getResourceSet);
-        var resources = optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, List.of(SysmlPackage.eINSTANCE.getPackage())))
-                .toList())
-                .orElseGet(ArrayList::new);
-        return resources.stream().sorted((r1, r2) -> this.getResourceName(r1).compareTo(this.getResourceName(r2))).toList();
+    public List<Object> getNamespaceImportSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getPackage()));
     }
 
     /**
      * Service to retrieve the children of a given element in the selection dialog of the NamespaceImport creation tool.
      *
-     * @param self
-     *            an element of the tree
-     * @return the list of {@link Package} element found under the given root element.
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
+     *         {@link Package}.
      */
-    public List<Package> getNamespaceImportSelectionDialogChildren(Object self) {
-        List<Package> result = new ArrayList<>();
-        if (self instanceof Resource resource) {
-            resource.getContents().stream()
-                    .filter(Element.class::isInstance)
-                    .map(Element.class::cast)
-                    .forEach(element -> result.addAll(this.findClosestPackageInChildren(element)));
-        } else if (self instanceof Package packageElement) {
-            packageElement.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .forEach(membership -> result.addAll(this.findClosestPackageInChildren(membership)));
-        }
-        return result;
+    public List<? extends Object> getNamespaceImportSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        // List<Package> result = new ArrayList<>();
+        // if (self instanceof Resource resource) {
+        // resource.getContents().stream()
+        // .filter(Element.class::isInstance)
+        // .map(Element.class::cast)
+        // .forEach(element -> result.addAll(this.findClosestPackageInChildren(element)));
+        // } else if (self instanceof Package packageElement) {
+        // packageElement.getOwnedRelationship().stream()
+        // .filter(Membership.class::isInstance)
+        // .map(Membership.class::cast)
+        // .forEach(membership -> result.addAll(this.findClosestPackageInChildren(membership)));
+        // }
+        // return result;
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getPackage()));
+
     }
 
     /**
@@ -430,9 +428,10 @@ public class ViewToolService extends ToolService {
      *
      * @param editingContext
      *            the (non-{@code null}) {@link IEditingContext}.
-     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link PartUsage}.
      */
-    public List<Resource> getStakeholderSelectionDialogElements(IEditingContext editingContext) {
+    public List<Object> getStakeholderSelectionDialogElements(IEditingContext editingContext) {
         return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getPartUsage()));
     }
 
@@ -441,11 +440,15 @@ public class ViewToolService extends ToolService {
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
      *         {@link PartUsage}.
      */
-    public List<? extends Object> getStakeholderSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, List.of(SysmlPackage.eINSTANCE.getPartUsage()));
+    public List<? extends Object> getStakeholderSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getPartUsage()));
     }
 
     /**
@@ -453,9 +456,10 @@ public class ViewToolService extends ToolService {
      *
      * @param editingContext
      *            the (non-{@code null}) {@link IEditingContext}.
-     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link Type}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link Type}.
      */
-    public List<Resource> getSubjectSelectionDialogElements(IEditingContext editingContext) {
+    public List<Object> getSubjectSelectionDialogElements(IEditingContext editingContext) {
         return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getType()));
     }
 
@@ -464,11 +468,15 @@ public class ViewToolService extends ToolService {
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
      *         {@link Usage}.
      */
-    public List<? extends Object> getSubjectSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, List.of(SysmlPackage.eINSTANCE.getType()));
+    public List<? extends Object> getSubjectSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getType()));
     }
 
     /**
@@ -476,11 +484,38 @@ public class ViewToolService extends ToolService {
      *
      * @param editingContext
      *            the (non-{@code null}) {@link IEditingContext}.
-     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}
-     *         or {@link PartDefinition}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link PartUsage} or {@link PartDefinition}.
      */
-    public List<Resource> getActorSelectionDialogElements(IEditingContext editingContext) {
+    public List<Object> getActorSelectionDialogElements(IEditingContext editingContext) {
         return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getPartDefinition()));
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for the Objective Requirement creation tool.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
+     *         {@link RequirementUsage} or {@link RequirementDefinition}.
+     */
+    public List<? extends Object> getObjectiveRequirementSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds,
+                List.of(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementDefinition()));
+    }
+
+    /**
+     * Provides the root elements in the tree of the selection dialog for the Objective Requirement creation tool.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link RequirementUsage} or {@link RequirementDefinition}.
+     */
+    public List<Object> getObjectiveRequirementSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementDefinition()));
     }
 
     /**
@@ -488,11 +523,13 @@ public class ViewToolService extends ToolService {
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
      *         {@link PartUsage} or {@link PartDefinition}.
      */
-    public List<? extends Object> getActorSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, List.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getPartDefinition()));
+    public List<? extends Object> getActorSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getPartDefinition()));
     }
 
     /**
@@ -500,9 +537,10 @@ public class ViewToolService extends ToolService {
      *
      * @param editingContext
      *            the (non-{@code null}) {@link IEditingContext}.
-     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link ActionUsage}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link ActionUsage}.
      */
-    public List<Resource> getActionReferenceSelectionDialogElements(IEditingContext editingContext) {
+    public List<Object> getActionReferenceSelectionDialogElements(IEditingContext editingContext) {
         return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getActionUsage()));
     }
 
@@ -511,10 +549,43 @@ public class ViewToolService extends ToolService {
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
-     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an {@link ActionUsage}.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an
+     *         {@link ActionUsage}.
      */
-    public List<? extends Object> getActionReferenceSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, List.of(SysmlPackage.eINSTANCE.getActionUsage()));
+    public List<? extends Object> getActionReferenceSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getActionUsage()));
+    }
+
+    /**
+     * Provides the root elements in the tree of the selection dialog for presenting all existing StateUsage.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link StateUsage}.
+     */
+    public List<Object> getExhibitStateSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getStateUsage()));
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for presenting all existing StateUsage.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an
+     *         {@link StateUsage}.
+     */
+    public List<? extends Object> getExhibitStateSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getStateUsage()));
     }
 
     /**
@@ -526,7 +597,7 @@ public class ViewToolService extends ToolService {
      *            the EClassifier candidates.
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one candidates.
      */
-    public List<Resource> getSelectionDialogElements(IEditingContext editingContext, List<EClassifier> candidates) {
+    public List<Object> getSelectionDialogElements(IEditingContext editingContext, List<EClassifier> candidates) {
         return this.getAllResourcesWithInstancesOf(editingContext, candidates);
     }
 
@@ -535,32 +606,36 @@ public class ViewToolService extends ToolService {
      *
      * @param selectionDialogTreeElement
      *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
      * @param candidates
      *            the EClassifier candidates.
      * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are candidates.
      */
-    public List<? extends Object> getSelectionDialogChildren(Object selectionDialogTreeElement, List<EClassifier> candidates) {
-        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, candidates);
+    public List<? extends Object> getSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds, List<EClassifier> candidates) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, candidates);
     }
 
-    protected List<Resource> getAllResourcesWithInstancesOf(IEditingContext editingContext, List<EClassifier> eClassifiers) {
-        Objects.requireNonNull(editingContext);
+    protected List<Object> getAllResourcesWithInstancesOf(IEditingContext editingContext, List<EClassifier> eClassifiers) {
+        var elementsContainingClassifiers = new ArrayList<>();
+        List<Object> elements = this.sysONExplorerService.getElements(editingContext, List.of());
+        for (Object rootElement : elements) {
+            if (rootElement instanceof Resource resource && this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifiers)) {
+                elementsContainingClassifiers.add(resource);
+            } else if (rootElement instanceof ISysONExplorerFragment fragment) {
+                elementsContainingClassifiers.add(fragment);
+            }
+        }
 
-        var optResourceSet = Optional.of(editingContext)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(IEMFEditingContext::getDomain)
-                .map(EditingDomain::getResourceSet);
-        var resourcesContainingPartUsage = optResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifiers))
-                .toList())
-                .orElseGet(ArrayList::new);
-        return resourcesContainingPartUsage.stream().sorted(Comparator.comparing(r -> this.getResourceName(r))).toList();
+        return elementsContainingClassifiers.stream()
+                .sorted(Comparator.comparingInt(this::getSelectionDialogRootSortRank)
+                        .thenComparing(this::getElementName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
     }
 
-    protected List<? extends Object> getChildrenWithInstancesOf(Object selectionDialogTreeElement, List<EClassifier> eClassifiers) {
-        Objects.requireNonNull(selectionDialogTreeElement);
-
+    protected List<? extends Object> getChildrenWithInstancesOf(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds, List<EClassifier> eClassifiers) {
         final List<? extends Object> result;
 
         if (selectionDialogTreeElement instanceof Resource resource) {
@@ -568,12 +643,19 @@ public class ViewToolService extends ToolService {
                     .filter(content -> eClassifiers.stream().anyMatch(eClassifier -> eClassifier.isInstance(content)) || this.containsDirectlyOrIndirectlyInstancesOf(content, eClassifiers))
                     .toList();
         } else if (selectionDialogTreeElement instanceof Element sysmlElement) {
-            return sysmlElement.getOwnedRelationship().stream()
+            result = sysmlElement.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
                     .map(Membership.class::cast)
                     .map(Membership::getOwnedRelatedElement).flatMap(List::stream)
                     .filter(content -> eClassifiers.stream().anyMatch(eClassifier -> eClassifier.isInstance(content)) || this.containsDirectlyOrIndirectlyInstancesOf(content, eClassifiers))
                     .toList();
+        } else if (selectionDialogTreeElement instanceof ISysONExplorerFragment fragment) {
+            result = fragment.getChildren(editingContext, List.of(), expandedIds, List.of()).stream().filter(child -> {
+                if (child instanceof Resource childResource && !this.containsDirectlyOrIndirectlyInstancesOf(childResource, eClassifiers)) {
+                    return false;
+                }
+                return true;
+            }).toList();
         } else {
             result = new ArrayList<>();
         }
@@ -618,6 +700,26 @@ public class ViewToolService extends ToolService {
                 .findFirst()
                 .map(ResourceMetadataAdapter::getName)
                 .orElse(resource.getURI().lastSegment());
+    }
+
+    protected String getElementName(Object element) {
+        String elementName = "";
+        if (element instanceof Resource resource) {
+            elementName = this.getResourceName(resource);
+        } else if (element instanceof ISysONExplorerFragment fragment) {
+            elementName = fragment.getLabel();
+        }
+        return elementName;
+    }
+
+    protected int getSelectionDialogRootSortRank(Object element) {
+        int rank = Integer.MAX_VALUE;
+        if (element instanceof Resource) {
+            rank = 0;
+        } else if (element instanceof ISysONExplorerFragment) {
+            rank = 1;
+        }
+        return rank;
     }
 
     protected List<Package> findClosestPackageInChildren(Element element) {

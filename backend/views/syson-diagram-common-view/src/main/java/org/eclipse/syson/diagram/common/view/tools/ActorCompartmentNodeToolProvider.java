@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
@@ -40,7 +41,7 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .elementsExpression(ServiceMethod.of0(ViewToolService::getActorSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of0(ViewToolService::getActorSelectionDialogChildren).aqlSelf())
+                .childrenExpression(ServiceMethod.of2(ViewToolService::getActorSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + partUsageType + ") or self.oclIsKindOf(" + partDefType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()

@@ -17,10 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.diagram.services.utils.ViewFilterSwitch;
@@ -130,16 +128,7 @@ public class DiagramQueryExposeService {
                 .toList();
     }
 
-    public List<Element> getAllReachableRequirements(EObject eObject) {
-        List<EObject> allRequirementUsages = this.utilService.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getRequirementUsage(), false);
-        List<EObject> allRequirementDefinitions = this.utilService.getAllReachableType(eObject, SysmlPackage.eINSTANCE.getRequirementDefinition(), false);
-        return Stream.concat(allRequirementUsages.stream(), allRequirementDefinitions.stream())
-                .filter(Element.class::isInstance)
-                .map(Element.class::cast)
-                .toList();
-    }
-
-    Set<Element> getDirectExposedElements(ViewUsage viewUsage) {
+    private Set<Element> getDirectExposedElements(ViewUsage viewUsage) {
         var directExposedElements = new HashSet<Element>();
         List<Expose> exposedElements = viewUsage.getOwnedRelationship().stream()
                 .filter(Expose.class::isInstance)

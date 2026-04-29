@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -77,13 +76,6 @@ public class DiagramQueryAQLService {
      */
     public boolean canCreateFlowUsage(ConnectionUsage connection) {
         return this.diagramQueryElementService.canCreateFlowUsage(connection);
-    }
-
-    /**
-     * {@link DiagramQueryExposeService#getAllReachableRequirements(EObject)}.
-     */
-    public List<Element> getAllReachableRequirements(EObject eObject) {
-        return this.diagramQueryExposeService.getAllReachableRequirements(eObject);
     }
 
     /**

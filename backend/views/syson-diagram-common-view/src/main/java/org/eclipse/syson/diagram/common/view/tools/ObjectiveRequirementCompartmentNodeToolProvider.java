@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Node tool provider for objective compartment in the element that need such compartment.
@@ -38,8 +42,13 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        String reqUsageType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementUsage());
+        String reqDefType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementDefinition());
+
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(DiagramQueryAQLService::getAllReachableRequirements).aqlSelf())
+                .elementsExpression(ServiceMethod.of0(ViewToolService::getObjectiveRequirementSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of2(ViewToolService::getObjectiveRequirementSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + reqUsageType + ") or self.oclIsKindOf(" + reqDefType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)

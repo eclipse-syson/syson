@@ -45,6 +45,7 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** Improve the tool to create a `SatisfyRequirement` graphical node, either standalone, feature typed, or subsetting a `RequirementUsage` by reference.
 ** Reorganize the three tools to create `ExhibitStateUsage` graphical nodes into two tools, one for parallel `ExhibitStateUsage`, one for non-parallel `ExhibitStateUsage`.
 Both tools optionally allow selecting an existing `StateUsage` to exhibit.
+** Improve the selection dialog used in various tools by regrouping all standard libraries candidates under a "Libraries" category.
 
 * In the _Explorer_ view:
 
