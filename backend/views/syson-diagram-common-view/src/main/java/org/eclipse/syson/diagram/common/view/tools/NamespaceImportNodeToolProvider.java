@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -85,7 +86,7 @@ public class NamespaceImportNodeToolProvider implements INodeToolProvider {
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .elementsExpression(ServiceMethod.of0(ViewToolService::getNamespaceImportSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of0(ViewToolService::getNamespaceImportSelectionDialogChildren).aqlSelf())
+                .childrenExpression(ServiceMethod.of2(ViewToolService::getNamespaceImportSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainType + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()

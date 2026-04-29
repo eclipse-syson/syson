@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -73,6 +74,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.eclipse.syson.util.ViewConstants;
@@ -97,6 +99,10 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVTopNodeCreationTests extends AbstractIntegrationTests {
+
+    private static final String KERML_SELECTION_DIALOG_ID = UUID.nameUUIDFromBytes("SysON_KerML_Directory".getBytes()).toString();
+
+    private static final String SYSML_SELECTION_DIALOG_ID = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new SDVDescriptionNameGenerator();
 
@@ -358,12 +364,62 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
             var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, representationId);
             var treeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
-            var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {
-                // 95 is the number of standard libraries
-                assertThat(tree.getChildren()).isNotEmpty().hasSize(95);
+            var hasSelectionDialogRootContent = this.getTreeSubscriptionConsumer(tree -> {
+                assertThat(tree.getChildren()).isNotEmpty();
+
+                TreeItem librariesItem = tree.getChildren().stream()
+                        .filter(treeItem -> LibrariesDirectory.LIBRARIES_DIRECTORY_ID.equals(treeItem.getId()))
+                        .findFirst()
+                        .orElseThrow();
+                assertThat(librariesItem.getLabel().toString()).isEqualTo("Libraries");
+                assertThat(librariesItem.isEditable()).isFalse();
+                assertThat(librariesItem.isDeletable()).isFalse();
+                assertThat(librariesItem.isSelectable()).isFalse();
+                assertThat(librariesItem.isHasChildren()).isTrue();
+
+                assertThat(tree.getChildren()).anySatisfy(treeItem -> {
+                    assertThat(treeItem.getId()).isEqualTo(LibrariesDirectory.LIBRARIES_DIRECTORY_ID);
+                    assertThat(treeItem.getLabel().toString()).isEqualTo("Libraries");
+                });
             });
+
+            var expandedRepresentationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT,
+                    List.of(LibrariesDirectory.LIBRARIES_DIRECTORY_ID));
+            var expandedInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), GeneralViewEmptyTestProjectData.EDITING_CONTEXT, expandedRepresentationId);
+            var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedInput).flux();
+
+            var hasExpandedLibrariesContent = this.getTreeSubscriptionConsumer(tree -> {
+                TreeItem librariesItem = tree.getChildren().stream()
+                        .filter(treeItem -> LibrariesDirectory.LIBRARIES_DIRECTORY_ID.equals(treeItem.getId()))
+                        .findFirst()
+                        .orElseThrow();
+
+                assertThat(librariesItem.getChildren()).hasSize(2);
+                assertThat(librariesItem.getChildren()).anySatisfy(treeItem -> {
+                    assertThat(treeItem.getId()).isEqualTo(KERML_SELECTION_DIALOG_ID);
+                    assertThat(treeItem.getLabel().toString()).isEqualTo("KerML");
+                    assertThat(treeItem.isEditable()).isFalse();
+                    assertThat(treeItem.isDeletable()).isFalse();
+                    assertThat(treeItem.isSelectable()).isFalse();
+                    assertThat(treeItem.isHasChildren()).isTrue();
+                });
+                assertThat(librariesItem.getChildren()).anySatisfy(treeItem -> {
+                    assertThat(treeItem.getId()).isEqualTo(SYSML_SELECTION_DIALOG_ID);
+                    assertThat(treeItem.getLabel().toString()).isEqualTo("SysML");
+                    assertThat(treeItem.isEditable()).isFalse();
+                    assertThat(treeItem.isDeletable()).isFalse();
+                    assertThat(treeItem.isSelectable()).isFalse();
+                    assertThat(treeItem.isHasChildren()).isTrue();
+                });
+            });
+
             StepVerifier.create(treeFlux)
-                    .consumeNextWith(hasResourceRootContent)
+                    .consumeNextWith(hasSelectionDialogRootContent)
+                    .thenCancel()
+                    .verify(Duration.ofSeconds(10));
+
+            StepVerifier.create(expandedTreeFlux)
+                    .consumeNextWith(hasExpandedLibrariesContent)
                     .thenCancel()
                     .verify(Duration.ofSeconds(10));
         }

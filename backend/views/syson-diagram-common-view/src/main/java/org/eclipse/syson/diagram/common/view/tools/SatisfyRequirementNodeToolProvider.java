@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -73,7 +74,8 @@ public class SatisfyRequirementNodeToolProvider implements INodeToolProvider {
 
         var selectionDialogTreeDescription = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .elementsExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(selectableTypes)))
-                .childrenExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogChildren).aqlSelf(AQLUtils.aqlSequence(selectableTypes)))
+                .childrenExpression(
+                        ServiceMethod.of3(ViewToolService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(selectableTypes)))
                 .isSelectableExpression(AQLConstants.AQL + "self.oclIsKindOf(" + defType + ") or self.oclIsKindOf(" + reqUsageType + ")")
                 .build();
 
