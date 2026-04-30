@@ -18,6 +18,7 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DecoratorContainer,
   Label,
   Resizer,
   useConnectionLineNodeStyle,
@@ -45,6 +46,7 @@ const sysMLImportedPackageNodeStyle = (
     padding: '0px',
     width: '100%',
     height: '100%',
+    position: 'relative',
     opacity: faded ? '0.4' : '',
     ...style,
     border: 'none',
@@ -194,6 +196,7 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`SysMLImportedPackage - ${data?.insideLabel?.text}`}>
+          <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
           {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />

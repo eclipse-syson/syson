@@ -32,7 +32,7 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<sirius.web.version>2026.3.3</sirius.web.version>
+		<sirius.web.version>2026.3.8</sirius.web.version>
 		<syson.version>2026.3.3</syson.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/releng/syson-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>

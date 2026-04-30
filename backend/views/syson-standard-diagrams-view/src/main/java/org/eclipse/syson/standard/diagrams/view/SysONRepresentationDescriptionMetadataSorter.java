@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.syson.standard.diagrams.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 import org.eclipse.sirius.components.emf.services.api.IRepresentationDescriptionMetadataSorter;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +28,10 @@ import org.springframework.stereotype.Service;
 public class SysONRepresentationDescriptionMetadataSorter implements IRepresentationDescriptionMetadataSorter {
 
     @Override
-    public List<RepresentationDescriptionMetadata> sort(List<RepresentationDescriptionMetadata> representationDescriptions) {
-        List<RepresentationDescriptionMetadata> sortedRepresentationDescriptions = new ArrayList<>();
-        for (RepresentationDescriptionMetadata representationDescriptionMetadata : representationDescriptions) {
-            if (SDVDiagramDescriptionProvider.DESCRIPTION_NAME.equals(representationDescriptionMetadata.getLabel())) {
+    public List<RepresentationDescriptionMetadataDTO> sort(List<RepresentationDescriptionMetadataDTO> representationDescriptions) {
+        List<RepresentationDescriptionMetadataDTO> sortedRepresentationDescriptions = new ArrayList<>();
+        for (RepresentationDescriptionMetadataDTO representationDescriptionMetadata : representationDescriptions) {
+            if (SDVDiagramDescriptionProvider.DESCRIPTION_NAME.equals(representationDescriptionMetadata.label())) {
                 sortedRepresentationDescriptions.add(0, representationDescriptionMetadata);
             } else {
                 sortedRepresentationDescriptions.add(representationDescriptionMetadata);

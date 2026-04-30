@@ -15,6 +15,7 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DecoratorContainer,
   Label,
   Resizer,
   useConnectionLineNodeStyle,
@@ -41,6 +42,7 @@ const sysMLViewFrameNodeStyle = (
     padding: '0px',
     width: '100%',
     height: '100%',
+    position: 'relative',
     opacity: faded ? '0.4' : '',
     ...style,
     backgroundColor: 'transparent',
@@ -129,7 +131,8 @@ export const SysMLViewFrameNode: NodeComponentsMap['sysMLViewFrameNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`SysMLViewFrame - ${data?.insideLabel?.text}`}
           data-svg="rect">
-          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
+          {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
           <div

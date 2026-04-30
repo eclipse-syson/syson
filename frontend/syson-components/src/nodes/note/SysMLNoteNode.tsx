@@ -18,6 +18,7 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DecoratorContainer,
   EdgeData,
   Label,
   NodeData,
@@ -46,6 +47,7 @@ const sysMLNoteNodeStyle = (
     padding: '0px',
     width: '100%',
     height: '100%',
+    position: 'relative',
     opacity: faded ? '0.4' : '',
     ...style,
     // No border nor background color: this is handled by the SVG image
@@ -148,6 +150,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
               />
             </svg>
           </div>
+          <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
           {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
           {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
