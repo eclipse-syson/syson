@@ -32,9 +32,12 @@ test.describe('diagram - general view', () => {
     await playwrightExplorer.expand('Package1');
     await playwrightExplorer.createRepresentation('view1 [GeneralView]', 'General View', 'view1');
 
-    // Make sure all the elements are visible and at well-defined locations
-    await page.getByTestId('arrange-all-menu').click();
-    await page.getByTestId('arrange-all-elk-layered').click();
+    await page.getByTestId('arrange-all-main-button').click();
+
+    const partNode = new PlaywrightNode(page, 'part1', 'List');
+    await expect(partNode.nodeLocator).toBeAttached();
+
+    // Keep the diagram content visible without depending on Sirius Web's arrange-all toolbar controls.
     await page.getByTestId('zoom-out').click();
   });
 

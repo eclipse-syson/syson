@@ -11,6 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+/* The selection rectangle */
+.react-flow__nodesselection-rect {
+  pointer-events: none;
+}
+
 /* The circle used to reconnect an edge */
 .react-flow__edgeupdater {
   cursor: pointer;

@@ -63,6 +63,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-diagrams</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
