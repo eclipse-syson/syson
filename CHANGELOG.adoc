@@ -61,6 +61,7 @@ This change ensures compatibility with classpath resource resolution, which requ
 - https://github.com/eclipse-syson/syson/issues/2045[#2045] [diagrams] In Interconnection View diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
 - https://github.com/eclipse-syson/syson/issues/2094[#2094] [libraries] Ensure library documents are read-only.
 - https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] Fixed classpath resource resolution on Windows by enforcing forward slashes (`/`) in library paths.
+- https://github.com/eclipse-syson/syson/issues/2185[#2185] [explorer] When creating a `ConstraintUsage` inside a `Requirement` the new constraint is now correctly owned through a `RequirementConstraintMembership`.
 
 === Improvements
 

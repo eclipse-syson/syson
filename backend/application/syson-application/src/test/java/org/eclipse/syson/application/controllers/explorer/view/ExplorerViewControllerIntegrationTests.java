@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,6 +35,8 @@ import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -57,9 +60,11 @@ import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.WithUserLibrariesTestProjectData;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
@@ -73,6 +78,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 /**
@@ -135,6 +141,9 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
     @Autowired
     private IIdentityService identityService;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private ExplorerEventSubscriptionRunner treeEventSubscriptionRunner;
@@ -405,6 +414,55 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
         List<String> treeFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescription.filters[*].id");
         assertThat(treeFilterIds).isEmpty();
+    }
+
+    @DisplayName("GIVEN the Sirius Explorer View, WHEN creating a constraint inside a requirement, THEN the new constraint is owned through a RequirementConstraintMembership")
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateConstraintInRequirement() {
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
+
+        var newConstraintId = new AtomicReference<String>(null);
+
+        Consumer<Object> ignorePayload = (o) -> {
+            // Ignore the refresh event payload, we will check the actual semantic model content.
+        };
+
+        Runnable createChildConstraint = () -> {
+            var input = new CreateChildInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, ExplorerViewDirectEditTestProjectData.SemanticIds.REQ1_RU_ID,
+                    "SysMLv2EditService-ConstraintUsage");
+            var result = this.createChildMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
+            assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
+            String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
+            newConstraintId.set(objectId);
+        };
+
+        Runnable checkConstraintOwnership = () -> {
+            var editingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
+                var optionalContraint = this.objectSearchService.getObject(editingContext, newConstraintId.get());
+                assertThat(optionalContraint).containsInstanceOf(ConstraintUsage.class);
+                var constraint = (ConstraintUsage) optionalContraint.get();
+                assertThat(constraint.getOwningRelationship()).isInstanceOf(RequirementConstraintMembership.class);
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalContraint.get());
+            });
+            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(editingContextFunctionInput);
+            var payload = result.block();
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(ignorePayload)
+                .then(createChildConstraint)
+                .consumeNextWith(ignorePayload)
+                .then(checkConstraintOwnership)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     private List<String> getAllTreeItemIds(String editingContextId) {
