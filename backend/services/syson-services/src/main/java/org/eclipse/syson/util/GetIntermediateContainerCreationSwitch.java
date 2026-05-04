@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -27,6 +28,8 @@ import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
@@ -52,6 +55,19 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     @Override
     public Optional<EClass> caseComment(Comment object) {
         return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
+    }
+
+    @Override
+    public Optional<EClass> caseConstraintUsage(ConstraintUsage object) {
+        Optional<EClass> intermediateContainer;
+        if (this.container instanceof RequirementDefinition || this.container instanceof RequirementUsage) {
+            // SysML v2 8.3.21.7: "A RequirementConstraintMembership is a FeatureMembership for an assumed or required
+            // ConstraintUsage of a RequirementDefinition or RequirementUsage."
+            intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getRequirementConstraintMembership());
+        } else {
+            intermediateContainer = this.caseFeature(object);
+        }
+        return intermediateContainer;
     }
 
     @Override

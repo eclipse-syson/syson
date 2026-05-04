@@ -16,7 +16,11 @@
 
 * In _Details_ view:
 
-** Fix an issue that allowed to edit library objects via the _Details_ view. 
+** Fix an issue that allowed to edit library objects via the _Details_ view.
+
+* In the _Explorer_ view:
+
+** When creating a `ConstraintUsage` inside a `Requirement` the new constraint is now correctly owned through a `RequirementConstraintMembership`.
 
 == Improvements
 
