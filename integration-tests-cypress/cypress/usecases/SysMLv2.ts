@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,16 @@ import { CreatedProjectData } from './SysMLv2.types';
 
 export class SysMLv2 {
   public createSysMLv2Project(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject('SysMLv2', 'sysmlv2-template').then((res) => {
+    return cy.createProject('SysMLv2', 'sysmlv2-template', []).then((res) => {
+      if (!res?.body?.data?.createProject) {
+        throw new Error(
+          'The project SysMLv2 has not been created: createProject did not return an HTTP response payload'
+        );
+      }
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
-        const data: CreatedProjectData = { projectId };
-        return cy.wrap(data);
+        return { projectId };
       } else {
         throw new Error(`The project SysMLv2 has not been created`);
       }

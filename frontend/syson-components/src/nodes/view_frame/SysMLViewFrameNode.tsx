@@ -37,7 +37,7 @@ const sysMLViewFrameNodeStyle = (
   hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
-  const packageContainerStyle: React.CSSProperties = {
+  const frameContainerStyle: React.CSSProperties = {
     display: 'flex',
     padding: '0px',
     width: '100%',
@@ -49,10 +49,10 @@ const sysMLViewFrameNodeStyle = (
   };
 
   if (selected || hovered) {
-    packageContainerStyle.outline = `${theme.palette.selected} solid 1px`;
+    frameContainerStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
-  return packageContainerStyle;
+  return frameContainerStyle;
 };
 
 const viewFrameNameCompartmentStyle = (
@@ -63,8 +63,8 @@ const viewFrameNameCompartmentStyle = (
   return {
     display: 'flex',
     position: 'absolute',
-    top: 0,
-    left: 0,
+    top: -1,
+    left: -1,
     width: '70%',
     padding: '4px 8px',
     opacity: faded ? '0.4' : '',
