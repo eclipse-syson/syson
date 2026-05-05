@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -80,16 +81,41 @@ public class MetamodelQueryElementService {
     }
 
     /**
-     * Check if a given {@code element} is an {@link Expression} definition. We can not simply rely on whether the
-     * element is an instance of {@link Expression} as many types in SysMLv2 inherit from this type without being
-     * themselves an actual expressions.
+     * Check if a given {@link Element element} is an {@link Expression expression} definition. We can not simply rely
+     * on whether the element is an instance of {@link Expression expression} as many types in SysMLv2 inherit from this
+     * type without being themselves an actual expressions.
      *
      * @param element
      *            the element to test.
      * @return true if the element is an actual expression definition.
      */
     public boolean isExpressionDefinition(Element element) {
-        return element instanceof Expression && !(element instanceof Usage);
+        return element instanceof Expression && !(element instanceof Usage) && !(element instanceof BooleanExpression);
+    }
+
+    /**
+     * Check is a given {@link Element element} is a top-level {@link Expression expression}. In most cases, end-users
+     * are only interested with these and not the internal elements which are technically also expressions but represent
+     * parts of the overall expression.
+     *
+     * @param element
+     *            the element to test.
+     * @return true if the element is a top-level expression definition.
+     */
+    public boolean isTopLevelExpression(Element element) {
+        boolean result = false;
+        if (this.isExpressionDefinition(element)) {
+            result = true;
+            var ancestor = element.getOwner();
+            while (ancestor != null) {
+                if (this.isExpressionDefinition(ancestor)) {
+                    result = false;
+                    break;
+                }
+                ancestor = ancestor.getOwner();
+            }
+        }
+        return result;
     }
 
     /**
