@@ -2,54 +2,64 @@
 
 == Key highlights
 
+* SysON now requires *Java 21* or later.
+* New diagram tools let you create timeslices and snapshots from `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
+* Improved multi-selection support in standard diagrams for _Duplicate Element_, _View As_, and _Add existing elements_. _Duplicate Element_ now also has the `Ctrl+d` key binding.
+* Improved selection dialogs in several creation tools: some specialization or reference selections are now optional, and standard library candidates are grouped under a `Libraries` category.
+* In the _Explorer_ view, `Expression` elements now display their full textual representation.
+
 == Breaking changes
 
-- As of version 2026.5.0, SysON now requires **Java 21** or later.
+* As of version 2026.5.0, SysON now requires *Java 21* or later.
 
 == New features
 
-== Bug fixes
-
 * In diagrams:
 
-** In _Interconnection View_ diagrams, fix an issue where the `parts` compartment of `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from the `PartDefinition` graphical node, even if the `interconnection` compartment was already visible.
+** Add tools to create timeslices and snapshots on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
+These tools use a selection dialog to either create a graphical node based on an existing timeslice or snapshot, or, if nothing is selected, create a default timeslice or snapshot `OccurrenceUsage` graphical node.
 
-* In _Details_ view:
-
-** Fix an issue that allowed to edit library objects via the _Details_ view.
-
-* In the _Explorer_ view:
-
-** When creating a `ConstraintUsage` inside a `Requirement` the new constraint is now correctly owned through a `RequirementConstraintMembership`.
-
-== Improvements
-
-* In diagrams:
-
-** Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
-These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
 ** Improved support for `Stakeholder`.
-On `Requirement` or `Concern` (either definition or usage) graphical nodes it is now possible to create new _stakeholders_ (which must reference existing `PartUsage`).
-Stakeholders are by default represented with a dedicated graphical node connected to the parent graphical node, or can appear inside the `stakeholders` list compartment.
+It is now possible to create new _stakeholders_ from `Requirement` and `Concern` graphical nodes, whether they are definitions or usages.
+Created stakeholders must reference an existing `PartUsage`.
+By default, stakeholders are represented as dedicated graphical nodes connected to their parent graphical node, but they can also be displayed in the `stakeholders` compartment.
 +
 image::release-notes-stakeholder-menu.png[Tool to create a new Stakeholder]
 +
 image::release-notes-stakeholder-node.png[Default representation of Stakeholder connected to its corresponding `RequirementDefinition`]
 
-** Improve the tool to create an `Actor` graphical node by making specialization selection optional.
-** Improve the tool to create a `Stakeholder` graphical node by making specialization selection optional.
-** Improve the tool to create a `Subject` graphical node by making specialization selection optional.
-** Improve the tool to create a `FlowUsage` from a `ConnectionUsage` by making the payload selection optional.
-** Merge the two objective creation tools into a single tool by leveraging the updated selection dialog which make the specialization selection optional.
-** Merge the two perform action creation tools into a single tool by leveraging the updated selection dialog which make the selection of a referenced action optional.
-** Improve the _Duplicate Element_ tool to support multi-selection in standard diagrams, and also associate it with a keybinding (_ctrl+d_).
+== Bug fixes
+
+* In diagrams:
+
+** In _Interconnection View_ diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from that `PartDefinition`, even when the `interconnection` compartment was already visible.
+
+* In the _Details_ view:
+
+** Fix an issue that allowed users to edit library objects from the _Details_ view.
+
+* In the _Explorer_ view:
+
+** When creating a `ConstraintUsage` inside a `Requirement`, the new constraint is now correctly owned through a `RequirementConstraintMembership`.
+
+== Improvements
+
+* In diagrams:
+
+** Improve the tool for creating an `Actor` graphical node by making specialization selection optional.
+** Improve the tool for creating a `Stakeholder` graphical node by making specialization selection optional.
+** Improve the tool for creating a `Subject` graphical node by making specialization selection optional.
+** Improve the tool for creating a `FlowUsage` from a `ConnectionUsage` by making payload selection optional.
+** Merge the two objective creation tools into a single tool by leveraging the updated selection dialog, which makes specialization selection optional.
+** Merge the two perform action creation tools into a single tool by leveraging the updated selection dialog, which makes selection of a referenced action optional.
+** Improve the _Duplicate Element_ tool to support multi-selection in standard diagrams, and add the `Ctrl+D` key binding.
 ** Improve the _View As_ tool on graphical nodes to support multi-selection in standard diagrams.
 ** Improve the _Add existing elements_ tool on graphical nodes to support multi-selection in standard diagrams.
-** Improve the tools to create `PerformActionUsage` by making the selection of a subsetted reference optional.
-** Improve the tool to create a `SatisfyRequirement` graphical node, either standalone, feature typed, or subsetting a `RequirementUsage` by reference.
-** Reorganize the three tools to create `ExhibitStateUsage` graphical nodes into two tools, one for parallel `ExhibitStateUsage`, one for non-parallel `ExhibitStateUsage`.
-Both tools optionally allow selecting an existing `StateUsage` to exhibit.
-** Improve the selection dialog used in various tools by regrouping all standard libraries candidates under a "Libraries" category.
+** Improve the tools for creating `PerformActionUsage` by making selection of a subsetted reference optional.
+** Improve the tool for creating a `SatisfyRequirement` graphical node, whether standalone, feature typed, or subsetting a `RequirementUsage` by reference.
+** Reorganize the three tools for creating `ExhibitStateUsage` graphical nodes into two tools: one for parallel `ExhibitStateUsage`, and one for non-parallel `ExhibitStateUsage`.
+Both tools optionally allow the selection of an existing `StateUsage` to exhibit.
+** Improve the selection dialog used by various tools by grouping all standard library candidates under a `Libraries` category.
 
 * In the _Explorer_ view:
 
@@ -59,4 +69,4 @@ image::explorer-expression-text.png[Expression textual representation]
 
 == Technical details
 
-* For technical details on this {product} release (including breaking changes), please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
