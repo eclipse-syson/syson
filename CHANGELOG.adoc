@@ -30,6 +30,7 @@
 Disabling the _Hide expression internals_ filter in the _Explorer_ view allows to display them if needed.
 - https://github.com/eclipse-syson/syson/issues/2112[#2112] [diagrams] Add tools to create _Start_ and _Done_ `StateUsages`, available on `StateUsage` and `StateDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2231[#2231] [diagrams] Add a new tools to create a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2231[#2231] [diagrams] Add the support for the _frames_ compartment graphical node in `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 == v2026.5.0
 

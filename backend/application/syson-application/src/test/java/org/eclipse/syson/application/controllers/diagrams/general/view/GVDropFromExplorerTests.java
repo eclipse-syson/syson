@@ -237,12 +237,12 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewEdgeCount(0)
                     // 1 node for the Requirement and 8 for its compartments and one for the documentation
-                    .hasNewNodeCount(10)
+                    .hasNewNodeCount(11)
                     .check(diagram.get(), newDiagram);
             new CheckNodeOnDiagram(diagramDescriptionIdProvider, this.diagramComparator)
                     .hasNodeDescriptionName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
                     .hasTargetObjectLabel("RequirementUsage")
-                    .hasTotalCompartmentCount(8)
+                    .hasTotalCompartmentCount(9)
                     .check(diagram.get(), newDiagram);
         });
 

@@ -44,7 +44,7 @@ public class SDVDescriptionNameGenerator extends DescriptionNameGenerator {
             name = "New Require constraint";
         } else if (SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern().equals(eReference)
                 || SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern().equals(eReference)) {
-            name = "New framed concern";
+            name = "New framed Concern";
         }
         return name;
     }

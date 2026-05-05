@@ -52,6 +52,8 @@ import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescription
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneStateNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentItemNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
@@ -378,6 +380,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         this.linkActionPerformActionsCompartment(cache);
         this.linkInterconnectionCompartment(cache);
         this.linkSatisfyRequirementsCompartment(cache);
+        this.linkFramedConcernCompartment(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -541,11 +544,11 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         // ActionUsage, PartUsage, PerformActionUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForNestedAction(colorProvider));
 
-        // Compartment "interconnection" (many usages and defintions) is defined for:
+        // Compartment "interconnection" (many usages and definitions) is defined for:
         // PartUsage, PartDefinition
         compartmentNodeDescriptionProviders.addAll(this.createInterconnectionCompartment(colorProvider));
 
-        // Compartment "satisfy requirements" (many usages and defintions) is defined for:
+        // Compartment "satisfy requirements" (many usages and definitions) is defined for:
         // PartUsage, PartDefinition
         compartmentNodeDescriptionProviders.addAll(this.createSatisfyRequirementsCompartments(colorProvider));
 
@@ -573,6 +576,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         // Exhibit State Usage
         compartmentNodeDescriptionProviders.add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(),
                 colorProvider, this.getDescriptionNameGenerator()));
+
+        // Compartment "frames" (ConcernUsage contained by FramedConcernMembership) is defined for:
+        // RequirementUsage, RequirementDefinition
+        compartmentNodeDescriptionProviders.addAll(this.createFramedConcernCompartments(colorProvider));
 
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForListItems(colorProvider));
 
@@ -702,6 +709,19 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new SatisfyRequirementCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createFramedConcernCompartments(IColorProvider colorProvider) {
+        List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(),
                 colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
@@ -1367,6 +1387,21 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                         .ifPresent(compartmentNodeDescription -> {
                             nd.getReusedChildNodeDescriptions().add(compartmentNodeDescription);
                         }));
+    }
+
+    private void linkFramedConcernCompartment(IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition()))
+                .ifPresent(requirementDefinitionNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern())
+                        + FramedConcernCompartmentNodeDescription.COMPARTMENT_NAME)
+                        .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
+                .ifPresent(requirementUsageNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern())
+                                    + FramedConcernCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
     }
 
     private void addCompartmentNodeDescriptionInNodeDescription(IViewDiagramElementFinder cache, NodeDescription compartmentNodeDescription, EClass eClass) {
