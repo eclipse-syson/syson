@@ -147,6 +147,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a GV diagram, WHEN adding existing element recursively, THEN expected nodes should have been added to the diagram")
     @GivenSysONServer({ GeneralViewAddExistingElementsTestProjectData.SCRIPT_PATH })
     @Test
     public void addExistingElementsRecursiveOnDiagram() {
@@ -450,7 +451,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
         assertThat(optRequirementNode).isPresent();
         assertThat(optRequirementNode.get().getChildNodes())
-                .as("Node RequirementUsage should contain 8 hidden compartment children").hasSize(8)
+                .as("Node RequirementUsage should contain 9 hidden compartment children").hasSize(9)
                 .allMatch(node -> node.getModifiers().contains(ViewModifier.Hidden));
     }
 
