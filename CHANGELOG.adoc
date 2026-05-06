@@ -164,6 +164,7 @@ And the following methods have been added:
 
 === Bug fixes
 
+- [export] Fix textual export not including nested packages in the output due to missing `org.eclipse.syson.sysml.Package` import in `SysMLRelationPredicates`.
 - https://github.com/eclipse-syson/syson/issues/1847[#1847] [export] Textual export duplicates "abstract" keyword for `OccurrenceUsage`.
 - https://github.com/eclipse-syson/syson/issues/1887[#1887] [export] Export fails to escape some names when using qualified name.
 - https://github.com/eclipse-syson/syson/issues/1953[#1953] [import] Fix an issue where `TransitionUsage` with `SendActionUsage` were not properly resolved.
