@@ -96,6 +96,7 @@ Both tools optionally allow selecting an existing `StateUsage` to exhibit.
 - https://github.com/eclipse-syson/syson/issues/1979[#1979] [diagrams] Add tools to create timeslices and snapshots, available on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
 These tools leverage a selection dialog to either create a specific timeslice/snapshot graphical node or, if no selection is made, default to a timeslice/snapshot `OccurrenceUsage` graphical node.
 - https://github.com/eclipse-syson/syson/issues/2176[#2176] [metamodel] Implements `ownedConcern` and `referencedConcern` of `FramedConcernMembership`.
+- https://github.com/eclipse-syson/syson/issues/2174[#2174] [diagrams] Add a new edge tool creating a _frame_ graphical edge between a `RequirementUsage` or a `RequirementDefinition` graphical node, and a `ConcernUsage` graphical node.
 
 == v2026.3.0
 

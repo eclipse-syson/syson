@@ -28,6 +28,13 @@ image::release-notes-stakeholder-menu.png[Tool to create a new Stakeholder, widt
 +
 image::release-notes-stakeholder-node.png[Default representation of Stakeholder connected to its corresponding `RequirementDefinition`, width=60%,height=60%]
 
+** Add support for the _frame_ graphical edge.
+A frame edge can be created between a `RequirementUsage` or a `RequirementDefinition` graphical node and a `ConcernUsage` graphical node.
++
+image::release-notes-frame-edge-tool.png[Edge tool to frame a ConcernUsage, width=60%,height=60%]
++
+image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a ConcernUsage, width=60%,height=60%]
+
 == Bug fixes
 
 * In diagrams:

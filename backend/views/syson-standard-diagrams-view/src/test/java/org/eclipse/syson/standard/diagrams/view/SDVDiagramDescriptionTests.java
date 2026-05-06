@@ -87,7 +87,7 @@ public class SDVDiagramDescriptionTests {
                 // SuccessionAsUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSuccessionAsUsage()).negate())
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
-                // Use a non editable fixed label
+                // Use a non-editable fixed label
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getIncludeUseCaseUsage()).negate())
                 // TransitionUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getTransitionUsage()).negate())
@@ -95,6 +95,8 @@ public class SDVDiagramDescriptionTests {
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFeatureValue()).negate())
                 // SatisfyRequirementUsage edge has a label (satisfy) but it is a constant and should not be modifiable
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()).negate())
+                // FramedConcernMembership edge has a label (frame) but it is a constant and should not be modifiable
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFramedConcernMembership()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

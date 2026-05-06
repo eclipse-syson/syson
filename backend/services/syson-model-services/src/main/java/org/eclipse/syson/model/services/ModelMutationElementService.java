@@ -18,15 +18,19 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -197,6 +201,33 @@ public class ModelMutationElementService {
         this.metamodelMutationElementService.initialize(newReferenceSubsetting);
 
         return newSatisfyRequirementUsage;
+    }
+
+    /**
+     * In a {@link RequirementDefinition}, or a {@link RequirementUsage}, creates {@link FramedConcernMembership} containing a {@link ConcernUsage} subsetted by reference the given concernUsage.
+     *
+     * @param type The type that will hold the {@link FramedConcernMembership}, must be a {@link RequirementDefinition}, or a {@link RequirementUsage}
+     * @param concernUsage The {@link ConcernUsage} subsetted by reference
+     * @return The created {@link FramedConcernMembership} when type is a {@link RequirementDefinition}, or a {@link RequirementUsage}, {@code null} otherwise
+     */
+    public FramedConcernMembership createFramedConcern(Type type, ConcernUsage concernUsage) {
+        if (type instanceof RequirementDefinition || type instanceof RequirementUsage) {
+            var newFramedConcernMembership = SysmlFactory.eINSTANCE.createFramedConcernMembership();
+            type.getOwnedRelationship().add(newFramedConcernMembership);
+
+            var newConcernUsage = SysmlFactory.eINSTANCE.createConcernUsage();
+            newFramedConcernMembership.getOwnedRelatedElement().add(newConcernUsage);
+
+            var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            newConcernUsage.getOwnedRelationship().add(newReferenceSubsetting);
+            newReferenceSubsetting.setReferencedFeature(concernUsage);
+
+            this.metamodelMutationElementService.initialize(newFramedConcernMembership);
+            this.metamodelMutationElementService.initialize(newConcernUsage);
+            this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+            return newFramedConcernMembership;
+        }
+        return null;
     }
 
     /**
