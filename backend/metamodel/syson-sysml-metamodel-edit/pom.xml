@@ -18,12 +18,12 @@
 	<parent>
 		<groupId>org.eclipse.syson</groupId>
 		<artifactId>syson</artifactId>
-		<version>2026.3.8</version>
+		<version>2026.3.9</version>
 		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-metamodel-edit</artifactId>
-	<version>2026.3.8</version>
+	<version>2026.3.9</version>
 	<name>syson-sysml-metamodel-edit</name>
 	<description>SysON SysMLv2 Metamodel - Edit Support</description>
 
