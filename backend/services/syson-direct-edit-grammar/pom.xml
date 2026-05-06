@@ -18,12 +18,12 @@
 	<parent>
 		<groupId>org.eclipse.syson</groupId>
 		<artifactId>syson</artifactId>
-		<version>2026.3.8</version>
+		<version>2026.3.9</version>
 		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-direct-edit-grammar</artifactId>
-	<version>2026.3.8</version>
+	<version>2026.3.9</version>
 	<name>syson-direct-edit-grammar</name>
 	<description>SysON Direct Edit Grammar</description>
 

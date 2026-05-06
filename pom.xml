@@ -24,7 +24,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson</artifactId>
-	<version>2026.3.8</version>
+	<version>2026.3.9</version>
 
 	<name>syson</name>
 	<description>SysON</description>
@@ -33,7 +33,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<sirius.web.version>2026.3.9</sirius.web.version>
-		<syson.version>2026.3.8</syson.version>
+		<syson.version>2026.3.9</syson.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/releng/backend/releng/syson-test-coverage/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
