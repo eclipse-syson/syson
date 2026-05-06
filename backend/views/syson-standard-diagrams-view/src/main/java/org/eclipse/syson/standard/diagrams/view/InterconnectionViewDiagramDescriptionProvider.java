@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.services.InterconnectionViewCreateService;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -47,8 +48,9 @@ public class InterconnectionViewDiagramDescriptionProvider implements IViewDescr
             public RepresentationDescription create(IColorProvider colorProvider) {
                 return new DiagramBuilders().newDiagramDescription()
                         .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
-                        .autoLayout(false)
                         .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
+                        .layoutOption(DiagramLayoutOption.NONE)
+                        .minimapVisible(true)
                         .preconditionExpression(ServiceMethod.of0(InterconnectionViewCreateService::canCreateDiagram).aqlSelf())
                         .name(DESCRIPTION_NAME)
                         .style(new DiagramBuilders().newDiagramStyleDescription()

@@ -45,7 +45,7 @@ This change ensures compatibility with classpath resource resolution, which requ
 === Dependency update
 
 - [releng] As of version 2026.5.0, SysON now requires **Java 21** or later.
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.8]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.3.9]
 - [releng] Update to `jacoco-maven-plugin` 0.8.14.
 - [releng] Update to `maven-checkstyle-plugin` 3.6.0 and CheckStyle 3.13.0.
 - [releng] Update to lexical 0.42.0.

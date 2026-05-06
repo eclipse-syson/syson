@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.AutoLayoutState;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -284,7 +285,7 @@ public class GVViewUsageExposedElementsTests extends AbstractIntegrationTests {
                 });
 
         Runnable newDiagramLayout = () -> {
-            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), ViewUsageExposedElementsTestProjectData.EDITING_CONTEXT_ID, diagram.get().getId(),
                     DiagramRefreshedEventPayload.CAUSE_REFRESH, layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
