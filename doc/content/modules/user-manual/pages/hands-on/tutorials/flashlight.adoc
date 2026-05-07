@@ -138,7 +138,7 @@ image::flashlight-action-tree.png[Flashlight Requirements Tree]
 . Edit it to `mass :> ISQ::mass`
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `fov:Real`.
 . Right-click again on `flashlight`, and use the quick access tool `New Attribute` to add `illuminationLevel:Real`.
-. Right-click on `flashlight`, then select the `Behavior` -> `New Perform` and select the action `produceDirectedLight` created earlier.
+. Right-click on `flashlight`, then select the `Behavior` -> `New Perform`, choose the second option in the selection dialog, then select the action `produceDirectedLight` created earlier.
 . In the `Explorer` view, select the `flashlight` part, click the "more" menu, and choose `New representation`.
 . Set the name of the representation to `Flashlight Interconnection View`.
 . Create a new `Interconnection View` and open it.
@@ -203,7 +203,7 @@ image::flashlight-interconnection.png[Flashlight Interconnection]
 . Set the name of the representation to `Flashlight General View`.
 . Create a new `General View` and open it.
 . In the main editor area, right-click on the diagram background to open the palette.
-. Click on `Behavior`-> `New Exhibit State` to create an exhibit state usage.
+. Click on `Behavior`-> `New Exhibit State`, choose the first option in the selection dialog to create an exhibit state usage.
 . Rename it to `flashlightStates`.
 . Right-click on `flashlightStates`, then select the `Behavior` -> `New State` to create a three nested states.
 . Rename them to `initial`, `off`, and `on`.
@@ -211,7 +211,7 @@ image::flashlight-interconnection.png[Flashlight Interconnection]
 . Create the following transitions between the `on` state and the `off` state.
 .. transition `off_To_on` from `off` to `on`
 .. transition `on_To_off` from `on` to `off`
-. Right-click on the `on` state, select the `Behavior` -> `Do Action with referenced action`, and select the `produceDirectedLight` action defined earlier .
+. Right-click on the `on` state, select the `Behavior` -> `New Do Action`, choose the second option in the selection dialog, then select the `produceDirectedLight` action defined earlier .
 
 image::flashlight-states.png[Flashlight States]
 
