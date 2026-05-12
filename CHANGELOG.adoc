@@ -62,6 +62,7 @@ This change ensures compatibility with classpath resource resolution, which requ
 - https://github.com/eclipse-syson/syson/issues/2094[#2094] [libraries] Ensure library documents are read-only.
 - https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] Fixed classpath resource resolution on Windows by enforcing forward slashes (`/`) in library paths.
 - https://github.com/eclipse-syson/syson/issues/2185[#2185] [explorer] When creating a `ConstraintUsage` inside a `Requirement` the new constraint is now correctly owned through a `RequirementConstraintMembership`.
+- https://github.com/eclipse-syson/syson/issues/2204[#2204] [diagrams] Fix an issue where the resize of _Documentation_ graphical nodes was not working correctly, allowing inside text to overflow outside of the graphical node.
 
 === Improvements
 

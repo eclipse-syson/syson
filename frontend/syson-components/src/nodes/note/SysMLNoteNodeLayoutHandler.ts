@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,16 +46,12 @@ export class SysMLNoteNodeLayoutHandler implements INodeLayoutHandler<SysMLNoteN
     const nodeElement = document.getElementById(`${node.id}-sysMLNoteNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 1;
 
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-
-    const labelHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
-
-    const nodeMinComputeHeight = labelHeight + borderWidth * 2;
+    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
 
     const nodeWidth = forceDimensions?.width ?? node?.width ?? 200;
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser && !forceDimensions?.width) {
