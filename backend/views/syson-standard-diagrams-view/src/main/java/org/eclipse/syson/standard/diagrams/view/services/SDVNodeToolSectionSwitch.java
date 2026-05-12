@@ -245,6 +245,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
@@ -275,6 +276,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
@@ -795,6 +797,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
@@ -825,6 +828,7 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS, this.createRequirementUsageAsObjectiveRequirementNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider().create(this.cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
