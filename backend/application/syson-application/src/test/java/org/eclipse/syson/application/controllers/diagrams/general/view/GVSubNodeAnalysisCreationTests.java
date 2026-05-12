@@ -473,6 +473,38 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
+    @DisplayName("GIVEN a CaseUsage, WHEN creating a perform action from the node palette, THEN the perform action is created in the perform actions compartment")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createPerformActionUsageInCaseUsage() {
+        this.createPerformActionWithoutSelectionInCaseNode(SysmlPackage.eINSTANCE.getCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_USAGE_ID, CASE,
+                SysmlPackage.eINSTANCE.getUsage_NestedAction());
+    }
+
+    @DisplayName("GIVEN a CaseDefinition, WHEN creating a perform action from the node palette, THEN the perform action is created in the perform actions compartment")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createPerformActionUsageInCaseDefinition() {
+        this.createPerformActionWithoutSelectionInCaseNode(SysmlPackage.eINSTANCE.getCaseDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CASE_DEFINITION_ID,
+                "CaseDefinition", SysmlPackage.eINSTANCE.getDefinition_OwnedAction());
+    }
+
+    @DisplayName("GIVEN a UseCaseUsage, WHEN creating a perform action from the node palette, THEN the perform action is created in the perform actions compartment")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createPerformActionUsageInUseCaseUsage() {
+        this.createPerformActionWithoutSelectionInCaseNode(SysmlPackage.eINSTANCE.getUseCaseUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_USAGE_ID, USE_CASE,
+                SysmlPackage.eINSTANCE.getUsage_NestedAction());
+    }
+
+    @DisplayName("GIVEN a UseCaseDefinition, WHEN creating a perform action from the node palette, THEN the perform action is created in the perform actions compartment")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createPerformActionUsageInUseCaseDefinition() {
+        this.createPerformActionWithoutSelectionInCaseNode(SysmlPackage.eINSTANCE.getUseCaseDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_DEFINITION_ID,
+                "UseCaseDefinition", SysmlPackage.eINSTANCE.getDefinition_OwnedAction());
+    }
+
     @DisplayName("GIVEN a Case, WHEN creating a new Subject selecting a Part, THEN the Subject subsetted by the Part is created in the Case")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
@@ -894,5 +926,40 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 .then(semanticCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    private void createPerformActionWithoutSelectionInCaseNode(EClass parentEClass, String targetObjectId, String parentLabel, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        EClass childEClass = SysmlPackage.eINSTANCE.getPerformActionUsage();
+        String creationToolName = "New Perform action";
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId,
+                creationToolName);
+
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram, true);
+        });
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(100));
     }
 }

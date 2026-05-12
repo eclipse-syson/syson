@@ -63,6 +63,7 @@ This change ensures compatibility with classpath resource resolution, which requ
 - https://github.com/eclipse-syson/syson/issues/2143[#2143] [configuration] Fixed classpath resource resolution on Windows by enforcing forward slashes (`/`) in library paths.
 - https://github.com/eclipse-syson/syson/issues/2185[#2185] [explorer] When creating a `ConstraintUsage` inside a `Requirement` the new constraint is now correctly owned through a `RequirementConstraintMembership`.
 - https://github.com/eclipse-syson/syson/issues/2196[#2196] [diagrams] Align the _New Flow (flow)_ tool on `PortUsage`, `ItemUsage`, and `ReferenceUsage` border nodes with the supported `FlowUsage` rendered endpoints, preventing unsupported targets such as regular `ActionUsage` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2197[#2197] [diagrams] Fix an issue where the _New Perform action_ tool was missing from `CaseUsage`, `CaseDefinition`, `UseCaseUsage`, and `UseCaseDefinition` graphical node palettes, while remaining available in the revealed `perform actions` compartment.
 - https://github.com/eclipse-syson/syson/issues/2204[#2204] [diagrams] Fix an issue where the resize of _Documentation_ graphical nodes was not working correctly, allowing inside text to overflow outside of the graphical node.
 
 === Improvements
