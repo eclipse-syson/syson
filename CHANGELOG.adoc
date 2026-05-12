@@ -14,6 +14,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.
+
 === New features
 
 

@@ -53,14 +53,14 @@ public class ServiceMethodTest {
         assertThat(ServiceMethod.of0(ArityFixture::instance0).declaration())
                 .isEqualTo(ArityFixture.class.getDeclaredMethod("instance0", Object.class));
         assertThat(ServiceMethod.of1(ArityFixture::instance1).aql("ctx", AQL_VALUE)).isEqualTo("aql:ctx.instance1('value')");
-        assertThat(ServiceMethod.of2(ArityFixture::instance2).aqlSelf(AQL_VALUE, AQL_INT)).isEqualTo("aql:self.instance2('value',2)");
-        assertThat(ServiceMethod.of3(ArityFixture::instance3).aqlSelf(AQL_VALUE, AQL_INT, "true")).isEqualTo("aql:self.instance3('value',2,true)");
+        assertThat(ServiceMethod.of2(ArityFixture::instance2).aqlSelf(AQL_VALUE, AQL_INT)).isEqualTo("aql:self.instance2('value', 2)");
+        assertThat(ServiceMethod.of3(ArityFixture::instance3).aqlSelf(AQL_VALUE, AQL_INT, "true")).isEqualTo("aql:self.instance3('value', 2, true)");
         assertThat(ServiceMethod.of4(ArityFixture::instance4).aqlSelf(AQL_VALUE, AQL_INT, "true", "4.0"))
-                .isEqualTo("aql:self.instance4('value',2,true,4.0)");
+                .isEqualTo("aql:self.instance4('value', 2, true, 4.0)");
         assertThat(ServiceMethod.of5(ArityFixture::instance5).aqlSelf(AQL_VALUE, AQL_INT, "true", "4.0", "5L"))
-                .isEqualTo("aql:self.instance5('value',2,true,4.0,5L)");
+                .isEqualTo("aql:self.instance5('value', 2, true, 4.0, 5L)");
         assertThat(ServiceMethod.of6(ArityFixture::instance6).aqlSelf(AQL_VALUE, AQL_INT, "true", "4.0", "5L", "6.0f"))
-                .isEqualTo("aql:self.instance6('value',2,true,4.0,5L,6.0f)");
+                .isEqualTo("aql:self.instance6('value', 2, true, 4.0, 5L, 6.0f)");
     }
 
     @Test
@@ -110,12 +110,21 @@ public class ServiceMethodTest {
         assertThat(ServiceMethod.ofStatic1(StaticFixture::static1).aqlSelf(AQL_VALUE)).isEqualTo("aql:self.static1('value')");
         assertThat(ServiceMethod.ofStatic1(Object.class, String.class, StaticFixture::static1).declaration())
                 .isEqualTo(StaticFixture.class.getDeclaredMethod("static1", Object.class, String.class));
-        assertThat(ServiceMethod.ofStatic2(StaticFixture::static2).aql("ctx", AQL_VALUE, AQL_INT)).isEqualTo("aql:ctx.static2('value',2)");
+        assertThat(ServiceMethod.ofStatic2(StaticFixture::static2).aql("ctx", AQL_VALUE, AQL_INT)).isEqualTo("aql:ctx.static2('value', 2)");
         assertThat(ServiceMethod.ofStatic2(Object.class, String.class, Integer.class, StaticFixture::static2).declaration())
                 .isEqualTo(StaticFixture.class.getDeclaredMethod("static2", Object.class, String.class, Integer.class));
-        assertThat(ServiceMethod.ofStatic3(StaticFixture::static3).aqlSelf(AQL_VALUE, AQL_INT, "true")).isEqualTo("aql:self.static3('value',2,true)");
+        assertThat(ServiceMethod.ofStatic3(StaticFixture::static3).aqlSelf(AQL_VALUE, AQL_INT, "true")).isEqualTo("aql:self.static3('value', 2, true)");
         assertThat(ServiceMethod.ofStatic3(Object.class, String.class, Integer.class, Boolean.class, StaticFixture::static3).declaration())
                 .isEqualTo(StaticFixture.class.getDeclaredMethod("static3", Object.class, String.class, Integer.class, Boolean.class));
+    }
+
+    @Test
+    @DisplayName("GIVEN a service method, WHEN arrow AQL expressions are constructed, THEN the expected expressions are returned")
+    public void givenServiceMethodWhenArrowAqlExpressionsAreConstructedThenTheExpectedExpressionsAreReturned() {
+        assertThat(ServiceMethod.of0(ArityFixture::instance0).aqlSelfArrow()).isEqualTo("aql:self->instance0()");
+        assertThat(ServiceMethod.of2(ArityFixture::instance2).aqlSelfArrow(AQL_VALUE, AQL_INT)).isEqualTo("aql:self->instance2('value', 2)");
+        assertThat(ServiceMethod.of2(ArityFixture::instance2).aqlArrow("droppedElements", "droppedNodes", "targetElement"))
+                .isEqualTo("aql:droppedElements->instance2(droppedNodes, targetElement)");
     }
 
     @Test

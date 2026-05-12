@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,7 @@ public class CaseUsageSubjectCompartmentNodeDescriptionProvider extends Abstract
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return ServiceMethod.of6(DiagramMutationAQLService::dropSubjectFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
+        return ServiceMethod.of6(DiagramMutationAQLService::dropSubjectFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
                 DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 

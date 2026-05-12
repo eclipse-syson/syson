@@ -1401,9 +1401,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(this.viewBuilderHelper.newChangeContext()
-                        .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode",
-                                IEditingContext.EDITING_CONTEXT,
-                                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
+                        .expression(ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode",
+                                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE))
                         .build())
                 .build();
     }
