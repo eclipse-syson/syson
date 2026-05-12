@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.services;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -167,10 +168,10 @@ public class DiagramMutationDndService {
     /**
      * Called by "Drop Node tool" from General View diagram.
      *
-     * @param droppedElement
-     *            the dropped {@link Element}.
-     * @param droppedNode
-     *            the dropped {@link Node}.
+     * @param droppedElements
+     *            the dropped {@link Element elements}.
+     * @param droppedNodes
+     *            the dropped {@link Node nodes}.
      * @param targetElement
      *            the new semantic container.
      * @param targetNode
@@ -186,9 +187,9 @@ public class DiagramMutationDndService {
      *            a variable accessible from the variable manager.
      * @return the input {@link Element}.
      */
-    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+    public Element dropElementFromDiagram(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        final Element result;
         final Element realTargetElement;
         // If the target element is a ViewUsage, then we must drop the dropped element in its owner.
         if (targetElement instanceof ViewUsage viewUsage) {
@@ -196,86 +197,222 @@ public class DiagramMutationDndService {
         } else {
             realTargetElement = targetElement;
         }
-        // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
-        // to prevent the drop.
-        if (EMFUtils.isAncestor(droppedElement, realTargetElement)) {
-            this.logAncestorError(droppedElement, realTargetElement);
-            // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
-            result = null;
-        } else if (droppedNode.isBorderNode()) {
-            // Null prevents the drop of border node when we only want to move them along the border of their parent
-            result = null;
-        } else {
-            this.diagramMutationMoveService.moveElement(droppedElement, droppedNode, realTargetElement, targetNode, editingContext, diagramContext, convertedNodes);
-            result = droppedElement;
+        // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
+        // Null also prevents the drop of border node when we only want to move them along the border of their parent.
+        Element result = null;
+        for (DropPair dropPair : this.getDropPairs(droppedElements, droppedNodes)) {
+            Element droppedElement = dropPair.droppedElement();
+            Node droppedNode = dropPair.droppedNode();
+            // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
+            // want to prevent the drop.
+            if (EMFUtils.isAncestor(droppedElement, realTargetElement)) {
+                this.logAncestorError(droppedElement, realTargetElement);
+            } else if (!droppedNode.isBorderNode()) {
+                this.diagramMutationMoveService.moveElement(droppedElement, droppedNode, realTargetElement, targetNode, editingContext, diagramContext, convertedNodes);
+                if (result == null) {
+                    result = droppedElement;
+                }
+            }
         }
         return result;
     }
 
-    public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+    /**
+     * Called by subject compartments to drop graphical nodes coming from the diagram.
+     * <p>
+     * Since the subject relationship is single-valued, only the first valid dropped element/node pair is processed.
+     * Additional dropped pairs are ignored.
+     * </p>
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @param targetElement
+     *            the semantic element receiving the subject.
+     * @param targetNode
+     *            the graphical compartment receiving the drop.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param convertedNodes
+     *            the converted node descriptions of the current diagram.
+     * @return the first processed dropped {@link Element}, or <code>null</code> if no drop is performed.
+     */
+    public Element dropSubjectFromDiagram(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (targetElement instanceof RequirementUsage
-                || targetElement instanceof RequirementDefinition
-                || targetElement instanceof CaseUsage
-                || targetElement instanceof CaseDefinition) {
-            boolean noExistingSubject = targetElement.getOwnedRelationship().stream()
-                    .filter(SubjectMembership.class::isInstance)
-                    .map(SubjectMembership.class::cast)
-                    .findFirst().isEmpty();
-            if (noExistingSubject) {
-                this.diagramMutationMoveService.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
-            }
+        if (this.isSupportedSubjectTarget(targetElement) && this.hasNoSubject(targetElement)) {
+            return this.getDropPairs(droppedElements, droppedNodes).stream()
+                    .findFirst()
+                    .map(dropPair -> {
+                        this.diagramMutationMoveService.moveElement(dropPair.droppedElement(), dropPair.droppedNode(), targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+                        return dropPair.droppedElement();
+                    })
+                    .orElse(null);
         }
-        return droppedElement;
+        return null;
     }
 
-    public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, DiagramContext diagramContext,
+    /**
+     * Called by objective requirement compartments to drop graphical nodes coming from the diagram.
+     * <p>
+     * Since the objective requirement is single-valued, only the first valid dropped element/node pair is processed.
+     * Additional dropped pairs are ignored.
+     * </p>
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @param targetElement
+     *            the semantic element receiving the objective requirement.
+     * @param targetNode
+     *            the graphical compartment receiving the drop.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param convertedNodes
+     *            the converted node descriptions of the current diagram.
+     * @return the first processed dropped {@link Element}, or <code>null</code> if no drop is performed.
+     */
+    public Element dropObjectiveRequirementFromDiagram(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (targetElement instanceof CaseUsage
                 || targetElement instanceof CaseDefinition) {
             if (this.utilService.isEmptyObjectiveRequirement(targetElement)) {
-                this.diagramMutationMoveService.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+                return this.getDropPairs(droppedElements, droppedNodes).stream()
+                        .findFirst()
+                        .map(dropPair -> {
+                            this.diagramMutationMoveService.moveElement(dropPair.droppedElement(), dropPair.droppedNode(), targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+                            return dropPair.droppedElement();
+                        })
+                        .orElse(null);
             }
         }
-        return droppedElement;
+        return null;
     }
 
-    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+    /**
+     * Called by assumed-constraint compartments to drop multiple constraint nodes from the diagram.
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @param targetElement
+     *            the semantic element receiving the dropped constraints.
+     * @param targetNode
+     *            the graphical compartment receiving the drop.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param convertedNodes
+     *            the converted node descriptions of the current diagram.
+     * @return the first processed dropped {@link Element}, or <code>null</code> if no drop is performed.
+     */
+    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode,
+            IEditingContext editingContext,
             DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
-            this.diagramMutationMoveService.moveConstraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
-            this.diagramMutationElementService.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-            diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
-        }
-        return droppedElement;
-    }
-
-    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
-            this.diagramMutationMoveService.moveConstraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
-            this.diagramMutationElementService.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-            diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
-        }
-        return droppedElement;
-    }
-
-    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
-            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement instanceof ConstraintUsage droppedConstraint) {
-            if (targetElement instanceof ConstraintUsage || targetElement instanceof ConstraintDefinition) {
-                var oldMembership = droppedConstraint.eContainer();
-                var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-                membership.getOwnedRelatedElement().add(droppedConstraint);
-                targetElement.getOwnedRelationship().add(membership);
-                if (oldMembership instanceof OwningMembership owningMembership) {
-                    this.deleteService.deleteFromModel(owningMembership);
+        Element result = null;
+        if (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition) {
+            for (DropPair dropPair : this.getDropPairs(droppedElements, droppedNodes)) {
+                if (dropPair.droppedElement() instanceof ConstraintUsage droppedConstraint) {
+                    this.diagramMutationMoveService.moveConstraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
+                    this.diagramMutationElementService.createView(dropPair.droppedElement(), editingContext, diagramContext, targetNode, convertedNodes);
+                    diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(dropPair.droppedNode().getId()).build());
+                    if (result == null) {
+                        result = dropPair.droppedElement();
+                    }
                 }
-                this.diagramMutationElementService.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
-                diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
             }
         }
-        return droppedElement;
+        return result;
+    }
+
+    /**
+     * Called by required-constraint compartments to drop multiple constraint nodes from the diagram.
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @param targetElement
+     *            the semantic element receiving the dropped constraints.
+     * @param targetNode
+     *            the graphical compartment receiving the drop.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param convertedNodes
+     *            the converted node descriptions of the current diagram.
+     * @return the first processed dropped {@link Element}, or <code>null</code> if no drop is performed.
+     */
+    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode,
+            IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Element result = null;
+        if (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition) {
+            for (DropPair dropPair : this.getDropPairs(droppedElements, droppedNodes)) {
+                if (dropPair.droppedElement() instanceof ConstraintUsage droppedConstraint) {
+                    this.diagramMutationMoveService.moveConstraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
+                    this.diagramMutationElementService.createView(dropPair.droppedElement(), editingContext, diagramContext, targetNode, convertedNodes);
+                    diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(dropPair.droppedNode().getId()).build());
+                    if (result == null) {
+                        result = dropPair.droppedElement();
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Called by generic constraint compartments to drop multiple constraint nodes from the diagram.
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @param targetElement
+     *            the semantic element receiving the dropped constraints.
+     * @param targetNode
+     *            the graphical compartment receiving the drop.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool.
+     * @param diagramContext
+     *            the {@link DiagramContext} of the tool.
+     * @param convertedNodes
+     *            the converted node descriptions of the current diagram.
+     * @return the first processed dropped {@link Element}, or <code>null</code> if no drop is performed.
+     */
+    public Element dropElementFromDiagramInConstraintCompartment(List<Element> droppedElements, List<Node> droppedNodes, Element targetElement, Node targetNode, IEditingContext editingContext,
+            DiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Element result = null;
+        if (targetElement instanceof ConstraintUsage || targetElement instanceof ConstraintDefinition) {
+            for (DropPair dropPair : this.getDropPairs(droppedElements, droppedNodes)) {
+                if (dropPair.droppedElement() instanceof ConstraintUsage droppedConstraint) {
+                    var oldMembership = droppedConstraint.eContainer();
+                    var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                    membership.getOwnedRelatedElement().add(droppedConstraint);
+                    targetElement.getOwnedRelationship().add(membership);
+                    if (oldMembership instanceof OwningMembership owningMembership) {
+                        this.deleteService.deleteFromModel(owningMembership);
+                    }
+                    this.diagramMutationElementService.createView(dropPair.droppedElement(), editingContext, diagramContext, targetNode, convertedNodes);
+                    diagramContext.viewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(dropPair.droppedNode().getId()).build());
+                    if (result == null) {
+                        result = dropPair.droppedElement();
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -287,7 +424,7 @@ public class DiagramMutationDndService {
      * </p>
      * <p>
      * This method doesn't perform a drop of an element on the diagram to another element on the diagram. See
-     * {@link #dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, DiagramContext, Map)} for
+     * {@link #dropElementFromDiagram(List, List, Element, Node, IEditingContext, DiagramContext, Map)} for
      * in-diagram drag and drop.
      * </p>
      *
@@ -421,6 +558,68 @@ public class DiagramMutationDndService {
                 // Do nothing on purpose (for the moment).
             }
         }
+    }
+
+    /**
+     * Indicates whether the provided target element currently has no {@link SubjectMembership}.
+     *
+     * @param targetElement
+     *            the element receiving the dropped subject.
+     * @return <code>true</code> if the target element has no subject yet, <code>false</code> otherwise.
+     */
+    private boolean hasNoSubject(Element targetElement) {
+        return targetElement.getOwnedRelationship().stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .findFirst()
+                .isEmpty();
+    }
+
+    /**
+     * Indicates whether the provided target element can receive a subject through diagram drag and drop.
+     *
+     * @param targetElement
+     *            the potential drop target.
+     * @return <code>true</code> if the target supports subject ownership, <code>false</code> otherwise.
+     */
+    private boolean isSupportedSubjectTarget(Element targetElement) {
+        return targetElement instanceof RequirementUsage
+                || targetElement instanceof RequirementDefinition
+                || targetElement instanceof CaseUsage
+                || targetElement instanceof CaseDefinition;
+    }
+
+    /**
+     * Pairs dropped semantic elements with their corresponding dropped graphical nodes by index.
+     *
+     * @param droppedElements
+     *            the dropped semantic elements.
+     * @param droppedNodes
+     *            the dropped graphical nodes.
+     * @return the non-null dropped element/node pairs, truncated to the shortest input list.
+     */
+    private List<DropPair> getDropPairs(List<Element> droppedElements, List<Node> droppedNodes) {
+        int pairCount = Math.min(droppedElements.size(), droppedNodes.size());
+        List<DropPair> dropPairs = new ArrayList<>(pairCount);
+        for (int index = 0; index < pairCount; index++) {
+            Element droppedElement = droppedElements.get(index);
+            Node droppedNode = droppedNodes.get(index);
+            if (droppedElement != null && droppedNode != null) {
+                dropPairs.add(new DropPair(droppedElement, droppedNode));
+            }
+        }
+        return dropPairs;
+    }
+
+    /**
+     * Associates a dropped semantic element with its corresponding dropped graphical node.
+     *
+     * @param droppedElement
+     *            the dropped semantic element.
+     * @param droppedNode
+     *            the dropped graphical node.
+     */
+    private record DropPair(Element droppedElement, Node droppedNode) {
     }
 
     private String findParentTargetObjectId(DiagramContext diagramContext, Node visibleNode) {

@@ -156,8 +156,8 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return
      */
     protected String getDropElementFromDiagramExpression() {
-        return ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aql("droppedElement", "droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT,
-                DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
+        return ServiceMethod.of6(DiagramMutationAQLService::dropElementFromDiagram).aqlArrow("droppedElements", "droppedNodes", "targetElement", "targetNode",
+                IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE);
     }
 
     /**
