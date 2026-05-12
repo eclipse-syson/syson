@@ -62,8 +62,6 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
 
     protected abstract List<NodeDescription> getBindingConectorAsUsageToolTarget(IViewDiagramElementFinder cache);
 
-    protected abstract List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache);
-
     protected abstract String getSemanticCandidatesExpression();
 
     protected abstract String getName();
@@ -165,7 +163,7 @@ public abstract class AbstractItemUsageBorderNodeDescriptionProvider extends Abs
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
                         this.createBindingConnectorAsUsageEdgeTool(this.getBindingConectorAsUsageToolTarget(cache)),
-                        this.createFlowUsageEdgeTool(this.getFlowConnectionToolTargets(cache)))
+                        this.createFlowUsageEdgeTool(this.getFlowUsageToolTargetDescriptions(cache, this.descriptionNameGenerator)))
                 .quickAccessTools(this.getDuplicateElementAndNodeTool())
                 .build();
     }

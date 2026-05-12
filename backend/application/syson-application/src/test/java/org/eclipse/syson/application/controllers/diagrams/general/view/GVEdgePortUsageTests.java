@@ -30,6 +30,8 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -39,6 +41,7 @@ import org.eclipse.syson.application.controller.editingcontext.checkers.Semantic
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.GeneralViewPortTestProjectData;
+import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -47,6 +50,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.BindingConnector;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
@@ -108,6 +112,36 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                 GeneralViewPortTestProjectData.SemanticIds.PACKAGE_1_ID);
     }
 
+    @DisplayName("GIVEN a General View diagram description, WHEN inspecting the New Flow tool on PortUsage border nodes, THEN ActionUsage nodes are not valid targets")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void givenGeneralViewDiagramDescriptionWhenInspectingFlowToolTargetsThenActionUsageNodesAreNotValidTargets() {
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+
+        var portUsageBorderNodeDescription = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(nodeDescription -> this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())
+                        .equals(nodeDescription.getName()))
+                .findFirst();
+        assertThat(portUsageBorderNodeDescription).isPresent();
+
+        var actionUsageNodeDescription = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(nodeDescription -> this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()).equals(nodeDescription.getName()))
+                .findFirst();
+        assertThat(actionUsageNodeDescription).isPresent();
+        var referenceUsageBorderNodeDescriptionName = this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage());
+        var inheritedPortUsageBorderNodeDescriptionName = this.descriptionNameGenerator
+                .getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort());
+
+        var newFlowTool = portUsageBorderNodeDescription.get().getPalette().getEdgeTools().stream()
+                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
+                .findFirst();
+        assertThat(newFlowTool).isPresent();
+        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
+                .contains(referenceUsageBorderNodeDescriptionName, inheritedPortUsageBorderNodeDescriptionName)
+                .doesNotContain(actionUsageNodeDescription.get().getName());
+    }
+
     @DisplayName("GIVEN a SysML Project with Ports, WHEN Flow edge tool creation is request between two ports, THEN a new Flow edge is created")
     @GivenSysONServer({ GeneralViewPortTestProjectData.SCRIPT_PATH })
     @Test
@@ -157,6 +191,14 @@ public class GVEdgePortUsageTests extends AbstractIntegrationTests {
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
+    }
+
+    private List<String> getTargetDescriptionNames(EdgeTool edgeTool) {
+        return edgeTool.getTargetElementDescriptions().stream()
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .map(NodeDescription::getName)
+                .toList();
     }
 
     @DisplayName("GIVEN a SysML Project with ports, WHEN binding connector as usage edge tool creation is request between two ports, THEN a new binding connector edge is created")

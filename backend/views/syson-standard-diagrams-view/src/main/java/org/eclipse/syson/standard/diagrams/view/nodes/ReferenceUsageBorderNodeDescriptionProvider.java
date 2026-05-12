@@ -163,7 +163,7 @@ public class ReferenceUsageBorderNodeDescriptionProvider extends AbstractNodeDes
         List<EdgeTool> edgeTools = new ArrayList<>();
         if (cache.getNodeDescription(this.getName()).isPresent()) {
             edgeTools.add(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)));
-            edgeTools.add(this.createFlowUsageEdgeTool(List.of(nodeDescription)));
+            edgeTools.add(this.createFlowUsageEdgeTool(this.getFlowUsageToolTargetDescriptions(cache, this.descriptionNameGenerator)));
         }
         return edgeTools;
     }

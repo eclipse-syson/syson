@@ -57,15 +57,4 @@ public class PortUsageNestedItemBorderNodeDescriptionProvider extends AbstractIt
         return nodeDescriptions;
     }
 
-    @Override
-    protected List<NodeDescription> getFlowConnectionToolTargets(IViewDiagramElementFinder cache) {
-        var nodes = new ArrayList<NodeDescription>();
-        cache.getNodeDescription(this.getName()).ifPresent(nodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(nodes::add);
-        return nodes;
-    }
-
 }

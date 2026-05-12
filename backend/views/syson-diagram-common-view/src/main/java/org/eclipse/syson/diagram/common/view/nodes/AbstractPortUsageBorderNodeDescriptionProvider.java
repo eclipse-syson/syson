@@ -156,7 +156,7 @@ public abstract class AbstractPortUsageBorderNodeDescriptionProvider extends Abs
 
     protected EdgeTool createFlowUsageEdgeTool(IViewDiagramElementFinder cache) {
         return this.getViewEdgeToolService(cache)
-                .createFlowUsageEdgeTool(new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getUsage()));
+                .createFlowUsageEdgeTool(this.getFlowUsageToolTargetDescriptions(cache, this.descriptionNameGenerator));
     }
 
     protected EdgeTool createInterfaceUsageEdgeTool(IViewDiagramElementFinder cache) {
