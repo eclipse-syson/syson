@@ -22,11 +22,13 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
@@ -34,8 +36,10 @@ import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConv
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 
@@ -80,6 +84,19 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .positionDependentRotation(isRotable)
                 .shape(imagePath)
                 .build();
+    }
+
+    protected List<NodeDescription> getFlowUsageToolTargetDescriptions(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator) {
+        var nodes = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter())).ifPresent(nodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage())).ifPresent(nodes::add);
+        return nodes;
     }
 
     protected NodeTool getDeleteFromDiagramTool() {

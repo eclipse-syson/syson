@@ -44,6 +44,8 @@ import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRun
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
@@ -67,6 +69,7 @@ import org.eclipse.syson.sysml.FlowEnd;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.PayloadFeature;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
@@ -142,6 +145,48 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
         this.givenInitialServerState.initialize();
         this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
                 GeneralViewFlowConnectionItemUsagesProjectData.SemanticIds.PACKAGE_1_ID);
+    }
+
+    @DisplayName("GIVEN a General View diagram description, WHEN inspecting the New Flow tool on ItemUsage border nodes, THEN it uses the full renderer-compatible border-node targets")
+    @GivenSysONServer({ GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH })
+    @Test
+    public void givenGeneralViewDiagramDescriptionWhenInspectingItemFlowToolTargetsThenTheyMatchTheRendererContract() {
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+
+        var itemUsageBorderNodeDescription = this.findNodeDescription(diagramDescription,
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()));
+        var actionUsageNodeDescription = this.findNodeDescription(diagramDescription, this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
+
+        var newFlowTool = itemUsageBorderNodeDescription.getPalette().getEdgeTools().stream()
+                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
+                .findFirst();
+        assertThat(newFlowTool).isPresent();
+
+        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
+                .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
+                .doesNotContain(actionUsageNodeDescription.getName());
+    }
+
+    @DisplayName("GIVEN a General View diagram description, WHEN inspecting the New Flow tool on ReferenceUsage border nodes, THEN it uses the full renderer-compatible border-node targets")
+    @GivenSysONServer({ GeneralViewFlowConnectionItemUsagesProjectData.SCRIPT_PATH })
+    @Test
+    public void givenGeneralViewDiagramDescriptionWhenInspectingReferenceFlowToolTargetsThenTheyMatchTheRendererContract() {
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewFlowConnectionItemUsagesProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+
+        var referenceUsageBorderNodeDescription = this.findNodeDescription(diagramDescription,
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()));
+        var actionUsageNodeDescription = this.findNodeDescription(diagramDescription, this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
+
+        var newFlowTool = referenceUsageBorderNodeDescription.getPalette().getEdgeTools().stream()
+                .filter(edgeTool -> "New Flow (flow)".equals(edgeTool.getName()))
+                .findFirst();
+        assertThat(newFlowTool).isPresent();
+
+        assertThat(this.getTargetDescriptionNames(newFlowTool.get()))
+                .containsExactlyInAnyOrderElementsOf(this.getExpectedFlowTargetDescriptionNames())
+                .doesNotContain(actionUsageNodeDescription.getName());
     }
 
     @DisplayName("GIVEN a SysML Project with ItemUsages on ActionUsage, WHEN creating a FlowUsage between them, THEN an edge should be displayed to represent that new flow")
@@ -623,5 +668,32 @@ public class GVFlowUsageTests extends AbstractIntegrationTests {
         var connectionType = connection.getType().get(0);
         var connectionTypeId = this.identityService.getId(connectionType);
         assertThat(connectionTypeId).isEqualTo(expectedTypeElementId);
+    }
+
+    private NodeDescription findNodeDescription(org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription, String nodeDescriptionName) {
+        return EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)
+                .filter(nodeDescription -> nodeDescriptionName.equals(nodeDescription.getName()))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private List<String> getExpectedFlowTargetDescriptionNames() {
+        return List.of(
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
+                this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort()),
+                this.descriptionNameGenerator.getInheritedBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getBehavior_Parameter()),
+                this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getReferenceUsage()));
+    }
+
+    private List<String> getTargetDescriptionNames(EdgeTool edgeTool) {
+        return edgeTool.getTargetElementDescriptions().stream()
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .map(NodeDescription::getName)
+                .toList();
     }
 }
