@@ -39,8 +39,8 @@ import java.util.Arrays;
  * the number of AQL parameters after {@code self}.</li>
  * <li>The helper extracts the Java method name through the standard lambda serialization hook (reading a
  * {@link SerializedLambda}). No service is invoked.</li>
- * <li>You then call {@link #aqlSelf(String...)} or {@link #aql(String, String...)} to build the final AQL string,
- * delegating to {@code AQLUtils}.</li>
+ * <li>You then call {@link #aqlSelf(String...)}, {@link #aqlSelfArrow(String...)}, {@link #aql(String, String...)}
+ * or {@link #aqlArrow(String, String...)} to build the final AQL string.</li>
  * </ol>
  * <p>
  * Important: the arguments passed to {@code aqlSelf(...)} and {@code aql(var, ...)} are AQL snippets, not Java values.
@@ -51,8 +51,12 @@ import java.util.Arrays;
  * <ul>
  * <li>{@link #aqlSelf(String...)} when the receiver is {@code self}, for expressions like
  * {@code aql:self.myService(...)}.</li>
+ * <li>{@link #aqlSelfArrow(String...)} when the receiver is {@code self} and you need AQL's collection call syntax,
+ * for expressions like {@code aql:self->myService(...)}.</li>
  * <li>{@link #aql(String, String...)} when you target another variable in the AQL context, for example
  * {@code aql:elt.myService(...)}.</li>
+ * <li>{@link #aqlArrow(String, String...)} when you target another variable in the AQL context and you need AQL's
+ * collection call syntax, for example {@code aql:elts->myService(...)}.</li>
  * </ul>
  * <p>
  * Type inference: if the compiler says something like <i>The type X does not define methodName(Object, Object,
@@ -127,10 +131,22 @@ public final class ServiceMethod {
      */
     public String aqlSelf(String... params) {
         this.checkArity(params);
-        if (params == null || params.length == 0) {
-            return AQLUtils.getSelfServiceCallExpression(this.name);
-        }
-        return AQLUtils.getSelfServiceCallExpression(this.name, Arrays.asList(params));
+        return this.aqlCall(AQLConstants.SELF, ".", params);
+    }
+
+    /**
+     * Build {@code aql:self->method(...)} for the captured service name.
+     * <p>
+     * Use when the receiver is {@code self} and you want AQL to keep the receiver as a collection instead of applying
+     * the call item by item.
+     *
+     * @param params
+     *            AQL parameter snippets, for example {@code "'declaredName'"} or {@code someVar}
+     * @return A full AQL expression string
+     */
+    public String aqlSelfArrow(String... params) {
+        this.checkArity(params);
+        return this.aqlCall(AQLConstants.SELF, "->", params);
     }
 
     /**
@@ -146,17 +162,36 @@ public final class ServiceMethod {
      * @return A full AQL expression string
      */
     public String aql(String var, String... params) {
-        String aqlString = null;
+        this.checkArity(params);
+        return this.aqlCall(var, ".", params);
+    }
+
+    /**
+     * Build {@code aql:var->method(...)} for the captured service name.
+     * <p>
+     * Use when you target a collection variable in the AQL scope and want to pass it as the receiver, for example
+     * {@code aql:elts->myService(...)}.
+     *
+     * @param var
+     *            the AQL variable name to call the service on, for example {@code "elts"}
+     * @param params
+     *            AQL parameter snippets
+     * @return A full AQL expression string
+     */
+    public String aqlArrow(String var, String... params) {
+        this.checkArity(params);
+        return this.aqlCall(var, "->", params);
+    }
+
+    private String aqlCall(String var, String operator, String... params) {
         if (var == null || var.isEmpty()) {
             throw new IllegalArgumentException("var must be a non empty AQL variable name");
-        } else {
-            this.checkArity(params);
-            if (params == null || params.length == 0) {
-                aqlString = AQLUtils.getServiceCallExpression(var, this.name);
-            }
-            aqlString = AQLUtils.getServiceCallExpression(var, this.name, Arrays.asList(params));
         }
-        return aqlString;
+        String joinedParams = "";
+        if (params != null && params.length > 0) {
+            joinedParams = String.join(", ", Arrays.asList(params));
+        }
+        return MessageFormat.format("aql:{0}{1}{2}({3})", var, operator, this.name, joinedParams);
     }
 
     // ---------------------- Factories for unbound instance methods ----------------------

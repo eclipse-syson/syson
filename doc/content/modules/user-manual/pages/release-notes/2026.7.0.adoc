@@ -10,6 +10,10 @@
 
 == Improvements
 
+* In diagrams:
+
+** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
+
 == Technical details
 
 * For technical details on this {product} release, including breaking changes, please refer to the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
