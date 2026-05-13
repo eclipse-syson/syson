@@ -18,7 +18,6 @@
 
 ** Add tools to create _timeslices_ and _snapshots_ on `OccurrenceUsage`, `ItemUsage`, and `PartUsage` graphical nodes.
 These tools use a selection dialog to either create a graphical node based on an existing _timeslice_ or _snapshot_, or, if nothing is selected, create a default _timeslice_ or _snapshot_ `OccurrenceUsage` graphical node.
-
 ** Improved support for `Stakeholder`.
 It is now possible to create new _stakeholders_ from `Requirement` and `Concern` graphical nodes, whether they are definitions or usages.
 Created stakeholders must reference an existing `PartUsage`.
@@ -35,7 +34,8 @@ image::release-notes-stakeholder-node.png[Default representation of Stakeholder 
 ** In _Interconnection View_ diagrams, fix an issue where the `parts` compartment of a `PartDefinition` graphical node was incorrectly revealed when creating a `PartUsage` from that `PartDefinition`, even when the `interconnection` compartment was already visible.
 ** Fix an issue where the _New Flow (flow)_ tool on `PortUsage`, `ItemUsage`, and `ReferenceUsage` graphical border nodes could expose unsupported targets, preventing some valid flow endpoints from being proposed and allowing non-renderable ones.
 ** Fix an issue where the _New Perform action_ tool was not available directly on `CaseUsage`, `CaseDefinition`, `UseCaseUsage`, and `UseCaseDefinition` graphical nodes, even though it was available in their revealed `perform actions` compartment.
-** Fix an issue where the resize of _Documentation_ graphical nodes was not working correctly, allowing inside text to overflow outside of the graphical node.
+** Fix an issue where the resize of _Documentation_ graphical nodes was not working correctly, allowing inside text to overflow outside the graphical node.
+** Fix an issue where applying a tool to create a child element may reveal compartments of the wrong graphical node.
 
 * In the _Details_ view:
 

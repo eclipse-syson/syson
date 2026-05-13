@@ -84,10 +84,18 @@ public class DiagramMutationCompartmentService {
                 .toList();
 
         if (!compartmentDescriptionCandidates.isEmpty()) {
-            NodeFinder nodeFinder = new NodeFinder(diagramContext.diagram());
-            List<Node> compartmentNodeCandidates = nodeFinder
-                    .getAllNodesMatching(n -> compartmentDescriptionCandidates.stream().anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
-                            && Objects.equals(n.getTargetObjectId(), node.getTargetObjectId()));
+            // Search for candidate in the node first
+            List<Node> compartmentNodeCandidates = node.getChildNodes().stream()
+                    .filter(n -> compartmentDescriptionCandidates.stream().anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
+                            && Objects.equals(n.getTargetObjectId(), node.getTargetObjectId()))
+                    .toList();
+            if (compartmentNodeCandidates.isEmpty()) {
+                // If no candidate are found, search for candidate in the whole diagram
+                NodeFinder nodeFinder = new NodeFinder(diagramContext.diagram());
+                compartmentNodeCandidates = nodeFinder
+                        .getAllNodesMatching(n -> compartmentDescriptionCandidates.stream().anyMatch(id -> Objects.equals(id, n.getDescriptionId()))
+                                && Objects.equals(n.getTargetObjectId(), node.getTargetObjectId()));
+            }
             var noCompartmentToHandleTargetElement = compartmentNodeCandidates.stream()
                     .allMatch(candidate -> ViewModifier.Hidden.equals(candidate.getState()));
             if (noCompartmentToHandleTargetElement) {
