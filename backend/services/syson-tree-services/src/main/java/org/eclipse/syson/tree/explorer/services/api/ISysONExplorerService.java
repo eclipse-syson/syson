@@ -63,4 +63,109 @@ public interface ISysONExplorerService {
 
     String getLibraryLabel(Object self);
 
+    /**
+     * NoOp implementation.
+     *
+     * @author Arthur Daussy
+     */
+    class NoOp implements ISysONExplorerService {
+
+        @Override
+        public String getTreeItemId(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getTreeItemTooltip(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getKind(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getLabel(Object self) {
+            return "";
+        }
+
+        @Override
+        public boolean isEditable(Object self) {
+            return false;
+        }
+
+        @Override
+        public boolean isDeletable(Object self) {
+            return false;
+        }
+
+        @Override
+        public boolean isSelectable(Object self) {
+            return false;
+        }
+
+        @Override
+        public List<String> getImageURL(Object self) {
+            return List.of();
+        }
+
+        @Override
+        public Object getTreeItemObject(String treeItemId, org.eclipse.sirius.components.core.api.IEditingContext editingContext) {
+            return null;
+        }
+
+        @Override
+        public Object getParent(Object self, String treeItemId, org.eclipse.sirius.components.core.api.IEditingContext editingContext) {
+            return null;
+        }
+
+        @Override
+        public boolean hasChildren(Object self, org.eclipse.sirius.components.core.api.IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds,
+                List<String> activeFilterIds) {
+            return false;
+        }
+
+        @Override
+        public List<Object> getChildren(Object self, org.eclipse.sirius.components.core.api.IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations,
+                List<String> expandedIds, List<String> activeFilterIds) {
+            return List.of();
+        }
+
+        @Override
+        public boolean canExpandAll(TreeItem treeItem, org.eclipse.sirius.components.core.api.IEditingContext editingContext) {
+            return false;
+        }
+
+        @Override
+        public boolean canCreateNewObjectsFromText(Object self) {
+            return false;
+        }
+
+        @Override
+        public List<Object> getElements(org.eclipse.sirius.components.core.api.IEditingContext editingContext, List<String> activeFilterIds) {
+            return List.of();
+        }
+
+        @Override
+        public String getType(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getShortName(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getReadOnlyTag(Object self) {
+            return "";
+        }
+
+        @Override
+        public String getLibraryLabel(Object self) {
+            return "";
+        }
+    }
+
 }

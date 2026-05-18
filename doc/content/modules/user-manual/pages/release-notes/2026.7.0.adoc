@@ -40,6 +40,7 @@ a|image::explorer-expression-internals-visible.png[Internals visible]
 * In diagrams:
 
 ** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
+** Improve feedback message reporting while moving elements in diagrams.
 
 == Technical details
 

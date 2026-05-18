@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,13 +45,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DropTreeItemHandler implements IDropTreeItemHandler {
 
-    private ILabelService labelService;
+    private final ILabelService labelService;
 
-    private IObjectSearchService objectSearchService;
+    private final IObjectSearchService objectSearchService;
 
-    private SysONTreeViewDescriptionProvider treeProvider;
+    private final SysONTreeViewDescriptionProvider treeProvider;
 
-    private ISysMLMoveElementService moveService;
+    private final ISysMLMoveElementService moveService;
 
     public DropTreeItemHandler(ILabelService labelService, IObjectSearchService objectSearchService, SysONTreeViewDescriptionProvider treeProvider, ISysMLMoveElementService moveService) {
         this.labelService = Objects.requireNonNull(labelService);
@@ -113,11 +113,15 @@ public class DropTreeItemHandler implements IDropTreeItemHandler {
     }
 
     private String getLabel(Object droppedElement) {
+        final String label;
         StyledString styledLabel = this.labelService.getStyledLabel(droppedElement);
-        if ((styledLabel == null || styledLabel.toString().isEmpty()) && droppedElement instanceof EObject droppedEObject) {
-            styledLabel = StyledString.of(droppedEObject.eClass().getName());
+        if (styledLabel != null && !styledLabel.toString().isEmpty()) {
+            label = styledLabel.toString();
+        } else if (droppedElement instanceof EObject droppedEObject) {
+            label = droppedEObject.eClass().getName();
+        } else {
+            label = "";
         }
-        return styledLabel.toString();
+        return label;
     }
-
 }
