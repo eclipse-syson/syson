@@ -117,7 +117,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Element")
                 .iconURLsExpression("/images/content_copy.svg")
-                .keyBindings(this.viewBuilderHelper.newKeyBinding().ctrl(true).key("d").build())
                 .preconditionExpression(AQLConstants.AQL + "self.oclIsKindOf(sysml::Element) and not self.oclIsKindOf(sysml::Relationship)")
                 .body(this.viewBuilderHelper.newChangeContext()
                         .expression(
@@ -135,7 +134,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Duplicate Element")
                 .iconURLsExpression("/images/content_copy.svg")
-                .keyBindings(this.viewBuilderHelper.newKeyBinding().ctrl(true).key("d").build())
                 .preconditionExpression(AQLConstants.AQL
                         + "selectedNodes->notEmpty() and selectedEdges->isEmpty() and self->forAll(e | e.oclIsKindOf(sysml::Element) and not e.oclIsKindOf(sysml::Relationship))")
                 .body(this.viewBuilderHelper.newChangeContext()
