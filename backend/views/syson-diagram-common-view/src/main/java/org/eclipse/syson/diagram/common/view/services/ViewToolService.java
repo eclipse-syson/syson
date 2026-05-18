@@ -27,13 +27,16 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
+import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -81,11 +84,14 @@ public class ViewToolService extends ToolService {
 
     protected final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
 
+    private final ILabelService labelService;
+
     public ViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService,
-            IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService, ISysONExplorerService sysONExplorerService) {
+            IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService, ISysONExplorerService sysONExplorerService, ILabelService labelService) {
         super(identityService, objectSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.sysONExplorerService = Objects.requireNonNull(sysONExplorerService);
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     /**
@@ -177,8 +183,13 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            this.moveService.moveSemanticElement(usage, newContainer);
-            usage.setIsComposite(true);
+            MoveStatus moveStatus = this.moveService.moveSemanticElement(usage, newContainer);
+            if (moveStatus.isSuccess()) {
+                usage.setIsComposite(true);
+            } else {
+                this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to move {0} in {1}: {2}", this.getLabel(usage), this.getLabel(newContainer), moveStatus.message()), MessageLevel.WARNING));
+            }
+
         }
         return usage;
     }
@@ -308,7 +319,11 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            this.moveService.moveSemanticElement(otherEnd, newSource);
+            MoveStatus moveStatus = this.moveService.moveSemanticElement(otherEnd, newSource);
+            if (!moveStatus.isSuccess()) {
+                this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to move {0} in {1}: {2}", this.getLabel(self), this.getLabel(newSource),
+                        moveStatus.message()), MessageLevel.WARNING));
+            }
             result = otherEnd;
         }
         return result;
@@ -356,7 +371,11 @@ public class ViewToolService extends ToolService {
      */
     public Element reconnnectTargetAnnotatedEdge(Element self, Element newTarget) {
         if (!(newTarget instanceof Comment) && !(newTarget instanceof Documentation)) {
-            this.moveService.moveSemanticElement(self, newTarget);
+            MoveStatus moveStatus = this.moveService.moveSemanticElement(self, newTarget);
+            if (!moveStatus.isSuccess()) {
+                this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("Unable to move {0} in {1}: {2}", this.getLabel(self), this.getLabel(newTarget),
+                        moveStatus.message()), MessageLevel.WARNING));
+            }
         }
         return self;
     }
@@ -754,5 +773,18 @@ public class ViewToolService extends ToolService {
             currentElement = currentElement.getOwner();
         }
         return ownerHierarchy;
+    }
+
+    private String getLabel(Object droppedElement) {
+        final String label;
+        StyledString styledLabel = this.labelService.getStyledLabel(droppedElement);
+        if (styledLabel != null && !styledLabel.toString().isEmpty()) {
+            label = styledLabel.toString();
+        } else if (droppedElement instanceof EObject droppedEObject) {
+            label = droppedEObject.eClass().getName();
+        } else {
+            label = "";
+        }
+        return label;
     }
 }
