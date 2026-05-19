@@ -1583,7 +1583,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 if (nsProvider == null) {
                     nsProvider = new LibraryNamespaceProvider(this);
                 }
-                Type snapshot = nsProvider.getNamespaceFromLibrary("Occurrences::Occurrence::snapshot", Type.class);
+                Type snapshot = nsProvider.getNamespaceFromLibrary("Occurrences::Occurrence::snapshots", Type.class);
                 if (owningType == nsProvider.getNamespaceFromLibrary("Occurrences::Occurrence")) {
                     implicitType = snapshot;
                 } else {
