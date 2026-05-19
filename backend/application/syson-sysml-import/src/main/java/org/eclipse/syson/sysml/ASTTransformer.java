@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -28,6 +30,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
 import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.EAttributeHandler;
@@ -57,6 +60,8 @@ public class ASTTransformer {
 
     private final NonContainmentReferenceHandler nonContainmentReferenceHandler;
 
+    private final MetamodelQueryElementService metamodelQueryElementService;
+
     public ASTTransformer() {
         this.messageReporter = new MessageReporter();
         this.nonContainmentReferenceHandler = new NonContainmentReferenceHandler(this.messageReporter);
@@ -64,6 +69,7 @@ public class ASTTransformer {
         var proxyResolver = new ProxyResolver(this.messageReporter);
         var astObjectParser = new EAttributeHandler(this.messageReporter);
         this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, this.nonContainmentReferenceHandler, proxyResolver, astObjectParser, this.messageReporter);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     public Resource convertResource(final InputStream input, final ResourceSet resourceSet) {
@@ -89,43 +95,59 @@ public class ASTTransformer {
      *
      * @param input
      *            the textual representation
-     * @param resourceSet
-     *            the current {@link ResourceSet}
      * @param parentElement
-     *            the parent element in which created element will be added.
+     *            the parent element in which created element will be added. May be null if we only validate.
      * @return the list of the created elements
      */
-    public List<Element> convertToElements(final InputStream input, final ResourceSet resourceSet, Element parentElement) {
+    public List<Element> convertToElements(InputStream input, Element parentElement) {
+        return this.convertToElements(input, parentElement, null, (messages) -> Boolean.FALSE);
+    }
+
+    /**
+     * Convert the given SysML text into Elements and add them into the given parent.
+     *
+     * @param input
+     *            the textual representation
+     * @param parentElement
+     *            the parent element in which created element will be added. May be null if we only validate.
+     * @param contentSelector
+     *            a function to select the SysML Elements of actual interest from the result of syside's parsing.
+     * @param shouldRevertPredicate
+     *            predicate invoked after the operation is done to determine, given the impact (as reported by the
+     *            messages), if it should be reverted.
+     * @return the list of the created elements
+     */
+    public List<Element> convertToElements(InputStream input, Element parentElement, Function<List<Element>, List<Element>> contentSelector, Predicate<List<Message>> shouldRevertPredicate) {
         List<Element> result = List.of();
         if (input != null) {
             final JsonNode astJson = this.readAst(input);
             if (astJson != null) {
                 this.logger.info("Create the Root eObject containment structure");
-                result = this.extractContent(this.astTreeParser.parseAst(astJson));
+                List<EObject> parsedAst = this.astTreeParser.parseAst(astJson);
+                var contents = this.getNamespaceContent(parsedAst);
+                if (contentSelector != null) {
+                    result = contentSelector.apply(contents);
+                } else {
+                    result = contents;
+                }
                 this.logger.info("File Parsed");
+                List<Runnable> undo = new ArrayList<>();
                 for (Element root : result) {
-                    this.addInParent(parentElement, root);
+                    undo.add(this.addInParent(parentElement, root));
                 }
                 this.logger.info("Elements added in parent");
 
                 this.fixAndResolve(result);
+
+                if (shouldRevertPredicate.test(this.messageReporter.getReportedMessages())) {
+                    undo.reversed().forEach(Runnable::run);
+                }
             }
         }
         return result;
     }
 
-    private void fixAndResolve(List<? extends EObject> result) {
-        this.preResolvingFixingPhase(result);
-
-        List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
-        this.logger.info("{} references to resolve.", proxiedReferences.size());
-        this.astTreeParser.resolveAllReference(proxiedReferences);
-        this.logger.info("End of references resolving");
-
-        this.postResolvingFixingPhase(result);
-    }
-
-    private List<Element> extractContent(List<EObject> roots) {
+    private List<Element> getNamespaceContent(List<EObject> roots) {
         return roots.stream().filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .flatMap(ns -> ns.getOwnedRelationship().stream())
@@ -143,20 +165,57 @@ public class ASTTransformer {
         return children;
     }
 
-    private void addInParent(Element parent, Element child) {
+    private void fixAndResolve(List<? extends EObject> result) {
+        this.preResolvingFixingPhase(result);
+
+        List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
+        this.logger.info("{} references to resolve.", proxiedReferences.size());
+        this.astTreeParser.resolveAllReference(proxiedReferences);
+        this.logger.info("End of references resolving");
+
+        this.postResolvingFixingPhase(result);
+    }
+
+    /**
+     * Add a child element inside a parent, using the appropriate relationship.
+     *
+     * @param parent
+     *            the parent element.
+     * @param child
+     *            the child to add.
+     * @return a Runnable that can be executed to undo the addition.
+     */
+    private Runnable addInParent(Element parent, Element child) {
+        Runnable undo = () -> {
+            // No-op
+        };
         if (child instanceof Import imp) {
             parent.getOwnedRelationship().add(imp);
+            undo = () -> parent.getOwnedRelationship().remove(imp);
+        } else if (child instanceof Expression expr) {
+            var compatibleOwnerships = this.metamodelQueryElementService.getCompatibleExpressionOwnerships(parent);
+            if (!compatibleOwnerships.isEmpty()) {
+                var selectedOwnership = compatibleOwnerships.get(0);
+                selectedOwnership.getOwnedRelatedElement().add(expr);
+                parent.getOwnedRelationship().add(selectedOwnership);
+                selectedOwnership.getOwnedRelatedElement().add(child);
+                undo = () -> parent.getOwnedRelationship().remove(selectedOwnership);
+            }
         } else if (child instanceof Feature && parent instanceof Type) {
             Membership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            parent.getOwnedRelationship().add(membership);
             membership.getOwnedRelatedElement().add(child);
+            parent.getOwnedRelationship().add(membership);
+            undo = () -> parent.getOwnedRelationship().remove(membership);
         } else if (parent instanceof Package || SysmlPackage.eINSTANCE.getNamespace().equals(parent.eClass())) {
             Membership membership = SysmlFactory.eINSTANCE.createOwningMembership();
             membership.getOwnedRelatedElement().add(child);
             parent.getOwnedRelationship().add(membership);
+            undo = () -> parent.getOwnedRelationship().remove(membership);
         } else if (child instanceof Relationship rel) {
             parent.getOwnedRelationship().add(rel);
+            undo = () -> parent.getOwnedRelationship().remove(rel);
         }
+        return undo;
     }
 
     private void postResolvingFixingPhase(List<? extends EObject> rootSysmlObjects) {
@@ -169,11 +228,11 @@ public class ASTTransformer {
     }
 
     /**
-     * The current implementation of the parser does not force the memberFeature of EndFeatureMembership to have "isEnd = true" like stated in the SysML specification see "8.3.3.3.3
-     * EndFeatureMembership".
+     * The current implementation of the parser does not force the memberFeature of EndFeatureMembership to have "isEnd
+     * = true" like stated in the SysML specification see "8.3.3.3.3 EndFeatureMembership".
      *
      * @param root
-     *         the root of the imported object
+     *            the root of the imported object
      */
     private void fixEndFeatureMembership(EObject root) {
         EMFUtils.allContainedObjectOfType(root, EndFeatureMembership.class)

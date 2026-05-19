@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.sysml.dto;
+package org.eclipse.syson.sysml.services;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -31,10 +31,9 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.SysmlToAst;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
+import org.eclipse.syson.sysml.dto.InsertTextualSysMLv2Input;
+import org.eclipse.syson.sysml.services.api.ISysMLTextImporter;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -52,17 +51,16 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
 
     private final IObjectSearchService objectSearchService;
 
-    private final ICollaborativeMessageService messageService;
+    private final ISysMLTextImporter sysmlTextImporter;
 
-    private final SysmlToAst sysmlToAst;
+    private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public InsertTextualSysMLv2EventHandler(IObjectSearchService objectSearchService, ICollaborativeMessageService messageService,
-            SysmlToAst sysmlToAst, MeterRegistry meterRegistry) {
+    public InsertTextualSysMLv2EventHandler(IObjectSearchService objectSearchService, ISysMLTextImporter sysmlTextImporter, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.sysmlTextImporter = Objects.requireNonNull(sysmlTextImporter);
         this.messageService = Objects.requireNonNull(messageService);
-        this.sysmlToAst = Objects.requireNonNull(sysmlToAst);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -85,12 +83,12 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
 
         if (input instanceof InsertTextualSysMLv2Input insertTextualInput && editingContext instanceof IEMFEditingContext emfEditingContext) {
             messages = new ArrayList<>();
-            var parentObjectId = insertTextualInput.objectId();
-            var parentElement = this.getParentElement(parentObjectId, emfEditingContext);
-            if (parentElement != null) {
-                var transformer = new ASTTransformer();
-                var newObjects = this.convert(insertTextualInput, emfEditingContext, transformer, parentElement, messages);
-                messages.addAll(transformer.getTransformationMessages());
+            var optionalParentElement = this.resolveElement(emfEditingContext, insertTextualInput.objectId());
+            if (optionalParentElement.isPresent()) {
+                var parent = optionalParentElement.get();
+                var textualContent = insertTextualInput.textualContent();
+
+                var newObjects = this.sysmlTextImporter.importSysMLText(emfEditingContext, parent, textualContent, messages);
                 if (!newObjects.isEmpty()) {
                     payload = new SuccessPayload(input.id(), messages);
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
@@ -108,44 +106,10 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private Element getParentElement(String parentObjectId, IEMFEditingContext emfEditingContext) {
-        var parentObject = this.objectSearchService.getObject(emfEditingContext, parentObjectId);
-        if (parentObject.isPresent()) {
-            var object = parentObject.get();
-            if (object instanceof Element parentElement) {
-                return parentElement;
-            }
-        }
-        return null;
+    private Optional<Element> resolveElement(IEMFEditingContext emfEditingContext, String objectId) {
+        return this.objectSearchService.getObject(emfEditingContext, objectId)
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast);
     }
 
-    private List<Element> convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer transformer, Element parentElement, List<Message> messages) {
-        var textualContent = insertTextualInput.textualContent();
-        var resourceSet = emfEditingContext.getDomain().getResourceSet();
-        var inputStream = new ByteArrayInputStream(textualContent.getBytes());
-        var astParsingResult = this.sysmlToAst.convert(inputStream, ".sysml");
-        messages.addAll(astParsingResult.reports().stream()
-                .map(this::toMessage)
-                .filter(Objects::nonNull)
-                .toList());
-        if (astParsingResult.ast().isPresent()) {
-            return transformer.convertToElements(astParsingResult.ast().get(), resourceSet, parentElement);
-        } else {
-            return List.of();
-        }
-    }
-
-    private Message toMessage(Status status) {
-        MessageLevel msgLevel = switch (status.severity()) {
-            case INFO -> MessageLevel.INFO;
-            case WARNING -> MessageLevel.WARNING;
-            case ERROR -> MessageLevel.ERROR;
-            default -> null;
-        };
-        if (msgLevel != null) {
-            return new Message(status.message(), msgLevel);
-        } else {
-            return null;
-        }
-    }
 }

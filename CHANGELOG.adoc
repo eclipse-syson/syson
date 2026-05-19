@@ -40,6 +40,8 @@ Disabling the _Hide expression internals_ filter in the _Explorer_ view allows t
 - https://github.com/eclipse-syson/syson/issues/2235[#2235] [diagrams] Leverage the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2242[#2242] [explorer] Add two options to the dialog creating a child element of `RequirementUsage` or `RequirementDefinition` tree items.
 One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
+- https://github.com/eclipse-syson/syson/issues/2097[#2097] [explorer] Add support for creating and editing exressions through their textual representation.
+This is currently supported on `Features` (e.g. `Attribute`), `Constraints` and `Transitions` (guard conditions) view new context menu actions (_Create expression_ and _Edit expression_) on the corresponding elements in the _Explorer_.
 
 == v2026.5.0
 

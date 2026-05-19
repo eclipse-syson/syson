@@ -27,11 +27,16 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
 
 /**
  * Element-related services doing queries. This class should not depend on sirius-web services or other spring services.
@@ -115,6 +120,94 @@ public class MetamodelQueryElementService {
                     break;
                 }
                 ancestor = ancestor.getOwner();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Check is a given {@code element} has a single/non-ambiguous existing {@link Expression} definition associated.
+     *
+     * @param element
+     *            the element to test
+     * @return true if the element has a single existing associated expression definition.
+     */
+    public boolean hasSingleExpressionDefinition(Element element) {
+        return this.findSingleExpressionDefinition(element).isPresent();
+    }
+
+    /**
+     * Check whether a given {@link Element element} can contain an {@link Expression}.
+     *
+     * @param element
+     *            the element to test.
+     * @return true if the element can contain an expression.
+     */
+    public boolean canContainExpressionDefinition(Element element) {
+        return !this.getCompatibleExpressionOwnerships(element).isEmpty();
+    }
+
+    /**
+     * Given an {@link Element element}, returns the list of all {@link OwningMembership owning memberships} through
+     * which it can contain an {@link Expression expression}.
+     *
+     * @param element
+     *            a SysML {@link Element element}.
+     * @return the owning memberships through which the element may contain an expression.
+     */
+    public List<OwningMembership> getCompatibleExpressionOwnerships(Element element) {
+        var result = new ArrayList<OwningMembership>();
+
+        // KerML 8.3.4.10.2 FeatureValue: "A FeatureValue is a Membership that identifies a particular member
+        // Expression that provides the value of the Feature that owns the FeatureValue."
+        if (element instanceof Feature) {
+            result.add(SysmlFactory.eINSTANCE.createFeatureValue());
+        }
+
+        return result;
+    }
+
+    /**
+     * Check is a given {@code element} has a single/non-ambiguous existing {@link Expression} definition associated.
+     *
+     * @param element
+     *            the element to test
+     * @return true if the element has a single existing associated expression definition.
+     */
+    public Optional<Expression> findSingleExpressionDefinition(Element element) {
+        Optional<Expression> result = Optional.empty();
+        if (this.isExpressionDefinition(element)) {
+            result = Optional.of((Expression) element);
+        } else {
+            var ownedExpressions = element.getOwnedElement().stream().filter(child -> this.isExpressionDefinition(child)).toList();
+            if (ownedExpressions.size() == 1) {
+                result = Optional.of((Expression) ownedExpressions.get(0));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the textual representation of an {@link Expression expression}.
+     *
+     * @param expression
+     *            an expression.
+     * @return its textual representation/serialization.
+     */
+    public String getExpressionTextualRepresentation(Expression expression) {
+        String result = "";
+        if (expression != null) {
+            SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
+                    .lineSeparator("\n")
+                    .nameDeresolver(new FileNameDeresolver())
+                    .indentation("\t")
+                    .needEscapeCharacter(false)
+                    .build();
+            String textualFormat = new SysMLElementSerializer(options, s -> {
+                // Do nothing for now
+            }).doSwitch(expression);
+            if (textualFormat != null) {
+                result = textualFormat;
             }
         }
         return result;

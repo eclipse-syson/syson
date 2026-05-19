@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ public class DetailsViewServiceTest {
         // SysON for the moment.
         List<Descriptor> composedAdapterFactoryDescriptors = List.of();
         this.detailsViewService = new DetailsViewService(composedAdapterFactoryDescriptors, new IFeedbackMessageService.NoOp(),
-                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()), List.of());
+                new ComposedReadOnlyObjectPredicate(List.of(new SysONReadOnlyObjectPredicateDelegate()), new DefaultReadOnlyObjectPredicate()), new MetamodelQueryElementService(), List.of());
     }
 
     @Test

@@ -1,0 +1,51 @@
+= Expressions
+
+{product} supports the visualisation, creation and edition of {sysmlv2} _expressions_ directly using their natural textual representation.
+
+== Visualisation
+
+In the {explorer} view, elements corresponding to top-level expressions display the textual representation of the whole expression:
+
+image::explorer-expression-full-text.png[Expression textual representation]
+
+By default, the internal structure of the expressions is hidden, but can be revealed by disabling the _Hide expression internals_ filter:
+
+[cols="1,1"]
+|===
+|Internals hidden (default)
+|Internals visible
+
+a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
+a|image::explorer-expression-internals-visible.png[Internals visible]
+|===
+
+== Creation
+
+To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+
+A modal will open where you can enter the textual representation of the expression to create.
+Click on the _Update_ button to validate.
+
+- If the expression entered is valid, it will be created and the modal will be automatically close.
+- If the expression entered is _not_ valid, the modal will be kept open and show the error(s) in an expandable accordion.
+Fix any error reported before clicking on _Update_ again (or canceling the operation).
++
+image::edit-expression-modal.png[Edit expression modal, width=80%]
+image::edit-expression-modal-error.png[Edit expression modal showing an error message if the new expression is invalid, width=80%]
+
+== Edition
+
+To edit an already existing expression, invoke the _Edit expression_ context menu action directly on the existing expression.
+The same modal as for expression creation will open, but with the current textual representation of the expression pre-filled.
+
+Edit the textual representation of the expression as required, and click on the _Update_ button to validate.
+
+As for expression creation, the change will only be applied if there are no errors detected; otherwise the modal will display any errors (e.g. names used in the expression that can not be resolve to existing elements) so that you can fix the input.
+
+Note that if the new text value entered for the expression is empty, applying the change will _delete_ the expression.
+
+== Deletion
+
+To _delete_ an existing expression, you can simply invoke the normal _Delete_ menu item action on the expression itself or the new _Delete expression_ on its parent element.
+
+You can also open the _Edit expression_ modal, clear the text and apply the change; this will also delete the expression.

@@ -42,9 +42,6 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
-import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
 import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.fragments.KerMLStandardLibraryDirectory;
 import org.eclipse.syson.tree.explorer.fragments.LibrariesDirectory;
@@ -157,7 +154,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             label = fragment.getLabel();
         } else if (self instanceof Expression expression && this.metamodelQueryElementService.isExpressionDefinition(expression)) {
-            label = this.getValueExpressionTextualRepresentation(expression);
+            label = this.metamodelQueryElementService.getExpressionTextualRepresentation(expression);
         } else if (self instanceof Type type) {
             String name = type.getName();
             if (name != null) {
@@ -167,25 +164,6 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             label = this.getFallbackLabel(self);
         }
         return label;
-    }
-
-    private String getValueExpressionTextualRepresentation(Expression value) {
-        String result = "";
-        if (value != null) {
-            SysMLSerializingOptions options = new SysMLSerializingOptions.Builder()
-                    .lineSeparator("\n")
-                    .nameDeresolver(new FileNameDeresolver())
-                    .indentation("\t")
-                    .needEscapeCharacter(false)
-                    .build();
-            String textualFormat = new SysMLElementSerializer(options, s -> {
-                // Do nothing for now
-            }).doSwitch(value);
-            if (textualFormat != null) {
-                result = textualFormat;
-            }
-        }
-        return result;
     }
 
     private String getFallbackLabel(Object self) {
@@ -264,7 +242,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     @Override
     public boolean canCreateNewObjectsFromText(Object self) {
-        return self instanceof Element && this.isEditable(self);
+        return self instanceof Element element && !this.readOnlyObjectPredicate.test(element);
     }
 
     @Override
@@ -303,7 +281,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             result = fragment.isEditable();
         } else if (self instanceof Element element) {
-            result = !this.readOnlyObjectPredicate.test(element);
+            result = !this.readOnlyObjectPredicate.test(element) && !this.metamodelQueryElementService.isExpressionDefinition(element);
         } else if (self instanceof Resource resource) {
             result = !this.readOnlyObjectPredicate.test(resource);
         }
