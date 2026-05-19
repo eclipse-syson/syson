@@ -23,12 +23,14 @@ public class GeneralViewFlowUsageProjectData {
     public static final String SCRIPT_PATH = "/scripts/database-content/GeneralView-FlowUsage.sql";
 
     /**
-     * Ids of the graphical elements elements.
+     * Ids of the graphical elements.
      */
     public static final class GraphicalIds {
         public static final String DIAGRAM_ID = "2a1b62cf-36ea-41d2-8433-8ff781b3f4e5";
 
         public static final String CONNECTION_EDGE_ID = "7f3367d5-a200-339b-820a-2408e5b82c84";
+
+        public static final String SCREEN_PART_ID = "946dc191-c8df-3f97-96a9-02cce98768f4";
     }
 
     /**
@@ -40,6 +42,10 @@ public class GeneralViewFlowUsageProjectData {
         public static final String HDMI_CABLE_ID = "1df3f0e9-7d6d-4dd6-93d9-206129fd793f";
 
         public static final String VIDEO_SIGNAL_ID = "d9b2dd49-4bae-44a7-8137-73bcaf0a2d5e";
+
+        public static final String SCREEN_PART = "7776b0d9-287c-441f-b203-36b7ba41a7c6";
+
+        public static final String PACKAGE_1 = "8cb4376f-fe0d-4501-abcb-05eac69e766c";
 
     }
 }
