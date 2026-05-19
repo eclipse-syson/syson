@@ -117,7 +117,7 @@
     "@types/react-dom": "18.3.0",
     "@types/react-resizable": "3.0.8",
     "@types/react-router-dom": "5.3.3",
-    "@vitejs/plugin-react": "6.0.1",
+    "@vitejs/plugin-react": "6.0.2",
     "@vitest/coverage-v8": "3.2.4",
     "@xyflow/react": "12.6.0",
     "d3": "7.0.0",
@@ -144,7 +144,7 @@
     "svg-path-parser": "1.1.0",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
-    "vite": "8.0.1",
+    "vite": "8.0.13",
     "vitest": "3.2.4"
   }
 }
