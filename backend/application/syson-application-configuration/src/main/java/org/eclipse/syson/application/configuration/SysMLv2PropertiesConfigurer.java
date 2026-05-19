@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.syson.sysml.Element;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
@@ -63,8 +62,9 @@ import org.eclipse.syson.form.services.aql.FormQueryAQLService;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelQueryAQLService;
-import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.ServiceMethod;
@@ -119,9 +119,9 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final ILabelService labelService;
 
-    private final UtilService utilService;
-
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
+
+    private final MetamodelQueryElementService metamodelQueryElementService;
 
     private final List<IDetailsViewHelpTextProvider> detailViewHelpTextProviders;
 
@@ -133,7 +133,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         this.labelService = Objects.requireNonNull(labelService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.detailViewHelpTextProviders = Objects.requireNonNull(detailViewHelpTextProviders);
-        this.utilService = new UtilService();
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
     }
 
     @Override
@@ -155,7 +155,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactoryDescriptors, this.feedbackMessageService, this.readOnlyObjectPredicate, this.detailViewHelpTextProviders), this.labelService, this.utilService,
+                List.of(new DetailsViewService(this.composedAdapterFactoryDescriptors, this.feedbackMessageService, this.readOnlyObjectPredicate, this.metamodelQueryElementService,
+                        this.detailViewHelpTextProviders), this.labelService,
                         new ModelMutationAQLService(new ModelMutationElementService()), new ModelQueryAQLService(), new FormMutationAQLService(), new FormQueryAQLService()),
                 List.of(SysmlPackage.eINSTANCE));
         ViewConverterResult converterResult = this.converter.convert(viewFormDescription, List.of(), interpreter);

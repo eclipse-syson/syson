@@ -17,6 +17,7 @@
 ** xref:user-manual:features/other-views.adoc[]
 
 * xref:user-manual:features/import-export-textual.adoc[]
+* xref:user-manual:features/expressions.adoc[]
 
 * xref:user-manual:features/mbse-capability.adoc[]
 

@@ -793,7 +793,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var menuEntriesIds = this.treeItemContextMenuTester.getContextMenuEntries(GeneralViewEmptyTestProjectData.EDITING_CONTEXT, treeId.get(),
                     GeneralViewEmptyTestProjectData.SemanticIds.VIEW_USAGE_ID);
             // no NewRepresentation on a ViewUsage which already contains a standard diagram or requirements-table
-            assertThat(menuEntriesIds).hasSize(4)
+            assertThat(menuEntriesIds).hasSize(5)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT)
                     .contains(SysONExplorerTreeItemContextMenuEntryProvider.NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID)
                     .contains(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL);
@@ -879,14 +879,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void sysONExplorerHidesExpressionInternalsByDefault() {
         List<String> defaultFilters = this.explorerDefaultFiltersSearchService.findTreeDefaultFilterIds(ExpressionSamplesProjectData.EDITING_CONTEXT_ID, this.sysONExplorerTreeDescriptionId);
 
-        var expandedItemIds = List.of(
-                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_DOCUMENT_ID,
-                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_PACKAGE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_VALUE_ID);
+        var expandedItemIds = ExpressionSamplesProjectData.SemanticIds.ALL_IDS;
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, defaultFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
@@ -905,7 +898,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var packageItem = documentItem.getChildren().get(0);
             assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
 
-            assertThat(packageItem.getChildren()).hasSize(7);
+            assertThat(packageItem.getChildren()).hasSize(6);
 
             var tankItem = this.getChildByLabel(packageItem, "Tank");
             assertThat(tankItem).isPresent();
@@ -940,14 +933,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         // Keep all defaults but HIDE_EXPRESSION_INTERNALS_ID
         List<String> activeFilters = defaultFilters.stream().filter(filterId -> !SysONTreeFilterConstants.HIDE_EXPRESSION_INTERNALS_ID.equals(filterId)).toList();
 
-        var expandedItemIds = List.of(
-                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_DOCUMENT_ID,
-                ExpressionSamplesProjectData.SemanticIds.EXPRESSIONS_PACKAGE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_ID,
-                ExpressionSamplesProjectData.SemanticIds.TANK_PRESSURE_LIMIT_CONSTRAINT_VALUE_ID);
+        var expandedItemIds = ExpressionSamplesProjectData.SemanticIds.ALL_IDS;
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONExplorerTreeDescriptionId, expandedItemIds, activeFilters);
         var input = new ExplorerEventInput(UUID.randomUUID(), ExpressionSamplesProjectData.EDITING_CONTEXT_ID, explorerRepresentationId);
@@ -966,7 +952,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
             var packageItem = documentItem.getChildren().get(0);
             assertThat(packageItem.getLabel().toString()).isEqualTo("Expressions");
 
-            assertThat(packageItem.getChildren()).hasSize(7);
+            assertThat(packageItem.getChildren()).hasSize(6);
 
             var tankItem = this.getChildByLabel(packageItem, "Tank");
             assertThat(tankItem).isPresent();

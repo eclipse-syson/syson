@@ -37,13 +37,15 @@ import {
   ImportLibraryCommand,
   navigationBarMenuIconExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
-
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { SysMLImportedPackageNodePaletteAppearanceSection } from '../../nodes/imported_package/SysMLImportedPackageNodePaletteAppearanceSection';
 import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNoteNodePaletteAppearanceSection';
 import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/SysMLPackageNodePaletteAppearanceSection';
 import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocumentTransform';
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
+import { DeleteSysMLExpressionMenuContribution } from '../expressions/DeleteSysMLExpressionMenuContribution';
+import { EditSysMLExpressionMenuContribution } from '../expressions/EditSysMLExpressionMenuContribution';
+import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
@@ -103,6 +105,24 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
       return entry.id === 'newObjectsFromText';
     },
     component: InsertTextualSysMLMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id === 'createExpression';
+    },
+    component: NewSysMLExpressionMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id === 'editExpression';
+    },
+    component: EditSysMLExpressionMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id === 'deleteExpression';
+    },
+    component: DeleteSysMLExpressionMenuContribution,
   },
 ];
 

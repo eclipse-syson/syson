@@ -8,3 +8,4 @@
 ** xref:user-manual:hands-on/how-tos/representations-view.adoc[]
 ** xref:user-manual:features/query-view.adoc[]
 ** xref:user-manual:features/import-export-textual.adoc[]
+** xref:user-manual:features/expressions.adoc[]

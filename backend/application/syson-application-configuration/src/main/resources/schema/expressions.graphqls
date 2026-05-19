@@ -1,0 +1,15 @@
+extend type EditingContext {
+  expressionTextualRepresentation(elementId: ID!): String
+}
+
+extend type Mutation {
+  deleteExpression(input: DeleteExpressionInput!): DeleteExpressionPayload!
+}
+
+input DeleteExpressionInput {
+  id: ID!
+  editingContextId: String!
+  parentElementId: String!
+}
+
+union DeleteExpressionPayload = ErrorPayload | SuccessPayload

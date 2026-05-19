@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2025 Obeo.
+* Copyright (c) 2023, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -66,13 +66,14 @@ public class ResultExpressionMembershipImpl extends FeatureMembershipImpl implem
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetOwnedResultExpression() {
-        // TODO: implement this method to return the 'Owned Result Expression' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(Expression.class::isInstance)
+                .map(Expression.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

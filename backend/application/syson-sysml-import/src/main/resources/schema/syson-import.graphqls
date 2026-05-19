@@ -1,4 +1,3 @@
-
 extend type Mutation {
   insertTextualSysMLv2(input: InsertTextualSysMLv2Input!): InsertTextualSysMLv2Payload!
 }
@@ -11,3 +10,38 @@ input InsertTextualSysMLv2Input {
 }
 
 union InsertTextualSysMLv2Payload = ErrorPayload | SuccessPayload
+
+extend type Mutation {
+  createExpression(input: CreateExpressionInput!): CreateExpressionPayload!
+  editExpression(input: EditExpressionInput!): EditExpressionPayload!
+}
+
+input CreateExpressionInput {
+  id: ID!
+  editingContextId: ID!
+  parentElementId: ID!
+  expressionText: String!
+}
+
+union CreateExpressionPayload = ErrorPayload | CreateExpressionSuccessPayload
+
+type CreateExpressionSuccessPayload {
+  id: ID!
+  newExpressionId: ID!
+  messages: [Message]!
+}
+
+input EditExpressionInput {
+  id: ID!
+  editingContextId: ID!
+  expressionElementId: ID!
+  newExpressionText: String!
+}
+
+union EditExpressionPayload = ErrorPayload | EditExpressionSuccessPayload
+
+type EditExpressionSuccessPayload {
+  id: ID!
+  newExpressionId: ID!
+  messages: [Message]!
+}
