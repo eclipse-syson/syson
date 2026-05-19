@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,7 @@ export const baseTheme: Theme = createTheme({
     action: {
       hover: '#A1A4C436',
       selected: '#A1A4C460',
+      disabledBackground: '#E0E0E0',
     },
   },
   components: {

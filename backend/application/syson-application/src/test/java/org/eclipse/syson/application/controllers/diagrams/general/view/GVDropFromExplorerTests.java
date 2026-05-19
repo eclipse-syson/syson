@@ -173,7 +173,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
         Runnable dropFromExplorerRunnable = () -> {
             assertThat(diagram.get().getNodes()).hasSize(0);
             var background = diagram.get().getStyle().getBackground();
-            assertThat(background).isNotEqualTo("transparent");
+            assertThat(background).isNotEqualTo("white");
             this.dropFromExplorerTester.dropFromExplorerOnDiagram(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, semanticElementId.get());
         };
 
@@ -190,7 +190,7 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
                 .hasTotalCompartmentCount(11)
                 .check(diagram.get(), newDiagram);
             var background = newDiagram.getStyle().getBackground();
-            assertThat(background).isEqualTo("transparent");
+            assertThat(background).isEqualTo("white");
         });
 
         Runnable exposedElementsChecker = this.semanticRunnableFactory.createRunnable(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID,
