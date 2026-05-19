@@ -1,0 +1,79 @@
+= Delete element recipe (python script)
+
+Learn how to delete an element programmatically.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* <<delete_an_element>>: Delete an element from a project by creating a commit.
+
+[#delete_an_element]
+== Delete an element
+This example demonstrates how to delete an existing element by using the {product} REST API.
+The script first fetches the latest commit of the target project, retrieves the element to confirm it exists, and then creates a new commit containing a deletion change for that element.
+After the commit is created, the script verifies that the element is no longer accessible in the latest commit.
+
+[NOTE]
+====
+To delete an element through the commit API, send a `DataVersion` with its `identity` set to the target element ID and omit the `payload`.
+When an element is deleted, {product} also removes incoming relationships to maintain model integrity.
+====
+
+Example script to delete an element:
+
+[source,python]
+.delete_element.py
+----
+include::example$delete_element.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_element` function* with four parameters:
+
+* `host`: The base API address.
+* `project_id`: The UUID of the project.
+* `commit_id`: The UUID of the commit in which the element is read.
+* `element_id`: The UUID of the element to fetch.
+
+<3> Constructs the *API endpoint* URL for retrieving a single element.
+
+<4> *Sends a `GET` request* to confirm the element exists before trying to delete it.
+
+<5> *Define the `delete_element` function* with three parameters:
+
+* `host`: The base API address.
+* `project_id`: The UUID of the project.
+* `element_id`: The UUID of the element to delete.
+
+<6> Constructs the *API endpoint* URL for creating a commit.
+
+<7> Builds the *commit payload* for deletion by setting `identity` and omitting `payload`.
+
+<8> *Sends a `POST` request* to create the delete commit.
+
+<9> Fetches the latest commit again after the delete operation.
+
+<10> *Verifies the deletion* by checking that the element endpoint returns `404`.
+
+Run the script:
+[source,bash]
+----
+$ python delete_element.py your-project-id your-element-id
+----
+
+Output example:
+[source,bash]
+----
+Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Last Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Deleting element 'battery' (id = 7d5e52f4-6fd0-4f3b-9daa-9cb7f0c3e501, type = PartUsage)
+Delete commit created successfully.
+Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Commit ID: 6f70be18-0117-4e2d-b947-a6bbf2981b63
+Last Commit ID: 6f70be18-0117-4e2d-b947-a6bbf2981b63
+Element '7d5e52f4-6fd0-4f3b-9daa-9cb7f0c3e501' deleted successfully.
+----
