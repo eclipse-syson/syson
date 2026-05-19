@@ -25,6 +25,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.syson.services.api.IDefaultSysMLMoveElementService;
+import org.eclipse.syson.services.api.ISysMLMoveElementCheckerService;
+import org.eclipse.syson.services.api.ISysMLMoveElementServiceDelegate;
+import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -56,7 +60,7 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
     @BeforeEach
     public void setUp() {
         this.readOnlyElements = new ArrayList<>();
-        this.moveService = new SysMLMoveElementService(e -> this.readOnlyElements.contains(e));
+        this.moveService = new SysMLMoveElementService(List.of(), this.createDefaultMoveElementService());
         this.rSet = new ResourceSetImpl();
         // Make sure the resources we manipulate use a CrossReferenceAdapter.
         this.rSet.eAdapters().add(new ECrossReferenceAdapter());
@@ -181,10 +185,161 @@ public class SysMLMoveElementServiceTest extends AbstractServiceTest {
                 .returns(p1, FeatureTyping::getTypedFeature);
     }
 
+    @Test
+    @DisplayName("GIVEN a delegate that can handle a move, WHEN we move an element, THEN the delegate is used")
+    public void delegateMoveElement() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+        CapturingMoveElementServiceDelegate delegate = new CapturingMoveElementServiceDelegate(true, MoveStatus.buildSuccess());
+        CapturingDefaultSysMLMoveElementService defaultMoveService = new CapturingDefaultSysMLMoveElementService(MoveStatus.buildFailure("Default implementation should not be used"));
+        SysMLMoveElementService service = new SysMLMoveElementService(List.of(delegate), defaultMoveService);
+
+        MoveStatus moveStatus = service.moveSemanticElement(p1, p2);
+
+        assertThat(moveStatus.isSuccess()).isTrue();
+        assertThat(delegate.moveCallCount).isEqualTo(1);
+        assertThat(defaultMoveService.moveCallCount).isZero();
+    }
+
+    @Test
+    @DisplayName("GIVEN no delegate that can handle a move, WHEN we move an element, THEN the default implementation is used")
+    public void defaultMoveElement() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+        CapturingMoveElementServiceDelegate delegate = new CapturingMoveElementServiceDelegate(false, MoveStatus.buildFailure("Delegate should not be used"));
+        CapturingDefaultSysMLMoveElementService defaultMoveService = new CapturingDefaultSysMLMoveElementService(MoveStatus.buildSuccess());
+        SysMLMoveElementService service = new SysMLMoveElementService(List.of(delegate), defaultMoveService);
+
+        MoveStatus moveStatus = service.moveSemanticElement(p1, p2);
+
+        assertThat(moveStatus.isSuccess()).isTrue();
+        assertThat(delegate.moveCallCount).isZero();
+        assertThat(defaultMoveService.moveCallCount).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("GIVEN a delegate that can handle a move, WHEN the default guard would reject the move, THEN the delegate is still used")
+    public void delegateIsResponsibleForMoveGuards() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+        this.readOnlyElements.add(p1);
+        CapturingMoveElementServiceDelegate delegate = new CapturingMoveElementServiceDelegate(true, MoveStatus.buildSuccess());
+        DefaultSysMLMoveElementService defaultMoveService = this.createDefaultMoveElementService();
+        SysMLMoveElementService service = new SysMLMoveElementService(List.of(delegate), defaultMoveService);
+
+        // The default implementation would normally reject that move but since the delegate say it can handle it, it is a success
+        MoveStatus moveStatus = service.moveSemanticElement(p1, p2);
+
+        assertThat(moveStatus.isSuccess()).isTrue();
+        assertThat(delegate.canHandleCallCount).isEqualTo(1);
+        assertThat(delegate.moveCallCount).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("GIVEN the default implementation, WHEN canMove rejects the move, THEN the move is not performed")
+    public void defaultMoveElementUsesCanMove() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+        DefaultSysMLMoveElementService defaultMoveElementService = new DefaultSysMLMoveElementService(new CapturingMoveElementCheckerService(MoveStatus.buildFailure("Forbidden")));
+
+        MoveStatus moveStatus = defaultMoveElementService.moveSemanticElement(p1, p2);
+
+        assertThat(moveStatus.isSuccess()).isFalse();
+        assertThat(pack.getOwnedRelationship()).hasSize(2);
+        assertThat(p2.getOwnedRelationship()).isEmpty();
+    }
+
     private void addInPackage(Element element, Package pack) {
         OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         pack.getOwnedRelationship().add(owningMembership);
         owningMembership.getOwnedRelatedElement().add(element);
     }
 
+    private DefaultSysMLMoveElementService createDefaultMoveElementService() {
+        return new DefaultSysMLMoveElementService(new SysMLMoveElementCheckerService(e -> this.readOnlyElements.contains(e)));
+    }
+
+    /**
+     * Test implementation of {@link IDefaultSysMLMoveElementService} which captures calls.
+     */
+    private static final class CapturingDefaultSysMLMoveElementService implements IDefaultSysMLMoveElementService {
+
+        private final MoveStatus moveStatus;
+
+        private int moveCallCount;
+
+        CapturingDefaultSysMLMoveElementService(MoveStatus moveStatus) {
+            this.moveStatus = moveStatus;
+        }
+
+        @Override
+        public MoveStatus moveSemanticElement(Element element, Element newParent) {
+            this.moveCallCount++;
+            return this.moveStatus;
+        }
+    }
+
+    /**
+     * Test implementation of {@link ISysMLMoveElementCheckerService} which returns a fixed status.
+     */
+    private static final class CapturingMoveElementCheckerService implements ISysMLMoveElementCheckerService {
+
+        private final MoveStatus moveStatus;
+
+        CapturingMoveElementCheckerService(MoveStatus moveStatus) {
+            this.moveStatus = moveStatus;
+        }
+
+        @Override
+        public MoveStatus canMove(Element element, Element newParent) {
+            return this.moveStatus;
+        }
+    }
+
+    /**
+     * Test implementation of {@link ISysMLMoveElementServiceDelegate} which captures calls.
+     */
+    private static final class CapturingMoveElementServiceDelegate implements ISysMLMoveElementServiceDelegate {
+
+        private final boolean canHandle;
+
+        private final MoveStatus moveStatus;
+
+        private int canHandleCallCount;
+
+        private int moveCallCount;
+
+        CapturingMoveElementServiceDelegate(boolean canHandle, MoveStatus moveStatus) {
+            this.canHandle = canHandle;
+            this.moveStatus = moveStatus;
+        }
+
+        @Override
+        public boolean canHandle(Element element, Element newParent) {
+            this.canHandleCallCount++;
+            return this.canHandle;
+        }
+
+        @Override
+        public MoveStatus moveSemanticElement(Element element, Element newParent) {
+            this.moveCallCount++;
+            return this.moveStatus;
+        }
+    }
 }
