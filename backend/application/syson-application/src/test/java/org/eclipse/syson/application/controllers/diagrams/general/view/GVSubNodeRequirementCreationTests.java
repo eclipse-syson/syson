@@ -821,7 +821,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getRequirementUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, "New Framed concern");
+        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, "New framed Concern");
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, SysmlPackage.eINSTANCE.getConcernUsage(), 8, 2);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("requirement", SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), SysmlPackage.eINSTANCE.getConcernUsage()));
 
