@@ -11,7 +11,7 @@
 ** Add support for the _frame_ graphical edge.
 A _frame_ graphical edge can be created between a `RequirementUsage` or a `RequirementDefinition` graphical node and a `ConcernUsage` graphical node.
 +
-image::release-notes-frame-edge-tool.png[Edge tool to frame a ConcernUsage, width=60%,height=60%]
+image::release-notes-frame-edge-tool.png[Edge tool to frame a ConcernUsage, width=50%,height=50%]
 +
 image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a ConcernUsage, width=60%,height=60%]
 
@@ -19,13 +19,15 @@ image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a 
 +
 image::release-notes-start-done-states.png[Tool to create a start and done, width=60%,height=60%]
 
-** Add a new tools to create a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add a new tool to create a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 +
 image::release-notes-framed-concern-tool.png[Tool to create a _frame_ concern usage, width=60%,height=60%]
 
 ** Add the _frames_ compartment graphical node in `RequirementUsage` and `RequirementDefinition` graphical nodes.
 +
-image::release-notes-frames-compartment.png[frames compartment displaying concern usages of a requirement, width=60%,height=60%]
+image::release-notes-frames-compartment.png[frames compartment displaying concern usages of a requirement, width=40%,height=40%]
+
+** Leverage the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 * In the _Explorer_ view:
 

@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -44,6 +45,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentItemNodeDescription;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -51,8 +53,11 @@ import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
@@ -110,6 +115,9 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
     @Autowired
     private DiagramComparator diagramComparator;
+
+    @Autowired
+    private IIdentityService identityService;
 
     private NodeCreationTestsService creationTestsService;
 
@@ -806,10 +814,10 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                 .verify(Duration.ofMinutes(10));
     }
 
-    @DisplayName("GIVEN a Requirement Usage, WHEN creating a new Framed concern, THEN a new Framed concern is created")
+    @DisplayName("GIVEN a Requirement Usage, WHEN creating a New Framed Concern without referencing another concern, THEN a New Framed Concern is created")
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
-    public void createRequirementUsageFramedConcern() {
+    public void createRequirementUsageFramedConcernWithoutSelection() {
         var flux = this.givenSubscriptionToDiagram();
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
@@ -821,9 +829,77 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
         EClass parentEClass = SysmlPackage.eINSTANCE.getRequirementUsage();
         String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID;
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, "New framed Concern");
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, "New Framed Concern");
         Consumer<Object> diagramCheck = this.diagramCheckerService.siblingNodeGraphicalChecker(diagram, diagramDescriptionIdProvider, SysmlPackage.eINSTANCE.getConcernUsage(), 8, 2);
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("requirement", SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), SysmlPackage.eINSTANCE.getConcernUsage()));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN a Requirement Usage, WHEN creating a New Framed Concern referencing another concern, THEN a New Framed Concern is created")
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @Test
+    public void createRequirementUsageFramedConcernWithSelection() {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getRequirementUsage();
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID;
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, "New Framed Concern", GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID);
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(diagram.get(), newDiagram);
+
+            String newNodeDescriptionName = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern()) + FramedConcernCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME;
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName("frames")
+                    .hasNodeDescriptionName(newNodeDescriptionName)
+                    .hasCompartmentCount(0)
+                    .isHidden()
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = object -> {
+            assertThat(object).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(concernUsages -> {
+                        assertThat((List<?>) concernUsages).size().isEqualTo(1);
+                        assertThat(concernUsages.getFirst())
+                                .isInstanceOf(ConcernUsage.class)
+                                .asInstanceOf(type(ConcernUsage.class))
+                                .satisfies(concernUsage -> {
+                                    assertThat(concernUsage.eContainer())
+                                            .isInstanceOf(FramedConcernMembership.class)
+                                            .asInstanceOf(type(FramedConcernMembership.class))
+                                            .satisfies(framedConcernMembership -> {
+                                                assertThat(this.identityService.getId(framedConcernMembership.getReferencedConcern())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID);
+                                                assertThat(concernUsage.getOwnedRelationship().getFirst())
+                                                        .isInstanceOf(ReferenceSubsetting.class)
+                                                        .asInstanceOf(type(ReferenceSubsetting.class))
+                                                        .satisfies(referenceSubsetting -> {
+                                                            assertThat(referenceSubsetting.getReferencedFeature()).isEqualTo(framedConcernMembership.getReferencedConcern());
+                                                        });
+                                            });
+                                });
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("requirement", SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(), SysmlPackage.eINSTANCE.getConcernUsage(), additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)

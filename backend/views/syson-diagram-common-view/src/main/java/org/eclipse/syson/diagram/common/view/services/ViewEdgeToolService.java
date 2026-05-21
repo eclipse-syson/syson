@@ -676,7 +676,7 @@ public class ViewEdgeToolService {
                 .ifPresent(targetNodeDescriptions::add);
 
         return builder
-                .name(this.nameGenerator.getCreationToolName("New framed ", SysmlPackage.eINSTANCE.getConcernUsage()))
+                .name(this.nameGenerator.getCreationToolName("New Framed ", SysmlPackage.eINSTANCE.getConcernUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getFramedConcernMembership().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))

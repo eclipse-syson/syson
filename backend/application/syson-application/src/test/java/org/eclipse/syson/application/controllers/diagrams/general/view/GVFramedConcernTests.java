@@ -130,7 +130,7 @@ public class GVFramedConcernTests extends AbstractIntegrationTests {
 
         var edgeCreationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(
                 this.descriptionNameGenerator.getNodeName(parentEClass),
-                "New framed Concern");
+                "New Framed Concern");
 
         AtomicReference<Diagram> diagram = new AtomicReference<>();
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);

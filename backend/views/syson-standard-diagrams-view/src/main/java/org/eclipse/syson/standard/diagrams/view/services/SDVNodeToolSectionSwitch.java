@@ -37,6 +37,7 @@ import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.FramedConcernNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.InterfaceDefinitionEndCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
@@ -698,6 +699,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage()), SysmlPackage.eINSTANCE.getRequirementUsage()));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS,
+                new FramedConcernNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewStakeholderNodeTool());
@@ -718,6 +721,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     @Override
     public List<NodeToolSection> caseRequirementDefinition(RequirementDefinition object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.REQUIREMENTS,
+                new FramedConcernNodeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewStakeholderNodeTool());
