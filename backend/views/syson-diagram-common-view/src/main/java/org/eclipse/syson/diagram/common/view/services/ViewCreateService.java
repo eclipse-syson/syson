@@ -213,6 +213,8 @@ public class ViewCreateService {
             ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.REQUIREMENT);
         } else if (feature.equals(SysmlPackage.eINSTANCE.getElement_Documentation())) {
             result = SysmlFactory.eINSTANCE.createOwningMembership();
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern()) || feature.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern())) {
+            result = SysmlFactory.eINSTANCE.createFramedConcernMembership();
         }
         return result;
     }

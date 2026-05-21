@@ -19,6 +19,10 @@ image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a 
 +
 image::release-notes-start-done-states.png[Tool to create a start and done, width=60%,height=60%]
 
+** Add a new tools to create a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
++
+image::release-notes-framed-concern-tool.png[Tool to create a _frame_ concern usage, width=60%,height=60%]
+
 * In the _Explorer_ view:
 
 ** The tree items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.
