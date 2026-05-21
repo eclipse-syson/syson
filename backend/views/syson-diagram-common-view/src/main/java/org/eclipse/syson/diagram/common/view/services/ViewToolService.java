@@ -608,6 +608,36 @@ public class ViewToolService extends ToolService {
     }
 
     /**
+     * Provides the root elements in the tree of the selection dialog for presenting all existing ConcernUsage.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link org.eclipse.syson.sysml.ConcernUsage}.
+     */
+    public List<Object> getConcernReferenceSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getConcernUsage()));
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for presenting all existing ConcernUsage.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an
+     *         {@link org.eclipse.syson.sysml.ConcernUsage}.
+     */
+    public List<? extends Object> getConcernReferenceSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getConcernUsage()));
+    }
+
+
+
+    /**
      * Provides the root elements in the tree of the selection dialog for the any creation tool.
      *
      * @param editingContext

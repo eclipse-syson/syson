@@ -220,13 +220,16 @@ public class ModelMutationElementService {
             var newConcernUsage = SysmlFactory.eINSTANCE.createConcernUsage();
             newFramedConcernMembership.getOwnedRelatedElement().add(newConcernUsage);
 
-            var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-            newConcernUsage.getOwnedRelationship().add(newReferenceSubsetting);
-            newReferenceSubsetting.setReferencedFeature(concernUsage);
-
             this.metamodelMutationElementService.initialize(newFramedConcernMembership);
             this.metamodelMutationElementService.initialize(newConcernUsage);
-            this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+
+            if (concernUsage != null) {
+                var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                newConcernUsage.getOwnedRelationship().add(newReferenceSubsetting);
+                newReferenceSubsetting.setReferencedFeature(concernUsage);
+                this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+            }
+
             return newFramedConcernMembership;
         }
         return null;

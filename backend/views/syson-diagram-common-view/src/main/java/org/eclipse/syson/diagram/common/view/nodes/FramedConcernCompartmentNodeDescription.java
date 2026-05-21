@@ -18,8 +18,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.tools.FramedConcernNodeToolProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -52,6 +54,11 @@ public class FramedConcernCompartmentNodeDescription extends AbstractCompartment
                     .ifPresent(itemNodeDescription -> nodeDescription.getChildrenDescriptions().add(itemNodeDescription));
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
+    }
+
+    @Override
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        return List.of(new FramedConcernNodeToolProvider());
     }
 
     @Override
