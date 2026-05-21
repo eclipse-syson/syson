@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view;
 
+import java.util.Optional;
+
+import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.builder.generated.view.ColorPaletteBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.syson.common.view.api.IViewDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AddYourFirstElement;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,5 +42,15 @@ public class SDVDescriptionProvider implements IViewDescriptionProvider {
     @Override
     public IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
         return new SDVDiagramDescriptionProvider();
+    }
+
+    @Override
+    public Optional<ColorPalette> buildColorPalette() {
+        ColorPalette colorPalette = new ColorPaletteBuilder().colors(new ViewBuilders().newFixedColor()
+                        .name(AddYourFirstElement.COLOR_NAME)
+                        .value("url(" + AddYourFirstElement.BASE64 + ") no-repeat center center / contain")
+                        .build())
+                .build();
+        return Optional.of(colorPalette);
     }
 }
