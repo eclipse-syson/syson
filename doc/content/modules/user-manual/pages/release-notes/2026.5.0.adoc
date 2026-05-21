@@ -1,4 +1,4 @@
-= 2026.5.0 (work in progress)
+= 2026.5.0
 
 == Key highlights
 
