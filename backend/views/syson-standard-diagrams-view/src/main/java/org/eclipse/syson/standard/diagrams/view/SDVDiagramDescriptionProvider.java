@@ -321,14 +321,10 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace());
-
         var emptyDiagramStyle = new DiagramBuilders().newConditionalDiagramStyle()
                 .condition("aql:self.exposedElement->size() == 0 and editingContext.isDiagramEmpty(diagramContext, previousDiagram, self.exposedElement->size())")
                 .style(new DiagramBuilders().newDiagramStyleDescription()
-                        .background(this.viewBuilderHelper.newFixedColor()
-                                .name("AddYourFirstElement")
-                                .value("url(" + AddYourFirstElement.BASE64 + ") no-repeat center center / contain")
-                                .build())
+                        .background(colorProvider.getColor(AddYourFirstElement.COLOR_NAME))
                         .build())
                 .build();
 

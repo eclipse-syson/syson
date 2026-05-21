@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,14 @@
 package org.eclipse.syson.common.view.api;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
@@ -55,6 +57,9 @@ public interface IViewDescriptionProvider {
         View view = viewBuilder.build();
         IColorProvider colorProvider = new ColorProvider(view);
 
+        this.buildColorPalette()
+                .ifPresent(colorPalette -> view.getColorPalettes().add(colorPalette));
+
         // Create org.eclipse.sirius.components.view.RepresentationDescription
         IRepresentationDescriptionProvider viewDiagramDescriptionProvider = this.getRepresentationDescriptionProvider();
         RepresentationDescription viewRepresentationDescription = viewDiagramDescriptionProvider.create(colorProvider);
@@ -72,5 +77,14 @@ public interface IViewDescriptionProvider {
         resource.getContents().add(view);
 
         return List.of(view);
+    }
+
+    /**
+     * Creates an optional color palette for this {@link View}.
+     *
+     * @return an {@link Optional} color palette.
+     */
+    default Optional<ColorPalette> buildColorPalette() {
+        return Optional.empty();
     }
 }
