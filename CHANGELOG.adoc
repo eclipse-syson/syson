@@ -20,6 +20,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/2232[#2232] [configuration] Fix a serialization problem of the View models of SysON representations.
+- https://github.com/eclipse-syson/syson/issues/2237[#2237] [diagrams] Fix the item label inside `frames`, `require constraints`, and `assume constraints` compartments.
 
 === Improvements
 

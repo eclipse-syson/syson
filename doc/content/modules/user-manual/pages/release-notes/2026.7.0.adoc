@@ -51,6 +51,12 @@ a|image::explorer-expression-internals-visible.png[Internals visible]
 
 ** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
 ** Improve feedback message reporting while moving elements in diagrams.
+** Fix and improve the labeling logic inside `frames`, `require constraints`, and `assume constraints` compartments.
+Previously, the label was always the name of the `ConcernUsage` or the `ConstraintUsage` displayed in the compartment.
+Now, the label dynamically adapts based on whether the `ConcernUsage` or `ConstraintUsage` has a name and an owned reference subsetting:
+*** Elements having both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
+*** Elements without name and an owned reference subsetting display only the reference subsetting name
+*** Elements without reference subsetting display their name.
 
 == Technical details
 
