@@ -179,6 +179,7 @@ public class DiagramQueryLabelServiceTest {
     }
 
     @DisplayName("Check Attribute Usage item label with name and short name")
+    @Test
     void testItemCompartmentLabelWithNameAndShortName() {
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
         attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
@@ -270,15 +271,50 @@ public class DiagramQueryLabelServiceTest {
                 this.labelService.getCompartmentItemLabel(attributeUsage));
     }
 
-    @DisplayName("GIVEN a ConstraintUsage with no expression, WHEN its label is computed, THEN the label contains the name of the constraint")
+    @DisplayName("GIVEN a ConstraintUsage without expression, with declared name, without requiring another constraint, WHEN its label is computed, THEN the label contains the name of the constraint")
     @Test
-    public void testGetCompartmentItemLabelOfConstraintWithNoExpression() {
+    public void testGetCompartmentItemLabelOfConstraintWithoutExpressionWithDeclaredNameWithoutRequiringAnotherConstraint() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
         // Constraints have a special label when they are inside a RequirementConstraintMembership
         RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
         requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
         assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME);
+    }
+
+    @DisplayName("GIVEN a ConstraintUsage without expression, with declared name, requiring another constraint, WHEN its label is computed, THEN the label contains the constraint name with subsetted refence name")
+    @Test
+    public void testGetCompartmentItemLabelOfConstraintWithoutExpressionWithDeclaredNameRequiringAnotherConstraint() {
+        ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
+        constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+
+        ConstraintUsage referenceConstraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
+        referenceConstraintUsage.setDeclaredName("referencedConstraint");
+        var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        referenceSubsetting.setReferencedFeature(referenceConstraintUsage);
+        constraintUsage.getOwnedRelationship().add(referenceSubsetting);
+
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME + LabelConstants.SPACE + LabelConstants.REFERENCES + LabelConstants.SPACE + "referencedConstraint");
+    }
+
+    @DisplayName("GIVEN a ConstraintUsage without expression, without declared name, requiring another constraint, WHEN its label is computed, THEN the label contains only subsetted refence name")
+    @Test
+    public void testGetCompartmentItemLabelOfConstraintWithoutExpressionWithoutDeclaredNameRequiringAnotherConstraint() {
+        ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
+
+        ConstraintUsage referenceConstraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
+        referenceConstraintUsage.setDeclaredName("referencedConstraint");
+        var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        referenceSubsetting.setReferencedFeature(referenceConstraintUsage);
+        constraintUsage.getOwnedRelationship().add(referenceSubsetting);
+
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
+        assertThat(this.labelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("referencedConstraint");
     }
 
     @DisplayName("GIVEN a ConstraintUsage with a boolean expression, WHEN its label is computed, THEN the label represents the expression")
