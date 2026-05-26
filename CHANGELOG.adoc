@@ -38,6 +38,8 @@ Disabling the _Hide expression internals_ filter in the _Explorer_ view allows t
 - https://github.com/eclipse-syson/syson/issues/2231[#2231] [diagrams] Add a new tool to create a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2231[#2231] [diagrams] Add the support for the _frames_ compartment graphical node in `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2235[#2235] [diagrams] Leverage the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/2242[#2242] [explorer] Add two options to the dialog creating a child element of `RequirementUsage` or `RequirementDefinition` tree items.
+One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
 
 == v2026.5.0
 

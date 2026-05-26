@@ -43,6 +43,12 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
+** The dialog creating a child element provide two more options for `RequirementUsage` or `RequirementDefinition` tree items.
+One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
+The one creating a `ConcernUsage` create a `FramedConcernMembership` as an intermediate container.
+The one creating a `FramedConcernMembership` only creates the membership.
+In both cases, to display the `FramedConcernMembership` deactivate the `Hide Memberships` filter.
+
 == Bug fixes
 
 == Improvements
