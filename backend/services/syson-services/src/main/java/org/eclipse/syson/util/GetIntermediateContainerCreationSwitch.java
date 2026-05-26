@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
@@ -64,6 +65,19 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
             // SysML v2 8.3.21.7: "A RequirementConstraintMembership is a FeatureMembership for an assumed or required
             // ConstraintUsage of a RequirementDefinition or RequirementUsage."
             intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getRequirementConstraintMembership());
+        } else {
+            intermediateContainer = this.caseFeature(object);
+        }
+        return intermediateContainer;
+    }
+
+    @Override
+    public Optional<EClass> caseConcernUsage(ConcernUsage object) {
+        Optional<EClass> intermediateContainer;
+        if (this.container instanceof RequirementDefinition || this.container instanceof RequirementUsage) {
+            // SysML v2 8.3.21.5: "A FramedConcernMembership is a RequirementConstraintMembership for a framed ConcernUsage of a
+            // RequirementDefinition or RequirementUsage."
+            intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getFramedConcernMembership());
         } else {
             intermediateContainer = this.caseFeature(object);
         }

@@ -60,8 +60,10 @@ import org.eclipse.syson.application.data.ExplorerViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewEmptyTestProjectData;
 import org.eclipse.syson.application.data.ProjectWithLibraryDependencyContainingLibraryPackageTestProjectData;
 import org.eclipse.syson.application.data.WithUserLibrariesTestProjectData;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -446,11 +448,11 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
 
         Runnable checkConstraintOwnership = () -> {
             var editingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
-                var optionalContraint = this.objectSearchService.getObject(editingContext, newConstraintId.get());
-                assertThat(optionalContraint).containsInstanceOf(ConstraintUsage.class);
-                var constraint = (ConstraintUsage) optionalContraint.get();
+                var optionalConstraint = this.objectSearchService.getObject(editingContext, newConstraintId.get());
+                assertThat(optionalConstraint).containsInstanceOf(ConstraintUsage.class);
+                var constraint = (ConstraintUsage) optionalConstraint.get();
                 assertThat(constraint.getOwningRelationship()).isInstanceOf(RequirementConstraintMembership.class);
-                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalContraint.get());
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConstraint.get());
             });
             Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(editingContextFunctionInput);
             var payload = result.block();
@@ -462,6 +464,55 @@ public class ExplorerViewControllerIntegrationTests extends AbstractIntegrationT
                 .then(createChildConstraint)
                 .consumeNextWith(ignorePayload)
                 .then(checkConstraintOwnership)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN the Sirius Explorer View, WHEN creating a concern inside a requirement, THEN the new concern is owned through a FramedConcernMembership")
+    @GivenSysONServer({ ExplorerViewDirectEditTestProjectData.SCRIPT_PATH })
+    @Test
+    public void testCreateConcernInRequirement() {
+        var expandedIds = this.getAllTreeItemIds(ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID);
+        var activatedFilters = List.of(SysONTreeFilterConstants.HIDE_ROOT_NAMESPACES_ID);
+        var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.sysONTreeViewDescriptionProvider.getDescriptionId(), expandedIds, activatedFilters);
+
+        var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, treeRepresentationId);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
+
+        var newConcernId = new AtomicReference<String>(null);
+
+        Consumer<Object> ignorePayload = (o) -> {
+            // Ignore the refresh event payload, we will check the actual semantic model content.
+        };
+
+        Runnable createChildConstraint = () -> {
+            var input = new CreateChildInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, ExplorerViewDirectEditTestProjectData.SemanticIds.REQ1_RU_ID,
+                    "SysMLv2EditService-ConcernUsage");
+            var result = this.createChildMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
+            assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
+            String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
+            newConcernId.set(objectId);
+        };
+
+        Runnable checkConcernOwnership = () -> {
+            var editingContextFunctionInput = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), ExplorerViewDirectEditTestProjectData.EDITING_CONTEXT_ID, (editingContext, input) -> {
+                var optionalConcern = this.objectSearchService.getObject(editingContext, newConcernId.get());
+                assertThat(optionalConcern).containsInstanceOf(ConstraintUsage.class);
+                var concern = (ConcernUsage) optionalConcern.get();
+                assertThat(concern.getOwningRelationship()).isInstanceOf(FramedConcernMembership.class);
+                return new ExecuteEditingContextFunctionSuccessPayload(input.id(), optionalConcern.get());
+            });
+            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(editingContextFunctionInput);
+            var payload = result.block();
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+        };
+
+        StepVerifier.create(treeFlux)
+                .consumeNextWith(ignorePayload)
+                .then(createChildConstraint)
+                .consumeNextWith(ignorePayload)
+                .then(checkConcernOwnership)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

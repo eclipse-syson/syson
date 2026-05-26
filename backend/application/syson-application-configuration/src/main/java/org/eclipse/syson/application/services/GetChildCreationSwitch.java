@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Namespace;
@@ -135,6 +136,13 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> caseFramedConcernMembership(FramedConcernMembership object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getConcernUsage());
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> caseInterfaceUsage(InterfaceUsage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
@@ -224,6 +232,8 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.addAll(this.caseDefinition(object));
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubjectMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getFramedConcernMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getConcernUsage());
         return childrenCandidates;
     }
 
@@ -232,6 +242,8 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.addAll(this.caseUsage(object));
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubjectMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getFramedConcernMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getConcernUsage());
         return childrenCandidates;
     }
 
