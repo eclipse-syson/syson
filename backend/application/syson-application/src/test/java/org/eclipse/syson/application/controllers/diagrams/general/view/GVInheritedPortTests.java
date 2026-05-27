@@ -41,7 +41,7 @@ import org.eclipse.syson.application.data.GeneralViewInheritedPortTestProjectDat
 import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersInput;
 import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersSuccessPayload;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
-import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

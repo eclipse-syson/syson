@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,16 @@ public class LibraryNamespaceProvider extends AdapterImpl implements ILibraryNam
 
     private final Notifier source;
 
+    /**
+     * Simple constructor.
+     *
+     * @param notifier
+     *            any notifier that is usable to compute the root {@link ResourceSet}.
+     */
+    public LibraryNamespaceProvider(Notifier notifier) {
+        this.source = Objects.requireNonNull(notifier);
+    }
+
     public static LibraryNamespaceProvider get(ResourceSet rs) {
         return rs.eAdapters().stream()
                 .filter(LibraryNamespaceProvider.class::isInstance)
@@ -69,16 +79,6 @@ public class LibraryNamespaceProvider extends AdapterImpl implements ILibraryNam
             }
         }
         return null;
-    }
-
-    /**
-     * Simple constructor.
-     *
-     * @param notifier
-     *            any notifier that is usable to compute the root {@link ResourceSet}.
-     */
-    public LibraryNamespaceProvider(Notifier notifier) {
-        this.source = Objects.requireNonNull(notifier);
     }
 
     @Override
@@ -165,6 +165,7 @@ public class LibraryNamespaceProvider extends AdapterImpl implements ILibraryNam
     }
 
     private Namespace findMatch(List<String> names, List<? extends Element> element) {
+        Namespace findMatch = null;
         if (!names.isEmpty()) {
             String name = NameHelper.unescapeString(names.get(0));
             Optional<Namespace> match = element.stream()
@@ -173,13 +174,13 @@ public class LibraryNamespaceProvider extends AdapterImpl implements ILibraryNam
                     .findFirst();
             if (match.isPresent()) {
                 if (names.size() == 1) {
-                    return match.get();
+                    findMatch = match.get();
                 } else {
-                    return this.findMatch(names.subList(1, names.size()), match.get().getOwnedElement());
+                    findMatch = this.findMatch(names.subList(1, names.size()), match.get().getOwnedElement());
                 }
             }
         }
-        return null;
+        return findMatch;
     }
 
     private ResourceSet getResourceSet(Notifier n) {

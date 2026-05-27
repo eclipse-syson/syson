@@ -62,7 +62,7 @@ import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.util.NodeFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

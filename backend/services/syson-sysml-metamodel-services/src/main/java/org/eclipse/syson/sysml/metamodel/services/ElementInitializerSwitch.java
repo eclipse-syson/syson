@@ -61,7 +61,7 @@ import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**

@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;

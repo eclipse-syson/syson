@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,21 +38,21 @@ public class NameConflictingFilter implements Predicate<Membership> {
 
     @Override
     public boolean test(Membership member) {
+        boolean test = true;
         if (member != null) {
             if (member.getMemberName() != null
                     && member.getMemberElement() != null
                     && member.getMemberName() != member.getMemberElement().getName()) {
-                boolean result = this.checkConflictingNames(member.getMemberName());
-                return result;
+                test = this.checkConflictingNames(member.getMemberName());
             } else {
                 Element memberElement = member.getMemberElement();
                 if (memberElement != null) {
-                    return this.checkConflictingElement(memberElement);
+                    test = this.checkConflictingElement(memberElement);
                 }
             }
         }
 
-        return true;
+        return test;
     }
 
     public boolean checkConflictingElement(Element memberElement) {

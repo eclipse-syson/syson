@@ -38,7 +38,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.export.checker.SysmlImportExportChecker;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

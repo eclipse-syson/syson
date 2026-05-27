@@ -30,7 +30,7 @@ import org.eclipse.sirius.web.infrastructure.elasticsearch.services.DefaultIndex
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexCreationService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexDeletionService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateServiceDelegate;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

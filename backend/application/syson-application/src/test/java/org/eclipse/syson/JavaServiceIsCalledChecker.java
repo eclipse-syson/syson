@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.interpreter.SimpleCrossReferenceProvider;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.util.AQLConstants;
 
 /**

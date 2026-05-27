@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.syson.services.DeleteService;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
 import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.EAttributeHandler;

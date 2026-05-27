@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.syson.services.api.ISysMLMoveElementCheckerService;
 import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.springframework.stereotype.Service;
 
 /**

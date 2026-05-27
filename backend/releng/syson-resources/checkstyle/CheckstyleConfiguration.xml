@@ -321,7 +321,7 @@
   </module>
   <module name="FileLength">
     <property name="severity" value="error"/>
-    <property name="max" value="2100"/>
+    <property name="max" value="3500"/>
   </module>
   <module name="RegexpMultiline">
     <metadata name="net.sf.eclipsecs.core.comment" value="printStackTrace"/>

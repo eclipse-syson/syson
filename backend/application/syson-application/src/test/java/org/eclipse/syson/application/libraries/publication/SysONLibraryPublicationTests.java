@@ -53,7 +53,7 @@ import org.eclipse.syson.application.data.SimpleProjectElementsTestProjectData;
 import org.eclipse.syson.application.publication.SysONLibraryPublicationHandler;
 import org.eclipse.syson.application.publication.SysONLibraryPublicationListener;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

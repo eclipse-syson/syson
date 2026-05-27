@@ -39,7 +39,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
-import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

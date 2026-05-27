@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
+import org.eclipse.syson.sysml.metamodel.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;

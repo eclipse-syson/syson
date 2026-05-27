@@ -26,7 +26,7 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.filters.SysONTreeFilterConstants;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public interface ILibraryNamespaceProvider {
     <T extends Namespace> T getNamespaceFromLibrary(String qualifiedName, Class<T> type);
 
     /**
-     * Gets a Namespace from its full qualified name
+     * Gets a Namespace from its full qualified name.
      *
      * @param qualifiedName
      *            the full qualified name of the target
@@ -44,7 +44,12 @@ public interface ILibraryNamespaceProvider {
      */
     Namespace getNamespaceFromLibrary(String qualifiedName);
 
-    public class NoOp implements ILibraryNamespaceProvider {
+    /**
+     * Noop class for ILibraryNamespaceProvider.
+     *
+     * @author arichard
+     */
+    class NoOp implements ILibraryNamespaceProvider {
 
         @Override
         public <T extends Namespace> T getNamespaceFromLibrary(String qualifiedName, Class<T> type) {

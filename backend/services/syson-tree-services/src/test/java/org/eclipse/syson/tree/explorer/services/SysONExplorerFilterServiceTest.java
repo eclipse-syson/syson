@@ -29,7 +29,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.Test;
 

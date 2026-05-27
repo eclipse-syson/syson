@@ -20,8 +20,8 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.SimpleNameDeresolver;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

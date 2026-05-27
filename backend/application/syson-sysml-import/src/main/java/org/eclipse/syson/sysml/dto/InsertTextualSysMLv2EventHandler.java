@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlToAst;
-import org.eclipse.syson.sysml.textual.utils.Status;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;

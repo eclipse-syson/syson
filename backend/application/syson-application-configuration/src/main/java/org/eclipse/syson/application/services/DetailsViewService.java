@@ -70,9 +70,9 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
-import org.eclipse.syson.sysml.textual.SysMLElementSerializer;
-import org.eclipse.syson.sysml.textual.SysMLSerializingOptions;
-import org.eclipse.syson.sysml.textual.utils.FileNameDeresolver;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.FileNameDeresolver;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link SysMLv2PropertiesConfigurer}.

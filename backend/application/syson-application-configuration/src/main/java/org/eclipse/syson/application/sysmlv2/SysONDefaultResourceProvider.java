@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.syson.application.sysmlv2.api.IDefaultSysMLv2ResourceProvider;
 import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

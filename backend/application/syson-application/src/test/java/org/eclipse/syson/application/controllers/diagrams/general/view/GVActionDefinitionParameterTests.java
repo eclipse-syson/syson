@@ -43,7 +43,7 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.syson.sysml.export;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextPersistenceFilter;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
 /**

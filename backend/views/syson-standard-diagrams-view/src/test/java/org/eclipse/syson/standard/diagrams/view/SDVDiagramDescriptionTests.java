@@ -42,7 +42,7 @@ import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionReusesChecker;
 import org.eclipse.syson.diagram.tests.predicates.DiagramPredicates;
 import org.eclipse.syson.services.ColorProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

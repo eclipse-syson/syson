@@ -87,7 +87,7 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.AfterEach;

@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
-
 /**
  * Set of static methods to help to manipulate/escape name/qualified name of sysml elements.
  *

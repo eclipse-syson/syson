@@ -33,8 +33,8 @@ import org.eclipse.sirius.web.application.document.services.api.IExternalResourc
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.AstParsingResult;
 import org.eclipse.syson.sysml.SysmlToAst;
-import org.eclipse.syson.sysml.textual.utils.Status;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -29,7 +29,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.eclipse.syson.util.SysONRepresentationDescriptionIdentifiers;
 import org.springframework.stereotype.Service;

@@ -29,7 +29,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 

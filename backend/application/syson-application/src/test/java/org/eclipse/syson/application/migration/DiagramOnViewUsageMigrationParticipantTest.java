@@ -41,7 +41,7 @@ import org.eclipse.syson.application.data.DiagramOnViewUsageMigrationParticipant
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

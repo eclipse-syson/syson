@@ -19,8 +19,8 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlFactory;
-import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.DeresolvingNamespaceProvider;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.util.NamedProxy;
 import org.springframework.stereotype.Service;
 

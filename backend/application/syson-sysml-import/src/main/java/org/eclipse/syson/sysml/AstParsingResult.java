@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-import org.eclipse.syson.sysml.textual.utils.Status;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
 
 /**
  * Result of the parsing of the AST.

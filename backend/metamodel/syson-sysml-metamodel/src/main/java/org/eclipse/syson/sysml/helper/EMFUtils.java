@@ -69,7 +69,7 @@ public class EMFUtils {
     }
 
     /**
-     * Gets all Settings targeting the given source element with the given {@link EReference}
+     * Gets all Settings targeting the given source element with the given {@link EReference}.
      *
      * @param source
      *            the source element
@@ -88,7 +88,7 @@ public class EMFUtils {
                 });
 
     }
-    
+
     /**
      * Gets all Settings targeting the given source element.
      *
@@ -349,7 +349,7 @@ public class EMFUtils {
 
     private static void resolveAllNonDerived(EObject eObject) {
         resolveNonDerivedCrossReferences(eObject);
-        for (Iterator<EObject> i = eObject.eAllContents(); i.hasNext();) {
+        for (Iterator<EObject> i = eObject.eAllContents(); i.hasNext(); ) {
             EObject childEObject = i.next();
             resolveNonDerivedCrossReferences(childEObject);
         }

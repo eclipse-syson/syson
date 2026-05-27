@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import org.eclipse.sirius.web.application.object.services.api.IObjectRestService
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
 /**

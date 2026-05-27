@@ -32,7 +32,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

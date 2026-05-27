@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicateDelegate;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
 /**

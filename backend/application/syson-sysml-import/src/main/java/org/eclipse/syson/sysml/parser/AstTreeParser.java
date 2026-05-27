@@ -28,7 +28,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.translation.EClassifierTranslator;
 import org.eclipse.syson.sysml.utils.LogNameProvider;
 import org.eclipse.syson.sysml.utils.MessageReporter;

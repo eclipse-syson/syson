@@ -18,8 +18,8 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OperatorExpression;
-import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.eclipse.syson.sysml.textual.utils.INameDeresolver;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.INameDeresolver;
 
 /**
  * {@link INameDeresolver} implementation that uses {@link Element#getDeclaredName()} or {@link Element#getShortName()}

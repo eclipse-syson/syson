@@ -51,7 +51,7 @@ import org.eclipse.syson.application.publication.api.ISysMLLibraryPublisher;
 import org.eclipse.syson.application.publication.api.ISysONLibraryDependencyCollector;
 import org.eclipse.syson.application.services.SysONResourceService;
 import org.eclipse.syson.services.api.ISysONResourceService;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
