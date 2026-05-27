@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import {
   diagramToolbarActionExtensionPoint,
@@ -21,6 +22,11 @@ import {
   paletteAppearanceSectionExtensionPoint,
   RectangularNodeAppearanceSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  GQLWidget,
+  PropertySectionComponent,
+  widgetContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-forms';
 import {
   OmniboxCommand,
   OmniboxCommandOverrideContribution,
@@ -37,6 +43,7 @@ import {
   ImportLibraryCommand,
   navigationBarMenuIconExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
+import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { SysMLImportedPackageNodePaletteAppearanceSection } from '../../nodes/imported_package/SysMLImportedPackageNodePaletteAppearanceSection';
 import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNoteNodePaletteAppearanceSection';
@@ -45,6 +52,7 @@ import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocument
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
 import { DeleteSysMLExpressionMenuContribution } from '../expressions/DeleteSysMLExpressionMenuContribution';
 import { EditSysMLExpressionMenuContribution } from '../expressions/EditSysMLExpressionMenuContribution';
+import { ExpressionPropertySection } from '../expressions/ExpressionPropertySection';
 import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
@@ -213,6 +221,24 @@ const customNodePaletteAppearanceSectionContribution: PaletteAppearanceSectionCo
 sysONExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
   identifier: `syson_${paletteAppearanceSectionExtensionPoint.identifier}`,
   data: customNodePaletteAppearanceSectionContribution,
+});
+
+sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
+  identifier: `syson_${widgetContributionExtensionPoint.identifier}`,
+  data: [
+    {
+      name: 'ExpressionValuePropertySectionOverride',
+      icon: <QuestionMarkOutlinedIcon />,
+      previewComponent: () => null,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        let propertySectionComponent: PropertySectionComponent<GQLWidget> | null = null;
+        if (widget.__typename == 'Textarea' && widget.label.startsWith('syson:expression-value-widget')) {
+          propertySectionComponent = ExpressionPropertySection as PropertySectionComponent<GQLWidget>;
+        }
+        return propertySectionComponent;
+      },
+    },
+  ],
 });
 
 export { sysONExtensionRegistry };

@@ -27,9 +27,11 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -306,4 +308,20 @@ public class MetamodelQueryElementService {
         }
         return null;
     }
+
+    /**
+     * Get the {@link ResultExpressionMembership} contained inside a given {@link Namespace}.
+     *
+     * @param namespace
+     *            a given {@link Namespace}.
+     * @return a {@link ResultExpressionMembership}, or <code>null</code> if not found.
+     */
+    public ResultExpressionMembership getResultExpressionMembership(Namespace namespace) {
+        return namespace.getOwnedMembership().stream()
+                .filter(ResultExpressionMembership.class::isInstance)
+                .map(ResultExpressionMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+    }
+
 }

@@ -26,11 +26,11 @@
 
 - https://github.com/eclipse-syson/syson/issues/2198[#2198] [diagrams] Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once, leveraging Sirius Web's `droppedNodes` and `droppedElements` variables.
 - https://github.com/eclipse-syson/syson/issues/2194[#2194] [diagrams] Properly report feedback messages to user when using _ISysMLMoveElementService_.
-- https://github.com/eclipse-syson/syson/issues/2182[#2182] [services] Provide a way for downstream applications to extend _ISysMLMoveElementService_;
+- https://github.com/eclipse-syson/syson/issues/2182[#2182] [services] Provide a way for downstream applications to extend _ISysMLMoveElementService_.
 - https://github.com/eclipse-syson/syson/issues/2240[#2240] [diagrams] Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
 Before, the selection dialog option with selection allowed choosing between all _timeslice/snapshot_ types.
 Now, the choice is restricted to the _timeslice/snapshot_ type that match the graphical node type on which the tool is applied.
-
+- https://github.com/eclipse-syson/syson/issues/2119[#2119] [details] Display expressions values in the _Details_ view and allow to edit them from there.
 
 === New features
 
