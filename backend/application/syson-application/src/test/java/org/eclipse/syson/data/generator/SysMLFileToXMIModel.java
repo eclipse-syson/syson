@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.AstParsingResult;
 import org.eclipse.syson.sysml.SysmlToAst;
-import org.eclipse.syson.sysml.textual.utils.Status;
+import org.eclipse.syson.sysml.metamodel.services.textual.utils.Status;
 
 /**
  * Converts a SyML file to its XMI representation using SysON import.

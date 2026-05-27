@@ -81,10 +81,10 @@ import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.ViewDefinition;
 import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.eclipse.syson.sysml.helper.NameHelper;
+import org.eclipse.syson.sysml.metamodel.helper.EMFUtils;
+import org.eclipse.syson.sysml.metamodel.helper.NameHelper;
 import org.eclipse.syson.sysml.metamodel.services.ElementInitializerSwitch;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.util.SysONEContentAdapter;
 
 /**
@@ -586,7 +586,7 @@ public class UtilService {
      * @return <code>true</code> if the given element name is a qualified name, <code>false</code> otherwise.
      */
     public boolean isQualifiedName(String elementName) {
-        List<String> segments = NameHelper.parseQualifiedName(elementName);
+        List<String> segments = new NameHelper().parseQualifiedName(elementName);
         return segments.size() > 1;
     }
 

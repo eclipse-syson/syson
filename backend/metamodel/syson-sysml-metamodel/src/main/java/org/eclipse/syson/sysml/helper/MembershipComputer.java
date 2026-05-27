@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,13 +36,15 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * Object in charge of computing:
+ * Object in charge of computing.
  * <ul>
  * <li>visibleMemberships</li>
  * <li>inheritedMemberships</li>
  * <li>importedMemberships</li>
  * </ul>
  *
+ * @param <T>
+ *            the type on which to apply the computation
  * @author Arthur Daussy
  */
 public class MembershipComputer<T extends Element> {
@@ -158,12 +160,13 @@ public class MembershipComputer<T extends Element> {
     }
 
     private EList<Membership> importedMemberships(Import self) {
+        EList<Membership> importedMemberships = new BasicEList<>();
         if (self instanceof NamespaceImport nmImport) {
-            return this.importedMemberships(nmImport);
+            importedMemberships = this.importedMemberships(nmImport);
         } else if (self instanceof MembershipImport msImport) {
-            return this.importedMemberships(msImport);
+            importedMemberships = this.importedMemberships(msImport);
         }
-        return new BasicEList<>();
+        return importedMemberships;
     }
 
     private EList<Membership> importedMemberships(MembershipImport msImport) {

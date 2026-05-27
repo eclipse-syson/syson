@@ -76,8 +76,8 @@ import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.helper.LabelConstants;
-import org.eclipse.syson.sysml.textual.SysMLv2Keywords;
+import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.services.textual.SysMLv2Keywords;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**

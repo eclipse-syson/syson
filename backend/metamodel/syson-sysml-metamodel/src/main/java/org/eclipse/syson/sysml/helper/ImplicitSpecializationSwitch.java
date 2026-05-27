@@ -1419,11 +1419,11 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     }
 
     private Feature computeSourceFeature(SuccessionAsUsage successionAsUsage) {
+        Feature computeSourceFeature = null;
         Namespace owningNamespace = successionAsUsage.getOwningNamespace();
         if (owningNamespace instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
-            return transitionUsage.getSource();
-        }
-        if (owningNamespace != null) {
+            computeSourceFeature = transitionUsage.getSource();
+        } else if (owningNamespace != null) {
             EList<Membership> ownedMemberships = owningNamespace.getOwnedMembership();
             int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
             if (index > 0) {
@@ -1436,13 +1436,14 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
                 }
             }
         }
-        return null;
+        return computeSourceFeature;
     }
 
     private Feature computeTargetFeature(SuccessionAsUsage successionAsUsage) {
+        Feature computeTargetFeature = null;
         Namespace owningNamespace = successionAsUsage.getOwningNamespace();
         if (owningNamespace instanceof TransitionUsage transitionUsage && transitionUsage.getSuccession() == successionAsUsage) {
-            return transitionUsage.getTarget();
+            computeTargetFeature = transitionUsage.getTarget();
         } else if (owningNamespace != null) {
             EList<Membership> ownedMemberships = owningNamespace.getOwnedMembership();
             int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
@@ -1456,7 +1457,7 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
                 }
             }
         }
-        return null;
+        return computeTargetFeature;
     }
 
     private boolean isValidSourceOrTargetFeaturForSuccession(Feature feature) {

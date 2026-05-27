@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2025 Obeo.
+* Copyright (c) 2025, 2026 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -30,6 +30,12 @@ public class VirtualLinkAdapter extends AdapterImpl {
 
     private final String virtualReferenceName;
 
+    public VirtualLinkAdapter(Element virtualOwningRelatedElement, String virtualReferenceName) {
+        super();
+        this.virtualOwningRelatedElement = Objects.requireNonNull(virtualOwningRelatedElement);
+        this.virtualReferenceName = Objects.requireNonNull(virtualReferenceName);
+    }
+
     /**
      * Gets the target of a virtual link.
      *
@@ -57,12 +63,6 @@ public class VirtualLinkAdapter extends AdapterImpl {
      */
     public static boolean hasVirtualLink(EObject source) {
         return source.eAdapters().stream().anyMatch(VirtualLinkAdapter.class::isInstance);
-    }
-
-    public VirtualLinkAdapter(Element virtualOwningRelatedElement, String virtualReferenceName) {
-        super();
-        this.virtualOwningRelatedElement = Objects.requireNonNull(virtualOwningRelatedElement);
-        this.virtualReferenceName = Objects.requireNonNull(virtualReferenceName);
     }
 
     public Element getVirtualOwningRelatedElement() {

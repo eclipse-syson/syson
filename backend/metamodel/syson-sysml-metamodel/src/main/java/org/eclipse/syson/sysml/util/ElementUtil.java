@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,14 +115,16 @@ public class ElementUtil {
         if (element instanceof LibraryPackage libraryPackage && libraryPackage.isIsStandard()) {
             Resource resource = element.eResource();
             if (resource != null) {
-                String uri = resource.getURI().toString().startsWith("kermllibrary:") ? ElementUtil.KERML_LIBRARY_BASE_URI : ElementUtil.SYSML_LIBRARY_BASE_URI;
+                String uri = ElementUtil.SYSML_LIBRARY_BASE_URI;
+                if (resource.getURI().toString().startsWith("kermllibrary:")) {
+                    uri = ElementUtil.KERML_LIBRARY_BASE_URI;
+                }
                 String qualifiedName = element.getQualifiedName();
                 if (qualifiedName != null) {
                     uuid = generateUUIDv5(ElementUtil.NAME_SPACE_URL_UUID, uri + qualifiedName);
                 }
             }
-        } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null
-                && !(element instanceof Import || element instanceof Membership || element instanceof Specialization || element instanceof TypeFeaturing)) {
+        } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null && !noNeedForUUID(element)) {
             String qualifiedName = element.getQualifiedName();
             Namespace libraryNamespace = element.libraryNamespace();
             if (qualifiedName != null && libraryNamespace != null) {
@@ -131,6 +133,10 @@ public class ElementUtil {
             }
         }
         return uuid;
+    }
+
+    private static boolean noNeedForUUID(Element element) {
+        return element instanceof Import || element instanceof Membership || element instanceof Specialization || element instanceof TypeFeaturing;
     }
 
     /**
@@ -364,13 +370,15 @@ public class ElementUtil {
      * @return <code>true</code> if a match is found, <code>false</code> otherwise.
      */
     private boolean nameMatches(Element element, String name) {
+        boolean nameMatches = false;
         if (element == null || name == null) {
-            return false;
+            nameMatches = false;
+        } else if (this.equalsConsideringOptionalQuotes(element.getName(), name)) {
+            nameMatches = true;
+        } else {
+            nameMatches = this.equalsConsideringOptionalQuotes(element.getShortName(), name);
         }
-        if (this.equalsConsideringOptionalQuotes(element.getName(), name)) {
-            return true;
-        }
-        return this.equalsConsideringOptionalQuotes(element.getShortName(), name);
+        return nameMatches;
     }
 
     private boolean equalsConsideringOptionalQuotes(String candidate, String query) {
@@ -380,8 +388,8 @@ public class ElementUtil {
         boolean matches = candidate.strip().equals(query.strip());
         if (!matches && query.startsWith("'") && query.endsWith("'")) {
             // We give the option to quote names, but the quotes aren't part of the model.
-            candidate = "'" + candidate + "'";
-            matches = candidate.strip().equals(query.strip());
+            String tmpCandidate = "'" + candidate + "'";
+            matches = tmpCandidate.strip().equals(query.strip());
         }
         return matches;
     }

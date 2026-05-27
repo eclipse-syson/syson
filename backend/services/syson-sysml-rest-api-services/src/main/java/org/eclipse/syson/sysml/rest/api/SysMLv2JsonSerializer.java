@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.sysml.metamodel.util.ElementUtil;
 import org.eclipse.syson.sysml.util.VirtualLinkAdapter;
 
 import tools.jackson.core.JacksonException;
