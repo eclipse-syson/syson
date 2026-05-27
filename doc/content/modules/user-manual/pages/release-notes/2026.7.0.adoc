@@ -66,6 +66,11 @@ To _edit_ an existing expression, simply invoke the _Edit expression_ context me
 +
 To _delete_ an existing expression, you can simply invoke the normal _Delete_ menu item action on the expression itself or the new _Delete expression_ on its parent element.
 
+* In the _Details_ view:
+
+** When an `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays its textual representation, with a button to open the expression edition modal (see above) directly on it:
++
+image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
 
 == Bug fixes
 

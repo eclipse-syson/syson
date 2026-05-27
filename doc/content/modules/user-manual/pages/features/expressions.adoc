@@ -19,6 +19,10 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
+When an `Expression` element is selected(for example from the {explorer} view), the {details}} view displays its textual representation, with a button to open the expression edition modal (see below) directly on it:
++
+image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
+
 == Creation
 
 To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).

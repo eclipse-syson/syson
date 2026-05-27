@@ -79,6 +79,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
+    private static final String CUSTOM_EXPRESSION_WIDGET_KEY = "syson:expression-value-widget";
+
     private static final String CORE_PROPERTIES = "Core Properties";
 
     private static final String ADVANCED_PROPERTIES = "Advanced Properties";
@@ -189,6 +191,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraAcceptActionUsagePropertiesGroup());
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
         pageCore.getGroups().add(this.createFeatureValuePropertiesGroup());
+        pageCore.getGroups().add(this.createExpressionPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setName("SysON-DetailsView-Advanced");
@@ -203,6 +206,28 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return form;
     }
 
+    /**
+     * Creates a group to display the value of an Expression.
+     *
+     * @return a {@link GroupDescription}
+     */
+    private GroupDescription createExpressionPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName("Expression Value");
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getExpression).aqlSelf());
+
+        TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
+        expressionWidget.setName("Expression");
+        expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
+        expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getExpressionTextualRepresentation).aqlSelf());
+        expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
+
+        group.getChildren().add(expressionWidget);
+
+        return group;
+    }
 
     /**
      * Creates a group to display the value of a Feature or FeatureValue.

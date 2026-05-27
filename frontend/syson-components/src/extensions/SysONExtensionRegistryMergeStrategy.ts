@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { DataExtension, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
+import { widgetContributionExtensionPoint } from '@eclipse-sirius/sirius-components-forms';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
 import { treeItemContextMenuEntryOverrideExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
@@ -36,6 +37,9 @@ export class SysONExtensionRegistryMergeStrategy
     }
     if (identifier === treeItemContextMenuEntryOverrideExtensionPoint.identifier) {
       return this.mergeTreeItemContributions(existingValues, newValues);
+    }
+    if (identifier === widgetContributionExtensionPoint.identifier) {
+      return this.mergeWidgetContributions(existingValues, newValues);
     }
     return newValues;
   }
@@ -66,6 +70,16 @@ export class SysONExtensionRegistryMergeStrategy
   ): DataExtension<any> {
     return {
       identifier: `syson_${treeItemContextMenuEntryOverrideExtensionPoint.identifier}`,
+      data: [...existingContributions.data, ...newContributions.data],
+    };
+  }
+
+  private mergeWidgetContributions(
+    existingContributions: DataExtension<any>,
+    newContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: `syson_${widgetContributionExtensionPoint.identifier}`,
       data: [...existingContributions.data, ...newContributions.data],
     };
   }
