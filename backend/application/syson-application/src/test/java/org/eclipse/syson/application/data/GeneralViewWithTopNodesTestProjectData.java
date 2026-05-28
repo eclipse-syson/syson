@@ -30,6 +30,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ACTION_USAGE_ID = "61aaf64a-4fbc-356e-ba73-4bd47b386989";
 
+        public static final String ALLOCATION_USAGE_ID = "361506fb-2a1d-3edc-be2d-8cd60a235f53";
+
         public static final String ATTRIBUTE_USAGE_ID = "7b8e6835-c563-35cd-8991-e2f894fc2139";
 
         public static final String CONCERN_USAGE_ID = "0999b8c3-d37c-3644-a1d6-b9777a499d11";
@@ -38,15 +40,21 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ITEM_DEFINITION_ID = "df3542d9-6314-3da5-993c-a296f4042674";
 
-        public static final String PART_USAGE_ID = "4c4fe0d5-4974-377e-9113-9ab022c75f8c";
+        public static final String ITEM_USAGE_ID = "78a84b8a-e91c-3338-b447-864793773dd9";
+
+        public static final String INTERFACE_USAGE_ID = "6bc0765c-4f9f-3a9e-ab45-3d717519535c";
 
         public static final String PART_DEFINITION_ID = "fa617798-658e-3812-92f2-52e2fc39f851";
 
         public static final String PART_DEFINITION_TEXTUAL_REP_ID = "3a992e49-95fa-384a-bb54-47284825bf17";
 
-        public static final String REQUIREMENT_USAGE_ID = "3eea9d01-7033-3f31-b7ef-561b5bc86d10";
+        public static final String PART_USAGE_ID = "4c4fe0d5-4974-377e-9113-9ab022c75f8c";
+
+        public static final String OCCURRENCE_USAGE_ID = "47653014-87d1-3dc6-856b-72454aa93154";
 
         public static final String REQUIREMENT_DEFINITION_ID = "b83f2b54-1602-382d-beb1-c500e08a8684";
+
+        public static final String REQUIREMENT_USAGE_ID = "3eea9d01-7033-3f31-b7ef-561b5bc86d10";
 
         public static final String STATE_USAGE_ID = "1541c013-2cc7-3dd7-a39f-6e33d07b411e";
     }
