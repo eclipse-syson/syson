@@ -32,6 +32,7 @@ import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
@@ -212,17 +213,17 @@ public class MetamodelMutationElementService {
     }
 
     /**
-     * Creates an instance of {@code eClass} in the given {@link OccurrenceUsage} container.
-     * <p>It returns {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage}</p>
+     * Creates an instance of {@code eClass} in the given {@link Type} container if it is an {@link OccurrenceUsage} or an {@link OccurrenceDefinition}.
+     * <p>It returns {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage} or the {@code container} is not assignable to either @link OccurrenceUsage} or {@link OccurrenceDefinition}</p>
      *
      * @param container
-     *            the {@link OccurrenceUsage} container
+     *            the {@link Type} container
      * @param eClass
      *            the {@link EClass} assignable to {@link OccurrenceUsage} to instantiate
-     * @return a new {@link EClass} instantiated {@link EObject}, {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage}
+     * @return a new {@link EClass} instantiated {@link EObject}, {@code null} if the {@code eClass} is not assignable to {@link OccurrenceUsage} and the {@code container} is not assignable to either {@link OccurrenceUsage} or {@link OccurrenceDefinition}
      */
-    public EObject createOccurrenceInOccurrence(OccurrenceUsage container, EClass eClass) {
-        if (SysmlPackage.eINSTANCE.getOccurrenceUsage().isSuperTypeOf(eClass)) {
+    public EObject createOccurrenceInOccurrence(Type container, EClass eClass) {
+        if ((container instanceof OccurrenceUsage || container instanceof OccurrenceDefinition) && SysmlPackage.eINSTANCE.getOccurrenceUsage().isSuperTypeOf(eClass)) {
             var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
             var timeSlice = (OccurrenceUsage) SysmlFactory.eINSTANCE.create(eClass);
             membership.getOwnedRelatedElement().add(timeSlice);

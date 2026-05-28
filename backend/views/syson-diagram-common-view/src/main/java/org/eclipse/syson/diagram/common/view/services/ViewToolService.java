@@ -41,13 +41,17 @@ import org.eclipse.syson.services.api.ViewDefinitionKind;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConnectionDefinition;
+import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -425,19 +429,6 @@ public class ViewToolService extends ToolService {
      *         {@link Package}.
      */
     public List<? extends Object> getNamespaceImportSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
-        // List<Package> result = new ArrayList<>();
-        // if (self instanceof Resource resource) {
-        // resource.getContents().stream()
-        // .filter(Element.class::isInstance)
-        // .map(Element.class::cast)
-        // .forEach(element -> result.addAll(this.findClosestPackageInChildren(element)));
-        // } else if (self instanceof Package packageElement) {
-        // packageElement.getOwnedRelationship().stream()
-        // .filter(Membership.class::isInstance)
-        // .map(Membership.class::cast)
-        // .forEach(membership -> result.addAll(this.findClosestPackageInChildren(membership)));
-        // }
-        // return result;
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getPackage()));
 
     }
@@ -665,6 +656,25 @@ public class ViewToolService extends ToolService {
      */
     public List<? extends Object> getSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds, List<EClassifier> candidates) {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, candidates);
+    }
+
+    /**
+     * Return the {@code Usage} {@link EClass} corresponding to the given {@link Type}.
+     *
+     * @param type
+     *          the type we want the {@code Usage} {@link EClass}
+     * @return the {@code Usage} {@link EClass} corresponding to the given {@link Type}
+     */
+    public EClass getPortionKindSelectionDialogElement(Type type) {
+        return switch (type) {
+            case AllocationDefinition a -> SysmlPackage.eINSTANCE.getAllocationUsage();
+            case ConnectionDefinition c -> SysmlPackage.eINSTANCE.getConnectionUsage();
+            case PartDefinition p -> SysmlPackage.eINSTANCE.getPartUsage();
+            case ConstraintDefinition c -> SysmlPackage.eINSTANCE.getConstraintUsage();
+            case ItemDefinition i -> SysmlPackage.eINSTANCE.getItemUsage();
+            case Usage u -> u.eClass();
+            default -> SysmlPackage.eINSTANCE.getOccurrenceUsage();
+        };
     }
 
     protected List<Object> getAllResourcesWithInstancesOf(IEditingContext editingContext, List<EClassifier> eClassifiers) {

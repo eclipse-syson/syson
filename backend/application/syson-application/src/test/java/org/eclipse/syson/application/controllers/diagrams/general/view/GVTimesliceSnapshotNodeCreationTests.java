@@ -152,11 +152,15 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
 
     private static Stream<Arguments> portionKindSelectionDialogTreeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_USAGE_ID),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.INTERFACE_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.INTERFACE_USAGE_ID),
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.OCCURRENCE_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID)
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getAllocationUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_DEFINITION_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_DEFINITION_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getAllocationUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ALLOCATION_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ALLOCATION_USAGE_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), SysmlPackage.eINSTANCE.getInterfaceUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.INTERFACE_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.INTERFACE_USAGE_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_DEFINITION_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_DEFINITION_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getItemUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ITEM_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.ITEM_USAGE_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.OCCURRENCE_DEFINITION_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_DEFINITION_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), SysmlPackage.eINSTANCE.getOccurrenceUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.OCCURRENCE_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.OCCURRENCE_USAGE_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_DEFINITION_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_DEFINITION_ID),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getPartUsage(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.PART_USAGE_ID, GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID)
         ).map(TestNameGenerator::namedArguments);
     };
 
@@ -251,7 +255,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
 
     @ParameterizedTest
     @MethodSource("portionKindSelectionDialogTreeParameters")
-    public void testCheckAvailableElementsInTimesliceSelectionDialog(EClass elementClass, String graphicalId, String semanticId) {
+    public void testCheckAvailableElementsInTimesliceSelectionDialog(EClass elementClass, EClass expectedTimesliceEClass, String graphicalId, String semanticId) {
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
@@ -264,7 +268,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).size().isEqualTo(1);
-            assertThat(tree.getChildren().getFirst().getId()).isEqualTo(identityService.getId(elementClass));
+            assertThat(tree.getChildren().getFirst().getId()).isEqualTo(identityService.getId(expectedTimesliceEClass));
         });
 
         StepVerifier.create(flux)
@@ -275,7 +279,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
 
     @ParameterizedTest
     @MethodSource("portionKindSelectionDialogTreeParameters")
-    public void testCheckAvailableElementsInSnapshotSelectionDialog(EClass elementClass, String graphicalId, String semanticId) {
+    public void testCheckAvailableElementsInSnapshotSelectionDialog(EClass elementClass, EClass expectedSnapshotEClass, String graphicalId, String semanticId) {
         var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
                 SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
@@ -288,7 +292,7 @@ public class GVTimesliceSnapshotNodeCreationTests extends AbstractIntegrationTes
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).size().isEqualTo(1);
-            assertThat(tree.getChildren().getFirst().getId()).isEqualTo(identityService.getId(elementClass));
+            assertThat(tree.getChildren().getFirst().getId()).isEqualTo(identityService.getId(expectedSnapshotEClass));
         });
 
         StepVerifier.create(flux)
