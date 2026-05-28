@@ -23,7 +23,7 @@ image::release-notes-start-done-states.png[Tool to create a start and done, widt
 +
 image::release-notes-framed-concern-tool.png[Tool to create a _frame_ concern usage, width=60%,height=60%]
 
-** Add the _frames_ compartment graphical node in `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Add the _frames_ compartment graphical node to `RequirementUsage` and `RequirementDefinition` graphical nodes.
 +
 image::release-notes-frames-compartment.png[frames compartment displaying concern usages of a requirement, width=40%,height=40%]
 
@@ -32,7 +32,7 @@ image::release-notes-frames-compartment.png[frames compartment displaying concer
 * In the _Explorer_ view:
 
 ** The tree items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.
-A new _Explorer_ view filter named _Hide expression internals_ allows to display them if needed.
+A new _Explorer_ view filter named _Hide expression internals_ allows displaying them if needed.
 +
 [cols="1,1"]
 |===
@@ -43,17 +43,17 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
-** The dialog creating a child element provide two more options for `RequirementUsage` or `RequirementDefinition` tree items.
-One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
-The one creating a `ConcernUsage` create a `FramedConcernMembership` as an intermediate container.
-The one creating a `FramedConcernMembership` only creates the membership.
-In both cases, to display the `FramedConcernMembership` deactivate the `Hide Memberships` filter.
+** The dialog creating a child element provides two more options for `RequirementUsage` or `RequirementDefinition` tree items.
+One creates a `ConcernUsage` and another one creates a `FramedConcernMembership`.
+The option that creates a `ConcernUsage` creates a `FramedConcernMembership` as an intermediate container.
+The option that creates a `FramedConcernMembership` only creates the membership.
+In both cases, to display the `FramedConcernMembership`, deactivate the `Hide Memberships` filter.
 ** It is now possible to create, edit and delete _Expressions_ using their textual syntax from the _Explorer_ view.
 To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
 A modal will open where you can enter the textual representation of the expression to create.
 Click on the _Update_ button to validate.
-If the expression entered is valid, it will be created and the modal will be automatically close.
-If the expression entered is _not_ valid, the modal will be kept open and show the error(s) in an expandable accordion.
+If the entered expression is valid, it will be created and the modal will automatically close.
+If the entered expression is _not_ valid, the modal will remain open and show the error(s) in an expandable accordion.
 Fix any error reported before clicking on _Update_ again (or canceling the operation).
 +
 image::edit-expression-modal.png[Edit expression modal, width=80%]
@@ -78,6 +78,9 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 *** Elements having both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
 *** Elements without name and an owned reference subsetting display only the reference subsetting name
 *** Elements without reference subsetting display their name.
+** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
+Before, the selection dialog allowed choosing between all _timeslice_ and _snapshot_ types.
+Now, the choice is restricted to the _timeslice_ or _snapshot_ type that matches the graphical node type on which the tool is applied.
 
 == Technical details
 

@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -34,7 +30,6 @@ import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Used to create a time slice in any subclass of {@link org.eclipse.syson.sysml.OccurrenceUsage}.
@@ -46,28 +41,6 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  * @author gcoutable
  */
 public class OccurrenceUsageTimesliceNodeToolProvider implements INodeToolProvider {
-
-    private static final List<EClass> SUPPORTED_PORTION_KIND_ELEMENTS = List.of(
-            SysmlPackage.eINSTANCE.getAcceptActionUsage(),
-            SysmlPackage.eINSTANCE.getActionUsage(),
-            SysmlPackage.eINSTANCE.getAllocationUsage(),
-            SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
-            SysmlPackage.eINSTANCE.getCaseUsage(),
-            SysmlPackage.eINSTANCE.getConcernUsage(),
-            SysmlPackage.eINSTANCE.getConstraintUsage(),
-            SysmlPackage.eINSTANCE.getExhibitStateUsage(),
-            SysmlPackage.eINSTANCE.getInterfaceUsage(),
-            SysmlPackage.eINSTANCE.getItemUsage(),
-            SysmlPackage.eINSTANCE.getOccurrenceUsage(),
-            SysmlPackage.eINSTANCE.getPartUsage(),
-            SysmlPackage.eINSTANCE.getPerformActionUsage(),
-            SysmlPackage.eINSTANCE.getPortUsage(),
-            SysmlPackage.eINSTANCE.getRequirementUsage(),
-            SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
-            SysmlPackage.eINSTANCE.getStateUsage(),
-            SysmlPackage.eINSTANCE.getUseCaseUsage(),
-            SysmlPackage.eINSTANCE.getViewUsage()
-    );
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -131,9 +104,8 @@ public class OccurrenceUsageTimesliceNodeToolProvider implements INodeToolProvid
     }
 
     private SelectionDialogTreeDescription getDialogTreeDescriptionDialog() {
-        String elementsExpression = SUPPORTED_PORTION_KIND_ELEMENTS.stream().map(SysMLMetamodelHelper::buildQualifiedName).collect(Collectors.joining(",", "aql:Sequence{", "}"));
         return this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(elementsExpression)
+                .elementsExpression(AQLConstants.AQL_SELF + ".eClass()")
                 .isSelectableExpression(AQLConstants.AQL_TRUE)
                 .build();
     }
