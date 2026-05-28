@@ -402,6 +402,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
     @Override
     public List<NodeToolSection> caseItemDefinition(ItemDefinition object) {
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageTimesliceNodeToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageSnapshotNodeToolProvider().create(cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.toolDescriptionService
@@ -456,6 +458,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE,
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageTimesliceNodeToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageSnapshotNodeToolProvider().create(cache));
 
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.VIEW_AS,
                 new ViewNodeAsToolProvider(AQLUtils.aqlString(StandardDiagramsConstants.GV_QN), StandardDiagramsConstants.GV).create(this.cache));
@@ -528,6 +532,8 @@ public class SDVNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch 
                 new ExhibitStateNodeToolProvider(false).create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
                 new ExhibitStateNodeToolProvider(true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageTimesliceNodeToolProvider().create(cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new OccurrenceUsageSnapshotNodeToolProvider().create(cache));
 
         this.createToolsForCompartmentItems(object, sections, this.cache);
 

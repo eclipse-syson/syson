@@ -21,7 +21,6 @@ import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Type;
@@ -95,9 +94,9 @@ public class ModelMutationAQLService {
     }
 
     /**
-     * {@link MetamodelMutationElementService#createOccurrenceInOccurrence(OccurrenceUsage, EClass)}.
+     * {@link MetamodelMutationElementService#createOccurrenceInOccurrence(Type, EClass)}.
      */
-    public EObject createOccurrenceInOccurrence(OccurrenceUsage container, EClass eClass) {
+    public EObject createOccurrenceInOccurrence(Type container, EClass eClass) {
         return this.metamodelElementMutationService.createOccurrenceInOccurrence(container, eClass);
     }
 

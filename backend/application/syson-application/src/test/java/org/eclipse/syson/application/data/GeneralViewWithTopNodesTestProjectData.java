@@ -30,6 +30,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String ACTION_USAGE_ID = "61aaf64a-4fbc-356e-ba73-4bd47b386989";
 
+        public static final String ALLOCATION_DEFINITION_ID = "304ed5e0-b3e2-3399-b110-8836d4b27127";
+
         public static final String ALLOCATION_USAGE_ID = "361506fb-2a1d-3edc-be2d-8cd60a235f53";
 
         public static final String ATTRIBUTE_USAGE_ID = "7b8e6835-c563-35cd-8991-e2f894fc2139";
@@ -49,6 +51,8 @@ public class GeneralViewWithTopNodesTestProjectData {
         public static final String PART_DEFINITION_TEXTUAL_REP_ID = "3a992e49-95fa-384a-bb54-47284825bf17";
 
         public static final String PART_USAGE_ID = "4c4fe0d5-4974-377e-9113-9ab022c75f8c";
+
+        public static final String OCCURRENCE_DEFINITION_ID = "af3a9437-85c6-3bce-a62e-20aa80f277f4";
 
         public static final String OCCURRENCE_USAGE_ID = "47653014-87d1-3dc6-856b-72454aa93154";
 
