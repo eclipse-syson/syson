@@ -90,7 +90,7 @@ public class FramedConcernNodeToolProvider implements INodeToolProvider {
                 .withSelectionActionLabelExpression("Select an existing Concern to frame")
                 .withSelectionActionDescriptionExpression("Create a New Framed Concern referencing the selected Concern")
                 .noSelectionActionStatusMessageExpression("It will create a New Framed Concern without referencing an existing Concern")
-                .selectionRequiredWithoutSelectionStatusMessageExpression("Select on Concern to frame")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select one Concern to frame")
                 .selectionRequiredWithSelectionStatusMessageExpression(AQLConstants.AQL + "'It will create a new Concern referencing ' + selectedObjects->first().name")
                 .optional(true)
                 .build();

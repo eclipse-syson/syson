@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -140,11 +141,12 @@ public class DiagramMutationExposeService {
                 viewUsage.getOwnedRelationship().add(membershipExpose);
                 new ElementInitializerSwitch().doSwitch(membershipExpose);
                 // if it is the General View, we want to hide tree elements if a compartment containing the same
-                // element is displayed or it is displayed as border node
+                // element is displayed or it is displayed as border node, or if there is another exposed relation
                 if (selectedNode != null && ViewDefinitionKind.isGeneralView(this.utilService.getViewDefinitionKind(element, List.of(), editingContext))) {
                     this.hideNodeIfVisibleCompartmentCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
                     this.hideNodeIfBorderNodeCouldHostTheFutureNode(element, editingContext, diagramContext, selectedNode, convertedNodes);
                     this.hideNodeIfNestedIsDefault(element, editingContext, diagramContext, selectedNode, convertedNodes);
+                    this.hideNodeIfHasReferenceSubset(element, editingContext, diagramContext, selectedNode, convertedNodes);
                 }
             }
         }
@@ -276,7 +278,7 @@ public class DiagramMutationExposeService {
      * Returns the elements contained by {@code parentElement} that should be rendered.
      * <p>
      * This method is typically used by
-     * {@link #addToExposedElements(Element, IEditingContext, DiagramContext, Node, Map, boolean)} to navigate the model
+     * {@link #addToExposedElements(Element, boolean, IEditingContext, DiagramContext, Node, Map)} to navigate the model
      * and find the elements to display.
      * </p>
      *
@@ -473,6 +475,24 @@ public class DiagramMutationExposeService {
                 }
             }
             if (compartmentOrBorderThatCouldHostTheFutureNode) {
+                var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
+                var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
+                if (parentId != null && descriptionId.isPresent()) {
+                    var nodeId = new NodeIdProvider().getNodeId(parentId,
+                            descriptionId.get(),
+                            NodeContainmentKind.CHILD_NODE,
+                            this.siriusWebCoreServices.identityService().getId(element));
+                    diagramContext.diagramEvents().add(new HideDiagramElementEvent(Set.of(nodeId), true));
+                }
+            }
+        }
+    }
+
+    private void hideNodeIfHasReferenceSubset(Element element, IEditingContext editingContext, DiagramContext diagramContext, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var owningMembership = element.getOwningMembership();
+        if (owningMembership.eClass().equals(SysmlPackage.eINSTANCE.getRequirementConstraintMembership())) {
+            var requirementConstraintMembership = (RequirementConstraintMembership) owningMembership;
+            if (requirementConstraintMembership.getReferencedConstraint() != requirementConstraintMembership.getOwnedConstraint() && requirementConstraintMembership.getOwnedConstraint() == element) {
                 var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, selectedNode);
                 var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
                 if (parentId != null && descriptionId.isPresent()) {

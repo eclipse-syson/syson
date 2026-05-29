@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.standard.diagrams.view;
 
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 
 /**
@@ -31,18 +29,5 @@ public class SDVDescriptionNameGenerator extends DescriptionNameGenerator {
 
     public SDVDescriptionNameGenerator() {
         super(PREFIX);
-    }
-
-    @Override
-    public String getCreationToolName(EReference eReference) {
-        String name = super.getCreationToolName(eReference);
-        if (SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint().equals(eReference)
-                || SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint().equals(eReference)) {
-            name = "New Assume constraint";
-        } else if (SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint().equals(eReference)
-                || SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint().equals(eReference)) {
-            name = "New Require constraint";
-        }
-        return name;
     }
 }

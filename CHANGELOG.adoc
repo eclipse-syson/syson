@@ -48,6 +48,7 @@ One creates a `ConcernUsage` and another one creates `FramedConcernMembership`.
 This is currently supported on `Features` (e.g. `Attribute`), `Constraints` and `Transitions` (guard conditions) view new context menu actions (_Create expression_ and _Edit expression_) on the corresponding elements in the _Explorer_.
 - https://github.com/eclipse-syson/syson/issues/2247[#2247] [diagrams] Add the support for creating _timeslices/snapshots_ from the different kind of `OccurrenceDefiniton` graphical nodes.
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
+- https://github.com/eclipse-syson/syson/issues/2250[#2250] [diagrams] Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 == v2026.5.0
 
