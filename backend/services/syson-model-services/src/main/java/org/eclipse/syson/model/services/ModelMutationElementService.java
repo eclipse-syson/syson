@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.utils.SiriusEMFCopier;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -26,6 +27,8 @@ import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
@@ -231,6 +234,42 @@ public class ModelMutationElementService {
             }
 
             return newFramedConcernMembership;
+        }
+        return null;
+    }
+
+    /**
+     * In a {@link RequirementUsage} or a {@link RequirementDefinition}, creates a {@link RequirementConstraintMembership} containing a {@link ConstraintUsage}.
+     * The {@link RequirementConstraintKind} is used to indicate whether the constraint is {@code required} or {@code assumed}.
+     * If a {@link ConstraintUsage} is given, the {@link RequirementConstraintMembership} owned constraint will be subsetted by the given {@link ConstraintUsage}.
+     *
+     * @param type
+     *          the type that will hold the {@link RequirementConstraintMembership}, {@code type} must be a {@link RequirementDefinition} or a requirementUsage
+     * @param constraintUsage
+     *          the {@link ConstraintUsage} subsetted by reference, can be {@code null}
+     * @param constraintKind
+     *          whether the constraint is {@code required} or {@code assumed}
+     * @return the created {@link RequirementConstraintMembership} when {@code type} is a {@link RequirementDefinition}, or a {@link RequirementUsage}, {@code null} otherwise
+     */
+    public RequirementConstraintMembership createConstraint(Type type, ConstraintUsage constraintUsage, RequirementConstraintKind constraintKind) {
+        if (type instanceof RequirementDefinition || type instanceof RequirementUsage) {
+            var newRequirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+            type.getOwnedRelationship().add(newRequirementConstraintMembership);
+            newRequirementConstraintMembership.setKind(constraintKind);
+
+            var newConstraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
+            newRequirementConstraintMembership.getOwnedRelatedElement().add(newConstraintUsage);
+
+            this.metamodelMutationElementService.initialize(newRequirementConstraintMembership);
+            this.metamodelMutationElementService.initialize(newConstraintUsage);
+
+            if (constraintUsage != null) {
+                var newReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                newConstraintUsage.getOwnedRelationship().add(newReferenceSubsetting);
+                newReferenceSubsetting.setReferencedFeature(constraintUsage);
+                this.metamodelMutationElementService.initialize(newReferenceSubsetting);
+            }
+            return newRequirementConstraintMembership;
         }
         return null;
     }

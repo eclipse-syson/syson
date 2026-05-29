@@ -47,6 +47,8 @@ import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AddYourFirstElement;
 import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AssumeConstraintCompartmentItemNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.AssumeConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
@@ -59,6 +61,8 @@ import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeD
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentItemNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
@@ -212,8 +216,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getCaseDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getCaseUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getConcernDefinition(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getConcernUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getConcernDefinition(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
+            Map.entry(SysmlPackage.eINSTANCE.getConcernUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getConnectionDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
@@ -231,8 +235,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
             Map.entry(SysmlPackage.eINSTANCE.getPerformActionUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getUsage_NestedItem())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),              List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
@@ -381,6 +385,8 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         this.linkInterconnectionCompartment(cache);
         this.linkSatisfyRequirementsCompartment(cache);
         this.linkFramedConcernCompartment(cache);
+        this.linkRequireConstraintCompartment(cache);
+        this.linkAssumeConstraintCompartment(cache);
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -581,6 +587,14 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         // RequirementUsage, RequirementDefinition
         compartmentNodeDescriptionProviders.addAll(this.createFramedConcernCompartments(colorProvider));
 
+        // Compartments "require constraints" (Constraint contained by RequirementConstraintMembership with RequirementConstraintKind#REQUIREMENT) is defined for:
+        // RequirementUsage, RequirementDefinition
+        compartmentNodeDescriptionProviders.addAll(this.createRequireConstraintCompartments(colorProvider));
+
+        // Compartments "assume constraints" (Constraint contained by RequirementConstraintMembership with RequirementConstraintKind#ASSUMPTION) is defined for:
+        // RequirementUsage, RequirementDefinition
+        compartmentNodeDescriptionProviders.addAll(this.createAssumeConstraintCompartments(colorProvider));
+
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForListItems(colorProvider));
 
         return compartmentNodeDescriptionProviders;
@@ -719,6 +733,50 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(),
                 colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new FramedConcernCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createRequireConstraintCompartments(IColorProvider colorProvider) {
+        List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequireConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        return compartmentNodeDescriptionProviders;
+    }
+
+    private List<IDiagramElementDescriptionProvider<?>> createAssumeConstraintCompartments(IColorProvider colorProvider) {
+        List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentNodeDescription(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new AssumeConstraintCompartmentItemNodeDescription(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
                 colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
@@ -1408,6 +1466,62 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .ifPresent(requirementUsageNodeDescription -> {
                     cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern())
                                     + FramedConcernCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+    }
+
+    private void linkRequireConstraintCompartment(IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition()))
+                .ifPresent(requirementDefinitionNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())
+                                    + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
+                .ifPresent(requirementUsageNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())
+                                    + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition()))
+                .ifPresent(requirementDefinitionNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())
+                                    + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage()))
+                .ifPresent(requirementUsageNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())
+                                    + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+    }
+
+    private void linkAssumeConstraintCompartment(IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition()))
+                .ifPresent(requirementDefinitionNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint())
+                                    + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage()))
+                .ifPresent(requirementUsageNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
+                                    + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition()))
+                .ifPresent(requirementDefinitionNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint())
+                                    + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
+                            .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                });
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage()))
+                .ifPresent(requirementUsageNodeDescription -> {
+                    cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
+                                    + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME)
                             .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
                 });
     }

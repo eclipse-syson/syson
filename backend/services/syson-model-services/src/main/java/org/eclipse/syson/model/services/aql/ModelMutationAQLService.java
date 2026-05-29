@@ -18,10 +18,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.model.services.ModelMutationElementService;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.ViewUsage;
@@ -112,5 +114,12 @@ public class ModelMutationAQLService {
      */
     public Element createFramedConcern(Type type, ConcernUsage concernUsage) {
         return this.modelMutationElementService.createFramedConcern(type, concernUsage);
+    }
+
+    /**
+     * {@link ModelMutationElementService#createConstraint(Type, ConstraintUsage, RequirementConstraintKind)}.
+     */
+    public Element createConstraint(Type type, ConstraintUsage constraintUsage, RequirementConstraintKind constraintKind) {
+        return this.modelMutationElementService.createConstraint(type, constraintUsage, constraintKind);
     }
 }

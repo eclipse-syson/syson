@@ -45,7 +45,9 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramChecke
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
+import org.eclipse.syson.diagram.common.view.nodes.AssumeConstraintCompartmentItemNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentItemNodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentItemNodeDescription;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
@@ -54,11 +56,13 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -144,8 +148,21 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
     private static Stream<Arguments> concernUsageSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), "New Assume constraint", 6, 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), "New Require constraint", 6, 1))
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), "New Assume constraint", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, 6, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), "New Require constraint", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, 6, 1))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> createSubsettedConstraintUsageNodes() {
+        return Stream.of(
+                        Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement", "New Assume constraint", "assume constraints", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition", "New Assume constraint", "assume constraints", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_USAGE_ID, "requirement", "New Require constraint", "require constraints", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.REQUIREMENT_DEFINITION_ID, "RequirementDefinition", "New Require constraint", "require constraints", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern", "New Assume constraint", "assume constraints", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition", "New Assume constraint", "assume constraints", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getConcernUsage(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_USAGE_ID, "concern", "New Require constraint", "require constraints", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()),
+                        Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID, "ConcernDefinition", "New Require constraint", "require constraints", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -164,9 +181,14 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
     private static Stream<Arguments> concernDefinitionSiblingAndChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirements", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), null, 11, 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), "New Assume constraint", 6, 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), "New Require constraint", 6, 1))
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirements", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), null, 11, 1))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> createConcernDefinitionSiblingAndChildNodesWithCustomTools() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), "New Assume constraint", AssumeConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, 6, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), "New Require constraint", RequireConstraintCompartmentItemNodeDescription.COMPARTMENT_ITEM_NAME, 6, 1))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -336,7 +358,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
     @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @ParameterizedTest
     @MethodSource("concernUsageSiblingAndChildNodeParameters")
-    public void createConcernUsageSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolNameParameter, int expectedNumberOfNewNodes,
+    public void createConcernUsageSiblingAndChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolNameParameter, String compartmentItemSuffix, int expectedNumberOfNewNodes,
             int expectedNumberOfNewEdges) {
         var flux = this.givenSubscriptionToDiagram();
 
@@ -357,14 +379,14 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             creationToolName = this.descriptionNameGenerator.getCreationToolName(childEClass);
         }
 
-        Runnable createNodeRunnable = this.creationTestsService.createNode(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             var initialDiagram = diagram.get();
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNumberOfNewNodes)
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
                     .check(initialDiagram, newDiagram);
-            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentItemSuffix;
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)
@@ -373,6 +395,74 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                     .check(initialDiagram, newDiagram);
         });
         Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("concern", containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @MethodSource("createSubsettedConstraintUsageNodes")
+    @ParameterizedTest
+    public void createSubsettedConstraintUsageNodes(EClass parentEClass, String targetObjectId, String parentLabel, String toolName, String compartmentName, String compartmentItemSuffix, EReference containmentReference) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithSingleSelection(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, toolName, GeneralViewWithTopNodesTestProjectData.SemanticIds.CONSTRAINT_USAGE_ID);
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(6)
+                    .hasNewEdgeCount(2)
+                    .check(diagram.get(), newDiagram);
+
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(0)
+                    .hasNewEdgeCount(0)
+                    .check(diagram.get(), newDiagram, true);
+
+            String listConstraintNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentItemSuffix;
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listConstraintNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(diagram.get(), newDiagram);
+        });
+
+        Consumer<Object> additionalCheck = object -> {
+            assertThat(object).isInstanceOf(List.class)
+                    .asInstanceOf(type(List.class))
+                    .satisfies(constraints -> {
+                        assertThat((List<?>) constraints).size().isEqualTo(1);
+                        assertThat(constraints.getFirst())
+                                .isInstanceOf(ConstraintUsage.class)
+                                .asInstanceOf(type(ConstraintUsage.class))
+                                .satisfies(constraint -> {
+                                    assertThat(constraint.eContainer()).isInstanceOf(RequirementConstraintMembership.class)
+                                            .asInstanceOf(type(RequirementConstraintMembership.class))
+                                            .satisfies(membership -> {
+                                                assertThat(this.identityService.getId(membership.getReferencedConstraint())).isEqualTo(GeneralViewWithTopNodesTestProjectData.SemanticIds.CONSTRAINT_USAGE_ID);
+                                                assertThat(constraint.getOwnedRelationship().getFirst()).isInstanceOf(ReferenceSubsetting.class)
+                                                        .asInstanceOf(type(ReferenceSubsetting.class))
+                                                        .satisfies(referenceSubsetting -> {
+                                                            assertThat(referenceSubsetting.getReferencedFeature()).isEqualTo(membership.getReferencedConstraint());
+                                                        });
+                                            });
+                                });
+                    });
+        };
+
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, SysmlPackage.eINSTANCE.getConstraintUsage(), additionalCheck));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
@@ -462,6 +552,56 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                     .hasNewEdgeCount(expectedNumberOfNewEdges)
                     .check(initialDiagram, newDiagram);
             String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
+                    .withTargetObjectId(targetObjectId)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        });
+        Runnable semanticCheck = this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker("ConcernDefinition", containmentReference, childEClass));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNodeRunnable)
+                .consumeNextWith(diagramCheck)
+                .then(semanticCheck)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+    @ParameterizedTest
+    @MethodSource("createConcernDefinitionSiblingAndChildNodesWithCustomTools")
+    public void createConcernDefinitionSiblingAndChildNodesWithCustomTools(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolNameParameter, String compartmentItemSuffix, int expectedNumberOfNewNodes,
+            int expectedNumberOfNewEdges) {
+        var flux = this.givenSubscriptionToDiagram();
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        EClass parentEClass = SysmlPackage.eINSTANCE.getConcernDefinition();
+        String targetObjectId = GeneralViewWithTopNodesTestProjectData.SemanticIds.CONCERN_DEFINITION_ID;
+
+        final String creationToolName;
+        if (creationToolNameParameter != null) {
+            creationToolName = creationToolNameParameter;
+        } else {
+            creationToolName = this.descriptionNameGenerator.getCreationToolName(childEClass);
+        }
+
+        Runnable createNodeRunnable = this.creationTestsService.createNodeWithSelectionDialogWithoutSelectionProvided(diagramDescriptionIdProvider, diagram, parentEClass, targetObjectId, creationToolName);
+        Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+            var initialDiagram = diagram.get();
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(expectedNumberOfNewNodes)
+                    .hasNewEdgeCount(expectedNumberOfNewEdges)
+                    .check(initialDiagram, newDiagram);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentItemSuffix;
             new CheckNodeInCompartment(diagramDescriptionIdProvider, this.diagramComparator)
                     .withTargetObjectId(targetObjectId)
                     .withCompartmentName(compartmentName)

@@ -626,6 +626,34 @@ public class ViewToolService extends ToolService {
         return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getConcernUsage()));
     }
 
+    /**
+     * Provides the root elements in the tree of the selection dialog for presenting all existing ConstraintUsage.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} and {@link ISysONExplorerFragment} that
+     *         contain at least one {@link org.eclipse.syson.sysml.ConstraintUsage}.
+     */
+    public List<Object> getConstraintReferenceSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, List.of(SysmlPackage.eINSTANCE.getConstraintUsage()));
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for presenting all existing ConstraiNtUsage.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @param expandedIds
+     *            the list of already expanded treeItems, by their Ids.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) an
+     *         {@link org.eclipse.syson.sysml.ConstraintUsage}.
+     */
+    public List<? extends Object> getConstraintReferenceSelectionDialogChildren(Object selectionDialogTreeElement, IEditingContext editingContext, List<String> expandedIds) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, editingContext, expandedIds, List.of(SysmlPackage.eINSTANCE.getConstraintUsage()));
+    }
+
 
 
     /**

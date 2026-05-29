@@ -28,6 +28,7 @@ image::release-notes-framed-concern-tool.png[Tool to create a _frame_ concern us
 image::release-notes-frames-compartment.png[frames compartment displaying concern usages of a requirement, width=40%,height=40%]
 
 ** Leverage the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
 ** Add the support for creating _timeslices/snapshots_ from the different kind of `OccurrenceDefiniton` graphical nodes.
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.

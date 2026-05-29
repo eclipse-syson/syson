@@ -19,8 +19,10 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AssumeConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.FramedConcernCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.InterconnectionCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.RequireConstraintCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.SatisfyRequirementCompartmentNodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVDescriptionNameGenerator;
@@ -60,18 +62,6 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
 
     private void addReusableCompartments(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
         // don't forget to add custom compartments
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
@@ -142,7 +132,31 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
 
         this.addCustomCompartmentsForRequirements(cache, descriptionNameGenerator, childrenNodes);
+        this.addCustomCompartmentsForConcerns(cache, descriptionNameGenerator, childrenNodes);
         this.addCustomCompartmentsForParts(cache, descriptionNameGenerator, childrenNodes);
+    }
+
+    private void addCustomCompartmentsForConcerns(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())
+                + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())
+                + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
+                + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint())
+                + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
     }
 
     private void addCustomCompartmentsForRequirements(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
@@ -160,8 +174,16 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern())
                 + FramedConcernCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
-        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementDefinition_FramedConcern())
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_FramedConcern())
                 + FramedConcernCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())
+                + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())
+                + RequireConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint())
+                + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
+                + AssumeConstraintCompartmentNodeDescription.COMPARTMENT_NAME).ifPresent(childrenNodes::add);
     }
 
     private void addCustomCompartmentsForParts(IViewDiagramElementFinder cache, IDescriptionNameGenerator descriptionNameGenerator, List<NodeDescription> childrenNodes) {
