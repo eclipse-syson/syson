@@ -28,7 +28,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { Theme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { EditSysMLExpressionModalProps, EditSysMLExpressionModalState } from './EditSysMLExpressionModal.types';
 import { useCreateExpression } from './useCreateExpression';
@@ -96,6 +96,8 @@ export const EditSysMLExpressionModal = ({
   const validationStatus = computeValidationStatus(state.validationResult);
   const busy = state.operationInProgress !== null;
 
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+
   const { textualRepresentation, loading } = useExpressionTextualRepresentation(editingContextId, elementId);
   useEffect(() => {
     if (loading) {
@@ -110,12 +112,21 @@ export const EditSysMLExpressionModal = ({
     }
   }, [textualRepresentation, loading]);
 
+  const fieldReady = !busy && state.textualContent !== null;
+  useEffect(() => {
+    if (fieldReady) {
+      const timeoutId = window.setTimeout(() => inputRef.current?.focus());
+      return () => window.clearTimeout(timeoutId);
+    }
+    return undefined;
+  }, [fieldReady]);
+
   const { createExpression, loading: creationInProgress, messages: postCreationMessages } = useCreateExpression();
   const { editExpression, loading: editionInProgress, messages: postEditionMessages } = useEditExpression();
   const { deleteExpression } = useDeleteExpression();
 
-  const onUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const onUpdate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null) => {
+    event?.preventDefault();
     if (state.textualContent !== null) {
       if (mode === 'create' && state.textualContent.trim() !== '') {
         setState((prevState) => ({ ...prevState, operationInProgress: 'creating' }));
@@ -169,6 +180,7 @@ export const EditSysMLExpressionModal = ({
             id="edit-sysml-expression-modal-textarea"
             data-testid="edit-sysml-expression-modal-textarea"
             disabled={busy || state.textualContent === null}
+            inputRef={inputRef}
             className={classes.textarea}
             autoFocus
             multiline
@@ -180,6 +192,11 @@ export const EditSysMLExpressionModal = ({
             onChange={(event) =>
               setState((prevState) => ({ ...prevState, textualContent: event.target.value, validationResult: null }))
             }
+            onKeyUp={(event) => {
+              if (event.ctrlKey && event.key === 'Enter') {
+                onUpdate(null);
+              }
+            }}
             slotProps={{
               input: {
                 endAdornment: <SysMLStatusChip validationStatus={validationStatus} />,

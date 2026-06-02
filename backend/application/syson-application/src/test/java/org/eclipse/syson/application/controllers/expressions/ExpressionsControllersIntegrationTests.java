@@ -553,18 +553,21 @@ public class ExpressionsControllersIntegrationTests extends AbstractIntegrationT
             treeId.set(tree.getId());
         });
 
-        // The Tank part and its attribute are not themselves expressions => ""
+        // The Tank part is not an expression => ""
         var checkTank = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_ID, "");
-        var checkTankAttribute = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, "");
+        // The Tank's attribute is not an expression itself either, but it owns a single, non-ambiguous expression to
+        // can act as a "shortcut" to interact with id.
+        var checkTankAttribute = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_ID, "100.0 * minVolume");
         // The actual attribute default value expression however should be correctly represented
         var checkTankAttributeValueExpression = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.TANK_MAX_VOLUME_ATTRIBUTE_VALUE_ID,
                 "100.0 * minVolume");
 
         var checkPerformanceConcern = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ID, "");
         // A ConstaintUsage *is* an Expression from the point of view of SysML's type hierarchy, but not a top-level
-        // Expression, so we expect "" here.
+        // Expression. However if it contains a single expression, it an act as a "shortcut" to it.
         var checkPerformanceConcernAssumeConstraint = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_ASSUME_ID, "");
-        var checkPerformanceConcernRequireConstraint = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_ID, "");
+        var checkPerformanceConcernRequireConstraint = this.checkExpressiontTextualRepresentation(editingContextId, ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_ID,
+                "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0");
         // require s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0
         var checkPerformanceConcernRequireConstraintExpression = this.checkExpressiontTextualRepresentation(editingContextId,
                 ExpressionSamplesProjectData.SemanticIds.PERFORMANCE_CONCERN_REQUIRE_EXPRESSION_ID, "s.samplingRate >= 50.0 & s.currentValue != 0.0 | s.errorCount == 0");

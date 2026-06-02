@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author pcdavid
  */
-public record EditExpressionInput(UUID id, String editingContextId, String expressionElementId, String newExpressionText) implements IInput {
+public record EditExpressionInput(UUID id, String editingContextId, String elementId, String newExpressionText) implements IInput {
 }

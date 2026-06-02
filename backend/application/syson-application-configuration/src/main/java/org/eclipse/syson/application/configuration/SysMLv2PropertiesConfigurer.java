@@ -192,6 +192,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
         pageCore.getGroups().add(this.createFeatureValuePropertiesGroup());
         pageCore.getGroups().add(this.createExpressionPropertiesGroup());
+        pageCore.getGroups().add(this.createResultExpressionPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setName("SysON-DetailsView-Advanced");
@@ -243,8 +244,31 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
         expressionWidget.setName("ValueExpression");
-        expressionWidget.setLabelExpression("Value");
+        expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
         expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getValueExpressionTextualRepresentation).aqlSelf());
+        expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
+
+        group.getChildren().add(expressionWidget);
+
+        return group;
+    }
+
+    /**
+     * Creates a group to display the value of a ResultExpression.
+     *
+     * @return a {@link GroupDescription}
+     */
+    private GroupDescription createResultExpressionPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName("Result");
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(ServiceMethod.of0(DetailsViewService::getResultExpression).aqlSelf());
+
+        TextAreaDescription expressionWidget = FormFactory.eINSTANCE.createTextAreaDescription();
+        expressionWidget.setName("ResultExpression");
+        expressionWidget.setLabelExpression(CUSTOM_EXPRESSION_WIDGET_KEY);
+        expressionWidget.setValueExpression(ServiceMethod.of0(DetailsViewService::getResultExpressionTextualRepresentation).aqlSelf());
         expressionWidget.setIsEnabledExpression(AQLConstants.AQL_FALSE);
 
         group.getChildren().add(expressionWidget);

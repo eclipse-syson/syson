@@ -27,7 +27,7 @@ export interface GQLEditExpressionVariables {
 export interface GQLEditExpressionInput {
   id: string;
   editingContextId: string;
-  expressionElementId: string;
+  elementId: string;
   newExpressionText: string;
 }
 

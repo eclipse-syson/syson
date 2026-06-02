@@ -192,7 +192,8 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
             expressionEntries.add(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
         } else if (this.metamodelQueryElementService.hasSingleExpressionDefinition(element)
                 && !this.metamodelQueryElementService.hasSingleExpressionDefinition(element.getOwner())) {
-            // "Delete expression" on the owner of a root Expression element
+            // "Edit expression" and "Delete expression" on the owner of a root Expression element
+            expressionEntries.add(EDIT_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
             expressionEntries.add(DELETE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID);
         }
 

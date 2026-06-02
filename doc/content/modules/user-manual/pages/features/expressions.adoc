@@ -19,7 +19,7 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
-When an `Expression` element is selected(for example from the {explorer} view), the {details}} view displays its textual representation, with a button to open the expression edition modal (see below) directly on it:
+When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the {explorer} view), the {details}} view displays the textual representation of the expression, with a button to open the expression edition modal (see below) directly on it:
 +
 image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
 
@@ -39,10 +39,10 @@ image::edit-expression-modal-error.png[Edit expression modal showing an error me
 
 == Edition
 
-To edit an already existing expression, invoke the _Edit expression_ context menu action directly on the existing expression.
+To edit an already existing expression, invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element.
 The same modal as for expression creation will open, but with the current textual representation of the expression pre-filled.
 
-Edit the textual representation of the expression as required, and click on the _Update_ button to validate.
+Edit the textual representation of the expression as required, and click on the _Update_ button or hit _Ctrl-RET_ to validate.
 
 As for expression creation, the change will only be applied if there are no errors detected; otherwise the modal will display any errors (e.g. names used in the expression that can not be resolve to existing elements) so that you can fix the input.
 

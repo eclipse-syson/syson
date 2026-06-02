@@ -96,5 +96,19 @@ describe('Details View Tests', () => {
         details.getTextField('Expression value').should('have.value', 'vehicle.actualSpeed <= maxSpeed');
       });
     });
+
+    context('When we select a ConstraintUsage which contains an Expression', () => {
+      beforeEach(() => {
+        explorer.select('Wheel');
+        explorer.expand('Wheel');
+        explorer.select('boundingBox');
+        explorer.expand('boundingBox');
+        explorer.select('length');
+      });
+      it("Then the Details view shows the child expression's textual value", () => {
+        details.getTextField('Expression value').should('exist');
+        details.getTextField('Expression value').should('have.value', '80 [SI::centimetre]');
+      });
+    });
   });
 });
