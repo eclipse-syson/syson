@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.dto.EditExpressionInput;
 import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.services.api.ISysMLExpressionEditor;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,8 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
 
     private final ISysMLExpressionEditor expressionEditor;
 
+    private final MetamodelQueryElementService metamodelQueryElementService;
+
     private final Counter counter;
 
     public EditExpressionEventHandler(IObjectSearchService objectSearchService, IIdentityService identityService, ICollaborativeMessageService messageService, ISysMLExpressionEditor expressionEditor,
@@ -62,6 +65,7 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
         this.identityService = Objects.requireNonNull(identityService);
         this.messageService = Objects.requireNonNull(messageService);
         this.expressionEditor = Objects.requireNonNull(expressionEditor);
+        this.metamodelQueryElementService = new MetamodelQueryElementService();
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
@@ -79,13 +83,8 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof EditExpressionInput editExpressionInput && editingContext instanceof IEMFEditingContext emfEditingContext) {
-            Optional<Expression> optionalExpression = this.objectSearchService.getObject(editingContext, editExpressionInput.expressionElementId())
-                    .filter(Expression.class::isInstance)
-                    .map(Expression.class::cast);
-            Optional<Element> optionalParent = Optional.empty();
-            if (optionalExpression.isPresent()) {
-                optionalParent = Optional.ofNullable(optionalExpression.get().getOwner());
-            }
+            var optionalParent = this.getExpressionParent(emfEditingContext, editExpressionInput.elementId());
+            var optionalExpression = this.getExpression(emfEditingContext, editExpressionInput.elementId());
 
             if (optionalParent.isPresent() && optionalExpression.isPresent()) {
                 var result = this.expressionEditor.editExpression(emfEditingContext, optionalParent.get(), optionalExpression.get(), editExpressionInput.newExpressionText());
@@ -107,5 +106,58 @@ public class EditExpressionEventHandler implements IEditingContextEventHandler {
 
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+
+    /**
+     * Finds the {@link Expression} element to consider given the provided {@code elementId}.
+     *
+     * @param editingContext
+     *            the editing context.
+     * @param elementId
+     *            either to id of an actual {@link Expression} element, or of the parent {@link Element} of a single
+     *            {@code Expression}.
+     * @return the directly of indirectly designated {@link Expression}.
+     */
+    private Optional<Expression> getExpression(IEditingContext editingContext, String elementId) {
+        Optional<Expression> result = Optional.empty();
+        Optional<Element> optionalElement = this.objectSearchService.getObject(editingContext, elementId)
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast);
+        if (optionalElement.isPresent()) {
+            Element element = optionalElement.get();
+            if (element instanceof Expression expression && this.metamodelQueryElementService.isTopLevelExpression(expression)) {
+                result = optionalElement.map(Expression.class::cast);
+            } else {
+                result = this.metamodelQueryElementService.findSingleExpressionDefinition(element);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Finds the {@link Expression} element to consider given the provided {@code elementId}.
+     *
+     * @param editingContext
+     *            the editing context.
+     * @param elementId
+     *            either to id of an actual {@link Expression} element, or of the parent {@link Element} of a single
+     *            {@code Expression}.
+     * @return the directly of indirectly designated {@link Expression}.
+     */
+    private Optional<Element> getExpressionParent(IEditingContext editingContext, String elementId) {
+        Optional<Element> result = Optional.empty();
+
+        Optional<Element> optionalElement = this.objectSearchService.getObject(editingContext, elementId)
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast);
+        if (optionalElement.isPresent()) {
+            Element element = optionalElement.get();
+            if (element instanceof Expression expression && this.metamodelQueryElementService.isTopLevelExpression(expression)) {
+                result = optionalElement.map(Element::getOwner);
+            } else {
+                result = optionalElement;
+            }
+        }
+        return result;
     }
 }

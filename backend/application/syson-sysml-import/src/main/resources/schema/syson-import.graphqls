@@ -34,7 +34,7 @@ type CreateExpressionSuccessPayload {
 input EditExpressionInput {
   id: ID!
   editingContextId: ID!
-  expressionElementId: ID!
+  elementId: ID!
   newExpressionText: String!
 }
 

@@ -54,7 +54,7 @@ In both cases, to display the `FramedConcernMembership`, deactivate the `Hide Me
 ** It is now possible to create, edit and delete _Expressions_ using their textual syntax from the _Explorer_ view.
 To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
 A modal will open where you can enter the textual representation of the expression to create.
-Click on the _Update_ button to validate.
+Click on the _Update_ button or hit _Ctrl-RET_ to validate.
 If the entered expression is valid, it will be created and the modal will automatically close.
 If the entered expression is _not_ valid, the modal will remain open and show the error(s) in an expandable accordion.
 Fix any error reported before clicking on _Update_ again (or canceling the operation).
@@ -62,13 +62,13 @@ Fix any error reported before clicking on _Update_ again (or canceling the opera
 image::edit-expression-modal.png[Edit expression modal, width=80%]
 image::edit-expression-modal-error.png[Edit expression modal showing an error message if the new expression is invalid, width=80%]
 +
-To _edit_ an existing expression, simply invoke the _Edit expression_ context menu action directly on the existing expression; the same modal will open but with the current textual representation of the expression pre-filled.
+To _edit_ an existing expression, simply invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element; the same modal will open but with the current textual representation of the expression pre-filled.
 +
 To _delete_ an existing expression, you can simply invoke the normal _Delete_ menu item action on the expression itself or the new _Delete expression_ on its parent element.
 
 * In the _Details_ view:
 
-** When an `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays its textual representation, with a button to open the expression edition modal (see above) directly on it:
+** When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays the textual representation of the `Expression`, with a button to open the expression edition modal (see above) directly on it:
 +
 image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
 

@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.syson.application.expressions.dto.ExpressionTextualRepresentationInput;
 import org.eclipse.syson.application.expressions.dto.ExpressionTextualRepresentationPayload;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.springframework.stereotype.Service;
@@ -55,14 +56,38 @@ public class ExpressionTextualRepresentationEventHandler implements IEditingCont
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         String textualRepresentation = "";
         if (input instanceof ExpressionTextualRepresentationInput expressionTextualRepresentationInput) {
-            Optional<Expression> optionalExpression = this.objectSearchService.getObject(editingContext, expressionTextualRepresentationInput.elementId())
-                    .filter(Expression.class::isInstance)
-                    .map(Expression.class::cast)
-                    .filter(this.metamodelQueryElementService::isTopLevelExpression);
+            String elementId = expressionTextualRepresentationInput.elementId();
+            Optional<Expression> optionalExpression = this.getExpression(editingContext, elementId);
             if (optionalExpression.isPresent()) {
                 textualRepresentation = this.metamodelQueryElementService.getExpressionTextualRepresentation(optionalExpression.get());
             }
         }
         payloadSink.tryEmitValue(new ExpressionTextualRepresentationPayload(input.id(), textualRepresentation));
+    }
+
+    /**
+     * Finds the {@link Expression} element to consider given the provided {@code elementId}.
+     *
+     * @param editingContext
+     *            the editing context.
+     * @param elementId
+     *            either to id of an actual {@link Expression} element, or of the parent {@link Element} of a single
+     *            {@code Expression}.
+     * @return the directly of indirectly designated {@link Expression}.
+     */
+    private Optional<Expression> getExpression(IEditingContext editingContext, String elementId) {
+        Optional<Expression> result = Optional.empty();
+        Optional<Element> optionalElement = this.objectSearchService.getObject(editingContext, elementId)
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast);
+        if (optionalElement.isPresent()) {
+            Element element = optionalElement.get();
+            if (element instanceof Expression expression && this.metamodelQueryElementService.isTopLevelExpression(expression)) {
+                result = optionalElement.map(Expression.class::cast);
+            } else {
+                result = this.metamodelQueryElementService.findSingleExpressionDefinition(element);
+            }
+        }
+        return result;
     }
 }

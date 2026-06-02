@@ -52,11 +52,11 @@ export const useEditExpression = (): UseEditExpressionValue => {
     GQLEditExpressionVariables
   >(editExpressionMutation);
 
-  const editExpression = (editingContextId: string, expressionElementId: string, newExpressionText: string) => {
+  const editExpression = (editingContextId: string, elementId: string, newExpressionText: string) => {
     const input: GQLEditExpressionInput = {
       id: crypto.randomUUID(),
       editingContextId,
-      expressionElementId,
+      elementId: elementId,
       newExpressionText,
     };
 
