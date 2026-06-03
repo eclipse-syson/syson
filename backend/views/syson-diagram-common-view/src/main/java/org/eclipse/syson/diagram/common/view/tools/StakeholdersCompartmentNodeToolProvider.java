@@ -16,7 +16,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -41,8 +41,8 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var domainName = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(ViewToolService::getStakeholderSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(ViewToolService::getStakeholderSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getStakeholderSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getStakeholderSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + domainName + ")")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()

@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.nodes.SubjectNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -113,7 +113,7 @@ public class NestedSubjectEdgeDescriptionProvider extends AbstractEdgeDescriptio
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewToolService::reconnectSourceNestedSubjectEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                .expression(ServiceMethod.of2(DiagramMutationAQLService::reconnectSourceNestedSubjectEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
                         AQLConstants.SEMANTIC_OTHER_END));
     }
 

@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.nodes.ActorNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -114,7 +114,7 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of2(ViewToolService::reconnectSourceNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
+                .expression(ServiceMethod.of2(DiagramMutationAQLService::reconnectSourceNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT, AQLConstants.SEMANTIC_RECONNECTION_TARGET,
                         AQLConstants.SEMANTIC_OTHER_END));
     }
 
@@ -122,7 +122,7 @@ public class NestedActorEdgeDescriptionProvider extends AbstractEdgeDescriptionP
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         // Because of https://github.com/eclipse-sirius/sirius-web/issues/2930, it is not possible to prevent user to do the reconnection.
         return this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewToolService::reconnectTargetNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT));
+                .expression(ServiceMethod.of0(DiagramMutationAQLService::reconnectTargetNestedActorEdge).aql(AQLConstants.EDGE_SEMANTIC_ELEMENT));
     }
 
     @Override

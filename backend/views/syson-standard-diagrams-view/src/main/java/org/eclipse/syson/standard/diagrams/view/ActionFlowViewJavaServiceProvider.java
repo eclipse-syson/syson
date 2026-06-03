@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.syson.representation.services.aql.RepresentationMutationAQLSe
 import org.eclipse.syson.representation.services.aql.RepresentationQueryAQLService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.services.ActionFlowViewCreateService;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -48,7 +49,8 @@ public class ActionFlowViewJavaServiceProvider implements IJavaServiceProvider {
                     ModelMutationAQLService.class,
                     ModelQueryAQLService.class,
                     RepresentationMutationAQLService.class,
-                    RepresentationQueryAQLService.class);
+                    RepresentationQueryAQLService.class,
+                    TreeQueryAQLService.class);
         }
         return List.of();
     }

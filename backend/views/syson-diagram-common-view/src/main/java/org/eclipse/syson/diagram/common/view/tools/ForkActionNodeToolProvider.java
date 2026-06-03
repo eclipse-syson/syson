@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -58,10 +58,10 @@ public class ForkActionNodeToolProvider extends AbstractFreeFormCompartmentNodeT
     protected String getPreconditionServiceCallExpression() {
         if (this.ownerEClass == null) {
             // this tool will be invoked on the diagram background
-            return ServiceMethod.of2(ViewToolService::isControlNodeActionCreationToolInsideActionOnAFV).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
+            return ServiceMethod.of2(DiagramQueryAQLService::isControlNodeActionCreationToolInsideActionOnAFV).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT);
         } else {
             // this tool will be invoked from a selected node
-            return ServiceMethod.of1(ViewToolService::isControlNodeActionCreationToolInAction).aql(IEditingContext.EDITING_CONTEXT, Node.SELECTED_NODE);
+            return ServiceMethod.of1(DiagramQueryAQLService::isControlNodeActionCreationToolInAction).aql(IEditingContext.EDITING_CONTEXT, Node.SELECTED_NODE);
         }
     }
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.services;
+package org.eclipse.syson.diagram.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,29 +19,25 @@ import java.util.IdentityHashMap;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.services.api.MoveStatus;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link ViewToolService}.
+ * Tests for {@link DiagramMutationToolService}.
  *
  * @author Arthur Daussy
  */
-public class ViewToolServiceTest {
+public class DiagramMutationToolServiceTest {
 
     private static final String FAILURE_MESSAGE = "move refused";
 
@@ -109,14 +105,7 @@ public class ViewToolServiceTest {
             labelService.withLabel(thirdObject, thirdLabel);
         }
 
-        ViewToolService service = new ViewToolService(
-                new IIdentityService.NoOp(),
-                new IObjectSearchService.NoOp(),
-                new IViewRepresentationDescriptionSearchService.NoOp(),
-                feedbackMessageService,
-                moveService,
-                new ISysONExplorerService.NoOp(),
-                labelService);
+        DiagramMutationToolService service = new DiagramMutationToolService(feedbackMessageService, moveService, labelService);
         return new TestServices(service, moveService, feedbackMessageService);
     }
 
@@ -130,7 +119,7 @@ public class ViewToolServiceTest {
      * @param feedbackMessageService
      *            the feedback message service collecting messages
      */
-    private record TestServices(ViewToolService service, TestMoveElementService moveService, CapturingFeedbackMessageService feedbackMessageService) {
+    private record TestServices(DiagramMutationToolService service, TestMoveElementService moveService, CapturingFeedbackMessageService feedbackMessageService) {
     }
 
     /**
@@ -194,6 +183,4 @@ public class ViewToolServiceTest {
             return this.labels.getOrDefault(object, StyledString.of(""));
         }
     }
-
-
 }

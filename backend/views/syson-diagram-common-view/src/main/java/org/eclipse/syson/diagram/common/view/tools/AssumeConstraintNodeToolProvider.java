@@ -23,11 +23,11 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -51,7 +51,8 @@ public class AssumeConstraintNodeToolProvider implements INodeToolProvider {
                 .expression(ServiceMethod.of4(DiagramMutationAQLService::expose).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT, Node.SELECTED_NODE,
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
-        // We expose both the reference constraint and owned constraint because the tool `show content as tree` should display the owned constraint.
+        // We expose both the reference constraint and owned constraint because the tool "show content as tree" should
+        // display the owned constraint.
         // However, if the reference constraint and the owned constraint are different, it means the owned constraint is subsetted by reference, and thus we hide the owned constraint graphical node
         //  thanks to DiagramMutationExposeService#hideNodeIfHasReferenceSubset
         var exposeReferenceConstraint = this.viewBuilderHelper.newChangeContext()
@@ -89,8 +90,8 @@ public class AssumeConstraintNodeToolProvider implements INodeToolProvider {
 
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
                 .isSelectableExpression(AQLConstants.AQL_SELF + ".oclIsKindOf(" + constraintUsageType + ")")
-                .elementsExpression(ServiceMethod.of0(ViewToolService::getConstraintReferenceSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
-                .childrenExpression(ServiceMethod.of2(ViewToolService::getConstraintReferenceSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getConstraintReferenceSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT))
+                .childrenExpression(ServiceMethod.of2(TreeQueryAQLService::getConstraintReferenceSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED))
                 .build();
 
         return this.diagramBuilderHelper.newSelectionDialogDescription()

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,8 @@ import org.eclipse.syson.services.ColorProvider;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.standard.diagrams.view.SDVDiagramDescriptionProvider;
 import org.eclipse.syson.standard.diagrams.view.SDVJavaServiceProvider;
+import org.eclipse.syson.tree.explorer.view.SysONExplorerJavaServiceProvider;
+import org.eclipse.syson.tree.explorer.view.SysONExplorerTreeDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,8 +57,10 @@ public class JavaServiceTests {
             RepresentationDescription description = provider.create(colorProvider);
             this.view.getDescriptions().add(description);
         });
+        var sysONExplorerTreeView = new SysONExplorerTreeDescriptionProvider().createView();
+        this.view.getDescriptions().addAll(sysONExplorerTreeView.getDescriptions());
 
-        List<IJavaServiceProvider> javaServiceProviders = List.of(new SDVJavaServiceProvider());
+        List<IJavaServiceProvider> javaServiceProviders = List.of(new SDVJavaServiceProvider(), new SysONExplorerJavaServiceProvider());
         this.serviceClasses = javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(this.view).stream())
                 .collect(Collectors.toSet());

@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -73,9 +73,9 @@ public class SatisfyRequirementNodeToolProvider implements INodeToolProvider {
         var selectableTypes = List.of(reqUsageType, defType);
 
         var selectionDialogTreeDescription = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of1(ViewToolService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(selectableTypes)))
+                .elementsExpression(ServiceMethod.of1(TreeQueryAQLService::getSelectionDialogElements).aql(IEditingContext.EDITING_CONTEXT, AQLUtils.aqlSequence(selectableTypes)))
                 .childrenExpression(
-                        ServiceMethod.of3(ViewToolService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(selectableTypes)))
+                        ServiceMethod.of3(TreeQueryAQLService::getSelectionDialogChildren).aqlSelf(IEditingContext.EDITING_CONTEXT, TreeRenderer.EXPANDED, AQLUtils.aqlSequence(selectableTypes)))
                 .isSelectableExpression(AQLConstants.AQL + "self.oclIsKindOf(" + defType + ") or self.oclIsKindOf(" + reqUsageType + ")")
                 .build();
 

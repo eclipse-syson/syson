@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
@@ -114,7 +113,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
     @Override
     protected DeleteTool getEdgeDeleteTool() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of0(ViewToolService::moveToClosestContainingPackage).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(ServiceMethod.of0(DiagramMutationAQLService::moveToClosestContainingPackage).aql(org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")

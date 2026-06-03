@@ -33,7 +33,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
+import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.services.UtilService;
@@ -523,7 +523,7 @@ public class ToolDescriptionService {
                 .iconURLsExpression(iconPath.toString())
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
-                .preconditionExpression(ServiceMethod.of3(ViewToolService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
                         SysMLMetamodelHelper.buildQualifiedName(eClass)))
                 .build();
     }
@@ -614,7 +614,7 @@ public class ToolDescriptionService {
                 .iconURLsExpression(iconPath.toString())
                 .body(changeContextRoot.build())
                 .elementsToSelectExpression("aql:newInstance")
-                .preconditionExpression(ServiceMethod.of3(ViewToolService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
+                .preconditionExpression(ServiceMethod.of3(DiagramQueryAQLService::toolShouldBeAvailable).aqlSelf(IEditingContext.EDITING_CONTEXT, DiagramContext.DIAGRAM_CONTEXT,
                         SysMLMetamodelHelper.buildQualifiedName(eClass)))
                 .build();
     }

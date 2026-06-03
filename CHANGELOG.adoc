@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- [services] As part of the migration to the new diagram service architecture, the methods that were exposed by `ViewToolService` (which has been deleted) are now split between `org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService` for mutation services, `org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService` for diagram query and tool precondition services, and `org.eclipse.syson.tree.services.aql.TreeQueryAQLService` for selection dialog tree query services.
+
 === Dependency update
 
 === Bug fixes
@@ -17,7 +19,6 @@
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/2316[#2316] [diagrams] Add support for list item inheritance in _perform actions_ compartments
-s
 
 == v2026.7.0
 

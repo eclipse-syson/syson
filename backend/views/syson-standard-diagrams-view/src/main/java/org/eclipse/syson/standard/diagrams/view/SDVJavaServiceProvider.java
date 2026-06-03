@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
@@ -28,6 +27,7 @@ import org.eclipse.syson.representation.services.aql.RepresentationMutationAQLSe
 import org.eclipse.syson.representation.services.aql.RepresentationQueryAQLService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -49,14 +49,14 @@ public class SDVJavaServiceProvider implements IJavaServiceProvider {
                     ViewCreateService.class,
                     ViewEdgeService.class,
                     ViewLabelService.class,
-                    ViewToolService.class,
                     UtilService.class,
                     DiagramMutationAQLService.class,
                     DiagramQueryAQLService.class,
                     ModelMutationAQLService.class,
                     ModelQueryAQLService.class,
                     RepresentationMutationAQLService.class,
-                    RepresentationQueryAQLService.class);
+                    RepresentationQueryAQLService.class,
+                    TreeQueryAQLService.class);
         }
         return List.of();
     }

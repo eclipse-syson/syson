@@ -27,6 +27,7 @@ import org.eclipse.syson.diagram.services.DiagramQueryElementService;
 import org.eclipse.syson.diagram.services.DiagramQueryExposeService;
 import org.eclipse.syson.diagram.services.DiagramQueryGraphicalService;
 import org.eclipse.syson.diagram.services.DiagramQueryLabelService;
+import org.eclipse.syson.diagram.services.DiagramQueryToolService;
 import org.eclipse.syson.diagram.services.DiagramQueryViewService;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConnectionUsage;
@@ -66,15 +67,36 @@ public class DiagramQueryAQLService {
 
     private final DiagramQueryAnnotatingService diagramQueryAnnotatingService;
 
+    private final DiagramQueryToolService diagramQueryToolService;
+
+    /**
+     * Creates a new diagram query AQL service.
+     *
+     * @param diagramQueryElementService
+     *            the diagram element query service
+     * @param diagramQueryLabelService
+     *            the diagram label query service
+     * @param diagramQueryExposeService
+     *            the diagram exposed element query service
+     * @param diagramQueryGraphicalService
+     *            the diagram graphical query service
+     * @param diagramQueryViewService
+     *            the diagram view query service
+     * @param diagramQueryAnnotatingService
+     *            the diagram annotating query service
+     * @param diagramQueryToolService
+     *            the diagram tool query service
+     */
     public DiagramQueryAQLService(DiagramQueryElementService diagramQueryElementService, DiagramQueryLabelService diagramQueryLabelService,
             DiagramQueryExposeService diagramQueryExposeService, DiagramQueryGraphicalService diagramQueryGraphicalService, DiagramQueryViewService diagramQueryViewService,
-            DiagramQueryAnnotatingService diagramQueryAnnotatingService) {
+            DiagramQueryAnnotatingService diagramQueryAnnotatingService, DiagramQueryToolService diagramQueryToolService) {
         this.diagramQueryElementService = Objects.requireNonNull(diagramQueryElementService);
         this.diagramQueryLabelService = Objects.requireNonNull(diagramQueryLabelService);
         this.diagramQueryExposeService = Objects.requireNonNull(diagramQueryExposeService);
         this.diagramQueryGraphicalService = Objects.requireNonNull(diagramQueryGraphicalService);
         this.diagramQueryViewService = Objects.requireNonNull(diagramQueryViewService);
         this.diagramQueryAnnotatingService = Objects.requireNonNull(diagramQueryAnnotatingService);
+        this.diagramQueryToolService = Objects.requireNonNull(diagramQueryToolService);
     }
 
     /**
@@ -239,6 +261,20 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryElementService#isControlNodeActionCreationToolInAction(editingContext, selectedNode)}.
+     */
+    public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
+        return this.diagramQueryToolService.isControlNodeActionCreationToolInsideActionOnAFV(element, editingContext, diagramContext);
+    }
+
+    /**
+     * {@link DiagramQueryElementService#isControlNodeActionCreationToolInAction(editingContext, selectedNode)}.
+     */
+    public boolean isControlNodeActionCreationToolInAction(IEditingContext editingContext, Node selectedNode) {
+        return this.diagramQueryToolService.isControlNodeActionCreationToolInAction(editingContext, selectedNode);
+    }
+
+    /**
      * {@link DiagramQueryElementService#isDiagramEmpty(editingContext, diagramContext, previousDiagram)}.
      */
     public boolean isDiagramEmpty(IEditingContext editingContext, DiagramContext diagramContext, Diagram previousDiagram, int exposedElements) {
@@ -250,6 +286,36 @@ public class DiagramQueryAQLService {
      */
     public boolean isHiddenByDefault(Element self, String compartmentName, List<Object> ancestors, IEditingContext editingContext, DiagramContext diagramContext) {
         return this.diagramQueryViewService.isHiddenByDefault(self, compartmentName, ancestors, editingContext, diagramContext);
+    }
+
+    /**
+     * AQL Service to control the default visibility of control nodes (Decision, Fork, Join, Merge) in diagrams (GV and
+     * AFV).
+     *
+     * @param element
+     *            the control node to display or not
+     * @param ancestors
+     *            the semantic ancestor of the given element
+     * @return <code>true</code> if this node should be hidden by default or <code>false</code> if it should be
+     *         displayed.
+     */
+    public boolean isHiddenControlNodeByDefault(Element element, List<Object> ancestors) {
+        // A control node on the top of the GV diagram should be hidden by default
+        // A control node on the top of the AFV diagram should be hidden by default if it has not been created on the
+        // AFV background
+        boolean result = false;
+        if (element instanceof ControlNode controlNode && !ancestors.isEmpty() && ancestors.getFirst() instanceof ViewUsage viewUsage) {
+            if (this.isGVDiagram(viewUsage)) {
+                result = true;
+            } else if (this.isAFVDiagram(viewUsage)) {
+                Element owner = controlNode.getOwner();
+                Element viewUsageOwner = viewUsage.getOwner();
+                if (!Objects.equals(owner, viewUsageOwner)) {
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -290,27 +356,10 @@ public class DiagramQueryAQLService {
     }
 
     /**
-     * AQL Service to control the default visibility of control nodes (Decision, Fork, Join, Merge) in diagrams (GV and AFV).
-     * @param element the control node to display or not
-     * @param ancestors the semantic ancestor of the given element
-     * @return <code>true</code> if this node should be hidden by default or <code>false</code> if it should be displayed.
+     * {@link DiagramQueryToolService#toolShouldBeAvailable(Element, IEditingContext, DiagramContext, EClass)}.
      */
-    public boolean isHiddenControlNodeByDefault(Element element, List<Object> ancestors) {
-        // A control node on the top of the GV diagram should be hidden by default
-        // A control node on the top of the AFV diagram should be hidden by default if it has not been created on the AFV background
-        boolean result = false;
-        if (element instanceof ControlNode controlNode && !ancestors.isEmpty() && ancestors.getFirst() instanceof ViewUsage viewUsage) {
-            if (this.isGVDiagram(viewUsage)) {
-                result = true;
-            } else if (this.isAFVDiagram(viewUsage)) {
-                Element owner = controlNode.getOwner();
-                Element viewUsageOwner = viewUsage.getOwner();
-                if (!Objects.equals(owner, viewUsageOwner)) {
-                    result = true;
-                }
-            }
-        }
-        return result;
+    public boolean toolShouldBeAvailable(Element element, IEditingContext editingContext, DiagramContext diagramContext, EClass newElementType) {
+        return this.diagramQueryToolService.toolShouldBeAvailable(element, editingContext, diagramContext, newElementType);
     }
 
     private boolean isGVDiagram(ViewUsage viewUsage) {

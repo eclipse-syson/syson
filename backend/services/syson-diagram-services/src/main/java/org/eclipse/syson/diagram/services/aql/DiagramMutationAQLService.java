@@ -27,6 +27,7 @@ import org.eclipse.syson.diagram.services.DiagramMutationDndService;
 import org.eclipse.syson.diagram.services.DiagramMutationElementService;
 import org.eclipse.syson.diagram.services.DiagramMutationExposeService;
 import org.eclipse.syson.diagram.services.DiagramMutationLabelService;
+import org.eclipse.syson.diagram.services.DiagramMutationToolService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Connector;
@@ -35,6 +36,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Type;
@@ -61,15 +63,50 @@ public class DiagramMutationAQLService {
 
     private final DiagramMutationCompartmentService diagramMutationCompartmentService;
 
+    private final DiagramMutationToolService diagramMutationToolService;
+
+    /**
+     * Creates a new diagram mutation AQL service.
+     *
+     * @param diagramMutationDndService
+     *            the diagram drag and drop mutation service
+     * @param diagramMutationElementService
+     *            the diagram element mutation service
+     * @param diagramMutationExposeService
+     *            the diagram exposed element mutation service
+     * @param diagramMutationLabelService
+     *            the diagram label mutation service
+     * @param diagramMutationDiagramService
+     *            the diagram mutation service
+     * @param diagramMutationCompartmentService
+     *            the diagram compartment mutation service
+     * @param diagramMutationToolService
+     *            the diagram tool mutation service
+     */
     public DiagramMutationAQLService(DiagramMutationDndService diagramMutationDndService, DiagramMutationElementService diagramMutationElementService,
             DiagramMutationExposeService diagramMutationExposeService, DiagramMutationLabelService diagramMutationLabelService, DiagramMutationDiagramService diagramMutationDiagramService,
-            DiagramMutationCompartmentService diagramMutationCompartmentService) {
+            DiagramMutationCompartmentService diagramMutationCompartmentService, DiagramMutationToolService diagramMutationToolService) {
         this.diagramMutationDndService = Objects.requireNonNull(diagramMutationDndService);
         this.diagramMutationElementService = Objects.requireNonNull(diagramMutationElementService);
         this.diagramMutationExposeService = Objects.requireNonNull(diagramMutationExposeService);
         this.diagramMutationLabelService = Objects.requireNonNull(diagramMutationLabelService);
         this.diagramMutationDiagramService = Objects.requireNonNull(diagramMutationDiagramService);
         this.diagramMutationCompartmentService = Objects.requireNonNull(diagramMutationCompartmentService);
+        this.diagramMutationToolService = Objects.requireNonNull(diagramMutationToolService);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#becomeNestedUsage(Usage, Element)}.
+     */
+    public Usage becomeNestedUsage(Usage usage, Element newContainer) {
+        return this.diagramMutationToolService.becomeNestedUsage(usage, newContainer);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#becomeObjectiveRequirement(RequirementUsage, Element)}.
+     */
+    public RequirementUsage becomeObjectiveRequirement(RequirementUsage requirement, Element newContainer) {
+        return this.diagramMutationToolService.becomeObjectiveRequirement(requirement, newContainer);
     }
 
     /**
@@ -258,6 +295,34 @@ public class DiagramMutationAQLService {
     }
 
     /**
+     * {@link DiagramMutationToolService#moveToClosestContainingPackage(Usage)}.
+     */
+    public Element moveToClosestContainingPackage(Usage usage) {
+        return this.diagramMutationToolService.moveToClosestContainingPackage(usage);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnectSourceNestedActorEdge(Element, Element, Element)}.
+     */
+    public Element reconnectSourceNestedActorEdge(Element self, Element newSource, Element otherEnd) {
+        return this.diagramMutationToolService.reconnectSourceNestedActorEdge(self, newSource, otherEnd);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnectSourceNestedStakeholderEdge(Element, Element, Element)}.
+     */
+    public Element reconnectSourceNestedStakeholderEdge(Element self, Element newSource, Element otherEnd) {
+        return this.diagramMutationToolService.reconnectSourceNestedStakeholderEdge(self, newSource, otherEnd);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnectSourceNestedSubjectEdge(Element, Element, Element)}.
+     */
+    public Element reconnectSourceNestedSubjectEdge(Element self, Element newSource, Element otherEnd) {
+        return this.diagramMutationToolService.reconnectSourceNestedSubjectEdge(self, newSource, otherEnd);
+    }
+
+    /**
      * {@link DiagramMutationElementService#reconnectSatisfyRequirementSource(SatisfyRequirementUsage, Element)}.
      */
     public SatisfyRequirementUsage reconnectSatisfyRequirementSource(SatisfyRequirementUsage sru, Element newSource) {
@@ -269,6 +334,13 @@ public class DiagramMutationAQLService {
      */
     public SatisfyRequirementUsage reconnectSatisfyRequirementTarget(SatisfyRequirementUsage sru, Element newTarget) {
         return this.diagramMutationElementService.reconnectSatisfyRequirementTarget(sru, newTarget);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnnectSourceCompositionEdge(Element, Element, Element)}.
+     */
+    public Element reconnnectSourceCompositionEdge(Element self, Element newSource, Element otherEnd) {
+        return this.diagramMutationToolService.reconnnectSourceCompositionEdge(self, newSource, otherEnd);
     }
 
     /**
@@ -285,6 +357,27 @@ public class DiagramMutationAQLService {
     public Connector reconnectTarget(Connector connector, Feature newTarget, Node sourceNode, Node newTargetNode, IEditingContext editingContext,
             Diagram diagram) {
         return this.diagramMutationElementService.reconnectTarget(connector, newTarget, sourceNode, newTargetNode, editingContext, diagram);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnnectTargetAnnotatedEdge(Element, Element)}.
+     */
+    public Element reconnnectTargetAnnotatedEdge(Element self, Element newTarget) {
+        return this.diagramMutationToolService.reconnnectTargetAnnotatedEdge(self, newTarget);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnnectTargetCompositionEdge(Element, Element, Element, Element)}.
+     */
+    public Element reconnnectTargetCompositionEdge(Element self, Element oldTarget, Element newTarget, Element otherEnd) {
+        return this.diagramMutationToolService.reconnnectTargetCompositionEdge(self, oldTarget, newTarget, otherEnd);
+    }
+
+    /**
+     * {@link DiagramMutationToolService#reconnectTargetNestedActorEdge(Element)}.
+     */
+    public Element reconnectTargetNestedActorEdge(Element self) {
+        return this.diagramMutationToolService.reconnectTargetNestedActorEdge(self);
     }
 
     /**

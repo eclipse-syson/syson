@@ -24,11 +24,11 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
 import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.tree.services.aql.TreeQueryAQLService;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -106,7 +106,7 @@ public class OccurrenceUsageTimesliceNodeToolProvider implements INodeToolProvid
 
     private SelectionDialogTreeDescription getDialogTreeDescriptionDialog() {
         return this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(ServiceMethod.of0(ViewToolService::getPortionKindSelectionDialogElement).aqlSelf())
+                .elementsExpression(ServiceMethod.of0(TreeQueryAQLService::getPortionKindSelectionDialogElement).aqlSelf())
                 .isSelectableExpression(AQLConstants.AQL_TRUE)
                 .build();
     }
