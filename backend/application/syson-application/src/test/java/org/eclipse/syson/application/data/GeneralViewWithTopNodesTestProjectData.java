@@ -38,6 +38,8 @@ public class GeneralViewWithTopNodesTestProjectData {
 
         public static final String CONCERN_USAGE_ID = "0999b8c3-d37c-3644-a1d6-b9777a499d11";
 
+        public static final String CONSTRAINT_USAGE_ID = "22da3b61-32f6-346e-9deb-7dd1f64bfd69";
+
         public static final String DIAGRAM_ID = "fa8c8a8d-2813-404c-876f-c04e8b297134";
 
         public static final String ITEM_DEFINITION_ID = "df3542d9-6314-3da5-993c-a296f4042674";
