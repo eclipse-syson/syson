@@ -23,8 +23,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementVerificationMembership;
 
 /**
  * EContentAdapter for SysON. Allow to cache SysML elements by their type.
@@ -84,6 +85,6 @@ public class SysONEContentAdapter extends EContentAdapter {
      * @return whether the notifier is a membership that should be cached
      */
     private boolean shouldCacheMembership(Notifier notifier) {
-        return notifier instanceof FramedConcernMembership || notifier instanceof FeatureValue;
+        return (!(notifier instanceof RequirementVerificationMembership) && notifier instanceof RequirementConstraintMembership) || notifier instanceof FeatureValue;
     }
 }

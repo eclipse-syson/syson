@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.BooleanExpression;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Connector;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -31,6 +32,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -310,6 +312,23 @@ public class MetamodelQueryElementService {
     }
 
     /**
+     * Returns the requirement constraint target of {@link RequirementConstraintMembership}.
+     * <p>
+     *     It returns a constraint when the requirement constraint membership owned constraint is subsetted by another constraint.
+     * </p>
+     *
+     * @param requirementConstraintMembership
+     *               The requirement constraint membership
+     * @return the requirement constraint target of {@link RequirementConstraintMembership}
+     */
+    public ConstraintUsage getRequirementConstraintTarget(RequirementConstraintMembership requirementConstraintMembership) {
+        if (requirementConstraintMembership.getOwnedConstraint() != requirementConstraintMembership.getReferencedConstraint()) {
+            return requirementConstraintMembership.getReferencedConstraint();
+        }
+        return null;
+    }
+
+    /**
      * Get the {@link ResultExpressionMembership} contained inside a given {@link Namespace}.
      *
      * @param namespace
@@ -323,5 +342,4 @@ public class MetamodelQueryElementService {
                 .findFirst()
                 .orElse(null);
     }
-
 }

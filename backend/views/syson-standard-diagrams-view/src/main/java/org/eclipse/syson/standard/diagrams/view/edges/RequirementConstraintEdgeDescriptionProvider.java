@@ -41,15 +41,15 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the edge description representing the `frame` relationship between a {@link org.eclipse.syson.sysml.RequirementDefinition} or a {@link org.eclipse.syson.sysml.RequirementUsage} and a {@link org.eclipse.syson.sysml.ConcernUsage}.
+ * Used to create the edge description representing both the 'require' and 'assume' relationships between a {@link org.eclipse.syson.sysml.RequirementDefinition} or a {@link org.eclipse.syson.sysml.RequirementUsage} and a {@link org.eclipse.syson.sysml.ConstraintUsage}.
  *
  * @author gcoutable
  */
-public class FrameConcernEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class RequirementConstraintEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public FrameConcernEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public RequirementConstraintEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
@@ -68,17 +68,17 @@ public class FrameConcernEdgeDescriptionProvider extends AbstractEdgeDescription
 
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFramedConcernMembership());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementConstraintMembership());
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(LabelConstants.OPEN_QUOTE + LabelConstants.FRAME + LabelConstants.CLOSE_QUOTE)
+                .centerLabelExpression(this.getCenterLabelExpression())
                 .name(this.getName())
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))
                 .sourceExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getRelationship_OwningRelatedElement().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getFramedConcernTarget).aqlSelf())
+                .targetExpression(ServiceMethod.of0(ModelQueryAQLService::getRequirementConstraintTarget).aqlSelf())
                 .build();
     }
 
@@ -95,14 +95,13 @@ public class FrameConcernEdgeDescriptionProvider extends AbstractEdgeDescription
 
             edgeDescription.setPalette(this.createEdgePalette(cache));
         });
-
     }
 
     @Override
     protected DeleteTool getEdgeDeleteTool() {
         // Delete the referenced subsetting only.
         var referenceSubsetting = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".ownedConcern.ownedRelationship->select(rel | rel.oclIsKindOf(sysml::ReferenceSubsetting))->first()")
+                .expression(AQLConstants.AQL_SELF + ".ownedConstraint.ownedRelationship->select(rel | rel.oclIsKindOf(sysml::ReferenceSubsetting))->first()")
                 .children(this.viewBuilderHelper.newChangeContext()
                         .expression(ServiceMethod.of0(DeleteService::deleteFromModel).aqlSelf())
                         .build()
@@ -114,8 +113,12 @@ public class FrameConcernEdgeDescriptionProvider extends AbstractEdgeDescription
                 .build();
     }
 
+    private String getCenterLabelExpression() {
+        return AQLConstants.AQL + "if self.kind = sysml::RequirementConstraintKind.getEEnumLiteral('requirement').instance then '" + LabelConstants.OPEN_QUOTE + LabelConstants.REQUIRE + LabelConstants.CLOSE_QUOTE + "' else '" + LabelConstants.OPEN_QUOTE + LabelConstants.ASSUME + LabelConstants.CLOSE_QUOTE + "' endif";
+    }
+
     private String getName() {
-        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getFramedConcernMembership());
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getRequirementConstraintMembership());
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -138,6 +141,6 @@ public class FrameConcernEdgeDescriptionProvider extends AbstractEdgeDescription
     }
 
     private List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getConcernUsage());
+        return new DescriptionFinder(this.descriptionNameGenerator).getConnectableNodeDescriptions(cache.getNodeDescriptions(), SysmlPackage.eINSTANCE.getConstraintUsage());
     }
 }

@@ -97,6 +97,8 @@ public class SDVDiagramDescriptionTests {
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage()).negate())
                 // FramedConcernMembership edge has a label (frame) but it is a constant and should not be modifiable
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getFramedConcernMembership()).negate())
+                // RequirementConstraintMembership edges have a label (assume or require) but they are a constant and should not be modifiable
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getRequirementConstraintMembership()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }
