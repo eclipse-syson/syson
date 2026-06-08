@@ -34,9 +34,14 @@ image::release-notes-frames-compartment.png[frames compartment displaying concer
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
 
 ** Add the support for _assume_ and _require_ graphical edges.
-These edges are displayed using the tool to create a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes, when another `ConstraintUsage` is selected.
+These graphical edges are displayed using the tool to create a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes, when another `ConstraintUsage` is selected.
+These graphical edges can also be created using the _New Assume Constraint_ or _New Require Constraint_ graphical edge tools.
 +
 image::release-notes-assume-and-require-edges.png[assume and require edge between a RequirementDefinition and two different ConstraintUsage, width=60%,height=60%]
+
+** Add the _New Assume Constraint_ or _New Require Constraint_ edge tools to create _assume_ and _require_ graphical edges.
++
+image::release-notes-assume-and-require-edge-tools.png[list available edge tools containing the two new tools, between a RequirementUsage and a ConstraintUsage, width=60%,height=60%]
 
 * In the _Explorer_ view:
 

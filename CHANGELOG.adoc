@@ -55,6 +55,7 @@ This is currently supported on `Features` (e.g. `Attribute`), `Constraints` and 
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
 - https://github.com/eclipse-syson/syson/issues/2250[#2250] [diagrams] Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2254[#2254] [diagrams] Add the support for _assume_ and _require_ graphical edges.
+- https://github.com/eclipse-syson/syson/issues/2260[#2260] [diagrams] Add the _New Assume Constraint_ or _New Require Constraint_ edge tools to create _assume_ and _require_ graphical edges.
 
 == v2026.5.0
 

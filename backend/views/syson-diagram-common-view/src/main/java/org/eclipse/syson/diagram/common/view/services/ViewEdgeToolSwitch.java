@@ -258,6 +258,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseRequirementDefinition(RequirementDefinition object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
+        edgeTools.add(this.edgeToolService.createAssumeConstraintEdgeTool());
+        edgeTools.add(this.edgeToolService.createRequireConstraintEdgeTool());
         edgeTools.addAll(this.caseDefinition(object));
         return edgeTools;
     }
@@ -277,6 +279,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 .toList();
         edgeTools.add(this.edgeToolService.createBecomeObjectiveRequirementEdgeTool(objectiveTargets));
         edgeTools.add(this.edgeToolService.createFramedConcernEdgeTool());
+        edgeTools.add(this.edgeToolService.createAssumeConstraintEdgeTool());
+        edgeTools.add(this.edgeToolService.createRequireConstraintEdgeTool());
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }

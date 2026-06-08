@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.diagram.services.aql.DiagramQueryAQLService;
 import org.eclipse.syson.model.services.aql.ModelMutationAQLService;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
@@ -679,6 +680,58 @@ public class ViewEdgeToolService {
                 .name(this.nameGenerator.getCreationToolName("New Framed ", SysmlPackage.eINSTANCE.getConcernUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getFramedConcernMembership().getName() + SVG)
                 .body(body.build())
+                .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createAssumeConstraintEdgeTool() {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of2(ModelMutationAQLService::createConstraint).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, "assumptionConstraint"));
+
+        var targetNodeDescriptions = new ArrayList<NodeDescription>();
+        var constraintUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> constraintUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
+        String requirementConstraintKindType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementConstraintKind());
+        var letRequirementConstraintLiteral = this.viewBuilderHelper.newLet()
+                .variableName("assumptionConstraint")
+                .valueExpression(AQLConstants.AQL + requirementConstraintKindType + ".getEEnumLiteral('" + RequirementConstraintKind.ASSUMPTION.getLiteral() + "').instance")
+                .children(body.build());
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName("New Assume ", SysmlPackage.eINSTANCE.getConstraintUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getRequirementConstraintMembership().getName() + SVG)
+                .body(letRequirementConstraintLiteral.build())
+                .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    public EdgeTool createRequireConstraintEdgeTool() {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of2(ModelMutationAQLService::createConstraint).aql(EdgeDescription.SEMANTIC_EDGE_SOURCE, EdgeDescription.SEMANTIC_EDGE_TARGET, "requirementConstraint"));
+
+        var targetNodeDescriptions = new ArrayList<NodeDescription>();
+        var constraintUsageNodeDescriptionName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintUsage());
+        this.allNodeDescriptions.stream()
+                .filter(nd -> constraintUsageNodeDescriptionName.equals(nd.getName()))
+                .findFirst()
+                .ifPresent(targetNodeDescriptions::add);
+
+        String requirementConstraintKindType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getRequirementConstraintKind());
+        var letRequirementConstraintLiteral = this.viewBuilderHelper.newLet()
+                .variableName("requirementConstraint")
+                .valueExpression(AQLConstants.AQL + requirementConstraintKindType + ".getEEnumLiteral('" + RequirementConstraintKind.REQUIREMENT.getLiteral() + "').instance")
+                .children(body.build());
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName("New Require ", SysmlPackage.eINSTANCE.getConstraintUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getRequirementConstraintMembership().getName() + SVG)
+                .body(letRequirementConstraintLiteral.build())
                 .targetElementDescriptions(targetNodeDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
