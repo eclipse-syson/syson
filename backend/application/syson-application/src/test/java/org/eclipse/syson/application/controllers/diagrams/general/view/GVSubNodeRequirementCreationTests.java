@@ -422,12 +422,12 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         Consumer<Object> diagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(6)
-                    .hasNewEdgeCount(2)
+                    .hasNewEdgeCount(3)
                     .check(diagram.get(), newDiagram);
 
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(0)
-                    .hasNewEdgeCount(0)
+                    .hasNewEdgeCount(1)
                     .check(diagram.get(), newDiagram, true);
 
             String listConstraintNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference) + compartmentItemSuffix;

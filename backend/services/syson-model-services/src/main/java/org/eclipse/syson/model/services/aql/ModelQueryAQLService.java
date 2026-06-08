@@ -17,9 +17,11 @@ import java.util.List;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FramedConcernMembership;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 
 /**
@@ -76,5 +78,12 @@ public class ModelQueryAQLService {
      */
     public ConcernUsage getFramedConcernTarget(FramedConcernMembership framedConcernMembership) {
         return this.metamodelQueryElementService.getFramedConcernTarget(framedConcernMembership);
+    }
+
+    /**
+     * {@link MetamodelQueryElementService#getRequirementConstraintTarget(RequirementConstraintMembership)}.
+     */
+    public ConstraintUsage getRequirementConstraintTarget(RequirementConstraintMembership requirementConstraintMembership) {
+        return this.metamodelQueryElementService.getRequirementConstraintTarget(requirementConstraintMembership);
     }
 }

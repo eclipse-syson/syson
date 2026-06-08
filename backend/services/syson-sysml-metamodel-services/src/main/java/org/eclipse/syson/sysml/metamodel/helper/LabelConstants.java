@@ -23,6 +23,8 @@ public class LabelConstants {
 
     public static final String ABSTRACT = SysMLv2Keywords.ABSTRACT;
 
+    public static final String ASSUME = SysMLv2Keywords.ASSUME;
+
     public static final String CLOSE_BRACKET = SysMLv2Keywords.RIGHT_BRACKET;
 
     public static final String CLOSE_PARENTHESIS = SysMLv2Keywords.RIGHT_PAREN;
@@ -76,6 +78,8 @@ public class LabelConstants {
     public static final String REF = SysMLv2Keywords.REF;
 
     public static final String REFERENCES = SysMLv2Keywords.DOUBLE_COLON_SPECIALIZES;
+
+    public static final String REQUIRE = SysMLv2Keywords.REQUIRE;
 
     public static final String SATISFY = SysMLv2Keywords.SATISFY;
 
