@@ -148,7 +148,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
                     entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()));
                 }
                 entries.add(new SingleClickTreeItemContextMenuEntry(NEW_OBJECTS_FROM_TEXT_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
-                if (this.canHaveNewExpression(editingContext, treeItem.getId(), object)) {
+                if (this.canHaveNewExpression(editingContext, object)) {
                     entries.add(new SingleClickTreeItemContextMenuEntry(CREATE_EXPRESSION_MENU_ENTRY_CONTRIBUTION_ID, "", List.of(), false, List.of()));
                 }
 
@@ -178,7 +178,7 @@ public class SysONExplorerTreeItemContextMenuEntryProvider implements ITreeItemC
         return result;
     }
 
-    private boolean canHaveNewExpression(IEMFEditingContext editingContext, String treeItemId, EObject object) {
+    private boolean canHaveNewExpression(IEMFEditingContext editingContext, EObject object) {
         return !this.readOnlyObjectPredicate.test(object) && object instanceof Element element && this.metamodelQueryElementService.canContainExpressionDefinition(element)
                 && !this.metamodelQueryElementService.hasSingleExpressionDefinition(element);
     }

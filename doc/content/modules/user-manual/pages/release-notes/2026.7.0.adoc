@@ -100,6 +100,16 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 ** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
 Before, the selection dialog allowed choosing between all _timeslice_ and _snapshot_ types.
 Now, the choice is restricted to the _timeslice_ or _snapshot_ type that matches the graphical node type on which the tool is applied.
+** It is now possible to create, edit and delete _Expressions_ using their textual syntax from the a diagram.
+To _create_ an expression, invoke the _New expression_ action in the _Expression_ palette section of a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+The same modal as described above when invoked from the _Explorer_ or _Details_ view will open where you can enter the textual representation of the expression to create.
+Editing and deleting an _Expression_ is also available on compatible diagram elements with the corresponding actions in their _Expressions_ palette section.
+The behavior is the same when invoking the equivalen action from the _Explorer_ or _Details_ view.
++
+image::expression-palette-section.png[Expression palette tool section on an `Attribute` in a diagram, width=80%]
+** In an _action flow_ compartment, `Succession` edges which have a guard now display the guard condition `Expression` as a _begin label_:
++
+image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=80%]
 
 == Technical details
 

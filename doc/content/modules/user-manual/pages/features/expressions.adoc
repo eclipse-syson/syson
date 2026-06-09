@@ -25,7 +25,9 @@ image::expression-details.png[Expression value displayed in the _Details_ veiw, 
 
 == Creation
 
-To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+To _create_ an expression, invoke the _New expression_ action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+In the {explorer} view, this is available in the element's context menu.
+In a _Diagram_, it is avilable in the _Expression_ section of the element's palette (if applicable).
 
 A modal will open where you can enter the textual representation of the expression to create.
 Click on the _Update_ button to validate.
@@ -39,7 +41,10 @@ image::edit-expression-modal-error.png[Edit expression modal showing an error me
 
 == Edition
 
-To edit an already existing expression, invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element.
+To edit an already existing expression, invoke the _Edit expression_ action directly on the existing expression or on its parent element.
+In the {explorer} view, this is available in the element's context menu.
+In a _Diagram_, it is avilable in the _Expression_ section of the element's palette (if applicable).
+
 The same modal as for expression creation will open, but with the current textual representation of the expression pre-filled.
 
 Edit the textual representation of the expression as required, and click on the _Update_ button or hit _Ctrl-RET_ to validate.

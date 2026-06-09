@@ -138,6 +138,13 @@ public class DiagramQueryAQLService {
     }
 
     /**
+     * {@link DiagramQueryLabelService#getBeginEdgeLabel(Element)}.
+     */
+    public String getBeginEdgeLabel(Element element) {
+        return this.diagramQueryLabelService.getBeginEdgeLabel(element);
+    }
+
+    /**
      * {@link DiagramQueryLabelService#getEdgeLabel(Element)}.
      */
     public String getEdgeLabel(Element element) {
