@@ -39,6 +39,7 @@ Before, the selection dialog option with selection allowed choosing between all 
 Now, the choice is restricted to the _timeslice/snapshot_ type that match the graphical node type on which the tool is applied.
 - https://github.com/eclipse-syson/syson/issues/2119[#2119] [details] Display expressions values in the _Details_ view and allow to edit them from there.
 - https://github.com/eclipse-syson/syson/issues/2251[#2251] [explorer] Allow expression-related operations on their parent element
+- https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions
 
 === New features
 

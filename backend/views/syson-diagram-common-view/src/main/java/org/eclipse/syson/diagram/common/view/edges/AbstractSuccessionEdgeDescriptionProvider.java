@@ -78,6 +78,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
                 .domainType(domainType)
                 .preconditionExpression("aql:graphicalEdgeSource.isInSameGraphicalContainer(graphicalEdgeTarget,cache) and not self.getOwningElement().oclIsKindOf(sysml::TransitionUsage)")
                 .isDomainBasedEdge(true)
+                .beginLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getBeginEdgeLabel).aqlSelf())
                 .centerLabelExpression(ServiceMethod.of0(DiagramQueryAQLService::getEdgeLabel).aqlSelf())
                 .name(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))
                 .semanticCandidatesExpression(ServiceMethod.of1(UtilService::getAllReachable).aqlSelf(domainType))

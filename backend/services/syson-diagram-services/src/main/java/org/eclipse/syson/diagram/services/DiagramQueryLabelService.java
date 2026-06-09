@@ -58,6 +58,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLElementSerializer;
 import org.eclipse.syson.sysml.metamodel.services.textual.SysMLSerializingOptions;
 import org.eclipse.syson.sysml.metamodel.services.textual.utils.Appender;
@@ -92,6 +93,8 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
     private static final String EFFECT_ACTION_SEPARATOR = ", ";
 
     private final Logger logger = LoggerFactory.getLogger(DiagramQueryLabelService.class);
+
+    private final MetamodelQueryElementService metamodelQueryElementService = new MetamodelQueryElementService();
 
     @Override
     public String getIdentificationLabel(Element element) {
@@ -506,6 +509,22 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
             label.append(this.getValueStringRepresentation(usage, directEditInput));
         }
         return label.toString();
+    }
+
+    /**
+     * The default begin label for edges.
+     *
+     * @param element
+     *            the element to get the edge label from
+     * @return the begin edge label
+     */
+    public String getBeginEdgeLabel(Element element) {
+        var optionalExpression = this.metamodelQueryElementService.findSingleExpressionDefinition(element);
+        if (optionalExpression.isPresent()) {
+            var expression = optionalExpression.get();
+            return LabelConstants.OPEN_BRACKET + this.metamodelQueryElementService.getExpressionTextualRepresentation(expression) + LabelConstants.CLOSE_BRACKET;
+        }
+        return null;
     }
 
     /**

@@ -33,6 +33,10 @@ import {
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
 import {
+  PaletteToolOverriddenContributionProps,
+  paletteToolOverrideExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
+import {
   GQLTreeItemContextMenuEntry,
   treeItemContextMenuEntryOverrideExtensionPoint,
   TreeItemContextMenuOverrideContribution,
@@ -50,9 +54,12 @@ import { SysMLNoteNodePaletteAppearanceSection } from '../../nodes/note/SysMLNot
 import { SysMLPackageNodePaletteAppearanceSection } from '../../nodes/package/SysMLPackageNodePaletteAppearanceSection';
 import { sysMLNodesStyleDocumentTransform } from '../../nodes/SysMLNodesDocumentTransform';
 import { SysMLViewFrameNodePaletteAppearanceSection } from '../../nodes/view_frame/SysMLViewFrameNodePaletteAppearanceSection';
+import { DeleteExpressionDiagramToolOverriddenContribution } from '../expressions/DeleteExpressionDiagramToolOverriddenContribution';
 import { DeleteSysMLExpressionMenuContribution } from '../expressions/DeleteSysMLExpressionMenuContribution';
+import { EditExpressionDiagramToolOverriddenContribution } from '../expressions/EditExpressionDiagramToolOverriddenContribution';
 import { EditSysMLExpressionMenuContribution } from '../expressions/EditSysMLExpressionMenuContribution';
 import { ExpressionPropertySection } from '../expressions/ExpressionPropertySection';
+import { NewExpressionDiagramToolOverriddenContribution } from '../expressions/NewExpressionDiagramToolOverriddenContribution';
 import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
@@ -239,6 +246,40 @@ sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
       },
     },
   ],
+});
+
+// FIXME: This type should be exported by @eclipse-sirius/sirius-components-palette
+interface GQLTool {
+  id: string;
+  label: string;
+  iconURL: string[];
+  __typename: string;
+}
+
+const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
+  {
+    canHandle: (tool: GQLTool) => {
+      return tool.id === 'tool_new_expression';
+    },
+    component: NewExpressionDiagramToolOverriddenContribution,
+  },
+  {
+    canHandle: (tool: GQLTool) => {
+      return tool.id === 'tool_edit_expression';
+    },
+    component: EditExpressionDiagramToolOverriddenContribution,
+  },
+  {
+    canHandle: (tool: GQLTool) => {
+      return tool.id === 'tool_delete_expression';
+    },
+    component: DeleteExpressionDiagramToolOverriddenContribution,
+  },
+];
+
+sysONExtensionRegistry.putData<PaletteToolOverriddenContributionProps[]>(paletteToolOverrideExtensionPoint, {
+  identifier: `syson_${paletteToolOverrideExtensionPoint.identifier}`,
+  data: diagramPaletteToolOverriddenContributions,
 });
 
 export { sysONExtensionRegistry };
