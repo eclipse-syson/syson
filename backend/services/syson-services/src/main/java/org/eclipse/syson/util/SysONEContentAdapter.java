@@ -58,7 +58,7 @@ public class SysONEContentAdapter extends EContentAdapter {
 
     @Override
     protected void removeAdapter(Notifier notifier) {
-        if (notifier instanceof Element element && (!(notifier instanceof Membership) || notifier instanceof FeatureValue)) {
+        if (notifier instanceof Element element && (!(notifier instanceof Membership) || this.shouldCacheMembership(notifier))) {
             EClass eClass = element.eClass();
             List<EObject> value;
             if (this.cache.containsKey(eClass)) {
