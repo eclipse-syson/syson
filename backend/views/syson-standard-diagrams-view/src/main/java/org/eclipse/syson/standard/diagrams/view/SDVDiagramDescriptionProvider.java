@@ -700,6 +700,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
     private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForActionParameters(IColorProvider colorProvider) {
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
         compartmentNodeDescriptionProviders.add(new ActionDefinitionParametersCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders
                 .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), colorProvider,
                 this.getDescriptionNameGenerator()));
@@ -707,6 +708,7 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         compartmentNodeDescriptionProviders
                 .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), colorProvider,
                         this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedReference(), colorProvider, this.getDescriptionNameGenerator()));
         return compartmentNodeDescriptionProviders;
     }
 
