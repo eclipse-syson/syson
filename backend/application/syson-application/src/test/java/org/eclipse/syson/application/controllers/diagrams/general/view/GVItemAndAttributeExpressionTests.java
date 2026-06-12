@@ -15,14 +15,18 @@ package org.eclipse.syson.application.controllers.diagrams.general.view;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
@@ -38,9 +42,17 @@ import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolRunn
 import org.eclipse.syson.application.controllers.diagrams.testers.DeleteToolTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditInitialLabelTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.DirectEditTester;
+import org.eclipse.syson.application.controllers.expressions.graphql.CreateExpressionMutationRunner;
+import org.eclipse.syson.application.controllers.expressions.graphql.DeleteExpressionMutationRunner;
+import org.eclipse.syson.application.controllers.expressions.graphql.EditExpressionMutationRunner;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
+import org.eclipse.syson.application.expressions.dto.DeleteExpressionInput;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.dto.CreateExpressionInput;
+import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
+import org.eclipse.syson.sysml.dto.EditExpressionInput;
+import org.eclipse.syson.sysml.dto.EditExpressionSuccessPayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,6 +69,7 @@ import reactor.test.StepVerifier;
  * @author Arthur Daussy
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests {
 
@@ -77,6 +90,15 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
     @Autowired
     private DeleteToolRunner deleteFromDiagramRunner;
+
+    @Autowired
+    private CreateExpressionMutationRunner createExpressionMutationRunner;
+
+    @Autowired
+    private EditExpressionMutationRunner editExpressionMutationRunner;
+
+    @Autowired
+    private DeleteExpressionMutationRunner deleteExpressionMutationRunner;
 
     private DirectEditInitialLabelTester directEditInitialLabelTester;
 
@@ -132,8 +154,9 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         Runnable directEditInitialLabelCheck = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
                 "x1");
 
-        Runnable directEditInsideLabelCheck = this.directEditTester.directEditInsideLabel(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID, "x1 = x2 + x3 + 4.5");
-        Consumer<Object> directEditInsideLabelDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable createAttributeValueExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, GeneralViewItemAndAttributeProjectData.SemanticIds.P1_1_X1_ID,
+                "x2 + x3 + 4.5");
+        Consumer<Object> createAttributeValueExpressionDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
 
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode().getInsideLabel();
@@ -142,11 +165,12 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
         // Using qualified name but keep pointing to attributes in P1_1
         Runnable directEditInitialLabelCheck2 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = x2 + x3 + 4.5");
+                "x1");
 
-        Runnable directEditInsideLabelDiagramCheck2 = this.directEditTester.directEditInsideLabel(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = RootPackage::p1::p1_1::x3 - RootPackage::p1::p1_1::x2 - 4.5"); // We use simple name for label
-        Consumer<Object> directEditInsideLabelDiagramCheck3 = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable editExpression = this.editExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                () -> GeneralViewItemAndAttributeProjectData.SemanticIds.P1_1_X1_ID,
+                "RootPackage::p1::p1_1::x3 - RootPackage::p1::p1_1::x2 - 4.5"); // We use simple name for label
+        Consumer<Object> editExpressionLabelDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
 
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode().getInsideLabel();
@@ -155,11 +179,11 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
 
         // Now change the target to attributes defined in P1
         Runnable directEditInitialLabelCheck3 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = x3 - x2 - 4.5");
+                "x1");
 
-        Runnable directEditInsideLabelCheck4 = this.directEditTester.directEditInsideLabel(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = RootPackage::p1::x3 / RootPackage::p1::x3 * 10");
-        Consumer<Object> directEditInsideLabelDiagramCheck4 = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable editExpression2 = this.editExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, () -> GeneralViewItemAndAttributeProjectData.SemanticIds.P1_1_X1_ID,
+                "RootPackage::p1::x3 / RootPackage::p1::x3 * 10");
+        Consumer<Object> editExpressionLabelDiagramCheck2 = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
 
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode().getInsideLabel();
@@ -169,19 +193,19 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         // Here the direct edit input needs to explicitly give the qualified name of x3 since the default x3 is the one
         // located in p1_1 whereas we are targeting RootPackage::p1::x3
         Runnable directEditInitialLabelCheck5 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "x1 = RootPackage::p1::x3 / RootPackage::p1::x3 * 10");
+                "x1");
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(directEditInitialLabelCheck)
-                .then(directEditInsideLabelCheck)
-                .consumeNextWith(directEditInsideLabelDiagramCheck)
+                .then(createAttributeValueExpression)
+                .consumeNextWith(createAttributeValueExpressionDiagramCheck)
                 .then(directEditInitialLabelCheck2)
-                .then(directEditInsideLabelDiagramCheck2)
-                .consumeNextWith(directEditInsideLabelDiagramCheck3)
+                .then(editExpression)
+                .consumeNextWith(editExpressionLabelDiagramCheck)
                 .then(directEditInitialLabelCheck3)
-                .then(directEditInsideLabelCheck4)
-                .consumeNextWith(directEditInsideLabelDiagramCheck4)
+                .then(editExpression2)
+                .consumeNextWith(editExpressionLabelDiagramCheck2)
                 .then(directEditInitialLabelCheck5)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -209,18 +233,20 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
             OutsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID).getNode().getOutsideLabels().get(0);
             // Bordered node do not display the feature value in their label
             assertThat(newLabel.text()).isEqualTo("a2_1");
+            // But the item in the compartment does
+            InsideLabel itemLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID).getNode().getInsideLabel();
+            assertThat(itemLabel.getText()).isEqualTo("in a2_1 = a1.a1_2");
         });
 
-        // But the item in the compartment does
+        // Direct edit initial text does not include the "= ..." part
         Runnable directEditInitialLabelCheck2 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1 = a1.a1_2");
+                "in a2_1");
 
         // Simple test on the icon and label node representing a2_1
-        Runnable directEditInsideLabelCheck2 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1 = a1.a1_3.i2_1.i3_1");
-        Consumer<Object> directEditInsideLabelDiagramCheck2 = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable editExpression = this.editExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, () -> GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID,
+                "a1.a1_3.i2_1.i3_1");
+        Consumer<Object> editExpressionDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID).getNode().getInsideLabel();
             assertThat(newLabel.getText()).isEqualTo("in a2_1 = a1.a1_3.i2_1.i3_1");
@@ -232,8 +258,8 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                 .then(directEditOutsideLabelCheck1)
                 .consumeNextWith(directEditOutsideLabelDiagramCheck1)
                 .then(directEditInitialLabelCheck2)
-                .then(directEditInsideLabelCheck2)
-                .consumeNextWith(directEditInsideLabelDiagramCheck2)
+                .then(editExpression)
+                .consumeNextWith(editExpressionDiagramCheck)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -252,48 +278,48 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
                 "x1");
 
         // Inside P1 there is no import so we need qualified name
-        Runnable directEditInsideLabelCheck1 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_X1_ID,
-                "a2_1 = 45 [SI::kg]");
-        Consumer<Object> directEditInsideLabelDiagramCheck1 = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.SemanticIds.P1_X1_ID,
+                "45 [SI::kg]");
+        Consumer<Object> createExpressionDiagramCheck = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_X1_ID).getNode().getInsideLabel();
-            assertThat(newLabel.getText()).isEqualTo("a2_1 = 45 [kg]"); // Use short name for displaying bracket expression
+            assertThat(newLabel.getText()).isEqualTo("x1 = 45 [kg]"); // Use short name for displaying bracket
+                                                                      // expression
         });
 
         Runnable directEditInitialLabelCheck2 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_X1_ID,
-                "a2_1 = 45 [kg]");
+                "x1");
 
         // Inside P1_1 there is an import of S1::* so no need to use the qualified name
-        // Test using qualified name
+
         Runnable directEditInitialLabelCheck3 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
                 "x1");
 
-        // Inside P1 there is no import so we need qualified name
-        Runnable directEditInsideLabelCheck3 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "a2_1 = 45 [kg]");
-        Consumer<Object> directEditInsideLabelDiagramCheck3 = assertRefreshedDiagramThat(newDiagram -> {
+        Runnable createExpression2 = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.SemanticIds.P1_1_X1_ID,
+                "45 [kg]");
+        Consumer<Object> createExpressionLabelDiagramCheck2 = assertRefreshedDiagramThat(newDiagram -> {
             DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
             InsideLabel newLabel = diagramNavigator.nodeWithId(GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID).getNode().getInsideLabel();
-            assertThat(newLabel.getText()).isEqualTo("a2_1 = 45 [kg]");
+            assertThat(newLabel.getText()).isEqualTo("x1 = 45 [kg]");
         });
 
         Runnable directEditInitialLabelCheck4 = this.directEditInitialLabelTester.checkDirectEditInitialLabelOnNode(diagram,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.P1_1_X1_ID,
-                "a2_1 = 45 [kg]");
+                "x1");
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(directEditInitialLabelCheck1)
-                .then(directEditInsideLabelCheck1)
-                .consumeNextWith(directEditInsideLabelDiagramCheck1)
+                .then(createExpression)
+                .consumeNextWith(createExpressionDiagramCheck)
                 .then(directEditInitialLabelCheck2)
                 .then(directEditInitialLabelCheck3)
-                .then(directEditInsideLabelCheck3)
-                .consumeNextWith(directEditInsideLabelDiagramCheck3)
+                .then(createExpression2)
+                .consumeNextWith(createExpressionLabelDiagramCheck2)
                 .then(directEditInitialLabelCheck4)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -309,33 +335,32 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
         // Create an edge using direct edit
-        Runnable directEditInsideLabelCheck1 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1 = a1.a1_1");
+        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID,
+                "a1.a1_1");
         Consumer<Object> diagramCheck1 = this.buildEdgeChecker(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1 = a1.a1_1",
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID, GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_1_BORDERED_NODE_ID);
 
         // Change the edge to a new target
-        Runnable directEditInsideLabelCheck2 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1 = a1.a1_2");
+        Runnable editExpression1 = this.editExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                () -> GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID,
+                "a1.a1_2");
         Consumer<Object> diagramCheck2 = this.buildEdgeChecker(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1 = a1.a1_2",
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID, GeneralViewItemAndAttributeProjectData.GraphicalIds.A1_2_BORDERED_NODE_ID);
 
         // Remove edge
-        Runnable directEditInsideLabelCheck3 = this.directEditTester.directEditInsideLabel(diagram,
-                GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID,
-                "in a2_1 =");
+        Runnable deleteExpression = this.deleteExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
+                GeneralViewItemAndAttributeProjectData.SemanticIds.A2_1_ID);
         Consumer<Object> diagramCheck3 = this.buildNoEdgeStartingFromChecker(diagram, GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_ICON_AND_LABEL_ID, "in a2_1",
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.A2_1_BORDERED_NODE_ID);
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(directEditInsideLabelCheck1)
+                .then(createExpression)
                 .consumeNextWith(diagramCheck1)
-                .then(directEditInsideLabelCheck2)
+                .then(editExpression1)
                 .consumeNextWith(diagramCheck2)
-                .then(directEditInsideLabelCheck3)
+                .then(deleteExpression)
                 .consumeNextWith(diagramCheck3)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -405,4 +430,32 @@ public class GVItemAndAttributeExpressionTests extends AbstractIntegrationTests 
             assertThat(newEdges).hasSize(0);
         });
     }
+
+    private Runnable createExpression(String editingContextId, String parentElementId, String expressionContent) {
+        return () -> {
+            var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId, expressionContent);
+            var result = this.createExpressionMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.createExpression.__typename");
+            assertThat(typename).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
+        };
+    }
+
+    private Runnable editExpression(String editingContextId, Supplier<String> elementId, String expressionContent) {
+        return () -> {
+            var input = new EditExpressionInput(UUID.randomUUID(), editingContextId, elementId.get(), expressionContent);
+            var result = this.editExpressionMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.editExpression.__typename");
+            assertThat(typename).isEqualTo(EditExpressionSuccessPayload.class.getSimpleName());
+        };
+    }
+
+    private Runnable deleteExpression(String editingContextId, String parentElementId) {
+        return () -> {
+            var input = new DeleteExpressionInput(UUID.randomUUID(), editingContextId, parentElementId);
+            var result = this.deleteExpressionMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.deleteExpression.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+    }
+
 }

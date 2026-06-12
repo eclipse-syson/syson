@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.syson.util;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.FeatureMapUtil;
 
 /**
  * SysON specialization of {@link EcoreUtil} class coming from org.eclipse.emf.ecore. The specialization allows to have
@@ -91,26 +89,6 @@ public class SysONEcoreUtil extends EcoreUtil {
         // Disconnect all cross resource objects.
         for (EObject crossResourceEObject : crossResourceEObjects) {
             EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(), crossResourceEObject);
-        }
-    }
-
-    /**
-     * Removes the values from the setting.
-     *
-     * @param setting
-     *            the setting holding the value.
-     * @param values
-     *            the values to remove.
-     */
-    public static void removeAll(EStructuralFeature.Setting setting, Collection<?> values) {
-        EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
-        if (eStructuralFeature != null && !eStructuralFeature.isDerived()) {
-            if (FeatureMapUtil.isMany(setting.getEObject(), eStructuralFeature)) {
-                ((List<?>) setting.get(false)).removeAll(values);
-            } else {
-                // The feature is assumed to hold the value.
-                setting.unset();
-            }
         }
     }
 }

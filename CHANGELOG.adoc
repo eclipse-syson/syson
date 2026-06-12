@@ -12,6 +12,7 @@
 - [services] All services that were previously available in `org.eclipse.syson.sysml.textual` package of `syson-sysml-metamodel` module have been moved to `org.eclipse.syson.sysml.metamodel.services.textual` package of `syson-sysml-metamodel-services` module.
 - [services] All services that were previously available in `org.eclipse.syson.sysml.textual.utils` package of `syson-sysml-metamodel` module have been moved to `org.eclipse.syson.sysml.metamodel.services.textual.utils` package of `syson-sysml-metamodel-services` module.
 - [services] All services that were previously available in `org.eclipse.syson.sysml.util` package of `syson-sysml-metamodel` module have been moved to `org.eclipse.syson.sysml.metamodel.util` package of `syson-sysml-metamodel-services` module.
+- [services] All methods from `org.eclipse.syson.util.AQLUtils` except `aqlString` and `aqlSequence` have been removed.
 - [frontend] The `variables.css` file, which used to define custom colors an typography settings has been removed.
 It has long been unused by Sirius Web itself (since the transition to MUI).
 
@@ -39,8 +40,10 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 Before, the selection dialog option with selection allowed choosing between all _timeslice/snapshot_ types.
 Now, the choice is restricted to the _timeslice/snapshot_ type that match the graphical node type on which the tool is applied.
 - https://github.com/eclipse-syson/syson/issues/2119[#2119] [details] Display expressions values in the _Details_ view and allow to edit them from there.
-- https://github.com/eclipse-syson/syson/issues/2251[#2251] [explorer] Allow expression-related operations on their parent element
-- https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions
+- https://github.com/eclipse-syson/syson/issues/2251[#2251] [explorer] Allow expression-related operations on their parent element.
+- https://github.com/eclipse-syson/syson/issues/2270[#2270] [diagram] Add dedicated tools to diagram elements palette to create/edit/delete expressions.
+- https://github.com/eclipse-syson/syson/issues/2269[#2269] [diagram] When using direct edit on feature elements which have a value expression (e.g. an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value, and will be ignored if supplied in the new text value.
+Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
 
 === New features
 
