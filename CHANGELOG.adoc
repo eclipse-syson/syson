@@ -17,7 +17,9 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 
 === Dependency update
 
-- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.5.1]
+- [releng] Update to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2026.5.2].
+- [releng] Update to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.7[Spring Boot 4.0.7].
+- [releng] Update to https://github.com/xyflow/xyflow/releases/tag/@xyflow/react@12.10.2[xyflow 12.10.2].
 - [releng] Update to https://github.com/vitejs/vite/releases/tag/v8.0.14[Vite 8.0.14] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.0.2[`@vitejs/plugin-react` 6.0.2].
 - [releng] Switch to `@fontsource/roboto` v5.2.10.
 
