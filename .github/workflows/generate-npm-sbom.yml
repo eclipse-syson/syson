@@ -82,7 +82,7 @@ jobs:
           ref="${GITHUB_REF}"
           input="${INPUTS_VERSION}"
 
-          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/bom.json)"
+          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/full-bom.json)"
 
           if [[ "$event" == "workflow_run" ]] && [[ "$ref" == refs/heads/* ]] && [[ ! "$event_workflow_run_head_branch" =~ ^v ]]; then
             VERSION="${VERSION}@dev"
