@@ -35,6 +35,7 @@ import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
@@ -43,7 +44,10 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.FlowEnd;
+import org.eclipse.syson.sysml.FlowUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -889,6 +893,42 @@ public class SysMLElementSerializerTest {
         assertEquals(expected, content);
     }
 
+    private EndFeatureMembership createConnectionEndFeatureMembership(Feature referencedFeature) {
+        EndFeatureMembership endFeatureMembership = this.fact.createEndFeatureMembership();
+        PortUsage endFeature = this.fact.createPortUsage();
+        endFeature.setIsEnd(true);
+        endFeatureMembership.getOwnedRelatedElement().add(endFeature);
+        endFeatureMembership.setMemberElement(endFeature);
+        this.builder.addReferenceSubsetting(endFeature, referencedFeature);
+        return endFeatureMembership;
+    }
+
+    private EndFeatureMembership createUnresolvedConnectionEndFeatureMembership() {
+        EndFeatureMembership endFeatureMembership = this.fact.createEndFeatureMembership();
+        Feature endFeature = this.fact.createFeature();
+        endFeature.setIsEnd(true);
+        endFeatureMembership.getOwnedRelatedElement().add(endFeature);
+        endFeatureMembership.setMemberElement(endFeature);
+        return endFeatureMembership;
+    }
+
+    private EndFeatureMembership createFlowEndFeatureMembership(Feature referencedFeature, String ownedFeatureName) {
+        EndFeatureMembership endFeatureMembership = this.fact.createEndFeatureMembership();
+        FlowEnd flowEnd = this.fact.createFlowEnd();
+        flowEnd.setIsEnd(true);
+        endFeatureMembership.getOwnedRelatedElement().add(flowEnd);
+        endFeatureMembership.setMemberElement(flowEnd);
+        this.builder.addReferenceSubsetting(flowEnd, referencedFeature);
+
+        FeatureMembership featureMembership = this.fact.createFeatureMembership();
+        flowEnd.getOwnedRelationship().add(featureMembership);
+        ReferenceUsage ownedFeature = this.fact.createReferenceUsage();
+        ownedFeature.setDeclaredName(ownedFeatureName);
+        featureMembership.getOwnedRelatedElement().add(ownedFeature);
+        featureMembership.setMemberElement(ownedFeature);
+        return endFeatureMembership;
+    }
+
     @Test
     public void attributeUsage() {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
@@ -1590,6 +1630,65 @@ public class SysMLElementSerializerTest {
 
         this.assertTextualFormEquals("first u1.attr1 then u2.attr2;", successionUsage);
 
+    }
+
+    @Test
+    public void interfaceUsageWithPortEnds() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
+
+        PartUsage heater = this.builder.createInWithName(PartUsage.class, rootPart, "heater");
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, heater, "socket");
+        PortUsage outlet = this.builder.createInWithName(PortUsage.class, rootPart, "outlet");
+
+        Feature source = this.builder.createFeatureChaining(heater, socket);
+        InterfaceUsage interfaceUsage = this.builder.createInWithName(InterfaceUsage.class, rootPart, "interface1");
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(source));
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(outlet));
+
+        this.assertTextualFormEquals("connection interface1 connect heater.socket to outlet;", interfaceUsage);
+    }
+
+    @Test
+    public void interfaceUsageWithNestedPortEnd() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
+
+        PartUsage livingRoom = this.builder.createInWithName(PartUsage.class, rootPart, "livingRoom");
+        PartUsage heater = this.builder.createInWithName(PartUsage.class, livingRoom, "heater");
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, heater, "socket");
+        PortUsage outlet = this.builder.createInWithName(PortUsage.class, rootPart, "outlet");
+
+        Feature source = this.builder.createFeatureChaining(livingRoom, heater, socket);
+        InterfaceUsage interfaceUsage = this.builder.createInWithName(InterfaceUsage.class, rootPart, "interface1");
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(source));
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(outlet));
+
+        this.assertTextualFormEquals("connection interface1 connect livingRoom.heater.socket to outlet;", interfaceUsage);
+    }
+
+    @Test
+    public void interfaceUsageWithUnresolvedPortEnd() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
+
+        PortUsage socket = this.builder.createInWithName(PortUsage.class, rootPart, "socket");
+        InterfaceUsage interfaceUsage = this.builder.createInWithName(InterfaceUsage.class, rootPart, "interface1");
+        interfaceUsage.getOwnedRelationship().add(this.createConnectionEndFeatureMembership(socket));
+        interfaceUsage.getOwnedRelationship().add(this.createUnresolvedConnectionEndFeatureMembership());
+
+        this.assertTextualFormEquals("connection interface1 connect socket to ;", interfaceUsage);
+    }
+
+    @Test
+    public void flowUsageWithPortEnds() {
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
+
+        PartUsage heater = this.builder.createInWithName(PartUsage.class, rootPart, "heater");
+        PartUsage adapter = this.builder.createInWithName(PartUsage.class, rootPart, "adapter");
+
+        FlowUsage flowUsage = this.builder.createInWithName(FlowUsage.class, rootPart, "flow1");
+        flowUsage.getOwnedRelationship().add(this.createFlowEndFeatureMembership(heater, "socket"));
+        flowUsage.getOwnedRelationship().add(this.createFlowEndFeatureMembership(adapter, "outlet"));
+
+        this.assertTextualFormEquals("flow flow1 from heater.socket to adapter.outlet;", flowUsage);
     }
 
     @DisplayName("ActionUsage with SuccessionAsUsage linked to an action defined in the ActionDefinition")
