@@ -27,6 +27,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/2264[#2264] [services] Fix connection interface end names dropped on textual SysML export.
 - https://github.com/eclipse-syson/syson/issues/2232[#2232] [configuration] Fix a serialization problem of the View models of SysON representations.
 - https://github.com/eclipse-syson/syson/issues/2237[#2237] [diagrams] Fix the item label inside `frames`, `require constraints`, and `assume constraints` compartments.
 - https://github.com/eclipse-syson/syson/issues/2291[#2291] [diagrams] Fix item label for constraint to show their name and expression value between braces (if present).

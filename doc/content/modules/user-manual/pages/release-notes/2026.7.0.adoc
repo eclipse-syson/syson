@@ -123,6 +123,10 @@ Now, the label dynamically adapts based on whether the `ConcernUsage` or `Constr
 ** Fix the broken `New Interface` tool icon.
 ** Add an explicit warning message when user tries to reconnect one `Actor` 's graphical edge to another `Actor`.
 
+* In textual import/export:
+
+** Fix connection interface end names on textual SysML export. For example, `connection interface1 connect heater.socket to outlet;` where `heater.socket` and `outlet` are the names of existing features in the model, is now correctly exported.
+
 == Improvements
 
 * In diagrams:
