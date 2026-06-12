@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
+import org.eclipse.syson.application.controllers.expressions.graphql.CreateExpressionMutationRunner;
 import org.eclipse.syson.application.data.GeneralViewDirectEditTestProjectData;
 import org.eclipse.syson.application.data.GeneralViewItemAndAttributeProjectData;
 import org.eclipse.syson.application.data.GeneralViewPartUsageRedefinitionProjectData;
@@ -42,6 +44,8 @@ import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortionKind;
+import org.eclipse.syson.sysml.dto.CreateExpressionInput;
+import org.eclipse.syson.sysml.dto.CreateExpressionSuccessPayload;
 import org.eclipse.syson.sysml.metamodel.helper.LabelConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,6 +75,9 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
 
     @Autowired
     private EditLabelMutationRunner editLabelMutationRunner;
+
+    @Autowired
+    private CreateExpressionMutationRunner createExpressionMutationRunner;
 
     @Autowired
     private IObjectSearchService objectSearchService;
@@ -395,7 +402,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with an attribute, WHEN we direct edit with an operation using an unimported namespace, THEN the attribute is correctly set")
+    @DisplayName("GIVEN a diagram with an attribute, WHEN we set its value to an expression using an unimported namespace, THEN the attribute is correctly set")
     @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
     public void directEditOperationUsingUnImportedNameSpaceName() {
@@ -407,6 +414,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var partNodeId = new AtomicReference<String>();
+        var partNodeTargetId = new AtomicReference<String>();
         var partNodeLabelId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -414,26 +422,19 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             var partNode = new DiagramNavigator(diagram).nodeWithLabel("x1").getNode();
             partNodeId.set(partNode.getId());
             partNodeLabelId.set(partNode.getInsideLabel().getId());
+            partNodeTargetId.set(partNode.getTargetObjectId());
         });
 
-        Runnable editLabel = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 = 1[g]");
-            var result = this.editLabelMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
-            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
-            List<String> messages = JsonPath.read(result.data(), "$.data.editLabel.messages[*].body");
-            assertThat(messages).hasSize(0);
-        };
+        Runnable createExpression = this.createExpression(GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, partNodeTargetId::get, "1 [g]");
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
             var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
-            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 = 1 [g]");
+            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("x1 = 1 [g]");
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
-                .then(editLabel)
+                .then(createExpression)
                 .consumeNextWith(updatedDiagramContentMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
@@ -622,10 +623,10 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .verify(Duration.ofSeconds(10));
     }
 
-    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity and operation, THEN the part is correctly set only if the multiplicity is before the operation")
+    @DisplayName("GIVEN a diagram with a part, WHEN we direct edit with multiplicity, THEN the multiplicity is correctly set")
     @GivenSysONServer({ GeneralViewItemAndAttributeProjectData.SCRIPT_PATH })
     @Test
-    public void directEditMultiplicityWithOperation() {
+    public void directEditMultiplicity() {
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
                 GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID,
                 GeneralViewItemAndAttributeProjectData.GraphicalIds.DIAGRAM_ID);
@@ -644,7 +645,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
         });
 
         Runnable editLabelWithMultiplicityBefore = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 [4] = 1[g]");
+            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 [4]");
             var result = this.editLabelMutationRunner.run(input);
 
             String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
@@ -653,20 +654,7 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
             assertThat(messages).hasSize(0);
         };
 
-        Runnable editLabelWithMultiplicityAfter = () -> {
-            var input = new EditLabelInput(UUID.randomUUID(), GeneralViewItemAndAttributeProjectData.EDITING_CONTEXT_ID, diagramId.get(), partNodeLabelId.get(), "t1 = 1[g] [4]");
-            var result = this.editLabelMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
-            assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
-        };
-
         Consumer<Object> updatedDiagramContentMatcherBefore = assertRefreshedDiagramThat(diagram -> {
-            var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
-            DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 [4] = 1 [g]");
-        });
-
-        Consumer<Object> updatedDiagramContentMatcherAfter = assertRefreshedDiagramThat(diagram -> {
             var node = new DiagramNavigator(diagram).nodeWithId(partNodeId.get()).getNode();
             DiagramAssertions.assertThat(node.getInsideLabel()).hasText("t1 [4]");
         });
@@ -675,8 +663,6 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(editLabelWithMultiplicityBefore)
                 .consumeNextWith(updatedDiagramContentMatcherBefore)
-                .then(editLabelWithMultiplicityAfter)
-                .consumeNextWith(updatedDiagramContentMatcherAfter)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -745,5 +731,14 @@ public class GVDirectEditTests extends AbstractIntegrationTests {
                 .then(redefinedElementsChecker)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    private Runnable createExpression(String editingContextId, Supplier<String> parentElementId, String expressionContent) {
+        return () -> {
+            var input = new CreateExpressionInput(UUID.randomUUID(), editingContextId, parentElementId.get(), expressionContent);
+            var result = this.createExpressionMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.createExpression.__typename");
+            assertThat(typename).isEqualTo(CreateExpressionSuccessPayload.class.getSimpleName());
+        };
     }
 }

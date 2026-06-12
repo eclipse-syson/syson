@@ -360,7 +360,7 @@ public class DiagramQueryLabelService implements IDiagramLabelService {
                 .filter(FeatureValue.class::isInstance)
                 .map(FeatureValue.class::cast)
                 .findFirst();
-        if (featureValue.isPresent()) {
+        if (featureValue.isPresent() && !directEditInput) {
             var expression = featureValue.get().getValue();
             String valueAsString = null;
             if (expression != null) {

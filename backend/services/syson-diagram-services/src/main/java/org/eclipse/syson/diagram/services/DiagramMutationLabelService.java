@@ -139,7 +139,7 @@ public class DiagramMutationLabelService {
      * @return the given {@link Element}.
      */
     public Element directEditListItem(Element element, String newLabel) {
-        return this.directEdit(element, newLabel, true, (String[]) null);
+        return this.directEdit(element, newLabel, true, LabelService.VALUE_OFF);
     }
 
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {

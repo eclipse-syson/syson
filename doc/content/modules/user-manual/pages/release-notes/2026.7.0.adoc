@@ -43,6 +43,9 @@ image::release-notes-assume-and-require-edges.png[assume and require edge betwee
 +
 image::release-notes-assume-and-require-edge-tools.png[list available edge tools containing the two new tools, between a RequirementUsage and a ConstraintUsage, width=60%,height=60%]
 
+** When using direct edit on feature elements which have a value expression (e.g. an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value, and will be ignored if supplied in the new text value.
+Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
+
 * In the _Explorer_ view:
 
 ** The tree items corresponding to the internals of `Expression` elements (syntax tree) are now hidden by default.
