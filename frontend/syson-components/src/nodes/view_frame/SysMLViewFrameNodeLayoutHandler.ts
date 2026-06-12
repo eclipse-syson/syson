@@ -83,8 +83,10 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
     const headerHeightFootprint: number = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
-    const borderNodes: Node<NodeData, string>[] = directChildren.filter((node) => node.data.isBorderNode);
-    const directNodesChildren: Node<NodeData, string>[] = directChildren.filter((child) => !child.data.isBorderNode);
+    const borderNodes: Node<NodeData, DiagramNodeType>[] = directChildren.filter((node) => node.data.isBorderNode);
+    const directNodesChildren: Node<NodeData, DiagramNodeType>[] = directChildren.filter(
+      (child) => !child.data.isBorderNode
+    );
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
@@ -180,7 +182,7 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
     const nodeWidth: number = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight: number = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+    const previousNode: Node<NodeData, DiagramNodeType> | undefined = (previousDiagram?.nodes ?? []).find(
       (prevNode) => prevNode.id === node.id
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
@@ -227,7 +229,7 @@ export class SysMLViewFrameNodeLayoutHandler implements INodeLayoutHandler<SysML
     const minNodeWidth: number = node.data.resizedByUser ? 75 : node.data.defaultWidth ?? 75;
     const minNodeHeight: number = Math.max(labelHeight, node.data.resizedByUser ? 50 : node.data.defaultHeight ?? 50);
 
-    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+    const previousNode: Node<NodeData, DiagramNodeType> | undefined = (previousDiagram?.nodes ?? []).find(
       (prevNode) => prevNode.id === node.id
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
