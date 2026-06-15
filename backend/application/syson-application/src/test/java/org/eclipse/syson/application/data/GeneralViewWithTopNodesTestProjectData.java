@@ -28,6 +28,8 @@ public class GeneralViewWithTopNodesTestProjectData {
      */
     public static class GraphicalIds {
 
+        public static final String ACTION_DEFINITION_ID = "26c1c427-ac52-33f4-961e-4153999f2379";
+
         public static final String ACTION_USAGE_ID = "61aaf64a-4fbc-356e-ba73-4bd47b386989";
 
         public static final String ALLOCATION_DEFINITION_ID = "304ed5e0-b3e2-3399-b110-8836d4b27127";

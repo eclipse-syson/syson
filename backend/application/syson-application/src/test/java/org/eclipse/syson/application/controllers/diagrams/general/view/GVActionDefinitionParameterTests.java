@@ -34,6 +34,7 @@ import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.GivenSysONServer;
 import org.eclipse.syson.SysONTestsProperties;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.controllers.diagrams.testers.ToolTester;
 import org.eclipse.syson.application.data.GeneralViewWithTopNodesTestProjectData;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -62,6 +63,8 @@ import reactor.test.StepVerifier;
  * @author fbarbin
  */
 @Transactional
+@GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { SysONTestsProperties.NO_DEFAULT_LIBRARIES_PROPERTY })
 public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
 
@@ -81,7 +84,10 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private ToolTester nodeCreationTester;
+    private ToolTester toolTester;
+
+    @Autowired
+    private EdgeCreationTester edgeCreationTester;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -99,13 +105,8 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
     }
 
     @DisplayName("GIVEN a SysML Project with an ActionDefinition that subclasses a UseCaseDefinition, WHEN creating a subject in the UseCaseDefinition, THEN it should not be displayed in the ActionDefinition parameters compartment")
-    @GivenSysONServer({ GeneralViewWithTopNodesTestProjectData.SCRIPT_PATH })
     @Test
-    public void checkActionDefinitionInParameter() {
-        this.checkItemParameterOnActionDefinition();
-    }
-
-    private void checkItemParameterOnActionDefinition() {
+    public void checkActionDefinitionParameterFilter() {
         var flux = this.givenSubscriptionToDiagram();
         List<ToolVariable> variables = new ArrayList<>();
         variables.add(new ToolVariable("selectedObject", GeneralViewWithTopNodesTestProjectData.SemanticIds.PART_USAGE_ID, ToolVariableType.OBJECT_ID));
@@ -120,7 +121,7 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
 
-        Runnable newCreationTool = () -> this.nodeCreationTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_DEFINITION_ID, creationToolId, variables);
+        Runnable newCreationTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.USE_CASE_DEFINITION_ID, creationToolId, variables);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
             new CheckDiagramElementCount(this.diagramComparator)
@@ -143,6 +144,86 @@ public class GVActionDefinitionParameterTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(newCreationTool)
                 .consumeNextWith(updatedDiagramConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("GIVEN an ActionDefinition with behavior parameter, WHEN subclassing the ActionDefinition with another ActionDefinition, THEN the other ActionDefinition behavior parameters are inherited from the subclassed ActionDefinition")
+    @Test
+    public void checkActionDefinitionParameterInheritance() {
+        String parameterToolName = "New Parameter In";
+        String expectedListItemLabelText = "in ref parameter1";
+        var flux = this.givenSubscriptionToDiagram();
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID,
+                SysONRepresentationDescriptionIdentifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
+        var diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
+
+        AtomicReference<Diagram> diagram = new AtomicReference<>();
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram::set);
+
+        // Create parameter on ActionDefinition
+        String createParameterToolId = diagramDescriptionIdProvider.getNodeToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), parameterToolName);
+        Runnable newCreationTool = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID, createParameterToolId);
+        Consumer<Object> createdParameterDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewBorderNodeCount(1)
+                    .hasNewNodeCount(1) // The parameter is created
+                    .hasNewEdgeCount(0)
+                    .check(diagram.get(), newDiagram, true);
+
+            var parameterCompartment = new DiagramNavigator(newDiagram)
+                    .nodeWithTargetObjectId(GeneralViewWithTopNodesTestProjectData.SemanticIds.ACTION_DEFINITION_ID)
+                    .childNodeWithLabel("parameters")
+                    .getNode();
+            assertThat(parameterCompartment.getChildNodes()).hasSize(1);
+            assertThat(parameterCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo(expectedListItemLabelText);
+            diagram.set(newDiagram);
+        });
+
+        AtomicReference<String> newActionDefinitionNodeId = new AtomicReference<>();
+
+        // Create another ActionDefinition
+        String createActionDefinitionToolId = diagramDescriptionIdProvider.getDiagramCreationToolId("New Action Definition");
+        Runnable createActionDefinitionRunnable = () -> this.toolTester.invokeTool(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, null, createActionDefinitionToolId);
+        Consumer<Object> createdActionDefinitionDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewBorderNodeCount(0)
+                    .hasNewNodeCount(1) // The Action definition
+                    .hasNewEdgeCount(0)
+                    .check(diagram.get(), newDiagram, true);
+            var newNodes = this.diagramComparator.newNodes(diagram.get(), newDiagram);
+            newActionDefinitionNodeId.set(newNodes.getFirst().getId());
+            diagram.set(newDiagram);
+        });
+
+        // Create the subclassification between the created ActionDefinition and the existing one
+        String createSubclassificationToolId = diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()), "New Subclassification");
+        Runnable createSubclassification = () -> this.edgeCreationTester.createEdgeUsingNodeId(GeneralViewWithTopNodesTestProjectData.EDITING_CONTEXT_ID, diagram, newActionDefinitionNodeId.get(), GeneralViewWithTopNodesTestProjectData.GraphicalIds.ACTION_DEFINITION_ID, createSubclassificationToolId);
+
+        // check the parameter is inherited and contains a '^' in its name
+        Consumer<Object> createSubclassificationDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewBorderNodeCount(0)
+                    .hasNewNodeCount(1) // The list item inherited from subclassed element
+                    .hasNewEdgeCount(1) // The subclassification edge
+                    .check(diagram.get(), newDiagram);
+
+            var parameterCompartment = new DiagramNavigator(newDiagram)
+                    .nodeWithId(newActionDefinitionNodeId.get())
+                    .childNodeWithLabel("parameters")
+                    .getNode();
+            assertThat(parameterCompartment.getChildNodes()).hasSize(1);
+            assertThat(parameterCompartment.getChildNodes().getFirst().getInsideLabel().getText()).isEqualTo("^" + expectedListItemLabelText);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(newCreationTool)
+                .consumeNextWith(createdParameterDiagramConsumer)
+                .then(createActionDefinitionRunnable)
+                .consumeNextWith(createdActionDefinitionDiagramConsumer)
+                .then(createSubclassification)
+                .consumeNextWith(createSubclassificationDiagramConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -28,6 +28,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 
 - https://github.com/eclipse-syson/syson/issues/2232[#2232] [configuration] Fix a serialization problem of the View models of SysON representations.
 - https://github.com/eclipse-syson/syson/issues/2237[#2237] [diagrams] Fix the item label inside `frames`, `require constraints`, and `assume constraints` compartments.
+- https://github.com/eclipse-syson/syson/issues/2278[#2278] [diagrams] Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 
 === Improvements
 

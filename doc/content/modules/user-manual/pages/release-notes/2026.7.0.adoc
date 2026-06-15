@@ -110,6 +110,7 @@ image::expression-palette-section.png[Expression palette tool section on an `Att
 ** In an _action flow_ compartment, `Succession` edges which have a guard now display the guard condition `Expression` as a _begin label_:
 +
 image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=80%]
+** Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
 
 == Technical details
 
