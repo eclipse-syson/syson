@@ -112,18 +112,6 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
     }
 
     protected void addReusableCustomNodes(IViewDiagramElementFinder cache, List<NodeDescription> childrenNodes) {
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartStateNodeDescriptionProvider.START_STATE_NAME))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneStateNodeDescriptionProvider.DONE_STATE_NAME))

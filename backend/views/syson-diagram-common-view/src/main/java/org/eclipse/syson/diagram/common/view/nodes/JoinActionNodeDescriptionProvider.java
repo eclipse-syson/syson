@@ -26,7 +26,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class JoinActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
 
-    public static final String JOIN_ACTION_NAME = "JoinAction";
+    public static final String JOIN_ACTION_NAME = SysmlPackage.eINSTANCE.getJoinNode().getName();
 
     public JoinActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

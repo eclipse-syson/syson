@@ -26,7 +26,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class DecisionActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
 
-    public static final String DECISION_ACTION_NAME = "DecisionAction";
+    public static final String DECISION_ACTION_NAME = SysmlPackage.eINSTANCE.getDecisionNode().getName();
 
     public DecisionActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

@@ -26,7 +26,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class ForkActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
 
-    public static final String FORK_ACTION_NAME = "ForkAction";
+    public static final String FORK_ACTION_NAME = SysmlPackage.eINSTANCE.getForkNode().getName();
 
     public ForkActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

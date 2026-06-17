@@ -129,9 +129,8 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        // this nodeDescription has not been added to the diagramDescription children but to the fakeNodeDescription
-        // children instead
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.getNodeDescriptionName())).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.setPalette(this.createNodePalette(cache));
         });
     }

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -70,8 +71,11 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.ViewDefinition;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
+import org.eclipse.syson.util.StandardDiagramsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +100,52 @@ public class ViewToolService extends ToolService {
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.sysONExplorerService = Objects.requireNonNull(sysONExplorerService);
         this.labelService = Objects.requireNonNull(labelService);
+    }
+
+    /**
+     * Tool precondition for control node actions (Start/Done/Decision/Fork/Join/Merge) invoked on diagram background.
+     *
+     * @param element
+     *         the given {@link Element}.
+     * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
+     */
+    public boolean isControlNodeActionCreationToolInsideActionOnAFV(Element element, IEditingContext editingContext, DiagramContext diagramContext) {
+        if (this.isAFVDiagram(editingContext, diagramContext)) {
+            var owner = this.utilService.getViewUsageOwner(element);
+            return owner instanceof ActionUsage || owner instanceof ActionDefinition;
+        }
+        return false;
+    }
+
+    /**
+     * Tool precondition for control node actions (Start/Done/Decision/Fork/Join/Merge) invoked on a selected node.
+     *
+     * @param editingContext
+     *         the (non-{@code null}) {@link IEditingContext}.
+     * @param selectedNode
+     *         the selected node. It corresponds to a variable accessible from the variable
+     *         manager.
+     * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
+     */
+    public boolean isControlNodeActionCreationToolInAction(IEditingContext editingContext, Node selectedNode) {
+        return this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId())
+                .map(object -> {
+                    return object instanceof ActionUsage || object instanceof ActionDefinition;
+                }).orElse(false);
+    }
+
+    private boolean isAFVDiagram(IEditingContext editingContext, DiagramContext diagramContext) {
+        var objectId = diagramContext.diagram().getTargetObjectId();
+        return this.objectSearchService.getObject(editingContext, objectId)
+                .map(object -> {
+                    if (object instanceof ViewUsage viewUsage) {
+                        if (!viewUsage.getType().isEmpty()) {
+                            Type type = viewUsage.getType().getFirst();
+                            return type instanceof ViewDefinition && StandardDiagramsConstants.AFV_QN.equals(type.getQualifiedName());
+                        }
+                    }
+                    return false;
+                }).orElse(false);
     }
 
     /**

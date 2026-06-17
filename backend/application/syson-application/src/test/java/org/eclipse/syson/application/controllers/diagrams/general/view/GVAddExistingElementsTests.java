@@ -76,6 +76,8 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
 
     private static final String PART2 = "part2";
 
+    private static final String SUCCESSION = "SuccessionAsUsage";
+
     private static final String ATTRIBUTE_DEFINITION = "AttributeDefinition1";
 
     private static final String NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE = "Node {0} should exist on the diagram";
@@ -166,15 +168,17 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
         Runnable addExistingElementTool = () -> this.nodeCreationTester.invokeTool(GeneralViewAddExistingElementsTestProjectData.EDITING_CONTEXT_ID, diagram, addExistingElementToolId);
 
         Consumer<Object> updatedDiagramConsumer = assertRefreshedDiagramThat(newDiagram -> {
-            assertThat(newDiagram.getNodes()).as("7 root nodes should be visible on the diagram").hasSize(7);
+            assertThat(newDiagram.getNodes()).as("8 root nodes should be visible on the diagram").hasSize(8);
             assertThat(newDiagram.getEdges().stream().filter(e -> ViewModifier.Normal.equals(e.getState())).toList())
-                    .as("3 edges should be visible on the diagram").hasSize(3)
+                    .as("4 edges should be visible on the diagram").hasSize(4)
                     .as("The diagram should contain a composite edge between part2 and part1")
                     .anyMatch(edge -> edge.getTargetObjectLabel().equals(PART1))
                     .as("The diagram should contain a composite edge between action1 and action2")
                     .anyMatch(edge -> edge.getTargetObjectLabel().equals(ACTION1))
                     .as("The diagram should contain a composite edge between action2 and action3")
-                    .anyMatch(edge -> edge.getTargetObjectLabel().equals(ACTION2));
+                    .anyMatch(edge -> edge.getTargetObjectLabel().equals(ACTION2))
+                    .as("The diagram should contain a SuccessionAsUsage edge between start and action2")
+                    .anyMatch(edge -> edge.getTargetObjectLabel().equals(SUCCESSION));
             assertThat(newDiagram.getNodes())
                     .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, PACKAGE1))
                     .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), PACKAGE1))
@@ -185,7 +189,9 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                     .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, PART2))
                     .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), PART2))
                     .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, "RequirementUsage"))
-                    .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), "RequirementUsage"));
+                    .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), "RequirementUsage"))
+                    .as(MessageFormat.format(NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE, "start"))
+                    .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), "start"));
 
             this.checkPackageNode(newDiagram);
 

@@ -26,7 +26,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class MergeActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
 
-    public static final String MERGE_ACTION_NAME = "MergeAction";
+    public static final String MERGE_ACTION_NAME = SysmlPackage.eINSTANCE.getMergeNode().getName();
 
     public MergeActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

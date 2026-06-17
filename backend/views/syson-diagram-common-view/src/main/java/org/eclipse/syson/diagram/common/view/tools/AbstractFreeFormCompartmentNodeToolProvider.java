@@ -25,6 +25,8 @@ import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
+import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.ServiceMethod;
 
@@ -43,9 +45,12 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
 
     protected final String compartmentName;
 
+    protected final EClass ownerEClass;
+
     public AbstractFreeFormCompartmentNodeToolProvider(EClass ownerEClass, String compartmentName, IDescriptionNameGenerator descriptionNameGenerator) {
         this.compartmentName = Objects.requireNonNull(compartmentName);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.ownerEClass = ownerEClass;
     }
 
     /**
@@ -115,18 +120,30 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                         ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment)
-                        .aql(Node.SELECTED_NODE, "self", DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
+                .expression(ServiceMethod.of4(DiagramMutationAQLService::revealCompartment).aql(Node.SELECTED_NODE, AQLConstants.SELF, DiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT,
+                        ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE));
 
-        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
+        var conditionalRevealOperation = this.viewBuilderHelper.newIf()
+                .conditionExpression(AQLConstants.AQL + Node.SELECTED_NODE + " <> null")
+                .children(revealOperation.build());
+
+        var changeContextCreateInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getCreationServiceCallExpression())
-                .children(addToExposedElements.build(), revealOperation.build());
+                .children(addToExposedElements.build(), conditionalRevealOperation.build());
+
+        var changeContextViewUsageOwner = this.viewBuilderHelper.newChangeContext()
+                .expression(ServiceMethod.of0(UtilService::getViewUsageOwner).aqlSelf())
+                .children(changeContextCreateInstance.build());
+
+        var changeContextRoot = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF)
+                .children(changeContextViewUsageOwner.build());
 
         String preconditionExpression = this.getPreconditionServiceCallExpression();
 
         return builder.name(this.getLabel())
                 .iconURLsExpression(this.getIconPath())
-                .body(creationServiceCall.build())
+                .body(changeContextRoot.build())
                 .preconditionExpression(preconditionExpression)
                 .build();
     }
