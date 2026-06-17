@@ -168,10 +168,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionUsageFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1, 0, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), 5, 2, 1))
                 .map(TestNameGenerator::namedArguments);
     }
@@ -191,10 +191,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> actionDefinitionFreeFormNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0, 0, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1, 0, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1, 0, 1),
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 5, 2, 1))
                 .map(TestNameGenerator::namedArguments);
     }

@@ -71,6 +71,7 @@ It leverages the selection dialog to either create an _occurrence timeslice/snap
 - https://github.com/eclipse-syson/syson/issues/2250[#2250] [diagrams] Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/2254[#2254] [diagrams] Add the support for _assume_ and _require_ graphical edges.
 - https://github.com/eclipse-syson/syson/issues/2260[#2260] [diagrams] Add the _New Assume Constraint_ or _New Require Constraint_ edge tools to create _assume_ and _require_ graphical edges.
+- https://github.com/eclipse-syson/syson/issues/2113[#2113] [diagrams] Handle start/end/merge/decision... graphical nodes on Action Flow View diagram background
 
 == v2026.5.0
 

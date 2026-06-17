@@ -13,9 +13,9 @@ A _frame_ graphical edge can be created between a `RequirementUsage` or a `Requi
 +
 image::release-notes-frame-edge-tool.png[Edge tool to frame a ConcernUsage, width=50%,height=50%]
 +
-image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a ConcernUsage, width=60%,height=60%]
+image::release-notes-frame-edge.png[Frame edge between a RequirementUsage and a ConcernUsage, width=40%,height=40%]
 
-** Add tools to create _Start_ and _Done_ on `StateUsage` and `StateDefinition` graphical nodes.
+** Add tools to create _Start_ and _Done_ states on `StateUsage` and `StateDefinition` graphical nodes.
 +
 image::release-notes-start-done-states.png[Tool to create a start and done, width=60%,height=60%]
 
@@ -27,13 +27,13 @@ image::release-notes-framed-concern-tool.png[Tool to create a _frame_ concern us
 +
 image::release-notes-frames-compartment.png[frames compartment displaying concern usages of a requirement, width=40%,height=40%]
 
-** Leverage the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
-** Leverage the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Use the selection dialog to improve the graphical node tool creating a _frame_ `ConcernUsage` from `RequirementUsage` and `RequirementDefinition` graphical nodes.
+** Use the selection dialog to improve the graphical node tools creating a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes.
 
-** Add the support for creating _timeslices/snapshots_ from the different kind of `OccurrenceDefiniton` graphical nodes.
+** Add support for creating _timeslices/snapshots_ from the different kinds of `OccurrenceDefinition` graphical nodes.
 It leverages the selection dialog to either create an _occurrence timeslice/snapshot_, or the _usage timeslice/snapshot_ matching the `OccurrenceDefinition` on which the tool is applied.
 
-** Add the support for _assume_ and _require_ graphical edges.
+** Add support for _assume_ and _require_ graphical edges.
 These graphical edges are displayed using the tool to create a _require_ `ConstraintUsage`, or an _assume_ `ConstraintUsage`, from `RequirementUsage` and `RequirementDefinition` graphical nodes, when another `ConstraintUsage` is selected.
 These graphical edges can also be created using the _New Assume Constraint_ or _New Require Constraint_ graphical edge tools.
 +
@@ -41,10 +41,12 @@ image::release-notes-assume-and-require-edges.png[assume and require edge betwee
 
 ** Add the _New Assume Constraint_ or _New Require Constraint_ edge tools to create _assume_ and _require_ graphical edges.
 +
-image::release-notes-assume-and-require-edge-tools.png[list available edge tools containing the two new tools, between a RequirementUsage and a ConstraintUsage, width=60%,height=60%]
+image::release-notes-assume-and-require-edge-tools.png[list available edge tools containing the two new tools, between a RequirementUsage and a ConstraintUsage, width=40%,height=40%]
 
-** When using direct edit on feature elements which have a value expression (e.g. an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value, and will be ignored if supplied in the new text value.
+** When using direct edit on feature elements that have a value expression (e.g., an `Attribute` with a default value defined), the expression part (after the `=` sign) is no longer part of the initial direct edit value and will be ignored if supplied in the new text value.
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
+
+** Add support for creating _Start_, _Done_, _Decision_, _Fork_, _Join_, and _Merge_ actions directly on the background of an `Action Flow View` diagram if its root element is an `ActionUsage` or `ActionDefinition`.
 
 * In the _Explorer_ view:
 
@@ -60,13 +62,13 @@ a|image::explorer-expression-internals-hidden.png[Internals hidden (default)]
 a|image::explorer-expression-internals-visible.png[Internals visible]
 |===
 
-** The dialog creating a child element provides two more options for `RequirementUsage` or `RequirementDefinition` tree items.
-One creates a `ConcernUsage` and another one creates a `FramedConcernMembership`.
-The option that creates a `ConcernUsage` creates a `FramedConcernMembership` as an intermediate container.
+** The dialog for creating a child element provides two additional options for `RequirementUsage` or `RequirementDefinition` tree items.
+One creates a `ConcernUsage` and another creates a `FramedConcernMembership`.
+The option that creates a `ConcernUsage` also creates a `FramedConcernMembership` as an intermediate container.
 The option that creates a `FramedConcernMembership` only creates the membership.
 In both cases, to display the `FramedConcernMembership`, deactivate the `Hide Memberships` filter.
-** It is now possible to create, edit and delete _Expressions_ using their textual syntax from the _Explorer_ view.
-To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+** It is now possible to create, edit, and delete _Expressions_ using their textual syntax from the _Explorer_ view.
+To _create_ an expression, invoke the _New expression_ context menu action on a compatible element (supported elements are `Attributes`, `Constraints`, and `Transitions`).
 A modal will open where you can enter the textual representation of the expression to create.
 Click on the _Update_ button or hit _Ctrl-RET_ to validate.
 If the entered expression is valid, it will be created and the modal will automatically close.
@@ -76,13 +78,13 @@ Fix any error reported before clicking on _Update_ again (or canceling the opera
 image::edit-expression-modal.png[Edit expression modal, width=80%]
 image::edit-expression-modal-error.png[Edit expression modal showing an error message if the new expression is invalid, width=80%]
 +
-To _edit_ an existing expression, simply invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element; the same modal will open but with the current textual representation of the expression pre-filled.
+To _edit_ an existing expression, invoke the _Edit expression_ context menu action directly on the existing expression or on its parent element. The same modal will open with the current textual representation of the expression pre-filled.
 +
 To _delete_ an existing expression, you can simply invoke the normal _Delete_ menu item action on the expression itself or the new _Delete expression_ on its parent element.
 
 * In the _Details_ view:
 
-** When an `Expression` element or an `Element` which contains a single `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays the textual representation of the `Expression`, with a button to open the expression edition modal (see above) directly on it:
+** When an `Expression` element or an `Element` that contains a single `Expression` element is selected (for example from the _Explorer_ view), the _Details_ view displays the textual representation of the `Expression`, with a button to open the expression editing modal (see above) directly on it:
 +
 image::expression-details.png[Expression value displayed in the _Details_ veiw, width=80%]
 
@@ -98,27 +100,27 @@ image::expression-details.png[Expression value displayed in the _Details_ veiw, 
 
 ** Improve diagram-to-diagram drag and drop to support dropping multiple graphical nodes at once.
 ** Improve feedback message reporting while moving elements in diagrams.
-** Fix and improve the labeling logic inside `frames`, `require constraints`, and `assume constraints` compartments.
+** Improve the labeling logic inside `frames`, `require constraints`, and `assume constraints` compartments.
 Previously, the label was always the name of the `ConcernUsage` or the `ConstraintUsage` displayed in the compartment.
 Now, the label dynamically adapts based on whether the `ConcernUsage` or `ConstraintUsage` has a name and an owned reference subsetting:
-*** Elements having both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
-*** Elements without name and an owned reference subsetting display only the reference subsetting name
-*** Elements without reference subsetting display their name.
-** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools creating _timeslice_ and _snapshot_ elements.
-Before, the selection dialog allowed choosing between all _timeslice_ and _snapshot_ types.
+*** Elements with both a name and an owned reference subsetting now display using the standard subsetting notation (e.g., `ElementName ::> SubsettingName`).
+*** Elements without a name and an owned reference subsetting display only the reference subsetting name.
+*** Elements without a reference subsetting display their name.
+** Update the choice of _timeslice_ and _snapshot_ elements that can be created in the selection dialog of tools for creating _timeslice_ and _snapshot_ elements.
+Previously, the selection dialog allowed choosing from all _timeslice_ and _snapshot_ types.
 Now, the choice is restricted to the _timeslice_ or _snapshot_ type that matches the graphical node type on which the tool is applied.
-** It is now possible to create, edit and delete _Expressions_ using their textual syntax from the a diagram.
-To _create_ an expression, invoke the _New expression_ action in the _Expression_ palette section of a compatible element (supported elements are `Attributes`, `Constraints` and `Transitions`).
+** It is now possible to create, edit, and delete _Expressions_ using their textual syntax from a diagram.
+To _create_ an expression, invoke the _New expression_ action in the _Expression_ palette section of a compatible element (supported elements are `Attributes`, `Constraints`, and `Transitions`).
 The same modal as described above when invoked from the _Explorer_ or _Details_ view will open where you can enter the textual representation of the expression to create.
 Editing and deleting an _Expression_ is also available on compatible diagram elements with the corresponding actions in their _Expressions_ palette section.
-The behavior is the same when invoking the equivalen action from the _Explorer_ or _Details_ view.
+The behavior is the same when invoking the equivalent action from the _Explorer_ or _Details_ view.
 +
-image::expression-palette-section.png[Expression palette tool section on an `Attribute` in a diagram, width=80%]
-** In an _action flow_ compartment, `Succession` edges which have a guard now display the guard condition `Expression` as a _begin label_:
+image::expression-palette-section.png[Expression palette tool section on an `Attribute` in a diagram, width=40%,height=40%]
+** In an _action flow_ compartment, `Succession` edges that have a guard now display the guard condition `Expression` as a _begin label_:
 +
-image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=80%]
+image::action-flow-guard-labels.png[Succession edges with visible guard expressions, width=40%,height=40%]
 ** Display inherited behavior parameters in the _parameters_ compartment of `ActionDefinition` and `ActionUsage` graphical nodes.
-** Display inherited `ItemUsages` in the _items_ compartment, and inherited `ActionUsages` in the _actions_ compartment of `ActionDefinitions`, `ActionUsages`, `PartUsages`... graphical nodes.
+** Display inherited `ItemUsages` in the _items_ compartment and inherited `ActionUsages` in the _actions_ compartment of `ActionDefinitions`, `ActionUsages`, `PartUsages`, and other graphical nodes.
 
 == Technical details
 

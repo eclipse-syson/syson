@@ -61,9 +61,8 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        // this nodeDescription has not been added to the diagramDescription children but to the fakeNodeDescription
-        // children instead
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME)).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.setPalette(this.createNodePalette());
         });
     }

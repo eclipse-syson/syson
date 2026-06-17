@@ -40,6 +40,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -413,18 +414,20 @@ public class DiagramMutationExposeService {
         }
         // 1- get visible compartments of selected node
         // 2- get visible compartments that could host the future node
-        // 3- if a visible compartment could host the future node, then hide the tree node
+        // 3- if a visible compartment could host the future node, or it is a control node, then hide the tree node
         List<Node> visibleCompartments = referenceParent.getChildNodes().stream().filter(n -> n.getState().equals(ViewModifier.Normal)).toList();
-        boolean visibleCompartmentsThatCouldHostTheFutureNode = false;
-        for (Node visibleCompartment : visibleCompartments) {
-            Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, visibleCompartment,
-                    convertedNodes);
-            if (childNodeDescriptionIdForRendering.isPresent()) {
-                visibleCompartmentsThatCouldHostTheFutureNode = true;
-                break;
+        boolean shouldHide = element instanceof ControlNode;
+        if (!shouldHide) {
+            for (Node visibleCompartment : visibleCompartments) {
+                Optional<String> childNodeDescriptionIdForRendering = this.diagramMutationElementService.getChildNodeDescriptionIdForRendering(element, editingContext, diagramContext, visibleCompartment,
+                        convertedNodes);
+                if (childNodeDescriptionIdForRendering.isPresent()) {
+                    shouldHide = true;
+                    break;
+                }
             }
         }
-        if (visibleCompartmentsThatCouldHostTheFutureNode) {
+        if (shouldHide) {
             var parentId = this.diagramQueryElementService.getGraphicalParentId(diagramContext, referenceParent);
             var descriptionId = this.diagramQueryElementService.getNodeDescriptionId(element, diagramContext.diagram(), editingContext);
             if (parentId != null && descriptionId.isPresent()) {

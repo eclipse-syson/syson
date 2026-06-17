@@ -73,9 +73,15 @@ import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescript
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsViewToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.services.aql.DiagramMutationAQLService;
 import org.eclipse.syson.standard.diagrams.view.edges.AllocateEdgeDescriptionProvider;
@@ -981,6 +987,18 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+        definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
@@ -1100,6 +1118,14 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getDecisionNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getForkNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getJoinNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getMergeNode(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAllocation(),
                 colorProvider, this.getDescriptionNameGenerator()));
@@ -1629,6 +1655,12 @@ public class SDVDiagramDescriptionProvider implements IRepresentationDescription
         if (BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateNodeToolProvider(false).create(cache));
             nodeTools.add(new ExhibitStateNodeToolProvider(true).create(cache));
+            nodeTools.add(new StartActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new DoneActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new JoinActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new DecisionActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new ForkActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
+            nodeTools.add(new MergeActionNodeToolProvider(null, this.getDescriptionNameGenerator()).create(cache));
         } else if (STRUCTURE_TOOL_SECTION.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
