@@ -20,11 +20,10 @@ import {
   PropertySectionLabel,
   TextfieldStyleProps,
 } from '@eclipse-sirius/sirius-components-forms';
+import Typography from '@mui/material/Typography';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -141,46 +140,14 @@ export const ExpressionPropertySection: PropertySectionComponent<GQLTextfield | 
       <div className={classes.propertySectionLabel}>
         <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widgetForLabel} />
       </div>
-      <TextField
-        name={labelOverride}
-        placeholder={labelOverride}
-        variant="standard"
-        value={widget.stringValue}
-        spellCheck={false}
-        margin="dense"
-        multiline={true}
-        maxRows={4}
-        fullWidth
-        data-testid={labelOverride}
-        disabled={true}
-        error={widget.diagnostics.length > 0}
-        helperText={widget.diagnostics[0]?.message}
-        className={classes.textfield}
-        InputProps={
-          widget.style
-            ? {
-                className: classes.style,
-              }
-            : {}
-        }
-        inputProps={{
-          'data-testid': `input-${labelOverride}`,
-          className: classes.input,
-        }}
-        slotProps={{
-          input: {
-            endAdornment: (
-              <InputAdornment position="end">
-                <Tooltip title={'Edit'}>
-                  <IconButton size="small" onClick={onEditExpression}>
-                    <MoreHorizIcon />
-                  </IconButton>
-                </Tooltip>
-              </InputAdornment>
-            ),
-          },
-        }}
-      />
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Typography data-testid={`details-expression-value`}>{widget.stringValue}</Typography>
+        <Tooltip title={'Edit'}>
+          <IconButton size="small" onClick={onEditExpression}>
+            <MoreHorizIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
       {modalElement}
     </div>
   );

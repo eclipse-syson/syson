@@ -92,8 +92,8 @@ describe('Details View Tests', () => {
         explorer.select('vehicle.actualSpeed <= maxSpeed');
       });
       it("Then the Details view shows the expression's textual value", () => {
-        details.getTextField('Expression value').should('exist');
-        details.getTextField('Expression value').should('have.value', 'vehicle.actualSpeed <= maxSpeed');
+        cy.getByTestId('details-expression-value').should('exist');
+        cy.getByTestId('details-expression-value').should('have.text', 'vehicle.actualSpeed <= maxSpeed');
       });
     });
 
@@ -106,8 +106,8 @@ describe('Details View Tests', () => {
         explorer.select('length');
       });
       it("Then the Details view shows the child expression's textual value", () => {
-        details.getTextField('Expression value').should('exist');
-        details.getTextField('Expression value').should('have.value', '80 [SI::centimetre]');
+        cy.getByTestId('details-expression-value').should('exist');
+        cy.getByTestId('details-expression-value').should('have.text', '80 [SI::centimetre]');
       });
     });
   });
