@@ -47,6 +47,9 @@ image::release-notes-assume-and-require-edge-tools.png[list available edge tools
 Users should use the dedicated tools to edit expressions instead, as they ensure only valid expressions (with all names resolving) are accepted.
 ** Add support for list item inheritance in _states_ and _exhibit states_ compartments.
 ** Add support for creating _Start_, _Done_, _Decision_, _Fork_, _Join_, and _Merge_ actions directly on the background of an `Action Flow View` diagram if its root element is an `ActionUsage` or `ActionDefinition`.
+** Add the support for a tool to rotate `ForkNode` and `JoinNode` graphical nodes.
++
+image::release-notes-rotate-fork-join-graphical-nodes.png[For both fork nodes and two join nodes, display one horizontal and one vertical graphical node. Also display the palette with the rotate tool, width=60%,height=60%]
 
 * In the _Explorer_ view:
 
