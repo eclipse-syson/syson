@@ -40,7 +40,7 @@ include::example$retrieve_project_documents.py[]
 * `url`: The {product} server URL.
 * `project_id`: The UUID of the project whose documents should be retrieved.
 
-<3> *Sends a `GET` request* to `/api/projects/{projectId}` so the server returns the project archive as a ZIP file.
+<3> *Sends a `GET` request* to `/api/projects/\{projectId\}` so the server returns the project archive as a ZIP file.
 
 <4> *Reads the `manifest.json` file* from the downloaded archive and extracts the `documentIdsToName` mapping.
 
@@ -67,6 +67,4 @@ Document Name: Requirements.sysml, Document ID: 7f4b9d33-0f4d-4b79-a6f8-8bc12edb
 ----
 
 Then you can reuse the retrieved document ids in recipes such as xref:developer-guide:api/api-cookbook.adoc#download_sysml_file[download a SysML file].
-
-include::developer-guide:partial$download_sysml_file_recipe.adoc[leveloffset=+2]
 
